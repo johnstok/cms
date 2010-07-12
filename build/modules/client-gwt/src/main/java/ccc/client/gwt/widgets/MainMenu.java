@@ -34,19 +34,18 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.types.Permission;
 import ccc.api.types.SortOrder;
+import ccc.client.core.Action;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.actions.ChooseTemplateAction;
 import ccc.client.gwt.actions.OpenAboutAction;
 import ccc.client.gwt.actions.OpenCreateUserAction;
 import ccc.client.gwt.actions.OpenHelpAction;
 import ccc.client.gwt.actions.OpenUpdateCurrentUserAction;
 import ccc.client.gwt.actions.OpenUpdateFolderAction;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Action;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.i18n.UIConstants;
-import ccc.client.gwt.presenters.CreateGroupPresenter;
 import ccc.client.gwt.remoting.GetRootsAction;
 import ccc.client.gwt.remoting.ListGroups;
 import ccc.client.gwt.remoting.LockAction;
@@ -59,6 +58,8 @@ import ccc.client.gwt.remoting.UnlockAction;
 import ccc.client.gwt.remoting.UnpublishAction;
 import ccc.client.gwt.remoting.ViewHistoryAction;
 import ccc.client.gwt.views.gxt.GroupViewImpl;
+import ccc.client.i18n.UIConstants;
+import ccc.client.presenters.CreateGroupPresenter;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -80,7 +81,7 @@ public class MainMenu
     private static final String CONTENT = "content";
 
     private final Globals _globals = new GlobalsImpl();
-    private final UIConstants _constants = GlobalsImpl.uiConstants();
+    private final UIConstants _constants = I18n.UI_CONSTANTS;
     private final User _user;
 
     /**
@@ -90,31 +91,11 @@ public class MainMenu
      */
     public MainMenu(final User user) {
         _user = user;
-        if (_user.hasPermission(Permission.USER_CREATE)) {
-            addMenu(
-                "users-menu",
-                _constants.users(),
-                createMenuItem(
-                    "create-user-menu-item",
-                    _constants.createUser(),
-                    new OpenCreateUserAction()),
-                createMenuItem(
-                    "create-group-menu-item",
-                    _constants.createGroup(),
-                    new Action(){
-                        @Override public void execute() {
-                            new CreateGroupPresenter(
-                                new GroupViewImpl(_globals));
-                        }
-                    }));
-        }
 
-//        if (_user.hasPermission(Globals.ADMINISTRATOR)
-//                || _user.hasPermission(Globals.SITE_BUILDER)) {
-            createContentRootMenu(CONTENT, _constants.contentRoot());
-//        }
+        createUserMenu();
+        createContentRootMenu(CONTENT, _constants.contentRoot());
 
-        addMenu(
+        addMenu(null,
             "tools-menu",
             _constants.tools(),
             createMenuItem(
@@ -127,7 +108,7 @@ public class MainMenu
                 new LogoutAction())
         );
 
-        addMenu(
+        addMenu(null,
             "help-menu",
             _constants.help(),
             createMenuItem(
@@ -139,6 +120,35 @@ public class MainMenu
                 _constants.manual(),
                 new OpenHelpAction())
         );
+    }
+
+    private void createUserMenu() {
+
+        final Menu itemMenu = new Menu();
+        if (_user.hasPermission(Permission.USER_CREATE)
+            ||_user.hasPermission(Permission.GROUP_CREATE)) {
+            final Button item = new Button(_constants.users());
+            item.setId("users-menu");
+            item.setMenu(itemMenu);
+            add(item);
+        }
+        if (_user.hasPermission(Permission.USER_CREATE)) {
+            itemMenu.add(createMenuItem(
+                    "create-user-menu-item",
+                    _constants.createUser(),
+                    new OpenCreateUserAction()));
+        }
+        if (_user.hasPermission(Permission.GROUP_CREATE)) {
+            itemMenu.add(createMenuItem(
+                    "create-group-menu-item",
+                    _constants.createGroup(),
+                    new Action(){
+                        @Override public void execute() {
+                            new CreateGroupPresenter(
+                                new GroupViewImpl(_globals));
+                        }
+                    }));
+        }
     }
 
     private void createContentRootMenu(final String rootName,
@@ -196,7 +206,6 @@ public class MainMenu
         } else {
             if (root.getLockedBy().equals(_user.getUsername())
                     || _user.hasPermission(Permission.RESOURCE_UNLOCK)) {
-
                 rootMenu.add(createMenuItem(
                     "unlock-root-"+name,
                     _constants.unlock(),
@@ -205,17 +214,22 @@ public class MainMenu
             if (root.getLockedBy().equals(_user.getUsername())) {
                 if (root.getPublishedBy() == null
                         || root.getPublishedBy().toString().equals("")) {
-                    rootMenu.add(createMenuItem(
-                        "publish-root-"+name,
-                        _constants.publish(),
-                        new PublishAction(ssm)));
+                    if (_user.hasPermission(Permission.RESOURCE_PUBLISH)) {
+                        rootMenu.add(createMenuItem(
+                            "publish-root-"+name,
+                            _constants.publish(),
+                            new PublishAction(ssm)));
+                    }
                 } else {
-                    rootMenu.add(createMenuItem(
-                        "unpublish-root-"+name,
-                        _constants.unpublish(),
-                        new UnpublishAction(ssm)));
+                    if (_user.hasPermission(Permission.RESOURCE_UNPUBLISH)) {
+                        rootMenu.add(createMenuItem(
+                            "unpublish-root-"+name,
+                            _constants.unpublish(),
+                            new UnpublishAction(ssm)));
+                    }
                 }
-                if (CONTENT.equals(root.getName())) {
+                if (CONTENT.equals(root.getName())
+                     && _user.hasPermission(Permission.RESOURCE_UPDATE)) {
                     rootMenu.add(createMenuItem(
                         "chooseTemplate-root-"+name,
                         _constants.chooseTemplate(),
@@ -232,21 +246,25 @@ public class MainMenu
                         Globals.MAX_FETCH,
                         "name",
                         SortOrder.ASC) {
-                        
+
                         @Override
                         protected void execute(final PagedCollection<Group> groups) {
                             new OpenUpdateResourceAclAction(
                                 ssm, groups.getElements())
                             .execute();
                         }}));
-                rootMenu.add(createMenuItem(
-                    "updateMetadata-root-"+name,
-                    _constants.updateMetadata(),
-                    new OpenUpdateMetadataAction(ssm)));
-                rootMenu.add(createMenuItem(
-                    "cacheDuration-root-"+name,
-                    _constants.cacheDuration(),
-                    new OpenEditCacheAction(ssm)));
+                if (_user.hasPermission(Permission.RESOURCE_UPDATE))  {
+                    rootMenu.add(createMenuItem(
+                        "updateMetadata-root-"+name,
+                        _constants.updateMetadata(),
+                        new OpenUpdateMetadataAction(ssm)));
+                }
+                if (_user.hasPermission(Permission.RESOURCE_CACHE_UPDATE))  {
+                    rootMenu.add(createMenuItem(
+                        "cacheDuration-root-"+name,
+                        _constants.cacheDuration(),
+                        new OpenEditCacheAction(ssm)));
+                }
             }
         }
     }
@@ -269,7 +287,7 @@ public class MainMenu
                         sb.append(_constants.publishedBy()
                             +" "+root.getPublishedBy()+"\n");
                     }
-                    _globals.alert(sb.toString());
+                    InternalServices.WINDOW.alert(sb.toString());
                 }
 
             });
@@ -279,28 +297,27 @@ public class MainMenu
 
         final SingleSelectionModel ssm =
             new SingleSelectionModel() {
-                private final ResourceSummaryModelData _md =
-                    new ResourceSummaryModelData(root);
+                private final ResourceSummary _md = root;
 
-                    public void create(final ResourceSummaryModelData model) {
+                    public void create(final ResourceSummary model) {
                         /* No-op */
                     }
-                    public void delete(final ResourceSummaryModelData model) {
+                    public void delete(final ResourceSummary model) {
                         /* No-op */
                     }
-                    public void move(final ResourceSummaryModelData model,
-                                     final ResourceSummaryModelData newParent,
-                                     final ResourceSummaryModelData oldParent) {
+                    public void move(final ResourceSummary model,
+                                     final ResourceSummary newParent,
+                                     final ResourceSummary oldParent) {
                         /* No-op */
                     }
-                    public ResourceSummaryModelData tableSelection() {
+                    public ResourceSummary tableSelection() {
                         return _md;
                     }
-                    public ResourceSummaryModelData treeSelection() {
+                    public ResourceSummary treeSelection() {
                         throw new UnsupportedOperationException(
                             "Method not implemented.");
                     }
-                    public void update(final ResourceSummaryModelData model) {
+                    public void update(final ResourceSummary model) {
                         /* No-op */
                     }
 

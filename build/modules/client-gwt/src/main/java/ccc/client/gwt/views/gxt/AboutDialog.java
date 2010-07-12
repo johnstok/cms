@@ -28,8 +28,9 @@ package ccc.client.gwt.views.gxt;
 
 import java.util.Map;
 
+import ccc.client.core.I18n;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.GetPropertyAction;
 
 
@@ -52,7 +53,7 @@ public class AboutDialog extends AbstractBaseDialog{
      *
      */
     public AboutDialog() {
-        super(new GlobalsImpl().uiConstants().about(),
+        super(I18n.UI_CONSTANTS.about(),
             new GlobalsImpl());
 
         setWidth(ABOUT_WIDTH);
@@ -63,7 +64,8 @@ public class AboutDialog extends AbstractBaseDialog{
             /** {@inheritDoc} */
             @Override
             protected void onOK(final Response response) {
-                final Map<String, String> map = parseMapString(response);
+                final Map<String, String> map =
+                    getParser().parseMapString(response.getText());
 
                 _version = map.get("ccc-version");
                 _build = map.get("buildNumber");

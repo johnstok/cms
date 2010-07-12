@@ -35,10 +35,11 @@ import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
 import ccc.plugins.s11n.json.PagedCollectionReader;
 
 import com.google.gwt.json.client.JSONObject;
@@ -94,12 +95,13 @@ public abstract class ListComments
         final Map<String, String[]> params = new HashMap<String, String[]>();
         params.put("page",  new String[] {""+_page});
         params.put("count", new String[] {""+_count});
-        params.put("status", new String[] {_status.name()});
+        params.put(
+            "status", new String[] {(null==_status) ? null : _status.name()});
         params.put("sort",  new String[] {_sort});
         params.put("order", new String[] {_order.name()});
 
         return
-            new Link(GLOBALS.comments().getLink("self"))
+            new Link(new GlobalsImpl().comments().getLink("self"))
             .build(params, new GWTTemplateEncoder());
     }
 

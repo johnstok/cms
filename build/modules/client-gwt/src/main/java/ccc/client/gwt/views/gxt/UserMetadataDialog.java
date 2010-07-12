@@ -26,13 +26,16 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
+
 import java.util.Map;
 
 import ccc.api.core.User;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateUserAction;
-import ccc.client.gwt.validation.Validate;
-import ccc.client.gwt.validation.Validations;
 import ccc.client.gwt.widgets.MetadataGrid;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
@@ -60,7 +63,7 @@ public class UserMetadataDialog extends AbstractEditDialog {
      * @param user The user.
      */
     public UserMetadataDialog(final User user) {
-        super(new GlobalsImpl().uiConstants().metadata(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.metadata(), new GlobalsImpl());
         setHeight(HEIGHT);
         _user = user;
 
@@ -86,29 +89,29 @@ public class UserMetadataDialog extends AbstractEditDialog {
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                Validate.callTo(updateMetaData())
-                    .check(_metadataPanel.validateMetadataValues())
-                    .stopIfInError()
-                    .callMethodOr(Validations.reportErrors());
+
+                final ValidationResult vr = new ValidationResult();
+                vr.addError(
+                    VALIDATOR.validateMetadataValues(
+                        _metadataPanel.currentMetadata()));
+
+                if (!vr.isValid()) {
+                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    return;
+                }
+
+                updateMetaData();
             }
         };
     }
 
 
-    private Runnable updateMetaData() {
-        return new Runnable() {
-
-            public void run() {
-                final Map<String, String> metadata =
-                    _metadataPanel.currentMetadata();
-                _user.setMetadata(metadata);
-                new UpdateUserAction(_user) {
-                    /** {@inheritDoc} */
-                    @Override protected void done() {
-                        UserMetadataDialog.this.hide();
-                    }
-                }.execute();
-            }
-        };
+    private void updateMetaData() {
+        final Map<String, String> metadata = _metadataPanel.currentMetadata();
+        _user.setMetadata(metadata);
+        new UpdateUserAction(_user) {
+            /** {@inheritDoc} */
+            @Override protected void done() { UserMetadataDialog.this.hide(); }
+        }.execute();
     }
 }

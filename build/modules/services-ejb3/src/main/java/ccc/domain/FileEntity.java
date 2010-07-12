@@ -40,9 +40,9 @@ import ccc.api.core.Resource;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.api.types.MimeType;
+import ccc.api.types.NormalisingEncoder;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
-import ccc.commons.NormalisingEncoder;
 import ccc.commons.streams.ReadToStringAction;
 import ccc.persistence.DataRepository;
 
@@ -279,6 +279,7 @@ public class FileEntity
         dto.setText(sn.isText());
         dto.setMimeType(sn.getMimeType());
         dto.setRevision(-1);
+        dto.setProperties(sn.getProperties());
         return dto;
     }
 
@@ -295,6 +296,9 @@ public class FileEntity
         dto.setText(sn.isText());
         dto.setMimeType(sn.getMimeType());
         dto.setRevision(currentRevisionNo());
+        dto.setProperties(sn.getProperties());
+        dto.setMajorEdit(sn.isMajorChange());
+        dto.setComment(sn.getComment());
         return dto;
     }
 
@@ -311,6 +315,9 @@ public class FileEntity
         dto.setText(sn.isText());
         dto.setMimeType(sn.getMimeType());
         dto.setRevision(revNo);
+        dto.setProperties(sn.getProperties());
+        dto.setMajorEdit(sn.isMajorChange());
+        dto.setComment(sn.getComment());
         return dto;
     }
 
@@ -342,14 +349,8 @@ public class FileEntity
      * @return The summary of the file.
      */
     public File mapTextFile(final DataRepository dataRepo) {
-        final File fs =
-            new File(
-                getId(),
-                (!isText())
-                    ? null : read(dataRepo, this),
-                getMimeType(),
-                currentRevision().isMajorChange(),
-                currentRevision().getComment());
+        final File fs = forCurrentRevision();
+        fs.setContent((!isText()) ? null : read(dataRepo, this));
         fs.addLink(
             Resource.SELF,
             new Link(ccc.api.core.ResourceIdentifiers.File.ELEMENT)

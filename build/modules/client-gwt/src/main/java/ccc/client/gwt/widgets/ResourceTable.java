@@ -32,30 +32,14 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.User;
-import ccc.api.types.ResourceType;
+import ccc.api.types.CommandType;
+import ccc.api.types.ResourcePath;
 import ccc.api.types.SortOrder;
+import ccc.client.core.InternalServices;
+import ccc.client.events.Event;
+import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.events.AliasCreated;
-import ccc.client.gwt.events.FolderCreated;
-import ccc.client.gwt.events.PageCreated;
-import ccc.client.gwt.events.ResourceCreated;
-import ccc.client.gwt.events.ResourceDeleted;
-import ccc.client.gwt.events.ResourceRenamed;
-import ccc.client.gwt.events.ResourceTemplateChanged;
-import ccc.client.gwt.events.WorkingCopyApplied;
-import ccc.client.gwt.events.WorkingCopyCleared;
-import ccc.client.gwt.events.AliasCreated.AliasCreatedHandler;
-import ccc.client.gwt.events.FolderCreated.FolderCreatedHandler;
-import ccc.client.gwt.events.PageCreated.PageCreatedHandler;
-import ccc.client.gwt.events.ResourceCreated.ResourceCreatedHandler;
-import ccc.client.gwt.events.ResourceDeleted.ResourceDeletedHandler;
-import ccc.client.gwt.events.ResourceRenamed.RenamedHandler;
-import ccc.client.gwt.events.ResourceTemplateChanged.ResTemChangedHandler;
-import ccc.client.gwt.events.WorkingCopyApplied.WCAppliedHandler;
-import ccc.client.gwt.events.WorkingCopyCleared.WCClearedHandler;
 import ccc.client.gwt.remoting.GetChildrenPagedAction;
 
 import com.extjs.gxt.ui.client.Style;
@@ -63,15 +47,16 @@ import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.GridView;
 import com.extjs.gxt.ui.client.widget.grid.GridViewConfig;
@@ -91,23 +76,15 @@ public class ResourceTable
     extends
         TablePanel
     implements
-        SingleSelectionModel,
-        ResourceDeletedHandler,
-        ResourceCreatedHandler,
-        ResTemChangedHandler,
-        RenamedHandler,
-        PageCreatedHandler,
-        FolderCreatedHandler,
-        AliasCreatedHandler,
-        WCClearedHandler,
-        WCAppliedHandler {
+        EventHandler<CommandType>,
+        SingleSelectionModel {
 
-    private ListStore<ResourceSummaryModelData> _detailsStore =
-        new ListStore<ResourceSummaryModelData>();
+    private ListStore<BeanModel> _detailsStore =
+        new ListStore<BeanModel>();
 
     private final ResourceSummary _root;
     private final FolderResourceTree _tree;
-    private final Grid<ResourceSummaryModelData> _grid;
+    private final Grid<BeanModel> _grid;
     private final PagingToolBar _pagerBar;
 
 
@@ -116,30 +93,20 @@ public class ResourceTable
      *
      * @param root ResourceSummary
      * @param tree FolderResourceTree
-     * @param user UserSummary of currently logged in user.
      */
     ResourceTable(final ResourceSummary root,
-        final FolderResourceTree tree,
-        final User user) {
+        final FolderResourceTree tree) {
 
-        ContentCreator.EVENT_BUS.addHandler(ResourceDeleted.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(ResourceCreated.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(PageCreated.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(FolderCreated.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(AliasCreated.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(WorkingCopyCleared.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(WorkingCopyApplied.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(ResourceRenamed.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(ResourceTemplateChanged.TYPE, this);
+        InternalServices.REMOTING_BUS.registerHandler(this);
 
         _root = root;
         _tree = tree;
-        final ToolBar toolBar = new FolderToolBar(this, user);
+        final ToolBar toolBar = new FolderToolBar(this);
         setTopComponent(toolBar);
         setHeading(UI_CONSTANTS.resourceDetails());
         setLayout(new FitLayout());
 
-        final Menu contextMenu = new ResourceContextMenu(this, user);
+        final Menu contextMenu = new ResourceContextMenu(this);
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         final ContextActionGridPlugin gp =
             new ContextActionGridPlugin(contextMenu);
@@ -149,7 +116,7 @@ public class ResourceTable
         createColumnConfigs(configs);
 
         final ColumnModel cm = new ColumnModel(configs);
-        _grid = new Grid<ResourceSummaryModelData>(_detailsStore, cm);
+        _grid = new Grid<BeanModel>(_detailsStore, cm);
         setUpGrid();
         _grid.setContextMenu(contextMenu);
         _grid.addPlugin(gp);
@@ -176,20 +143,20 @@ public class ResourceTable
      *
      * @param folder The parent folder for the records to display in the table.
      */
-    public void displayResourcesFor(final ResourceSummaryModelData folder) {
+    public void displayResourcesFor(final ResourceSummary folder) {
 
-        final RpcProxy<PagingLoadResult<ResourceSummaryModelData>> proxy =
-            new RpcProxy<PagingLoadResult<ResourceSummaryModelData>>() {
+        final RpcProxy<PagingLoadResult<BeanModel>> proxy =
+            new RpcProxy<PagingLoadResult<BeanModel>>() {
 
             @Override
             protected void load(final Object loadConfig,
                                 final AsyncCallback<PagingLoadResult
-                                <ResourceSummaryModelData>> callback) {
+                                <BeanModel>> callback) {
                 if (folder == null
                     || null==loadConfig
                     || !(loadConfig instanceof BasePagingLoadConfig)) {
-                    final PagingLoadResult<ResourceSummaryModelData> plr =
-                       new BasePagingLoadResult<ResourceSummaryModelData>(null);
+                    final PagingLoadResult<BeanModel> plr =
+                       new BasePagingLoadResult<BeanModel>(null);
                     callback.onSuccess(plr);
                 } else {
                     final BasePagingLoadConfig config =
@@ -202,7 +169,7 @@ public class ResourceTable
                             : SortOrder.DESC;
 
                     new GetChildrenPagedAction(
-                        folder.getDelegate(),
+                        folder,
                         page,
                         config.getLimit(),
                         config.getSortField(),
@@ -217,11 +184,11 @@ public class ResourceTable
                         @Override protected void execute(
                                  final Collection<ResourceSummary> children,
                                  final int totalCount) {
-                            final List<ResourceSummaryModelData> results =
+                            final List<BeanModel> results =
                                 DataBinding.bindResourceSummary(children);
 
-                            final PagingLoadResult<ResourceSummaryModelData> plr =
-                                new BasePagingLoadResult<ResourceSummaryModelData>(
+                            final PagingLoadResult<BeanModel> plr =
+                                new BasePagingLoadResult<BeanModel>(
                             results, config.getOffset(), totalCount);
                             callback.onSuccess(plr);
                         }
@@ -233,7 +200,7 @@ public class ResourceTable
 
         final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);
-        _detailsStore = new ListStore<ResourceSummaryModelData>(loader);
+        _detailsStore = new ListStore<BeanModel>(loader);
         _pagerBar.bind(loader);
         loader.load(0, PAGING_ROW_COUNT);
         final ColumnModel cm = _grid.getColumnModel();
@@ -242,57 +209,69 @@ public class ResourceTable
 
 
     private void createColumnConfigs(final List<ColumnConfig> configs) {
+
+        final GridCellRenderer<BeanModel> rsRenderer =
+            ResourceTypeRendererFactory.rendererForResourceSummary();
+
         final ColumnConfig typeColumn =
             new ColumnConfig(
-                ResourceSummaryModelData.Property.TYPE.name(),
+                ResourceSummary.TYPE,
                 UI_CONSTANTS.type(),
                 40);
-        typeColumn.setRenderer(
-            ResourceTypeRendererFactory.rendererForResourceSummary());
+        typeColumn.setRenderer(rsRenderer);
         configs.add(typeColumn);
 
         final ColumnConfig workingCopyColumn =
             new ColumnConfig(
-                ResourceSummaryModelData.Property.WORKING_COPY.name(),
+                ResourceSummary.WORKING_COPY,
                 UI_CONSTANTS.draft(),
                 40);
         workingCopyColumn.setSortable(false);
         workingCopyColumn.setMenuDisabled(true);
-        workingCopyColumn.setRenderer(new ResourceWorkingCopyRenderer());
+        workingCopyColumn.setRenderer(rsRenderer);
         configs.add(workingCopyColumn);
 
         final ColumnConfig mmIncludeColumn =
             new ColumnConfig(
-                ResourceSummaryModelData.Property.MM_INCLUDE.name(),
+                ResourceSummary.MM_INCLUDE,
                 UI_CONSTANTS.menu(),
                 40);
-        mmIncludeColumn.setRenderer(new ResourceIncludedInMainMenuRenderer());
+        mmIncludeColumn.setRenderer(rsRenderer);
         configs.add(mmIncludeColumn);
+
+        final ColumnConfig visibleColumn =
+            new ColumnConfig(
+                ResourceSummary.VISIBLE,
+                UI_CONSTANTS.visible(),
+                45);
+        visibleColumn.setRenderer(rsRenderer);
+        visibleColumn.setHidden(true);
+        configs.add(visibleColumn);
 
         final ColumnConfig lockedColumn =
             new ColumnConfig(
-                ResourceSummaryModelData.Property.LOCKED.name(),
+                ResourceSummary.LOCKED,
                 UI_CONSTANTS.lockedBy(),
                 80);
         configs.add(lockedColumn);
 
         final ColumnConfig publishedByColumn =
             new ColumnConfig(
-                ResourceSummaryModelData.Property.PUBLISHED.name(),
+                ResourceSummary.PUBLISHED,
                 UI_CONSTANTS.publishedBy(),
                 80);
         configs.add(publishedByColumn);
 
         final ColumnConfig nameColumn =
             new ColumnConfig(
-                ResourceSummaryModelData.Property.NAME.name(),
+                ResourceSummary.NAME,
                 UI_CONSTANTS.name(),
                 250);
         configs.add(nameColumn);
 
         final ColumnConfig titleColumn =
             new ColumnConfig(
-                ResourceSummaryModelData.Property.TITLE.name(),
+                ResourceSummary.TITLE,
                 UI_CONSTANTS.title(),
                 250);
         configs.add(titleColumn);
@@ -310,9 +289,9 @@ public class ResourceTable
             @Override
             public String getRowStyle(final ModelData model,
                                       final int rowIndex,
-                                      final ListStore ds) {
-                final ResourceSummaryModelData rs =
-                    (ResourceSummaryModelData) model;
+                                      final ListStore<ModelData> ds) {
+                final ResourceSummary rs =
+                    ((BeanModel) model).<ResourceSummary>getBean();
                 return rs.getName()+"_row";
             }
         };
@@ -320,48 +299,36 @@ public class ResourceTable
         view.setViewConfig(vc);
         _grid.setView(view);
 
-        final GridSelectionModel<ResourceSummaryModelData> gsm =
-            new GridSelectionModel<ResourceSummaryModelData>();
+        final GridSelectionModel<BeanModel> gsm =
+            new GridSelectionModel<BeanModel>();
         gsm.setSelectionMode(SelectionMode.SINGLE);
         _grid.setSelectionModel(gsm);
         _grid.setAutoExpandColumn(
-            ResourceSummaryModelData.Property.TITLE.name());
+            ResourceSummary.TITLE);
     }
 
 
 
     /** {@inheritDoc} */
-    public ResourceSummaryModelData tableSelection() {
+    public ResourceSummary tableSelection() {
         if (_grid.getSelectionModel() == null) {
             return null;
         }
-        return _grid.getSelectionModel().getSelectedItem();
+        final BeanModel selected = _grid.getSelectionModel().getSelectedItem();
+        return (null==selected) ? null : selected.<ResourceSummary>getBean();
     }
 
 
     /** {@inheritDoc} */
-    public ResourceSummaryModelData treeSelection() {
-        final ResourceSummaryModelData item =
-            _tree.treePanel().getSelectionModel().getSelectedItem();
-        if (item == null) {
-            return null;
-        }
-        return item;
+    public ResourceSummary treeSelection() {
+        return _tree.getSelectedItem();
     }
 
 
     /** {@inheritDoc} */
-    public void update(final ResourceSummaryModelData model) {
-        final String uuidPropertyName =
-            ResourceSummaryModelData.Property.UUID.name();
-        final ResourceSummaryModelData parent =
-            _tree.store().findModel(uuidPropertyName, model.getParent());
-        _detailsStore.update(model);
-        _tree.store().update(model);
-        if (null!=parent) {
-            _tree.treePanel().setExpanded(parent, false);
-            _tree.treePanel().setExpanded(parent, true);
-        }
+    public void update(final ResourceSummary model) {
+        updateResource(model.getId());
+        _tree.updateResource(model);
     }
 
 
@@ -371,169 +338,120 @@ public class ResourceTable
      * @param item The model to remove.
      */
     public void delete(final UUID item) {
-        final String uuidPropertyName =
-            ResourceSummaryModelData.Property.UUID.name();
+        removeResource(item);
+        _tree.removeResource(item);
+    }
 
-        // Handle tree
-        final ResourceSummaryModelData treeData =
-            _tree.store().findModel(uuidPropertyName, item);
-        if (null!=treeData) {
-            final ResourceSummaryModelData parent =
-                _tree.store().findModel(uuidPropertyName, treeData.getParent());
-            _tree.store().remove(treeData);
 
-            if (null!=parent) {
-                if (ResourceType.FOLDER==treeData.getType()) {
-                    parent.decrementFolderCount();
-                }
-                _tree.treePanel().setExpanded(parent, false);
-                if (parent.getFolderCount()<1) {
-                    _tree.treePanel().setLeaf(parent, true);
-                } else {
-                    _tree.treePanel().setExpanded(parent, true);
-                }
-            }
-            _tree.store().update(parent);
-        }
+    /** {@inheritDoc} */
+    @Override
+    public void create(final ResourceSummary model) {
+        final boolean addedToSelectedTreeNode = _tree.addResource(model);
+        if (addedToSelectedTreeNode) { addResource(model); }
+    }
 
-        // Handle table
-        final ResourceSummaryModelData tableData =
-            _detailsStore.findModel(uuidPropertyName, item);
-        if (null!=tableData) {
-            _detailsStore.remove(tableData);
+
+    private void updateResource(final UUID id) {
+        final BeanModel tBean =
+            _detailsStore.findModel(ResourceSummary.UUID, id);
+        if (null!=tBean) {
+            _detailsStore.update(tBean);
         }
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void create(final ResourceSummaryModelData model) {
-        final ResourceSummaryModelData np =
-            _tree.store().findModel(
-                ResourceSummaryModelData.Property.UUID.name(),
-                model.getParent());
-        if (null!=np) { // May not exist in the store
-            if (model.getType() == ResourceType.FOLDER) {
-                // Add to the left-hand tree
-                final TreeStore<ResourceSummaryModelData> store = _tree.store();
-                store.add(np, model, false);
-                final String uuidPropertyName =
-                    ResourceSummaryModelData.Property.UUID.name();
-                final ResourceSummaryModelData destinationFolder =
-                    store.findModel(uuidPropertyName, model.getParent());
-                destinationFolder.incrementFolderCount();
-                _tree.store().update(model);
-                _tree.store().update(destinationFolder);
-            }
-            if (np.equals(treeSelection())) {   // Add to the right-hand table
-                _detailsStore.add(model);
-            }
+    private void removeResource(final UUID id) {
+        final BeanModel tBean =
+            _detailsStore.findModel(ResourceSummary.UUID, id);
+        if (null!=tBean) {
+            _detailsStore.remove(tBean);
         }
     }
 
 
+    private void addResource(final ResourceSummary model) {
+        final BeanModel tBean = DataBinding.bindResourceSummary(model);
+        _detailsStore.add(tBean);
+    }
+
+
     /** {@inheritDoc} */
-    public void move(final ResourceSummaryModelData model,
-                     final ResourceSummaryModelData newParent,
-                     final ResourceSummaryModelData oldParent) {
-        _detailsStore.remove(model);
+    public void move(final ResourceSummary model,
+                     final ResourceSummary newParent,
+                     final ResourceSummary oldParent) {
+        removeResource(model.getId());
+        _tree.move(oldParent, newParent, model);
+    }
 
-        final TreeStore<ResourceSummaryModelData> store = _tree.store();
-        store.remove(oldParent, model);
 
-        final String uuidPropertyName =
-            ResourceSummaryModelData.Property.UUID.name();
-        final ResourceSummaryModelData destinationFolder =
-            store.findModel(uuidPropertyName, newParent.getId());
+    /** {@inheritDoc} */
+    @Override
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case RESOURCE_PUBLISH:
+                mergeAndUpdate(event.<ResourceSummary>getProperty("resource"));
+                break;
 
-        if (null!=destinationFolder) { // May not exist in other store
-            final String newPath = newParent.getAbsolutePath();
-            final String oldPath = oldParent.getAbsolutePath();
-            final String currentPath = model.getAbsolutePath();
-            final String newModelPath =
-                currentPath.replaceFirst(oldPath, newPath);
-            model.setAbsolutePath(newModelPath);
-            if (ResourceType.FOLDER==model.getType()) {
-                destinationFolder.incrementFolderCount();
-                store.add(destinationFolder, model, false);
-            }
+            case RESOURCE_DELETE:
+                delete(event.<UUID>getProperty("resource"));
+                break;
+
+            case FILE_CREATE:
+            case PAGE_CREATE:
+            case FOLDER_CREATE:
+            case ALIAS_CREATE:
+                create(event.<ResourceSummary>getProperty("resource"));
+                break;
+
+            case RESOURCE_RENAME:
+                final BeanModel bm1 =
+                    _detailsStore.findModel(
+                        ResourceSummary.UUID, event.getProperty("id"));
+                final ResourceSummary md1 = bm1.<ResourceSummary>getBean();
+                md1.setAbsolutePath(
+                    event.<ResourcePath>getProperty("path").toString());
+                md1.setName(
+                    event.<String>getProperty("name"));
+                update(md1);
+                break;
+
+            case RESOURCE_CHANGE_TEMPLATE:
+                final BeanModel bm2 =
+                    _detailsStore.findModel(
+                        ResourceSummary.UUID, event.getProperty("resource"));
+                if (null==bm2) { return; } // Not present in table.
+                final ResourceSummary md2 = bm2.<ResourceSummary>getBean();
+                md2.setTemplateId(event.<UUID>getProperty("template"));
+                update(md2);
+                break;
+
+            case RESOURCE_CLEAR_WC:
+                final ResourceSummary item1 =
+                    event.getProperty("resource");
+                item1.setHasWorkingCopy(false);
+                update(item1);
+                break;
+
+            case RESOURCE_APPLY_WC:
+                final ResourceSummary item2 =
+                    event.getProperty("resource");
+                item2.setHasWorkingCopy(false);
+                update(item2);
+                break;
+
+            default:
+                break;
         }
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void onApply(final WorkingCopyApplied event) {
-        final ResourceSummaryModelData item = event.getResource();
-        item.setWorkingCopy(false);
-        update(item);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onClear(final WorkingCopyCleared event) {
-        final ResourceSummaryModelData item = event.getResource();
-        item.setWorkingCopy(false);
-        update(item);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onCreate(final AliasCreated event) {
-        create(event.getResource());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onCreate(final FolderCreated event) {
-        create(event.getResource());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onCreate(final PageCreated event) {
-        create(event.getResource());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onRename(final ResourceRenamed event) {
-        final ResourceSummaryModelData md =
-            _detailsStore.findModel("UUID", event.getId());
-        md.setAbsolutePath(event.getPath());
-        md.setName(event.getName());
-        update(md);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onTemlateChanged(final ResourceTemplateChanged event) {
-        final ResourceSummaryModelData md =
-            _detailsStore.findModel("UUID", event.getResource());
-        if (null==md) { return; } // Not present in table.
-        md.setTemplateId(event.getNewTemplate());
-        update(md);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onCreate(final ResourceCreated event) {
-        final ResourceSummaryModelData resourceModelData =
-            new ResourceSummaryModelData(event.getResource());
-        create(resourceModelData);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onDelete(final ResourceDeleted event) {
-        delete(event.getResource());
+    private void mergeAndUpdate(final ResourceSummary rs) {
+        final BeanModel tBean =
+            _detailsStore.findModel(ResourceSummary.UUID, rs.getId());
+        if (null!=tBean) {
+            tBean.setProperties(
+                DataBinding.bindResourceSummary(rs).getProperties());
+            update(tBean.<ResourceSummary>getBean());
+        }
     }
 }

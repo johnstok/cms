@@ -66,7 +66,9 @@ public interface GroupRepository {
      *
      * @return A list of groups matching the search criteria.
      */
-    Collection<GroupEntity> list(String name, int pageNo, int pageSize);
+    Collection<GroupEntity> list(String name,
+        int pageNo,
+        int pageSize);
 
     /**
      * Return number of group entities with given filter.

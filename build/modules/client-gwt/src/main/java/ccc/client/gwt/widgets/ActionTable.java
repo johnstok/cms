@@ -29,15 +29,16 @@ package ccc.client.gwt.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.ActionStatus;
+import ccc.api.types.CommandType;
+import ccc.api.types.Permission;
 import ccc.api.types.SortOrder;
-import ccc.client.gwt.binding.ActionSummaryModelData;
+import ccc.client.core.InternalServices;
+import ccc.client.events.Event;
+import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.events.ActionCancelled;
-import ccc.client.gwt.events.ActionCancelled.ActionCancelledHandler;
 import ccc.client.gwt.remoting.ListCompletedActionsAction;
 import ccc.client.gwt.remoting.ListPendingActionsAction;
 
@@ -45,6 +46,7 @@ import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.DataProxy;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
@@ -69,34 +71,39 @@ public class ActionTable
     extends
         TablePanel
     implements
-        ActionCancelledHandler {
+        EventHandler<CommandType> {
 
     private static final int MEDIUM_COLUMN = 200;
     private static final int TYPE_COLUMN = 150;
     private static final int SMALL_COLUMN = 100;
-    private ListStore<ActionSummaryModelData> _actionStore =
-        new ListStore<ActionSummaryModelData>();
-    private final Grid<ActionSummaryModelData> _grid;
+    private static final int V_SMALL_COLUMN = 40;
+    private ListStore<BeanModel> _actionStore = new ListStore<BeanModel>();
+    private final Grid<BeanModel> _grid;
     private final PagingToolBar _pagerBar;
 
     /**
      * Constructor.
      */
     public ActionTable() {
+
+        InternalServices.REMOTING_BUS.registerHandler(this);
+
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         setId("action-details");
         setHeading(UI_CONSTANTS.actionDetails());
         setLayout(new FitLayout());
 
-        setTopComponent(new ActionToolBar(this));
+        if (GLOBALS.currentUser().hasPermission(Permission.ACTION_CANCEL)) {
+            setTopComponent(new ActionToolBar(this));
+        }
 
         createColumnConfigs(configs);
 
         final ColumnModel cm = new ColumnModel(configs);
 
-        _grid = new Grid<ActionSummaryModelData>(_actionStore, cm);
-        _grid.setAutoExpandColumn(Action.Property.PATH.name());
+        _grid = new Grid<BeanModel>(_actionStore, cm);
+        _grid.setAutoExpandColumn(ActionSummary.PATH);
         _grid.setId("action-grid");
 
         add(_grid);
@@ -108,50 +115,51 @@ public class ActionTable
     private void createColumnConfigs(final List<ColumnConfig> configs) {
         addColumn(
             configs,
-            Action.Property.LOCALISED_TYPE.name(),
+            ActionSummary.TYPE,
             UI_CONSTANTS.action(),
-            TYPE_COLUMN);
+            TYPE_COLUMN).setRenderer(
+                ResourceTypeRendererFactory.rendererForActionSummary());
         addColumn(
             configs,
-            Action.Property.USERNAME.name(),
+            ActionSummary.USERNAME,
             UI_CONSTANTS.scheduledBy(),
             SMALL_COLUMN);
         addColumn(
             configs,
-            Action.Property.EXECUTE_AFTER.name(),
+            ActionSummary.EXECUTE_AFTER,
             UI_CONSTANTS.scheduledFor(),
             SMALL_COLUMN)
             .setDateTimeFormat(DateTimeFormat.getShortDateTimeFormat());
         addColumn(
             configs,
-            Action.Property.LOCALISED_STATUS.name(),
+            ActionSummary.STATUS,
             UI_CONSTANTS.status(),
-            SMALL_COLUMN);
+            SMALL_COLUMN)
+            .setRenderer(
+                ResourceTypeRendererFactory.rendererForActionSummary());
         addColumn(
             configs,
-            Action.Property.FAILURE_CODE.name(),
+            ActionSummary.FAILURE_CODE,
             UI_CONSTANTS.failureCode(),
             SMALL_COLUMN);
-
-        final ColumnConfig subjectTypeColumn = addColumn(
-            configs,
-            Action.Property.SUBJECT_TYPE.name(),
-            UI_CONSTANTS.resourceType(),
-            SMALL_COLUMN);
-        subjectTypeColumn.setRenderer(
-            ResourceTypeRendererFactory.rendererForActionSummary());
-
         addColumn(
             configs,
-            Action.Property.PATH.name(),
+            ActionSummary.SUBJECT_TYPE,
+            UI_CONSTANTS.type(),
+            V_SMALL_COLUMN)
+            .setRenderer(
+                ResourceTypeRendererFactory.rendererForActionSummary());
+        addColumn(
+            configs,
+            ActionSummary.PATH,
             UI_CONSTANTS.resourcePath(),
             MEDIUM_COLUMN);
     }
 
     private ColumnConfig addColumn(final List<ColumnConfig> configs,
-                           final String id,
-                           final String header,
-                           final int columnWidth) {
+                                   final String id,
+                                   final String header,
+                                   final int columnWidth) {
         final ColumnConfig column = new ColumnConfig();
         column.setId(id);
         column.setHeader(header);
@@ -168,18 +176,18 @@ public class ActionTable
     public void displayActionsFor(final ModelData selected) {
         _actionStore.removeAll();
 
-        final DataProxy<PagingLoadResult<ActionSummaryModelData>> proxy =
-            new RpcProxy<PagingLoadResult<ActionSummaryModelData>>() {
+        final DataProxy<PagingLoadResult<BeanModel>> proxy =
+            new RpcProxy<PagingLoadResult<BeanModel>>() {
 
                 @Override
                 protected void load(
-    final Object loadConfig,
-    final AsyncCallback<PagingLoadResult<ActionSummaryModelData>> callback) {
+                    final Object loadConfig,
+                    final AsyncCallback<PagingLoadResult<BeanModel>> callback) {
 
                     if (null==loadConfig
                         || !(loadConfig instanceof BasePagingLoadConfig)) {
-                        final PagingLoadResult<ActionSummaryModelData> plr =
-                           new BasePagingLoadResult<ActionSummaryModelData>(
+                        final PagingLoadResult<BeanModel> plr =
+                           new BasePagingLoadResult<BeanModel>(
                                null);
                         callback.onSuccess(plr);
 
@@ -210,10 +218,10 @@ public class ActionTable
 
 
     private ListCompletedActionsAction getCompletedActions(
-       final AsyncCallback<PagingLoadResult<ActionSummaryModelData>> callback,
-       final BasePagingLoadConfig config,
-       final int page,
-       final SortOrder order) {
+                   final AsyncCallback<PagingLoadResult<BeanModel>> callback,
+                   final BasePagingLoadConfig config,
+                   final int page,
+                   final SortOrder order) {
 
         return new ListCompletedActionsAction(page,
                          config.getLimit(),
@@ -231,11 +239,11 @@ public class ActionTable
                        final List<ActionSummary> comments,
                        final int totalCount) {
 
-                final List<ActionSummaryModelData> results =
+                final List<BeanModel> results =
                     DataBinding.bindActionSummary(comments);
 
-                final PagingLoadResult<ActionSummaryModelData> plr =
-                    new BasePagingLoadResult<ActionSummaryModelData>(
+                final PagingLoadResult<BeanModel> plr =
+                    new BasePagingLoadResult<BeanModel>(
                 results, config.getOffset(), totalCount);
                 callback.onSuccess(plr);
             }
@@ -243,7 +251,7 @@ public class ActionTable
     }
 
     private ListPendingActionsAction getPendingActions(
-         final AsyncCallback<PagingLoadResult<ActionSummaryModelData>> callback,
+         final AsyncCallback<PagingLoadResult<BeanModel>> callback,
          final BasePagingLoadConfig config,
          final int page,
          final SortOrder order) {
@@ -262,11 +270,11 @@ public class ActionTable
             @Override
             protected void execute(
                                final PagedCollection<ActionSummary> actions) {
-                final List<ActionSummaryModelData> results =
+                final List<BeanModel> results =
                     DataBinding.bindActionSummary(actions.getElements());
 
-                final PagingLoadResult<ActionSummaryModelData> plr =
-                    new BasePagingLoadResult<ActionSummaryModelData>(
+                final PagingLoadResult<BeanModel> plr =
+                    new BasePagingLoadResult<BeanModel>(
                 results, config.getOffset(), (int) actions.getTotalCount());
                 callback.onSuccess(plr);
             }
@@ -277,7 +285,7 @@ public class ActionTable
     private void updatePager(final DataProxy proxy){
         final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);
-        _actionStore = new ListStore<ActionSummaryModelData>(loader);
+        _actionStore = new ListStore<BeanModel>(loader);
         _pagerBar.bind(loader);
         loader.load(0, PAGING_ROW_COUNT);
         final ColumnModel cm = _grid.getColumnModel();
@@ -289,7 +297,7 @@ public class ActionTable
      *
      * @return The selected row, or NULL if no row is selected.
      */
-    public ActionSummaryModelData getSelectedItem() {
+    public BeanModel getSelectedItem() {
         return _grid.getSelectionModel().getSelectedItem();
     }
 
@@ -298,15 +306,27 @@ public class ActionTable
      *
      * @param action The row that was updated.
      */
-    public void update(final ActionSummaryModelData action) {
+    public void update(final BeanModel action) {
         _actionStore.update(action);
     }
 
+
     /** {@inheritDoc} */
     @Override
-    public void onCancel(final ActionCancelled event) {
-        final ActionSummaryModelData action = event.getAction();
-        action.setStatus(ActionStatus.CANCELLED);
-        update(action);
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case ACTION_CANCEL:
+                final ActionSummary as = event.getProperty("action");
+                final BeanModel bm =
+                    _actionStore.findModel(ActionSummary.ID, as.getId());
+                if (null!=bm) {
+                    bm.set(ActionSummary.STATUS, ActionStatus.CANCELLED);
+                    update(bm);
+                }
+                break;
+
+            default:
+                break;
+        }
     }
 }

@@ -26,12 +26,12 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.views.gxt.EditTemplateDialog;
 import ccc.client.gwt.widgets.ResourceTable;
 import ccc.plugins.s11n.json.TemplateSerializer;
@@ -49,7 +49,7 @@ public class OpenUpdateTemplateAction
     extends
         RemotingAction {
 
-    private final ResourceSummaryModelData _template;
+    private final ResourceSummary _template;
     private final ResourceTable _table;
 
     /**
@@ -57,7 +57,7 @@ public class OpenUpdateTemplateAction
      * @param resourceTable The table displaying the template.
      * @param template The template to update.
      */
-    public OpenUpdateTemplateAction(final ResourceSummaryModelData template,
+    public OpenUpdateTemplateAction(final ResourceSummary template,
                                 final ResourceTable resourceTable) {
         super(UI_CONSTANTS.editTemplate());
         _table = resourceTable;
@@ -67,7 +67,7 @@ public class OpenUpdateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _template.getDelegate().self().build(new GWTTemplateEncoder());
+        return _template.self().build(new GWTTemplateEncoder());
     }
 
     /** {@inheritDoc} */

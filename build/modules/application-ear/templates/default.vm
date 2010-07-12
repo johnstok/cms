@@ -1,0 +1,117 @@
+#set ($resources = $services.getResources())
+#set ($folders = $services.getFolders())
+#set ($pages = $services.getPages())
+#set ($comments = $services.getComments())
+
+#macro( optional $name $startText $endText)
+  #foreach( $para in $resource.getParagraphs() )
+    #if ($para.name() == $name && $para.text())
+      $startText
+      $para.text()
+      $endText
+    #end
+  #end
+#end
+
+#macro( call $this )
+  #set( $swallow = $this )
+#end
+
+#macro (breadcrumb)
+  #set($crumbElements = [])
+  #populateCrumb($resource)
+  $collections.reverse($crumbElements)
+  #set($last = $crumbElements.size())
+  #set($index = 1)
+  #foreach ($element in $crumbElements)
+    #if ($element.getName().equals($resource.getName()))
+      $element.getTitle()
+    #else
+      <a href="$element.getAbsolutePath()">$element.getTitle()</a>
+    #end
+    #if($index < $last)
+      &nbsp;&gt;&nbsp;
+    #end
+    #set($index = $index + 1)
+  #end
+#end
+
+#macro (populateCrumb $temp)
+  #if($temp.getParent())
+    #call($crumbElements.add($temp))
+    #set($papa = $resources.resource($temp.getParent()))
+    #populateCrumb($papa)
+  #end
+#end
+
+#macro (menuTag)
+  #set($tree = [])
+  #set ($tempResource = $resource)
+  #populateTree($tempResource)
+  $collections.reverse($tree)
+  #startEndLevel
+  <ul>
+    #menulevel($startLevel)
+  </ul>
+#end
+
+#macro (startEndLevel)
+  <!-- Levels to display $tree.size() -->
+  #if(!$startLevel)
+    #set ($startLevel = 1)
+  #end
+  #if(!$endLevel)
+    #set ($countedSize = $tree.size())
+    #set ($countedSize = $countedSize - 1)
+    #set ($endLevel = $countedSize)
+  #end
+#end
+
+#macro (populateTree $temp)
+  #if($temp.getParent())
+    #set($siblings=$resources.list($temp.getParent(),  null, null, null, "true", null, null, "true",
+                                   "manual", $enums.of("ccc.api.types.SortOrder", "ASC"), 1, 100).getElements())
+#call($tree.add($siblings))
+    #set($papa = $resources.retrieve($temp.getParent()))
+    #populateTree($papa)
+  #end
+#end
+
+#macro ( menulevel $depth)
+    #if ($tree.size() > $depth)
+    #if ($depth != $endLevel)
+        #set($jumpdepth = $depth + 1)
+        #if ($tree.get($jumpdepth).size() > 0)
+            #set($jumpID = $tree.get($jumpdepth).get(0).getParent())
+            #set($jumpName = $resources.retrieve($jumpID).getName())
+        #end
+    #end
+    <!-- this level $depth -->
+        #foreach( $entry in $tree.get($depth))
+            #menuLinks
+        #end
+    #end
+#end
+
+#macro(menuLinks)
+    #if ($entry.getName().equals($jumpName) &&  $entry.getType().name() == "FOLDER")
+        <li class="open">
+        <a href="$entry.getAbsolutePath()">$entry.getTitle() </a>
+        #if ($depth != $endLevel)
+            <ul>
+            #set($newdepth = $depth + 1)
+            #menulevel($newdepth )
+            </ul>
+        #end
+        </li>
+    #elseif ($entry.getName().equals($resource.getName().toString()))
+        <li class="hot">
+            <a href="$entry.getAbsolutePath()">$entry.getTitle() </a>
+        </li>
+    #else
+        <li class="leaf">
+        <a href="$entry.getAbsolutePath()">$entry.getTitle() </a>
+        </li>
+    #end
+#end
+

@@ -28,7 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
+import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -60,7 +60,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
 
     private final String _elementid;
 
-    private ResourceSummaryModelData _md = null;
+    private ResourceSummary _md = null;
     private String _uuid = null;
 
     private final ResourceSummary _targetRoot;
@@ -83,7 +83,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                                final String innerText,
                                final String cccId,
                                final boolean openInNew) {
-        super(new GlobalsImpl().uiConstants().selectResource(),
+        super(I18n.UI_CONSTANTS.selectResource(),
             new GlobalsImpl());
         _targetRoot = targetRoot;
         _elementid = elementid;
@@ -150,31 +150,17 @@ public class LinkSelectionDialog extends AbstractEditDialog {
 
             if (selection.HasAncestorNode('A')) {
                 var link = selection.MoveToAncestorNode( 'A' ) ;
-                if ( link )
-                    selection.SelectNode( link ) ;
-                link.href = selectedUrl;
-                link.setAttribute('_fcksavedurl', selectedUrl);
-                link.innerHTML = innerText;
-                link.title = title;
-                if (openInNew) {
-                    link.target = "_blank";
-                }
-                if (uuid != null) {
-                    link.setAttribute( 'class', "ccc:"+uuid) ;
-                } else {
-                    link.removeAttribute('class') ;
-                }
-            } else {
-                var linkURL = "<a href='"+selectedUrl+"' title='"+title+"'";
-                if (uuid != null) {
-                    linkURL = linkURL +" class='ccc:"+uuid+"'";
-                }
-                if (openInNew) {
-                    linkURL = linkURL +" target='_blank'";
-                }
-                linkURL = linkURL +">"+ innerText +"</a>";
-                return instance.InsertHtml(linkURL);
+                link.parentNode.removeChild(link);
             }
+            var linkURL = "<a href=\""+selectedUrl+"\" title=\""+title+"\"";
+            if (uuid != null) {
+                linkURL = linkURL +" class=\"ccc:"+uuid+"\"";
+            }
+            if (openInNew) {
+                linkURL = linkURL +" target=\"_blank\"";
+            }
+            linkURL = linkURL +">"+ innerText +"</a>";
+            return instance.InsertHtml(linkURL);
         }
         return null;
 

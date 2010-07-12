@@ -27,6 +27,7 @@
 package ccc.plugins.search;
 
 import ccc.api.types.SearchResult;
+import ccc.api.types.SortOrder;
 
 
 /**
@@ -42,9 +43,27 @@ public interface Index {
      * @param searchTerms The terms to match.
      * @param resultCount The number of results to return.
      * @param page The page of results to return (first page has index of 0).
+     *
      * @return The SearchResult object with set entities and total count.
      */
-    SearchResult find(final String searchTerms, int resultCount, int page);
+    SearchResult find(String searchTerms, int resultCount, int page);
+
+    /**
+     * Find the results that match the specified search terms.
+     *
+     * @param searchTerms The terms to match.
+     * @param sort The field to sort on.
+     * @param order The order of the sort.
+     * @param resultCount The number of results to return.
+     * @param page The page of results to return (first page has index of 0).
+     *
+     * @return The SearchResult object with set entities and total count.
+     */
+    SearchResult find(String searchTerms,
+                      String sort,
+                      SortOrder order,
+                      int resultCount,
+                      int page);
 
     /**
      * Find the results that are similar to the specified page.
@@ -52,6 +71,7 @@ public interface Index {
      * @param uuid The UUID of the page to compare.
      * @param nofOfResultsPerPage The number of results to return.
      * @param pageNo The page of results to return (first page has index of 0).
+     *
      * @return The SearchResult object with set entities and total count.
      */
     SearchResult similar(String uuid, int nofOfResultsPerPage, int pageNo);

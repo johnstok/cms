@@ -33,14 +33,14 @@ import java.util.List;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.types.ResourceType;
+import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.LogEntrySummaryModelData;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.widgets.HistoryToolBar;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -57,7 +57,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  */
 public class HistoryDialog
     extends
-        AbstractTableDialog<Revision, LogEntrySummaryModelData> {
+        AbstractTableDialog<Revision, BeanModel> {
 
     private final ToolBar _toolBar;
     private final SingleSelectionModel _ssm;
@@ -65,15 +65,14 @@ public class HistoryDialog
     /**
      * Constructor.
      *
-     * @param data The history to display, as a collection of
-     *  {@link Revision}.
+     * @param data The history to display, as a collection of {@link Revision}s.
      * @param resourceType The type of the resource.
      * @param ssm The selection model.
      */
     public HistoryDialog(final Collection<Revision> data,
                          final ResourceType resourceType,
                          final SingleSelectionModel ssm) {
-        super(GlobalsImpl.uiConstants().resourceHistory(),
+        super(I18n.UI_CONSTANTS.resourceHistory(),
               new GlobalsImpl(),
               data,
               false);
@@ -84,18 +83,19 @@ public class HistoryDialog
         setTopComponent(_toolBar);
         getDataStore().add(DataBinding.bindLogEntrySummary(getData()));
         getDataStore().sort(
-            LogEntrySummaryModelData.Property.HAPPENED_ON.name(), SortDir.DESC);
-        getGrid().setAutoExpandColumn(LogEntrySummaryModelData.EXPAND_PROPERTY);
+            DataBinding.RevisionBeanModel.HAPPENED_ON, SortDir.DESC);
+        getGrid().setAutoExpandColumn(DataBinding.RevisionBeanModel.COMMENT);
         getGrid().addListener(
             Events.RowClick,
             new Listener<GridEvent<?>>(){
                 public void handleEvent(final GridEvent<?> be) {
-                    final LogEntrySummaryModelData md =
+                    final BeanModel md =
                         getGrid().getSelectionModel().getSelectedItem();
                     if (null==md) {
                         _toolBar.disable();
                     } else {
                         if (ResourceType.PAGE==resourceType
+                            || ResourceType.TEMPLATE==resourceType
                             || ResourceType.FILE==resourceType) {
                             _toolBar.enable();
                         } else {
@@ -116,14 +116,14 @@ public class HistoryDialog
 
         final ColumnConfig userColumn =
             new ColumnConfig(
-                LogEntrySummaryModelData.Property.USERNAME.name(),
+                DataBinding.RevisionBeanModel.USERNAME,
                 getUiConstants().user(),
                 100);
         configs.add(userColumn);
 
         final ColumnConfig timeColumn =
             new ColumnConfig(
-                LogEntrySummaryModelData.Property.HAPPENED_ON.name(),
+                DataBinding.RevisionBeanModel.HAPPENED_ON,
                 getUiConstants().time(),
                 150);
         timeColumn.setDateTimeFormat(DateTimeFormat.getMediumDateTimeFormat());
@@ -131,14 +131,14 @@ public class HistoryDialog
 
         final ColumnConfig majorEditColumn =
             new ColumnConfig(
-                LogEntrySummaryModelData.Property.IS_MAJOR_EDIT.name(),
+                DataBinding.RevisionBeanModel.IS_MAJOR_EDIT,
                 getUiConstants().majorEdit(),
                 70);
         configs.add(majorEditColumn);
 
         final ColumnConfig commentColumn = new ColumnConfig();
         commentColumn.setId(
-            LogEntrySummaryModelData.Property.COMMENT.name());
+            DataBinding.RevisionBeanModel.COMMENT);
         commentColumn.setHeader(getUiConstants().comment());
         configs.add(commentColumn);
 
@@ -152,9 +152,9 @@ public class HistoryDialog
      *
      * @return The selected item.
      */
-    public LogEntrySummaryModelData selectedItem() {
-        final LogEntrySummaryModelData selected =
-            getGrid().getSelectionModel().getSelectedItem();
+    public Revision selectedItem() {
+        final Revision selected =
+            getGrid().getSelectionModel().getSelectedItem().getBean();
         return selected;
     }
 
@@ -164,9 +164,9 @@ public class HistoryDialog
      *
      */
     public void workingCopyCreated() {
-        final ResourceSummaryModelData selectedInMainWindow =
+        final ResourceSummary selectedInMainWindow =
             _ssm.tableSelection();
-        selectedInMainWindow.setWorkingCopy(true);
+        selectedInMainWindow.setHasWorkingCopy(true);
         _ssm.update(selectedInMainWindow);
     }
 
@@ -177,7 +177,7 @@ public class HistoryDialog
      * @return True is selection is locked.
      */
     public boolean hasLock() {
-        return null!=_ssm.tableSelection().getLocked();
+        return null!=_ssm.tableSelection().getLockedBy();
     }
 
 
@@ -187,6 +187,6 @@ public class HistoryDialog
      * @return The id for the resource.
      */
     public ResourceSummary getResource() {
-        return _ssm.tableSelection().getDelegate();
+        return _ssm.tableSelection();
     }
 }

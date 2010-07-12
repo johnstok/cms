@@ -93,6 +93,38 @@ public class EmailAddressTest
     /**
      * Test.
      */
+    public void testEmailConstructionTrimsSurroundingWhitespace() {
+
+        // ARRANGE
+
+        // ACT
+        final EmailAddress leading =
+            new EmailAddress("\r\t\n foo@example.com");
+        final EmailAddress trailing =
+            new EmailAddress("foo@example.com \r\t\n");
+
+        // ASSERT
+        assertEquals("foo@example.com", leading.toString());
+        assertEquals("foo@example.com", trailing.toString());
+    }
+
+    /**
+     * Test.
+     */
+    public void testEmailValidationIgnoresSurroundingWhitespace() {
+
+        // ARRANGE
+
+        // ACT
+
+        // ASSERT
+        assertTrue(EmailAddress.isValidText("\r\t\n foo@example.com"));
+        assertTrue(EmailAddress.isValidText("foo@example.com \r\t\n"));
+    }
+
+    /**
+     * Test.
+     */
     public void testEmailAddressToString() {
 
         // ARRANGE

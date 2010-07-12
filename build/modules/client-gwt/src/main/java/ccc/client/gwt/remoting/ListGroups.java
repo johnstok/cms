@@ -33,13 +33,14 @@ import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
+import ccc.client.core.Globals;
+import ccc.client.core.HttpMethod;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Request;
+import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.HttpMethod;
-import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Request;
-import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.plugins.s11n.json.PagedCollectionReader;
 
 import com.google.gwt.json.client.JSONObject;
@@ -90,7 +91,7 @@ public abstract class ListGroups
         params.put("order", new String[] {_order.name()});
         return
             Globals.API_URL
-            + new Link(GLOBALS.groups().getLink("self"))
+            + new Link(new GlobalsImpl().groups().getLink("self"))
                 .build(params, new GWTTemplateEncoder());
     }
 
@@ -105,7 +106,7 @@ public abstract class ListGroups
             new ResponseHandlerAdapter(USER_ACTIONS.unknownAction()){
                 /** {@inheritDoc} */
                 @Override
-                public void onOK(final ccc.client.gwt.core.Response response) {
+                public void onOK(final ccc.client.core.Response response) {
                     final JSONObject obj =
                         JSONParser.parse(response.getText()).isObject();
                     final PagedCollection<Group> groups =

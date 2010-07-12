@@ -31,14 +31,15 @@ import java.util.UUID;
 
 import ccc.api.core.Template;
 import ccc.api.types.ResourceName;
+import ccc.client.core.Editable;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.TemplateSummaryModelData;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.views.ChangeResourceTemplate;
+import ccc.client.views.ChangeResourceTemplate;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -59,13 +60,13 @@ public class ChooseTemplateDialog
 
     private Editable _presenter;
 
-    private final ComboBox<TemplateSummaryModelData> _selectedTemplate =
-        new ComboBox<TemplateSummaryModelData>();
-    private final ListStore<TemplateSummaryModelData> _store =
-        new ListStore<TemplateSummaryModelData>();
+    private final ComboBox<BeanModel> _selectedTemplate =
+        new ComboBox<BeanModel>();
+    private final ListStore<BeanModel> _store =
+        new ListStore<BeanModel>();
 
-    private final TemplateSummaryModelData _none =
-        new TemplateSummaryModelData(
+    private final BeanModel _none =
+        DataBinding.bindTemplate(
             Template.summary(
                 null,
                 new ResourceName("NONE"),
@@ -81,16 +82,16 @@ public class ChooseTemplateDialog
      * Constructor.
      */
     public ChooseTemplateDialog() {
-        super(new GlobalsImpl().uiConstants().chooseTemplate(),
+        super(I18n.UI_CONSTANTS.chooseTemplate(),
               new GlobalsImpl());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
 
         _selectedTemplate.setFieldLabel(constants().defaultTemplate());
-        _selectedTemplate.setTemplate("<tpl for=\".\">"
-            +"<div class=x-combo-list-item id={NAME}>{NAME}</div></tpl>");
-        _selectedTemplate.setId("default-template");
+//        _selectedTemplate.setTemplate("<tpl for=\".\">"
+//            +"<div class=x-combo-list-item id={NAME}>{NAME}</div></tpl>");
+//        _selectedTemplate.setId("default-template");
         _selectedTemplate.setDisplayField(
-            TemplateSummaryModelData.Property.NAME.name());
+            DataBinding.TemplateBeanModel.NAME);
         _selectedTemplate.setForceSelection(true);
         _selectedTemplate.setEditable(false);
         _selectedTemplate.setTriggerAction(TriggerAction.ALL);
@@ -111,7 +112,7 @@ public class ChooseTemplateDialog
     /** {@inheritDoc} */
     @Override
     public UUID getSelectedTemplate() {
-        return _selectedTemplate.getValue().getId();
+        return _selectedTemplate.getValue().<Template>getBean().getId();
     }
 
 
@@ -121,8 +122,8 @@ public class ChooseTemplateDialog
         if (null == templateId) {
             _selectedTemplate.setValue(_none);
         } else {
-            for (final TemplateSummaryModelData model : _store.getModels()) {
-                if (templateId.equals(model.getId())) {
+            for (final BeanModel model : _store.getModels()) {
+                if (templateId.equals(model.<Template>getBean().getId())) {
                     _selectedTemplate.setValue(model);
                     break;
                 }
@@ -136,7 +137,7 @@ public class ChooseTemplateDialog
     public void setTemplates(final Collection<Template> templates) {
         _store.add(_none);
         _store.add(DataBinding.bindTemplateDelta(templates));
-        _store.sort(TemplateSummaryModelData.Property.NAME.name(), SortDir.ASC);
+        _store.sort(DataBinding.TemplateBeanModel.NAME, SortDir.ASC);
         _selectedTemplate.setStore(_store);
     }
 

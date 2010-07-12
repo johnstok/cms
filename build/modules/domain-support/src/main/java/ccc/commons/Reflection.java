@@ -103,7 +103,7 @@ public final class Reflection {
         } catch (final IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (final InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getCause());
         } catch (final NoSuchMethodException e) {
             throw new RuntimeException(e);
         } catch (final ClassNotFoundException e) {

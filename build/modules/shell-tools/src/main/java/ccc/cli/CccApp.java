@@ -27,6 +27,7 @@
 
 package ccc.cli;
 
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -238,5 +239,24 @@ class CccApp {
             System.exit(1);
             return null; // We can't actually get here.
         }
+    }
+
+    /**
+     * Read from standard input.
+     *
+     * @param label The label for the prompt.
+     * @return The input from standard input.
+     */
+    static String readConsolePassword(final String label) {
+        String result = null;
+        Console con = System.console();
+        if (con != null) {
+            char[] pw = con.readPassword("Enter "+label+": ");
+            result = String.copyValueOf(pw);
+        }
+        if (result != null && result.isEmpty()) {
+            return readConsolePassword(label);
+        }
+        return result;
     }
 }

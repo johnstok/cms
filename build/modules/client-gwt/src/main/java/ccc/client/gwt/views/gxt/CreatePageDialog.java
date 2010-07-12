@@ -32,21 +32,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
+import ccc.client.core.Editable;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.binding.TemplateSummaryModelData;
-import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.remoting.ComputeTemplateAction;
-import ccc.client.gwt.views.CreatePage;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.PageElement;
+import ccc.client.views.CreatePage;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
@@ -59,7 +61,6 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
-import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
@@ -99,23 +100,23 @@ public class CreatePageDialog
     private EditPagePanel _secondWizardPage = new EditPagePanel(null);
     private final ContentPanel _thirdWizardPage = new ContentPanel();
 
-    private final ListStore<TemplateSummaryModelData> _templatesStore =
-        new ListStore<TemplateSummaryModelData>();
-    private final Grid<TemplateSummaryModelData> _templateGrid;
+    private final ListStore<BeanModel> _templatesStore =
+        new ListStore<BeanModel>();
+    private final Grid<BeanModel> _templateGrid;
 
     private final ContentPanel _descriptionPanel =
         new ContentPanel(new RowLayout());
     private final ContentPanel _templatePanel =
         new ContentPanel(new RowLayout());
 
-    private TemplateSummaryModelData _template = null;
+    private Template _template = null;
 
 
     private final Text _description = new Text("");
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
 
-    private final ResourceSummaryModelData _parent;
+    private final ResourceSummary _parent;
 
     /**
      * Constructor.
@@ -126,31 +127,34 @@ public class CreatePageDialog
      * @param parent The Folder in which page will created.
      */
     public CreatePageDialog(final Collection<Template> list,
-                            final ResourceSummaryModelData parent) {
-        super(new GlobalsImpl().uiConstants().createPage(),
+                            final ResourceSummary parent) {
+        super(I18n.UI_CONSTANTS.createPage(),
               new GlobalsImpl());
         _parent = parent;
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         final ColumnConfig templateNameColumn = new ColumnConfig();
-        templateNameColumn.setId(TemplateSummaryModelData.Property.NAME.name());
+        templateNameColumn.setId(DataBinding.TemplateBeanModel.NAME);
         templateNameColumn.setHeader(getUiConstants().name());
         templateNameColumn.setWidth(NAME_COLUMN_WIDTH);
         configs.add(templateNameColumn);
 
         final ColumnModel cm = new ColumnModel(configs);
 
-        _templateGrid = new Grid<TemplateSummaryModelData>(_templatesStore, cm);
-        _templateGrid.setId("TemplateGrid");
+        _templateGrid = new Grid<BeanModel>(_templatesStore, cm);
+//        _templateGrid.setId("TemplateGrid");
         _templateGrid.setHeight(TEMPLATE_GRID_HEIGHT);
 
         final Listener<GridEvent<?>> gridEventlistener =
             new Listener<GridEvent<?>>() {
             public void handleEvent(final GridEvent<?> gridEvent) {
-                final TemplateSummaryModelData t =
-                    (TemplateSummaryModelData)
-                        gridEvent.getGrid().getSelectionModel().getSelectedItem();
+                final Template t =
+                    ((BeanModel) gridEvent
+                        .getGrid()
+                        .getSelectionModel()
+                        .getSelectedItem())
+                        .getBean();
                 updateSecondPage(t);
             }
         };
@@ -158,7 +162,7 @@ public class CreatePageDialog
 
         _templatesStore.add(DataBinding.bindTemplateDelta(list));
         _templatesStore.sort(
-            TemplateSummaryModelData.Property.NAME.name(), SortDir.ASC);
+            DataBinding.TemplateBeanModel.NAME, SortDir.ASC);
 
         _templatePanel.setHeaderVisible(true);
         _templatePanel.setHeading(getUiConstants().template());
@@ -224,7 +228,7 @@ public class CreatePageDialog
             setId(getUiConstants().useDefaultTemplate());
 
             new ComputeTemplateAction(
-                getUiConstants().createPage(), _parent.getDelegate()) {
+                getUiConstants().createPage(), _parent) {
 
                 /** {@inheritDoc} */
                 @Override
@@ -241,9 +245,7 @@ public class CreatePageDialog
                     setValue(Boolean.TRUE);
                     _templateGrid.disable();
                     _templateGrid.getSelectionModel().deselectAll();
-                    TemplateSummaryModelData sm =
-                        new TemplateSummaryModelData(_t2);
-                    updateSecondPage(sm);
+                    updateSecondPage(_t2);
                 }
 
             }.execute();
@@ -254,9 +256,7 @@ public class CreatePageDialog
                         if (null != _t2) {
                             _templateGrid.disable();
                             _templateGrid.getSelectionModel().deselectAll();
-                            TemplateSummaryModelData sm =
-                                new TemplateSummaryModelData(_t2);
-                            updateSecondPage(sm);
+                            updateSecondPage(_t2);
                         }
                     } else {
                         _secondWizardPage.removeAll();
@@ -279,9 +279,9 @@ public class CreatePageDialog
         };
     }
 
-    private void updateSecondPage(final TemplateSummaryModelData t) {
+    private void updateSecondPage(final Template t) {
         _template = t;
-        final EditPagePanel second = new EditPagePanel(t.getTemplate());
+        final EditPagePanel second = new EditPagePanel(t);
         replaceCard(_secondWizardPage, second);
         _secondWizardPage = second;
         _description.setText(t.getDescription());
@@ -290,7 +290,9 @@ public class CreatePageDialog
 
     /** {@inheritDoc} */
     @Override
-    public void alert(final String message) { getGlobals().alert(message); }
+    public void alert(final String message) {
+        InternalServices.WINDOW.alert(message);
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -317,14 +319,14 @@ public class CreatePageDialog
 
     /** {@inheritDoc} */
     @Override
-    public TemplateSummaryModelData getSelectedTemplate() {
+    public Template getSelectedTemplate() {
         return _template;
     }
 
     /** {@inheritDoc} */
     @Override
-    public TextField<String> getName() {
-        return _secondWizardPage.name();
+    public String getName() {
+        return _secondWizardPage.name().getValue();
     }
 
 

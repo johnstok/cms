@@ -26,12 +26,16 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.HttpMethod;
-import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
+import ccc.api.core.ResourceSummary;
+import ccc.api.types.CommandType;
+import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
+import ccc.client.events.Event;
 import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.ResourceSummarySerializer;
 
 /**
  * Publish a resource.
@@ -59,15 +63,21 @@ public class PublishAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _selectionModel.tableSelection().getDelegate().uriPublish().build(new GWTTemplateEncoder());
+        return
+            _selectionModel
+                .tableSelection()
+                .uriPublish()
+                .build(InternalServices.ENCODER);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onNoContent(final Response response) {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        item.setPublished(GLOBALS.currentUser().getUsername());
-        _selectionModel.update(item);
+    protected void onOK(final Response response) {
+        final Json json = InternalServices.PARSER.parseJson(response.getText());
+        final ResourceSummary rs = new ResourceSummarySerializer().read(json);
+        InternalServices.REMOTING_BUS.fireEvent(
+            new Event<CommandType>(CommandType.RESOURCE_PUBLISH)
+                .addProperty("resource", rs));
     }
 }

@@ -40,11 +40,15 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.core.Template;
 import ccc.api.core.User;
-import ccc.client.gwt.core.Globals;
+import ccc.client.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.data.BeanModel;
+import com.extjs.gxt.ui.client.data.BeanModelLookup;
+import com.extjs.gxt.ui.client.data.BeanModelMarker;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.BeanModelMarker.BEAN;
 
 
 /**
@@ -68,48 +72,52 @@ public final class DataBinding {
     /**
      * Convert a collection of log entry summaries to model data.
      *
-     * @param arg0 The summaries
+     * @param revisions The revisions.
      * @return The model data.
      */
-    public static List<LogEntrySummaryModelData> bindLogEntrySummary(
-                                       final Collection<Revision> arg0) {
-        final List<LogEntrySummaryModelData> boundData =
-            new ArrayList<LogEntrySummaryModelData>();
-        for (final Revision les : arg0) {
-            boundData.add(new LogEntrySummaryModelData(les, GLOBALS));
-        }
-        return boundData;
+    public static List<BeanModel> bindLogEntrySummary(
+                                       final Collection<Revision> revisions) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Revision.class).createModel(revisions);
     }
 
 
     /**
-     * Create model data objects for a collection of resource summaries.
+     * Convert a collection of resource summaries to model data.
      *
-     * @param arg0 The resource summaries.
-     * @return The corresponding model data objects.
+     * @param resources The resources.
+     *
+     * @return The model data.
      */
-    public static List<ResourceSummaryModelData> bindResourceSummary(
-                                       final Collection<ResourceSummary> arg0) {
-        final List<ResourceSummaryModelData> boundData =
-            new ArrayList<ResourceSummaryModelData>();
-        for (final ResourceSummary fs : arg0) {
-            final ResourceSummaryModelData md = bindResourceSummary(fs);
-            boundData.add(md);
-        }
-        return boundData;
+    public static List<BeanModel> bindResourceSummary(
+                               final Collection<ResourceSummary> resources) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(ResourceSummary.class).createModel(resources);
     }
 
 
     /**
-     * Create a model data object from a resource summary.
+     * Convert a resource summary to model data.
      *
-     * @param rs The resource summary.
-     * @return The corresponding model data object.
+     * @param rs The resource.
+     *
+     * @return The model data.
      */
-    public static ResourceSummaryModelData bindResourceSummary(
-                                                     final ResourceSummary rs) {
-        final ResourceSummaryModelData md = new ResourceSummaryModelData(rs);
-        return md;
+    public static BeanModel bindResourceSummary(final ResourceSummary rs) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(ResourceSummary.class).createModel(rs);
+    }
+
+
+    /**
+     * Create model data object for a user.
+     *
+     * @param user The user to bind.
+     * @return The corresponding bean model.
+     */
+    public static BeanModel bindUserSummary(final User user) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(User.class).createModel(user);
     }
 
 
@@ -119,14 +127,10 @@ public final class DataBinding {
      * @param result The user summaries.
      * @return The corresponding model data objects.
      */
-    public static List<UserSummaryModelData> bindUserSummary(
+    public static List<BeanModel> bindUserSummary(
                                          final Collection<User> result) {
-        final List<UserSummaryModelData> boundData =
-            new ArrayList<UserSummaryModelData>();
-        for (final User us : result) {
-            boundData.add(new UserSummaryModelData(us));
-        }
-        return boundData;
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(User.class).createModel(result);
     }
 
 
@@ -134,33 +138,53 @@ public final class DataBinding {
      * Create model data objects for a collection of template summaries.
      *
      * @param list The template summaries.
+     *
      * @return The corresponding model data objects.
      */
-    public static List<TemplateSummaryModelData> bindTemplateDelta(
+    public static List<BeanModel> bindTemplateDelta(
                                      final Collection<Template> list) {
-        final List<TemplateSummaryModelData> boundData =
-            new ArrayList<TemplateSummaryModelData>();
-        for (final Template ts : list) {
-            boundData.add(new TemplateSummaryModelData(ts));
-        }
-        return boundData;
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Template.class).createModel(list);
     }
 
 
     /**
-     * Create model data objects for a collection of file DTOs.
+     * Create a model data object for a single template.
      *
-     * @param arg0 The file DTOs.
+     * @param template The template to bind.
+     *
+     * @return The bean model wrapper for the template.
+     */
+    public static BeanModel bindTemplate(final Template template) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Template.class).createModel(template);
+    }
+
+
+    /**
+     * Create model data objects for a collection of files.
+     *
+     * @param files The files to bind.
+     *
      * @return The corresponding model data objects.
      */
-    public static List<ImageSummaryModelData> bindFileSummary(
-                                           final Collection<File> arg0) {
-        final List<ImageSummaryModelData> boundData =
-            new ArrayList<ImageSummaryModelData>();
-        for (final File fs : arg0) {
-            boundData.add(new ImageSummaryModelData(fs));
-        }
-        return boundData;
+    public static List<BeanModel> bindFileSummary(
+                                           final Collection<File> files) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(File.class).createModel(files);
+    }
+
+
+    /**
+     * Create a model data object for a file.
+     *
+     * @param file The file to bind.
+     *
+     * @return The corresponding model data object.
+     */
+    public static BeanModel bindFileSummary(final File file) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(File.class).createModel(file);
     }
 
 
@@ -185,40 +209,175 @@ public final class DataBinding {
 
 
     /**
-     * Create model data objects for a collection of action summaries.
+     * Bind a collection of action summaries.
      *
-     * @param actions The action summaries.
-     * @return The corresponding model data objects.
+     * @param actions The action summaries to bind.
+     *
+     * @return The corresponding gxt models.
      */
-    public static List<ActionSummaryModelData> bindActionSummary(
+    public static List<BeanModel> bindActionSummary(
                                       final Collection<ActionSummary> actions) {
-        final List<ActionSummaryModelData> boundData =
-            new ArrayList<ActionSummaryModelData>();
-        for (final ActionSummary as : actions) {
-            boundData.add(new ActionSummaryModelData(as, GLOBALS));
-        }
-        return boundData;
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(ActionSummary.class).createModel(actions);
     }
 
 
-    public static List<CommentModelData> bindCommentSummary(
-                                    final Collection<Comment> comments) {
-        final List<CommentModelData> boundData =
-            new ArrayList<CommentModelData>();
-        for (final Comment as : comments) {
-            boundData.add(new CommentModelData(as));
-        }
-        return boundData;
+    /**
+     * Bind a collection of comments.
+     *
+     * @param comments The comments to bind.
+     *
+     * @return The corresponding gxt models.
+     */
+    public static List<BeanModel> bindCommentSummary(
+                                        final Collection<Comment> comments) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Comment.class).createModel(comments);
     }
 
 
-    public static List<GroupModelData> bindGroupSummary(
-                                    final Collection<Group> groups) {
-        final List<GroupModelData> boundData =
-            new ArrayList<GroupModelData>();
-        for (final Group as : groups) {
-            boundData.add(new GroupModelData(as));
-        }
-        return boundData;
+    /**
+     * Bind a single comment.
+     *
+     * @param comment The comment to bind.
+     *
+     * @return The corresponding gxt model.
+     */
+    public static BeanModel bindCommentSummary(final Comment comment) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Comment.class).createModel(comment);
+    }
+
+
+    /**
+     * Bind a single group.
+     *
+     * @param group The group to bind.
+     *
+     * @return The corresponding gxt model.
+     */
+    public static BeanModel bindGroupSummary(final Group group) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Group.class).createModel(group);
+    }
+
+
+    /**
+     * Bind a collection of groups.
+     *
+     * @param groups The groups to bind.
+     *
+     * @return The corresponding gxt models.
+     */
+    public static List<BeanModel> bindGroupSummary(
+                                            final Collection<Group> groups) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Group.class).createModel(groups);
+    }
+
+
+    /**
+     * GXT model for a template.
+     */
+    @BEAN(Template.class)
+    public interface TemplateBeanModel extends BeanModelMarker {
+        /** NAME : String. */
+        String NAME = "name";
+    }
+
+
+    /**
+     * GXT model for a user.
+     */
+    @BEAN(User.class)
+    public interface UserBeanModel extends BeanModelMarker {
+        /** EMAIL : String. */
+        String EMAIL = "email";
+        /** USERNAME : String. */
+        String USERNAME = "username";
+    }
+
+
+    /**
+     * GXT model for a group.
+     */
+    @BEAN(Group.class)
+    public interface GroupBeanModel extends BeanModelMarker {
+        /** NAME : String. */
+        String NAME = "name";
+        /** ID : String. */
+        String ID   = "id";
+    }
+
+
+    /**
+     * GXT model for a comment.
+     */
+    @BEAN(Comment.class)
+    public interface CommentBeanModel extends BeanModelMarker {
+        /** ID : String. */
+        String ID           = "id";
+        /** AUTHOR : String. */
+        String AUTHOR       = "author";
+        /** URL : String. */
+        String URL          = "url";
+        /** DATE_CREATED : String. */
+        String DATE_CREATED = "timestamp";
+        /** STATUS : String. */
+        String STATUS       = "status";
+    }
+
+
+    /**
+     * GXT model for a revision.
+     */
+    @BEAN(Revision.class)
+    public interface RevisionBeanModel extends BeanModelMarker {
+        /** USERNAME : String. */
+        String USERNAME      = "actorUsername";
+        /** HAPPENED_ON : String. */
+        String HAPPENED_ON   = "happenedOn";
+        /** COMMENT : String. */
+        String COMMENT       = "comment";
+        /** IS_MAJOR_EDIT : String. */
+        String IS_MAJOR_EDIT = "major";
+        /** INDEX : String. */
+        String INDEX         = "index";
+    }
+
+
+    /**
+     * GXT model for a file.
+     */
+    @BEAN(File.class)
+    public interface FileBeanModel extends BeanModelMarker {
+        /** NAME : String. */
+        String NAME = "name";
+        /** PATH : String. */
+        String PATH = "path";
+        /** TITLE : String. */
+        String TITLE = "title";
+        /** SHORT_NAME : String. */
+        String SHORT_NAME = "title";
+        /** WIDTH : String. */
+        String WIDTH = "width";
+        /** HEIGHT : String. */
+        String HEIGHT = "height";
+    }
+
+
+    /**
+     * GXT model for an action summary.
+     */
+    @BEAN(ActionSummary.class)
+    public interface ActionSummaryBeanModel extends BeanModelMarker {
+    }
+
+
+    /**
+     * GXT model for a resource summary.
+     */
+    @BEAN(ResourceSummary.class)
+    public interface ResourceSummaryBeanModel extends BeanModelMarker {
     }
 }

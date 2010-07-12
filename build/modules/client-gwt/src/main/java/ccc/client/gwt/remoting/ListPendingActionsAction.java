@@ -34,10 +34,11 @@ import ccc.api.core.PagedCollection;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
 import ccc.plugins.s11n.json.PagedCollectionReader;
 
 import com.google.gwt.json.client.JSONObject;
@@ -90,7 +91,7 @@ public abstract class ListPendingActionsAction
         params.put("order", new String[] {_order.name()});
 
         final String path =
-            new Link(GLOBALS.actions().getLink("pending"))
+            new Link(new GlobalsImpl().actions().getLink("pending"))
             .build(params, new GWTTemplateEncoder());
         return path;
     }

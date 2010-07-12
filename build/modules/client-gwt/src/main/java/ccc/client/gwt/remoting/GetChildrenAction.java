@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.ResourceSummarySerializer;
 

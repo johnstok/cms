@@ -146,4 +146,39 @@ public class TemplateAcceptanceTest extends
 
     }
 
+
+    /**
+     * Test.
+     */
+    public void testRetrieveTemplateRevision() {
+
+        // ARRANGE
+        final ResourceSummary folder = tempFolder();
+        final ResourceSummary t = dummyTemplate(folder);
+
+        final Template delta = new Template();
+        delta.setBody("newBody");
+        delta.setDefinition(
+            "<fields><field name=\"test\" type=\"html\"/></fields>");
+        delta.setMimeType(MimeType.BINARY_DATA);
+
+        getCommands().lock(t.getId());
+        getTemplates().update(t.getId(), delta);
+
+        // ACT
+        Template original = getTemplates().retrieveRevision(t.getId(), 0);
+        Template updated = getTemplates().retrieveRevision(t.getId(), 1);
+
+        // ASSERT
+        assertEquals("newBody", updated.getBody());
+        assertEquals("<fields><field name=\"test\" type=\"html\"/></fields>",
+                     updated.getDefinition());
+        assertEquals(MimeType.BINARY_DATA, updated.getMimeType());
+
+        assertEquals("body", original.getBody());
+        assertEquals("<fields/>", original.getDefinition());
+        assertEquals(MimeType.HTML, original.getMimeType());
+
+    }
+
 }

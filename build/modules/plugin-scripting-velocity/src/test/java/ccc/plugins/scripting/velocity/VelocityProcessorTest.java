@@ -30,6 +30,7 @@ import static org.easymock.EasyMock.*;
 
 import java.io.StringWriter;
 import java.util.Collections;
+import java.util.UUID;
 
 import junit.framework.TestCase;
 
@@ -242,7 +243,7 @@ public class VelocityProcessorTest extends TestCase {
         final String expectedMessage =
             "f7627735-6276-45b1-a516-aa8a1f9f28f2";
         final Context ctxt = new Context();
-        ctxt.add("resource", this);
+        ctxt.add("uuid", UUID.class);
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
@@ -255,10 +256,10 @@ public class VelocityProcessorTest extends TestCase {
     /**
      * Test.
      */
-    public void testSecurityBlockedClassName() {
+    public void testSecurityAllowsClassName() {
 
         // ARRANGE
-        final String template = "$uuid.Class.Name";
+        final String template = "$resource.Class.Name";
         final Context ctxt = new Context();
         ctxt.add("resource", this);
         ctxt.add("services", Testing.stub(ServiceLocator.class));
@@ -267,7 +268,7 @@ public class VelocityProcessorTest extends TestCase {
         final String html = _vp.render(new Script(template, "test"), ctxt);
 
         // ASSERT
-        assertEquals(template, html);
+        assertEquals(getClass().getName(), html);
     }
 
     /**
@@ -276,7 +277,7 @@ public class VelocityProcessorTest extends TestCase {
     public void testSecurityBlockedClassMethods() {
 
         // ARRANGE
-        final String template = "$uuid.Class.Methods";
+        final String template = "$resource.Class.Methods";
         final Context ctxt = new Context();
         ctxt.add("resource", this);
         ctxt.add("services", Testing.stub(ServiceLocator.class));
@@ -294,7 +295,7 @@ public class VelocityProcessorTest extends TestCase {
     public void testSecurityBlockedClassClassLoader() {
 
         // ARRANGE
-        final String template = "$uuid.Class.Methods";
+        final String template = "$resource.Class.ClassLoader";
         final Context ctxt = new Context();
         ctxt.add("resource", this);
         ctxt.add("services", Testing.stub(ServiceLocator.class));
@@ -313,7 +314,7 @@ public class VelocityProcessorTest extends TestCase {
 
         // ARRANGE
         final String template =
-            "$uuid.Class.ClassLoader.loadClass('java.util.HashMap')"
+            "$resource.Class.ClassLoader.loadClass('java.util.HashMap')"
             + ".newInstance().size()";
         final Context ctxt = new Context();
         ctxt.add("resource", this);

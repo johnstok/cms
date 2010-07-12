@@ -26,11 +26,20 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
-import ccc.client.gwt.binding.ActionSummaryModelData;
-import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Request;
+import ccc.api.types.CommandType;
+import ccc.client.core.Globals;
+import ccc.client.core.HttpMethod;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Request;
+import ccc.client.core.ResponseHandlerAdapter;
+import ccc.client.events.Event;
 import ccc.client.gwt.widgets.ActionTable;
+
+import com.extjs.gxt.ui.client.data.BeanModel;
 
 
 /**
@@ -57,12 +66,16 @@ public class CancelActionAction
 
     /** {@inheritDoc} */
     @Override protected boolean beforeExecute() {
-        final ActionSummaryModelData action = _table.getSelectedItem();
+        final BeanModel action = _table.getSelectedItem();
         if (null==action) {
-            GLOBALS.alert(UI_CONSTANTS.pleaseChooseAnAction());
+            InternalServices.WINDOW.alert(
+                UI_CONSTANTS.pleaseChooseAnAction());
             return false;
-        } else if (ActionStatus.SCHEDULED!=action.getStatus()) {
-            GLOBALS.alert(UI_CONSTANTS.thisActionHasAlreadyCompleted());
+        } else if (
+            ActionStatus.SCHEDULED!=
+                action.<ActionSummary>getBean().getStatus()) {
+            InternalServices.WINDOW.alert(
+                UI_CONSTANTS.thisActionHasAlreadyCompleted());
             return false;
         }
         return true;
@@ -72,6 +85,50 @@ public class CancelActionAction
     /** {@inheritDoc} */
     @Override
     protected Request getRequest() {
-        return _table.getSelectedItem().cancel();
+        return cancel(_table.getSelectedItem().<ActionSummary>getBean());
+    }
+
+
+    /**
+     * Cancel an action.
+     *
+     * @return The HTTP request to cancel this action.
+     */
+    public Request cancel(final ActionSummary action) {
+        final String path = Globals.API_URL + action.self();
+        return
+            new Request(
+                HttpMethod.DELETE,
+                path,
+                "",
+                new ActionCancelledCallback(action));
+    }
+
+
+    /**
+     * Callback handler for applying a working copy.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static class ActionCancelledCallback extends ResponseHandlerAdapter {
+
+        private final Event<CommandType> _event;
+
+        /**
+         * Constructor.
+         *
+         * @param action The resource whose WC has been applied.
+         */
+        public ActionCancelledCallback(final ActionSummary action) {
+            super(I18n.UI_CONSTANTS.cancel());
+            _event = new Event<CommandType>(CommandType.ACTION_CANCEL);
+            _event.addProperty("action", action);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onNoContent(final ccc.client.core.Response response) {
+            InternalServices.REMOTING_BUS.fireEvent(_event);
+        }
     }
 }

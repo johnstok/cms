@@ -108,4 +108,15 @@ public interface Templates {
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Template.COLLECTION)
     ResourceSummary create(Template template);
+
+    /**
+     * Retrieve a template revision.
+     *
+     * @param templateId The template's id.
+     * @param revision The revision to fetch.
+     * @return The corresponding delta.
+     */
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Template.REVISION)
+    Template retrieveRevision(@PathParam("id") UUID templateId,
+                              @PathParam("revision") int revision);
 }

@@ -33,10 +33,10 @@ import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
+import ccc.api.types.Permission;
 import ccc.api.types.SortOrder;
+import ccc.client.core.Globals;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.UserSummaryModelData;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.remoting.GetUserAction;
 import ccc.client.gwt.remoting.ListGroups;
 import ccc.client.gwt.remoting.ListUsersAction;
@@ -48,6 +48,7 @@ import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
@@ -81,8 +82,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class UserTable extends TablePanel {
 
-    private ListStore<UserSummaryModelData> _detailsStore =
-        new ListStore<UserSummaryModelData>();
+    private ListStore<BeanModel> _detailsStore =
+        new ListStore<BeanModel>();
 
     private final RadioGroup _radioGroup = new RadioGroup("searchField");
     private final ToolBar _toolBar = new ToolBar();
@@ -95,7 +96,7 @@ public class UserTable extends TablePanel {
 
     private final TextField<String> _searchString;
 
-    private final Grid<UserSummaryModelData> _grid;
+    private final Grid<BeanModel> _grid;
     private final PagingToolBar _pagerBar;
 
     private static final int COLUMN_WIDTH = 400;
@@ -124,17 +125,19 @@ public class UserTable extends TablePanel {
         contextMenu.setId("userContextMenu");
         final ContextActionGridPlugin gp =
             new ContextActionGridPlugin(contextMenu);
-        gp.setRenderer(new UserContextRenderer());
+        gp.setRenderer(new ContextMenuRenderer());
         final List<ColumnConfig> configs = createColumnConfigs(gp);
 
         final ColumnModel cm = new ColumnModel(configs);
 
-        _grid = new Grid<UserSummaryModelData>(_detailsStore, cm);
+        _grid = new Grid<BeanModel>(_detailsStore, cm);
         _grid.setId("UserGrid");
 
-        contextMenu.add(createEditUserMenu(_grid));
-        contextMenu.add(createEditPwMenu(_grid));
-        contextMenu.add(createEditMetadataMenu(_grid));
+        if (GLOBALS.currentUser().hasPermission(Permission.USER_UPDATE)) {
+            contextMenu.add(createEditUserMenu(_grid));
+            contextMenu.add(createEditPwMenu(_grid));
+            contextMenu.add(createEditMetadataMenu(_grid));
+        }
 
         _grid.setContextMenu(contextMenu);
         _grid.addPlugin(gp);
@@ -144,13 +147,13 @@ public class UserTable extends TablePanel {
         setBottomComponent(_pagerBar);
     }
 
-    private MenuItem createEditUserMenu(final Grid<UserSummaryModelData> grid) {
+    private MenuItem createEditUserMenu(final Grid<BeanModel> grid) {
         final MenuItem editUser = new MenuItem(UI_CONSTANTS.editUser());
         editUser.setId("editUserMenu");
         editUser.addSelectionListener(
             new SelectionListener<MenuEvent>() {
                 @Override public void componentSelected(final MenuEvent ce) {
-                    final UserSummaryModelData userDTO =
+                    final BeanModel userDTO =
                         grid.getSelectionModel().getSelectedItem();
 
                     new ListGroups(1,
@@ -158,9 +161,10 @@ public class UserTable extends TablePanel {
                                    "name",
                                    SortOrder.ASC) {
                         @Override
-                        protected void execute(final PagedCollection<Group> groups) {
+                        protected void execute(
+                                       final PagedCollection<Group> groups) {
                             new OpenEditUserDialogAction(
-                                userDTO.getDelegate(),
+                                userDTO.<User>getBean(),
                                 UserTable.this,
                                 groups.getElements())
                             .execute();
@@ -172,29 +176,29 @@ public class UserTable extends TablePanel {
         return editUser;
     }
 
-    private MenuItem createEditPwMenu(final Grid<UserSummaryModelData> grid) {
+    private MenuItem createEditPwMenu(final Grid<BeanModel> grid) {
         final MenuItem editUserPw = new MenuItem(UI_CONSTANTS.editUserPw());
         editUserPw.setId("editUserPwMenu");
         editUserPw.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                final UserSummaryModelData userDTO =
+                final BeanModel userDTO =
                     grid.getSelectionModel().getSelectedItem();
-                new EditUserPwDialog(userDTO).show();
+                new EditUserPwDialog(userDTO.<User>getBean()).show();
             }
         });
         return editUserPw;
     }
 
     private MenuItem createEditMetadataMenu(
-                         final Grid<UserSummaryModelData> grid) {
+                         final Grid<BeanModel> grid) {
         final MenuItem editUserMeta =
             new MenuItem(UI_CONSTANTS.editUserMetadata());
         editUserMeta.setId("editUserMetadataMenu");
         editUserMeta.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                final UserSummaryModelData modeldata =
+                final BeanModel modeldata =
                     grid.getSelectionModel().getSelectedItem();
-                new GetUserAction(modeldata.getDelegate().self()) {
+                new GetUserAction(modeldata.<User>getBean().self()) {
                     @Override
                     protected void execute(final User user) {
                         new UserMetadataDialog(user).show();
@@ -224,7 +228,6 @@ public class UserTable extends TablePanel {
         _toolBar.add(new SeparatorToolItem());
         _toolBar.add(_searchButton);
         _toolBar.setId("toolbar");
-        _toolBar.disable();
     }
 
     private List<ColumnConfig> createColumnConfigs(
@@ -234,13 +237,13 @@ public class UserTable extends TablePanel {
         configs.add(gp);
 
         final ColumnConfig usernameColumn = new ColumnConfig();
-        usernameColumn.setId(UserSummaryModelData.Property.USERNAME.name());
+        usernameColumn.setId(DataBinding.UserBeanModel.USERNAME);
         usernameColumn.setHeader(UI_CONSTANTS.username());
         usernameColumn.setWidth(COLUMN_WIDTH);
         configs.add(usernameColumn);
 
         final ColumnConfig emailColumn = new ColumnConfig();
-        emailColumn.setId(UserSummaryModelData.Property.EMAIL.name());
+        emailColumn.setId(DataBinding.UserBeanModel.EMAIL);
         emailColumn.setHeader(UI_CONSTANTS.email());
         emailColumn.setWidth(COLUMN_WIDTH);
         configs.add(emailColumn);
@@ -256,26 +259,12 @@ public class UserTable extends TablePanel {
     public void displayUsersFor(final ModelData selectedItem) {
         _lastSelected = selectedItem;
         _detailsStore.removeAll();
-
-        if (UserTree.SEARCH.equals(selectedItem.get("id"))) {
-            _toolBar.enable();
-        } else {
-            _toolBar.disable();
-        }
-
-        if (UserTree.ALL.equals(selectedItem.get("id"))) {
+        _searchString.setValue(null);
+        if (UserTree.USERS.equals(selectedItem.get("id"))) {
             updatePager(null);
-        } else if (UserTree.CONTENT_CREATOR.equals(selectedItem.get("id"))){
+        } else {
             final UserCriteria uc = new UserCriteria();
-            uc.setGroups("CONTENT_CREATOR");
-            updatePager(uc);
-        } else if (UserTree.SITE_BUILDER.equals(selectedItem.get("id"))) {
-            final UserCriteria uc = new UserCriteria();
-            uc.setGroups("SITE_BUILDER");
-            updatePager(uc);
-        } else if(UserTree.ADMINISTRATOR.equals(selectedItem.get("id"))) {
-            final UserCriteria uc = new UserCriteria();
-            uc.setGroups("ADMINISTRATOR");
+            uc.setGroups((String) selectedItem.get("id"));
             updatePager(uc);
         }
     }
@@ -284,8 +273,7 @@ public class UserTable extends TablePanel {
      * Refresh user list unless the last list was created through a search.
      */
     public void refreshUsers() {
-        if (_lastSelected != null
-                && !UserTree.SEARCH.equals(_lastSelected.get("id"))) {
+        if (_lastSelected != null){
             displayUsersFor(_lastSelected);
         }
     }
@@ -304,6 +292,9 @@ public class UserTable extends TablePanel {
             _detailsStore.removeAll();
             if (_radioGroup.getValue() == _usernameRadio) {
                 final UserCriteria uc = new UserCriteria();
+                if (!UserTree.USERS.equals(_lastSelected.get("id"))) {
+                    uc.setGroups((String) _lastSelected.get("id"));
+                }
                 uc.setUsername(_searchString.getValue().replace('*', '%'));
                 updatePager(uc);
             } else if (_radioGroup.getValue() == _emailRadio) {
@@ -316,17 +307,17 @@ public class UserTable extends TablePanel {
 
     private void updatePager(final UserCriteria uc){
 
-        final RpcProxy<PagingLoadResult<UserSummaryModelData>> proxy =
-            new RpcProxy<PagingLoadResult<UserSummaryModelData>>() {
+        final RpcProxy<PagingLoadResult<BeanModel>> proxy =
+            new RpcProxy<PagingLoadResult<BeanModel>>() {
 
             @Override
             protected void load(final Object loadConfig,
                                 final AsyncCallback<PagingLoadResult
-                                <UserSummaryModelData>> callback) {
+                                <BeanModel>> callback) {
                 if (null==loadConfig
                     || !(loadConfig instanceof BasePagingLoadConfig)) {
-                    final PagingLoadResult<UserSummaryModelData> plr =
-                       new BasePagingLoadResult<UserSummaryModelData>(null);
+                    final PagingLoadResult<BeanModel> plr =
+                       new BasePagingLoadResult<BeanModel>(null);
                     callback.onSuccess(plr);
                 } else {
                     final BasePagingLoadConfig config =
@@ -347,12 +338,12 @@ public class UserTable extends TablePanel {
                             @Override
                             protected void execute(
                                            final PagedCollection<User> users) {
-                                final List<UserSummaryModelData> results =
+                                final List<BeanModel> results =
                                     DataBinding
                                         .bindUserSummary(users.getElements());
 
-                            final PagingLoadResult<UserSummaryModelData> plr =
-                                new BasePagingLoadResult<UserSummaryModelData>(
+                            final PagingLoadResult<BeanModel> plr =
+                                new BasePagingLoadResult<BeanModel>(
                                     results, config.getOffset(),
                                     (int) users.getTotalCount());
                                 callback.onSuccess(plr);
@@ -365,7 +356,7 @@ public class UserTable extends TablePanel {
 
         final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);
-        _detailsStore = new ListStore<UserSummaryModelData>(loader);
+        _detailsStore = new ListStore<BeanModel>(loader);
         _pagerBar.bind(loader);
         loader.load(0, PAGING_ROW_COUNT);
         final ColumnModel cm = _grid.getColumnModel();

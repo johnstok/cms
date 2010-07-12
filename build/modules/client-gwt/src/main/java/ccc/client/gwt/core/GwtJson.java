@@ -358,7 +358,12 @@ public class GwtJson
         }
         final JSONObject o = v.isObject();
         for (final String mapKey : o.keySet()) {
-            value.put(mapKey, o.get(mapKey).isString().stringValue());
+            final JSONValue mapValue = o.get(mapKey);
+            if (null!=mapValue.isNull()) {
+                value.put(mapKey, null);
+            } else {
+                value.put(mapKey, mapValue.isString().stringValue());
+            }
         }
         return value;
     }

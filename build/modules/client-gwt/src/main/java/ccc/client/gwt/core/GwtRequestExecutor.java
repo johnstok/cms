@@ -26,6 +26,11 @@
  */
 package ccc.client.gwt.core;
 
+import ccc.client.core.HttpMethod;
+import ccc.client.core.Request;
+import ccc.client.core.RequestExecutor;
+import ccc.client.core.ResponseHandler;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;

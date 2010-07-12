@@ -67,7 +67,7 @@ public class Page
      */
     @Deprecated
     public Page(final UUID parentId,
-                final String name,
+                final String name, // FIXME: Should be a resource name.
                 final UUID templateId,
                 final String title,
                 final String comment,
@@ -182,7 +182,7 @@ public class Page
 
 
     /** WORKING_COPY : String. */
-    public static final String WORKING_COPY = "wc";
+    public static final String WORKING_COPY = "wc_p";
     /** VALIDATOR : String. */
     public static final String VALIDATOR = "page-validator";
 }

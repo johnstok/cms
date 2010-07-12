@@ -130,13 +130,11 @@
         <filter-name>txn-filter</filter-name>
         <servlet-name>content</servlet-name>
         <servlet-name>preview-content</servlet-name>
-        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>  
 
     <filter-mapping>
         <filter-name>ccc6-filter</filter-name>
         <servlet-name>content</servlet-name>
-        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>  
     
     <servlet-mapping>

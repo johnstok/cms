@@ -26,9 +26,12 @@
  */
 package ccc.client.gwt.core;
 
-import ccc.client.gwt.remoting.TextParser;
+import java.util.Map;
+
+import ccc.client.remoting.TextParser;
 import ccc.plugins.s11n.Json;
 
+import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
@@ -51,4 +54,25 @@ public class GWTTextParser
         final Json json = new GwtJson(result);
         return json;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean parseBoolean(final String text) {
+        final JSONBoolean b = JSONParser.parse(text).isBoolean();
+        return b.booleanValue();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<String, String> parseMapString(final String text) {
+        final Json json = parseJson(text);
+        return json.getStringMap("properties");
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Json newJson() { return new GwtJson(); }
 }

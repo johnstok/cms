@@ -168,14 +168,15 @@ public class FileUploadAcceptanceTest
         f.setInputStream(new ByteArrayInputStream(new byte[] {0, 1, 2, 3, 4}));
         f.setSize(5);
         f.setPublished(false);
-        f.setComment("Testing 1, 2, 3.");
 
         // ACT
         final ResourceSummary rs = getFiles().create(f);
 
         // ASSERT
+        final File actual = getFiles().retrieve(rs.getId());
         assertEquals(fName, rs.getName());
         assertEquals(filesFolder.getId(), rs.getParent());
+        assertEquals(null, actual.getComment());
     }
 
     /**
@@ -203,6 +204,8 @@ public class FileUploadAcceptanceTest
         assertEquals(fName, rs.getName());
         assertEquals("/files/"+fName, rs.getAbsolutePath());
         assertEquals("Hello!", getBrowser().previewContent(rs, false));
+        final File f = getFiles().retrieve(rs.getId());
+        assertEquals("UTF-8", f.getProperties().get("text.charset"));
     }
 
 
@@ -355,6 +358,51 @@ public class FileUploadAcceptanceTest
 
         // ASSERT
         assertEquals("Update!", getBrowser().previewContent(rs, false));
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testGetFileContentsFromPath() {
+
+        // ARRANGE
+        final String fName = UUID.randomUUID().toString();
+        final ResourceSummary filesFolder =
+            getCommands().resourceForPath("/files");
+        final ResourceSummary rs =
+            getFiles().createTextFile(
+                new File(
+                    filesFolder.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "Hello!"));
+
+        // ACT
+        final String content =
+            getCommands().fileContentsFromPath(rs.getAbsolutePath(), "UTF-8");
+
+        // ASSERT
+        assertEquals("Hello!", content);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testGetFileContentsIsEmptyForMissingPath() {
+
+        // ARRANGE
+
+        // ACT
+        final String content =
+            getCommands().fileContentsFromPath(
+                "/this/path/doesnt/exist", "UTF-8");
+
+        // ASSERT
+        assertEquals("", content);
     }
 
 

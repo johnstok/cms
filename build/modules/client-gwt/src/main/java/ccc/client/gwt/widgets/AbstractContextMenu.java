@@ -27,10 +27,11 @@
 
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.core.Action;
-import ccc.client.gwt.core.Globals;
+import ccc.client.core.Action;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.i18n.UIConstants;
+import ccc.client.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
@@ -46,7 +47,7 @@ public class AbstractContextMenu
         Menu {
 
     private final Globals _globals = new GlobalsImpl();
-    private final UIConstants _constants = GlobalsImpl.uiConstants();
+    private final UIConstants _constants = I18n.UI_CONSTANTS;
 
 
     /**
@@ -91,14 +92,20 @@ public class AbstractContextMenu
     /**
      * Creates and adds a menu item to the context menu.
      *
+     * @param permission The permission required to add the item.
      * @param id The id of the menu item.
      * @param text The text of the menu item.
      * @param action The action  of the menu item.
      */
-    protected void addMenuItem(final String id,
+    protected void addMenuItem(final String permission,
+                               final String id,
                                final String text,
                                final Action action) {
-        final MenuItem menuItem = createMenuItem(id, text, action);
-        add(menuItem);
+        if (permission == null
+                || _globals.currentUser().hasPermission(permission)) {
+            final MenuItem menuItem = createMenuItem(id, text, action);
+            add(menuItem);
+        }
     }
+
 }

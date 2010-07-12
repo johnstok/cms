@@ -27,13 +27,14 @@
 package ccc.client.gwt.views.gxt;
 
 
+import static ccc.client.core.InternalServices.*;
 import ccc.api.core.ResourceSummary;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Editable;
+import ccc.client.core.Editable;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.ValidationResult;
-import ccc.client.gwt.core.Validations2;
-import ccc.client.gwt.views.CreateAlias;
+import ccc.client.views.CreateAlias;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -60,7 +61,7 @@ public class CreateAliasDialog
     private final TriggerField<String> _parentFolder =
         new TriggerField<String>();
 
-    private ResourceSummaryModelData _parent = null;
+    private ResourceSummary _parent = null;
     private Editable _presenter;
     private static final int DIALOG_HEIGHT = 200;
 
@@ -70,7 +71,7 @@ public class CreateAliasDialog
      */
     public CreateAliasDialog() {
 
-        super(new GlobalsImpl().uiConstants().createAlias(),
+        super(I18n.UI_CONSTANTS.createAlias(),
               new GlobalsImpl());
         setHeight(DIALOG_HEIGHT);
 
@@ -145,16 +146,16 @@ public class CreateAliasDialog
     public ValidationResult getValidationResult() {
         final ValidationResult result = new ValidationResult();
 
-        if (!Validations2.notEmpty(_parentFolder.getValue())) {
-            result.addError(
-                _parentFolder.getFieldLabel()+getUiConstants().cannotBeEmpty());
-        }
-        if (!Validations2.notEmpty(_aliasName.getValue())) {
-            result.addError(
-                _aliasName.getFieldLabel()+getUiConstants().cannotBeEmpty());
-        } else if (!Validations2.notValidResourceName(_aliasName.getValue())) {
-            result.addError(getUiConstants().resourceNameIsInvalid());
-        }
+        result.addError(
+            VALIDATOR.notEmpty(
+                _parentFolder.getValue(), _parentFolder.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                _aliasName.getValue(), _aliasName.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notValidResourceName(
+                _aliasName.getValue(), _aliasName.getFieldLabel()));
+
         return result;
     }
 
@@ -179,11 +180,13 @@ public class CreateAliasDialog
     /** {@inheritDoc} */
     @Override
     public ResourceSummary getParent2() {
-       return (null==_parent) ? null : _parent.getDelegate();
+       return (null==_parent) ? null : _parent;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void alert(final String message) { getGlobals().alert(message); }
+    public void alert(final String message) {
+        InternalServices.WINDOW.alert(message);
+    }
 }

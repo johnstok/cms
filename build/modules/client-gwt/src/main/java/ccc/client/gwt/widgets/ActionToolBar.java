@@ -26,9 +26,10 @@
  */
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.i18n.UIConstants;
+import ccc.api.types.Permission;
+import ccc.client.core.I18n;
 import ccc.client.gwt.remoting.CancelActionAction;
+import ccc.client.i18n.UIConstants;
 
 
 /**
@@ -40,8 +41,7 @@ public class ActionToolBar
     extends
         AbstractToolBar {
 
-    private final UIConstants _constants = new GlobalsImpl().uiConstants();
-    private final ActionTable _actionTable;
+    private final UIConstants _constants = I18n.UI_CONSTANTS;
 
     /**
      * Constructor.
@@ -49,14 +49,13 @@ public class ActionToolBar
      * @param actionTable The table to operate on.
      */
     public ActionToolBar(final ActionTable actionTable) {
-        _actionTable = actionTable;
 
-        addSeparator();
-        addButton(
+        addSeparator(null);
+        addButton(Permission.ACTION_CANCEL,
             "cancel-action",
             _constants.cancel(),
-            new CancelActionAction(_actionTable));
-        addSeparator();
+            new CancelActionAction(actionTable));
+        addSeparator(Permission.ACTION_CANCEL);
     }
 
 }

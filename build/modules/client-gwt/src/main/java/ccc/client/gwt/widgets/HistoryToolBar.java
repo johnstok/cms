@@ -26,11 +26,14 @@
  */
 package ccc.client.gwt.widgets;
 
+import ccc.api.core.ResourceSummary;
+import ccc.api.types.Permission;
+import ccc.api.types.ResourceType;
+import ccc.client.core.I18n;
 import ccc.client.gwt.actions.PreviewHistoricalAction;
-import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.remoting.CreateWorkingCopyFromHistoricalVersionAction;
 import ccc.client.gwt.views.gxt.HistoryDialog;
+import ccc.client.i18n.UIConstants;
 
 
 /**
@@ -42,7 +45,7 @@ public class HistoryToolBar
     extends
         AbstractToolBar {
 
-    private final UIConstants _constants = new GlobalsImpl().uiConstants();
+    private final UIConstants _constants = I18n.UI_CONSTANTS;
     private final HistoryDialog _historyDialog;
 
     /**
@@ -53,19 +56,23 @@ public class HistoryToolBar
     public HistoryToolBar(final HistoryDialog historyDialog) {
         _historyDialog = historyDialog;
 
-        addSeparator();
-        addButton(
+        addSeparator(null);
+        addButton(null,
             "preview-historical",
             _constants.preview(),
             new PreviewHistoricalAction(_historyDialog));
-        addSeparator();
+        addSeparator(null);
         if (_historyDialog.hasLock()) {
-            addButton(
-                "create-historical-wc",
-                _constants.revert(),
-                new CreateWorkingCopyFromHistoricalVersionAction(
-                    _historyDialog));
-            addSeparator();
+            ResourceSummary resource = _historyDialog.getResource();
+            if(resource != null
+               && resource.getType()!=ResourceType.TEMPLATE) {
+                addButton(Permission.RESOURCE_UPDATE,
+                    "create-historical-wc",
+                    _constants.revert(),
+                    new CreateWorkingCopyFromHistoricalVersionAction(
+                        _historyDialog));
+                addSeparator(Permission.RESOURCE_UPDATE);
+            }
         }
     }
 

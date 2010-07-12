@@ -42,6 +42,7 @@ import ccc.api.core.Group;
 import ccc.api.core.Groups;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.Permission;
+import ccc.api.types.SortOrder;
 import ccc.domain.GroupEntity;
 import ccc.domain.LogEntry;
 import ccc.persistence.GroupRepository;
@@ -108,7 +109,9 @@ public class GroupsEJB
         final GroupRepository gr = getRepoFactory().createGroupRepo();
         final long totalCount = gr.totalCount(name);
 
-        final Collection<GroupEntity> groups = gr.list(name, pageNo, pageSize);
+        final Collection<GroupEntity> groups = gr.list(name,
+                                                       pageNo,
+                                                       pageSize);
 
         final PagedCollection<Group> pGroups =
             new PagedCollection<Group>(

@@ -125,5 +125,15 @@ public class TemplatesImpl
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Template retrieveRevision(UUID templateId, int revision) {
+        try {
+            return _templates.retrieveRevision(templateId, revision);
+        } catch (final RuntimeException cfe) {
+            throw convertException(cfe);
+        }
+    }
+
 
 }

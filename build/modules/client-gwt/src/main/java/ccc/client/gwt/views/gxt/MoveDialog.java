@@ -26,15 +26,16 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
 import ccc.api.core.ResourceSummary;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Globals;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
+import ccc.client.core.Response;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.MoveResourceAction;
-import ccc.client.gwt.validation.Validate;
-import ccc.client.gwt.validation.Validations;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -61,8 +62,8 @@ public class MoveDialog extends AbstractEditDialog {
     private final TriggerField<String> _parentFolder =
         new TriggerField<String>();
 
-    private final ResourceSummaryModelData _target;
-    private ResourceSummaryModelData _parent = null;
+    private final ResourceSummary _target;
+    private ResourceSummary _parent = null;
 
     private final SingleSelectionModel _ssm;
 
@@ -73,10 +74,10 @@ public class MoveDialog extends AbstractEditDialog {
      * @param ssm The selection model.
      * @param root Resource root for the selection dialog.
      */
-    public MoveDialog(final ResourceSummaryModelData item,
+    public MoveDialog(final ResourceSummary item,
                       final SingleSelectionModel ssm,
                       final ResourceSummary root) {
-        super(new GlobalsImpl().uiConstants().move(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.move(), new GlobalsImpl());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _ssm = ssm;
 
@@ -126,28 +127,31 @@ public class MoveDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 if (null==_parent) { return; }
-                Validate.callTo(move())
-                    .check(Validations.notEmpty(_parentFolder))
-                    .stopIfInError()
-                    .check(Validations.uniqueResourceName(
-                        _parent.getDelegate(), _targetName))
-                    .callMethodOr(Validations.reportErrors());
+
+                final ValidationResult vr = new ValidationResult();
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _parentFolder.getValue(),
+                        _parentFolder.getFieldLabel()));
+
+                if (!vr.isValid()) {
+                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    return;
+                }
+
+                move();
             }
         };
     }
 
-    private Runnable move() {
-        return new Runnable() {
-            public void run() {
-                new MoveResourceAction(_target.getDelegate(), _parent.getId()){
-                    /** {@inheritDoc} */
-                    @Override protected void onNoContent(
-                                                     final Response response) {
-                        _ssm.move(_target, _parent, _ssm.treeSelection());
-                        hide();
-                    }
-                }.execute();
+    private void move() {
+        new MoveResourceAction(_target, _parent.getId()){
+            /** {@inheritDoc} */
+            @Override protected void onNoContent(
+                                             final Response response) {
+                _ssm.move(_target, _parent, _ssm.treeSelection());
+                hide();
             }
-        };
+        }.execute();
     }
 }

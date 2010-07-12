@@ -82,10 +82,10 @@ public interface Resources {
         @QueryParam("tag") String tag,
         @QueryParam("before") Long before,
         @QueryParam("after") Long after,
-        @QueryParam("mainmenu") String mainMenu,
+        @QueryParam("mainmenu") String mainMenu, // FIXME: Should be boolean.
         @QueryParam("type") String type,
-        @QueryParam("locked") String locked,
-        @QueryParam("published") String published,
+        @QueryParam("locked") String locked,  // FIXME: Should be boolean.
+        @QueryParam("published") String published,  // FIXME: Should be boolean.
         @QueryParam("sort") String sort,
         @QueryParam("order") @DefaultValue("ASC") SortOrder order,
         @QueryParam("page") @DefaultValue("1") int pageNo,
@@ -280,7 +280,7 @@ public interface Resources {
      * @param resourceId The id of the resource to update.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH)
-    void publish(@PathParam("id") UUID resourceId);
+    ResourceSummary publish(@PathParam("id") UUID resourceId); // FIXME: Should return a Resource.
 
 
     /**
@@ -396,7 +396,7 @@ public interface Resources {
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.TEXT)
     String fileContentsFromPath(@PathParam("path") String absolutePath,
-                                @DefaultValue("UTF-8") String charset);
+                                @QueryParam("charset") @DefaultValue("UTF-8") String charset);
 
 
     /**

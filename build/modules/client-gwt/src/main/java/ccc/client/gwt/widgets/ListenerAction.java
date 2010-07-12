@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.core.Action;
+import ccc.client.core.Action;
 
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;

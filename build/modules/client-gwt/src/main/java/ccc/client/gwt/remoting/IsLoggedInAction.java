@@ -35,12 +35,15 @@ import ccc.api.core.Security;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
 import ccc.api.types.SortOrder;
-import ccc.client.gwt.concurrent.SimpleLatch;
-import ccc.client.gwt.core.Globals;
+import ccc.client.concurrent.SimpleLatch;
+import ccc.client.core.Globals;
+import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.views.gxt.LoginDialog;
+
+import com.google.gwt.user.client.Timer;
 
 
 /**
@@ -51,6 +54,9 @@ import ccc.client.gwt.views.gxt.LoginDialog;
 public class IsLoggedInAction
     extends
         RemotingAction {
+
+    private static final int KEEP_ALIVE = 600000;
+
 
     /**
      * Constructor.
@@ -70,8 +76,8 @@ public class IsLoggedInAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        if (parseBoolean(response)) {
-            GLOBALS.enableExitConfirmation();
+        if (getParser().parseBoolean(response.getText())) {
+            InternalServices.WINDOW.enableExitConfirmation();
             loadServices();
         } else {
             new LoginDialog().show();
@@ -148,5 +154,18 @@ public class IsLoggedInAction
                 l.countDown();
             }
         }.execute();
+
+        final Timer timer = new Timer() {
+            @Override
+            public void run() {
+                new GetCurrentUserAction() {
+                    @Override
+                    protected void onOK(final Response response) {
+                        //NO-OP
+                    };
+                }.execute();
+            }
+        };
+        timer.scheduleRepeating(KEEP_ALIVE);
     }
 }

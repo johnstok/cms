@@ -28,7 +28,9 @@ package ccc.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
 
@@ -98,8 +100,8 @@ public abstract class WorkingCopySupport<T extends RevisionEntity<U>,
      * @return The current working copy or NULL if no working copy exists.
      */
     public V getWorkingCopy() {
-        if (0==_wc.size()) {
-            return null;
+        if (!hasWorkingCopy()) {
+            throw new EntityNotFoundException((UUID) null);
         }
         return _wc.get(0);
     }
@@ -148,7 +150,7 @@ public abstract class WorkingCopySupport<T extends RevisionEntity<U>,
     /** {@inheritDoc} */
     @Override
     public U getOrCreateWorkingCopy() {
-        if (null!=getWorkingCopy()) {
+        if (hasWorkingCopy()) {
             return getWorkingCopy().delta();
         }
         return currentRevision().delta();

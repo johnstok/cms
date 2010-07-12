@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.i18n.UIConstants;
+import ccc.client.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
@@ -47,14 +47,15 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @author Civic Computing Ltd.
  */
 public class CodeMirrorEditor extends Composite {
-    private String _id;
+    private final String _id;
 
     @SuppressWarnings("unused")
     private JavaScriptObject _editor;
     private final RadioGroup _radioGroup = new RadioGroup();
     private boolean _ready = false;
-    private EditorListener _bus;
-    private Type _type;
+    private final EditorListener _bus;
+    private final Type _type;
+    private final boolean _readOnly;
 
     /**
      * Constructor.
@@ -62,14 +63,17 @@ public class CodeMirrorEditor extends Composite {
      * @param id The ID of the editor.
      * @param bus The event bus.
      * @param type The of the editor.
+     * @param readOnly The editor read only value for the config.
      */
     public CodeMirrorEditor(final String id,
                             final EditorListener bus,
-                            final Type type) {
+                            final Type type,
+                            final boolean readOnly) {
         super();
         _id = id;
         _bus = bus;
         _type = type;
+        _readOnly = readOnly;
         initWidget();
     }
 
@@ -164,7 +168,8 @@ public class CodeMirrorEditor extends Composite {
     protected void onLoad() {
         _editor = initCodeMirror(this,
             _id,
-            GWT.getModuleBaseURL()+"js/codemirror/");
+            GWT.getModuleBaseURL()+"js/codemirror/",
+            _readOnly);
     }
 
     /**
@@ -192,11 +197,13 @@ public class CodeMirrorEditor extends Composite {
      * @param obj The CodeMirrorEditor instance
      * @param id The ID of the editor.
      * @param baseUrl The base URL for scripts and css.
+     * @param readOnly The editor read only value for the config.
      * @return The editor instance.
      */
     public native JavaScriptObject initCodeMirror(final CodeMirrorEditor obj,
                                                   final String id,
-                                                  final String baseUrl) /*-{
+                                                  final String baseUrl,
+                                                  final boolean readOnly) /*-{
         initCMCallback = function() {
            obj.@ccc.client.gwt.widgets.CodeMirrorEditor::onInitialized()();
         }
@@ -218,6 +225,7 @@ public class CodeMirrorEditor extends Composite {
             lineNumbers: true,
             tabMode: "spaces",
             content: " ",
+            readOnly: readOnly,
             initCallback: initCMCallback
           });
 

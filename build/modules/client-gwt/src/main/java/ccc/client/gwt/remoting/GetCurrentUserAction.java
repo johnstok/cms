@@ -27,9 +27,10 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.User;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
 import ccc.plugins.s11n.json.UserSerializer;
 
 import com.google.gwt.json.client.JSONObject;
@@ -58,7 +59,7 @@ public class GetCurrentUserAction
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
         final User user = new UserSerializer().read(new GwtJson(result));
-        GLOBALS.currentUser(user);
+        new GlobalsImpl().currentUser(user);
         new DrawMainWindowAction(user).execute();
     }
 
@@ -66,6 +67,6 @@ public class GetCurrentUserAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return GLOBALS.users().getLink("me");
+        return new GlobalsImpl().users().getLink("me");
     }
 }

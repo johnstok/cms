@@ -42,10 +42,6 @@ import org.kohsuke.args4j.Option;
 public final class Settings extends CccApp {
     private static final Logger LOG = Logger.getLogger(Settings.class);
 
-    private static Options options;
-
-    private Settings() { super(); }
-
 
     /**
      * App entry point.
@@ -53,102 +49,94 @@ public final class Settings extends CccApp {
      * @param args Command line arguments.
      */
     public static void main(final String[] args) {
-        options  = parseOptions(args, Options.class);
-        updateSettings();
+        final Settings s  = parseOptions(args, Settings.class);
+        s.updateSettings();
     }
 
     /**
-     * Create a user.
+     * Modify settings.
      *
-     * @return The UUID of the new user.
      */
-    static void updateSettings() {
+    public void updateSettings() {
         final DatabaseVendor vendor =
-            DatabaseVendor.forConnectionString(options.getConString());
+            DatabaseVendor.forConnectionString(getConString());
         final Connection newConnection =
             getConnection(
                 vendor.driverClassName(),
-                options.getConString(),
-                options.getUsername(),
-                options.getPassword());
+                getConString(),
+                getUsername(),
+                getPassword());
         try {
             final NewDBQueries queries = new NewDBQueries(newConnection);
-                queries.updateSettingPaths(
-                    options.getPath());
+            queries.updateSettingPaths(
+                getPath());
             LOG.info("Updated path");
         } finally {
             DbUtils.closeQuietly(newConnection);
         }
     }
 
-    /**
-     * Options for the search scheduler tool.
-     *
-     * @author Civic Computing Ltd.
-     */
-    static class Options {
-        @Option(
-            name="-u",
-            required=true,
-            usage="Username for connecting to CCC DB.")
+    @Option(
+        name="-u",
+        required=true,
+        usage="Username for connecting to CCC DB.")
         private String _username;
 
-        @Option(
-            name="-p",
-            required=true,
-            usage="Password for connecting to CCC DB.")
+    @Option(
+        name="-p",
+        required=false,
+        usage="Password for connecting to CCC DB.")
         private String _password;
 
-        @Option(
-            name="-c", required=true, usage="Connection string for the DB.")
+    @Option(
+        name="-c", required=true, usage="Connection string for the DB.")
         private String _conString;
 
-        @Option(
-            name="-path", required=true, usage="Path to use.")
+    @Option(
+        name="-path", required=true, usage="Path to use.")
         private String _path;
 
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the username.
-         */
-        String getUsername() {
-            return _username;
+    /**
+     * Accessor.
+     *
+     * @return Returns the username.
+     */
+    String getUsername() {
+        return _username;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the password.
+     */
+    String getPassword() {
+        if (_password == null) {
+            return readConsolePassword("Password for connecting to CCC DB");
         }
+        return _password;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the password.
-         */
-        String getPassword() {
-            return _password;
-        }
+    /**
+     * Accessor.
+     *
+     * @return Returns the conString.
+     */
+    String getConString() {
+        return _conString;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the conString.
-         */
-        String getConString() {
-            return _conString;
-        }
-
-
-        /**
-         * Accessor.
-         *
-         * @return Returns the path.
-         */
-        String getPath() {
-            return _path;
-        }
-
-
-
+    /**
+     * Accessor.
+     *
+     * @return Returns the path.
+     */
+    String getPath() {
+        return _path;
     }
 }

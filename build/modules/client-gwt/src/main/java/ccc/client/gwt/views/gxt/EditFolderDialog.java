@@ -37,20 +37,19 @@ import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.Response;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.binding.ResourceSummaryModelData.Property;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.GetChildrenAction;
 import ccc.client.gwt.remoting.UpdateFolderAction;
 import ccc.client.gwt.widgets.ResourceTypeRendererFactory;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
-import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.dnd.GridDragSource;
 import com.extjs.gxt.ui.client.dnd.GridDropTarget;
 import com.extjs.gxt.ui.client.dnd.DND.Feedback;
@@ -81,21 +80,23 @@ AbstractEditDialog {
     private static final int GRID_WIDTH = 610;
     private static final int GRID_HEIGHT = 320;
 
-    private final ComboBox<ModelData> _indexPage = new ComboBox<ModelData>();
+    private final ComboBox<BaseModelData> _indexPage =
+        new ComboBox<BaseModelData>();
 
     private final SingleSelectionModel _selectionModel;
 
-    private final Grid<ResourceSummaryModelData> _grid;
+    private final Grid<BeanModel> _grid;
     private final ColumnModel _cm;
-    private ListStore<ResourceSummaryModelData> _detailsStore =
-        new ListStore<ResourceSummaryModelData>();
-    private ListStore<ModelData> _indexPageStore = new ListStore<ModelData>();
+    private ListStore<BeanModel> _detailsStore =
+        new ListStore<BeanModel>();
+    private ListStore<BaseModelData> _indexPageStore =
+        new ListStore<BaseModelData>();
 
     private GridDropTarget _target;
-    private ModelData _none = new BaseModelData();
+    private BaseModelData _none = new BaseModelData();
 
     private final UUID _currentIndexPage;
-    private final ResourceSummaryModelData _folder;
+    private final ResourceSummary _folder;
 
 
     /**
@@ -105,8 +106,8 @@ AbstractEditDialog {
      * @param folder The current folder.
      */
     public EditFolderDialog(final SingleSelectionModel ssm,
-                            final ResourceSummaryModelData folder) {
-        super(new GlobalsImpl().uiConstants().edit(), new GlobalsImpl());
+                            final ResourceSummary folder) {
+        super(I18n.UI_CONSTANTS.edit(), new GlobalsImpl());
 
         _currentIndexPage = folder.getIndexPageId();
         _folder = folder;
@@ -114,7 +115,8 @@ AbstractEditDialog {
         setHeight(Globals.DEFAULT_HEIGHT);
         _selectionModel = ssm;
 
-        configureComboBox(_indexPage,
+        configureComboBox(
+            _indexPage,
             _indexPageStore,
             "folder-index-page",
             constants().indexPage());
@@ -126,7 +128,7 @@ AbstractEditDialog {
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         createColumnConfigs(configs);
         _cm = new ColumnModel(configs);
-        _grid = new Grid<ResourceSummaryModelData>(_detailsStore, _cm);
+        _grid = new Grid<BeanModel>(_detailsStore, _cm);
         _grid.setHeight(GRID_HEIGHT);
         _grid.setWidth(GRID_WIDTH);
         _grid.setBorders(true);
@@ -153,7 +155,7 @@ AbstractEditDialog {
 
     private void populateIndexOptions(final Collection<ResourceSummary> arg0) {
         _indexPageStore.removeAll();
-        final List<ModelData> pagesOnly = new ArrayList<ModelData>();
+        final List<BaseModelData> pagesOnly = new ArrayList<BaseModelData>();
 
         _none.set("name", getUiConstants().none());
         _none.set("value", null);
@@ -161,7 +163,7 @@ AbstractEditDialog {
 
         for (final ResourceSummary item : arg0) {
             if (item.getType() == ResourceType.PAGE) {
-                final ModelData pageModel = new BaseModelData();
+                final BaseModelData pageModel = new BaseModelData();
                 pageModel.set("name", item.getName());
                 pageModel.set("value", item.getId());
                 pagesOnly.add(pageModel);
@@ -171,8 +173,8 @@ AbstractEditDialog {
     }
 
     private void loadDetailStore(final UUID currentIndexPage) {
-        _detailsStore =  new ListStore<ResourceSummaryModelData>();
-        final ResourceSummaryModelData selection =
+        _detailsStore =  new ListStore<BeanModel>();
+        final ResourceSummary selection =
             _selectionModel.tableSelection();
 
         new GetChildrenAction(getUiConstants().edit()) {
@@ -187,8 +189,7 @@ AbstractEditDialog {
                 params.put("order", new String[] {SortOrder.ASC.name()});
                 params.put("page", new String[] {"1"});
                 params.put("count", new String[] {"1000"});
-                return selection.getDelegate().list().build(
-                    params, new GWTTemplateEncoder());
+                return selection.list().build(params, new GWTTemplateEncoder());
             }
 
             /** {@inheritDoc} */
@@ -217,7 +218,7 @@ AbstractEditDialog {
 
 
     private void setCurrentIndexPage(final UUID currentValue) {
-        for (final ModelData md : _indexPageStore.getModels()) {
+        for (final BaseModelData md : _indexPageStore.getModels()) {
             if(currentValue != null && currentValue.equals(md.get("value"))) {
                 _indexPage.setValue(md);
                 return;
@@ -228,16 +229,21 @@ AbstractEditDialog {
 
 
 
-    private void configureComboBox(final ComboBox<ModelData> cb,
-                                   final ListStore<ModelData> store,
+    private void configureComboBox(final ComboBox<BaseModelData> cb,
+                                   final ListStore<BaseModelData> store,
                                    final String id,
                                    final String label) {
         cb.setFieldLabel(label);
         cb.setAllowBlank(false);
         cb.setId(id);
-        cb.setDisplayField("name");
-        cb.setTemplate("<tpl for=\".\">"
-            +"<div class=x-combo-list-item id=\"{name}\">{name}</div></tpl>");
+        cb.setDisplayField(ResourceSummary.NAME);
+        cb.setTemplate(
+            "<tpl for=\".\">"
+            +"<div class=x-combo-list-item id=\"{"
+            + ResourceSummary.NAME
+            +"}\">{"
+            + ResourceSummary.NAME
+    		+ "}</div></tpl>");
         cb.setEditable(false);
         cb.setStore(store);
         cb.setTriggerAction(TriggerAction.ALL);
@@ -249,17 +255,18 @@ AbstractEditDialog {
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final ResourceSummaryModelData md =
+                final ResourceSummary md =
                     _selectionModel.tableSelection();
 
                 final UUID indexPageId =
                     _indexPage.getValue().<UUID>get("value");
 
                 final List<String> orderList = new ArrayList<String>();
-                    final List<ResourceSummaryModelData> models =
+                    final List<BeanModel> models =
                         _grid.getStore().getModels();
-                    for(final ResourceSummaryModelData m : models) {
-                        orderList.add(m.getId().toString());
+                    for(final BeanModel m : models) {
+                        orderList.add(
+                            m.<ResourceSummary>getBean().getId().toString());
                     }
 
                 final Folder f = new Folder();
@@ -268,7 +275,7 @@ AbstractEditDialog {
                 f.setSortList(orderList);
                 f.addLink(
                     Resource.SELF,
-                    _folder.getDelegate().getLink(Resource.SELF));
+                    _folder.getLink(Resource.SELF));
 
                 new UpdateFolderAction(f) {
                     /** {@inheritDoc} */
@@ -287,7 +294,7 @@ AbstractEditDialog {
             DateTimeFormat.getFormat("dd.MM.yyyy");
 
         final ColumnConfig typeColumn = new ColumnConfig(
-            Property.TYPE.name(),
+            ResourceSummary.TYPE,
             getUiConstants().type(),
             40);
         typeColumn.setSortable(false);
@@ -297,7 +304,7 @@ AbstractEditDialog {
         configs.add(typeColumn);
 
         final ColumnConfig nameColumn = new ColumnConfig(
-            Property.NAME.name(),
+            ResourceSummary.NAME,
             getUiConstants().name(),
             180);
         nameColumn.setSortable(false);
@@ -305,7 +312,7 @@ AbstractEditDialog {
         configs.add(nameColumn);
 
         final ColumnConfig titleColumn = new ColumnConfig(
-            Property.TITLE.name(),
+            ResourceSummary.TITLE,
             getUiConstants().title(),
             180);
         titleColumn.setSortable(false);
@@ -313,7 +320,7 @@ AbstractEditDialog {
         configs.add(titleColumn);
 
         final ColumnConfig createdColumn = new ColumnConfig(
-            Property.DATE_CREATED.name(),
+            ResourceSummary.DATE_CREATED,
             getUiConstants().created(),
             75);
         createdColumn.setSortable(false);
@@ -322,7 +329,7 @@ AbstractEditDialog {
         configs.add(createdColumn);
 
         final ColumnConfig changedColumn = new ColumnConfig(
-            Property.DATE_CHANGED.name(),
+            ResourceSummary.DATE_CHANGED,
             getUiConstants().changed(),
             75);
         changedColumn.setSortable(false);

@@ -46,4 +46,15 @@ public class InvalidSnapshotException
         super("Invalid snapshot", cause);
     }
 
+
+    /**
+     * Constructor.
+     *
+     * @param detail The details of the exception.
+     * @param cause The cause of the exception.
+     */
+    public InvalidSnapshotException(final String detail,
+                                    final Throwable cause) {
+        super("Invalid snapshot:\n"+detail, cause);
+    }
 }

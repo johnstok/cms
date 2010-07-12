@@ -27,15 +27,15 @@
 package ccc.client.gwt.views.gxt;
 
 import ccc.api.core.ResourceSummary;
-import ccc.client.gwt.core.Globals;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.ImagePaths;
+import ccc.client.core.InternalServices;
+import ccc.client.core.RemoteException;
+import ccc.client.core.SessionTimeoutException;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.ImagePaths;
-import ccc.client.gwt.core.RemoteException;
-import ccc.client.gwt.core.SessionTimeoutException;
-import ccc.client.gwt.overlays.FailureOverlay;
-import ccc.client.gwt.validation.Validate;
-import ccc.client.gwt.validation.Validations;
 import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.json.FailureSerializer;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -74,7 +74,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
      * @param file The file to update.
      */
     public UpdateFileDialog(final ResourceSummary file) {
-        super(GlobalsImpl.uiConstants().updateFile(),
+        super(I18n.UI_CONSTANTS.updateFile(),
               new GlobalsImpl());
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
@@ -114,7 +114,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
 
                     if (
                         SessionTimeoutException.isTimedout(response)) {
-                        getGlobals().unexpectedError(
+                        InternalServices.EX_HANDLER.unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             getUiConstants().updateFile());
 
@@ -123,9 +123,11 @@ public class UpdateFileDialog extends AbstractEditDialog {
                             JSONParser.parse(response).isObject();
 
                         if (o.containsKey(JsonKeys.CODE)) { // Error
-                            getGlobals().unexpectedError(
+                            InternalServices.EX_HANDLER.unexpectedError(
                                 new RemoteException(
-                                    FailureOverlay.fromJson(response)),
+                                    new FailureSerializer().read(
+                                        InternalServices.PARSER.parseJson(
+                                            response))),
                                 getUiConstants().uploadFile());
                         } else {
                             hide();
@@ -145,8 +147,8 @@ public class UpdateFileDialog extends AbstractEditDialog {
                 if (!getPanel().isValid()) {
                     return;
                 }
-                Validate.callTo(submit())
-                .callMethodOr(Validations.reportErrors());
+
+                submit();
             }
         };
     }

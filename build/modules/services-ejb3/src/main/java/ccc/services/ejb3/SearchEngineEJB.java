@@ -52,6 +52,7 @@ import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.SearchResult;
+import ccc.api.types.SortOrder;
 import ccc.domain.FileEntity;
 import ccc.domain.PageEntity;
 import ccc.domain.ResourceEntity;
@@ -115,6 +116,18 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
+    @PermitAll
+    public SearchResult find(final String searchTerms,
+                             final String sort,
+                             final SortOrder order,
+                             final int resultCount,
+                             final int page) {
+        return createIndex().find(searchTerms, sort, order, resultCount, page);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
     @RolesAllowed({SEARCH_REINDEX})
     public void index() {
         final Indexer lucene = createIndexer();
@@ -146,9 +159,14 @@ public class SearchEngineEJB  implements SearchEngine {
     @RolesAllowed({SEARCH_SCHEDULE})
     public void start() {
         LOG.debug("Starting indexer.");
-        _context.getTimerService().createTimer(
-            INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
-        LOG.debug("Started indexer.");
+
+        if (isRunning()) {
+            LOG.debug("Indexer already running.");
+        } else {
+            _context.getTimerService().createTimer(
+                INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
+            LOG.debug("Started indexer.");
+        }
     }
 
 
@@ -297,5 +315,4 @@ public class SearchEngineEJB  implements SearchEngine {
         final String indexPathValue = indexPath.getValue();
         return indexPathValue;
     }
-
 }

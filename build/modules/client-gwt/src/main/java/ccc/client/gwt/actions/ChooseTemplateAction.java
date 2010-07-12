@@ -28,14 +28,15 @@ package ccc.client.gwt.actions;
 
 import java.util.Collection;
 
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.ResourceType;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Action;
+import ccc.client.core.Action;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.presenters.ChangeResourceTemplatePresenter;
 import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.ChooseTemplateDialog;
+import ccc.client.presenters.ChangeResourceTemplatePresenter;
 
 /**
  * Chooses template for the resource.
@@ -60,10 +61,10 @@ public final class ChooseTemplateAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
+        final ResourceSummary item = _selectionModel.tableSelection();
 
         if (item == null) {
-            GLOBALS.alert(UI_CONSTANTS.noFolderSelected());
+            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
             return;
         }
 
@@ -74,14 +75,14 @@ public final class ChooseTemplateAction
                 @Override protected void execute(
                                  final Collection<Template> templates) {
                     new ChangeResourceTemplatePresenter(
-                        GLOBALS,
                         new ChooseTemplateDialog(),
                         item,
                         templates);
                 }
             }.execute();
         } else {
-            GLOBALS.alert(UI_CONSTANTS.templateCannotBeChosen());
+            InternalServices.WINDOW.alert(
+                UI_CONSTANTS.templateCannotBeChosen());
 
         }
     }

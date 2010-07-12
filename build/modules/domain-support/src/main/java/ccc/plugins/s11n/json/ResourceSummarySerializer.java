@@ -26,13 +26,8 @@
  */
 package ccc.plugins.s11n.json;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
@@ -91,6 +86,7 @@ public class ResourceSummarySerializer implements Serializer<ResourceSummary> {
             (null==json.getString(JsonKeys.CHANGED_BY))
             ? null
                 : new Username(json.getString(JsonKeys.CHANGED_BY)));
+        s.setVisible(json.getBool(JsonKeys.VISIBLE).booleanValue());
 
         return s;
     }
@@ -145,6 +141,7 @@ public class ResourceSummarySerializer implements Serializer<ResourceSummary> {
             (null==instance.getChangedBy())
                 ? null
                 : instance.getChangedBy().toString());
+        json.set(JsonKeys.VISIBLE, instance.isVisible());
 
         return json;
     }

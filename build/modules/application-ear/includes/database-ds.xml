@@ -28,16 +28,16 @@
 -->
 
 <datasources>
-  <local-tx-datasource>
+  <xa-datasource>
   
     <jndi-name>${application.prefix}</jndi-name>
-    <connection-url>${ccc.db.connection.url}</connection-url>
-    <driver-class>${ccc.db.driver}</driver-class>
+    <xa-datasource-property name="URL">${ccc.db.connection.url}</xa-datasource-property>
+    <xa-datasource-class>${ccc.db.datasource}</xa-datasource-class>
     <user-name>${application.db-username}</user-name>
     <password>${application.db-password}</password>
     
     <max-pool-size>100</max-pool-size>
     <exception-sorter-class-name>${ccc.db.exc-sorter}</exception-sorter-class-name>
     
-  </local-tx-datasource>
+  </xa-datasource>
 </datasources>

@@ -32,14 +32,13 @@ import java.util.List;
 import java.util.Set;
 
 import ccc.api.core.Page;
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
+import ccc.client.core.I18n;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateWorkingCopyAction;
-import ccc.client.gwt.validation.Validate;
-import ccc.client.gwt.validation.Validations;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.PageElement;
 import ccc.client.gwt.widgets.ResourceTable;
@@ -67,7 +66,7 @@ public class UpdatePageDialog
 
     private Button _saveDraftButton;
     private Button _applyNowButton;
-    private final ResourceSummaryModelData _modelData;
+    private final ResourceSummary _modelData;
 
 
     /**
@@ -80,7 +79,7 @@ public class UpdatePageDialog
     public UpdatePageDialog(final Page page,
                             final Template template,
                             final ResourceTable rt) {
-        super(new GlobalsImpl().uiConstants().updateContent(),
+        super(I18n.UI_CONSTANTS.updateContent(),
               new GlobalsImpl());
         _rt = rt;
         _modelData = rt().tableSelection();
@@ -151,9 +150,7 @@ public class UpdatePageDialog
                 final Page p = Page.delta(getParagraphs());
                 p.setTemplate(_panel.template().getId());
 
-                Validate.callTo(updatePage())
-                    .check(Validations.validateFields(p))
-                    .callMethodOr(Validations.reportErrors());
+                updatePage();
             }
         };
     }
@@ -164,48 +161,38 @@ public class UpdatePageDialog
                 final Page p = Page.delta(getParagraphs());
                 p.setTemplate(_panel.template().getId());
 
-                Validate.callTo(saveDraft())
-                    .check(Validations.validateFields(p))
-                    .callMethodOr(Validations.reportErrors());
+                saveDraft();
             }
         };
     }
 
-    private Runnable updatePage() {
-        return new Runnable() {
-            public void run() {
-                final PageCommentDialog commentDialog =
-                    new PageCommentDialog(getParagraphs(),
-                                          UpdatePageDialog.this);
-                commentDialog.show();
-            }
-        };
+    private void updatePage() {
+        final PageCommentDialog commentDialog =
+            new PageCommentDialog(getParagraphs(),
+                                  UpdatePageDialog.this);
+        commentDialog.show();
     }
 
-    private Runnable saveDraft() {
-        return new Runnable() {
-            public void run() {
-                final Page update = new Page();
-                update.setId(getModelData().getId());
-                update.setParagraphs(getParagraphs());
-                update.addLink(
-                    Page.WORKING_COPY,
-                    _modelData.getDelegate().getLink(
-                        Page.WORKING_COPY));
+    private void saveDraft() {
+        final Page update = new Page();
+        update.setId(getModelData().getId());
+        update.setParagraphs(getParagraphs());
+        update.addLink(
+            Page.WORKING_COPY,
+            _modelData.getLink(
+                Page.WORKING_COPY));
 
-                new UpdateWorkingCopyAction(update) {
-                    /** {@inheritDoc} */
-                    @Override protected void onNoContent(
-                                                     final Response response) {
-                        final ResourceSummaryModelData md = getModelData();
-                        md.setWorkingCopy(true);
-                        rt().update(md);
-                        hide();
-                    }
-
-                }.execute();
+        new UpdateWorkingCopyAction(update) {
+            /** {@inheritDoc} */
+            @Override protected void onNoContent(
+                                             final Response response) {
+                final ResourceSummary md = getModelData();
+                md.setHasWorkingCopy(true);
+                rt().update(md);
+                hide();
             }
-        };
+
+        }.execute();
     }
 
     /**
@@ -232,7 +219,7 @@ public class UpdatePageDialog
      *
      * @return Returns The selected model data.
      */
-    protected ResourceSummaryModelData getModelData() {
+    protected ResourceSummary getModelData() {
         return _modelData;
     }
 

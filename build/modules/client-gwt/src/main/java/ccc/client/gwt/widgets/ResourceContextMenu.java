@@ -30,11 +30,15 @@ import static ccc.client.gwt.views.gxt.AbstractBaseDialog.*;
 import ccc.api.core.Group;
 import ccc.api.core.Page;
 import ccc.api.core.PagedCollection;
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.core.User;
 import ccc.api.types.Permission;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
+import ccc.client.core.Action;
+import ccc.client.core.Globals;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.actions.ChooseTemplateAction;
 import ccc.client.gwt.actions.OpenCreateActionAction;
 import ccc.client.gwt.actions.OpenCreateAliasAction;
@@ -42,9 +46,7 @@ import ccc.client.gwt.actions.OpenMoveAction;
 import ccc.client.gwt.actions.OpenRenameAction;
 import ccc.client.gwt.actions.OpenUpdateFolderAction;
 import ccc.client.gwt.actions.PreviewAction;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Action;
-import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.ApplyWorkingCopyAction;
 import ccc.client.gwt.remoting.ClearWorkingCopyAction;
 import ccc.client.gwt.remoting.ComputeTemplateAction;
@@ -85,6 +87,7 @@ public class ResourceContextMenu
         AbstractContextMenu {
 
     private final ResourceTable _table;
+    private final Globals _globals = new GlobalsImpl();
 
     // Actions
     private final Action _publishAction;
@@ -116,7 +119,7 @@ public class ResourceContextMenu
      * @param tbl The table this menu will work for.
      * @param user The UserSummary of the currently logged in user.
      */
-    ResourceContextMenu(final ResourceTable tbl, final User user) {
+    ResourceContextMenu(final ResourceTable tbl) {
         _table = tbl;
 
         _publishAction = new PublishAction(_table);
@@ -156,17 +159,16 @@ public class ResourceContextMenu
             Events.BeforeShow,
             new Listener<MenuEvent>(){
                 public void handleEvent(final MenuEvent be) {
-                    refreshMenuItems(user, be);
+                    refreshMenuItems(be);
                 }
             }
         );
     }
 
 
-    private void refreshMenuItems(final User user,
-                                  final MenuEvent be) {
+    private void refreshMenuItems(final MenuEvent be) {
         removeAll();
-        final ResourceSummaryModelData item = _table.tableSelection();
+        final ResourceSummary item = _table.tableSelection();
         if (item == null) { // don't display menu if no item is selected.
             be.setCancelled(false);
             return;
@@ -174,17 +176,18 @@ public class ResourceContextMenu
 
         addPreview();
         addViewHistory();
-        if (null==item.getLocked()
-            || "".equals(item.getLocked().toString())) {
+        if (null==item.getLockedBy()
+            || "".equals(item.getLockedBy().toString())) {
             addLockResource();
         } else {
-            if (item.getLocked().equals(user.getUsername())
-                 || user.hasPermission(Permission.RESOURCE_UNLOCK)) {
+            if (item.getLockedBy().equals(_globals.currentUser().getUsername())
+                 || _globals.currentUser().hasPermission(
+                     Permission.RESOURCE_UNLOCK)) {
                 addUnlockResource();
             }
-            if (item.getLocked().equals(user.getUsername())) {
-                if (item.getPublished() == null
-                        || "".equals(item.getPublished().toString())) {
+            if (item.getLockedBy().equals(_globals.currentUser().getUsername())) {
+                if (item.getPublishedBy() == null
+                        || "".equals(item.getPublishedBy().toString())) {
                     addPublishResource();
                 } else {
                     addUnpublishResource();
@@ -221,27 +224,23 @@ public class ResourceContextMenu
                 }
                 addMove();
                 addRename();
-                if (user.hasPermission(Permission.RESOURCE_ACL_UPDATE)) {
-                    addUpdateAclAction();
-                }
+                addUpdateAclAction();
                 addUpdateMetadata();
                 addCreateAlias();
                 addCreateAction();
-                if (user.hasPermission(Permission.RESOURCE_CACHE_UPDATE)) {
-                    addEditCache();
-                }
+                addEditCache();
 
-                if (item.isIncludedInMainMenu()) {
+                if (item.isIncludeInMainMenu()) {
                     addRemoveFromMainMenu();
                 } else {
                     addIncludeInMainMenu();
                 }
-                if (item.hasWorkingCopy()) {
+                if (item.isHasWorkingCopy()) {
                     add(new SeparatorMenuItem());
                     addPreviewWorkingCopy();
                     addDeleteWorkingCopy();
                     if (ResourceType.FILE==item.getType()) {
-                        addApplyWorkingCopy();
+                        addApplyFileWorkingCopy();
                     }
                 }
             }
@@ -249,8 +248,8 @@ public class ResourceContextMenu
     }
 
 
-    private void addApplyWorkingCopy() {
-        addMenuItem(
+    private void addApplyFileWorkingCopy() {
+        addMenuItem(Permission.FILE_UPDATE,
             "apply-working-copy",
             getConstants().applyWorkingCopy(),
             _applyWorkingCopyAction);
@@ -258,140 +257,140 @@ public class ResourceContextMenu
 
 
     private void addDeleteResource() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_DELETE,
             "delete-resource",
             getConstants().delete(),
             _deleteResourceAction);
     }
 
     private void addUpdateAclAction() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_ACL_UPDATE,
             "update-resource-roles",
             getConstants().updateRoles(),
             _updateAclAction);
     }
 
     private void addCreateAction() {
-        addMenuItem(
+        addMenuItem(Permission.ACTION_CREATE,
             "create-action",
             getConstants().createAction(),
             _createActionAction);
     }
 
     private void addEditFolder() {
-        addMenuItem(
+        addMenuItem(Permission.FOLDER_UPDATE,
             "edit-folder",
             getConstants().edit(),
             _editFolderAction);
     }
 
     private void addPublishResource() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_PUBLISH,
             "publish-resource",
             getConstants().publish(),
             _publishAction);
     }
 
     private void addIncludeInMainMenu() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_MM,
             "mmInclude-resource",
             getConstants().addToMainMenu(),
             _includeMainMenu);
     }
 
     private void addRemoveFromMainMenu() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_MM,
             "mmRemove-resource",
             getConstants().removeFromMainMenu(),
             _removeMainMenu);
     }
 
     private void addUnpublishResource() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_UNPUBLISH,
             "unpublish-resource",
             getConstants().unpublish(),
             _unpublishAction);
     }
 
     private void addChooseTemplate() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_UPDATE,
             "chooseTemplate-resource",
             getConstants().chooseTemplate(),
             _chooseTemplateAction);
     }
 
     private void addCreateAlias() {
-        addMenuItem(
+        addMenuItem(Permission.ALIAS_CREATE,
             "create-alias",
             getConstants().createAlias(),
             _createAliasAction);
     }
 
     private void addPreview() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_READ,
             "preview-resource",
             getConstants().preview(),
             _previewAction);
     }
 
     private void addLockResource() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_LOCK,
             "lock-resource",
             getConstants().lock(),
             _lockAction);
     }
 
     private void addUnlockResource() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_UNLOCK,
             "unlock-resource",
             getConstants().unlock(),
             _unlockAction);
     }
 
     private void addMove() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_MOVE,
             "move",
             getConstants().move(),
             _moveAction);
     }
 
     private void addRename() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_RENAME,
             "rename",
             getConstants().rename(),
             _renameAction);
     }
 
     private void addViewHistory() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_READ,
             "view-history",
             getConstants().viewHistory(),
             _viewHistory);
     }
 
     private void addUpdateMetadata() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_UPDATE,
             "update-metadata",
             getConstants().updateMetadata(),
             _updateMetadataAction);
     }
 
     private void addDeleteWorkingCopy() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_UPDATE,
             "delete-workingCopy",
             getConstants().deleteWorkingCopy(),
             _clearWorkingCopyAction);
     }
 
     private void addPreviewWorkingCopy() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_READ,
             "preview-workingCopy",
             getConstants().previewWorkingCopy(),
             _previewWorkingCopyAction);
     }
 
     private void addEditCache() {
-        addMenuItem(
+        addMenuItem(Permission.RESOURCE_CACHE_UPDATE,
             "edit-cache",
             getConstants().editCacheDuration(),
             _editCacheAction);
@@ -399,12 +398,11 @@ public class ResourceContextMenu
 
     private void addEditResource() {
         final MenuItem update = new MenuItem();
+        final ResourceSummary item = _table.tableSelection();
         update.setId("edit-resource");
         update.setText(getConstants().edit());
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                final ResourceSummaryModelData item = _table.tableSelection();
-
                 switch (item.getType()) {
                     case TEMPLATE:
                         updateTemplate(item);
@@ -419,17 +417,27 @@ public class ResourceContextMenu
                         updateFile(item);
                         break;
                     default:
-                        getGlobals().alert(
+                        InternalServices.WINDOW.alert(
                             getConstants().noEditorForResource());
                 }
             }
         });
-        add(update);
+        final User user = _globals.currentUser();
+        if ((user.hasPermission(Permission.TEMPLATE_UPDATE)
+                && item.getType() == ResourceType.TEMPLATE)
+                || (user.hasPermission(Permission.PAGE_UPDATE)
+                        && item.getType() == ResourceType.PAGE)
+                || (user.hasPermission(Permission.ALIAS_UPDATE)
+                        && item.getType() == ResourceType.ALIAS)
+                || (user.hasPermission(Permission.FILE_UPDATE)
+                        && item.getType() == ResourceType.FILE)) {
+            add(update);
+        }
     }
 
 
     private void addEditTextFile() {
-        addMenuItem(
+        addMenuItem(Permission.FILE_UPDATE,
             "editTextFile",
             getConstants().editInline(),
             _editTextFileAction);
@@ -437,31 +445,31 @@ public class ResourceContextMenu
 
 
 
-    private void updateFile(final ResourceSummaryModelData item) {
-        new UpdateFileDialog(item.getDelegate()).show();
+    private void updateFile(final ResourceSummary item) {
+        new UpdateFileDialog(item).show();
     }
 
     // TODO: Factor these methods to actions
-    private void updateAlias(final ResourceSummaryModelData item) {
+    private void updateAlias(final ResourceSummary item) {
         new OpenUpdateAliasAction(item, _table.root()).execute();
     }
 
-    private void updatePage(final ResourceSummaryModelData item) {
+    private void updatePage(final ResourceSummary item) {
         // Get the template for the page.
         new ComputeTemplateAction(
-            getConstants().updateContent(), item.getDelegate()) {
+            getConstants().updateContent(), item) {
 
             /** {@inheritDoc} */
             @Override
             protected void noTemplate() {
-                getGlobals().alert(getConstants().noTemplateFound());
+                InternalServices.WINDOW.alert(getConstants().noTemplateFound());
             }
 
             /** {@inheritDoc} */
             // Get a delta to edit.
             @Override protected void template(final Template ts) {
                 new PageDeltaAction(
-                    getConstants().updateContent(), item.getDelegate()){
+                    getConstants().updateContent(), item){
                     @Override
                     protected void execute(final Page delta) {
                         new UpdatePageDialog(
@@ -477,7 +485,7 @@ public class ResourceContextMenu
         }.execute();
     }
 
-    private void updateTemplate(final ResourceSummaryModelData item) {
+    private void updateTemplate(final ResourceSummary item) {
         new OpenUpdateTemplateAction(item, _table).execute();
     }
 }

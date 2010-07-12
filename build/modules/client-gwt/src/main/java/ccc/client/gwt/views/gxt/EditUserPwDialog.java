@@ -27,13 +27,14 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.gwt.validation.Validations.*;
+import static ccc.client.core.InternalServices.*;
 import ccc.api.core.User;
-import ccc.client.gwt.binding.UserSummaryModelData;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
+import ccc.client.core.Response;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateUserPasswordAction;
-import ccc.client.gwt.validation.Validate;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -51,16 +52,15 @@ public class EditUserPwDialog extends AbstractEditDialog {
     private final TextField<String> _password1 = new TextField<String>();
     private final TextField<String> _password2 = new TextField<String>();
 
-    private final UserSummaryModelData _userDTO;
+    private final User _userDTO;
 
     /**
      * Constructor.
      *
      * @param userDTO The userDTO of the selected user.
      */
-    public EditUserPwDialog(final UserSummaryModelData userDTO) {
-        super(new GlobalsImpl().uiConstants().editUserPw(),
-              new GlobalsImpl());
+    public EditUserPwDialog(final User userDTO) {
+        super(I18n.UI_CONSTANTS.editUserPw(), new GlobalsImpl());
 
         _userDTO = userDTO;
 
@@ -87,11 +87,19 @@ public class EditUserPwDialog extends AbstractEditDialog {
     @Override protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                Validate.callTo(updateUser())
-                    .check(passwordStrength(_password1.getValue()))
-                    .check(matchingPasswords(
-                        _password1.getValue(), _password2.getValue()))
-                    .callMethodOr(reportErrors());
+
+                final ValidationResult vr = new ValidationResult();
+                vr.addError(VALIDATOR.passwordStrength(_password1.getValue()));
+                vr.addError(
+                    VALIDATOR.matchingPasswords(
+                        _password1.getValue(), _password2.getValue()));
+
+                if (!vr.isValid()) {
+                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    return;
+                }
+
+                updateUser();
             }
         };
     }
@@ -102,21 +110,17 @@ public class EditUserPwDialog extends AbstractEditDialog {
      *
      * @return
      */
-    private Runnable updateUser() {
-        return new Runnable() {
-            public void run() {
-                final User update = new User();
-                update.setId(_userDTO.getId());
-                update.setPassword(_password1.getValue());
-                update.addLink(
-                    User.PASSWORD, _userDTO.getDelegate().uriPassword());
+    private void updateUser() {
+        final User update = new User();
+        update.setId(_userDTO.getId());
+        update.setPassword(_password1.getValue());
+        update.addLink(
+            User.PASSWORD, _userDTO.uriPassword());
 
-                new UpdateUserPasswordAction(update) {
-                    @Override protected void onNoContent(final Response r) {
-                        hide();
-                    }
-                }.execute();
+        new UpdateUserPasswordAction(update) {
+            @Override protected void onNoContent(final Response r) {
+                hide();
             }
-        };
+        }.execute();
     }
 }

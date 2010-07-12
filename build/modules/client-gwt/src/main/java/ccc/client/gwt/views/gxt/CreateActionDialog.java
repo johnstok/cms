@@ -30,12 +30,14 @@ import java.util.Date;
 import java.util.Map;
 
 import ccc.api.types.CommandType;
-import ccc.client.gwt.core.Editable;
+import ccc.client.core.Editable;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.ValidationResult;
-import ccc.client.gwt.i18n.UIConstants;
-import ccc.client.gwt.views.CreateAction;
 import ccc.client.gwt.widgets.CreateActionPanel;
+import ccc.client.i18n.UIConstants;
+import ccc.client.views.CreateAction;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -68,7 +70,7 @@ public class CreateActionDialog
      *
      */
     public CreateActionDialog() {
-        super(new GlobalsImpl().uiConstants().createAction(),
+        super(I18n.UI_CONSTANTS.createAction(),
               new GlobalsImpl());
 
 
@@ -97,8 +99,7 @@ public class CreateActionDialog
     private static class DateTimePicker extends LayoutContainer {
         private final DateField _date = new DateField();
         private final TimeField _time = new TimeField();
-        private static final UIConstants UICONSTANTS =
-            new GlobalsImpl().uiConstants();
+        private static final UIConstants UICONSTANTS = I18n.UI_CONSTANTS;
 
         DateTimePicker() {
             setLayout(new FormLayout());
@@ -143,7 +144,9 @@ public class CreateActionDialog
 
     /** {@inheritDoc} */
     @Override
-    public void alert(final String message) { getGlobals().alert(message); }
+    public void alert(final String message) {
+        InternalServices.WINDOW.alert(message);
+    }
 
     /** {@inheritDoc} */
     @Override

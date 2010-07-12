@@ -26,7 +26,9 @@
  */
 package ccc.services.ejb3;
 
+import static ccc.api.types.Permission.TEMPLATE_CREATE;
 import static ccc.api.types.Permission.*;
+import static ccc.api.types.Permission.TEMPLATE_UPDATE;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.UUID;
@@ -138,5 +140,18 @@ public final class TemplatesEJB
             getRepoFactory()
                 .createResourceRepository()
                 .find(TemplateEntity.class, templateId).forCurrentRevision();
+    }
+
+
+    @Override
+    @PermitAll
+    public Template retrieveRevision(final UUID templateId,
+                                     final int revision) {
+        checkPermission(TEMPLATE_READ);
+        return
+        getRepoFactory()
+            .createResourceRepository()
+            .find(TemplateEntity.class, templateId)
+                .forSpecificRevision(revision);
     }
 }

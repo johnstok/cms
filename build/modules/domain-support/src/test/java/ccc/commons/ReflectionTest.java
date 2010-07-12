@@ -29,16 +29,19 @@ package ccc.commons;
 import java.io.Serializable;
 
 import junit.framework.TestCase;
+import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.json.ActionSerializer;
 
 
 /**
- * TODO: Add a description for this type.
+ * Tests for the {@link Reflection} class.
  *
  * @author Civic Computing Ltd.
  */
 public class ReflectionTest
     extends
         TestCase {
+
 
     /**
      * Test.
@@ -55,6 +58,7 @@ public class ReflectionTest
         assertTrue(isClass);
     }
 
+
     /**
      * Test.
      */
@@ -68,5 +72,77 @@ public class ReflectionTest
 
         // ASSERT
         assertFalse(isClass);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testIsNotMissingClass() {
+
+        // ARRANGE
+        final Serializable s = new Serializable() { /* No Methods */ };
+
+        // ACT
+        final boolean isClass = Reflection.isClass("doesn't.Exist", s);
+
+        // ASSERT
+        assertFalse(isClass);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testCreateAndCast() {
+
+        // ARRANGE
+
+        // ACT
+        final Serializer<?> s =
+            Reflection.construct(
+                Serializer.class, "ccc.plugins.s11n.json.ActionSerializer");
+
+        // ASSERT
+        assertTrue(s instanceof ActionSerializer);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testCreateAndCast2() {
+
+        // ARRANGE
+
+        // ACT
+        final Serializer<?> s =
+            Reflection.construct(
+                Serializer.class,
+                "ccc.plugins.s11n.json.ActionSerializer",
+                new Object[] {});
+
+        // ASSERT
+        assertTrue(s instanceof ActionSerializer);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testCreateAndCast3() {
+
+        // ARRANGE
+
+        // ACT
+        final Serializer<?> s =
+            Reflection.construct(
+                Serializer.class,
+                "ccc.plugins.s11n.json.ActionSerializer",
+                new Class[] {},
+                new Object[] {});
+
+        // ASSERT
+        assertTrue(s instanceof ActionSerializer);
     }
 }

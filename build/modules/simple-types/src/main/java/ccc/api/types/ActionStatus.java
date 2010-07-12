@@ -41,23 +41,4 @@ public enum ActionStatus {
     FAILED,
     /** CANCELLED : ActionStatus. */
     CANCELLED;
-
-    /**
-     * Get the name of the name in 'camel case'.
-     *
-     * @return The camel case name as a string.
-     */
-    public String camelCaseName() {
-        final StringBuilder sb = new StringBuilder();
-        final char[] chars = name().toCharArray();
-        for (int i=0; i<chars.length; i++) {
-            if ('_'==chars[i]) {
-                i++;
-                sb.append(chars[i]);
-            } else {
-                sb.append(Character.toLowerCase(chars[i]));
-            }
-        }
-        return sb.toString();
-    }
 }

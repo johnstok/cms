@@ -40,10 +40,7 @@ import ccc.api.http.ProxyServiceLocator;
 public final class Scheduling extends CccApp {
     private static final Logger LOG = Logger.getLogger(Scheduling.class);
 
-    private static Options options;
     private static ServiceLocator services;
-
-    private Scheduling() { super(); }
 
 
     /**
@@ -54,29 +51,45 @@ public final class Scheduling extends CccApp {
     public static void main(final String[] args) {
         LOG.info("Starting.");
 
-        options  = parseOptions(args, Options.class);
+        final Scheduling s = parseOptions(args, Scheduling.class);
 
-        services = new ProxyServiceLocator(options.getBaseUrl());
+        try {
+            s.run();
+        } catch (final RuntimeException e) {
+            LOG.error("Error performing command.", e);
+            System.exit(1);
+        }
+    }
 
-        services.getSecurity().login(
-            options.getUsername(), options.getPassword());
+
+    /**
+     * Execute scheduling command.
+     *
+     */
+    public void run() {
+
+        services = new ProxyServiceLocator(getBaseUrl());
+
+        if (!services.getSecurity().login(getUsername(), getPassword())) {
+            throw new RuntimeException("Failed to authenticate.");
+        }
 
         final Actions s = services.getActions();
 
-        if ("start".equals(options.getAction())) {
+        if ("start".equals(getAction())) {
             s.start();
             LOG.info("Started.");
 
-        } else if ("stop".equals(options.getAction())) {
+        } else if ("stop".equals(getAction())) {
             s.stop();
             LOG.info("Stopped.");
 
-        } else if ("running".equals(options.getAction())) {
+        } else if ("running".equals(getAction())) {
             final boolean running = s.isRunning();
             LOG.info("Running: "+running+".");
 
         } else {
-            LOG.error("Invalid command.");
+            throw new RuntimeException("Invalid command: "+getAction());
         }
 
         services.getSecurity().logout();
@@ -84,66 +97,103 @@ public final class Scheduling extends CccApp {
         report("Finished in ");
     }
 
+
+    @Option(
+        name="-u", required=true, usage="Username for connecting to CCC.")
+    private String _username;
+
+    @Option(
+        name="-p", required=false, usage="Password for connecting to CCC.")
+    private String _password;
+
+    @Option(
+        name="-b", required=true, usage="Base URL for the application.")
+    private String _baseUrl;
+
+    @Option(
+        name="-c", required=true, usage="Action to perform.")
+    private String _action;
+
+
     /**
-     * Options for the action scheduler tool.
+     * Accessor.
      *
-     * @author Civic Computing Ltd.
+     * @return Returns the username.
      */
-    static class Options {
-        @Option(
-            name="-u", required=true, usage="Username for connecting to CCC.")
-        private String _username;
-
-        @Option(
-            name="-p", required=true, usage="Password for connecting to CCC.")
-        private String _password;
-
-        @Option(
-            name="-b", required=true, usage="Base URL for the application.")
-        private String _baseUrl;
-
-        @Option(
-            name="-c", required=true, usage="Action to perform.")
-        private String _action;
+    String getUsername() {
+        return _username;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the username.
-         */
-        String getUsername() {
-            return _username;
+    /**
+     * Accessor.
+     *
+     * @return Returns the password.
+     */
+    String getPassword() {
+        if (_password == null) {
+            return readConsolePassword("Password for connecting to CCC");
         }
+        return _password;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the password.
-         */
-        String getPassword() {
-            return _password;
-        }
+    /**
+     * Accessor.
+     *
+     * @return Returns the base URL for the app.
+     */
+    String getBaseUrl() {
+        return _baseUrl;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the base URL for the app.
-         */
-        String getBaseUrl() {
-            return _baseUrl;
-        }
+    /**
+     * Accessor.
+     *
+     * @return Returns the action.
+     */
+    String getAction() {
+        return _action;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the action.
-         */
-        String getAction() {
-            return _action;
-        }
+    /**
+     * Mutator.
+     *
+     * @param username The username to set.
+     */
+    public void setUsername(final String username) {
+        _username = username;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param password The password to set.
+     */
+    public void setPassword(final String password) {
+        _password = password;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param baseUrl The baseUrl to set.
+     */
+    public void setBaseUrl(final String baseUrl) {
+        _baseUrl = baseUrl;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param action The action to set.
+     */
+    public void setAction(final String action) {
+        _action = action;
     }
 }

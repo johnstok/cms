@@ -21,12 +21,12 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>impl-http</artifactId>
+            <artifactId>client-shell</artifactId>
             <version>${project.version}</version>
         </dependency>
        	<dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>client-gwt</artifactId>
+            <artifactId>client-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         

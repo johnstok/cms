@@ -36,7 +36,7 @@ import java.util.Set;
 import ccc.api.core.Group;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
-import ccc.commons.NormalisingEncoder;
+import ccc.api.types.NormalisingEncoder;
 
 
 /**

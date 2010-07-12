@@ -26,10 +26,11 @@
  */
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.core.Globals;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.i18n.ActionNameConstants;
-import ccc.client.gwt.i18n.UIConstants;
+import ccc.client.i18n.ActionNameConstants;
+import ccc.client.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 
@@ -45,11 +46,10 @@ public abstract class TablePanel extends ContentPanel {
     protected static final Globals GLOBALS = new GlobalsImpl();
 
     /** USER_ACTIONS : ActionNameConstants. */
-    protected static final ActionNameConstants USER_ACTIONS =
-        GlobalsImpl.userActions();
+    protected static final ActionNameConstants USER_ACTIONS = I18n.USER_ACTIONS;
 
     /** UI_CONSTANTS : UIConstants. */
-    protected static final UIConstants UI_CONSTANTS = GlobalsImpl.uiConstants();
+    protected static final UIConstants UI_CONSTANTS = I18n.UI_CONSTANTS;
 
     /** PAGING_ROW_COUNT : int. */
     protected static final int PAGING_ROW_COUNT = 20;

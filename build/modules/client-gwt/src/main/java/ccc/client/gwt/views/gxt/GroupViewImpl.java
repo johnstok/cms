@@ -26,18 +26,20 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import ccc.api.types.Permission;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.ValidationResult;
-import ccc.client.gwt.core.Validations2;
-import ccc.client.gwt.presenters.GroupPresenter.GroupView;
+import ccc.client.core.Editable;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
+import ccc.client.core.ValidationResult;
+import ccc.client.presenters.GroupPresenter.GroupView;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -72,9 +74,9 @@ public class GroupViewImpl
      * @param globals The globals implementation.
      */
     public GroupViewImpl(final Globals globals) {
-        super(GlobalsImpl.uiConstants().createGroup(), globals);
+        super(I18n.UI_CONSTANTS.createGroup(), globals);
 
-        _name.setFieldLabel(GlobalsImpl.uiConstants().name());
+        _name.setFieldLabel(I18n.UI_CONSTANTS.name());
         _name.setAllowBlank(false);
         addField(_name);
 
@@ -85,7 +87,7 @@ public class GroupViewImpl
             _permGroup.add(cb);
         }
         _permGroup.setOrientation(Orientation.VERTICAL);
-        _permGroup.setFieldLabel(GlobalsImpl.uiConstants().permissions());
+        _permGroup.setFieldLabel(I18n.UI_CONSTANTS.permissions());
 
         addField(_permGroup);
     }
@@ -159,14 +161,18 @@ public class GroupViewImpl
     @Override
     public ValidationResult getValidationResult() {
         final ValidationResult result = new ValidationResult();
-        if (!Validations2.notEmpty(_name.getValue())) {
-            result.addError(constants().nameMustNotBeEmpty());
-        }
+
+        result.addError(
+            VALIDATOR.notEmpty(
+                _name.getValue(), _name.getFieldLabel()));
+
         return result;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void alert(final String message) { getGlobals().alert(message); }
+    public void alert(final String message) {
+        InternalServices.WINDOW.alert(message);
+    }
 }

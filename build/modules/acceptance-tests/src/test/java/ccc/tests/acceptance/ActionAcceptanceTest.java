@@ -50,6 +50,7 @@ public class ActionAcceptanceTest
     private static final int ONE_DAY = 24*60*60*1000;
     private static final int ONE_SECOND = 1000;
 
+
     /**
      * Test.
      */
@@ -74,6 +75,7 @@ public class ActionAcceptanceTest
         assertEquals(rs.getAbsolutePath(), actual.getSubjectPath());
     }
 
+
     /**
      * Test.
      */
@@ -95,6 +97,7 @@ public class ActionAcceptanceTest
         final ActionSummary cancelled = getActions().retrieve(a.getId());
         assertEquals(ActionStatus.CANCELLED, cancelled.getStatus());
     }
+
 
     /**
      * Test.
@@ -119,6 +122,7 @@ public class ActionAcceptanceTest
         assertEquals(ActionStatus.COMPLETE, completed.getStatus());
     }
 
+
     /**
      * Test.
      */
@@ -140,6 +144,7 @@ public class ActionAcceptanceTest
         final ActionSummary failed = getActions().retrieve(a.getId());
         assertEquals(ActionStatus.FAILED, failed.getStatus());
     }
+
 
     /**
      * Test.
@@ -165,6 +170,7 @@ public class ActionAcceptanceTest
         assertEquals(ActionStatus.COMPLETE, completed.getStatus());
     }
 
+
     /**
      * Test.
      */
@@ -185,6 +191,25 @@ public class ActionAcceptanceTest
         assertFalse(startedAtFirst);
         assertTrue(startedAfterStart);
         assertFalse(startedAfterStop);
+    }
 
+
+    /**
+     * Test.
+     */
+    public void testStartSchedulerIsIdempotent() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            getActions().start();
+            getActions().start();
+            getActions().start();
+        } finally {
+            getActions().stop();
+        }
+
+        // ASSERT
     }
 }

@@ -29,11 +29,11 @@ package ccc.client.gwt.actions;
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.SortOrder;
-import ccc.client.gwt.core.Action;
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.presenters.CreateUserPresenter;
+import ccc.client.core.Action;
+import ccc.client.core.Globals;
 import ccc.client.gwt.remoting.ListGroups;
 import ccc.client.gwt.views.gxt.CreateUserDialog;
+import ccc.client.presenters.CreateUserPresenter;
 
 
 /**
@@ -51,7 +51,7 @@ public final class OpenCreateUserAction
             @Override
             protected void execute(final PagedCollection<Group> groups) {
                 new CreateUserPresenter(
-                    new CreateUserDialog(groups.getElements()), GLOBALS);
+                    new CreateUserDialog(groups.getElements()));
             }}.execute();
         }
 }

@@ -40,11 +40,13 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.ACL;
+import ccc.api.core.Alias;
 import ccc.api.core.File;
 import ccc.api.core.Folder;
 import ccc.api.core.Page;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
+import ccc.api.core.Template;
 import ccc.api.core.ACL.Entry;
 import ccc.api.exceptions.InsufficientPrivilegesException;
 import ccc.api.exceptions.LockMismatchException;
@@ -53,12 +55,12 @@ import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.api.types.Duration;
 import ccc.api.types.Link;
+import ccc.api.types.NormalisingEncoder;
 import ccc.api.types.Permission;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.commons.CharConversion;
-import ccc.commons.NormalisingEncoder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.ACLSerializer;
@@ -87,9 +89,9 @@ public abstract class ResourceEntity
     private FolderEntity         _parent            = null;
     private Integer        _parentIndex       = null;
     private UserEntity           _lockedBy          = null;
-    private Set<String>    _tags              = new HashSet<String>();
-    private Set<AccessPermission> _groupAcl   = new HashSet<AccessPermission>();
-    private Set<AccessPermission> _userAcl    = new HashSet<AccessPermission>();
+    private final Set<String>    _tags              = new HashSet<String>();
+    private final Set<AccessPermission> _groupAcl   = new HashSet<AccessPermission>();
+    private final Set<AccessPermission> _userAcl    = new HashSet<AccessPermission>();
     private UserEntity           _publishedBy       = null;
     private boolean        _includeInMainMenu = false;
     private Date           _dateCreated       = new Date();
@@ -99,7 +101,7 @@ public abstract class ResourceEntity
     private boolean        _deleted           = false;
     private UserEntity           _changedBy         = null;
     private UserEntity           _createdBy         = null;
-    private Map<String, String> _metadata = new HashMap<String, String>();
+    private final Map<String, String> _metadata = new HashMap<String, String>();
 
 
     /** Constructor: for persistence only. */
@@ -974,6 +976,7 @@ public abstract class ResourceEntity
                 (getChangedBy() != null)
                     ? getChangedBy().getUsername() : null
             );
+        rs.setVisible(isVisible());
 
         rs.addLink(
             Resource.REVISIONS,
@@ -1043,6 +1046,10 @@ public abstract class ResourceEntity
                     Resource.SELF,
                     new Link(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
+                rs.addLink(
+                    Alias.TARGET_NAME,
+                    new Link(ccc.api.core.ResourceIdentifiers.Alias.TARGET_NAME)
+                    .build("id", getId().toString(), new NormalisingEncoder()));
                 break;
 
             case PAGE:
@@ -1064,7 +1071,8 @@ public abstract class ResourceEntity
                 rs.addLink(
                     Folder.IMAGES,
                     new Link(ccc.api.core.ResourceIdentifiers.File.IMAGES)
-                    .build("id", getId().toString(), new NormalisingEncoder()));
+                    .build("id", getId().toString(), new NormalisingEncoder())
+                    + "?{-join|&|count,page}");
                 rs.addLink(
                     Folder.EXISTS,
                     new Link(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
@@ -1089,6 +1097,11 @@ public abstract class ResourceEntity
                     Resource.SELF,
                     new Link(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
+                rs.addLink(
+                    Template.REVISION,
+                    new Link(ccc.api.core.ResourceIdentifiers.Template.REVISION)
+                    .build("id", getId().toString(), new NormalisingEncoder())
+                    + "{revision}");
                 break;
 
             default:

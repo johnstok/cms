@@ -33,7 +33,8 @@ import java.util.List;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.types.Permission;
-import ccc.client.gwt.core.Globals;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -74,19 +75,19 @@ public class ResourceNavigator extends ContentPanel {
 
         setLayout(new AccordionLayout());
         setBodyBorder(false);
-        setHeading(GlobalsImpl.uiConstants().navigator());
+        setHeading(I18n.UI_CONSTANTS.navigator());
 
         for (final ResourceSummary root : roots) {
             final EnhancedResourceTree enhancedResourceTree =
-                new EnhancedResourceTree(root, _view, user, _globals);
+                new EnhancedResourceTree(root, _view, _globals);
             _rootTrees.add(enhancedResourceTree);
             final ContentPanel contentPanel = new ContentPanel();
             contentPanel.getHeader().setId(root.getName()+"-navigator");
             contentPanel.setAnimCollapse(false);
             contentPanel.setScrollMode(Scroll.AUTO);
-            contentPanel.setHeading(GlobalsImpl.uiConstants().content());
+            contentPanel.setHeading(I18n.UI_CONSTANTS.content());
 
-            contentPanel.add(enhancedResourceTree.treePanel());
+            contentPanel.add(enhancedResourceTree.asComponent());
             add(contentPanel);
             contentPanel.addListener(
                 Events.Expand,
@@ -102,20 +103,20 @@ public class ResourceNavigator extends ContentPanel {
         if (user.hasPermission(Permission.USER_READ)) {
             final ContentPanel usersPanel = new ContentPanel();
             setPanel(usersPanel, "user-navigator",
-                GlobalsImpl.uiConstants().users(), _usersTree);
+                I18n.UI_CONSTANTS.users(), _usersTree);
         }
 
         _actionTree = new ActionTree(_view);
         final ContentPanel actionPanel = new ContentPanel();
         setPanel(actionPanel, "action-navigator",
-            GlobalsImpl.uiConstants().actions(), _actionTree);
+            I18n.UI_CONSTANTS.actions(), _actionTree);
 
         _commentTree = new CommentTree(_view);
         final ContentPanel commentsPanel = new ContentPanel();
         setPanel(commentsPanel, "comment-navigator",
-            GlobalsImpl.uiConstants().comments(), _commentTree);
+            I18n.UI_CONSTANTS.comments(), _commentTree);
 
-        _rootTrees.get(0).showTable();
+        if (_rootTrees.size()>0) { _rootTrees.get(0).showTable(); }
     }
 
     private void setPanel(final ContentPanel panel,

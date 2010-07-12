@@ -26,8 +26,8 @@
  */
 package ccc.client.gwt.actions;
 
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Action;
+import ccc.api.core.ResourceSummary;
+import ccc.client.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.EditFolderDialog;
 
@@ -53,7 +53,7 @@ public class OpenUpdateFolderAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ResourceSummaryModelData selectedModel =
+        final ResourceSummary selectedModel =
             _selectionModel.tableSelection();
         new EditFolderDialog(
             _selectionModel,

@@ -26,10 +26,9 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import ccc.api.types.FailureCode;
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.RemoteException;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.RemoteException;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -46,8 +45,8 @@ import com.google.gwt.user.client.ui.HTML;
  * @author Civic Computing Ltd.
  */
 public class ErrorDialog extends AbstractEditDialog {
-    private static final int DIALOG_WIDTH  = 375;
-    private static final int DIALOG_HEIGHT = 300;
+    private static final int DIALOG_WIDTH  = 450;
+    private static final int DIALOG_HEIGHT = 375;
     private static final int DIALOG_MIN_HEIGHT = 100;
     private static final int PANEL_HEIGHT = 140;
 
@@ -60,29 +59,24 @@ public class ErrorDialog extends AbstractEditDialog {
                         final String error,
                         final String resolution,
                         final Globals globals) {
-        super(GlobalsImpl.uiConstants().error(), globals);
-        setPanelId("error-panel");
+        super(I18n.UI_CONSTANTS.error(), globals);
 
         getPanel().add(_message);
         _message.setHTML(
-            globals
-                .errorDescriptions()
+            I18n.ERROR_DESCRIPTIONS
                 .couldNotComplete("<b>", "</b><br><br>"));
 
         _action.setFieldLabel(constants().action());
-        _action.setId("error-action");
         _action.setReadOnly(true);
         _action.setValue(action);
         addField(_action);
 
         _error.setFieldLabel(constants().details());
-        _error.setId("error-details");
         _error.setReadOnly(true);
         _error.setValue(error);
         addField(_error);
 
         _resolution.setFieldLabel(constants().resolution());
-        _resolution.setId("error-resolution");
         _resolution.setReadOnly(true);
         _resolution.setValue(resolution);
         addField(_resolution);
@@ -117,7 +111,7 @@ public class ErrorDialog extends AbstractEditDialog {
         this(
             action,
             e.getMessage(),
-            globals.errorResolutions().contactSysAdmin(),
+            I18n.ERROR_RESOLUTIONS.contactSysAdmin(),
             globals);
     }
 
@@ -133,51 +127,49 @@ public class ErrorDialog extends AbstractEditDialog {
                        final Globals globals) {
         this(
             action,
-            lookupError(e.getCode(), globals),
-            lookupResolution(e.getCode(), globals),
+            lookupError(e),
+            lookupResolution(e),
             globals);
     }
 
 
-    private static String lookupResolution(final FailureCode code,
-                                           final Globals globals) {
-        switch (code) {
-            case UNLOCKED:
-                return globals.errorResolutions().unlocked();
-            case EXISTS:
-                return globals.errorResolutions().exists();
-            case LOCK_MISMATCH:
-                return globals.errorResolutions().lockMismatch();
-            case UNEXPECTED:
-                return globals.errorResolutions().contactSysAdmin();
-            case CYCLE:
-                return globals.errorResolutions().cycle();
-            case INVALID:
-                return globals.errorResolutions().invalidCommand();
-            default:
-                return globals.errorResolutions().contactSysAdmin();
+    private static String lookupResolution(final RemoteException e) {
+
+        final String code = e.getCode();
+
+        if ("ccc.api.exceptions.UnlockedException".equals(code)) {
+            return I18n.ERROR_RESOLUTIONS.unlocked();
+        } else if ("ccc.api.exceptions.ResourceExistsException".equals(code)) {
+            return I18n.ERROR_RESOLUTIONS.exists();
+        } else if ("ccc.api.exceptions.LockMismatchException".equals(code)) {
+            return I18n.ERROR_RESOLUTIONS.lockMismatch();
+        } else if ("ccc.api.exceptions.CycleDetectedException".equals(code)) {
+            return I18n.ERROR_RESOLUTIONS.cycle();
+        } else if ("ccc.api.exceptions.InvalidException".equals(code)) {
+            return I18n.ERROR_RESOLUTIONS.invalidCommand();
         }
+
+        return I18n.ERROR_RESOLUTIONS.contactSysAdmin();
     }
 
 
-    private static String lookupError(final FailureCode code,
-                                      final Globals globals) {
-        switch (code) {
-            case UNLOCKED:
-                return globals.errorDescriptions().unlocked();
-            case EXISTS:
-                return globals.errorDescriptions().exists();
-            case LOCK_MISMATCH:
-                return globals.errorDescriptions().lockMismatch();
-            case UNEXPECTED:
-                return globals.errorDescriptions().unknown();
-            case CYCLE:
-                return globals.errorDescriptions().cycle();
-            case INVALID:
-                return globals.errorDescriptions().invalidCommand();
-            default:
-                return globals.errorDescriptions().unknown();
+    private static String lookupError(final RemoteException e) {
+
+        final String code = e.getCode();
+
+        if ("ccc.api.exceptions.UnlockedException".equals(code)) {
+            return I18n.ERROR_DESCRIPTIONS.unlocked();
+        } else if ("ccc.api.exceptions.ResourceExistsException".equals(code)) {
+            return I18n.ERROR_DESCRIPTIONS.exists();
+        } else if ("ccc.api.exceptions.LockMismatchException".equals(code)) {
+            return I18n.ERROR_DESCRIPTIONS.lockMismatch();
+        } else if ("ccc.api.exceptions.CycleDetectedException".equals(code)) {
+            return I18n.ERROR_DESCRIPTIONS.cycle();
+        } else if ("ccc.api.exceptions.InvalidException".equals(code)) {
+            return I18n.ERROR_DESCRIPTIONS.invalidCommand();
         }
+
+        return I18n.ERROR_DESCRIPTIONS.unknown()+"\n\n"+e.getMessage();
     }
 
 

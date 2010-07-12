@@ -34,7 +34,7 @@ import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
-import ccc.api.core.Action;
+import ccc.api.core.ActionSummary;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
 import ccc.domain.ActionEntity;
@@ -167,21 +167,15 @@ class ActionRepositoryImpl
     }
 
     private String mapSortColumn(final String sort) {
-        try {
-            final Action.Property p = Action.Property.valueOf(sort);
-            switch (p) {
-                case USERNAME:
-                    return "_actor";
-                case LOCALISED_TYPE:
-                    return "_type";
-                case LOCALISED_STATUS:
-                    return "_status";
-                case FAILURE_CODE:
-                    return "_code";
-                default:
-                    return "_executeAfter";
-            }
-        } catch (final IllegalArgumentException e) {
+        if (ActionSummary.USERNAME.equals(sort)) {
+            return "_actor";
+        } else if (ActionSummary.TYPE.equals(sort)) {
+            return "_type";
+        } else if (ActionSummary.STATUS.equals(sort)) {
+            return "_status";
+        } else if (ActionSummary.FAILURE_CODE.equals(sort)) {
+            return "_code";
+        } else {
             return "_executeAfter";
         }
     }

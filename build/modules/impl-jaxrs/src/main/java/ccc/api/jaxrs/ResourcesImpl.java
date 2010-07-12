@@ -255,9 +255,9 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void publish(final UUID resourceId) {
+    public ResourceSummary publish(final UUID resourceId) {
         try {
-            _delegate.publish(resourceId);
+            return _delegate.publish(resourceId);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }

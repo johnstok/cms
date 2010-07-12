@@ -26,11 +26,12 @@
  */
 package ccc.client.gwt.actions;
 
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Action;
+import ccc.api.core.ResourceSummary;
+import ccc.client.core.Action;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.presenters.CreateFolderPresenter;
 import ccc.client.gwt.views.gxt.CreateFolderDialog;
+import ccc.client.presenters.CreateFolderPresenter;
 
 /**
  * Create a folder.
@@ -54,12 +55,11 @@ public final class OpenCreateFolderAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.treeSelection();
+        final ResourceSummary item = _selectionModel.treeSelection();
         if (item == null) {
-            GLOBALS.alert(UI_CONSTANTS.noFolderSelected());
+            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
         } else {
             new CreateFolderPresenter(
-                GLOBALS,
                 new CreateFolderDialog(),
                 item);
         }

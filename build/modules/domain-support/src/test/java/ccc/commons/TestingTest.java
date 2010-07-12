@@ -53,4 +53,82 @@ public class TestingTest
         assertEquals(length, actual.length());
         assertTrue("String contains invalid characters.", actual.matches("a*"));
     }
+
+
+    /**
+     * Test.
+     */
+    public void testDummyAnInterface() {
+
+        // ARRANGE
+
+        // ACT
+        final Object o = Testing.dummy(Runnable.class);
+
+        // ASSERT
+        assertTrue(o instanceof Runnable);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testCallingDummyMethodsCausesException() {
+
+        // ARRANGE
+        final Runnable r = Testing.dummy(Runnable.class);
+
+        // ACT
+        try {
+            r.run();
+            fail();
+
+        // ASSERT
+        } catch (final UnsupportedOperationException e) {
+
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testStubAnInterface() {
+
+        // ARRANGE
+
+        // ACT
+        final Object o = Testing.stub(Runnable.class);
+
+        // ASSERT
+        assertTrue(o instanceof Runnable);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testCallingStubMethodsReturnVoid() {
+
+        // ARRANGE
+        final Runnable r = Testing.stub(Runnable.class);
+
+        // ACT
+        r.run();
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testPrivateConstrutor() {
+
+        // ARRANGE
+
+        // ACT
+        Testing.construct(Testing.class);
+
+        // ASSERT
+
+    }
 }

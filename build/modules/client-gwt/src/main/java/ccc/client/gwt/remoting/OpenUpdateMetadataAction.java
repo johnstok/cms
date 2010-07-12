@@ -30,9 +30,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.ResourceMetadataDialog;
 
@@ -63,8 +63,8 @@ public final class OpenUpdateMetadataAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        ResourceSummary delegate =
-            _selectionModel.tableSelection().getDelegate();
+        final ResourceSummary delegate =
+            _selectionModel.tableSelection();
         return delegate.uriMetadata().build(new GWTTemplateEncoder());
     }
 

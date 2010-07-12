@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 
@@ -424,6 +425,26 @@ public final class File
      */
     public void setContent(final String content) {
         _content = content;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The width of the image resource.
+     */
+    public String getWidth() {
+        return getProperties().get(FilePropertyNames.WIDTH);
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The height of the image resource.
+     */
+    public String getHeight() {
+        return getProperties().get(FilePropertyNames.HEIGHT);
     }
 
 

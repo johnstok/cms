@@ -35,6 +35,11 @@ import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
 
+import ccc.acceptance.client.BundleWrapper;
+import ccc.acceptance.client.HttpClientRequestExecutor;
+import ccc.acceptance.client.ServerTextParser;
+import ccc.acceptance.client.WindowStub;
+import ccc.api.core.API;
 import ccc.api.core.Actions;
 import ccc.api.core.Alias;
 import ccc.api.core.Aliases;
@@ -48,6 +53,7 @@ import ccc.api.core.Page;
 import ccc.api.core.Pages;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
+import ccc.api.core.SearchEngine;
 import ccc.api.core.Security;
 import ccc.api.core.Template;
 import ccc.api.core.Templates;
@@ -56,8 +62,19 @@ import ccc.api.core.Users;
 import ccc.api.http.ProxyServiceLocator;
 import ccc.api.http.SiteBrowser;
 import ccc.api.types.MimeType;
+import ccc.api.types.NormalisingEncoder;
 import ccc.api.types.ResourceName;
 import ccc.api.types.Username;
+import ccc.client.core.CoreEvents;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
+import ccc.client.core.RequestExecutor;
+import ccc.client.events.Event;
+import ccc.client.events.EventHandler;
+import ccc.client.i18n.ActionNameConstants;
+import ccc.client.i18n.UIConstants;
+import ccc.client.i18n.UIMessages;
+import ccc.commons.Testing;
 
 
 /**
@@ -68,6 +85,8 @@ import ccc.api.types.Username;
 public abstract class AbstractAcceptanceTest
     extends
         TestCase {
+
+    private static final WindowStub WINDOW;
     private static final int PAGE_SIZE = 20;
     private static final Logger LOG =
         Logger.getLogger(AbstractAcceptanceTest.class);
@@ -75,6 +94,45 @@ public abstract class AbstractAcceptanceTest
     private ProxyServiceLocator _sl;
 
     private final String _hostUrl       = "http://localhost:8080/cc7";
+
+    static {
+        final API api = new API();
+        api.addLink(API.ALIASES, "/secure/aliases");
+        InternalServices.API = api;
+
+        I18n.USER_ACTIONS =
+            BundleWrapper.wrap(
+                ActionNameConstants.class,
+                "ccc.client.gwt.i18n.GWTActionNameConstants");
+        Testing.stub(ActionNameConstants.class);
+        I18n.UI_CONSTANTS =
+            BundleWrapper.wrap(
+                UIConstants.class,
+                "ccc.client.gwt.i18n.GWTUIConstants");
+        I18n.UI_MESSAGES =
+            BundleWrapper.wrap(
+                UIMessages.class,
+                "ccc.client.gwt.i18n.GWTUIMessages");
+        WINDOW = new WindowStub();
+        InternalServices.WINDOW = WINDOW;
+        InternalServices.ENCODER = new NormalisingEncoder();
+        InternalServices.PARSER = new ServerTextParser();
+
+        InternalServices.CORE_BUS.registerHandler(
+            new EventHandler<CoreEvents>() {
+                @Override
+                public void handle(final Event<CoreEvents> event) {
+                    switch (event.getType()) {
+                        case ERROR:
+                            throw new RuntimeException(
+                                "Test failed.",
+                                event.<Throwable>getProperty("exception"));
+                        default:
+                            break;
+                    }
+                }
+            });
+    }
 
 
     /**
@@ -190,10 +248,43 @@ public abstract class AbstractAcceptanceTest
     /**
      * Accessor.
      *
+     * @return Returns the search engine.
+     */
+    protected SearchEngine getSearch() {
+        return _sl.getSearch();
+    }
+
+
+    /**
+     * Accessor.
+     *
      * @return Returns a site browser.
      */
     protected SiteBrowser getBrowser() {
         return _sl.getBrowser();
+    }
+
+
+    /**
+     * Creates a HTTP executor.
+     *
+     * @return The executor.
+     */
+    protected final RequestExecutor createExecutor() {
+        return
+            new HttpClientRequestExecutor(
+                _sl.getHttpClient(),
+                _hostUrl+"/ccc/");
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The client window for testing.
+     */
+    protected final WindowStub getWindow() {
+        return WINDOW;
     }
 
 
@@ -278,7 +369,9 @@ public abstract class AbstractAcceptanceTest
         final String email = username+"@abc.def";
         final String name = "testuser";
         final List<Group> groups =
-            getGroups().query("CONTENT_CREATOR", 1, PAGE_SIZE).getElements();
+            getGroups().query("CONTENT_CREATOR",
+                1,
+                PAGE_SIZE).getElements();
         final Group contentCreator = groups.iterator().next();
 
         // Create the user
@@ -305,10 +398,21 @@ public abstract class AbstractAcceptanceTest
     }
 
 
+    /**
+     * Create a short unique ID.
+     *
+     * @return The UID as a string.
+     */
+    protected String uid() {
+        return UUID.randomUUID().toString().substring(0, 8);
+    }
+
+
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
         _sl   = new ProxyServiceLocator(_hostUrl);
+        InternalServices.EXECUTOR = createExecutor();
         getSecurity().login("migration", "migration");
     }
 
@@ -322,5 +426,6 @@ public abstract class AbstractAcceptanceTest
             LOG.warn("Logout failed.", e);
         }
         _sl = null;
+        InternalServices.EXECUTOR = null;
     }
 }

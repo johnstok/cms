@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.actions;
 
-import ccc.client.gwt.core.Action;
+import ccc.client.core.Action;
 import ccc.client.gwt.views.gxt.UpdateCurrentUserDialog;
 
 

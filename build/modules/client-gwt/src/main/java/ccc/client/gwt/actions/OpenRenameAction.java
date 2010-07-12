@@ -26,11 +26,11 @@
  */
 package ccc.client.gwt.actions;
 
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Action;
+import ccc.api.core.ResourceSummary;
+import ccc.client.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.presenters.RenameResourcePresenter;
 import ccc.client.gwt.views.gxt.RenameDialog;
+import ccc.client.presenters.RenameResourcePresenter;
 
 /**
  * Rename a resource.
@@ -54,7 +54,7 @@ public final class OpenRenameAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        new RenameResourcePresenter(GLOBALS, new RenameDialog(), item);
+        final ResourceSummary item = _selectionModel.tableSelection();
+        new RenameResourcePresenter(new RenameDialog(), item);
     }
 }

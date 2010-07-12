@@ -26,14 +26,15 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import ccc.client.gwt.core.Editable;
+import static ccc.client.core.InternalServices.VALIDATOR;
+import ccc.client.core.Editable;
+import ccc.client.core.I18n;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.ValidationResult;
-import ccc.client.gwt.core.Validations2;
-import ccc.client.gwt.views.CreateTextFile;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;
 import ccc.client.gwt.widgets.CodeMirrorEditor.Type;
+import ccc.client.views.CreateTextFile;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -64,7 +65,7 @@ public class CreateTextFileDialog
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
 
-    private CodeMirrorEditor _cme;
+    private final CodeMirrorEditor _cme;
 
     private Editable _presenter;
     private static final int DIALOG_HEIGHT = 650;
@@ -77,7 +78,7 @@ public class CreateTextFileDialog
      */
     public CreateTextFileDialog() {
 
-        super(new GlobalsImpl().uiConstants().createTextFile(),
+        super(I18n.UI_CONSTANTS.createTextFile(),
             new GlobalsImpl());
 
         setHeight(DIALOG_HEIGHT);
@@ -111,7 +112,8 @@ public class CreateTextFileDialog
         _cme = new CodeMirrorEditor(
             "textEditEditorID",
             this,
-            CodeMirrorEditor.Type.TEXT);
+            CodeMirrorEditor.Type.TEXT,
+            false);
         addField(_cme.parserSelector(getUiConstants()));
         addField(_cme);
 
@@ -165,25 +167,22 @@ public class CreateTextFileDialog
     public ValidationResult getValidationResult() {
         final ValidationResult result = new ValidationResult();
 
-        if (!Validations2.notEmpty(_fileName.getValue())) {
-            result.addError(
-                _fileName.getFieldLabel()+getUiConstants().cannotBeEmpty());
-        } else if (!Validations2.notValidResourceName(_fileName.getValue())) {
-            result.addError(getUiConstants().resourceNameIsInvalid());
-        }
-        if (!Validations2.notEmpty(_mimePrimaryType.getValue())) {
-            result.addError(
-                _mimePrimaryType.getFieldLabel()
-                +getUiConstants().cannotBeEmpty());
-        }
-        if (!Validations2.notEmpty(_mimeSubType.getValue())) {
-            result.addError(
-                _mimeSubType.getFieldLabel()+getUiConstants().cannotBeEmpty());
-        }
-        if (!Validations2.notEmpty(_cme.getEditorCode())) {
-            result.addError(
-                getUiConstants().content()+getUiConstants().cannotBeEmpty());
-        }
+        result.addError(
+            VALIDATOR.notEmpty(
+                _fileName.getValue(), _fileName.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notValidResourceName(
+                _fileName.getValue(), _fileName.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                _mimePrimaryType.getValue(), _mimePrimaryType.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                _mimeSubType.getValue(), _mimeSubType.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                _cme.getEditorCode(), getUiConstants().content()));
+
         return result;
     }
 

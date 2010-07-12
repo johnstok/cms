@@ -102,11 +102,13 @@ public class BooleanProvider
 
     /** {@inheritDoc} */
     @Override
-    public boolean isWriteable(final Class<?> arg0,
+    public boolean isWriteable(final Class<?> clazz,
                                final Type arg1,
                                final Annotation[] arg2,
                                final MediaType arg3) {
-        return Boolean.class.equals(arg0);
+        return
+            Boolean.TYPE.equals(clazz)
+            || Boolean.class.equals(clazz);
     }
 
     /** {@inheritDoc} */

@@ -26,11 +26,12 @@
  */
 package ccc.client.gwt.actions;
 
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Action;
+import ccc.api.core.ResourceSummary;
+import ccc.client.core.Action;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.presenters.CreateAliasPresenter;
 import ccc.client.gwt.views.gxt.CreateAliasDialog;
+import ccc.client.presenters.CreateAliasPresenter;
 
 /**
  * Create an alias.
@@ -54,12 +55,11 @@ public final class OpenCreateAliasAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
+        final ResourceSummary item = _selectionModel.tableSelection();
         if (item == null) {
-            GLOBALS.alert(UI_CONSTANTS.noResourceSelected());
+            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
         } else {
             new CreateAliasPresenter(
-                GLOBALS,
                 new CreateAliasDialog(),
                 item);
         }

@@ -31,14 +31,17 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.activation.MimeTypeParseException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -55,6 +58,7 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.File;
+import ccc.api.exceptions.CCException;
 import ccc.api.types.DBC;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
@@ -110,16 +114,25 @@ public class FileReader
                              final MultivaluedMap<String, String> arg4,
                              final InputStream arg5) throws IOException {
 
-        final MultipartFormData form =
-            new PluginFactory().createFormData(
-                arg3.getParameters().get("charset"),
-                Integer.parseInt(arg4.getFirst("Content-Length")),
-                arg3.toString(),
-                arg5);
+        try {
+            final MultipartFormData form =
+                new PluginFactory().createFormData(
+                    arg3.getParameters().get("charset"),
+                    Integer.parseInt(arg4.getFirst("Content-Length")),
+                    arg3.toString(),
+                    arg5);
 
-        final File f = parse(form);
+            final File f = parse(form);
+            return f;
 
-        return f;
+        } catch (final RuntimeException e) {
+            throw new WebApplicationException(
+                e,
+                new RestExceptionMapper().toResponse(
+                    new CCException(e.getMessage(), e),
+                    MimeType.HTML));
+        }
+
     }
 
 
@@ -170,8 +183,7 @@ public class FileReader
             titleString,
             props
         );
-        f.setComment(
-            (comment == null || comment.isEmpty()) ? "" : comment);
+        f.setComment(comment);
         f.setMajorEdit(isMajorEdit);
         f.setPublished(p);
         f.setParent(parentId);
@@ -255,43 +267,25 @@ public class FileReader
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream entityStream) throws IOException {
         try {
+            final List<Part> parts = new ArrayList<Part>();
 
-            final String name        = t.getName().toString();
-            final String title       = t.getTitle();
-            final String description = t.getDescription();
-            final Date lastUpdate    = t.getDateChanged();
-            final UUID parentId      = t.getParent();
-            final boolean publish    = t.isPublished();
-            final String contentType = t.getMimeType().toString();
-            final String charset     = t.getCharset();
-            final String comment     = t.getComment();
-            final String majorEdit   =
-                Boolean.valueOf(t.isMajorEdit()).toString();
+            addPart(parts, TITLE,       t.getTitle());
+            addPart(parts, DESCRIPTION, t.getDescription());
+            addPart(parts, COMMENT,     t.getComment());
+            addPart(parts, FILE_NAME,   t.getName().toString());
+            addPart(parts, PATH,        t.getParent().toString());
+            addPart(parts, MAJOR_EDIT,  t.isMajorEdit());
+            addPart(parts, PUBLISH,     t.isPublished());
+            addPart(parts, LAST_UPDATE, t.getDateChanged());
 
-            final PartSource ps = new SimplePart(t);
-
-            final FilePart fp = new FilePart(FILE, ps);
-            fp.setContentType(contentType);
-            fp.setCharSet(charset);
-            final Part[] parts = {
-                new StringPart(FILE_NAME, name),
-                new StringPart(TITLE, title),
-                new StringPart(DESCRIPTION, description),
-                new StringPart(COMMENT, comment),
-                new StringPart(MAJOR_EDIT, majorEdit),
-                new StringPart(
-                    LAST_UPDATE,
-                    String.valueOf(
-                        (null==lastUpdate)
-                            ? new Date().getTime()
-                            : lastUpdate.getTime())),
-                new StringPart(PATH, parentId.toString()),
-                new StringPart(PUBLISH, String.valueOf(publish)),
-                fp
-            };
+            final FilePart fp = new FilePart(FILE, new SimplePart(t));
+            fp.setContentType(t.getMimeType().toString());
+            fp.setCharSet(t.getCharset());
+            parts.add(fp);
 
             final RequestEntity entity =
-                new MultipartRequestEntity(parts, new HttpMethodParams());
+                new MultipartRequestEntity(
+                    parts.toArray(new Part[] {}), new HttpMethodParams());
 
             httpHeaders.add("Content-Type", entity.getContentType());
             entity.writeRequest(entityStream);
@@ -303,6 +297,29 @@ public class FileReader
                 LOG.warn("Error closing output stream.", e);
             }
         }
+    }
+
+
+    private void addPart(final List<Part> parts,
+                         final String partName,
+                         final Date value) {
+        if (null!=value) {
+            addPart(parts, partName, String.valueOf(value.getTime()));
+        }
+    }
+
+
+    private void addPart(final List<Part> parts,
+                         final String partName,
+                         final boolean value) {
+        addPart(parts, partName, String.valueOf(value));
+    }
+
+
+    private void addPart(final List<Part> parts,
+                         final String partName,
+                         final String value) {
+        if (null!=value) { parts.add(new StringPart(partName, value)); }
     }
 
 

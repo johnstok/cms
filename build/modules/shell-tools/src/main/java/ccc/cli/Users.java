@@ -43,10 +43,6 @@ import org.kohsuke.args4j.Option;
 public final class Users extends CccApp {
     private static final Logger LOG = Logger.getLogger(Users.class);
 
-    private static Options options;
-
-    private Users() { super(); }
-
 
     /**
      * App entry point.
@@ -54,8 +50,8 @@ public final class Users extends CccApp {
      * @param args Command line arguments.
      */
     public static void main(final String[] args) {
-        options  = parseOptions(args, Options.class);
-        create();
+        Users u  = parseOptions(args, Users.class);
+        u.create();
     }
 
     /**
@@ -63,121 +59,120 @@ public final class Users extends CccApp {
      *
      * @return The UUID of the new user.
      */
-    static UUID create() {
+    public UUID create() {
         final DatabaseVendor vendor =
-            DatabaseVendor.forConnectionString(options.getConString());
+            DatabaseVendor.forConnectionString(getConString());
         final Connection newConnection =
             getConnection(
                 vendor.driverClassName(),
-                options.getConString(),
-                options.getUsername(),
-                options.getPassword());
+                getConString(),
+                getUsername(),
+                getPassword());
         try {
             final NewDBQueries queries = new NewDBQueries(newConnection);
             final UUID userId =
                 queries.insertMigrationUser(
-                    options.getNewUsername(),
-                    options.getNewEmail(),
-                    options.getNewPassword());
-            LOG.info("Created user: "+options.getNewUsername());
+                    getNewUsername(),
+                    getNewEmail(),
+                    getNewPassword());
+            LOG.info("Created user: "+getNewUsername());
             return userId;
         } finally {
             DbUtils.closeQuietly(newConnection);
         }
     }
 
-    /**
-     * Options for the search scheduler tool.
-     *
-     * @author Civic Computing Ltd.
-     */
-    static class Options {
-        @Option(
-            name="-u",
-            required=true,
-            usage="Username for connecting to CCC DB.")
+    @Option(
+        name="-u",
+        required=true,
+        usage="Username for connecting to CCC DB.")
         private String _username;
 
-        @Option(
-            name="-p",
-            required=true,
-            usage="Password for connecting to CCC DB.")
+    @Option(
+        name="-p",
+        required=false,
+        usage="Password for connecting to CCC DB.")
         private String _password;
 
-        @Option(
-            name="-c", required=true, usage="Connection string for the DB.")
+    @Option(
+        name="-c", required=true, usage="Connection string for the DB.")
         private String _conString;
 
-        @Option(
-            name="-nu", required=true, usage="Username of the user to create.")
+    @Option(
+        name="-nu", required=true, usage="Username of the user to create.")
         private String _newUsername;
 
-        @Option(
-            name="-np", required=true, usage="Password of the user to create.")
+    @Option(
+        name="-np", required=false, usage="Password of the user to create.")
         private String _newPassword;
 
-        @Option(
-            name="-ne", required=true, usage="Email of the user to create.")
+    @Option(
+        name="-ne", required=true, usage="Email of the user to create.")
         private String _newEmail;
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the username.
-         */
-        String getUsername() {
-            return _username;
+    /**
+     * Accessor.
+     *
+     * @return Returns the username.
+     */
+    String getUsername() {
+        return _username;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the password.
+     */
+    String getPassword() {
+        if (_password == null) {
+            return readConsolePassword("Password for connecting to CCC DB");
         }
+        return _password;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the password.
-         */
-        String getPassword() {
-            return _password;
+    /**
+     * Accessor.
+     *
+     * @return Returns the conString.
+     */
+    String getConString() {
+        return _conString;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the newUsername.
+     */
+    String getNewUsername() {
+        return _newUsername;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the newPassword.
+     */
+    String getNewPassword() {
+        if (_newPassword == null) {
+            return readConsolePassword("Password of the user to create");
         }
+        return _newPassword;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the conString.
-         */
-        String getConString() {
-            return _conString;
-        }
-
-
-        /**
-         * Accessor.
-         *
-         * @return Returns the newUsername.
-         */
-        String getNewUsername() {
-            return _newUsername;
-        }
-
-
-        /**
-         * Accessor.
-         *
-         * @return Returns the newPassword.
-         */
-        String getNewPassword() {
-            return _newPassword;
-        }
-
-
-        /**
-         * Accessor.
-         *
-         * @return Returns the newEmail.
-         */
-        String getNewEmail() {
-            return _newEmail;
-        }
+    /**
+     * Accessor.
+     *
+     * @return Returns the newEmail.
+     */
+    String getNewEmail() {
+        return _newEmail;
     }
 }

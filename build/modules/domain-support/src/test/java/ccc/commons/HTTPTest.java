@@ -27,6 +27,7 @@
 package ccc.commons;
 
 import junit.framework.TestCase;
+import ccc.api.types.MimeType;
 
 
 /**
@@ -50,5 +51,104 @@ public class HTTPTest
 
         // ASSERT
 
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testEncodeURL() {
+
+        // ARRANGE
+
+        // ACT
+        final String encoded = HTTP.encode("/foo&bar?baz:", "utf-8");
+
+        // ASSERT
+        assertEquals("%2Ffoo%26bar%3Fbaz%3A", encoded);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testDecodeURL() {
+
+        // ARRANGE
+
+        // ACT
+        final String decoded = HTTP.decode("%2Ffoo%26bar%3Fbaz%3A", "utf-8");
+
+        // ASSERT
+        assertEquals("/foo&bar?baz:", decoded);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testDetermineMimeType() {
+
+        // ARRANGE
+
+        // ACT
+
+        // ASSERT
+        assertEquals(MimeType.HTML, HTTP.determineMimetype("foo.html"));
+        assertEquals(MimeType.JPEG, HTTP.determineMimetype("foo.jpg"));
+        assertEquals(MimeType.TEXT, HTTP.determineMimetype("foo.txt"));
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testDetermineMimeTypeHandlesEmptyName() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            HTTP.determineMimetype("");
+            fail();
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string must have length > 0.", e.getMessage());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testDetermineMimeTypeHandlesNullName() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            HTTP.determineMimetype(null);
+            fail();
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testDetermineMimeTypeHandlesAmbiguousName() {
+
+        // ARRANGE
+
+        // ACT
+
+        // ASSERT
+        assertEquals(MimeType.BINARY_DATA, HTTP.determineMimetype("foo"));
     }
 }

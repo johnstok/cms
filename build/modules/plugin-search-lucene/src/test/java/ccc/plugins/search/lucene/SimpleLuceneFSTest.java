@@ -30,6 +30,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
@@ -39,6 +40,7 @@ import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.SearchResult;
+import ccc.api.types.SortOrder;
 import ccc.plugins.search.TextExtractor;
 
 
@@ -169,6 +171,189 @@ public class SimpleLuceneFSTest
     /**
      * Test.
      */
+    public void testIndexAndSortedFind() {
+
+        // ARRANGE
+        final UUID capM = UUID.randomUUID();
+        final UUID a = UUID.randomUUID();
+        final UUID m = UUID.randomUUID();
+        final UUID z = UUID.randomUUID();
+        final SimpleLuceneFS searchEngine =
+            new SimpleLuceneFS(
+                new File("target/lucene/IndexAndSortedFind").getAbsolutePath());
+
+        // ACT
+        searchEngine.startUpdate();
+        searchEngine.createDocument(
+            m,
+            new ResourcePath("/m"),
+            new ResourceName("m"),
+            "m",
+            new HashSet<String>(),
+            "foo,foo,foo",
+            new HashSet<Paragraph>());
+        searchEngine.createDocument(
+            z,
+            new ResourcePath("/z"),
+            new ResourceName("z"),
+            "z",
+            new HashSet<String>(),
+            "foo,foo",
+            new HashSet<Paragraph>());
+        searchEngine.createDocument(
+            capM,
+            new ResourcePath("/M"),
+            new ResourceName("M"),
+            "M",
+            new HashSet<String>(),
+            "foo",
+            new HashSet<Paragraph>());
+        searchEngine.createDocument(
+            a,
+            new ResourcePath("/a"),
+            new ResourceName("a"),
+            "a",
+            new HashSet<String>(),
+            "foo",
+            new HashSet<Paragraph>());
+        searchEngine.commitUpdate();
+        final SearchResult result =
+            searchEngine.find("foo", "_title", SortOrder.ASC, 5, 0);
+
+        // ASSERT
+        assertEquals(4, result.totalResults());
+        assertEquals(4, result.hits().size());
+        final Iterator<UUID> i = result.hits().iterator();
+        assertEquals(capM, i.next());
+        assertEquals(a, i.next());
+        assertEquals(m, i.next()); // More relevant than capM.
+        assertEquals(z, i.next());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testIndexAndSortedDateFind() {
+
+        // ARRANGE
+        final UUID a = UUID.randomUUID();
+        final UUID m = UUID.randomUUID();
+        final UUID z = UUID.randomUUID();
+        final SimpleLuceneFS searchEngine =
+            new SimpleLuceneFS(
+                new File("target/lucene/IndexAndSortedDateFind")
+                .getAbsolutePath());
+
+        // ACT
+        searchEngine.startUpdate();
+        searchEngine.createDocument(
+            m,
+            new ResourcePath("/a"),
+            new ResourceName("a"),
+            "a",
+            new HashSet<String>(),
+            "foo,foo,foo",
+            Collections.singleton(Paragraph.fromDate("bar", new Date())));
+        searchEngine.createDocument(
+            z,
+            new ResourcePath("/a"),
+            new ResourceName("a"),
+            "a",
+            new HashSet<String>(),
+            "foo,foo",
+            Collections.singleton(Paragraph.fromDate("bar", new Date(Long.MAX_VALUE))));
+        searchEngine.createDocument(
+            a,
+            new ResourcePath("/a"),
+            new ResourceName("a"),
+            "a",
+            new HashSet<String>(),
+            "foo",
+            Collections.singleton(Paragraph.fromDate("bar", new Date(Long.MIN_VALUE))));
+        searchEngine.commitUpdate();
+        final SearchResult result =
+            searchEngine.find("foo", "_bar", SortOrder.ASC, 5, 0);
+
+        final SearchResult reversedResult =
+            searchEngine.find("foo", "_bar", SortOrder.DESC, 5, 0);
+
+        // ASSERT
+        assertEquals(3, result.totalResults());
+        assertEquals(result.hits().size(), 3);
+        final Iterator<UUID> i = result.hits().iterator();
+        assertEquals(a, i.next());
+        assertEquals(m, i.next());
+        assertEquals(z, i.next());
+
+        assertEquals(3, reversedResult.totalResults());
+        assertEquals(reversedResult.hits().size(), 3);
+        final Iterator<UUID> u = reversedResult.hits().iterator();
+        assertEquals(z, u.next());
+        assertEquals(m, u.next());
+        assertEquals(a, u.next());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testIndexAndSortedBooleanFind() {
+
+        // ARRANGE
+        final UUID a = UUID.randomUUID();
+        final UUID m = UUID.randomUUID();
+        final UUID z = UUID.randomUUID();
+        final SimpleLuceneFS searchEngine =
+            new SimpleLuceneFS(
+                new File("target/lucene/IndexAndSortedBooleanFind")
+                .getAbsolutePath());
+
+        // ACT
+        searchEngine.startUpdate();
+        searchEngine.createDocument(
+            m,
+            new ResourcePath("/a"),
+            new ResourceName("a"),
+            "a",
+            new HashSet<String>(),
+            "foo,foo,foo",
+            Collections.singleton(Paragraph.fromBoolean("bar", true)));
+        searchEngine.createDocument(
+            z,
+            new ResourcePath("/a"),
+            new ResourceName("a"),
+            "a",
+            new HashSet<String>(),
+            "foo,foo",
+            Collections.singleton(Paragraph.fromBoolean("bar", false)));
+        searchEngine.createDocument(
+            a,
+            new ResourcePath("/a"),
+            new ResourceName("a"),
+            "a",
+            new HashSet<String>(),
+            "foo",
+            Collections.singleton(Paragraph.fromBoolean("bar", true)));
+        searchEngine.commitUpdate();
+        final SearchResult result =
+            searchEngine.find("foo", "_bar", SortOrder.ASC, 5, 0);
+
+        // ASSERT
+        assertEquals(3, result.totalResults());
+        assertEquals(result.hits().size(), 3);
+        final Iterator<UUID> i = result.hits().iterator();
+        assertEquals(z, i.next());
+        assertEquals(m, i.next());
+        assertEquals(a, i.next());
+
+        // Note: 'false' sorts before 'true' lexicographically.
+    }
+
+
+    /**
+     * Test.
+     */
     public void testCreatePlainTextExtractor() {
 
         // ARRANGE
@@ -284,6 +469,7 @@ public class SimpleLuceneFSTest
 //        assertEquals(id2, result.hits().iterator().next());
 //    }
 
+
     /**
      * Test.
      */
@@ -355,21 +541,21 @@ public class SimpleLuceneFSTest
         assertEquals(result.hits().size(), 1);
         assertEquals(id, result.hits().iterator().next());
 
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append("date:[");
         sb.append(date.getTime());
         sb.append(" TO ");
         sb.append(date.getTime());
         sb.append("]");
-        
+
         result = searchEngine.find(sb.toString(), 5, 0);
         assertEquals(1, result.totalResults());
         assertEquals(result.hits().size(), 1);
         assertEquals(id, result.hits().iterator().next());
 
-//        result = searchEngine.find("num:[0 TO 2]", 5, 0);
-//        assertEquals(1, result.totalResults());
-//        assertEquals(result.hits().size(), 1);
-//        assertEquals(id, result.hits().iterator().next());
+        result = searchEngine.find("num:[1.0 TO 1.0]", 5, 0);
+        assertEquals(1, result.totalResults());
+        assertEquals(result.hits().size(), 1);
+        assertEquals(id, result.hits().iterator().next());
     }
 }

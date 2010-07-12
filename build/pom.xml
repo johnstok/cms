@@ -15,12 +15,12 @@
         <lib.version.easymock>2.4</lib.version.easymock>
         <lib.version.log4j>1.2.14</lib.version.log4j>
         <lib.version.oracle>10.2.0.4.0</lib.version.oracle>
-        <lib.version.mysql>5.1.6</lib.version.mysql>
+        <lib.version.mysql>5.1.13</lib.version.mysql>
         <lib.version.sqlserver>2.0</lib.version.sqlserver>
         <lib.version.args4j>2.0.12</lib.version.args4j>
         <lib.version.dbutils>1.1</lib.version.dbutils>
         <lib.version.lucene>3.0.1</lib.version.lucene>
-        <lib.version.pdfbox>0.7.3</lib.version.pdfbox>
+        <lib.version.pdfbox>1.1.0</lib.version.pdfbox>
         <lib.version.poi>3.0.1-FINAL</lib.version.poi>
         <lib.version.tmextractors>1.0</lib.version.tmextractors>
         <lib.version.gxt>2.1.3</lib.version.gxt>
@@ -30,7 +30,7 @@
         <lib.version.jboss>5.1.0.GA</lib.version.jboss>
         <lib.version.jboss-legacy>4.2.2.GA</lib.version.jboss-legacy>
         <lib.version.slf4j>1.5.8</lib.version.slf4j>
-        <lib.version.h2>1.1.118</lib.version.h2>
+        <lib.version.h2>1.2.138</lib.version.h2>
         <lib.version.selenium>1.0.1</lib.version.selenium>
         <lib.version.json>20080701</lib.version.json>
         <lib.version.javamail>1.4</lib.version.javamail>
@@ -101,6 +101,7 @@
         <module>modules/public-api</module>
         <module>modules/domain-support</module>
         <module>modules/client-gwt</module>
+        <module>modules/client-core</module>
         <module>modules/client-jaxrs</module>
         <module>modules/client-migration</module>
         <module>modules/services-ejb3</module>

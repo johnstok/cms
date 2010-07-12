@@ -28,9 +28,9 @@
 package ccc.client.gwt.widgets;
 
 import ccc.api.types.CommentStatus;
-import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.ImagePaths;
-import ccc.client.gwt.i18n.UIConstants;
+import ccc.client.core.I18n;
+import ccc.client.core.ImagePaths;
+import ccc.client.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -47,8 +47,8 @@ public class CommentTree extends Tree {
     /** USER_TREE_HEIGHT : int. */
     private static final int USER_TREE_HEIGHT = 300;
 
-    private final CommentTable _commentTable = new CommentTable();
-    private final UIConstants _constants = new GlobalsImpl().uiConstants();
+    private final CommentTable _commentTable;
+    private final UIConstants _constants = I18n.UI_CONSTANTS;
     private final LeftRightPane _view;
 
     /**
@@ -58,6 +58,7 @@ public class CommentTree extends Tree {
      */
     CommentTree(final LeftRightPane view) {
         _view = view;
+        _commentTable = new CommentTable();
 
         _tree.setDisplayProperty("name");
         _tree.setHeight(USER_TREE_HEIGHT);

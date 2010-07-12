@@ -26,20 +26,21 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Globals;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.ImagePaths;
+import ccc.client.core.InternalServices;
+import ccc.client.core.RemoteException;
+import ccc.client.core.SessionTimeoutException;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.ImagePaths;
-import ccc.client.gwt.core.RemoteException;
-import ccc.client.gwt.core.SessionTimeoutException;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.overlays.FailureOverlay;
-import ccc.client.gwt.validation.Validate;
-import ccc.client.gwt.validation.Validations;
 import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.json.FailureSerializer;
 import ccc.plugins.s11n.json.ResourceSummarySerializer;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -66,7 +67,7 @@ import com.google.gwt.user.client.ui.Image;
 public class UploadFileDialog extends AbstractEditDialog {
 
     private final TextField<String>   _fileName = new TextField<String>();
-    private final ResourceSummaryModelData _parent;
+    private final ResourceSummary _parent;
     private final HiddenField<String> _path = new HiddenField<String>();
     private final FileUploadField           _file = new FileUploadField();
 
@@ -82,9 +83,9 @@ public class UploadFileDialog extends AbstractEditDialog {
      * @param parentFolder The folder in which this file should be saved.
      * @param ssm The selection model.
      */
-    public UploadFileDialog(final ResourceSummaryModelData parentFolder,
+    public UploadFileDialog(final ResourceSummary parentFolder,
                             final SingleSelectionModel ssm) {
-        super(new GlobalsImpl().uiConstants().uploadFileTo()
+        super(I18n.UI_CONSTANTS.uploadFileTo()
             +": "+parentFolder.getName(), new GlobalsImpl());
 
         _parent = parentFolder;
@@ -134,7 +135,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                     // TODO: Handle 404 with notfound.jsp
 
                     if (SessionTimeoutException.isTimedout(response)) {
-                        getGlobals().unexpectedError(
+                        InternalServices.EX_HANDLER.unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             getUiConstants().uploadFile());
 
@@ -143,9 +144,11 @@ public class UploadFileDialog extends AbstractEditDialog {
                             JSONParser.parse(be.getResultHtml()).isObject();
 
                         if (o.containsKey(JsonKeys.CODE)) { // Error
-                            getGlobals().unexpectedError(
+                            InternalServices.EX_HANDLER.unexpectedError(
                                 new RemoteException(
-                                    FailureOverlay.fromJson(response)),
+                                    new FailureSerializer().read(
+                                        InternalServices.PARSER.parseJson(
+                                            response))),
                                 getUiConstants().uploadFile());
                         } else {
                             hide();
@@ -154,7 +157,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                             final ResourceSummary rs =
                                 new ResourceSummarySerializer()
                                     .read(new GwtJson(json));
-                            ssm.create(new ResourceSummaryModelData(rs));
+                            ssm.create(rs);
                         }
                     }
                 }
@@ -171,23 +174,28 @@ public class UploadFileDialog extends AbstractEditDialog {
                 if (!getPanel().isValid()) {
                     return;
                 }
-                Validate.callTo(submit())
-                .check(Validations.notEmpty(_fileName))
-                .check(Validations.notValidResourceName(_fileName))
-                .stopIfInError()
-                    .check(Validations.uniqueResourceName(_parent, _fileName))
-                .callMethodOr(Validations.reportErrors());
+
+                final ValidationResult vr = new ValidationResult();
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _fileName.getValue(), _fileName.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.notValidResourceName(
+                        _fileName.getValue(), _fileName.getFieldLabel()));
+
+                if (!vr.isValid()) {
+                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    return;
+                }
+
+                submit();
             }
         };
     }
 
 
-    private Runnable submit() {
-        return new Runnable() {
-            public void run() {
-                _image.setVisible(true);
-                getPanel().submit();
-            }
-        };
+    private void submit() {
+        _image.setVisible(true);
+        getPanel().submit();
     }
 }

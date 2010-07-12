@@ -27,9 +27,9 @@
 
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.ImagePaths;
-import ccc.client.gwt.i18n.UIConstants;
+import ccc.client.core.I18n;
+import ccc.client.core.ImagePaths;
+import ccc.client.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -54,8 +54,8 @@ public class ActionTree extends Tree {
         TODO read from a properties file */
     private static final int ACTION_TREE_HEIGHT = 300;
 
-    private final ActionTable _actionTable = new ActionTable();
-    private final UIConstants _uiConstants = new GlobalsImpl().uiConstants();
+    private final ActionTable _actionTable;
+    private final UIConstants _uiConstants = I18n.UI_CONSTANTS;
     private final LeftRightPane _view;
 
     /**
@@ -65,7 +65,7 @@ public class ActionTree extends Tree {
      */
     public ActionTree(final LeftRightPane view) {
         _view = view;
-
+        _actionTable = new ActionTable();
         _tree.setDisplayProperty("name");
         _tree.setHeight(ACTION_TREE_HEIGHT);
         _tree.setIconProvider(new ModelIconProviderImplementation());

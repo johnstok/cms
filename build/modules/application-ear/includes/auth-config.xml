@@ -39,6 +39,8 @@
                     AND g.id  = p.group_id  
                     AND u.user_id=?
                 </module-option>
+                <module-option name="ldapProviderUrl">${application.ldap.provider_url}</module-option>
+                <module-option name="baseDn">${application.ldap.base_dn}</module-option>
             </login-module>
         </authentication>
     </application-policy>

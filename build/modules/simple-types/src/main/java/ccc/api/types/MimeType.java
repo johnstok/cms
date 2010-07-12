@@ -152,4 +152,7 @@ public class MimeType implements Serializable {
     /** TEXT : MimeType. */
     public static final MimeType TEXT =
         new MimeType("text", "plain");
+    /** JSON : MimeType. */
+    public static final MimeType JSON =
+        new MimeType("application", "json");
 }

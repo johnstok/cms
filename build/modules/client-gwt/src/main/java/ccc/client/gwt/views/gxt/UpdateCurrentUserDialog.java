@@ -27,12 +27,14 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.gwt.validation.Validations.*;
+import static ccc.client.core.InternalServices.*;
 import ccc.api.core.User;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
+import ccc.client.core.Response;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateCurrentUserAction;
-import ccc.client.gwt.validation.Validate;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -59,7 +61,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
      *
      */
     public UpdateCurrentUserDialog() {
-        super(GlobalsImpl.uiConstants().editUser(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.editUser(), new GlobalsImpl());
         _user = new GlobalsImpl().currentUser();
 
         _username.setFieldLabel(constants().username());
@@ -97,25 +99,33 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
     @Override protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                if (_password1.getValue() != null
-                    && _password2.getValue() != null) {
-                    Validate.callTo(updateUser())
-                    .check(notEmpty(_email))
-                    .check(notEmpty(_name))
-                    .stopIfInError()
-                    .check(notValidEmail(_email))
-                    .check(passwordStrength(_password1.getValue()))
-                    .check(matchingPasswords(
-                        _password1.getValue(), _password2.getValue()))
-                        .callMethodOr(reportErrors());
-                } else {
-                    Validate.callTo(updateUser())
-                    .check(notEmpty(_email))
-                    .check(notEmpty(_name))
-                    .stopIfInError()
-                    .check(notValidEmail(_email))
-                        .callMethodOr(reportErrors());
+
+                final ValidationResult vr = new ValidationResult();
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _email.getValue(), _email.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _name.getValue(), _name.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.notValidEmail(
+                        _email.getValue(), _email.getFieldLabel()));
+
+                if (null!=_password1.getValue()
+                    || null!=_password2.getValue()) {
+                    vr.addError(
+                        VALIDATOR.passwordStrength(_password1.getValue()));
+                    vr.addError(
+                        VALIDATOR.matchingPasswords(
+                            _password1.getValue(), _password2.getValue()));
                 }
+
+                if (!vr.isValid()) {
+                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    return;
+                }
+
+                updateUser();
             }
         };
     }
@@ -126,30 +136,25 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
      *
      * @return
      */
-    private Runnable updateUser() {
-        return new Runnable() {
-            public void run() {
+    private void updateUser() {
+        final User user = new User();
+        user.setId(_user.getId());
+        user.setUsername(_user.getUsername());
+        user.setGroups(_user.getGroups());
+        user.setMetadata(_user.getMetadata());
+        user.setPassword(_password1.getValue());
+        user.setEmail(_email.getValue());
+        user.setName(_name.getValue());
 
-                final User user = new User();
-                user.setId(_user.getId());
-                user.setUsername(_user.getUsername());
-                user.setGroups(_user.getGroups());
-                user.setMetadata(_user.getMetadata());
-                user.setPassword(_password1.getValue());
-                user.setEmail(_email.getValue());
-                user.setName(_name.getValue());
-
-                new UpdateCurrentUserAction(user){
-                    /** {@inheritDoc} */
-                    @Override protected void onNoContent(
-                                                     final Response response) {
-                        // TODO Update current user should return a UserDto.
-                        GLOBALS.currentUser(user);
-                        hide();
-                    }
-
-                }.execute();
+        new UpdateCurrentUserAction(user){
+            /** {@inheritDoc} */
+            @Override protected void onNoContent(
+                                             final Response response) {
+                // TODO Update current user should return a UserDto.
+                new GlobalsImpl().currentUser(user);
+                hide();
             }
-        };
+
+        }.execute();
     }
 }

@@ -27,7 +27,9 @@
 
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.core.Action;
+import ccc.client.core.Action;
+import ccc.client.core.Globals;
+import ccc.client.gwt.core.GlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -47,6 +49,8 @@ public class AbstractToolBar
     extends
         ToolBar {
 
+    private final Globals _globals = new GlobalsImpl();
+
     /**
      * Adds a new {@link LabelToolItem}.
      *
@@ -59,45 +63,59 @@ public class AbstractToolBar
     /**
      * Adds a new {@link SeparatorToolItem}.
      *
+     * @param permission The permission to check.
      */
-    protected void addSeparator() {
-        add(new SeparatorToolItem());
+    protected void addSeparator(final String permission) {
+        if (permission != null
+                && _globals.currentUser().hasPermission(permission)) {
+            add(new SeparatorToolItem());
+        }
     }
 
     /**
      * Adds a new button {@link TextToolItem} to the toolbar.
      *
+     * @param permission The permission to check.
      * @param id The id of the button.
      * @param text The text of the button.
      * @param action The action of the button.
      */
-    protected void addButton(final String id,
+    protected void addButton(final String permission,
+                             final String id,
                              final String text,
                              final Action action) {
-        final Button toolItem = new Button(text);
-        toolItem.setId(id);
-        toolItem.addListener(Events.Select, new ListenerAction(action));
-        add(toolItem);
+        if (permission == null
+            || _globals.currentUser().hasPermission(permission)) {
+            final Button toolItem = new Button(text);
+            toolItem.setId(id);
+            toolItem.addListener(Events.Select, new ListenerAction(action));
+            add(toolItem);
+        }
     }
 
     /**
      * Adds a new menu {@link TextToolItem} to the toolbar.
      *
+     * @param permission The permission to check.
      * @param id The id of the menu.
      * @param text The text of the menu.
      * @param children Children of the menu.
      */
-    protected void addMenu(final String id,
+    protected void addMenu(final String permission,
+                           final String id,
                            final String text,
                            final MenuItem... children) {
-        final Button item = new Button(text);
-        item.setId(id);
-        final Menu itemMenu = new Menu();
-        for (final MenuItem child : children) {
-            itemMenu.add(child);
+        if (permission == null
+            || _globals.currentUser().hasPermission(permission)) {
+            final Button item = new Button(text);
+            item.setId(id);
+            final Menu itemMenu = new Menu();
+            for (final MenuItem child : children) {
+                itemMenu.add(child);
+            }
+            item.setMenu(itemMenu);
+            add(item);
         }
-        item.setMenu(itemMenu);
-        add(item);
     }
 
     /**

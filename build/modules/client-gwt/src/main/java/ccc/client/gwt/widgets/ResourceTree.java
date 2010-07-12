@@ -32,12 +32,12 @@ import java.util.List;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.SortOrder;
+import ccc.client.core.Globals;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.remoting.GetChildrenPagedAction;
 
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -66,21 +66,20 @@ public class ResourceTree extends AbstractResourceTree {
 
     /** {@inheritDoc} */
     @Override
-    protected RpcProxy<List<ResourceSummaryModelData>> createProxy() {
+    protected RpcProxy<List<BeanModel>> createProxy() {
 
-        final RpcProxy<List<ResourceSummaryModelData>> proxy =
-            new RpcProxy<List<ResourceSummaryModelData>>() {
+        final RpcProxy<List<BeanModel>> proxy =
+            new RpcProxy<List<BeanModel>>() {
 
             @Override
             protected void load(
                 final Object loadConfig,
-                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
+                final AsyncCallback<List<BeanModel>> callback) {
 
                 final ResourceSummary parent =
-                    (null==loadConfig
-                        || !(loadConfig instanceof ResourceSummaryModelData))
-                    ? _root
-                    : ((ResourceSummaryModelData) loadConfig).getDelegate();
+                    (null==loadConfig || !(loadConfig instanceof BeanModel))
+                        ? _root
+                        : ((BeanModel) loadConfig).<ResourceSummary>getBean();
 
                     new GetChildrenPagedAction(
                         parent,
@@ -110,11 +109,12 @@ public class ResourceTree extends AbstractResourceTree {
 
     /** {@inheritDoc} */
     @Override
-    protected BaseTreeLoader<ResourceSummaryModelData> createLoader() {
-        return new BaseTreeLoader<ResourceSummaryModelData>(createProxy()) {
+    protected BaseTreeLoader<BeanModel> createLoader() {
+        return new BaseTreeLoader<BeanModel>(createProxy()) {
             @Override
-            public boolean hasChildren(final ResourceSummaryModelData parent) {
-                final int childCount = parent.getChildCount();
+            public boolean hasChildren(final BeanModel parent) {
+                final int childCount =
+                    parent.<ResourceSummary>getBean().getChildCount();
                 return childCount > 0;
             }
         };

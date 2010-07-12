@@ -36,19 +36,20 @@ import java.util.UUID;
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
+import ccc.api.types.Link;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
-import ccc.api.types.Link;
-import ccc.client.gwt.binding.ImageSummaryModelData;
+import ccc.client.core.I18n;
+import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.GetAbsolutePathAction;
 import ccc.client.gwt.widgets.PageElement.FieldType;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -246,25 +247,22 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final ImageTriggerField image = c.image();
         final String id = para.getText();
         if (id != null && !id.trim().equals("")) {
-            final UUID resourceId = UUID.fromString(id);
-            ResourceSummary s = new ResourceSummary();
+            final ResourceSummary s = new ResourceSummary();
             s.addLink(
                 "absolute-path",
                 new Link(ccc.api.core.ResourceIdentifiers.Resource.PATH)
-                .build(new GWTTemplateEncoder()));
+                .build("id", id, new GWTTemplateEncoder()));
 
-            new GetAbsolutePathAction(GlobalsImpl.uiConstants().selectImage(),
-                                      s) {
+            new GetAbsolutePathAction(I18n.UI_CONSTANTS.selectImage(), s) {
                 @Override protected void execute(final String path) {
                     final File fs = new File(
                         new MimeType("image", "*"),
                         path,
-                        resourceId,
+                        UUID.fromString(id),
                         new ResourceName("img"),
                         "",
                         new HashMap<String, String>());
-                    final ImageSummaryModelData model =
-                        new ImageSummaryModelData(fs);
+                    final BeanModel model = DataBinding.bindFileSummary(fs);
                     image.setValue(path);
                     image.setFSModel(model);
                 }
@@ -323,9 +321,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private Paragraph extractImage(final PageElement c) {
         final ImageTriggerField image = c.image();
         String id = "";
-        final ImageSummaryModelData model = image.getFSModel();
+        final BeanModel model = image.getFSModel();
         if (model != null) {
-            id = model.getId().toString();
+            id = model.<File>getBean().getId().toString();
         }
 
         final Paragraph p =
@@ -777,7 +775,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
     private void addStaticFields() {
         _name = new TextField<String>();
-        _name.setFieldLabel(GlobalsImpl.uiConstants().name());
+        _name.setFieldLabel(I18n.UI_CONSTANTS.name());
         _name.setAllowBlank(false);
         add(_name, new FormData("95%"));
     }

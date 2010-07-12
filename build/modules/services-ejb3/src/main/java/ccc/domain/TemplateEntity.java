@@ -34,9 +34,9 @@ import ccc.api.core.Template;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.api.types.MimeType;
+import ccc.api.types.NormalisingEncoder;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
-import ccc.commons.NormalisingEncoder;
 
 
 /**
@@ -175,8 +175,12 @@ public class TemplateEntity
     /** {@inheritDoc} */
     @Override
     public Template forSpecificRevision(final int revNo) {
-        // TODO: Return correct revision.
-        return summarize();
+        TemplateRevision rev = revision(revNo);
+        Template dto = summarize();
+        dto.setDefinition(rev.getDefinition());
+        dto.setBody(rev.getBody());
+        dto.setMimeType(rev.getMimeType());
+        return dto;
     }
 
     /** {@inheritDoc} */

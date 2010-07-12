@@ -24,7 +24,7 @@ LinkSelectCommand.Execute=function() {
         var oldLink = selection.MoveToAncestorNode( 'A' ) ;
         url =  oldLink.getAttribute( 'href' , 2 ) || '' ;
         title = oldLink.title;
-        innerText = oldLink.innerHTML;
+        innerText = oldLink.firstChild.nodeValue;
         if (oldLink.target == "_blank") {
             openInNew = true;
         }

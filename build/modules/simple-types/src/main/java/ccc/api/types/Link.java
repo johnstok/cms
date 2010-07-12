@@ -189,7 +189,7 @@ public class Link {
             } else if (null!=param&&param.length>0) {
                 /* NO OP */
             } else {
-                result.append(encoder.encode(arg));
+                result.append(arg);
             }
         }
 

@@ -47,7 +47,7 @@ import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.FailureCode;
 import ccc.api.types.Link;
-import ccc.commons.NormalisingEncoder;
+import ccc.api.types.NormalisingEncoder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 

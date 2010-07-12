@@ -26,12 +26,13 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Globals;
+import static ccc.client.core.InternalServices.*;
+import ccc.client.core.Editable;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.ValidationResult;
-import ccc.client.gwt.core.Validations2;
-import ccc.client.gwt.views.RenameResource;
+import ccc.client.views.RenameResource;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -59,7 +60,7 @@ public class RenameDialog
      * Constructor.
      */
     public RenameDialog() {
-        super(new GlobalsImpl().uiConstants().rename(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.rename(), new GlobalsImpl());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
 
         setPanelId("RenamePanel");
@@ -119,13 +120,13 @@ public class RenameDialog
     public ValidationResult getValidationResult() {
         final ValidationResult result = new ValidationResult();
 
-        if (!Validations2.notEmpty(_newName.getValue())) {
-            result.addError(
-                _newName.getFieldLabel()+getUiConstants().cannotBeEmpty());
-        } else if (!Validations2.notValidResourceName(_newName.getValue())) {
-            result.addError(getUiConstants().resourceNameIsInvalid());
-        }
-//          && Validations2.uniqueResourceName(_item.getParent(), _newName))
+        result.addError(
+            VALIDATOR.notEmpty(
+                _newName.getValue(), _newName.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notValidResourceName(
+                _newName.getValue(), _newName.getFieldLabel()));
+
         return result;
     }
 

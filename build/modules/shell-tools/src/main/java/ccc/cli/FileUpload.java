@@ -52,12 +52,92 @@ import ccc.cli.fileupload.Server;
 public class FileUpload extends CccApp {
     private static final Logger LOG = Logger.getLogger(FileUpload.class);
 
-    private static Server        server;
+    @Option(
+        name="-u", required=true, usage="Username for connecting to CCC.")
+    private String _username;
 
-    private static void recurse(final UUID parentId,
-                                final File localFolder,
-                                final boolean includeHidden,
-                                final boolean publish) {
+    @Option(
+        name="-p", required=false, usage="Password for connecting to CCC.")
+    private String _password;
+
+    @Option(
+        name="-r", required=true, usage="Remote folder path.")
+    private String _remotePath;
+
+    @Option(
+        name="-l", required=true, usage="Local folder path.")
+    private String _localPath;
+
+    @Option(
+        name="-o", required=true, usage="The URL for file upload.")
+    private String _uploadUrl;
+
+    @Option(
+        name="-h", required=false, usage="Include hidden files/folders.")
+    private boolean _includeHidden;
+
+    @Option(
+        name="-b", required=false, usage="Publish uploaded files/folders.")
+    private boolean _publish;
+
+
+    /**
+     * Application entry point.
+     *
+     * @param args Command line arguments.
+     * @throws IOException If the local folder cannot be opened.
+     */
+    public static void main(final String[] args) throws IOException {
+        LOG.info("Starting.");
+        final FileUpload o = parseOptions(args, FileUpload.class);
+
+        try {
+            o.run();
+        } catch (final RuntimeException e) {
+            LOG.error("Error performing command.", e);
+            System.exit(1);
+        }
+    }
+
+    /**
+     * Upload a file.
+     *
+     * @throws IOException
+     */
+    public void run() throws IOException {
+
+        final ProxyServiceLocator sl =
+            new ProxyServiceLocator(getUploadUrl());
+
+        if (!sl.getSecurity().login(getUsername(), getPassword())) {
+            throw new RuntimeException("Failed to authenticate.");
+        }
+
+        final Server server = new CccServer(
+            new ResourcePath(getRemotePath()),
+            sl.getFiles(),
+            sl.getFolders(),
+            sl.getResources());
+
+        final File localFile = new File(getLocalPath()).getCanonicalFile();
+        LOG.info("Uploading from "+localFile.getAbsolutePath());
+
+        recurse(
+            server,
+            server.getRoot(),
+            localFile,
+            isIncludeHidden(),
+            isPublish());
+
+        report("Upload finished in ");
+    }
+
+
+    private void recurse(final Server server,
+                         final UUID parentId,
+                         final File localFolder,
+                         final boolean includeHidden,
+                         final boolean publish) {
         for (final File child : localFolder.listFiles()) {
             if (child.isHidden()&&!includeHidden) {
                 LOG.warn("Ignored hidden file: '"+child.getAbsolutePath()+"'.");
@@ -68,7 +148,7 @@ public class FileUpload extends CccApp {
                     try {
                         final UUID childFolder = server.createFolder(
                             parentId, child.getName(), publish);
-                        recurse(childFolder, child, includeHidden, publish);
+                        recurse(server, childFolder, child, includeHidden, publish);
                     } catch (final CCException e) {
                         LOG.warn(
                             "Failed to create folder '"
@@ -81,176 +161,146 @@ public class FileUpload extends CccApp {
         }
     }
 
+
     /**
-     * Application entry point.
+     * Accessor.
      *
-     * @param args Command line arguments.
-     * @throws IOException If the local folder cannot be opened.
+     * @return Returns the username.
      */
-    public static void main(final String[] args) throws IOException {
-        LOG.info("Starting.");
-
-        final Options o = parseOptions(args, Options.class);
-
-        final ProxyServiceLocator sl =
-            new ProxyServiceLocator(o._uploadUrl);
-
-        sl.getSecurity().login(o.getUsername(), o.getPassword());
-
-        server = new CccServer(
-            new ResourcePath(o.getRemotePath()),
-            sl.getFiles(),
-            sl.getFolders(),
-            sl.getResources());
-
-        try {
-            recurse(
-                server.getRoot(),
-                new File(o.getLocalPath()).getCanonicalFile(),
-                o.isIncludeHidden(),
-                o.isPublish());
-        } catch (final CCException e) {
-            System.err.print("Root folder does not exist.");
-        }
-
-        report("Upload finished in ");
+    String getUsername() {
+        return _username;
     }
 
 
     /**
-     * Options for the file upload tool.
+     * Accessor.
      *
-     * @author Civic Computing Ltd.
+     * @return Returns the password.
      */
-    static class Options {
-        @Option(
-            name="-u", required=true, usage="Username for connecting to CCC.")
-        private String _username;
-
-        @Option(
-            name="-p", required=true, usage="Password for connecting to CCC.")
-        private String _password;
-
-        @Option(
-            name="-r", required=true, usage="Remote folder path.")
-        private String _remotePath;
-
-        @Option(
-            name="-l", required=true, usage="Local folder path.")
-        private String _localPath;
-
-        @Option(
-            name="-a", required=true, usage="The name of the application.")
-        private String _appName;
-
-        @Option(
-            name="-o", required=true, usage="The URL for file upload.")
-        private String _uploadUrl;
-
-        @Option(
-            name="-h", required=false, usage="Include hidden files/folders.")
-        private boolean _includeHidden;
-
-        @Option(
-            name="-b", required=false, usage="Publish uploaded files/folders.")
-        private boolean _publish;
-
-        @Option(
-            name="-jn",
-            required=false,
-            usage="optional JNDI provider URL, defaults to localhost")
-            private String _providerURL;
-
-
-        /**
-         * Accessor.
-         *
-         * @return Returns the username.
-         */
-        String getUsername() {
-            return _username;
+    String getPassword() {
+        if (_password == null) {
+            return readConsolePassword("Password for connecting to CCC");
         }
+        return _password;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the password.
-         */
-        String getPassword() {
-            return _password;
-        }
+    /**
+     * Accessor.
+     *
+     * @return Returns the remotePath.
+     */
+    String getRemotePath() {
+        return _remotePath;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the remotePath.
-         */
-        String getRemotePath() {
-            return _remotePath;
-        }
+    /**
+     * Accessor.
+     *
+     * @return Returns the localPath.
+     */
+    String getLocalPath() {
+        return _localPath;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the localPath.
-         */
-        String getLocalPath() {
-            return _localPath;
-        }
+    /**
+     * Accessor.
+     *
+     * @return Returns the includeHidden.
+     */
+    boolean isIncludeHidden() {
+        return _includeHidden;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the includeHidden.
-         */
-        boolean isIncludeHidden() {
-            return _includeHidden;
-        }
+    /**
+     * Accessor.
+     *
+     * @return Returns the publish.
+     */
+    boolean isPublish() {
+        return _publish;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the publish.
-         */
-        boolean isPublish() {
-            return _publish;
-        }
+    /**
+     * Accessor.
+     *
+     * @return Returns the uploadUrl.
+     */
+    public final String getUploadUrl() {
+        return _uploadUrl;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the JNDI provider URL.
-         */
-        String getProviderURL() {
-            return _providerURL;
-        }
+    /**
+     * Mutator.
+     *
+     * @param username The username to set.
+     */
+    public void setUsername(final String username) {
+        _username = username;
+    }
 
 
-
-        /**
-         * Accessor.
-         *
-         * @return Returns the appName.
-         */
-        public final String getAppName() {
-            return _appName;
-        }
-
+    /**
+     * Mutator.
+     *
+     * @param password The password to set.
+     */
+    public void setPassword(final String password) {
+        _password = password;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the uploadUrl.
-         */
-        public final String getUploadUrl() {
-            return _uploadUrl;
-        }
+    /**
+     * Mutator.
+     *
+     * @param remotePath The remotePath to set.
+     */
+    public void setRemotePath(final String remotePath) {
+        _remotePath = remotePath;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param localPath The localPath to set.
+     */
+    public void setLocalPath(final String localPath) {
+        _localPath = localPath;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param uploadUrl The uploadUrl to set.
+     */
+    public void setUploadUrl(final String uploadUrl) {
+        _uploadUrl = uploadUrl;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param includeHidden The includeHidden to set.
+     */
+    public void setIncludeHidden(final boolean includeHidden) {
+        _includeHidden = includeHidden;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param publish The publish to set.
+     */
+    public void setPublish(final boolean publish) {
+        _publish = publish;
     }
 }

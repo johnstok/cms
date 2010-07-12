@@ -27,11 +27,11 @@
 
 package ccc.client.gwt.views.gxt;
 
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.i18n.ActionNameConstants;
-import ccc.client.gwt.i18n.UIConstants;
-import ccc.client.gwt.i18n.UIMessages;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.i18n.ActionNameConstants;
+import ccc.client.i18n.UIConstants;
+import ccc.client.i18n.UIMessages;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -65,7 +65,6 @@ public abstract class AbstractBaseDialog
     private final Globals _globals;
     private final UIConstants _constants;
     private final UIMessages  _messages;
-    private final UIConstants _uiConstants;
     private final ActionNameConstants _userActions;
 
     private final Button _cancel;
@@ -80,10 +79,9 @@ public abstract class AbstractBaseDialog
         super();
 
         _globals = globals;
-        _constants = GlobalsImpl.uiConstants();
-        _messages  = _globals.uiMessages();
-        _uiConstants = GlobalsImpl.uiConstants();
-        _userActions = GlobalsImpl.userActions();
+        _constants = I18n.UI_CONSTANTS;
+        _messages  = I18n.UI_MESSAGES;
+        _userActions = I18n.USER_ACTIONS;
 
         _cancel = cancelButton();
 
@@ -138,10 +136,19 @@ public abstract class AbstractBaseDialog
         new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                hide();
+                cancel();
             }
+
         });
         return cancel;
+    }
+
+
+    /**
+     * Cancel this dialog's action.
+     */
+    public void cancel() {
+        hide();
     }
 
 
@@ -181,7 +188,7 @@ public abstract class AbstractBaseDialog
      * @return Returns the uiConstants.
      */
     protected UIConstants getUiConstants() {
-        return _uiConstants;
+        return _constants;
     }
 
 

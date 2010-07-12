@@ -70,7 +70,7 @@ public class JsonImpl implements Serializable, Json {
         try {
             _detail = new JSONObject(detail);
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new InvalidSnapshotException(detail, e);
         }
     }
 
@@ -473,4 +473,8 @@ public class JsonImpl implements Serializable, Json {
             throw new InvalidSnapshotException(e);
         }
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() { return getDetail(); }
 }

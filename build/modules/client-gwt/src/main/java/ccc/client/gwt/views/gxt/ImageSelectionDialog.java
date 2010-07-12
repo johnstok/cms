@@ -26,11 +26,13 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import ccc.api.core.File;
 import ccc.api.types.Paragraph;
-import ccc.client.gwt.binding.ImageSummaryModelData;
+import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.ImageSelectionPanel;
 
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -84,7 +86,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                                 final String alt,
                                 final String title,
                                 final String cccId) {
-        super(GlobalsImpl.uiConstants().selectImage(),
+        super(I18n.UI_CONSTANTS.selectImage(),
               new GlobalsImpl());
         setLayout(new RowLayout());
         _elementid = elementid;
@@ -99,21 +101,20 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         setHeight(DIALOG_HEIGHT);
         setWidth(DIALOG_WIDTH);
         setFrame(true);
-        final ListViewSelectionModel<ImageSummaryModelData> selectionModel =
+        final ListViewSelectionModel<BeanModel> selectionModel =
             _imagePanel.getView().getSelectionModel();
         selectionModel.addListener(Events.SelectionChange,
-            new Listener<SelectionChangedEvent<ImageSummaryModelData>>() {
-            public void handleEvent(final SelectionChangedEvent
-                                    <ImageSummaryModelData> be) {
-                final ImageSummaryModelData md = be.getSelectedItem();
+            new Listener<SelectionChangedEvent<BeanModel>>() {
+            public void handleEvent(final SelectionChangedEvent<BeanModel> be) {
+                final BeanModel md = be.getSelectedItem();
                 if (md != null) {
-                    final String path = Paragraph.escape(md.getPath());
+                    final String path = md.<File>getBean().getPath();
                     final String appContext =
                         new GlobalsImpl().getSetting("application.context");
                     _urlField.setValue(appContext + path);
-                    _titleField.setValue(Paragraph.escape(md.getTitle()));
-                    _altField.setValue(Paragraph.escape(md.getTitle()));
-                    _uuid = md.getId().toString();
+                    _titleField.setValue(md.<File>getBean().getTitle());
+                    _altField.setValue(md.<File>getBean().getTitle());
+                    _uuid = md.<File>getBean().getId().toString();
                 }
             }
         });
@@ -173,9 +174,9 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                 if (_urlField.getValue() != null
                     && !_urlField.getValue().equals("")) {
                     jsniSetUrl(
-                        _urlField.getValue(),
-                        _titleField.getValue(),
-                        _altField.getValue(),
+                        Paragraph.escape(_urlField.getValue()),
+                        Paragraph.escape(_titleField.getValue()),
+                        Paragraph.escape(_altField.getValue()),
                         _uuid,
                         _elementid);
                     hide();
@@ -194,11 +195,11 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
      if ($wnd.FCKeditorAPI) {
             var instance = $wnd.FCKeditorAPI.GetInstance(elementID);
             if (instance != null) {
-                var linkURL = "<img title='"+title+"' alt='"
-                +alt+"' src='"+selectedUrl+"'"
+                var linkURL = "<img title=\""+title+"\" alt=\""
+                +alt+"\" src=\""+selectedUrl+"\""
 
                 if (uuid != null) {
-                    linkURL = linkURL +" class='ccc:"+uuid+"'";
+                    linkURL = linkURL +" class=\"ccc:"+uuid+"\"";
                 }
                 linkURL = linkURL +"/>";
                 return instance.InsertHtml(linkURL);

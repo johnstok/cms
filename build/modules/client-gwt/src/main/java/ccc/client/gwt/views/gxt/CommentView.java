@@ -26,13 +26,14 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
 import ccc.api.types.CommentStatus;
+import ccc.client.core.Editable;
+import ccc.client.core.Globals;
+import ccc.client.core.Validatable;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.EnumModelData;
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.Validatable;
-import ccc.client.gwt.core.ValidationResult;
-import ccc.client.gwt.core.Validations2;
-import ccc.client.gwt.presenters.UpdateCommentPresenter;
+import ccc.client.views.ICommentView;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -48,11 +49,13 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
  *
  * @author Civic Computing Ltd.
  */
+// TODO: This class shouldn't extend ContentPanel; composition not inheritance.
 public class CommentView
     extends
         AbstractEditDialog
     implements
-        Validatable {
+        Validatable,
+        ICommentView {
 
     private final TextField<String> _author = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
@@ -61,7 +64,7 @@ public class CommentView
     private final ComboBox<EnumModelData<CommentStatus>> _status =
         new ComboBox<EnumModelData<CommentStatus>>();
 
-    private UpdateCommentPresenter _presenter;
+    private Editable _presenter;
     private static final int TEXT_AREA_HEIGHT = 300;
 
     /**
@@ -102,40 +105,22 @@ public class CommentView
         addField(_body);
     }
 
-    /**
-     * Mutator.
-     *
-     * @param author The author of the comment.
-     */
+    /** {@inheritDoc} */
     public void setAuthor(final String author) {
         _author.setValue(author);
     }
 
-    /**
-     * Mutator.
-     *
-     * @param commentBody The text of the comment.
-     */
+    /** {@inheritDoc} */
     public void setBody2(final String commentBody) {
         _body.setValue(commentBody);
     }
 
-    /**
-     * Mutator.
-     *
-     * @param status The status of the comment.
-     */
+    /** {@inheritDoc} */
     public void setStatus(final CommentStatus status) {
         _status.setValue(new EnumModelData<CommentStatus>(status));
     }
 
-    /**
-     * Mutator.
-     * TODO: This class shouldn't extend ContentPanel; composition not
-     *  inheritance.
-     *
-     * @param url The url of the comment.
-     */
+    /** {@inheritDoc} */
     public void setUrl2(final String url) {
         _url.setValue(url);
     }
@@ -145,55 +130,31 @@ public class CommentView
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                _presenter.update();
+                _presenter.save();
             }
         };
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The author of the comment.
-     */
+    /** {@inheritDoc} */
     public String getAuthor() {
         return _author.getValue();
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The text of the comment.
-     */
+    /** {@inheritDoc} */
     public String getBody2() {
         return _body.getValue();
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The status of the comment.
-     */
+    /** {@inheritDoc} */
     public CommentStatus getStatus() {
         return _status.getValue().getValue();
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The URL of the comment.
-     */
+    /** {@inheritDoc} */
     public String getUrl2() {
         return _url.getValue();
     }
 
-    /**
-     * Mutator.
-     *
-     * @param presenter The MVP presenter.
-     */
-    public void setPresenter(final UpdateCommentPresenter presenter) {
-        _presenter = presenter;
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -204,37 +165,50 @@ public class CommentView
             if (!url.startsWith("http://") && !url.startsWith("https://")) {
                 _url.setValue("http://"+url);
             }
-            if (!Validations2.notValidURL(_url.getValue())) {
-                result.addError(constants().websiteAddressNotValid());
-            }
         }
-        if (!Validations2.notEmpty(_author.getValue())) {
-            result.addError(constants().commentNotValid());
-        }
-        if (!Validations2.notEmpty(_email.getValue())
-            || !Validations2.notValidEmail(_email.getValue())) {
-            result.addError(_email.getFieldLabel()
-            +" "+constants().isNotValid());
-        }
+
+        result.addError(
+            VALIDATOR.notValidURL(_url.getValue()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                _author.getValue(), _author.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                _email.getValue(), _email.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                _body.getValue(), _body.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notValidEmail(
+                _email.getValue(), _email.getFieldLabel()));
+
         return result;
     }
 
-    /**
-     * Mutator.
-     *
-     * @param email Email to set.
-     */
+
+    /** {@inheritDoc} */
     public void setEmail(final String email) {
         _email.setValue(email);
     }
 
-    /**
-     * Accessor.
-     *
-     * @return Email field value.
-     */
+
+    /** {@inheritDoc} */
     public String getEmail() {
         return _email.getValue();
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public void show(final Editable presenter) {
+        _presenter = presenter;
+        show();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void cancel() {
+        _presenter.cancel();
+    }
 }

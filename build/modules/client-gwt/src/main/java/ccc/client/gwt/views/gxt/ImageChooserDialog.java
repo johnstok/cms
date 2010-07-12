@@ -26,11 +26,13 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import ccc.client.gwt.binding.ImageSummaryModelData;
+import ccc.api.core.File;
+import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.ImageSelectionPanel;
 import ccc.client.gwt.widgets.ImageTriggerField;
 
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -41,17 +43,20 @@ import com.extjs.gxt.ui.client.widget.button.Button;
  *
  * @author Civic Computing Ltd.
  */
-public class ImageChooserDialog extends AbstractBaseDialog {
+public class ImageChooserDialog
+    extends
+        AbstractBaseDialog {
+
     private ImageSelectionPanel _imagePanel = new ImageSelectionPanel();
+
+
     /**
      * Constructor.
      *
      * @param image The trigger field for the image.
      */
     public ImageChooserDialog(final ImageTriggerField image) {
-
-        super(new GlobalsImpl().uiConstants().selectImage(),
-              new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.selectImage(), new GlobalsImpl());
         _imagePanel.setImage(image);
         add(_imagePanel);
         addButton(getCancel());
@@ -59,20 +64,23 @@ public class ImageChooserDialog extends AbstractBaseDialog {
         addButton(save);
     }
 
+
     /** {@inheritDoc} */
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>(){
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                final ImageSummaryModelData md =
+                final BeanModel md =
                     _imagePanel.getView().getSelectionModel().getSelectedItem();
+
                 if (md != null) {
-                    _imagePanel.getImage().setValue(md.getPath());
+                    _imagePanel.getImage().setValue(
+                        md.<File>getBean().getPath());
                 }
-                    _imagePanel.getImage().setFSModel(md);
+
+                _imagePanel.getImage().setFSModel(md);
                 hide();
             }
         };
     }
-
 }

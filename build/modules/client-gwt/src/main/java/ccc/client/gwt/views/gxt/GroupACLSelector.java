@@ -29,7 +29,7 @@ package ccc.client.gwt.views.gxt;
 import java.util.Collection;
 
 import ccc.api.core.Group;
-import ccc.client.gwt.i18n.UIConstants;
+import ccc.client.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -49,7 +49,7 @@ import com.extjs.gxt.ui.client.widget.button.Button;
  */
 class GroupACLSelector extends Window {
     private final UIConstants _constants;
-    private final ListStore<ModelData> _store;
+    private final ListStore<BaseModelData> _store;
     private static final int WIDTH = 200;
 
     /**
@@ -59,7 +59,7 @@ class GroupACLSelector extends Window {
      * @param allGroups All available groups.
      * @param constants UI constants.
      */
-    public GroupACLSelector(final ListStore<ModelData> store,
+    public GroupACLSelector(final ListStore<BaseModelData> store,
                             final Collection<Group> allGroups,
                             final UIConstants constants) {
         _constants = constants;
@@ -77,7 +77,7 @@ class GroupACLSelector extends Window {
         panel.setHeaderVisible(false);
         panel.setBodyBorder(false);
 
-        final ListStore<ModelData> gData = new ListStore<ModelData>();
+        final ListStore<BaseModelData> gData = new ListStore<BaseModelData>();
         for (final Group g : allGroups) {
             final BaseModelData d = new BaseModelData();
             boolean contains = false;
@@ -89,12 +89,14 @@ class GroupACLSelector extends Window {
             if (!contains) {
                 d.set("name", g.getName());
                 d.set("id", g.getId());
+                d.set("readable", true);
+                d.set("writeable", true);
                 gData.add(d);
             }
         }
 
-        final CheckBoxListView<ModelData> view =
-            new CheckBoxListView<ModelData>();
+        final CheckBoxListView<BaseModelData> view =
+            new CheckBoxListView<BaseModelData>();
         view.setStore(gData);
         view.setDisplayProperty("name");
         panel.add(view);
@@ -103,7 +105,7 @@ class GroupACLSelector extends Window {
 
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                for (final ModelData m : view.getChecked()) {
+                for (final BaseModelData m : view.getChecked()) {
                     _store.add(m);
                 }
                 hide();

@@ -6,12 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.i18n.UIConstants;
-import ccc.client.gwt.validation.Validate;
-import ccc.client.gwt.validation.Validator;
+import ccc.client.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -42,7 +40,7 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 public class MetadataGrid extends ContentPanel {
     private static final int GRID_WIDTH = 610;
     private static final int GRID_HEIGHT = 270;
-    private final UIConstants _constants = new GlobalsImpl().uiConstants();
+    private final UIConstants _constants = I18n.UI_CONSTANTS;
     private final Grid<ModelData> _grid;
     private final ListStore<ModelData> _dataStore = new ListStore<ModelData>();
     private CheckBoxSelectionModel<ModelData> _sm;
@@ -167,41 +165,5 @@ public class MetadataGrid extends ContentPanel {
         if (newHeight > (Globals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
             _grid.setHeight(height);
         }
-    }
-
-    /**
-     * Factory method for metadata validators.
-     *
-     * @return A new instance of the metaDataValues validator.
-     */
-    public Validator validateMetadataValues() {
-        final Map<String, String> data = currentMetadata();
-        return new Validator() {
-            public void validate(final Validate validate) {
-                final StringBuilder sb = new StringBuilder();
-                for (final Map.Entry<String, String> datum : data.entrySet()) {
-                    if (null==datum.getKey()
-                        || datum.getKey().trim().length() < 1) {
-                        sb.append(_constants.noEmptyKeysAllowed());
-                    }
-                    if (null==datum.getValue()
-                        || datum.getValue().trim().length() < 1) {
-                        sb.append(_constants.noEmptyValuesAllowed());
-                    }
-                    if (!datum.getKey().matches("[^<^>]*")) {
-                        sb.append(
-                            _constants.keysMustNotContainBrackets());
-                    }
-                    if (!datum.getValue().matches("[^<^>]*")) {
-                        sb.append(
-                            _constants.valuesMustNotContainBrackets());
-                    }
-                }
-                if (sb.length() > 0) {
-                    validate.addMessage(sb.toString());
-                }
-                validate.next();
-            }
-        };
     }
 }
