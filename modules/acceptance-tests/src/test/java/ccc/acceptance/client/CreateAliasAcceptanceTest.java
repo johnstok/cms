@@ -37,7 +37,7 @@ import ccc.tests.acceptance.AbstractAcceptanceTest;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateAliasTest
+public class CreateAliasAcceptanceTest
     extends
         AbstractAcceptanceTest {
 
