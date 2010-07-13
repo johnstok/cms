@@ -93,7 +93,7 @@ public abstract class AbstractAcceptanceTest
 
     private ProxyServiceLocator _sl;
 
-    private final String _hostUrl       = "http://localhost:8080/cc7";
+    private final String _hostUrl       = "http://localhost";
 
     static {
         final API api = new API();
