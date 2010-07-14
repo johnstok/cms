@@ -13,10 +13,6 @@
     <packaging>jar</packaging>
     <name>client-core</name>
     
-    <build>
-        <plugins />
-    </build>
-    
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
