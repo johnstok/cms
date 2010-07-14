@@ -299,7 +299,7 @@
                                             <arg value="-p" />
                                             <arg value="migration" />
                                             <arg value="-o" />
-                                            <arg value="http://localhost:8080/${application.prefix}" />
+                                            <arg value="http://localhost" />
                                         </java>
                                     </tasks>
                                 </configuration>
