@@ -171,7 +171,7 @@
 
     <profiles>
         <profile>
-            <id>deploy-remote</id>
+            <id>copy-remote</id>
             <build>
                 <plugins>
                     <plugin>
@@ -199,6 +199,13 @@
                             </execution>
                         </executions>
                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>deploy-remote</id>
+            <build>
+                <plugins>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>jboss-maven-plugin</artifactId>
@@ -342,7 +349,7 @@
                                             <arg value="-a" />
                                             <arg value="${application.prefix}" />
                                             <arg value="-cu" />
-                                            <arg value="http://localhost:8080/${application.prefix}" />
+                                            <arg value="http://localhost" />
                                             <arg value="-lu" />
                                             <arg value="ccc_migration" />
                                             <arg value="-lp" />
@@ -389,7 +396,7 @@
                                             <arg value="-p" />
                                             <arg value="migration" />
                                             <arg value="-b" />
-                                            <arg value="http://localhost:8080/${application.prefix}" />
+                                            <arg value="http://localhost" />
                                             <arg value="-c" />
                                             <arg value="index" />
                                         </java>
