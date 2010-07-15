@@ -382,6 +382,8 @@
                                             <arg value="d3ccc_migration" />
                                             <arg value="-lc" />
                                             <arg value="jdbc:oracle:thin:@poseidon:1521:DEV" />
+                                            <arg value="-jn" />
+                                            <arg value="${migration-host}:1099" />
                                         </java>
                                     </tasks>
                                 </configuration>
