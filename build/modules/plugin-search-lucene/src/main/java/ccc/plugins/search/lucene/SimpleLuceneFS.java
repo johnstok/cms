@@ -88,6 +88,7 @@ public class SimpleLuceneFS
 
     private final String _indexPath;
     private IndexWriter _writer;
+    private Locale _locale = Locale.US;
 
 
     /**
@@ -140,7 +141,8 @@ public class SimpleLuceneFS
 
         final Sort sorter =
             new Sort(
-                new SortField(sort, SortField.STRING_VAL, (SortOrder.DESC==order)));
+                new SortField(
+                    sort, SortField.STRING_VAL, (SortOrder.DESC==order)));
 
         if (searchTerms == null || searchTerms.trim().equals("")) {
             return
@@ -393,13 +395,13 @@ public class SimpleLuceneFS
             d.add(
                 new Field(
                     "path",
-                    path.toString().toLowerCase(Locale.US),
+                    path.toString().toLowerCase(_locale),
                     Field.Store.YES,
                     Field.Index.NOT_ANALYZED));
             d.add(
                 new Field(
                     "name",
-                    name.toString().toLowerCase(Locale.US),
+                    name.toString().toLowerCase(_locale),
                     Field.Store.YES,
                     Field.Index.NOT_ANALYZED));
 
@@ -476,7 +478,7 @@ public class SimpleLuceneFS
         d.add(
             new Field(
                 SORT_FIELD_PREFIX+fieldName,
-                fieldValue,
+                fieldValue.toLowerCase(_locale),
                 Field.Store.NO,
                 Field.Index.NOT_ANALYZED));
     }
