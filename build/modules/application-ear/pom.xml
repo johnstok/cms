@@ -176,27 +176,40 @@
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-antrun-plugin</artifactId>
+                        <artifactId>maven-deploy-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>ftp</id>
+                                <id>copy-node1</id>
                                 <phase>pre-integration-test</phase>
                                 <configuration>
-                                    <tasks>
-                                        <ftp server="${node1}"
-                                             remotedir="cc"
-                                             userid="anonymous" 
-                                             password="abc@def.com">
-                                             <fileset dir="${basedir}/target">
-                                                <include name="${application.name}.ear"/>
-                                             </fileset>
-                                         </ftp>
-                                    </tasks>
+                                    <file>${basedir}/target/${application.name}.ear</file>
+                                    <url>ftp://${node1}/cc</url>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}</artifactId>
+                                    <version>latest</version>
+                                    <packaging>${project.packaging}</packaging>
+                                    <uniqueVersion>false</uniqueVersion>
                                 </configuration>
                                 <goals>
-                                    <goal>run</goal>
+                                    <goal>deploy-file</goal>
                                 </goals>
                             </execution>
+                            <!-- execution>
+                                <id>copy-node2</id>
+                                <phase>pre-integration-test</phase>
+                                <configuration>
+                                    <file>${basedir}/target/${application.name}.ear</file>
+                                    <url>ftp://${node2}/cc</url>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}</artifactId>
+                                    <version>latest</version>
+                                    <packaging>${project.packaging}</packaging>
+                                    <uniqueVersion>false</uniqueVersion>
+                                </configuration>
+                                <goals>
+                                    <goal>deploy-file</goal>
+                                </goals>
+                            </execution -->
                         </executions>
                     </plugin>
                 </plugins>
@@ -209,16 +222,14 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>jboss-maven-plugin</artifactId>
-                        <configuration>
-                            <fileNames>
-                                <fileName>/var/ftp/cc/${application.name}.ear</fileName>
-                            </fileNames>
-                        </configuration>
                         <executions>
                             <execution>
                                 <id>deploy-node1</id>
                                 <phase>pre-integration-test</phase>
                                 <configuration>
+                                    <fileNames>
+                                        <fileName>/var/ftp/cc/${application.name}.ear</fileName>
+                                    </fileNames>
                                     <hostName>${node1}</hostName>
                                 </configuration>
                                 <goals>
@@ -237,13 +248,15 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>jboss-maven-plugin</artifactId>
-                        <configuration>
-                            <fileName>${basedir}/target/${application.name}.ear</fileName>
-                        </configuration>
                         <executions>
                             <execution>
                                 <id>deploy</id>
                                 <phase>pre-integration-test</phase>
+                                <configuration>
+                                    <fileNames>
+                                        <fileName>${basedir}/target/${application.name}.ear</fileName>
+                                    </fileNames>
+                                </configuration>
                                 <goals>
                                     <goal>deploy</goal>
                                 </goals>
