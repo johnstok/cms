@@ -224,9 +224,9 @@ public class SimpleLuceneFSTest
         assertEquals(4, result.totalResults());
         assertEquals(4, result.hits().size());
         final Iterator<UUID> i = result.hits().iterator();
-        assertEquals(capM, i.next());
         assertEquals(a, i.next());
         assertEquals(m, i.next()); // More relevant than capM.
+        assertEquals(capM, i.next());
         assertEquals(z, i.next());
     }
 
