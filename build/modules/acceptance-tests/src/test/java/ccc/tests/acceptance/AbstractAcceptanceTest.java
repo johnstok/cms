@@ -408,6 +408,16 @@ public abstract class AbstractAcceptanceTest
     }
 
 
+    /**
+     * Accessor.
+     *
+     * @return The host URL as a string.
+     */
+    protected String getHostUrl() {
+        return _hostUrl;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     protected void setUp() {

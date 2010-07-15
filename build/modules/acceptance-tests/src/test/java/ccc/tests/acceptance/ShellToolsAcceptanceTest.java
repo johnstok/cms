@@ -68,7 +68,7 @@ public class ShellToolsAcceptanceTest
         fu.setLocalPath("src/test/resources/upload");
         fu.setRemotePath(f.getAbsolutePath());
         fu.setPublish(true);
-        fu.setUploadUrl("http://localhost:8080/cc7");
+        fu.setUploadUrl(getHostUrl());
 
         // ACT
         fu.run();
@@ -101,7 +101,7 @@ public class ShellToolsAcceptanceTest
         s.setAction("running");
         s.setUsername("migration");
         s.setPassword("migration");
-        s.setBaseUrl("http://localhost:8080/cc7");
+        s.setBaseUrl(getHostUrl());
 
         // ACT
         s.run();
@@ -121,7 +121,7 @@ public class ShellToolsAcceptanceTest
         s.setAction("running");
         s.setUsername("migration");
         s.setPassword("foo");
-        s.setBaseUrl("http://localhost:8080/cc7");
+        s.setBaseUrl(getHostUrl());
 
         // ACT
         try {
@@ -145,7 +145,7 @@ public class ShellToolsAcceptanceTest
         s.setAction("foo");
         s.setUsername("migration");
         s.setPassword("migration");
-        s.setBaseUrl("http://localhost:8080/cc7");
+        s.setBaseUrl(getHostUrl());
 
         // ACT
         try {
