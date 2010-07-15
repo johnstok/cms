@@ -185,7 +185,7 @@
                                     <file>${basedir}/target/${application.name}.ear</file>
                                     <url>ftp://${node1}/cc</url>
                                     <groupId>${project.groupId}</groupId>
-                                    <artifactId>${project.artifactId}</artifactId>
+                                    <artifactId>cc7</artifactId>
                                     <version>latest</version>
                                     <packaging>${project.packaging}</packaging>
                                     <uniqueVersion>false</uniqueVersion>
@@ -194,14 +194,14 @@
                                     <goal>deploy-file</goal>
                                 </goals>
                             </execution>
-                            <!-- execution>
+                            <execution>
                                 <id>copy-node2</id>
                                 <phase>pre-integration-test</phase>
                                 <configuration>
                                     <file>${basedir}/target/${application.name}.ear</file>
                                     <url>ftp://${node2}/cc</url>
                                     <groupId>${project.groupId}</groupId>
-                                    <artifactId>${project.artifactId}</artifactId>
+                                    <artifactId>cc7</artifactId>
                                     <version>latest</version>
                                     <packaging>${project.packaging}</packaging>
                                     <uniqueVersion>false</uniqueVersion>
@@ -209,7 +209,7 @@
                                 <goals>
                                     <goal>deploy-file</goal>
                                 </goals>
-                            </execution -->
+                            </execution>
                         </executions>
                     </plugin>
                 </plugins>
@@ -228,9 +228,22 @@
                                 <phase>pre-integration-test</phase>
                                 <configuration>
                                     <fileNames>
-                                        <fileName>/var/ftp/cc/${application.name}.ear</fileName>
+                                        <fileName>/var/ftp/cc/com/civicuk/cc/cc7/latest/cc7-latest.ear</fileName>
                                     </fileNames>
                                     <hostName>${node1}</hostName>
+                                </configuration>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>deploy-node2</id>
+                                <phase>pre-integration-test</phase>
+                                <configuration>
+                                    <fileNames>
+                                        <fileName>/var/ftp/cc/com/civicuk/cc/cc7/latest/cc7-latest.ear</fileName>
+                                    </fileNames>
+                                    <hostName>${node2}</hostName>
                                 </configuration>
                                 <goals>
                                     <goal>deploy</goal>
