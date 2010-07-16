@@ -4,7 +4,7 @@
     <parent>
         <artifactId>build</artifactId>
         <groupId>com.civicuk.cc</groupId>
-        <version>7.2.7-SNAPSHOT</version>
+        <version>7.2.7</version>
     </parent>
     <properties>
         <parent_basedir>${basedir}/../..</parent_basedir>
@@ -192,12 +192,9 @@
                                 <phase>pre-integration-test</phase>
                                 <configuration>
                                     <tasks>
-                                        <ftp server="${node1}"
-                                             remotedir="cc"
-                                             userid="anonymous" 
-                                             password="abc@def.com">
+                                        <ftp server="${node1}" remotedir="cc" userid="anonymous" password="abc@def.com">
                                              <fileset dir="${basedir}/target">
-                                                <include name="${application.name}.ear"/>
+                                                <include name="${application.name}.ear" />
                                              </fileset>
                                          </ftp>
                                     </tasks>
