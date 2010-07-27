@@ -220,4 +220,51 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         assertEquals("working copy", wc);
     }
 
+    /**
+     * Test.
+     */
+    public void testRetrieveReturnsCurrent() {
+
+        // ARRANGE
+        final ResourceSummary templateFolder =
+            getCommands().resourceForPath("/assets/templates");
+        final String name = UUID.randomUUID().toString();
+
+        final Template t = new Template();
+        t.setName(new ResourceName(name));
+        t.setParent(templateFolder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody("$resource.getParagraph(\"foo\").getText()");
+        t.setDefinition("<fields><field name=\"foo\" type=\"html\"/></fields>");
+        t.setMimeType(MimeType.HTML);
+        final ResourceSummary ts = getTemplates().create(t);
+
+        final ResourceSummary f = tempFolder();
+        final ResourceSummary page = tempPage(f.getId(), ts.getId());
+
+        final Page update = new Page();
+        update.setMajorChange(true);
+        update.setComment("");
+        final Set<Paragraph> paras = new HashSet<Paragraph>();
+        final Paragraph testPara = Paragraph.fromText("foo", "original");
+        paras.add(testPara);
+        update.setParagraphs(paras);
+
+        // ACT
+        getCommands().lock(page.getId());
+        getPages().update(page.getId(), update);
+
+        final Set<Paragraph> modparas = new HashSet<Paragraph>();
+        final Paragraph modPara = Paragraph.fromText("foo", "working copy");
+        modparas.add(modPara);
+        final Page modified = Page.delta(modparas);
+
+        getPages().updateWorkingCopy(page.getId(), modified);
+
+        // ASSERT
+        final Page testPage = getPages().retrieve(page.getId());
+        assertEquals("original", testPage.getParagraph("foo").getText());
+    }
+
 }

@@ -63,14 +63,25 @@ public interface Pages {
 
 
     /**
-     * Retrieve the delta for a page.
+     * Retrieve the page.
      *
      * @param pageId The page's id.
      *
-     * @return The corresponding delta.
+     * @return The corresponding page.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
     Page retrieve(@PathParam("id") UUID pageId);
+
+
+    /**
+     * Retrieve the working copy for a page.
+     *
+     * @param pageId The page's id.
+     *
+     * @return The corresponding working copy.
+     */
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Page.WC)
+    Page retrieveWorkingCopy(@PathParam("id") UUID pageId);
 
 
     /**

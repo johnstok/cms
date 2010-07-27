@@ -121,4 +121,15 @@ public class PagesImpl
             throw convertException(cfe);
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Page retrieveWorkingCopy(final UUID pageId) {
+        try {
+            return _pages.retrieveWorkingCopy(pageId);
+        } catch (final RuntimeException cfe) {
+            throw convertException(cfe);
+        }
+    }
 }

@@ -126,6 +126,17 @@ public class PagesEJB
         return
             getRepoFactory()
                 .createResourceRepository()
+                .find(PageEntity.class, pageId).forCurrentRevision();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed(PAGE_UPDATE)
+    public Page retrieveWorkingCopy(final UUID pageId) {
+        return
+            getRepoFactory()
+                .createResourceRepository()
                 .find(PageEntity.class, pageId).deltaPage();
     }
 }
