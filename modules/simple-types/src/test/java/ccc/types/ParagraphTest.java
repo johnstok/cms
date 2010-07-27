@@ -20,6 +20,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
 
 
 /**
@@ -145,7 +146,7 @@ public final class ParagraphTest extends TestCase {
         // ARRANGE
         expect(_json.getString("name")).andReturn("bar");
         expect(_json.getString("type")).andReturn("NUMBER");
-        expect(_json.getBigDecimal("number"))
+        expect(_json.getBigDecimal(JsonKeys.TEXT))
             .andReturn(new BigDecimal("123.456"));
         replay(_json);
 

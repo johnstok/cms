@@ -165,8 +165,6 @@ public final class JsonKeys {
     public static final String TEXT = "text";
     /** DATE : String. */
     public static final String DATE = "date";
-    /** NUMBER : String. */
-    public static final String NUMBER = "number";
     /** BOOLEAN : String. */
     public static final String BOOLEAN = "boolean";
     /** CREATED_BY : String. */

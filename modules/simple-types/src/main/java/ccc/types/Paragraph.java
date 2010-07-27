@@ -82,7 +82,7 @@ public final class Paragraph implements Serializable, Jsonable {
                 break;
 
             case NUMBER:
-                _text = json.getBigDecimal(JsonKeys.NUMBER).toString();
+                _text = json.getBigDecimal(JsonKeys.TEXT).toString();
                 break;
 
             default:
