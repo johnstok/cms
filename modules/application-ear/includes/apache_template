@@ -1,8 +1,10 @@
 <VirtualHost *:80>
-        # the URL of the site
-        ServerName cc7server      
+    # Hostname and port that the server uses to identify itself
+        ServerName cc7server  
+    # Email address that the server includes in error messages sent to the client   
         ServerAdmin cc7admin
 
+	# Reverse proxy settings
         ProxyRequests Off
         <Proxy *>
                 Order deny,allow
@@ -19,7 +21,7 @@
     # Reverse proxy caching
         CacheEnable disk /
 
-    # Compression
+    # Compression with browser specific settings. 
         SetOutputFilter DEFLATE
         BrowserMatch ^Mozilla/4 gzip-only-text/html
         BrowserMatch ^Mozilla/4\.0[678] no-gzip
