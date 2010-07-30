@@ -17,14 +17,19 @@ package ccc.client.gwt.widgets;
 import java.util.Collection;
 
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.I18n;
 import ccc.client.gwt.remoting.GetRootsAction;
 import ccc.client.gwt.views.gxt.ImageSelectionDialog;
 import ccc.client.gwt.views.gxt.LinkSelectionDialog;
+import ccc.client.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.button.ToggleButton;
 import com.extjs.gxt.ui.client.widget.form.HiddenField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.GWT;
@@ -66,7 +71,15 @@ import com.google.gwt.user.client.ui.Frame;
 public class FCKEditor extends LayoutContainer {
 
     private final String _elementID;
+    private final Frame editorFrame = new Frame();
+    private final ToggleButton toggleButton = new ToggleButton();
+    private final HiddenField<String> _inputBox = new HiddenField<String>();
+    private final HiddenField<String>  _configBox = new HiddenField<String>();
+    private final Html _htmlArea = new Html();
 
+    private boolean enabled = false;
+    private String _html = "";
+    UIConstants UI_CONSTANTS = I18n.UI_CONSTANTS;
 
     /**
      * Constructor.
@@ -76,59 +89,51 @@ public class FCKEditor extends LayoutContainer {
      */
     public FCKEditor(final String html,
                      final String cssHeight) {
-
+        _html = html;
+        setLayout(new FitLayout());
         //Work out an ID
         _elementID =
             "ccc-contentcreator-client-ui-FCKEditor"
-            + System.identityHashCode(this);
+            + System.identityHashCode(FCKEditor.this);
 
-        initJSNI(this);
+        _htmlArea.setAutoHeight(false);
+        _htmlArea.setHeight(100);
+        _htmlArea.setBorders(true);
+        _htmlArea.setHtml(_html);
+        add(_htmlArea);
 
-        //Create the hidden input box
-        final HiddenField<String> inputBox = new HiddenField<String>();
-        inputBox.setId(_elementID);
-        inputBox.setVisible(false);
-        inputBox.setValue(html == null || html.equals("") ? " " : html);
-
-        //Create the configuration input box
-        final HiddenField<String>  configBox = new HiddenField<String>();
-        configBox.setId(_elementID + "___Config");
-        configBox.setVisible(false);
-        configBox.setValue("");
-
-        //Create the IFRAME
-        final Frame editorFrame = new Frame();
-        editorFrame.setUrl(
-            getFckBaseUrl()
-            + "editor/fckeditor.html?InstanceName="
-            + _elementID +"&Toolbar=ccc");
-        editorFrame.setHeight(cssHeight);
-        DOM.setElementProperty(editorFrame.getElement(), "height", cssHeight);
-        DOM.setElementProperty(editorFrame.getElement(), "scrolling", "no");
-        DOM.setElementProperty(
-            editorFrame.getElement(), "id", _elementID + "___Frame");
-        DOM.setElementPropertyInt(editorFrame.getElement(), "frameBorder", 0);
-
-        // Build the panel
-        setLayout(new FitLayout());
-        add(configBox);
-        add(inputBox);
-        add(editorFrame);
+        toggleButton.setText(UI_CONSTANTS.edit());
+        add(toggleButton);
 
         // Add a resize handler to adjust width.
         addListener(
             Events.Resize,
             new Listener<BoxComponentEvent>() {
                 public void handleEvent(final BoxComponentEvent be) {
-                    final String frameWidth = String.valueOf(be.getWidth());
-                    editorFrame.setWidth(frameWidth);
-                    DOM.setElementProperty(
-                        editorFrame.getElement(), "width", frameWidth);
+                    fckResize(be.getWidth());
                 }
             }
         );
+
+        toggleButton.addListener(Events.Select, new Listener<ButtonEvent>() {
+            @Override
+            public void handleEvent(ButtonEvent be) {
+                if (toggleButton.isPressed()) {
+                    switchToEditor(cssHeight);
+                } else {
+                    switchToView();
+                }
+            }
+        });
+
     }
 
+    public void fckResize(int width) {
+        final String frameWidth = String.valueOf(width);
+        editorFrame.setWidth(frameWidth);
+        DOM.setElementProperty(
+            editorFrame.getElement(), "width", frameWidth);
+    }
 
     /**
      * Returns the HTML currently contained in the editor.
@@ -136,7 +141,10 @@ public class FCKEditor extends LayoutContainer {
      * @return the HTML currently contained in the editor
      */
     public String getHTML() {
-        return jsniGetText(_elementID);
+        if(enabled) {
+            return jsniGetText(_elementID);
+        }
+        return _html;
     }
 
 
@@ -165,8 +173,21 @@ public class FCKEditor extends LayoutContainer {
         $wnd.cccImageSelector = function(fckname, url, alt, title, cccId) {
             obj.@ccc.client.gwt.widgets.FCKEditor::openImageSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(fckname,url,alt,title,cccId);
         };
+
+        $wnd.FCKeditor_OnComplete = function(editorInstance) {
+            obj.@ccc.client.gwt.widgets.FCKEditor::checkFCK()();
+        }
     }-*/;
 
+
+
+/**
+ * Enable save buttons when FCKEditors are ready.
+ */
+    public void checkFCK() {
+        enabled = true;
+        toggleButton.setText(UI_CONSTANTS.view());
+    }
 
     /**
      * Displays the FCKEditor specific link selection dialog.
@@ -201,7 +222,6 @@ public class FCKEditor extends LayoutContainer {
                                         cccId,
                                         openInNew).show();
             }
-
         }.execute();
     }
 
@@ -221,5 +241,57 @@ public class FCKEditor extends LayoutContainer {
                                   final String title,
                                   final String cccId) {
         new ImageSelectionDialog(elementID, url, alt, title, cccId).show();
+    }
+
+    private void switchToEditor(final String cssHeight) {
+
+        toggleButton.setText(UI_CONSTANTS.loading());
+        _htmlArea.hide();
+        initJSNI(FCKEditor.this);
+
+        //Create the hidden input box
+        _inputBox.setId(_elementID);
+        _inputBox.setVisible(false);
+        _inputBox.setValue(_html == null || _html.equals("") ? " " : _html);
+
+        //Create the configuration input box
+        _configBox.setId(_elementID + "___Config");
+        _configBox.setVisible(false);
+        _configBox.setValue("");
+
+        //Create the IFRAME
+        editorFrame.setUrl(
+            getFckBaseUrl()
+            + "editor/fckeditor.html?InstanceName="
+            + _elementID +"&Toolbar=ccc");
+        editorFrame.setHeight(cssHeight);
+        DOM.setElementProperty(editorFrame.getElement(), "height", cssHeight);
+        DOM.setElementProperty(editorFrame.getElement(), "scrolling", "no");
+        DOM.setElementProperty(
+            editorFrame.getElement(), "id", _elementID + "___Frame");
+        DOM.setElementPropertyInt(editorFrame.getElement(), "frameBorder", 0);
+
+        // Build the panel
+        remove(toggleButton);
+        add(_configBox);
+        add(_inputBox);
+        add(editorFrame);
+        add(toggleButton);
+
+        fckResize(getWidth());
+        layout();
+    }
+
+    private void switchToView() {
+
+        toggleButton.setText(UI_CONSTANTS.edit());
+        _html = getHTML();
+        _htmlArea.setHtml(_html);
+        remove(_configBox);
+        remove(_inputBox);
+        remove(editorFrame);
+        _htmlArea.show();
+        _htmlArea.setHeight(100);
+        enabled = false;
     }
 }

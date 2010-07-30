@@ -1555,4 +1555,18 @@ public interface UIConstants {
      * @return The constant, in the appropriate locale.
      */
     String visible();
+
+    /**
+     * "Loading...".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String loading();
+
+    /**
+     * "View".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String view();
 }

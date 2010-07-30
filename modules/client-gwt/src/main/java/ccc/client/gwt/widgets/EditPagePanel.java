@@ -87,8 +87,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private TextField<String> _name = new TextField<String>();
     private final List<PageElement> _pageElements =
         new ArrayList<PageElement>();
-    private Template _template;
-    private int _fckCount = 0;
+    private final Template _template;
 
 
     /**
@@ -105,16 +104,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         if (null!=template) { createFields(template.getDefinition()); }
         setScrollMode(Scroll.AUTOY);
     }
-
-    /**
-     * Return number of FCK editor instances.
-     *
-     * @return Number of instances.
-     */
-    public int getFCKCount() {
-        return _fckCount;
-    }
-
 
 
     /**
@@ -691,7 +680,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         pe.editor(fck);
         add(fck, new FormData("95%"));
         _pageElements.add(pe);
-        _fckCount++;
     }
 
     /**

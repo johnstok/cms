@@ -62,7 +62,6 @@ public class UpdatePageDialog
     private final Template _template;
     private final ResourceTable _rt;
     private final EditPagePanel _panel;
-    private int _fckReadyCount = 0;
 
     private Button _saveDraftButton;
     private Button _applyNowButton;
@@ -90,29 +89,6 @@ public class UpdatePageDialog
         setLayout(new FitLayout());
 
         drawGUI(_modelData.getName());
-        // in case of FCKeditors add JS function for ready status checking.
-        if (_panel.getFCKCount()>0) {
-            _applyNowButton.disable();
-            _saveDraftButton.disable();
-            initJSNI(this);
-        }
-    }
-
-    private static native String initJSNI(final UpdatePageDialog obj) /*-{
-        $wnd.FCKeditor_OnComplete = function(editorInstance) {
-            obj.@ccc.client.gwt.views.gxt.UpdatePageDialog::checkFCK()();
-        }
-    }-*/;
-
-    /**
-     * Enable save buttons when FCKEditors are ready.
-     */
-    public void checkFCK() {
-        _fckReadyCount++;
-        if (_fckReadyCount == _panel.getFCKCount()) {
-            _saveDraftButton.enable();
-            _applyNowButton.enable();
-        }
     }
 
     private void drawGUI(final String pageName) {
