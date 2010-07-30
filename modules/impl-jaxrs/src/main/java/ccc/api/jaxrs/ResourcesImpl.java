@@ -39,6 +39,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import ccc.api.core.ACL;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
 import ccc.api.core.Revision;
@@ -475,6 +476,20 @@ public class ResourcesImpl
                                         final String title) {
         try {
             return _delegate.createSearch(parentId, title);
+        } catch (final RuntimeException cfe) {
+            throw convertException(cfe);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public PagedCollection<ResourceSummary> list(
+                                                final ResourceCriteria criteria,
+                                                final int pageNo,
+                                                final int pageSize) {
+        try {
+            return _delegate.list(criteria, pageNo, pageSize);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }

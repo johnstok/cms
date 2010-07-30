@@ -117,7 +117,6 @@ public interface Pages {
     ResourceSummary create(Page page);
 
 
-
     /**
      * List existing pages.
      *

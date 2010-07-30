@@ -660,37 +660,21 @@ public class ResourcesEJB
     @Override
     @PermitAll
     public PagedCollection<ResourceSummary> list(final UUID parent,
-        final String tag,
-        final Long before,
-        final Long after,
-        final String mainMenu,
-        final String type,
-        final String locked,
-        final String published,
-        final String sort,
-        final SortOrder order,
-        final int pageNo,
-        final int pageSize) {
+                                                 final String tag,
+                                                 final Long before,
+                                                 final Long after,
+                                                 final String mainMenu,
+                                                 final String type,
+                                                 final String locked,
+                                                 final String published,
+                                                 final String sort,
+                                                 final SortOrder order,
+                                                 final int pageNo,
+                                                 final int pageSize) {
         checkPermission(RESOURCE_READ);
 
-        UserEntity u = null;
-        try {
-            u = currentUser();
-        } catch (final EntityNotFoundException e) {
-            Exceptions.swallow(e); // Leave user as NULL.
-        }
-
         final ResourceCriteria criteria = new ResourceCriteria();
-        FolderEntity f = null;
-        if (parent != null) {
-            f =
-                getRepoFactory()
-                .createResourceRepository()
-                .find(FolderEntity.class, parent);
-            checkRead(f);
-            criteria.setParent(parent);
-        }
-
+        criteria.setParent(parent);
         criteria.setTag(tag);
         criteria.setChangedBefore(
             (null==before)?null:new Date(before.longValue()));
@@ -707,26 +691,59 @@ public class ResourcesEJB
             (null==published) ? null : Boolean.valueOf(published));
         criteria.setLocked(
             (null==locked) ? null : Boolean.valueOf(locked));
+        criteria.setSortField(sort);
+        criteria.setSortOrder(order);
 
-        final List<ResourceSummary> list = ResourceEntity.mapResources(
-            filterAccessibleTo(u,
-                getResources().list(criteria,
-                    f,
-                    sort,
-                    order,
-                    pageNo,
-                    pageSize)));
-
-        final long count = getResources().totalCount(criteria, f);
-
-        return
-            new PagedCollection<ResourceSummary>(
-                count, ResourceSummary.class, list);
+        return list(criteria, pageNo, pageSize);
     }
 
 
     @Deprecated
     private ResourceRepository getResources() {
         return getRepoFactory().createResourceRepository();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public PagedCollection<ResourceSummary> list(
+                                                final ResourceCriteria criteria,
+                                                final int pageNo,
+                                                final int pageSize) {
+        checkPermission(RESOURCE_READ);
+
+        UserEntity u = null;
+        try {
+            u = currentUser();
+        } catch (final EntityNotFoundException e) {
+            Exceptions.swallow(e); // Leave user as NULL.
+        }
+
+        final UUID parent = criteria.getParent();
+        FolderEntity f = null;
+        if (parent != null) {
+            f =
+                getRepoFactory()
+                .createResourceRepository()
+                .find(FolderEntity.class, parent);
+            checkRead(f);
+            criteria.setParent(parent);
+        }
+
+        final List<ResourceSummary> list = ResourceEntity.mapResources(
+            filterAccessibleTo(u,
+                getResources().list(criteria,
+                                    f,
+                                    criteria.getSortField(),
+                                    criteria.getSortOrder(),
+                                    pageNo,
+                                    pageSize)));
+
+        final long count = getResources().totalCount(criteria, f);
+
+        return
+            new PagedCollection<ResourceSummary>(
+                count, ResourceSummary.class, list);
     }
 }

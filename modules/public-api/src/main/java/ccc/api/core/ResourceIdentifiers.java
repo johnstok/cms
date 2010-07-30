@@ -271,6 +271,8 @@ public interface ResourceIdentifiers {
         String PATH_WC            = COLLECTION + "/by-path-wc{path:.*}";
         /** SEARCH : String. */
         String SEARCH             = COLLECTION + "/search/{id}/{title}";
+        /** SEARCH : String. */
+        String SEARCH2             = COLLECTION + "/search2";
 
         /** ELEMENT : String. */
         String ELEMENT            = COLLECTION + "/{id}";

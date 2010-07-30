@@ -39,6 +39,7 @@ import ccc.api.core.Folder;
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
@@ -61,6 +62,26 @@ public class ResourceAcceptanceTest
     private static final int PAGE_SIZE = 20;
     private static final Logger LOG =
         Logger.getLogger(ResourceAcceptanceTest.class);
+
+
+    /**
+     * Test.
+     */
+    public void testSearchForResources() {
+
+        // ARRANGE
+        final ResourceCriteria rc = new ResourceCriteria();
+        rc.matchMetadatum("searchable", "false");
+
+        // ACT
+        final PagedCollection<ResourceSummary> result =
+            getCommands().list(rc, 1, 10);
+
+        // ASSERT
+        assertEquals(1, result.getElements().size());
+        assertEquals(1, result.getTotalCount());
+        assertEquals("assets", result.getElements().get(0).getTitle());
+    }
 
 
     /**
@@ -129,7 +150,8 @@ public class ResourceAcceptanceTest
         // ASSERT
         final ResourceSummary content = getCommands().resourceForPath("");
         final PagedCollection<ResourceSummary> children =
-            getCommands().list(content.getId(),
+            getCommands().list(
+                content.getId(),
                 null,
                 null,
                 null,

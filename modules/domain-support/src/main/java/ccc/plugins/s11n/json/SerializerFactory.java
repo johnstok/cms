@@ -42,6 +42,7 @@ import ccc.api.core.Group;
 import ccc.api.core.Page;
 import ccc.api.core.PageCriteria;
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.core.Template;
@@ -58,7 +59,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class SerializerFactory {
+public final class SerializerFactory {
 
     // TODO: How can we constrain the wildcards to a single type?
     private static final Map<Class<?>, Serializer<?>> SUPPORTED_CLASSES;
@@ -88,9 +89,17 @@ public class SerializerFactory {
         supported.put(Resource.class, new TempSerializer());
         supported.put(User.class, new UserSerializer());
         supported.put(PageCriteria.class, new PageCriteriaSerializer());
+        supported.put(
+            ResourceCriteria.class,
+            new ResourceCriteriaSerializer<ResourceCriteria>() {
+                @Override protected ResourceCriteria createObject() {
+                    return new ResourceCriteria();
+                }});
 
         SUPPORTED_CLASSES = supported;
     }
+
+    private SerializerFactory() { super(); }
 
 
     /**
@@ -102,6 +111,7 @@ public class SerializerFactory {
      * @return The corresponding serializer or NULL if no serializer is
      *  available.
      */
+    @SuppressWarnings("unchecked") // TODO: Find a cleaner solution.
     public static <T> Serializer<T> create(final Class<T> clazz) {
         return (Serializer<T>) SUPPORTED_CLASSES.get(clazz);
     }
