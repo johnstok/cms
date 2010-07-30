@@ -33,6 +33,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.Page;
+import ccc.api.core.PageCriteria;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.MimeType;
@@ -46,6 +48,26 @@ import ccc.api.types.ResourceName;
  * @author Civic Computing Ltd.
  */
 public class PageAcceptanceTest extends AbstractAcceptanceTest {
+
+
+    /**
+     * Test.
+     */
+    public void testSearchPages() {
+
+        // ARRANGE
+        final PageCriteria pc = new PageCriteria();
+        pc.matchParagraph("content", "%Control%");
+
+        // ACT
+        final PagedCollection<ResourceSummary> hits = getPages().list(pc, 1, 5);
+
+        // ASSERT
+        assertEquals(1, hits.getTotalCount());
+        assertEquals(1, hits.getElements().size());
+        assertEquals("Welcome", hits.getElements().get(0).getTitle());
+    }
+
 
     /**
      * Test.
@@ -74,6 +96,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         assertEquals(hw, pd.getParagraph("test").getText());
     }
 
+
     /**
      * Test.
      */
@@ -91,6 +114,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         // ASSERT
         assertNotNull("Page delta must not be null", pd);
     }
+
 
     /**
      * Test.
@@ -125,6 +149,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
             new ArrayList<Paragraph>(pd.getParagraphs());
         assertEquals(testPara, results.get(0));
     }
+
 
     /**
      * Test.
@@ -170,6 +195,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         assertEquals("test, regexp: \\d{1,3}", nokResult);
 
     }
+
 
     /**
      * Test.
@@ -220,6 +246,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         assertEquals("working copy", wc);
     }
 
+
     /**
      * Test.
      */
@@ -266,5 +293,4 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final Page testPage = getPages().retrieve(page.getId());
         assertEquals("original", testPage.getParagraph("foo").getText());
     }
-
 }

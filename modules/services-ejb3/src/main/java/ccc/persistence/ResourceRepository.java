@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.core.PageCriteria;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.SortOrder;
 import ccc.domain.FileEntity;
@@ -176,11 +178,24 @@ public interface ResourceRepository {
      * @return A list of comments.
      */
     List<ResourceEntity> list(ResourceCriteria criteria,
-        FolderEntity f,
-        String sort,
-        SortOrder sortOrder,
-        int pageNo,
-        int pageSize);
+                              FolderEntity f,
+                              String sort,
+                              SortOrder sortOrder,
+                              int pageNo,
+                              int pageSize);
+
+    /**
+     * List resources with given criteria.
+     *
+     * @param criteria Search criteria.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
+     *
+     * @return A list of comments.
+     */
+    List<PageEntity> list(PageCriteria criteria,
+                              int pageNo,
+                              int pageSize);
 
     /**
      * Return count of images in the folder.
@@ -195,9 +210,19 @@ public interface ResourceRepository {
      *
      * @param criteria Search criteria.
      * @param f Filter resources by parent. NULL will return all.
-     * @return The count
+     *
+     * @return The count, as a long.
      */
     long totalCount(ResourceCriteria criteria, FolderEntity f);
+
+    /**
+     * Return count of pages with given criteria.
+     *
+     * @param criteria Search criteria.
+     *
+     * @return The count, as a long.
+     */
+    long totalCount(PageCriteria criteria);
 
     /**
      * Return count of templates.

@@ -105,6 +105,8 @@ public interface ResourceIdentifiers {
         String COLLECTION  = "/secure/pages";
         /** VALIDATOR : String. */
         String VALIDATOR   = COLLECTION + "/validator";
+        /** SEARCH : String. */
+        String SEARCH   = COLLECTION + "/search";
         /** ELEMENT : String. */
         String ELEMENT     = COLLECTION + "/{id}";
         /** WC : String. */

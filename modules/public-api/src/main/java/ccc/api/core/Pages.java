@@ -30,12 +30,14 @@ package ccc.api.core;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 
 
@@ -114,4 +116,21 @@ public interface Pages {
     @POST @Path(ccc.api.core.ResourceIdentifiers.Page.COLLECTION)
     ResourceSummary create(Page page);
 
+
+
+    /**
+     * List existing pages.
+     *
+     * @param criteria The criteria by which to filter pages.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
+     *
+     * @return A list of pages.
+     */
+    @POST
+    @Path(ccc.api.core.ResourceIdentifiers.Page.SEARCH)
+    PagedCollection<ResourceSummary> list(
+        PageCriteria criteria,
+        @QueryParam("page") @DefaultValue("1") int pageNo,
+        @QueryParam("count") @DefaultValue("20") int pageSize);
 }

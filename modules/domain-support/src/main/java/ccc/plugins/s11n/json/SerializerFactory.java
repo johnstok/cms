@@ -40,6 +40,7 @@ import ccc.api.core.File;
 import ccc.api.core.Folder;
 import ccc.api.core.Group;
 import ccc.api.core.Page;
+import ccc.api.core.PageCriteria;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
@@ -86,6 +87,7 @@ public class SerializerFactory {
         supported.put(Template.class, new TemplateSerializer());
         supported.put(Resource.class, new TempSerializer());
         supported.put(User.class, new UserSerializer());
+        supported.put(PageCriteria.class, new PageCriteriaSerializer());
 
         SUPPORTED_CLASSES = supported;
     }

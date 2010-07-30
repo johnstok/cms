@@ -26,7 +26,10 @@
  */
 package ccc.services.ejb3;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
@@ -242,4 +245,22 @@ abstract class AbstractEJB {
         }
     }
 
+
+    /**
+     * Filter a collection of resources based on accessibility.
+     *
+     * @param u The user reading the collection.
+     * @param resources The un-filtered collection.
+     *
+     * @return Subset of the input collection, accessible to the specified user.
+     */
+    protected Collection<? extends ResourceEntity> filterAccessibleTo(
+                            final UserEntity u,
+                            final List<? extends ResourceEntity> resources) {
+        final List<ResourceEntity> accessible = new ArrayList<ResourceEntity>();
+        for (final ResourceEntity r : resources) {
+            if (r.isReadableBy(u)) { accessible.add(r); }
+        }
+        return accessible;
+    }
 }
