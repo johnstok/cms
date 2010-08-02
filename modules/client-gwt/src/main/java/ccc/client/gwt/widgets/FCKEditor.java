@@ -96,8 +96,6 @@ public class FCKEditor extends LayoutContainer {
             "ccc-contentcreator-client-ui-FCKEditor"
             + System.identityHashCode(FCKEditor.this);
 
-        _htmlArea.setAutoHeight(false);
-        _htmlArea.setHeight(100);
         _htmlArea.setBorders(true);
         _htmlArea.setHtml(_html);
         add(_htmlArea);
