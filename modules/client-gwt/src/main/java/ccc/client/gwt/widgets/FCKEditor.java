@@ -76,6 +76,7 @@ public class FCKEditor extends LayoutContainer {
     private final HiddenField<String> _inputBox = new HiddenField<String>();
     private final HiddenField<String>  _configBox = new HiddenField<String>();
     private final Html _htmlArea = new Html();
+    private final String _tooltip;
 
     private boolean enabled = false;
     private String _html = "";
@@ -86,10 +87,13 @@ public class FCKEditor extends LayoutContainer {
      *
      * @param html The HTML to be edited.
      * @param cssHeight The height of the editor in pixels.
+     * @param tooltip The editor's tool-tip.
      */
     public FCKEditor(final String html,
-                     final String cssHeight) {
+                     final String cssHeight,
+                     final String tooltip) {
         _html = html;
+        _tooltip = tooltip;
         setLayout(new FitLayout());
         //Work out an ID
         _elementID =
@@ -98,6 +102,7 @@ public class FCKEditor extends LayoutContainer {
 
         _htmlArea.setBorders(true);
         _htmlArea.setHtml(_html);
+        _htmlArea.setToolTip(_tooltip);
         add(_htmlArea);
 
         toggleButton.setText(UI_CONSTANTS.edit());
@@ -115,7 +120,7 @@ public class FCKEditor extends LayoutContainer {
 
         toggleButton.addListener(Events.Select, new Listener<ButtonEvent>() {
             @Override
-            public void handleEvent(ButtonEvent be) {
+            public void handleEvent(final ButtonEvent be) {
                 if (toggleButton.isPressed()) {
                     switchToEditor(cssHeight);
                 } else {
@@ -126,7 +131,7 @@ public class FCKEditor extends LayoutContainer {
 
     }
 
-    public void fckResize(int width) {
+    public void fckResize(final int width) {
         final String frameWidth = String.valueOf(width);
         editorFrame.setWidth(frameWidth);
         DOM.setElementProperty(
@@ -292,4 +297,11 @@ public class FCKEditor extends LayoutContainer {
         _htmlArea.setHeight(100);
         enabled = false;
     }
+
+    /**
+     * Get the tool-tip for this editor.
+     *
+     * @return The tool-tip, as a string.
+     */
+    public String getToolTip2() { return _tooltip; }
 }
