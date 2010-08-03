@@ -150,17 +150,31 @@ public class LinkSelectionDialog extends AbstractEditDialog {
 
             if (selection.HasAncestorNode('A')) {
                 var link = selection.MoveToAncestorNode( 'A' ) ;
-                link.parentNode.removeChild(link);
+                if ( link )
+                    selection.SelectNode( link ) ;
+                link.href = selectedUrl;
+                link.setAttribute('_fcksavedurl', selectedUrl);
+                link.innerHTML = innerText;
+                link.title = title;
+                if (openInNew) {
+                    link.target = "_blank";
+                }
+                if (uuid != null) {
+                    link.setAttribute( 'class', "ccc:"+uuid) ;
+                } else {
+                    link.removeAttribute('class') ;
+                }
+            } else {
+                var linkURL = "<a href='"+selectedUrl+"' title='"+title+"'";
+                if (uuid != null) {
+                    linkURL = linkURL +" class='ccc:"+uuid+"'";
+                }
+                if (openInNew) {
+                    linkURL = linkURL +" target='_blank'";
+                }
+                linkURL = linkURL +">"+ innerText +"</a>";
+                return instance.InsertHtml(linkURL);
             }
-            var linkURL = "<a href=\""+selectedUrl+"\" title=\""+title+"\"";
-            if (uuid != null) {
-                linkURL = linkURL +" class=\"ccc:"+uuid+"\"";
-            }
-            if (openInNew) {
-                linkURL = linkURL +" target=\"_blank\"";
-            }
-            linkURL = linkURL +">"+ innerText +"</a>";
-            return instance.InsertHtml(linkURL);
         }
         return null;
 
@@ -177,7 +191,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                     jsniSetUrl(
                         Paragraph.escape(_linkPath.getValue()),
                         Paragraph.escape(_linkTitle.getValue()),
-                        Paragraph.escape(_linkInnerText.getValue()),
+                        _linkInnerText.getValue(),
                         _uuid,
                         _elementid,
                         _openInNew.getValue().booleanValue());
@@ -210,7 +224,10 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                         final String path =_md.getAbsolutePath();
                         _linkPath.setValue(appContext+path);
                         _linkTitle.setValue(_md.getTitle());
-                        _linkInnerText.setValue(_md.getTitle());
+                        if (_linkInnerText.getValue() == null
+                            || _linkInnerText.getValue().trim().isEmpty()) {
+                            _linkInnerText.setValue(_md.getTitle());
+                        }
                         _uuid =_md.getId().toString();
                     }
                 }});
