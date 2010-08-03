@@ -153,12 +153,8 @@ public class UpdateFileDialog extends AbstractEditDialog {
         };
     }
 
-    private Runnable submit() {
-        return new Runnable() {
-            public void run() {
-                _image.setVisible(true);
-                getPanel().submit();
-            }
-        };
+    private void submit() {
+        _image.setVisible(true);
+        getPanel().submit();
     }
 }
