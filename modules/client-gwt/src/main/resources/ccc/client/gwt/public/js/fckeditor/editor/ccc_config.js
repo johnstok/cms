@@ -12,6 +12,7 @@ FCKConfig.ToolbarSets["ccc"] = [
         '/',
         ['FontFormat','Bold','Italic','Underline','StrikeThrough'],
         ['OrderedList','UnorderedList'],
+       	['JustifyLeft','JustifyCenter','JustifyRight'],
         ['Anchor','Table','SpecialChar','CCC_Image','CCC_Link']
 ] ;
 
