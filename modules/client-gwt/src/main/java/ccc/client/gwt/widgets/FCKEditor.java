@@ -103,6 +103,7 @@ public class FCKEditor extends LayoutContainer {
         _htmlArea.setBorders(true);
         _htmlArea.setHtml(_html);
         _htmlArea.setToolTip(_tooltip);
+        _htmlArea.setAutoHeight(true);
         add(_htmlArea);
 
         toggleButton.setText(UI_CONSTANTS.edit());
@@ -294,7 +295,6 @@ public class FCKEditor extends LayoutContainer {
         remove(_inputBox);
         remove(editorFrame);
         _htmlArea.show();
-        _htmlArea.setHeight(100);
         enabled = false;
     }
 
