@@ -26,11 +26,12 @@
  */
 package ccc.persistence;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -41,6 +42,7 @@ import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.Paragraph;
 import ccc.api.types.PredefinedResourceNames;
+import ccc.api.types.Range;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.SortOrder;
@@ -329,7 +331,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
             + " FROM ccc.domain.PageRevision p"
             + " INNER JOIN p._page AS r");
 
-        appendParaConditions(criteria.getParas(), query, params);
+        appendParaConditions(criteria, query, params);
 
         appendMetaConditions(criteria.getMetadata(), query, params);
 
@@ -343,10 +345,14 @@ class ResourceRepositoryImpl implements ResourceRepository {
         query.append((params.size()>0) ? " AND" : " WHERE");
         query.append(" r._currentRev=p._revNo");
 
-        appendSorting(
+        final boolean hasRegularSort = appendSorting(
             criteria.getSortField(),
             criteria.getSortOrder(),
             query);
+
+        if (criteria.isSortedByPara()) {
+            appendParaSort(criteria, hasRegularSort, query);
+        }
 
         return
             _repository.listDyn(
@@ -355,6 +361,31 @@ class ResourceRepositoryImpl implements ResourceRepository {
                 pageNo,
                 pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
                 params);
+    }
+
+
+    private void appendParaSort(final PageCriteria criteria,
+                                final boolean hasRegularSort,
+                                final StringBuffer query) {
+
+        query.append(hasRegularSort ? "," : " ORDER BY");
+        query.append(" ps_"+criteria.getParaSortField()+".");
+        switch (criteria.getParaSortType()) {
+            case BOOLEAN:
+                query.append("_boolean ");
+                break;
+            case NUMBER:
+            case TEXT:
+                query.append("_text ");
+                break;
+            case DATE:
+                query.append("_date ");
+                break;
+            default:
+                throw new RuntimeException(
+                    "Unsupported sort type: "+criteria.getType());
+        }
+        query.append(criteria.getParaSortOrder());
     }
 
 
@@ -372,7 +403,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
             + " FROM ccc.domain.PageRevision p"
             + " INNER JOIN p._page AS r");
 
-        appendParaConditions(criteria.getParas(), query, params);
+        appendParaConditions(criteria, query, params);
 
         appendMetaConditions(criteria.getMetadata(), query, params);
 
@@ -402,13 +433,23 @@ class ResourceRepositoryImpl implements ResourceRepository {
     }
 
 
-    private void appendParaConditions(final Set<Paragraph> paras,
+    private void appendParaConditions(final PageCriteria criteria,
                                       final StringBuffer query,
                                       final Map<String, Object> params) {
-        for (final Paragraph p : paras) {
+        for (final Paragraph p : criteria.getParaMatches()) {
             query.append(", IN (p._content) p_"+p.getName());
         }
-        for (final Paragraph p : paras) {
+        for (final String p : criteria.getParaRanges().keySet()) {
+            query.append(", IN (p._content) pr_"+p);
+        }
+        if (criteria.isSortedByPara()) {
+            query.append(", IN (p._content) ps_"+criteria.getParaSortField());
+            query.append(
+                " WHERE ps_"+criteria.getParaSortField()
+                + "._name=:psn_"+ criteria.getParaSortField());
+            params.put("psn_"+criteria.getParaSortField(), criteria.getParaSortField());
+        }
+        for (final Paragraph p : criteria.getParaMatches()) {
             query.append((params.size()>0) ? " AND" : " WHERE");
             query.append(" (p_"+p.getName()+"._name='"+p.getName());
             switch (p.getType()) {
@@ -440,6 +481,48 @@ class ResourceRepositoryImpl implements ResourceRepository {
                     throw new RuntimeException(
                         "Unsupported paragraphe type: "+p.getType());
             }
+        }
+        for (final Map.Entry<String, Range<?>> p
+                                        : criteria.getParaRanges().entrySet()) {
+            final String pName = p.getKey();
+            final String cName = "pr_"+pName;
+            final String eName = cName+"_end";
+            final String sName = cName+"_start";
+            final Range<?> pRange = p.getValue();
+
+            if (null==pRange.getStart() && null==pRange.getEnd()) {
+                continue;
+            }
+
+            query.append((params.size()>0) ? " AND" : " WHERE");
+            query.append(" ("+cName+"._name='"+pName+"'");
+
+            if (Date.class.equals(p.getValue().getType())) {
+                if (null!=pRange.getStart()) {
+                    query.append(" AND " + cName + "._date > :" + sName);
+                    params.put(sName, pRange.getStart());
+                }
+                if (null!=pRange.getEnd()) {
+                    query.append(" AND " + cName + "._date < :" + eName);
+                    params.put(eName, pRange.getEnd());
+                }
+
+            } else if (BigDecimal.class.equals(p.getValue().getType())) {
+                if (null!=pRange.getStart()) {
+                    query.append(" AND " + cName + "._text > :" + sName);
+                    params.put(sName, String.valueOf(pRange.getStart()));
+                }
+                if (null!=pRange.getEnd()) {
+                    query.append(" AND " + cName + "._text < :" + eName);
+                    params.put(eName, String.valueOf(pRange.getEnd()));
+                }
+
+            } else {
+                throw new RuntimeException(
+                    "Unsupported range type: "+pRange.getType());
+            }
+
+            query.append(")");
         }
     }
 
@@ -545,10 +628,9 @@ class ResourceRepositoryImpl implements ResourceRepository {
         }
     }
 
-    private void appendSorting(final String sort,
+    private boolean appendSorting(final String sort,
                                final SortOrder sortOrder,
                                final StringBuffer query) {
-
         if (null != sort) {
             boolean knownSort = true;
             if ("title".equalsIgnoreCase(sort)) {
@@ -575,9 +657,10 @@ class ResourceRepositoryImpl implements ResourceRepository {
             if (knownSort) {
                 query.append(sortOrder.name());
             }
+            return knownSort;
         }
+        return false;
     }
-
 
 
     /** {@inheritDoc} */

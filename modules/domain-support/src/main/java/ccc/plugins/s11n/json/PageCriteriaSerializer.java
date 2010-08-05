@@ -26,11 +26,21 @@
  */
 package ccc.plugins.s11n.json;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ccc.api.core.PageCriteria;
 import ccc.api.types.Paragraph;
+import ccc.api.types.ParagraphType;
+import ccc.api.types.Range;
+import ccc.api.types.SortOrder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -52,11 +62,47 @@ public class PageCriteriaSerializer
 
         final PageCriteria p = super.read(json);
 
+        final Map<String, Range<?>> ranges = new HashMap<String, Range<?>>();
+        final Collection<Json> jsonRanges = json.getCollection("para-ranges");
+        for (final Json jsonRange : jsonRanges) {
+            final String name = jsonRange.getString("name");
+            final String className = jsonRange.getString("class");
+            if (Date.class.getName().equals(className)) {
+                ranges.put(
+                    name,
+                    new Range<Date>(
+                        Date.class,
+                        jsonRange.getDate("start"),
+                        jsonRange.getDate("end")));
+            } else if (BigDecimal.class.getName().equals(className)) {
+                ranges.put(
+                    name,
+                    new Range<BigDecimal>(
+                        BigDecimal.class,
+                        jsonRange.getBigDecimal("start"),
+                        jsonRange.getBigDecimal("end")));
+            } else {
+                throw new RuntimeException(
+                    "Unsupported range type: "+className);
+            }
+        }
+        p.setParaRanges(ranges);
+
         final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
         for (final Json jsonPara : json.getCollection(JsonKeys.PARAGRAPHS)) {
             paragraphs.add(new ParagraphSerializer().read(jsonPara));
         }
-        p.setParas(paragraphs);
+        p.setParaMatches(paragraphs);
+
+        p.setParaSortField(json.getString("para-sort-field"));
+
+        final String pSortOrder = json.getString("para-sort-order");
+        p.setParaSortOrder(
+            (null==pSortOrder) ? null : SortOrder.valueOf(pSortOrder));
+
+        final String pSortType = json.getString("para-sort-type");
+        p.setParaSortType(
+            (null==pSortType) ? null : ParagraphType.valueOf(pSortType));
 
         return p;
     }
@@ -75,9 +121,40 @@ public class PageCriteriaSerializer
 
         super.write(json, instance);
 
+        final List<Json> ranges = new ArrayList<Json>();
+
+        for (final Map.Entry<String, Range<?>> i
+                                        : instance.getParaRanges().entrySet()) {
+            final Json range = json.create();
+            if (Date.class.equals(i.getValue().getType())) {
+                final Range<Date> j = (Range<Date>) i.getValue();
+                range.set("start", j.getStart());
+                range.set("end", j.getEnd());
+            } else if (BigDecimal.class.equals(i.getValue().getType())) {
+                final Range<BigDecimal> j = (Range<BigDecimal>) i.getValue();
+                range.set("start", j.getStart());
+                range.set("end", j.getEnd());
+            } else {
+                throw new RuntimeException(
+                    "Unsupported range type: "+i.getValue().getType());
+            }
+            range.set("class", i.getValue().getType().getName());
+            range.set("name", i.getKey());
+            ranges.add(range);
+        }
+        json.setJsons("para-ranges", ranges);
+
         json.setJsons(
             JsonKeys.PARAGRAPHS,
-            new ParagraphSerializer().write(json, instance.getParas()));
+            new ParagraphSerializer().write(json, instance.getParaMatches()));
+
+        json.set("para-sort-field", instance.getParaSortField());
+
+        final SortOrder o = instance.getParaSortOrder();
+        json.set("para-sort-order", (null==o) ? null : o.name());
+
+        final ParagraphType t = instance.getParaSortType();
+        json.set("para-sort-type", (null==t) ? null : t.name());
 
         return json;
     }

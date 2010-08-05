@@ -27,6 +27,7 @@
 package ccc.tests.acceptance;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,7 +40,9 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
+import ccc.api.types.ParagraphType;
 import ccc.api.types.ResourceName;
+import ccc.api.types.SortOrder;
 
 
 /**
@@ -58,6 +61,8 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         // ARRANGE
         final PageCriteria pc = new PageCriteria();
         pc.matchParagraph("content", "%Control%");
+        pc.rangeParagraph("foo", (Date) null, null);
+        pc.sort("content", ParagraphType.TEXT, SortOrder.ASC);
 
         // ACT
         final PagedCollection<ResourceSummary> hits = getPages().list(pc, 1, 5);

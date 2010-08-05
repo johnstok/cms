@@ -91,7 +91,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return The parent.
      */
-    public UUID getParent() {
+    public final UUID getParent() {
         return _parent;
     }
 
@@ -100,7 +100,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return The tag.
      */
-    public String getTag() {
+    public final String getTag() {
         return _tag;
     }
 
@@ -109,7 +109,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return Date changed before.
      */
-    public Date getChangedBefore() {
+    public final Date getChangedBefore() {
         return
             (null==_changedBefore) ? null : new Date(_changedBefore.getTime());
     }
@@ -119,7 +119,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param date Date changed before.
      */
-    public void setChangedBefore(final Date date) {
+    public final void setChangedBefore(final Date date) {
         _changedBefore = (null==date) ? null : new Date(date.getTime());
     }
      /**
@@ -127,7 +127,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return Date changed after.
      */
-    public Date getChangedAfter() {
+    public final Date getChangedAfter() {
         return
             (null==_changedAfter) ? null : new Date(_changedAfter.getTime());
     }
@@ -136,7 +136,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param date Date changed after.
      */
-    public void setChangedAfter(final Date date) {
+    public final void setChangedAfter(final Date date) {
         _changedAfter =  (null==date) ? null : new Date(date.getTime());
     }
     /**
@@ -144,7 +144,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param tag The tag.
      */
-    public void setTag(final String tag) {
+    public final void setTag(final String tag) {
         _tag = tag;
     }
     /**
@@ -152,7 +152,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param parent The resource's parent.
      */
-    public void setParent(final UUID parent) {
+    public final void setParent(final UUID parent) {
         _parent = parent;
     }
 
@@ -161,7 +161,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param mainmenu Included in main menu.
      */
-    public void setMainmenu(final Boolean mainmenu) {
+    public final void setMainmenu(final Boolean mainmenu) {
         _mainmenu = mainmenu;
     }
 
@@ -170,7 +170,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return  Included in main menu.
      */
-    public Boolean getMainmenu() {
+    public final Boolean getMainmenu() {
         return _mainmenu;
     }
 
@@ -224,7 +224,7 @@ public class ResourceCriteria implements Serializable {
      * @param field The paragraph to sort on.
      * @param order The order to sort.
      */
-    public void sort(final String field, final SortOrder order) {
+    public final void sort(final String field, final SortOrder order) {
         _sortField = field;
         _sortOrder = order;
     }
@@ -235,7 +235,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return The order by which results will be sorted.
      */
-    public SortOrder getSortOrder() {
+    public final SortOrder getSortOrder() {
         return _sortOrder;
     }
 
@@ -245,7 +245,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return The field on which to sort results.
      */
-    public String getSortField() {
+    public final String getSortField() {
         return _sortField;
     }
 
@@ -255,7 +255,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param sortField The field to sort on.
      */
-    public void setSortField(final String sortField) {
+    public final void setSortField(final String sortField) {
         _sortField = sortField;
     }
 
@@ -265,7 +265,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param sortOrder The order to sort in.
      */
-    public void setSortOrder(final SortOrder sortOrder) {
+    public final void setSortOrder(final SortOrder sortOrder) {
         _sortOrder = sortOrder;
     }
 
@@ -276,7 +276,7 @@ public class ResourceCriteria implements Serializable {
      * @param name The metadatum name.
      * @param value The metadatum value.
      */
-    public void matchMetadatum(final String name, final String value) {
+    public final void matchMetadatum(final String name, final String value) {
         _metaMatches.put(name, value);
     }
 
@@ -286,7 +286,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return The metadata to match.
      */
-    public Map<String, String> getMetadata() {
+    public final Map<String, String> getMetadata() {
         return new HashMap<String, String>(_metaMatches);
     }
 
@@ -296,7 +296,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param metadata The metadata to set.
      */
-    public void setMetadata(final Map<String, String> metadata) {
+    public final void setMetadata(final Map<String, String> metadata) {
         _metaMatches = new HashMap<String, String>(metadata);
     }
 }
