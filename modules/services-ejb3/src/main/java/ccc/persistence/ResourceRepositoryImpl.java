@@ -67,6 +67,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
     private static final int MAX_RESULTS = 1000;
     private final Repository _repository;
 
+
     /**
      * Constructor.
      *
@@ -107,9 +108,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ResourceEntity lookup(final ResourcePath path) {
         final FolderEntity root = root(PredefinedResourceNames.CONTENT);
@@ -119,6 +118,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
             throw new EntityNotFoundException((UUID) null);
         }
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -131,16 +131,18 @@ class ResourceRepositoryImpl implements ResourceRepository {
                     legacyId));
     }
 
+
     /** {@inheritDoc} */
     @Override
     public List<ResourceEntity> lookupWithMetadataKey(final String key) {
         return
-        discardDeleted(
-            _repository.list(
-                QueryNames.RESOURCE_BY_METADATA_KEY,
-                ResourceEntity.class,
-                key));
+            discardDeleted(
+                _repository.list(
+                    QueryNames.RESOURCE_BY_METADATA_KEY,
+                    ResourceEntity.class,
+                    key));
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -163,8 +165,8 @@ class ResourceRepositoryImpl implements ResourceRepository {
     /** {@inheritDoc} */
     @Override
     public List<FileEntity> images(final UUID folderId,
-        final int pageNo,
-        final int pageSize) {
+                                   final int pageNo,
+                                   final int pageSize) {
         final ResourceEntity r = find(ResourceEntity.class, folderId);
 
         final StringBuffer query = new StringBuffer();
@@ -212,9 +214,9 @@ class ResourceRepositoryImpl implements ResourceRepository {
                                           final int pageSize) {
         final Map<String, Object> params = new HashMap<String, Object>();
         final StringBuffer query = new StringBuffer();
-        query.append("from ");
+        query.append("FROM ");
         query.append(TemplateEntity.class.getName());
-        query.append(" where ");
+        query.append(" WHERE ");
         query.append(" _deleted = :deleted");
         params.put("deleted", Boolean.FALSE);
 
@@ -366,9 +368,9 @@ class ResourceRepositoryImpl implements ResourceRepository {
     private void appendParaSort(final PageCriteria criteria,
                                 final boolean hasRegularSort,
                                 final StringBuffer query) {
-
+        final String sName = safeName(criteria.getParaSortField());
         query.append(hasRegularSort ? "," : " ORDER BY");
-        query.append(" ps_"+criteria.getParaSortField()+".");
+        query.append(" ps_"+sName+".");
         switch (criteria.getParaSortType()) {
             case BOOLEAN:
                 query.append("_boolean ");
@@ -424,10 +426,13 @@ class ResourceRepositoryImpl implements ResourceRepository {
                                       final StringBuffer query,
                                       final Map<String, Object> params) {
         for (final Map.Entry<String, String> d : metadata.entrySet()) {
+            final String mName = safeName(d.getKey());
+            final String cName = "m_"+mName;
+
             query.append((params.size()>0) ? " AND" : " WHERE");
-            query.append(
-                " r._metadata['"+d.getKey()+"'] LIKE "+":m_"+d.getKey());
-            params.put("m_"+d.getKey(), d.getValue());
+            query.append(" r._metadata['"+mName+"'] LIKE "+":"+cName);
+
+            params.put(cName, d.getValue());
         }
     }
 
@@ -435,50 +440,62 @@ class ResourceRepositoryImpl implements ResourceRepository {
     private void appendParaConditions(final PageCriteria criteria,
                                       final StringBuffer query,
                                       final Map<String, Object> params) {
+
         for (final Paragraph p : criteria.getParaMatches()) {
-            query.append(", IN (p._content) p_"+p.getName());
+            final String pName = safeName(p.getName());
+            final String cName = "p_"+pName;
+            query.append(", IN (p._content) "+cName);
         }
+
         for (final String p : criteria.getParaRanges().keySet()) {
-            query.append(", IN (p._content) pr_"+p);
+            final String pName = safeName(p);
+            final String cName = "pr_"+pName;
+            query.append(", IN (p._content) "+cName);
         }
 
         if (criteria.isSortedByPara()) {
-            query.append(", IN (p._content) ps_"+criteria.getParaSortField());
-            query.append(
-                " WHERE ps_"+criteria.getParaSortField()
-                + "._name=:psn_"+ criteria.getParaSortField());
-            params.put(
-                "psn_"+criteria.getParaSortField(),
-                criteria.getParaSortField());
+            final String sName = safeName(criteria.getParaSortField());
+            final String cName = "ps_"+sName;
+            final String pnParam = "psn_"+sName;
+
+
+            query.append(", IN (p._content) "+cName);
+            query.append(" WHERE "+cName+"._name=:"+pnParam);
+            params.put(pnParam, criteria.getParaSortField());
         }
 
         for (final Paragraph p : criteria.getParaMatches()) {
+            final String pName = safeName(p.getName());
+            final String cName = "p_"+pName;
+            final String pnParam = "pn_"+pName;
+
             query.append((params.size()>0) ? " AND" : " WHERE");
-            query.append(" (p_"+p.getName()+"._name='"+p.getName());
+            query.append(" ("+cName+"._name=:"+pnParam);
+            params.put(pnParam, p.getName());
             switch (p.getType()) {
                 case BOOLEAN:
                     query.append(
-                        "' AND p_"+p.getName()
-                        +"._boolean = :p_"+p.getName()+")");
-                    params.put("p_"+p.getName(), p.getBoolean());
+                        " AND "+cName
+                        +"._boolean = :"+cName+")");
+                    params.put(cName, p.getBoolean());
                     break;
                 case DATE:
                     query.append(
-                        "' AND p_"+p.getName()
-                        +"._date = :p_"+p.getName()+")");
-                    params.put("p_"+p.getName(), p.getDate());
+                        " AND "+cName
+                        +"._date = :"+cName+")");
+                    params.put(cName, p.getDate());
                     break;
                 case TEXT:
                     query.append(
-                        "' AND p_"+p.getName()
-                        +"._text LIKE :p_"+p.getName()+")");
-                    params.put("p_"+p.getName(), p.getText());
+                        " AND "+cName
+                        +"._text LIKE :"+cName+")");
+                    params.put(cName, p.getText());
                     break;
 //                case NUMBER:
 //                    query.append(
-//                        "' AND p_"+p.getName()
-//                        +"._text = :p_"+p.getName()+")");
-//                    params.put("p_"+p.getName(), p.getText());
+//                        "' AND "+cName
+//                        +"._text = :"+cName+")");
+//                    params.put(cName, p.getNumber());
 //                    break;
                 default:
                     throw new RuntimeException(
@@ -488,8 +505,9 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
         for (final Map.Entry<String, Range<?>> p
                                         : criteria.getParaRanges().entrySet()) {
-            final String pName = p.getKey();
+            final String pName = safeName(p.getKey());
             final String cName = "pr_"+pName;
+            final String pnName = "prn_"+pName;
             final String eName = cName+"_end";
             final String sName = cName+"_start";
             final Range<?> pRange = p.getValue();
@@ -499,9 +517,10 @@ class ResourceRepositoryImpl implements ResourceRepository {
             }
 
             query.append((params.size()>0) ? " AND" : " WHERE");
-            query.append(" ("+cName+"._name='"+pName+"'");
+            query.append(" ("+cName+"._name=:"+pnName);
+            params.put(pnName, pName);
 
-            if (Date.class.equals(p.getValue().getType())) {
+            if (Date.class.equals(pRange.getType())) {
                 if (null!=pRange.getStart()) {
                     query.append(" AND " + cName + "._date > :" + sName);
                     params.put(sName, pRange.getStart());
@@ -511,7 +530,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
                     params.put(eName, pRange.getEnd());
                 }
 
-//            } else if (BigDecimal.class.equals(p.getValue().getType())) {
+//            } else if (BigDecimal.class.equals(pRange.getType())) {
 //                if (null!=pRange.getStart()) {
 //                    query.append(" AND " + cName + "._text > :" + sName);
 //                    params.put(sName, String.valueOf(pRange.getStart()));
@@ -521,7 +540,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 //                    params.put(eName, String.valueOf(pRange.getEnd()));
 //                }
 //
-            } else if (String.class.equals(p.getValue().getType())) {
+            } else if (String.class.equals(pRange.getType())) {
                 if (null!=pRange.getStart()) {
                     query.append(" AND " + cName + "._text > :" + sName);
                     params.put(sName, pRange.getStart());
@@ -642,29 +661,30 @@ class ResourceRepositoryImpl implements ResourceRepository {
         }
     }
 
+
     private boolean appendSorting(final String sort,
                                final SortOrder sortOrder,
                                final StringBuffer query) {
         if (null != sort) {
             boolean knownSort = true;
             if ("title".equalsIgnoreCase(sort)) {
-                query.append(" order by upper(r._title) ");
+                query.append(" ORDER BY upper(r._title) ");
             } else if ("mm_include".equalsIgnoreCase(sort)) {
-                query.append(" order by upper(r._includeInMainMenu) ");
+                query.append(" ORDER BY upper(r._includeInMainMenu) ");
             } else if ("locked".equalsIgnoreCase(sort)) {
-                query.append(" order by upper(r._lockedBy._username) ");
+                query.append(" ORDER BY upper(r._lockedBy._username) ");
             } else if ("published".equalsIgnoreCase(sort)) {
-                query.append(" order by upper(r._publishedBy._username) ");
+                query.append(" ORDER BY upper(r._publishedBy._username) ");
             } else if ("name".equalsIgnoreCase(sort)) {
-                query.append(" order by upper(r._name) ");
+                query.append(" ORDER BY upper(r._name) ");
             } else if ("type".equalsIgnoreCase(sort)) {
-                query.append(" order by r.class ");
+                query.append(" ORDER BY r.class ");
             } else if ("manual".equalsIgnoreCase(sort)) {
-                query.append(" order by r._parentIndex ");
+                query.append(" ORDER BY r._parentIndex ");
             } else if ("date_changed".equalsIgnoreCase(sort)) {
-                query.append(" order by r._dateChanged ");
+                query.append(" ORDER BY r._dateChanged ");
             } else if ("date_created".equalsIgnoreCase(sort)) {
-                query.append(" order by r._dateCreated ");
+                query.append(" ORDER BY r._dateCreated ");
             } else {
                 knownSort = false;
             }
@@ -717,4 +737,8 @@ class ResourceRepositoryImpl implements ResourceRepository {
         return _repository.scalarLong(query.toString(), params);
     }
 
+
+    private String safeName(final String unsafe) {
+        return ResourceName.escape(unsafe).toString();
+    }
 }
