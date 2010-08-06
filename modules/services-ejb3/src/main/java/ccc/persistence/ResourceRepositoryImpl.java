@@ -26,7 +26,6 @@
  */
 package ccc.persistence;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -173,7 +172,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
             + " WHERE f._publishedBy is not null "
             + " AND f._history[f._currentRev]._mimeType._primaryType = 'image' "
             + " AND f._parent = :parent "
-            + " order by upper(f._name) ASC");
+            + " ORDER BY upper(f._name) ASC");
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("parent", r);
 
@@ -442,13 +441,17 @@ class ResourceRepositoryImpl implements ResourceRepository {
         for (final String p : criteria.getParaRanges().keySet()) {
             query.append(", IN (p._content) pr_"+p);
         }
+
         if (criteria.isSortedByPara()) {
             query.append(", IN (p._content) ps_"+criteria.getParaSortField());
             query.append(
                 " WHERE ps_"+criteria.getParaSortField()
                 + "._name=:psn_"+ criteria.getParaSortField());
-            params.put("psn_"+criteria.getParaSortField(), criteria.getParaSortField());
+            params.put(
+                "psn_"+criteria.getParaSortField(),
+                criteria.getParaSortField());
         }
+
         for (final Paragraph p : criteria.getParaMatches()) {
             query.append((params.size()>0) ? " AND" : " WHERE");
             query.append(" (p_"+p.getName()+"._name='"+p.getName());
@@ -471,17 +474,18 @@ class ResourceRepositoryImpl implements ResourceRepository {
                         +"._text LIKE :p_"+p.getName()+")");
                     params.put("p_"+p.getName(), p.getText());
                     break;
-                case NUMBER:
-                    query.append(
-                        "' AND p_"+p.getName()
-                        +"._text = :p_"+p.getName()+")");
-                    params.put("p_"+p.getName(), p.getText());
-                    break;
+//                case NUMBER:
+//                    query.append(
+//                        "' AND p_"+p.getName()
+//                        +"._text = :p_"+p.getName()+")");
+//                    params.put("p_"+p.getName(), p.getText());
+//                    break;
                 default:
                     throw new RuntimeException(
                         "Unsupported paragraphe type: "+p.getType());
             }
         }
+
         for (final Map.Entry<String, Range<?>> p
                                         : criteria.getParaRanges().entrySet()) {
             final String pName = p.getKey();
@@ -507,14 +511,24 @@ class ResourceRepositoryImpl implements ResourceRepository {
                     params.put(eName, pRange.getEnd());
                 }
 
-            } else if (BigDecimal.class.equals(p.getValue().getType())) {
+//            } else if (BigDecimal.class.equals(p.getValue().getType())) {
+//                if (null!=pRange.getStart()) {
+//                    query.append(" AND " + cName + "._text > :" + sName);
+//                    params.put(sName, String.valueOf(pRange.getStart()));
+//                }
+//                if (null!=pRange.getEnd()) {
+//                    query.append(" AND " + cName + "._text < :" + eName);
+//                    params.put(eName, String.valueOf(pRange.getEnd()));
+//                }
+//
+            } else if (String.class.equals(p.getValue().getType())) {
                 if (null!=pRange.getStart()) {
                     query.append(" AND " + cName + "._text > :" + sName);
-                    params.put(sName, String.valueOf(pRange.getStart()));
+                    params.put(sName, pRange.getStart());
                 }
                 if (null!=pRange.getEnd()) {
                     query.append(" AND " + cName + "._text < :" + eName);
-                    params.put(eName, String.valueOf(pRange.getEnd()));
+                    params.put(eName, pRange.getEnd());
                 }
 
             } else {

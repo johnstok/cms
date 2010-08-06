@@ -26,7 +26,6 @@
  */
 package ccc.plugins.s11n.json;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -74,13 +73,20 @@ public class PageCriteriaSerializer
                         Date.class,
                         jsonRange.getDate("start"),
                         jsonRange.getDate("end")));
-            } else if (BigDecimal.class.getName().equals(className)) {
+            } else if (String.class.getName().equals(className)) {
                 ranges.put(
                     name,
-                    new Range<BigDecimal>(
-                        BigDecimal.class,
-                        jsonRange.getBigDecimal("start"),
-                        jsonRange.getBigDecimal("end")));
+                    new Range<String>(
+                        String.class,
+                        jsonRange.getString("start"),
+                        jsonRange.getString("end")));
+//            } else if (BigDecimal.class.getName().equals(className)) {
+//                ranges.put(
+//                    name,
+//                    new Range<BigDecimal>(
+//                        BigDecimal.class,
+//                        jsonRange.getBigDecimal("start"),
+//                        jsonRange.getBigDecimal("end")));
             } else {
                 throw new RuntimeException(
                     "Unsupported range type: "+className);
@@ -130,10 +136,14 @@ public class PageCriteriaSerializer
                 final Range<Date> j = (Range<Date>) i.getValue();
                 range.set("start", j.getStart());
                 range.set("end", j.getEnd());
-            } else if (BigDecimal.class.equals(i.getValue().getType())) {
-                final Range<BigDecimal> j = (Range<BigDecimal>) i.getValue();
+            } else if (String.class.equals(i.getValue().getType())) {
+                final Range<String> j = (Range<String>) i.getValue();
                 range.set("start", j.getStart());
                 range.set("end", j.getEnd());
+//            } else if (BigDecimal.class.equals(i.getValue().getType())) {
+//                final Range<BigDecimal> j = (Range<BigDecimal>) i.getValue();
+//                range.set("start", j.getStart());
+//                range.set("end", j.getEnd());
             } else {
                 throw new RuntimeException(
                     "Unsupported range type: "+i.getValue().getType());

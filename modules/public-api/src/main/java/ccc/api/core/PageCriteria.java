@@ -26,7 +26,6 @@
  */
 package ccc.api.core;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -78,37 +77,37 @@ public class PageCriteria
     }
 
 
-    /**
-     * Match the specified paragraph.
-     *
-     * @param name The paragraph name.
-     * @param value The paragraph value.
-     */
-    public void matchParagraph(final String name, final long value) {
-        _paraMatches.add(Paragraph.fromNumber(name, value));
-    }
-
-
-    /**
-     * Match the specified paragraph.
-     *
-     * @param name The paragraph name.
-     * @param value The paragraph value.
-     */
-    public void matchParagraph(final String name, final double value) {
-        _paraMatches.add(Paragraph.fromNumber(name, value));
-    }
-
-
-    /**
-     * Match the specified paragraph.
-     *
-     * @param name The paragraph name.
-     * @param value The paragraph value.
-     */
-    public void matchParagraph(final String name, final BigDecimal value) {
-        _paraMatches.add(Paragraph.fromNumber(name, value));
-    }
+//    /**
+//     * Match the specified paragraph.
+//     *
+//     * @param name The paragraph name.
+//     * @param value The paragraph value.
+//     */
+//    public void matchParagraph(final String name, final long value) {
+//        _paraMatches.add(Paragraph.fromNumber(name, value));
+//    }
+//
+//
+//    /**
+//     * Match the specified paragraph.
+//     *
+//     * @param name The paragraph name.
+//     * @param value The paragraph value.
+//     */
+//    public void matchParagraph(final String name, final double value) {
+//        _paraMatches.add(Paragraph.fromNumber(name, value));
+//    }
+//
+//
+//    /**
+//     * Match the specified paragraph.
+//     *
+//     * @param name The paragraph name.
+//     * @param value The paragraph value.
+//     */
+//    public void matchParagraph(final String name, final BigDecimal value) {
+//        _paraMatches.add(Paragraph.fromNumber(name, value));
+//    }
 
 
     /**
@@ -122,6 +121,13 @@ public class PageCriteria
     }
 
 
+    /**
+     * Filter pages within a range.
+     *
+     * @param name The name of the paragraph to filter on.
+     * @param from The starting filter value.
+     * @param to   The ending filter value.
+     */
     public void rangeParagraph(final String name,
                                final Date from,
                                final Date to) {
@@ -129,48 +135,62 @@ public class PageCriteria
     }
 
 
+    /**
+     * Filter pages within a range.
+     *
+     * @param name The name of the paragraph to filter on.
+     * @param from The starting filter value.
+     * @param to   The ending filter value.
+     */
     public void rangeParagraph(final String name,
-                               final Long from,
-                               final Long to) {
-        final BigDecimal fDecimal = (null==from) ? null : new BigDecimal(from);
-        final BigDecimal tDecimal = (null==to)   ? null : new BigDecimal(to);
-        rangeParagraph(name, fDecimal, tDecimal);
+                               final String from,
+                               final String to) {
+        _paraRanges.put(name, new Range<String>(String.class, from, to));
     }
 
 
-    public void rangeParagraph(final String name,
-                               final Double from,
-                               final Double to) {
-        final BigDecimal fDecimal = (null==from) ? null : new BigDecimal(from);
-        final BigDecimal tDecimal = (null==to)   ? null : new BigDecimal(to);
-        rangeParagraph(name, fDecimal, tDecimal);
-    }
-
-
-    public void rangeParagraph(final String name,
-                               final Float from,
-                               final Float to) {
-        final BigDecimal fDecimal = (null==from) ? null : new BigDecimal(from);
-        final BigDecimal tDecimal = (null==to)   ? null : new BigDecimal(to);
-        rangeParagraph(name, fDecimal, tDecimal);
-    }
-
-
-    public void rangeParagraph(final String name,
-                               final Integer from,
-                               final Integer to) {
-        final BigDecimal fDecimal = (null==from) ? null : new BigDecimal(from);
-        final BigDecimal tDecimal = (null==to)   ? null : new BigDecimal(to);
-        rangeParagraph(name, fDecimal, tDecimal);
-    }
-
-
-    public void rangeParagraph(final String name,
-                               final BigDecimal from,
-                               final BigDecimal to) {
-        _paraRanges.put(
-            name, new Range<BigDecimal>(BigDecimal.class, from, to));
-    }
+//    public void rangeParagraph(final String name,
+//                               final Long from,
+//                               final Long to) {
+//        final BigDecimal fDecimal = (null==from) ? null : new BigDecimal(from);
+//        final BigDecimal tDecimal = (null==to)   ? null : new BigDecimal(to);
+//        rangeParagraph(name, fDecimal, tDecimal);
+//    }
+//
+//
+//    public void rangeParagraph(final String name,
+//                               final Double from,
+//                               final Double to) {
+//        final BigDecimal fDecimal = (null==from) ? null : new BigDecimal(from);
+//        final BigDecimal tDecimal = (null==to)   ? null : new BigDecimal(to);
+//        rangeParagraph(name, fDecimal, tDecimal);
+//    }
+//
+//
+//    public void rangeParagraph(final String name,
+//                               final Float from,
+//                               final Float to) {
+//        final BigDecimal fDecimal = (null==from) ? null : new BigDecimal(from);
+//        final BigDecimal tDecimal = (null==to)   ? null : new BigDecimal(to);
+//        rangeParagraph(name, fDecimal, tDecimal);
+//    }
+//
+//
+//    public void rangeParagraph(final String name,
+//                               final Integer from,
+//                               final Integer to) {
+//        final BigDecimal fDecimal = (null==from) ? null : new BigDecimal(from);
+//        final BigDecimal tDecimal = (null==to)   ? null : new BigDecimal(to);
+//        rangeParagraph(name, fDecimal, tDecimal);
+//    }
+//
+//
+//    public void rangeParagraph(final String name,
+//                               final BigDecimal from,
+//                               final BigDecimal to) {
+//        _paraRanges.put(
+//            name, new Range<BigDecimal>(BigDecimal.class, from, to));
+//    }
 
 
     /**
@@ -275,6 +295,11 @@ public class PageCriteria
     }
 
 
+    /**
+     * Query.
+     *
+     * @return Returns true if results should be sorted; false otherwise.
+     */
     public boolean isSortedByPara() {
         return
             null!=_sortField
