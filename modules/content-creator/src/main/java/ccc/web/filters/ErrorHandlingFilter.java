@@ -149,11 +149,12 @@ public class ErrorHandlingFilter
      * @param response The response.
      * @param requestEx The exception we encountered.
      * @param <T> The type of exception encountered.
+     * @throws IOException
      */
     protected <T extends Exception> void dispatchError(
                                              final HttpServletRequest request,
                                              final HttpServletResponse response,
-                                             final T requestEx) {
+                                             final T requestEx) throws IOException {
 
         final UUID errorId = UUID.randomUUID();
         request.setAttribute(SessionKeys.EXCEPTION_CODE, errorId.toString());
@@ -170,7 +171,9 @@ public class ErrorHandlingFilter
             } catch (final Exception e1) {
                 LOG.warn("Failed writing error code to request: "+errorId, e1);
             }
-
+        } else if(requestEx.getCause() != null &&
+                requestEx.getCause().getClass()== NotFoundException.class) {
+            dispatchNotFound(request, response);
         } else {
             /* Let the container forward to the error handler in web.xml.
              * The exception will be logged by the container.             */
