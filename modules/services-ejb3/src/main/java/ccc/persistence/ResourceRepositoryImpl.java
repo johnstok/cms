@@ -64,7 +64,7 @@ import ccc.domain.TemplateEntity;
  */
 class ResourceRepositoryImpl implements ResourceRepository {
 
-    private static final int MAX_RESULTS = 1000;
+    private static final int MAX_RESULTS = 2000;
     private final Repository _repository;
 
 

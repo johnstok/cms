@@ -504,6 +504,36 @@ public class ResourceAcceptanceTest
         }
     }
 
+    /**
+     * Test.
+     */
+    public void testListOver1000() {
+
+        // ARRANGE
+        final ResourceSummary f = tempFolder();
+        for (int i=0;i<1100;i++) {
+            tempPage(f.getId(), null);
+        }
+
+        // ACT
+        PagedCollection<ResourceSummary> list = getCommands().list(f.getId(),
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            "title",
+            SortOrder.ASC,
+            1,
+            1300);
+
+        // ASSERT
+        assertEquals(1100, list.getTotalCount());
+        assertEquals(1100, list.getElements().size());
+    }
+
 
 //    /**
 //     * Test.
