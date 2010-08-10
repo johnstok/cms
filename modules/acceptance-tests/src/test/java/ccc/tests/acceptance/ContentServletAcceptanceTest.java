@@ -48,6 +48,45 @@ public class ContentServletAcceptanceTest
     /**
      * Test.
      */
+    public void testPostRedirectReturns302() {
+
+        // ARRANGE
+        final Resource metadata = new Resource();
+        metadata.setTitle("foo");
+        metadata.setDescription("foo");
+        metadata.setTags(new HashSet<String>());
+        metadata.setMetadata(Collections.singletonMap("executable", "true"));
+        final String fName = UUID.randomUUID().toString();
+        final ResourceSummary filesFolder =
+            getCommands().resourceForPath("");
+        final ResourceSummary script =
+            getFiles().createTextFile(
+                new File(
+                    filesFolder.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "response.sendRedirect("
+                        + "request.getContextPath()+'/welcome');"));
+        getCommands().lock(script.getId());
+        getCommands().updateMetadata(script.getId(), metadata);
+        getCommands().publish(script.getId());
+
+        // ACT
+        try {
+            getBrowser().post(script);
+            fail();
+
+            // ASSERT
+        } catch (final RuntimeException e) {
+            assertTrue(is302(e));
+        }
+    }
+
+    /**
+     * Test.
+     */
     public void testForwardedRequestsForMissingResourcesReturn500() {
 
         // ARRANGE
@@ -78,7 +117,7 @@ public class ContentServletAcceptanceTest
             getBrowser().previewContent(script, false);
             fail();
 
-        // ASSERT
+            // ASSERT
         } catch (final RuntimeException e) {
             assertTrue(is500(e));
         }
@@ -161,5 +200,10 @@ public class ContentServletAcceptanceTest
 
     private boolean is500(final RuntimeException e) {
         return e.getMessage().startsWith("500: <!-- An error occurred: ");
+    }
+
+
+    private boolean is302(final RuntimeException e) {
+        return e.getMessage().startsWith("302: ");
     }
 }

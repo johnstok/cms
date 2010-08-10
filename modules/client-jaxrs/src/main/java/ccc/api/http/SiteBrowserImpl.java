@@ -33,13 +33,14 @@ import java.io.IOException;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
 
 
 /**
- * TODO: Add a description for this type.
+ * A simple HTTP implementation of the site browser API.
  *
  * @author Civic Computing Ltd.
  */
@@ -86,6 +87,27 @@ public class SiteBrowserImpl
             throw new InternalError(); // FIXME: Report error.
         } finally {
             get.releaseConnection();
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String post(final ResourceSummary rs) {
+        final PostMethod post = new PostMethod(_hostUrl+rs.getAbsolutePath());
+        try {
+            _httpClient.executeMethod(post);
+            final int status = post.getStatusCode();
+            if (OK==status) {
+                return post.getResponseBodyAsString();
+            }
+            throw new RuntimeException(
+                status+": "+post.getResponseBodyAsString());
+        } catch (final HttpException e) {
+            throw new InternalError(); // FIXME: Report error.
+        } catch (final IOException e) {
+            throw new InternalError(); // FIXME: Report error.
+        } finally {
+            post.releaseConnection();
         }
     }
 
