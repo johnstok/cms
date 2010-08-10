@@ -44,6 +44,7 @@ import ccc.api.core.ServiceLocator;
 import ccc.api.types.Paragraph;
 import ccc.commons.Testing;
 import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
 import ccc.plugins.scripting.TextProcessor;
 
@@ -57,8 +58,10 @@ public class VelocityProcessorTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testFileParsing() {
+    public void testFileParsing() throws Exception {
 
         // ARRANGE
         expect(_reader.fileContentsFromPath("/a/b/c", "UTF8"))
@@ -80,8 +83,10 @@ public class VelocityProcessorTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testFileInclude() {
+    public void testFileInclude() throws Exception {
 
         // ARRANGE
         expect(_reader.fileContentsFromPath("/a/b/c", "UTF8"))
@@ -102,8 +107,10 @@ public class VelocityProcessorTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testRenderToOutputStream() {
+    public void testRenderToOutputStream() throws Exception {
 
         // ARRANGE
         final StringWriter output = new StringWriter();
@@ -118,8 +125,10 @@ public class VelocityProcessorTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testRenderToString() {
+    public void testRenderToString() throws Exception {
 
         // ARRANGE
         final Context ctxt = new Context();
@@ -133,8 +142,10 @@ public class VelocityProcessorTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testRenderResource() {
+    public void testRenderResource() throws Exception {
 
         // ARRANGE
         final Page foo =
@@ -193,7 +204,10 @@ public class VelocityProcessorTest extends TestCase {
 
 
         // ASSERT
-        } catch (final RuntimeException e) {
+        } catch (final ProcessingException e) {
+            assertEquals(
+                "Error processing script 'test' [line number 1].",
+                e.getMessage());
             assertTrue(e.getCause() instanceof ParseErrorException);
             assertTrue(e.getCause().getMessage().startsWith(expectedMessage));
         }
@@ -225,7 +239,10 @@ public class VelocityProcessorTest extends TestCase {
                 ctxt);
 
         // ASSERT
-        } catch (final RuntimeException e) {
+        } catch (final ProcessingException e) {
+            assertEquals(
+                "Error processing script 'test' [line number 1].",
+                e.getMessage());
             assertTrue(e.getCause() instanceof MethodInvocationException);
             assertTrue(e.getCause().getMessage().startsWith(expectedMessage));
         }
@@ -234,8 +251,10 @@ public class VelocityProcessorTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testSecurityPass() {
+    public void testSecurityPass() throws Exception {
 
         // ARRANGE
         final String template =
@@ -255,8 +274,10 @@ public class VelocityProcessorTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testSecurityAllowsClassName() {
+    public void testSecurityAllowsClassName() throws Exception {
 
         // ARRANGE
         final String template = "$resource.Class.Name";
@@ -273,8 +294,10 @@ public class VelocityProcessorTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testSecurityBlockedClassMethods() {
+    public void testSecurityBlockedClassMethods() throws Exception {
 
         // ARRANGE
         final String template = "$resource.Class.Methods";
@@ -291,8 +314,10 @@ public class VelocityProcessorTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testSecurityBlockedClassClassLoader() {
+    public void testSecurityBlockedClassClassLoader() throws Exception {
 
         // ARRANGE
         final String template = "$resource.Class.ClassLoader";
@@ -309,8 +334,10 @@ public class VelocityProcessorTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testSecurityBlockedNewInstance() {
+    public void testSecurityBlockedNewInstance() throws Exception {
 
         // ARRANGE
         final String template =

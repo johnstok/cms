@@ -48,7 +48,7 @@ public class ContentServletAcceptanceTest
     /**
      * Test.
      */
-    public void testForwardedRequestsForMissingResourcesReturn404() {
+    public void testForwardedRequestsForMissingResourcesReturn500() {
 
         // ARRANGE
         final Resource metadata = new Resource();
@@ -80,7 +80,7 @@ public class ContentServletAcceptanceTest
 
         // ASSERT
         } catch (final RuntimeException e) {
-            assertTrue(e.getMessage().startsWith("404"));
+            assertTrue(is500(e));
         }
     }
 
@@ -154,8 +154,12 @@ public class ContentServletAcceptanceTest
 
         // ASSERT
         } catch (final RuntimeException e) {
-            assertTrue(
-                e.getMessage().startsWith("500: <!-- An error occurred: "));
+            assertTrue(is500(e));
         }
+    }
+
+
+    private boolean is500(final RuntimeException e) {
+        return e.getMessage().startsWith("500: <!-- An error occurred: ");
     }
 }

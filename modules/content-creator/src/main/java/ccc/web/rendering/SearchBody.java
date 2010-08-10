@@ -39,8 +39,10 @@ import ccc.api.types.DBC;
 import ccc.api.types.SearchResult;
 import ccc.commons.Exceptions;
 import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
 import ccc.plugins.scripting.TextProcessor;
+import ccc.web.exceptions.RequestFailedException;
 
 
 /**
@@ -103,7 +105,11 @@ public class SearchBody
         final Script templateString = _template;
         final Writer w = new OutputStreamWriter(os, charset);
 
-        processor.render(templateString, w, context);
+        try {
+            processor.render(templateString, w, context);
+        } catch (final ProcessingException e) {
+            throw new RequestFailedException(e);
+        }
     }
 
 

@@ -42,6 +42,7 @@ import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
 
 
@@ -154,10 +155,14 @@ public abstract class Command<T> {
         context.add("command", this);
         context.add("result", result);
 
-        new PluginFactory().createScripting().render(
-            new Script(script, "after_"+getType()),
-            new PrintWriter(System.out),
-            context);
+        try {
+            new PluginFactory().createScripting().render(
+                new Script(script, "after_"+getType()),
+                new PrintWriter(System.out),
+                context);
+        } catch (final ProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -180,10 +185,14 @@ public abstract class Command<T> {
         context.add("happenedOn", happenedOn);
         context.add("command", this);
 
-        new PluginFactory().createScripting().render(
-            new Script(script, "before_"+getType()),
-            new PrintWriter(System.out),
-            context);
+        try {
+            new PluginFactory().createScripting().render(
+                new Script(script, "before_"+getType()),
+                new PrintWriter(System.out),
+                context);
+        } catch (final ProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

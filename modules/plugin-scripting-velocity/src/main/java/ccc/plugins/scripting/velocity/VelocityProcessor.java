@@ -27,7 +27,6 @@
 package ccc.plugins.scripting.velocity;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 import java.util.Map;
@@ -42,9 +41,10 @@ import org.apache.velocity.runtime.RuntimeConstants;
 
 import ccc.api.core.ServiceLocator;
 import ccc.api.types.DBC;
+import ccc.plugins.scripting.AbstractTextProcessor;
 import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
-import ccc.plugins.scripting.TextProcessor;
 
 
 /**
@@ -53,23 +53,14 @@ import ccc.plugins.scripting.TextProcessor;
  * @author Civic Computing Ltd.
  */
 public class VelocityProcessor
-    implements
-        TextProcessor {
-
-
-    /** {@inheritDoc} */
-    public String render(final Script template,
-                         final Context context) {
-        final StringWriter renderedOutput = new StringWriter();
-        render(template, renderedOutput, context);
-        return renderedOutput.toString();
-    }
+    extends
+        AbstractTextProcessor {
 
 
     /** {@inheritDoc} */
     public void render(final Script template,
                        final Writer output,
-                       final Context ctxt) {
+                       final Context ctxt) throws ProcessingException {
 
         DBC.require().notNull(template);
         DBC.require().notNull(output);
@@ -126,21 +117,26 @@ public class VelocityProcessor
             output.flush();
 
         } catch (final ParseErrorException e) {
-            handleException(e, template.getTitle());
+            handleException(
+                e,
+                "Velocity",
+                template.getTitle(),
+                e.getLineNumber(),
+                e.getColumnNumber());
         } catch (final MethodInvocationException e) {
-            handleException(e, template.getTitle());
+            handleException(
+                e,
+                "Velocity",
+                template.getTitle(),
+                e.getLineNumber(),
+                e.getColumnNumber());
         } catch (final ResourceNotFoundException e) {
-            handleException(e, template.getTitle());
+            handleException(e, "Velocity", template.getTitle(), -1, -1);
         } catch (final IOException e) {
-            handleException(e, template.getTitle());
+            handleException(e, "Velocity", template.getTitle(), -1, -1);
         } catch (final Exception e) {
-            handleException(e, template.getTitle());
+            handleException(e, "Velocity", template.getTitle(), -1, -1);
         }
-    }
-
-
-    private void handleException(final Exception e, final String title) {
-        throw new RuntimeException("Error in template '"+title+"'.", e);
     }
 
 

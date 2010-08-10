@@ -33,8 +33,10 @@ import java.nio.charset.Charset;
 
 import ccc.api.types.DBC;
 import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
 import ccc.plugins.scripting.TextProcessor;
+import ccc.web.exceptions.RequestFailedException;
 
 
 /**
@@ -69,7 +71,11 @@ public class PageBody
         final Script t = _template;
         final Writer w = new OutputStreamWriter(os, charset);
 
-        processor.render(t, w, context);
+        try {
+            processor.render(t, w, context);
+        } catch (final ProcessingException e) {
+            throw new RequestFailedException(e);
+        }
     }
 
 

@@ -24,44 +24,53 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.scripting.rhino;
+package ccc.web.exceptions;
 
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
-
-import ccc.commons.Resources;
-import ccc.plugins.scripting.Context;
-import ccc.plugins.scripting.Script;
 
 
 /**
- * Simple script runner for testing.
+ * Abstract super-type for web specific exceptions.
  *
  * @author Civic Computing Ltd.
  */
-public final class ScriptRunnerApp {
+public abstract class WebException
+    extends
+        RuntimeException {
 
-    private ScriptRunnerApp() { super(); }
 
     /**
-     * Application entry point.
-     *
-     * @param args Arguments to the application.
+     * Constructor.
      */
-    public static void main(final String[] args) throws Exception {
+    public WebException() { super(); }
 
-        final Charset utf8 = Charset.forName("UTF-8");
 
-        final String script =
-            Resources.readIntoString(
-                ScriptRunnerApp.class.getResource("/test.javascript"),
-                utf8);
-        final ScriptRunner sr = new ScriptRunner();
-
-        sr.render(
-            new Script(script, "test"),
-            new OutputStreamWriter(System.out, utf8),
-            new Context());
+    /**
+     * Constructor.
+     *
+     * @param message The message describing the exception.
+     */
+    public WebException(final String message) {
+        super(message);
     }
 
+
+    /**
+     * Constructor.
+     *
+     * @param cause The original cause of the exception.
+     */
+    public WebException(final Throwable cause) {
+        super(cause);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param message The message describing the exception.
+     * @param cause   The original cause of the exception.
+     */
+    public WebException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 }

@@ -24,44 +24,31 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.scripting.rhino;
-
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
-
-import ccc.commons.Resources;
-import ccc.plugins.scripting.Context;
-import ccc.plugins.scripting.Script;
+package ccc.plugins.scripting;
 
 
 /**
- * Simple script runner for testing.
+ * Exception thrown when script processing fails.
  *
  * @author Civic Computing Ltd.
  */
-public final class ScriptRunnerApp {
+public class ProcessingException
+    extends
+        Exception {
 
-    private ScriptRunnerApp() { super(); }
 
     /**
-     * Application entry point.
+     * Constructor.
      *
-     * @param args Arguments to the application.
+     * @param title  The title of the script.
+     * @param lineNo The line of the script that failed.
+     * @param cause  The cause of the failure.
      */
-    public static void main(final String[] args) throws Exception {
-
-        final Charset utf8 = Charset.forName("UTF-8");
-
-        final String script =
-            Resources.readIntoString(
-                ScriptRunnerApp.class.getResource("/test.javascript"),
-                utf8);
-        final ScriptRunner sr = new ScriptRunner();
-
-        sr.render(
-            new Script(script, "test"),
-            new OutputStreamWriter(System.out, utf8),
-            new Context());
+    public ProcessingException(final String title,
+                               final int lineNo,
+                               final Throwable cause) {
+        super(
+            "Error processing script '"+title+"' [line number "+lineNo+"].",
+            cause);
     }
-
 }

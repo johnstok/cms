@@ -43,6 +43,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.types.HttpStatusCode;
 import ccc.web.SessionKeys;
+import ccc.web.exceptions.RequestFailedException;
 import ccc.web.rendering.AuthenticationRequiredException;
 import ccc.web.rendering.NotFoundException;
 import ccc.web.rendering.RedirectRequiredException;
@@ -67,8 +68,7 @@ public class ErrorHandlingFilter
     @Override
     public void doFilter(final ServletRequest request,
                          final ServletResponse response,
-                         final FilterChain chain)
-                                        throws IOException, ServletException {
+                         final FilterChain chain) throws IOException {
 
         final HttpServletResponse resp = (HttpServletResponse) response;
         final HttpServletRequest  req  = (HttpServletRequest)  request;
@@ -87,14 +87,17 @@ public class ErrorHandlingFilter
             final String relUri = _loginUri + "?tg=" + e.getTarget();
             dispatchRedirect(req, resp, relUri);
 
-        } catch (final RuntimeException e) {
+        } catch (final RequestFailedException e) {
             dispatchError(req, resp, e);
+
+        } catch (final RuntimeException e) {
+            dispatchError(req, resp, new RequestFailedException(e));
 
         } catch (final IOException e) {
-            dispatchError(req, resp, e);
+            dispatchError(req, resp, new RequestFailedException(e));
 
         } catch (final ServletException e) {
-            dispatchError(req, resp, e);
+            dispatchError(req, resp, new RequestFailedException(e));
         }
     }
 
@@ -148,18 +151,15 @@ public class ErrorHandlingFilter
      * @param request The request.
      * @param response The response.
      * @param requestEx The exception we encountered.
-     * @param <T> The type of exception encountered.
-     * @throws IOException
      */
-    protected <T extends Exception> void dispatchError(
-                                             final HttpServletRequest request,
-                                             final HttpServletResponse response,
-                                             final T requestEx) throws IOException {
+    protected void dispatchError(final HttpServletRequest request,
+                                 final HttpServletResponse response,
+                                 final RequestFailedException requestEx) {
 
-        final UUID errorId = UUID.randomUUID();
+        final UUID errorId = requestEx.getId();
         request.setAttribute(SessionKeys.EXCEPTION_CODE, errorId.toString());
 
-        if (clientAborted(requestEx)) {
+        if (clientAborted(requestEx.getCause())) {
             LOG.warn("Ignoring ClientAbortException.");
             return;
 
@@ -171,15 +171,11 @@ public class ErrorHandlingFilter
             } catch (final Exception e1) {
                 LOG.warn("Failed writing error code to request: "+errorId, e1);
             }
-        } else if(requestEx.getCause() != null &&
-                requestEx.getCause().getClass()== NotFoundException.class) {
-            dispatchNotFound(request, response);
+
         } else {
             /* Let the container forward to the error handler in web.xml.
-             * The exception will be logged by the container.             */
-            throw new RuntimeException(
-                "Unhandled servlet error: "+errorId, requestEx);
-
+             * The exception will be logged by the container.            */
+            throw requestEx;
         }
     }
 

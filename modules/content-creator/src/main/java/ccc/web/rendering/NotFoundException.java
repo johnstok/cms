@@ -26,7 +26,7 @@
  */
 package ccc.web.rendering;
 
-
+import ccc.web.exceptions.WebException;
 
 
 /**
@@ -34,10 +34,10 @@ package ccc.web.rendering;
  *
  * @author Civic Computing Ltd.
  */
-@Deprecated // FIXME: Use the API exception.
+//TODO: Move to ccc.web.exceptions package.
 public class NotFoundException
     extends
-        RuntimeException {
+        WebException {
 
     /**
      * Constructor.

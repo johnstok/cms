@@ -38,8 +38,10 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.commons.Resources;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
 import ccc.plugins.scripting.TextProcessor;
+import ccc.web.exceptions.RequestFailedException;
 
 
 /**
@@ -84,7 +86,11 @@ public class ScriptBody
         final TextProcessor scriptRunner =
             new PluginFactory().createScripting();
         scriptRunner.setWhitelist(whiteList);
-        scriptRunner.render(_script, pw, context);
+        try {
+            scriptRunner.render(_script, pw, context);
+        } catch (final ProcessingException e) {
+            throw new RequestFailedException(e);
+        }
     }
 
 

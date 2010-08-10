@@ -24,44 +24,48 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.scripting.rhino;
+package ccc.web.exceptions;
 
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
+import java.util.UUID;
 
-import ccc.commons.Resources;
-import ccc.plugins.scripting.Context;
-import ccc.plugins.scripting.Script;
+import ccc.api.types.DBC;
 
 
 /**
- * Simple script runner for testing.
+ * An exception indicating an error during the processing of a request.
  *
  * @author Civic Computing Ltd.
  */
-public final class ScriptRunnerApp {
+public class RequestFailedException
+    extends
+        WebException {
 
-    private ScriptRunnerApp() { super(); }
+    private static final String BASIC_MESSAGE = "Failed to complete request";
+
+    private final UUID _uuid = UUID.randomUUID();
+
 
     /**
-     * Application entry point.
+     * Constructor.
      *
-     * @param args Arguments to the application.
+     * @param cause The original cause of the exception.
      */
-    public static void main(final String[] args) throws Exception {
-
-        final Charset utf8 = Charset.forName("UTF-8");
-
-        final String script =
-            Resources.readIntoString(
-                ScriptRunnerApp.class.getResource("/test.javascript"),
-                utf8);
-        final ScriptRunner sr = new ScriptRunner();
-
-        sr.render(
-            new Script(script, "test"),
-            new OutputStreamWriter(System.out, utf8),
-            new Context());
+    public RequestFailedException(final Throwable cause) {
+        super(
+            BASIC_MESSAGE+".",
+            DBC.require().notNull(cause));
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return The unique ID for this exception.
+     */
+    public UUID getId() { return _uuid; }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String getMessage() { return BASIC_MESSAGE+": "+getId(); }
 }
