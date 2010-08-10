@@ -26,11 +26,17 @@
  */
 package ccc.tests.acceptance;
 
+import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
+import ccc.api.core.Page;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.Paragraph;
 import ccc.api.types.SearchResult;
 import ccc.api.types.SortOrder;
 
@@ -121,4 +127,287 @@ public class SearchEngineAcceptanceTest
         assertEquals(1, result.totalResults());
         assertEquals(page.getId(), result.hits().iterator().next());
     }
+
+
+    /**
+     * Test.
+     * @throws Exception If the test fails.
+     */
+    public void testIdSearch() throws Exception {
+
+        // ARRANGE
+        final int tenSecs = 10000;
+        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary page   = tempPage(parent.getId(), null);
+        final String searchTerm = "id:"+page.getId();
+
+        updateMetadata(page);
+
+        getSearch().index();
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     * @throws Exception If the test fails.
+     */
+    public void testPathSearch() throws Exception {
+
+        // ARRANGE
+        final int tenSecs = 10000;
+        final ResourceSummary parent = tempFolder();
+        final ResourceSummary page   = tempPage(parent.getId(), null);
+        final String searchTerm = "path:/content"+parent.getAbsolutePath()+"*";
+
+        final Resource metadata = new Resource();
+        metadata.setTitle("pathTest1");
+        metadata.setDescription("");
+        metadata.setTags(new HashSet<String>());
+        metadata.setMetadata(Collections.singletonMap("searchable", "true"));
+
+        getCommands().lock(page.getId());
+        getCommands().updateMetadata(page.getId(), metadata);
+
+        getCommands().lock(parent.getId());
+        getCommands().updateMetadata(parent.getId(), metadata);
+
+        getCommands().publish(parent.getId());
+        getCommands().publish(page.getId());
+
+        getSearch().index();
+        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     * @throws Exception If the test fails.
+     */
+    public void testNameSearch() throws Exception {
+
+        // ARRANGE
+        final int tenSecs = 10000;
+        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary page   = tempPage(parent.getId(), null);
+        final String searchTerm = "name:"+page.getName();
+
+        updateMetadata(page);
+
+        getSearch().index();
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     * @throws Exception If the test fails.
+     */
+    public void testTitleSearch() throws Exception {
+
+        // ARRANGE
+        final int tenSecs = 10000;
+        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary page   = tempPage(parent.getId(), null);
+        page.setTitle("searchTitle"+page.getId());
+        updateMetadata(page);
+        final String searchTerm = "title:"+page.getTitle();
+
+        getSearch().index();
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+//  TODO: Cannot be run more than once
+//    /**
+//     * Test.
+//     * @throws Exception If the test fails.
+//     */
+//    public void testTagSearch() throws Exception {
+//
+//        // ARRANGE
+//        final int tenSecs = 10000;
+//        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
+//        final ResourceSummary parent = getCommands().resourceForPath("");
+//        final ResourceSummary page   = tempPage(parent.getId(), null);
+//
+//        final String term = "sampleword";
+//
+//        final Resource metadata = new Resource();
+//        metadata.setTitle(page.getTitle());
+//        metadata.setDescription("");
+//
+//        HashSet<String> tags = new HashSet<String>();
+//        tags.add("not important");
+//        tags.add(term);
+//        tags.add("test");
+//
+//        metadata.setTags(tags);
+//        metadata.setMetadata(Collections.singletonMap("searchable", "true"));
+//        getCommands().lock(page.getId());
+//        getCommands().updateMetadata(page.getId(), metadata);
+//        getCommands().publish(page.getId());
+//
+//        getSearch().index();
+//
+//        // ACT
+//        final SearchResult result =
+//            getSearch().find("tags:"+term, "title", SortOrder.ASC, 10, 0);
+//
+//        // ASSERT
+//        assertEquals(1, result.totalResults());
+//        assertEquals(page.getId(), result.hits().iterator().next());
+//    }
+
+
+    /**
+     * Test.
+     * @throws Exception If the test fails.
+     */
+    public void testDateSearch() throws Exception {
+
+        // ARRANGE
+        final int tenSecs = 10000;
+        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary pageResource   = tempPage(parent.getId(), null);
+        Page page =  getPages().retrieve(pageResource.getId());
+
+        Date testDate = new Date();
+
+        updateMetadata(pageResource);
+        Set<Paragraph> paragraphs = new HashSet<Paragraph>();
+        paragraphs.add(Paragraph.fromDate("testDate", testDate));
+
+        page.setParagraphs(paragraphs);
+        getPages().update(page.getId(), page);
+
+        final String searchTerm = "testDate:["+(testDate.getTime()-100)
+                                  +" TO "+(testDate.getTime()+100)+"]";
+        getSearch().index();
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     * @throws Exception If the test fails.
+     */
+    public void testNumericSearch() throws Exception {
+
+        // ARRANGE
+        final int tenSecs = 10000;
+        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary pageResource   = tempPage(parent.getId(), null);
+        Page page =  getPages().retrieve(pageResource.getId());
+
+        int testInt = new Random().nextInt();
+
+        BigDecimal testNumber = new BigDecimal(testInt);
+
+        updateMetadata(pageResource);
+        Set<Paragraph> paragraphs = new HashSet<Paragraph>();
+        paragraphs.add(Paragraph.fromNumber("testNumber", testNumber));
+
+        page.setParagraphs(paragraphs);
+        getPages().update(page.getId(), page);
+
+        final String searchTerm = "testNumber:["+testInt+".0 TO "+testInt+".0]";
+        getSearch().index();
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     * @throws Exception If the test fails.
+     */
+    public void testBooleanSearch() throws Exception {
+
+        // ARRANGE
+        final int tenSecs = 10000;
+        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary pageResource   = tempPage(parent.getId(), null);
+        Page page =  getPages().retrieve(pageResource.getId());
+
+        int testInt = new Random().nextInt();
+
+        updateMetadata(pageResource);
+        Set<Paragraph> paragraphs = new HashSet<Paragraph>();
+        paragraphs.add(Paragraph.fromBoolean("testBoolean"+testInt, false));
+
+        page.setParagraphs(paragraphs);
+        getPages().update(page.getId(), page);
+
+        final String searchTerm = "testBoolean"+testInt+":false";
+        getSearch().index();
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+    private void updateMetadata(final ResourceSummary page) {
+
+        final Resource metadata = new Resource();
+        metadata.setTitle(page.getTitle());
+        metadata.setDescription("");
+        metadata.setTags(new HashSet<String>());
+        metadata.setMetadata(Collections.singletonMap("searchable", "true"));
+        getCommands().lock(page.getId());
+        getCommands().updateMetadata(page.getId(), metadata);
+        getCommands().publish(page.getId());
+    }
+
 }
