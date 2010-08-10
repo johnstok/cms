@@ -427,47 +427,73 @@ public class SimpleLuceneFSTest
     }
 
 
-//    /**
-//     * Test.
-//     *
-//     * @throws Exception If the test fails.
-//     */
-//    public void testSuccessfulIndexAndFindSimilar() throws Exception {
-//
-//        // ARRANGE
-//        final UUID id1 = UUID.randomUUID();
-//        final UUID id2 = UUID.randomUUID();
-//        final SimpleLuceneFS searchEngine =
-//            new SimpleLuceneFS(
-//                new File("target/test4/lucene").getAbsolutePath());
-//
-//        // ACT
-//        searchEngine.startUpdate();
-//        searchEngine.createDocument(
-//            id1,
-//            new ResourcePath("/foo"),
-//            new ResourceName("foo"),
-//            "foo",
-//            Collections.singleton("foo"),
-//            "foo",
-//            new HashSet<Paragraph>());
-//        searchEngine.createDocument(
-//            id2,
-//            new ResourcePath("/bar"),
-//            new ResourceName("foo"),
-//            "foo",
-//            Collections.singleton("foo"),
-//            "foo",
-//            new HashSet<Paragraph>());
-//        searchEngine.commitUpdate();
-//        final SearchResult result =
-//            searchEngine.similar(id1.toString(), 5, 0);
-//
-//        // ASSERT
-//        assertEquals(1, result.totalResults());
-//        assertEquals(result.hits().size(), 1);
-//        assertEquals(id2, result.hits().iterator().next());
-//    }
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testSuccessfulIndexAndFindSimilar() throws Exception {
+
+        // ARRANGE
+        final UUID id1 = UUID.randomUUID();
+        final UUID id2 = UUID.randomUUID();
+        final UUID id3 = UUID.randomUUID();
+        final SimpleLuceneFS searchEngine =
+            new SimpleLuceneFS(
+                new File("target/test4/lucene").getAbsolutePath());
+
+        // ACT
+        Paragraph p1 = Paragraph.fromText("content",
+         "Test text that is similar to the other text in the same test case.");
+        HashSet<Paragraph> paras1 = new HashSet<Paragraph>();
+        paras1.add(p1);
+
+        Paragraph p2 = Paragraph.fromText("content",
+        "Test text that is quite similar to the other text in the same  case.");
+        HashSet<Paragraph> paras2 = new HashSet<Paragraph>();
+        paras2.add(p2);
+
+        Paragraph p3 = Paragraph.fromText("content",
+        "Totally different store here with no common parts.");
+        HashSet<Paragraph> paras3 = new HashSet<Paragraph>();
+        paras3.add(p3);
+
+        searchEngine.startUpdate();
+        searchEngine.createDocument(
+            id1,
+            new ResourcePath("/foo"),
+            new ResourceName("foo"),
+            "foo",
+            Collections.singleton("foo"),
+            p1.getText(),
+            paras1);
+        searchEngine.createDocument(
+            id2,
+            new ResourcePath("/bar"),
+            new ResourceName("foo"),
+            "foo",
+            Collections.singleton("foo"),
+            p2.getText(),
+            paras2);
+        searchEngine.createDocument(
+            id3,
+            new ResourcePath("/baz"),
+            new ResourceName("foo"),
+            "foo",
+            Collections.singleton("foo"),
+            p3.getText(),
+            paras3);
+        searchEngine.commitUpdate();
+        final SearchResult result =
+            searchEngine.similar(id1.toString(), 5, 0);
+
+        // ASSERT
+        assertEquals(2, result.totalResults());
+        assertEquals(result.hits().size(), 2);
+        assertEquals(true, result.hits().contains(id1));
+        assertEquals(true, result.hits().contains(id2));
+        assertEquals(false, result.hits().contains(id3));
+    }
 
 
     /**
