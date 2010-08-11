@@ -44,7 +44,7 @@ public final class Paragraph implements Serializable {
     /** MAX_NAME_LENGTH : int. */
     static final int MAX_NAME_LENGTH = 256;
     /** MAX_TEXT_LENGTH : int. */
-    static final int MAX_TEXT_LENGTH = 214748364;
+    static final int MAX_TEXT_LENGTH = 2147483647;
 
     private String        _text;
     private ParagraphType _type;
