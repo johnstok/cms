@@ -1569,4 +1569,11 @@ public interface UIConstants {
      * @return The constant, in the appropriate locale.
      */
     String view();
+
+    /**
+     * "Too many fields.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String tooManyFields();
 }
