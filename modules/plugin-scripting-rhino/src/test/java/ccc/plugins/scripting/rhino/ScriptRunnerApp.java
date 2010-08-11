@@ -46,6 +46,8 @@ public final class ScriptRunnerApp {
     /**
      * Application entry point.
      *
+     * @throws Exception If the script fails.
+     *
      * @param args Arguments to the application.
      */
     public static void main(final String[] args) throws Exception {

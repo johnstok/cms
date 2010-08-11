@@ -262,7 +262,8 @@ public class SimpleLuceneFSTest
             "a",
             new HashSet<String>(),
             "foo,foo",
-            Collections.singleton(Paragraph.fromDate("bar", new Date(Long.MAX_VALUE))));
+            Collections.singleton(
+                Paragraph.fromDate("bar", new Date(Long.MAX_VALUE))));
         searchEngine.createDocument(
             a,
             new ResourcePath("/a"),
@@ -270,7 +271,8 @@ public class SimpleLuceneFSTest
             "a",
             new HashSet<String>(),
             "foo",
-            Collections.singleton(Paragraph.fromDate("bar", new Date(Long.MIN_VALUE))));
+            Collections.singleton(
+                Paragraph.fromDate("bar", new Date(Long.MIN_VALUE))));
         searchEngine.commitUpdate();
         final SearchResult result =
             searchEngine.find("foo", "_bar", SortOrder.ASC, 5, 0);
@@ -318,7 +320,7 @@ public class SimpleLuceneFSTest
             "a",
             new HashSet<String>(),
             "foo,foo,foo",
-            Collections.singleton(Paragraph.fromBoolean("bar", true)));
+            Collections.singleton(Paragraph.fromBoolean("bar", Boolean.TRUE)));
         searchEngine.createDocument(
             z,
             new ResourcePath("/a"),
@@ -326,7 +328,7 @@ public class SimpleLuceneFSTest
             "a",
             new HashSet<String>(),
             "foo,foo",
-            Collections.singleton(Paragraph.fromBoolean("bar", false)));
+            Collections.singleton(Paragraph.fromBoolean("bar", Boolean.FALSE)));
         searchEngine.createDocument(
             a,
             new ResourcePath("/a"),
@@ -334,7 +336,7 @@ public class SimpleLuceneFSTest
             "a",
             new HashSet<String>(),
             "foo",
-            Collections.singleton(Paragraph.fromBoolean("bar", true)));
+            Collections.singleton(Paragraph.fromBoolean("bar", Boolean.TRUE)));
         searchEngine.commitUpdate();
         final SearchResult result =
             searchEngine.find("foo", "_bar", SortOrder.ASC, 5, 0);
@@ -429,10 +431,8 @@ public class SimpleLuceneFSTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testSuccessfulIndexAndFindSimilar() throws Exception {
+    public void testSuccessfulIndexAndFindSimilar() {
 
         // ARRANGE
         final UUID id1 = UUID.randomUUID();
@@ -443,19 +443,19 @@ public class SimpleLuceneFSTest
                 new File("target/test4/lucene").getAbsolutePath());
 
         // ACT
-        Paragraph p1 = Paragraph.fromText("content",
+        final Paragraph p1 = Paragraph.fromText("content",
          "Test text that is similar to the other text in the same test case.");
-        HashSet<Paragraph> paras1 = new HashSet<Paragraph>();
+        final HashSet<Paragraph> paras1 = new HashSet<Paragraph>();
         paras1.add(p1);
 
-        Paragraph p2 = Paragraph.fromText("content",
+        final Paragraph p2 = Paragraph.fromText("content",
         "Test text that is quite similar to the other text in the same  case.");
-        HashSet<Paragraph> paras2 = new HashSet<Paragraph>();
+        final HashSet<Paragraph> paras2 = new HashSet<Paragraph>();
         paras2.add(p2);
 
-        Paragraph p3 = Paragraph.fromText("content",
+        final Paragraph p3 = Paragraph.fromText("content",
         "Totally different store here with no common parts.");
-        HashSet<Paragraph> paras3 = new HashSet<Paragraph>();
+        final HashSet<Paragraph> paras3 = new HashSet<Paragraph>();
         paras3.add(p3);
 
         searchEngine.startUpdate();

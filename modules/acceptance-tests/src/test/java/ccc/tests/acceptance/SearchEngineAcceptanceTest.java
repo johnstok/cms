@@ -54,8 +54,10 @@ public class SearchEngineAcceptanceTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testStartStopActionScheduler() {
+    public void testStartStopActionScheduler() throws Exception {
 
         // ARRANGE
 
@@ -72,13 +74,19 @@ public class SearchEngineAcceptanceTest
         assertFalse(startedAtFirst);
         assertTrue(startedAfterStart);
         assertFalse(startedAfterStop);
+
+        // FINALLY
+        final int tenSecs = 10000;
+        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
     }
 
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testStartSchedulerIsIdempotent() {
+    public void testStartSchedulerIsIdempotent() throws Exception {
 
         // ARRANGE
 
@@ -92,18 +100,19 @@ public class SearchEngineAcceptanceTest
         }
 
         // ASSERT
+
+        // FINALLY
+        final int tenSecs = 10000;
+        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
     }
 
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testFind() throws Exception {
+    public void testFind() {
 
         // ARRANGE
-        final int tenSecs = 10000;
-        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
         final String searchTerm = "veryunlikelysearchterm"+uid();
         final ResourceSummary parent = getCommands().resourceForPath("");
         final ResourceSummary page   = tempPage(parent.getId(), null);
@@ -131,13 +140,10 @@ public class SearchEngineAcceptanceTest
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testIdSearch() throws Exception {
+    public void testIdSearch() {
 
         // ARRANGE
-        final int tenSecs = 10000;
-        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
         final ResourceSummary parent = getCommands().resourceForPath("");
         final ResourceSummary page   = tempPage(parent.getId(), null);
         final String searchTerm = "id:"+page.getId();
@@ -158,12 +164,10 @@ public class SearchEngineAcceptanceTest
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testPathSearch() throws Exception {
+    public void testPathSearch() {
 
         // ARRANGE
-        final int tenSecs = 10000;
         final ResourceSummary parent = tempFolder();
         final ResourceSummary page   = tempPage(parent.getId(), null);
         final String searchTerm = "path:/content"+parent.getAbsolutePath()+"*";
@@ -184,7 +188,6 @@ public class SearchEngineAcceptanceTest
         getCommands().publish(page.getId());
 
         getSearch().index();
-        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
 
         // ACT
         final SearchResult result =
@@ -198,13 +201,10 @@ public class SearchEngineAcceptanceTest
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testNameSearch() throws Exception {
+    public void testNameSearch() {
 
         // ARRANGE
-        final int tenSecs = 10000;
-        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
         final ResourceSummary parent = getCommands().resourceForPath("");
         final ResourceSummary page   = tempPage(parent.getId(), null);
         final String searchTerm = "name:"+page.getName();
@@ -225,13 +225,10 @@ public class SearchEngineAcceptanceTest
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testTitleSearch() throws Exception {
+    public void testTitleSearch() {
 
         // ARRANGE
-        final int tenSecs = 10000;
-        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
         final ResourceSummary parent = getCommands().resourceForPath("");
         final ResourceSummary page   = tempPage(parent.getId(), null);
         page.setTitle("searchTitle"+page.getId());
@@ -293,28 +290,26 @@ public class SearchEngineAcceptanceTest
 
     /**
      * Test.
-     * @throws Exception If the test fails.
+     *
      */
-    public void testDateSearch() throws Exception {
+    public void testDateSearch() {
 
         // ARRANGE
-        final int tenSecs = 10000;
-        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
         final ResourceSummary parent = getCommands().resourceForPath("");
         final ResourceSummary pageResource   = tempPage(parent.getId(), null);
-        Page page =  getPages().retrieve(pageResource.getId());
+        final Page page =  getPages().retrieve(pageResource.getId());
 
-        Date testDate = new Date();
+        final Date testDate = new Date();
 
         updateMetadata(pageResource);
-        Set<Paragraph> paragraphs = new HashSet<Paragraph>();
+        final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
         paragraphs.add(Paragraph.fromDate("testDate", testDate));
 
         page.setParagraphs(paragraphs);
         getPages().update(page.getId(), page);
 
-        final String searchTerm = "testDate:["+(testDate.getTime()-100)
-                                  +" TO "+(testDate.getTime()+100)+"]";
+        final String searchTerm = "testDate:["+(testDate.getTime()-1000)
+                                  +" TO "+(testDate.getTime()+1000)+"]";
         getSearch().index();
 
         // ACT
@@ -329,23 +324,20 @@ public class SearchEngineAcceptanceTest
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testNumericSearch() throws Exception {
+    public void testNumericSearch() {
 
         // ARRANGE
-        final int tenSecs = 10000;
-        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
         final ResourceSummary parent = getCommands().resourceForPath("");
         final ResourceSummary pageResource   = tempPage(parent.getId(), null);
-        Page page =  getPages().retrieve(pageResource.getId());
+        final Page page =  getPages().retrieve(pageResource.getId());
 
-        int testInt = new Random().nextInt();
+        final int testInt = new Random().nextInt();
 
-        BigDecimal testNumber = new BigDecimal(testInt);
+        final BigDecimal testNumber = new BigDecimal(testInt);
 
         updateMetadata(pageResource);
-        Set<Paragraph> paragraphs = new HashSet<Paragraph>();
+        final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
         paragraphs.add(Paragraph.fromNumber("testNumber", testNumber));
 
         page.setParagraphs(paragraphs);
@@ -366,21 +358,18 @@ public class SearchEngineAcceptanceTest
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testBooleanSearch() throws Exception {
+    public void testBooleanSearch() {
 
         // ARRANGE
-        final int tenSecs = 10000;
-        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
         final ResourceSummary parent = getCommands().resourceForPath("");
         final ResourceSummary pageResource   = tempPage(parent.getId(), null);
-        Page page =  getPages().retrieve(pageResource.getId());
+        final Page page =  getPages().retrieve(pageResource.getId());
 
-        int testInt = new Random().nextInt();
+        final int testInt = new Random().nextInt();
 
         updateMetadata(pageResource);
-        Set<Paragraph> paragraphs = new HashSet<Paragraph>();
+        final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
         paragraphs.add(Paragraph.fromBoolean("testBoolean"+testInt, false));
 
         page.setParagraphs(paragraphs);
@@ -398,8 +387,8 @@ public class SearchEngineAcceptanceTest
         assertEquals(page.getId(), result.hits().iterator().next());
     }
 
-    private void updateMetadata(final ResourceSummary page) {
 
+    private void updateMetadata(final ResourceSummary page) {
         final Resource metadata = new Resource();
         metadata.setTitle(page.getTitle());
         metadata.setDescription("");
@@ -409,5 +398,4 @@ public class SearchEngineAcceptanceTest
         getCommands().updateMetadata(page.getId(), metadata);
         getCommands().publish(page.getId());
     }
-
 }
