@@ -200,9 +200,8 @@ public class UpdatePageDialog
     }
 
     private Set<Paragraph> getParagraphs() {
-        final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
         final List<PageElement> definitions = panel().pageElements();
-        _panel.extractValues(definitions, paragraphs);
+        final Set<Paragraph> paragraphs = _panel.extractValues(definitions);
         return paragraphs;
     }
 }

@@ -28,7 +28,6 @@ package ccc.client.gwt.views.gxt;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -349,9 +348,8 @@ public class CreatePageDialog
         final List<PageElement> definitions =
             _secondWizardPage.pageElements();
 
-        final Set<Paragraph> paragraphs =
-            new HashSet<Paragraph>();
-        _secondWizardPage.extractValues(definitions, paragraphs);
+        final Set<Paragraph> paragraphs = 
+            _secondWizardPage.extractValues(definitions);
         return paragraphs;
     }
 

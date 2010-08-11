@@ -32,8 +32,6 @@ import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
-import ccc.api.types.Paragraph;
-import ccc.api.types.ParagraphType;
 
 
 /**
@@ -100,22 +98,44 @@ public final class ParagraphTest extends TestCase {
     /**
      * Test.
      */
-    public void testMaxNameLengthIs256() { // TODO
+    public void testMaxNameLengthIs256() {
 
         // ARRANGE
 
-//        // ACT
-//        try {
-//            Paragraph.fromText(
-//                Testing.dummyString('a', Paragraph.MAX_NAME_LENGTH+1), "foo");
-//            fail();
-//
-//        // ASSERT
-//        } catch (final IllegalArgumentException e) {
-//            assertEquals(
-//                "Specified string exceeds max length of 256.",
-//                e.getMessage());
-//        }
+        // ACT
+        try {
+            Paragraph.fromText(
+                dummyString("a", Paragraph.MAX_NAME_LENGTH+1), "foo");
+            fail();
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string exceeds max length of 256.",
+                e.getMessage());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testMaxTextLengthIs2147483647() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            Paragraph.fromText(
+                "foo", dummyString("aaaa", Paragraph.MAX_TEXT_LENGTH/4+1));
+            fail();
+
+            // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string exceeds max length of 214748364.",
+                e.getMessage());
+        }
     }
 
     /**
@@ -322,5 +342,21 @@ public final class ParagraphTest extends TestCase {
         final Paragraph paragraph1 = Paragraph.fromText("foo", "Hello world");
         final Paragraph paragraph2 = Paragraph.fromText("bar", "Hello world");
         assertFalse(paragraph1.equals(paragraph2));
+    }
+
+    /**
+     * Create a dummy string by repeating the specified character, 'length'
+     * times.
+     *
+     * @param c The character to repeat.
+     * @param length The length of the string.
+     * @return The dummy string 'c*length'.
+     */
+    public static String dummyString(final String c, final long length) {
+        final StringBuilder dummyString = new StringBuilder();
+        for (int i=0; i<length; i++) {
+            dummyString.append(c);
+        }
+        return dummyString.toString();
     }
 }

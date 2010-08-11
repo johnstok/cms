@@ -29,6 +29,7 @@ package ccc.client.gwt.widgets;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -271,8 +272,8 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param definitions List of form elements
      * @param paragraphs List of paragraphs
      */
-    public void extractValues(final List<PageElement> definitions,
-                              final Set<Paragraph> paragraphs) {
+    public Set<Paragraph> extractValues(final List<PageElement> definitions) {
+        Set<Paragraph> paragraphs = new HashSet<Paragraph>();
         Paragraph p = null;
 
         for (final PageElement c : definitions) {
@@ -299,6 +300,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 paragraphs.add(p);
             }
         }
+        return paragraphs;
     }
 
     private Paragraph extractNumber(final PageElement c) {
