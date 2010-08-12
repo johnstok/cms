@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import ccc.api.core.Page;
+import ccc.api.core.Template;
 import ccc.api.types.DBC;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
@@ -47,10 +48,6 @@ import ccc.commons.CharConversion;
 public class PageEntity
     extends
         WorkingCopySupport<PageRevision, Page, PageWorkingCopy> {
-
-    /** MAXIMUM_PARAGRAPHS : int. */
-    public static final int MAXIMUM_PARAGRAPHS = 32;
-
 
     /** Constructor: for persistence only. */
     protected PageEntity() { super(); }
@@ -147,7 +144,7 @@ public class PageEntity
                           final RevisionMetadata metadata) {
         DBC.require().maxValue(
             delta.getParagraphs().size(),
-            MAXIMUM_PARAGRAPHS);
+            Template.MAXIMUM_PARAGRAPHS);
 
         final HashSet<Paragraph> paras = cleanParagraphs(delta);
 

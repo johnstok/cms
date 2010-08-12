@@ -72,6 +72,10 @@ public class TemplateRevision
         DBC.require().notEmpty(body);
         DBC.require().notEmpty(definition);
         DBC.require().notNull(mimeType);
+        DBC.ensure().maxOccurrences(
+            definition.toLowerCase(),
+            "<field ",
+            Template.MAXIMUM_PARAGRAPHS);
 
         _body = body;
         _definition = definition;
