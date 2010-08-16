@@ -39,6 +39,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import ccc.commons.Environment;
+
 
 /**
  * A servlet action that prints details of each servlet request / response.
@@ -63,11 +65,14 @@ public class DebugFilter
             new DebugHttpServletResponse((HttpServletResponse) response);
         final HttpServletRequest  req  = (HttpServletRequest)  request;
 
+        resp.setHeader("X-ccc-host", Environment.getHostname());
+
         LOG.debug("URI: "+req.getRequestURI());
         LOG.debug("\tProtocol: "+req.getProtocol());
         LOG.debug("\tMethod: "+req.getMethod());
         LOG.debug("\tQuery: "+req.getQueryString());
         LOG.debug("\tPrincipal: "+req.getUserPrincipal());
+        LOG.debug("\tCookie: "+req.getHeader("Cookie"));
 
         chain.doFilter(request, resp);
 
