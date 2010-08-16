@@ -40,6 +40,7 @@ public class SimplePrincipal
 
     private final String _name;
 
+
     /**
      * Constructor.
      *
@@ -49,8 +50,13 @@ public class SimplePrincipal
         _name = name;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public String getName() { return _name; }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() { return getName(); }
 }
