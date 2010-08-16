@@ -1,0 +1,5 @@
+<jboss-web>
+   <replication-config>
+      <use-jk>true</use-jk>
+   </replication-config>
+</jboss-web>
