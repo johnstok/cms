@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.core.Comment;
-import ccc.api.exceptions.CCException;
+import ccc.api.exceptions.InvalidException;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
 import ccc.domain.CommentEntity;
@@ -87,9 +87,8 @@ public class UpdateCommentCommand
             try {
                 c.setUrl(new URL(_comment.getUrl()));
             } catch (final MalformedURLException e) {
-                // FIXME: Should be an InvalidException.
                 // FIXME: Duplicated on CreateCommentCommand.
-                throw new CCException("Bad URL: "+_comment.getUrl());
+                throw new InvalidException("Bad URL: "+_comment.getUrl());
             }
         }
 

@@ -43,6 +43,9 @@ public class CCException
     extends
         RuntimeException {
 
+    /** MESSAGE : String. */
+    public static final String MESSAGE = "message";
+
     private UUID                _id     = UUID.randomUUID();
     private Map<String, String> _params = new HashMap<String, String>();
 
@@ -63,7 +66,7 @@ public class CCException
                           final Map<String, String> params) {
         super(message, cause);
         _params.putAll(params);
-        _params.put("message", ""+message); // NPE has NULL message :(
+        _params.put(MESSAGE, ""+message); // NPE has NULL message :(
         _params.put("cause", (null==cause) ? null : ""+cause.getMessage());
     }
 
@@ -131,7 +134,7 @@ public class CCException
     /**
      * Mutator.
      *
-     * @param params The params to set.
+     * @param params The parameters to set.
      */
     public void setParams(final Map<String, String> params) {
         DBC.require().notNull(params);
@@ -143,8 +146,19 @@ public class CCException
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
-        final String message = _params.get("message");
+        final String message = _params.get(MESSAGE);
         if (null!=message) { return message; }
         return super.getMessage();
+    }
+
+
+    /**
+     * Add a parameter to the exception.
+     *
+     * @param key   The paramater's key.
+     * @param value The parameter's value.
+     */
+    protected void addParam(final String key, final String value) {
+        _params.put(key, value);
     }
 }

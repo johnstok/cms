@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import ccc.api.exceptions.CCException;
+import ccc.api.exceptions.InvalidException;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.RemoteException;
@@ -68,7 +70,7 @@ public class ErrorDialog extends AbstractEditDialog {
 
         _action.setFieldLabel(constants().action());
         _action.setReadOnly(true);
-        _action.setValue(action);
+        _action.setValue(action+".");
         addField(_action);
 
         _error.setFieldLabel(constants().details());
@@ -146,7 +148,11 @@ public class ErrorDialog extends AbstractEditDialog {
         } else if ("ccc.api.exceptions.CycleDetectedException".equals(code)) {
             return I18n.ERROR_RESOLUTIONS.cycle();
         } else if ("ccc.api.exceptions.InvalidException".equals(code)) {
-            return I18n.ERROR_RESOLUTIONS.invalidCommand();
+            final String resolution = e.getParam(InvalidException.RESOLUTION);
+            return
+                (null!=resolution)
+                    ? resolution
+                    : I18n.ERROR_RESOLUTIONS.invalidCommand();
         }
 
         return I18n.ERROR_RESOLUTIONS.contactSysAdmin();
@@ -166,7 +172,11 @@ public class ErrorDialog extends AbstractEditDialog {
         } else if ("ccc.api.exceptions.CycleDetectedException".equals(code)) {
             return I18n.ERROR_DESCRIPTIONS.cycle();
         } else if ("ccc.api.exceptions.InvalidException".equals(code)) {
-            return I18n.ERROR_DESCRIPTIONS.invalidCommand();
+            final String description = e.getParam(CCException.MESSAGE);
+            return
+                (null!=description)
+                    ? description
+                    : I18n.ERROR_DESCRIPTIONS.invalidCommand();
         }
 
         return I18n.ERROR_DESCRIPTIONS.unknown()+"\n\n"+e.getMessage();

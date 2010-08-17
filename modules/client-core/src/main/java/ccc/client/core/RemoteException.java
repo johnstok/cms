@@ -71,4 +71,16 @@ public class RemoteException
     public String getCode() {
         return _failure.getCode();
     }
+
+
+    /**
+     * Get the parameter with the specified key.
+     *
+     * @param key The key for the parameter.
+     *
+     * @return The parameter's value, as a string.
+     */
+    public String getParam(final String key) {
+        return _failure.getParams().get(key);
+    }
 }

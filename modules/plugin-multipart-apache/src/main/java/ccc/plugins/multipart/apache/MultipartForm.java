@@ -42,6 +42,7 @@ import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededExcepti
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 
+import ccc.api.exceptions.InvalidException;
 import ccc.api.types.DBC;
 import ccc.commons.Resources;
 import ccc.plugins.multipart.MultipartFormData;
@@ -198,12 +199,24 @@ public class MultipartForm implements MultipartFormData {
         try {
             return upload.parseRequest(context);
         } catch (final FileSizeLimitExceededException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw handleTooBig(e, e.getPermittedSize());
         } catch (final SizeLimitExceededException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw handleTooBig(e, e.getPermittedSize());
         } catch (final FileUploadException e) {
             throw new RuntimeException("Failed to parse multipart request.", e);
         }
+    }
+
+
+    private static InvalidException handleTooBig(final Throwable t,
+                                                 final long permittedSize) {
+        final String message =
+            "The file exceeds the maximum permitted size of "
+            + permittedSize
+            + " bytes.";
+        final InvalidException ie = new InvalidException(message, t);
+        ie.setResolution("Upload a smaller file.");
+        return ie;
     }
 
 
