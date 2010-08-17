@@ -28,6 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
 
@@ -217,7 +218,8 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                 new Listener<ComponentEvent>() {
                 public void handleEvent(final ComponentEvent ce) {
                     _md = folderSelect.selectedResource();
-                    if (_md != null) {
+                    if (_md != null
+                       && _md.getType() != ResourceType.RANGE_FOLDER) {
                         final String appContext =
                             new GlobalsImpl()
                         .getSetting("application.context");

@@ -40,6 +40,9 @@ public enum ResourceType {
     /** FOLDER : ResourceType. */
     FOLDER,
 
+    /** FOLDER : ResourceType. */
+    RANGE_FOLDER,
+
     /** TEMPLATE : ResourceType. */
     TEMPLATE,
 

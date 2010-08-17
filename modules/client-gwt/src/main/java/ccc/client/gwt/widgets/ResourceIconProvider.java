@@ -57,6 +57,8 @@ final class ResourceIconProvider
                 return ImagePaths.FILE;
             case SEARCH:
                 return ImagePaths.SEARCH;
+            case RANGE_FOLDER:
+                return ImagePaths.FOLDER_GO;
             default:
                 return null;
         }

@@ -26,11 +26,13 @@
  */
 package ccc.client.gwt.widgets;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
+import ccc.client.core.Globals;
 import ccc.client.gwt.binding.DataBinding;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -291,4 +293,35 @@ public abstract class AbstractResourceTree {
      */
     protected abstract BaseTreeLoader<BeanModel> createLoader();
 
+
+    /**
+     * Create list of range folders.
+     *
+     * @param count The parent folder or children count.
+     * @param parent The parent folder.
+     * @return The list of range folders.
+     */
+    protected List<ResourceSummary> createRangeFolders(int count,
+        final ResourceSummary parent) {
+
+        List<ResourceSummary> children =
+            new ArrayList<ResourceSummary>();
+        int page = 1;
+        for (int i = 0; i < count; i=i+Globals.MAX_FETCH) {
+            ResourceSummary rs = new ResourceSummary();
+            rs.setName(""+(i+1)+" ... "+((i+Globals.MAX_FETCH) > count
+                    ? count
+                    : i+Globals.MAX_FETCH));
+            rs.setParent(parent.getId());
+            rs.setId(parent.getId());
+            rs.setAbsolutePath(""+page);
+            rs.setFolderCount(1);
+            rs.setChildCount(1);
+            rs.setType(ResourceType.RANGE_FOLDER);
+            rs.addLinks(parent.getLinks());
+            children.add(rs);
+            page++;
+        }
+        return children;
+    }
 }

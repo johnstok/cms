@@ -57,7 +57,7 @@ public interface Globals {
     /** MIN_USER_NAME_LENGTH : int. */
     int MIN_USER_NAME_LENGTH = 4;
     /** MAX_FETCH : int. */
-    int MAX_FETCH = 1999;
+    int MAX_FETCH = 100;
 
 
     /**

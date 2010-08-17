@@ -34,6 +34,7 @@ import java.util.UUID;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourcePath;
+import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
@@ -153,6 +154,7 @@ public class ResourceTable
                                 final AsyncCallback<PagingLoadResult
                                 <BeanModel>> callback) {
                 if (folder == null
+                    || folder.getType() == ResourceType.RANGE_FOLDER
                     || null==loadConfig
                     || !(loadConfig instanceof BasePagingLoadConfig)) {
                     final PagingLoadResult<BeanModel> plr =
@@ -321,7 +323,11 @@ public class ResourceTable
 
     /** {@inheritDoc} */
     public ResourceSummary treeSelection() {
-        return _tree.getSelectedItem();
+        ResourceSummary item = _tree.getSelectedItem();
+        if (item != null && item.getType() == ResourceType.RANGE_FOLDER) {
+            return null;
+        }
+        return item;
     }
 
 
