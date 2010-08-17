@@ -70,17 +70,17 @@ import com.google.gwt.user.client.ui.Frame;
  */
 public class FCKEditor extends LayoutContainer {
 
-    private final String _elementID;
-    private final Frame editorFrame = new Frame();
-    private final ToggleButton toggleButton = new ToggleButton();
-    private final HiddenField<String> _inputBox = new HiddenField<String>();
-    private final HiddenField<String>  _configBox = new HiddenField<String>();
-    private final Html _htmlArea = new Html();
-    private final String _tooltip;
+    private final UIConstants         _uiConstants  = I18n.UI_CONSTANTS;
+    private final Frame               _editorFrame  = new Frame();
+    private final ToggleButton        _toggleButton = new ToggleButton();
+    private final HiddenField<String> _inputBox     = new HiddenField<String>();
+    private final HiddenField<String> _configBox    = new HiddenField<String>();
+    private final Html                _htmlArea     = new Html();
+    private final String              _elementID;
+    private final String              _tooltip;
 
-    private boolean enabled = false;
+    private boolean _enabled = false;
     private String _html = "";
-    UIConstants UI_CONSTANTS = I18n.UI_CONSTANTS;
 
     /**
      * Constructor.
@@ -106,8 +106,8 @@ public class FCKEditor extends LayoutContainer {
         _htmlArea.setAutoHeight(true);
         add(_htmlArea);
 
-        toggleButton.setText(UI_CONSTANTS.edit());
-        add(toggleButton);
+        _toggleButton.setText(_uiConstants.edit());
+        add(_toggleButton);
 
         // Add a resize handler to adjust width.
         addListener(
@@ -119,10 +119,10 @@ public class FCKEditor extends LayoutContainer {
             }
         );
 
-        toggleButton.addListener(Events.Select, new Listener<ButtonEvent>() {
+        _toggleButton.addListener(Events.Select, new Listener<ButtonEvent>() {
             @Override
             public void handleEvent(final ButtonEvent be) {
-                if (toggleButton.isPressed()) {
+                if (_toggleButton.isPressed()) {
                     switchToEditor(cssHeight);
                 } else {
                     switchToView();
@@ -132,12 +132,14 @@ public class FCKEditor extends LayoutContainer {
 
     }
 
-    public void fckResize(final int width) {
-        final String frameWidth = String.valueOf(width);
-        editorFrame.setWidth(frameWidth);
+
+    private void fckResize(final int newWidth) {
+        final String frameWidth = String.valueOf(newWidth);
+        _editorFrame.setWidth(frameWidth);
         DOM.setElementProperty(
-            editorFrame.getElement(), "width", frameWidth);
+            _editorFrame.getElement(), "width", frameWidth);
     }
+
 
     /**
      * Returns the HTML currently contained in the editor.
@@ -145,7 +147,7 @@ public class FCKEditor extends LayoutContainer {
      * @return the HTML currently contained in the editor
      */
     public String getHTML() {
-        if(enabled) {
+        if(_enabled) {
             return jsniGetText(_elementID);
         }
         return _html;
@@ -184,14 +186,14 @@ public class FCKEditor extends LayoutContainer {
     }-*/;
 
 
-
-/**
- * Enable save buttons when FCKEditors are ready.
- */
+    /**
+     * Enable save buttons when FCKEditors are ready.
+     */
     public void checkFCK() {
-        enabled = true;
-        toggleButton.setText(UI_CONSTANTS.view());
+        _enabled = true;
+        _toggleButton.setText(_uiConstants.view());
     }
+
 
     /**
      * Displays the FCKEditor specific link selection dialog.
@@ -247,9 +249,10 @@ public class FCKEditor extends LayoutContainer {
         new ImageSelectionDialog(elementID, url, alt, title, cccId).show();
     }
 
+
     private void switchToEditor(final String cssHeight) {
 
-        toggleButton.setText(UI_CONSTANTS.loading());
+        _toggleButton.setText(_uiConstants.loading());
         _htmlArea.hide();
         initJSNI(FCKEditor.this);
 
@@ -264,39 +267,40 @@ public class FCKEditor extends LayoutContainer {
         _configBox.setValue("");
 
         //Create the IFRAME
-        editorFrame.setUrl(
+        _editorFrame.setUrl(
             getFckBaseUrl()
             + "editor/fckeditor.html?InstanceName="
             + _elementID +"&Toolbar=ccc");
-        editorFrame.setHeight(cssHeight);
-        DOM.setElementProperty(editorFrame.getElement(), "height", cssHeight);
-        DOM.setElementProperty(editorFrame.getElement(), "scrolling", "no");
+        _editorFrame.setHeight(cssHeight);
+        DOM.setElementProperty(_editorFrame.getElement(), "height", cssHeight);
+        DOM.setElementProperty(_editorFrame.getElement(), "scrolling", "no");
         DOM.setElementProperty(
-            editorFrame.getElement(), "id", _elementID + "___Frame");
-        DOM.setElementPropertyInt(editorFrame.getElement(), "frameBorder", 0);
+            _editorFrame.getElement(), "id", _elementID + "___Frame");
+        DOM.setElementPropertyInt(_editorFrame.getElement(), "frameBorder", 0);
 
         // Build the panel
-        remove(toggleButton);
+        remove(_toggleButton);
         add(_configBox);
         add(_inputBox);
-        add(editorFrame);
-        add(toggleButton);
+        add(_editorFrame);
+        add(_toggleButton);
 
         fckResize(getWidth());
         layout();
     }
 
-    private void switchToView() {
 
-        toggleButton.setText(UI_CONSTANTS.edit());
+    private void switchToView() {
+        _toggleButton.setText(_uiConstants.edit());
         _html = getHTML();
         _htmlArea.setHtml(_html);
         remove(_configBox);
         remove(_inputBox);
-        remove(editorFrame);
+        remove(_editorFrame);
         _htmlArea.show();
-        enabled = false;
+        _enabled = false;
     }
+
 
     /**
      * Get the tool-tip for this editor.
@@ -304,4 +308,12 @@ public class FCKEditor extends LayoutContainer {
      * @return The tool-tip, as a string.
      */
     public String getToolTip2() { return _tooltip; }
+
+
+    /**
+     * Get the length of the HTML content.
+     *
+     * @return The content length, as an integer.
+     */
+    public int getLength() { return getHTML().length(); }
 }

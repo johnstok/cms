@@ -41,6 +41,28 @@ import junit.framework.TestCase;
  */
 public final class ParagraphTest extends TestCase {
 
+
+    /**
+     * Test.
+     */
+    public void testTooLargeTextIsRejected() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            Paragraph.fromText(
+                "foo", dummyString('a', Paragraph.MAX_TEXT_LENGTH+1));
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string exceeds max length of 524288.",
+                e.getMessage());
+        }
+    }
+
+
     /**
      * Test.
      */

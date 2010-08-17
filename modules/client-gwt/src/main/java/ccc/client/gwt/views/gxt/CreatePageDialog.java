@@ -303,8 +303,7 @@ public class CreatePageDialog
     /** {@inheritDoc} */
     @Override
     public ValidationResult getValidationResult() {
-        final ValidationResult result = new ValidationResult();
-        return result;
+        return _secondWizardPage.getValidationResult();
     }
 
     /**
@@ -348,7 +347,7 @@ public class CreatePageDialog
         final List<PageElement> definitions =
             _secondWizardPage.pageElements();
 
-        final Set<Paragraph> paragraphs = 
+        final Set<Paragraph> paragraphs =
             _secondWizardPage.extractValues(definitions);
         return paragraphs;
     }

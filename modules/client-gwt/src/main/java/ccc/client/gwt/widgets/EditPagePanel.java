@@ -42,6 +42,8 @@ import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.client.core.I18n;
+import ccc.client.core.Validatable;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.remoting.GetAbsolutePathAction;
@@ -82,7 +84,11 @@ import com.google.gwt.xml.client.XMLParser;
  *
  * @author Civic Computing Ltd.
  */
-public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
+public class EditPagePanel
+    extends
+        FormPanel // TODO: Should extend CCC class
+    implements
+        Validatable {
 
     private static final int LABEL_LENGTH = 13;
     private TextField<String> _name = new TextField<String>();
@@ -270,10 +276,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * objects of the paragraphs list.
      *
      * @param definitions List of form elements
-     * @param paragraphs List of paragraphs
+     *
+     * @return A set of paragraphs representing the content of the supplied
+     *  definitions.
      */
     public Set<Paragraph> extractValues(final List<PageElement> definitions) {
-        Set<Paragraph> paragraphs = new HashSet<Paragraph>();
+        final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
         Paragraph p = null;
 
         for (final PageElement c : definitions) {
@@ -773,6 +781,8 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
         final TextArea ta = new TextArea();
         ta.setData("type", FieldType.TEXT);
+        ta.setMaxLength(Paragraph.MAX_TEXT_LENGTH);
+
         ta.setFieldLabel(createLabel(name, title));
         ta.setToolTip(createTooltip(name, title, desc));
         if (regexp != null) {
@@ -782,6 +792,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final PageElement pe = new PageElement(name);
         pe.fieldType(FieldType.TEXT);
         pe.field(ta);
+
         _pageElements.add(pe);
     }
 
@@ -801,6 +812,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
         final TextField<String> tf = new TextField<String>();
         tf.setData("type", FieldType.TEXT);
+        tf.setMaxLength(Paragraph.MAX_TEXT_LENGTH);
 
         tf.setFieldLabel(createLabel(name, title));
         tf.setToolTip(createTooltip(name, title, desc));
@@ -849,5 +861,31 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         _name.setFieldLabel(I18n.UI_CONSTANTS.name());
         _name.setAllowBlank(false);
         add(_name, new FormData("95%"));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ValidationResult getValidationResult() {
+        final ValidationResult vResult = new ValidationResult();
+
+        for (final PageElement c : pageElements()) {
+            if (FieldType.HTML == c.fieldType()) {
+                if (c.editor().getLength() > Paragraph.MAX_TEXT_LENGTH) {
+                    final String pTitle = c.editorLabel().getText();
+                    vResult.addError(
+                        I18n.UI_MESSAGES.paragraphTooLarge(
+                            pTitle.substring(0, pTitle.length()-1)));
+                }
+            } else if (FieldType.TEXT == c.fieldType()) {
+                if (c.field().getValue().length() > Paragraph.MAX_TEXT_LENGTH) {
+                    final String pTitle = c.field().getFieldLabel();
+                    vResult.addError(
+                        I18n.UI_MESSAGES.paragraphTooLarge(pTitle));
+                }
+            }
+        }
+
+        return vResult;
     }
 }
