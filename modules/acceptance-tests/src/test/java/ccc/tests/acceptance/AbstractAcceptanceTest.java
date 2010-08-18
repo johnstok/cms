@@ -93,11 +93,12 @@ public abstract class AbstractAcceptanceTest
 
     private ProxyServiceLocator _sl;
 
-    private final String _hostUrl       = "http://localhost";
+    private final String _hostUrl       = "http://localhost:8080/cc7";
 
     static {
         final API api = new API();
         api.addLink(API.ALIASES, "/secure/aliases");
+        api.addLink(API.USERS, "/secure/users");
         InternalServices.API = api;
 
         I18n.USER_ACTIONS =
