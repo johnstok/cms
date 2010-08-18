@@ -54,4 +54,13 @@ public interface SiteBrowser {
      * @return The rendered resource as a String.
      */
     String post(final ResourceSummary rs);
+
+    /**
+     * Send an HTTP GET for a path.
+     *
+     * @param path The path to GET.
+     *
+     * @return The response body, as a string.
+     */
+    String get(String absolutePath);
 }

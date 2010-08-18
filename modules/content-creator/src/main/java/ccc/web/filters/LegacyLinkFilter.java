@@ -46,6 +46,7 @@ import org.apache.log4j.Logger;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
 import ccc.api.exceptions.CCException;
+import ccc.api.jaxrs.ResourcesImpl;
 import ccc.api.types.ResourcePath;
 import ccc.web.rendering.NotFoundException;
 import ccc.web.rendering.RedirectRequiredException;
@@ -187,7 +188,8 @@ public final class LegacyLinkFilter
             + req.getPathInfo());
 
         try {
-            final ResourceSummary r = _resources.resourceForLegacyId(legacyId);
+            final ResourceSummary r =
+                new ResourcesImpl(_resources).resourceForLegacyId(legacyId);
             final String resourcePath = r.getAbsolutePath();
             LOG.debug("Fixed to path: "+resourcePath);
 

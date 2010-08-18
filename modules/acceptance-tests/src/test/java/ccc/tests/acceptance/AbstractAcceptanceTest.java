@@ -63,6 +63,7 @@ import ccc.api.http.ProxyServiceLocator;
 import ccc.api.http.SiteBrowser;
 import ccc.api.types.MimeType;
 import ccc.api.types.NormalisingEncoder;
+import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.api.types.Username;
 import ccc.client.core.CoreEvents;
@@ -93,7 +94,7 @@ public abstract class AbstractAcceptanceTest
 
     private ProxyServiceLocator _sl;
 
-    private final String _hostUrl       = "http://localhost:8080/cc7";
+    private final String _hostUrl       = "http://localhost";
 
     static {
         final API api = new API();
@@ -328,6 +329,9 @@ public abstract class AbstractAcceptanceTest
                                         "title",
                                         "",
                                         true);
+        page.setParagraphs(
+            Collections.singleton(
+                Paragraph.fromText("content", "test content")));
         return getPages().create(page);
     }
 

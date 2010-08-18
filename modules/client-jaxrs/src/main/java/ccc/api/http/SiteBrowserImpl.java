@@ -32,6 +32,7 @@ import java.io.IOException;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
@@ -52,6 +53,7 @@ public class SiteBrowserImpl
     private final String _hostUrl;
     private final String _previewUrl;
 
+
     /**
      * Constructor.
      *
@@ -65,6 +67,7 @@ public class SiteBrowserImpl
 
     }
 
+
     /** {@inheritDoc} */
     @Override
     public String previewContent(final ResourceSummary rs, final boolean wc) {
@@ -73,6 +76,25 @@ public class SiteBrowserImpl
                 _previewUrl
                 + rs.getAbsolutePath()
                 + ((wc) ? "?wc=" : ""));
+        return invoke(get);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String post(final ResourceSummary rs) {
+        return invoke(new PostMethod(_hostUrl+rs.getAbsolutePath()));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String get(final String absolutePath) {
+        return invoke(new GetMethod(_hostUrl+absolutePath));
+    }
+
+
+    private String invoke(final HttpMethod get) {
         try {
             _httpClient.executeMethod(get);
             final int status = get.getStatusCode();
@@ -89,26 +111,4 @@ public class SiteBrowserImpl
             get.releaseConnection();
         }
     }
-
-    /** {@inheritDoc} */
-    @Override
-    public String post(final ResourceSummary rs) {
-        final PostMethod post = new PostMethod(_hostUrl+rs.getAbsolutePath());
-        try {
-            _httpClient.executeMethod(post);
-            final int status = post.getStatusCode();
-            if (OK==status) {
-                return post.getResponseBodyAsString();
-            }
-            throw new RuntimeException(
-                status+": "+post.getResponseBodyAsString());
-        } catch (final HttpException e) {
-            throw new InternalError(); // FIXME: Report error.
-        } catch (final IOException e) {
-            throw new InternalError(); // FIXME: Report error.
-        } finally {
-            post.releaseConnection();
-        }
-    }
-
 }

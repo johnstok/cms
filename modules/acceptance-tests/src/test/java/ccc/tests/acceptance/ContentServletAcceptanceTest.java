@@ -30,10 +30,17 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.UUID;
 
+import ccc.api.core.ACL;
+import ccc.api.core.Alias;
 import ccc.api.core.File;
+import ccc.api.core.Page;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
+import ccc.api.core.User;
 import ccc.api.types.MimeType;
+import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourcePath;
 
 
 /**
@@ -44,6 +51,224 @@ import ccc.api.types.MimeType;
 public class ContentServletAcceptanceTest
     extends
         AbstractAcceptanceTest {
+
+
+    /**
+     * Test.
+     */
+    public void testRequestForSecurePageReturnsPage() {
+
+        // ARRANGE
+        final ResourceSummary simple =
+            getCommands().resourceForPath("/assets/templates/simple");
+
+        final ACL.Entry aclEntry = new ACL.Entry();
+        aclEntry.setPrincipal(getUsers().retrieveCurrent().getId());
+        aclEntry.setReadable(true);
+        aclEntry.setWriteable(true);
+
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary p = tempPage(parent.getId(), simple.getId());
+        getCommands().lock(p.getId());
+        getCommands().publish(p.getId());
+        getCommands().changeAcl(
+            p.getId(), new ACL().setUsers(Collections.singleton(aclEntry)));
+
+        // ACT
+        final String content = getBrowser().get(p.getAbsolutePath());
+
+        // ASSERT
+        assertTrue(content.contains("test content"));
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testRequestForSecurePageRedirectsToLoginScreen() {
+
+        // ARRANGE
+        final User u = tempUser();
+
+        final ACL.Entry aclEntry = new ACL.Entry();
+        aclEntry.setPrincipal(u.getId());
+        aclEntry.setReadable(true);
+        aclEntry.setWriteable(true);
+
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary p = tempPage(parent.getId(), null);
+        getCommands().lock(p.getId());
+        getCommands().publish(p.getId());
+        getCommands().changeAcl(
+            p.getId(), new ACL().setUsers(Collections.singleton(aclEntry)));
+
+        // ACT
+        try {
+            getBrowser().post(p);
+            fail();
+
+            // ASSERT
+        } catch (final RuntimeException e) {
+            assertTrue(is302(e));
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testWorkingCopiesCanBePreviewed() {
+
+        // ARRANGE
+        final ResourceSummary simple =
+            getCommands().resourceForPath("/assets/templates/simple");
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary p = tempPage(parent.getId(), simple.getId());
+        getCommands().lock(p.getId());
+        final Page pWc = getPages().retrieveWorkingCopy(p.getId());
+        pWc.setParagraphs(
+            Collections.singleton(Paragraph.fromText("content", "meh")));
+        getPages().updateWorkingCopy(p.getId(), pWc);
+
+        // ACT
+        final String content = getBrowser().previewContent(p, true);
+
+        // ASSERT
+        assertTrue(content.contains("meh"));
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testMissingLegacyPagesReturn404() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            getBrowser().get("/4444.html");
+            fail();
+
+            // ASSERT
+        } catch (final RuntimeException e) {
+            assertTrue(is404(e));
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testLegacyPagesCanBeAccessedById() {
+
+        // ARRANGE
+        final long id = System.currentTimeMillis();
+        final Resource metadata = new Resource();
+        metadata.setTitle("foo");
+        metadata.setDescription("foo");
+        metadata.setTags(new HashSet<String>());
+        metadata.setMetadata(
+            Collections.singletonMap("legacyId", String.valueOf(id)));
+
+        final ResourceSummary simple =
+            getCommands().resourceForPath("/assets/templates/simple");
+
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary p = tempPage(parent.getId(), simple.getId());
+        getCommands().lock(p.getId());
+        getCommands().publish(p.getId());
+        getCommands().updateMetadata(p.getId(), metadata);
+
+        // ACT
+        final String content = getBrowser().get("/"+id+".html");
+
+        // ASSERT
+        assertTrue(content.contains("test content"));
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUnpublishedPagesCanBePreviewed() {
+
+        // ARRANGE
+        final ResourceSummary simple =
+            getCommands().resourceForPath("/assets/templates/simple");
+
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary p = tempPage(parent.getId(), simple.getId());
+        getCommands().lock(p.getId());
+
+        // ACT
+        final String content = getBrowser().previewContent(p, false);
+
+        // ASSERT
+        assertTrue(content.contains("test content"));
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testRequestForUnpublishedPageReturns404() {
+
+        // ARRANGE
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary p = tempPage(parent.getId(), null);
+        getCommands().lock(p.getId());
+
+        // ACT
+        try {
+            getBrowser().get(p.getAbsolutePath());
+            fail();
+
+            // ASSERT
+        } catch (final RuntimeException e) {
+            assertTrue(is404(e));
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testRequestForAliasSendsRedirect() {
+
+        // ARRANGE
+        final ResourceName aliasName = new ResourceName(uid());
+        final ResourceSummary welcome =
+            getCommands().resourceForPath("/welcome");
+        final Alias alias =
+            new Alias(welcome.getParent(), aliasName, welcome.getId());
+        final ResourceSummary as = getAliases().create(alias);
+        getCommands().lock(as.getId());
+        getCommands().publish(as.getId());
+
+        // ACT
+        final String content =
+            getBrowser().get(new ResourcePath(aliasName).toString());
+
+        // ASSERT
+        assertTrue(content.contains("Welcome to Content Control!"));
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testRequestForPublishedPageReturnsContent() {
+
+        // ARRANGE
+
+        // ACT
+        final String content = getBrowser().get("/welcome");
+
+        // ASSERT
+        assertTrue(content.contains("Welcome to Content Control!"));
+    }
+
 
     /**
      * Test.
@@ -83,6 +308,7 @@ public class ContentServletAcceptanceTest
             assertTrue(is302(e));
         }
     }
+
 
     /**
      * Test.
@@ -205,5 +431,10 @@ public class ContentServletAcceptanceTest
 
     private boolean is302(final RuntimeException e) {
         return e.getMessage().startsWith("302: ");
+    }
+
+
+    private boolean is404(final RuntimeException e) {
+        return e.getMessage().startsWith("404: ");
     }
 }
