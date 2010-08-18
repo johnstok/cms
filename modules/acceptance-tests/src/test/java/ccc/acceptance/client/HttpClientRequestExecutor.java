@@ -1,6 +1,13 @@
 package ccc.acceptance.client;
 
-import static ccc.api.types.HttpStatusCode.*;
+import static ccc.api.types.HttpStatusCode.BAD_REQUEST;
+import static ccc.api.types.HttpStatusCode.CONFLICT;
+import static ccc.api.types.HttpStatusCode.ERROR;
+import static ccc.api.types.HttpStatusCode.MS_IE6_1223;
+import static ccc.api.types.HttpStatusCode.NOT_FOUND;
+import static ccc.api.types.HttpStatusCode.NO_CONTENT;
+import static ccc.api.types.HttpStatusCode.OK;
+import static ccc.api.types.HttpStatusCode.UNAUTHORIZED;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -11,6 +18,7 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.PutMethod;
 
 import ccc.api.types.MimeType;
 import ccc.client.core.Request;
@@ -86,6 +94,17 @@ public class HttpClientRequestExecutor
                     throw new RuntimeException(e);
                 }
                 return pm;
+            case PUT:
+                final PutMethod pum =
+                    new PutMethod(_hostUrl+request.getPath());
+                try {
+                    pum.setRequestEntity(
+                        new ByteArrayRequestEntity(
+                            request.getBody().getBytes("UTF-8")));
+                } catch (final UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                }
+                return pum;
             default:
                 throw new IllegalArgumentException(
                     "Method not supported: "+request.getMethod());
