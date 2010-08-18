@@ -26,17 +26,20 @@
  */
 package ccc.plugins.s11n.json;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import junit.framework.TestCase;
+import ccc.commons.Testing;
 import ccc.plugins.s11n.InvalidSnapshotException;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.Jsonable;
-import ccc.plugins.s11n.json.JsonImpl;
-
-import junit.framework.TestCase;
 
 
 /**
@@ -47,6 +50,38 @@ import junit.framework.TestCase;
 public class JsonImplTest
     extends
         TestCase {
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testSerializeDeserialize() throws Exception {
+
+        // ARRANGE
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        final String longString =
+            Testing.dummyString('a', 65536); // writeUTF8 limit + 1
+        final JsonImpl s = new JsonImpl();
+        s.set("foo", longString);
+
+        // ACT
+        final ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(s);
+        oos.close();
+
+        final byte[] bytes = baos.toByteArray();
+
+        final ObjectInputStream ois =
+            new ObjectInputStream(new ByteArrayInputStream(bytes));
+        final JsonImpl actual = (JsonImpl) ois.readObject();
+
+        // ASSERT
+        assertEquals(longString, actual.getString("foo"));
+    }
+
 
     /**
      * Test.
