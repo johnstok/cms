@@ -40,6 +40,7 @@ import ccc.acceptance.client.HttpClientRequestExecutor;
 import ccc.acceptance.client.ServerTextParser;
 import ccc.acceptance.client.WindowStub;
 import ccc.api.core.API;
+import ccc.api.core.ActionSummary;
 import ccc.api.core.Actions;
 import ccc.api.core.Alias;
 import ccc.api.core.Aliases;
@@ -50,6 +51,7 @@ import ccc.api.core.Folders;
 import ccc.api.core.Group;
 import ccc.api.core.Groups;
 import ccc.api.core.Page;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.Pages;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
@@ -65,6 +67,7 @@ import ccc.api.types.MimeType;
 import ccc.api.types.NormalisingEncoder;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
+import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 import ccc.client.core.CoreEvents;
 import ccc.client.core.I18n;
@@ -419,6 +422,12 @@ public abstract class AbstractAcceptanceTest
         _sl   = new ProxyServiceLocator(_hostUrl);
         InternalServices.EXECUTOR = createExecutor();
         getSecurity().login("migration", "migration");
+        InternalServices.ACTIONS = createActions();
+    }
+
+
+    private PagedCollection<ActionSummary> createActions() {
+        return getActions().listPendingActions(null, SortOrder.ASC, 1, 1);
     }
 
 
