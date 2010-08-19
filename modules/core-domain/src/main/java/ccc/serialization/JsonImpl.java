@@ -365,15 +365,17 @@ public class JsonImpl implements Serializable, Json {
      * ================================================================== */
 
     private void readObject(final ObjectInputStream aInputStream)
-                                   throws IOException, ClassNotFoundException  {
+                                    throws IOException, ClassNotFoundException {
+
         aInputStream.defaultReadObject();
-        setDetail(aInputStream.readUTF());
+        setDetail((String) aInputStream.readObject());
     }
 
     private void writeObject(final ObjectOutputStream aOutputStream)
                                                             throws IOException {
+
         aOutputStream.defaultWriteObject();
-        aOutputStream.writeUTF(getDetail());
+        aOutputStream.writeObject(getDetail());
     }
 
     /** {@inheritDoc} */
