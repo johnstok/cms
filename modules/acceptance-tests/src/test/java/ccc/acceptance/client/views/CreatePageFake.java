@@ -26,43 +26,50 @@
  */
 package ccc.acceptance.client.views;
 
-import java.util.Date;
-import java.util.Map;
+import java.util.Set;
 
-import ccc.api.types.CommandType;
+import ccc.api.core.Template;
+import ccc.api.types.Paragraph;
 import ccc.client.core.Editable;
 import ccc.client.core.ValidationResult;
-import ccc.client.views.CreateAction;
+import ccc.client.views.CreatePage;
 
 
 /**
- * Fake implementation of the {@link CreateAction} view.
+ * Fake implementation of the {@link CreatePage} view.
  *
  * @author Civic Computing Ltd.
  */
-public class CreateActionFake implements CreateAction {
+public class CreatePageFake implements CreatePage {
 
-    private final Date _date;
-    private final CommandType _commandType;
-    private final Map<String, String> _actionParams;
-    private Editable _presenter;
+    private final String _comment;
+    private final boolean _majorEdit;
+    private final String _name;
+    private final Set<Paragraph> _paragraphs;
+    private final Template _template;
+    private Object _presenter;
     private boolean _showing;
     private final ValidationResult _validationResult = new ValidationResult();
-
 
     /**
      * Constructor.
      *
-     * @param date The date for action.
-     * @param commandType The command type.
-     * @param params The parameters.
+     * @param name The name
+     * @param majorEdit Major edit.
+     * @param comment Comment.
+     * @param paragraphs Paragraph of the page.
+     * @param template Template.
      */
-    public CreateActionFake(final Date date,
-                            final CommandType commandType,
-                            final Map<String, String> params) {
-        _date = date;
-        _commandType = commandType;
-        _actionParams = params;
+    public CreatePageFake(final String name,
+                          final boolean majorEdit,
+                          final String comment,
+                          final Set<Paragraph> paragraphs,
+                          final Template template) {
+        _comment = comment;
+        _name = name;
+        _majorEdit = majorEdit;
+        _paragraphs = paragraphs;
+        _template = template;
     }
 
     @Override
@@ -72,38 +79,42 @@ public class CreateActionFake implements CreateAction {
     }
 
     @Override
-    public Map<String, String> getActionParameters() {
-        return _actionParams;
+    public String getComment() {
+        return _comment;
     }
 
     @Override
-    public CommandType getCommandType() {
-        return _commandType;
+    public boolean getMajorEdit() {
+        return _majorEdit;
     }
 
     @Override
-    public Date getDate() {
-        return _date;
+    public String getName() {
+        return _name;
     }
 
+    @Override
+    public Set<Paragraph> getParagraphs() {
+        return _paragraphs;
+    }
 
-    /** {@inheritDoc} */
+    @Override
+    public Template getSelectedTemplate() {
+        return _template;
+    }
+
     @Override
     public void hide() {
         _presenter = null;
         _showing   = false;
     }
 
-
-    /** {@inheritDoc} */
     @Override
     public void show(final Editable presenter) {
         _presenter = presenter;
         _showing   = true;
     }
 
-
-    /** {@inheritDoc} */
     @Override
     public ValidationResult getValidationResult() {
         return _validationResult;

@@ -78,6 +78,7 @@ import ccc.client.events.EventHandler;
 import ccc.client.i18n.ActionNameConstants;
 import ccc.client.i18n.UIConstants;
 import ccc.client.i18n.UIMessages;
+import ccc.client.validation.AbstractValidations;
 import ccc.commons.Testing;
 
 
@@ -103,6 +104,7 @@ public abstract class AbstractAcceptanceTest
         final API api = new API();
         api.addLink(API.ALIASES, "/secure/aliases");
         api.addLink(API.USERS, "/secure/users");
+        api.addLink(API.PAGES, "/secure/pages");
         InternalServices.API = api;
 
         I18n.USER_ACTIONS =
@@ -137,6 +139,13 @@ public abstract class AbstractAcceptanceTest
                     }
                 }
             });
+
+        InternalServices.VALIDATOR = new AbstractValidations() {
+            @Override
+            public String notValidXML(final String definition) {
+                throw new UnsupportedOperationException("Method not implemented.");
+            }
+        };
     }
 
 
