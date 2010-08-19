@@ -26,43 +26,50 @@
  */
 package ccc.acceptance.client;
 
-import ccc.acceptance.client.views.ChangeResourceTemplateFake;
+import java.util.UUID;
+
+import ccc.acceptance.client.views.CreateTextFileFake;
+import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
-import ccc.client.presenters.ChangeResourceTemplatePresenter;
-import ccc.client.views.ChangeResourceTemplate;
+import ccc.client.presenters.CreateTextFilePresenter;
+import ccc.client.views.CreateTextFile;
 import ccc.tests.acceptance.AbstractAcceptanceTest;
 
 
 /**
- * Tests for the {@link ChangeResourceTemplatePresenter} class.
+ * Tests for the {@link CreateTextFilePresenter} class.
  *
  * @author Civic Computing Ltd.
  */
-public class ChangeResourceTemplateAcceptanceTest
-    extends AbstractAcceptanceTest {
+public class CreateTextFileAcceptanceTest extends AbstractAcceptanceTest {
 
     /**
      * Test.
      *
      */
-    public void testChangeTemplateSuccess() {
+    public void testCreateTextFileSuccess() {
 
         // ARRANGE
-        ChangeResourceTemplate view = new ChangeResourceTemplateFake();
         ResourceSummary model = tempFolder();
-        getCommands().lock(model.getId());
-        ResourceSummary template = dummyTemplate(model);
-        view.setSelectedTemplate(template.getId());
-        model.setTemplateId(template.getId());
-
-        ChangeResourceTemplatePresenter p =
-            new ChangeResourceTemplatePresenter(view, model, null);
+        CreateTextFile view = new CreateTextFileFake("text text text",
+            "file"+UUID.randomUUID().toString(),
+            "text",
+            "html",
+            "test comment",
+            true);
+        CreateTextFilePresenter p = new CreateTextFilePresenter(view, model);
 
         // ACT
         p.save();
 
         // ASSERT
-        ResourceSummary folder = getCommands().retrieve(model.getId());
-        assertEquals(template.getId(), folder.getTemplateId());
+        ResourceSummary rs = getCommands().resourceForPath(
+            model.getAbsolutePath()+"/"+view.getName());
+        File file = getFiles().retrieve(rs.getId());
+        assertEquals("text text text", file.getContent());
+        assertEquals("test comment", file.getComment());
+        assertEquals("text", file.getMimeType().getPrimaryType());
+        assertEquals("html", file.getMimeType().getSubType());
+
     }
 }
