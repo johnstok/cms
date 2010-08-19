@@ -30,6 +30,7 @@ import static org.easymock.EasyMock.*;
 
 import java.io.StringWriter;
 import java.util.Date;
+import java.util.UUID;
 
 import junit.framework.TestCase;
 
@@ -40,6 +41,7 @@ import ccc.commons.Context;
 import ccc.commons.Script;
 import ccc.commons.Testing;
 import ccc.commons.TextProcessor;
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
@@ -237,6 +239,27 @@ public class VelocityProcessorTest extends TestCase {
     /**
      * Test.
      */
+    public void testVelocityEngineConvertsEnfToNull() {
+
+        // ARRANGE
+        final String template = "$resource.list()";
+        final Context ctxt = new Context();
+        ctxt.add("resource", this);
+        ctxt.add("services", Testing.stub(ServiceLocator.class));
+
+        // ACT
+        final String result =
+            _vp.render(
+                new Script(template, "test"),
+                ctxt);
+
+        // ASSERT
+        assertEquals("$resource.list()", result);
+    }
+
+    /**
+     * Test.
+     */
     public void testSecurityPass() {
 
         // ARRANGE
@@ -347,6 +370,15 @@ public class VelocityProcessorTest extends TestCase {
      */
     public void failingMethod() {
         throw new RuntimeException("Fail.");
+    }
+
+    /**
+     * Generate an entity not found exception.
+     *
+     * @throws EntityNotFoundException Always.
+     */
+    public void list() throws EntityNotFoundException {
+        throw new EntityNotFoundException(UUID.randomUUID());
     }
 
     private TextProcessor _vp;

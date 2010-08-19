@@ -41,6 +41,7 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.app.event.MethodExceptionEventHandler;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
@@ -52,6 +53,7 @@ import ccc.commons.Context;
 import ccc.commons.Script;
 import ccc.commons.TextProcessor;
 import ccc.commons.XHTML;
+import ccc.domain.EntityNotFoundException;
 import ccc.rest.ServiceLocator;
 import ccc.types.DBC;
 
@@ -153,6 +155,9 @@ public class VelocityProcessor implements TextProcessor {
         velocityProperties.setProperty(
             "runtime.introspector.uberspect",
             "org.apache.velocity.util.introspection.SecureUberspector");
+        velocityProperties.setProperty(
+            "eventhandler.methodexception.class",
+            "ccc.rendering.velocity.VelocityProcessor$EntityNotFoundHandler");
 
         try {
             final VelocityContext context = new VelocityContext();
@@ -211,5 +216,30 @@ public class VelocityProcessor implements TextProcessor {
             LOG.warn("Failed to determine host address.", e);
             return "<unknown>";
         }
+    }
+
+
+    /**
+     * Velocity event handler to convert EntityNotFoundExceptions to NULL.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static class EntityNotFoundHandler
+        implements
+            MethodExceptionEventHandler {
+
+        /** {@inheritDoc} */
+        @SuppressWarnings("unchecked") // Interface is not generic.
+        @Override
+        public Object methodException(final Class clazz,
+                                      final String methodName,
+                                      final Exception ex) throws Exception {
+            if (ex instanceof EntityNotFoundException) {
+                LOG.warn("Converted EntityNotFoundException to NULL.");
+                return null;
+            }
+            throw ex;
+        }
+
     }
 }
