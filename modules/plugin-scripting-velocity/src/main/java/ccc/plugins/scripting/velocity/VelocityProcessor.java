@@ -32,14 +32,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.app.event.MethodExceptionEventHandler;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 
 import ccc.api.core.ServiceLocator;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.plugins.scripting.AbstractTextProcessor;
 import ccc.plugins.scripting.Context;
@@ -90,10 +93,14 @@ public class VelocityProcessor
             "org.apache.velocity.runtime.log.Log4JLogChute");
         velocityProperties.setProperty(
             "runtime.log.logsystem.log4j.logger",
-            "ccc.rendering.velocity.Template");
+            "ccc.plugins.scripting.velocity.Template");
         velocityProperties.setProperty(
             "runtime.introspector.uberspect",
             "org.apache.velocity.util.introspection.SecureUberspector");
+        velocityProperties.setProperty(
+            "eventhandler.methodexception.class",
+            "ccc.plugins.scripting.velocity.VelocityProcessor"
+                + "$EntityNotFoundHandler");
 
         try {
             final VelocityContext context = new VelocityContext();
@@ -145,5 +152,32 @@ public class VelocityProcessor
     public void setWhitelist(final List<String> allowedClasses) {
         throw new UnsupportedOperationException(
             "Whitelists not supported by Velocity plugin.");
+    }
+
+
+    /**
+     * Velocity event handler to convert EntityNotFoundExceptions to NULL.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static class EntityNotFoundHandler
+        implements
+            MethodExceptionEventHandler {
+
+        private static final Logger LOG =
+            Logger.getLogger(EntityNotFoundHandler.class);
+
+        /** {@inheritDoc} */
+        @SuppressWarnings("unchecked") // Interface is not generic.
+        @Override
+        public Object methodException(final Class clazz,
+                                      final String methodName,
+                                      final Exception ex) throws Exception {
+            if (ex instanceof EntityNotFoundException) {
+                LOG.warn("Converted EntityNotFoundException to NULL.");
+                return null;
+            }
+            throw ex;
+        }
     }
 }

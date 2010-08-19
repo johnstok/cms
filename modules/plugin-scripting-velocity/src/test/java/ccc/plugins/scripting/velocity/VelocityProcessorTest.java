@@ -41,6 +41,7 @@ import ccc.api.core.MemoryServiceLocator;
 import ccc.api.core.Page;
 import ccc.api.core.Resources;
 import ccc.api.core.ServiceLocator;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Paragraph;
 import ccc.commons.Testing;
 import ccc.plugins.scripting.Context;
@@ -105,6 +106,7 @@ public class VelocityProcessorTest extends TestCase {
         assertEquals("#macro(foo)foo!#end#foo()", actual);
     }
 
+
     /**
      * Test.
      *
@@ -123,6 +125,7 @@ public class VelocityProcessorTest extends TestCase {
         assertEquals("foo", output.toString());
     }
 
+
     /**
      * Test.
      *
@@ -139,6 +142,7 @@ public class VelocityProcessorTest extends TestCase {
         // ASSERT
         assertEquals("foo", output);
     }
+
 
     /**
      * Test.
@@ -169,6 +173,7 @@ public class VelocityProcessorTest extends TestCase {
         // ASSERT
         assertEquals("Hello "+foo.getName(), html);
     }
+
 
     /**
      * Test.
@@ -214,6 +219,7 @@ public class VelocityProcessorTest extends TestCase {
 
     }
 
+
     /**
      * Test.
      */
@@ -246,8 +252,32 @@ public class VelocityProcessorTest extends TestCase {
             assertTrue(e.getCause() instanceof MethodInvocationException);
             assertTrue(e.getCause().getMessage().startsWith(expectedMessage));
         }
-
     }
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testVelocityEngineConvertsEnfToNull() throws Exception {
+
+        // ARRANGE
+        final String template = "$resource.list()";
+        final Context ctxt = new Context();
+        ctxt.add("resource", this);
+        ctxt.add("services", Testing.stub(ServiceLocator.class));
+
+        // ACT
+        final String result =
+            _vp.render(
+                new Script(template, "test"),
+                ctxt);
+
+        // ASSERT
+        assertEquals("$resource.list()", result);
+    }
+
 
     /**
      * Test.
@@ -272,6 +302,7 @@ public class VelocityProcessorTest extends TestCase {
         assertEquals(expectedMessage, html);
     }
 
+
     /**
      * Test.
      *
@@ -291,6 +322,7 @@ public class VelocityProcessorTest extends TestCase {
         // ASSERT
         assertEquals(getClass().getName(), html);
     }
+
 
     /**
      * Test.
@@ -312,6 +344,7 @@ public class VelocityProcessorTest extends TestCase {
         assertEquals(template, html);
     }
 
+
     /**
      * Test.
      *
@@ -331,6 +364,7 @@ public class VelocityProcessorTest extends TestCase {
         // ASSERT
         assertEquals(template, html);
     }
+
 
     /**
      * Test.
@@ -363,6 +397,7 @@ public class VelocityProcessorTest extends TestCase {
         _sl.setCommands(_reader);
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
@@ -370,12 +405,22 @@ public class VelocityProcessorTest extends TestCase {
         _vp = null;
     }
 
+
     /**
      * Method that always fails.
      */
     public void failingMethod() {
         throw new RuntimeException("Fail.");
     }
+
+
+    /**
+     * Generate an entity not found exception.
+     */
+    public void list() {
+        throw new EntityNotFoundException(UUID.randomUUID());
+    }
+
 
     private TextProcessor _vp;
     private Resources _reader;
