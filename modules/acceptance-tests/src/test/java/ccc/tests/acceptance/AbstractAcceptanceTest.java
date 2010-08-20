@@ -433,6 +433,12 @@ public abstract class AbstractAcceptanceTest
         InternalServices.EXECUTOR = createExecutor();
         getSecurity().login("migration", "migration");
         InternalServices.ACTIONS = createActions();
+        InternalServices.GROUPS = createGroups();
+    }
+
+
+    private PagedCollection<Group> createGroups() {
+        return getGroups().query(null, 1, 1);
     }
 
 
