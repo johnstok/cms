@@ -65,6 +65,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -241,6 +242,26 @@ public class ResourceTable
         mmIncludeColumn.setRenderer(rsRenderer);
         configs.add(mmIncludeColumn);
 
+        final ColumnConfig createdColumn =
+            new ColumnConfig(
+                ResourceSummary.DATE_CREATED,
+                UI_CONSTANTS.dateCreated(),
+                100);
+        createdColumn.setDateTimeFormat(
+            DateTimeFormat.getShortDateTimeFormat());
+        createdColumn.setHidden(true);
+        configs.add(createdColumn);
+
+        final ColumnConfig updatedColumn =
+            new ColumnConfig(
+                ResourceSummary.DATE_CHANGED,
+                UI_CONSTANTS.dateChanged(),
+                100);
+        updatedColumn.setDateTimeFormat(
+            DateTimeFormat.getShortDateTimeFormat());
+        updatedColumn.setHidden(true);
+        configs.add(updatedColumn);
+
         final ColumnConfig visibleColumn =
             new ColumnConfig(
                 ResourceSummary.VISIBLE,
@@ -323,7 +344,7 @@ public class ResourceTable
 
     /** {@inheritDoc} */
     public ResourceSummary treeSelection() {
-        ResourceSummary item = _tree.getSelectedItem();
+        final ResourceSummary item = _tree.getSelectedItem();
         if (item != null && item.getType() == ResourceType.RANGE_FOLDER) {
             return null;
         }
