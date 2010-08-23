@@ -41,9 +41,11 @@ import ccc.api.core.MemoryServiceLocator;
 import ccc.api.core.Page;
 import ccc.api.core.Resources;
 import ccc.api.core.ServiceLocator;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Paragraph;
 import ccc.commons.Testing;
 import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
 import ccc.plugins.scripting.TextProcessor;
 
@@ -57,8 +59,10 @@ public class VelocityProcessorTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testFileParsing() {
+    public void testFileParsing() throws Exception {
 
         // ARRANGE
         expect(_reader.fileContentsFromPath("/a/b/c", "UTF8"))
@@ -80,8 +84,10 @@ public class VelocityProcessorTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testFileInclude() {
+    public void testFileInclude() throws Exception {
 
         // ARRANGE
         expect(_reader.fileContentsFromPath("/a/b/c", "UTF8"))
@@ -100,10 +106,13 @@ public class VelocityProcessorTest extends TestCase {
         assertEquals("#macro(foo)foo!#end#foo()", actual);
     }
 
+
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testRenderToOutputStream() {
+    public void testRenderToOutputStream() throws Exception {
 
         // ARRANGE
         final StringWriter output = new StringWriter();
@@ -116,10 +125,13 @@ public class VelocityProcessorTest extends TestCase {
         assertEquals("foo", output.toString());
     }
 
+
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testRenderToString() {
+    public void testRenderToString() throws Exception {
 
         // ARRANGE
         final Context ctxt = new Context();
@@ -131,10 +143,13 @@ public class VelocityProcessorTest extends TestCase {
         assertEquals("foo", output);
     }
 
+
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testRenderResource() {
+    public void testRenderResource() throws Exception {
 
         // ARRANGE
         final Page foo =
@@ -158,6 +173,7 @@ public class VelocityProcessorTest extends TestCase {
         // ASSERT
         assertEquals("Hello "+foo.getName(), html);
     }
+
 
     /**
      * Test.
@@ -193,12 +209,16 @@ public class VelocityProcessorTest extends TestCase {
 
 
         // ASSERT
-        } catch (final RuntimeException e) {
+        } catch (final ProcessingException e) {
+            assertEquals(
+                "Error processing script 'test' [line number 1].",
+                e.getMessage());
             assertTrue(e.getCause() instanceof ParseErrorException);
             assertTrue(e.getCause().getMessage().startsWith(expectedMessage));
         }
 
     }
+
 
     /**
      * Test.
@@ -225,17 +245,46 @@ public class VelocityProcessorTest extends TestCase {
                 ctxt);
 
         // ASSERT
-        } catch (final RuntimeException e) {
+        } catch (final ProcessingException e) {
+            assertEquals(
+                "Error processing script 'test' [line number 1].",
+                e.getMessage());
             assertTrue(e.getCause() instanceof MethodInvocationException);
             assertTrue(e.getCause().getMessage().startsWith(expectedMessage));
         }
-
     }
+
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testSecurityPass() {
+    public void testVelocityEngineConvertsEnfToNull() throws Exception {
+
+        // ARRANGE
+        final String template = "$resource.list()";
+        final Context ctxt = new Context();
+        ctxt.add("resource", this);
+        ctxt.add("services", Testing.stub(ServiceLocator.class));
+
+        // ACT
+        final String result =
+            _vp.render(
+                new Script(template, "test"),
+                ctxt);
+
+        // ASSERT
+        assertEquals("$resource.list()", result);
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testSecurityPass() throws Exception {
 
         // ARRANGE
         final String template =
@@ -253,10 +302,13 @@ public class VelocityProcessorTest extends TestCase {
         assertEquals(expectedMessage, html);
     }
 
+
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testSecurityAllowsClassName() {
+    public void testSecurityAllowsClassName() throws Exception {
 
         // ARRANGE
         final String template = "$resource.Class.Name";
@@ -271,10 +323,13 @@ public class VelocityProcessorTest extends TestCase {
         assertEquals(getClass().getName(), html);
     }
 
+
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testSecurityBlockedClassMethods() {
+    public void testSecurityBlockedClassMethods() throws Exception {
 
         // ARRANGE
         final String template = "$resource.Class.Methods";
@@ -289,10 +344,13 @@ public class VelocityProcessorTest extends TestCase {
         assertEquals(template, html);
     }
 
+
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testSecurityBlockedClassClassLoader() {
+    public void testSecurityBlockedClassClassLoader() throws Exception {
 
         // ARRANGE
         final String template = "$resource.Class.ClassLoader";
@@ -307,10 +365,13 @@ public class VelocityProcessorTest extends TestCase {
         assertEquals(template, html);
     }
 
+
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testSecurityBlockedNewInstance() {
+    public void testSecurityBlockedNewInstance() throws Exception {
 
         // ARRANGE
         final String template =
@@ -336,6 +397,7 @@ public class VelocityProcessorTest extends TestCase {
         _sl.setCommands(_reader);
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
@@ -343,12 +405,22 @@ public class VelocityProcessorTest extends TestCase {
         _vp = null;
     }
 
+
     /**
      * Method that always fails.
      */
     public void failingMethod() {
         throw new RuntimeException("Fail.");
     }
+
+
+    /**
+     * Generate an entity not found exception.
+     */
+    public void list() {
+        throw new EntityNotFoundException(UUID.randomUUID());
+    }
+
 
     private TextProcessor _vp;
     private Resources _reader;

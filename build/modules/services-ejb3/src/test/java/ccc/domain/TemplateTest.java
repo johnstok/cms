@@ -133,6 +133,66 @@ public final class TemplateTest extends TestCase {
         assertEquals(MimeType.HTML, old.getMimeType());
     }
 
+
+    /**
+     * Test.
+     */
+    public void testOver32Fields() {
+
+        // ARRANGE
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("<fields>");
+            for (int a=0;a<33;a++) {
+                sb.append("<field name=\"test"+a+"\" type=\"html\"/>");
+            }
+            sb.append("<fields/>");
+
+            final TemplateEntity t =
+                new TemplateEntity(
+                    new ResourceName("testName"),
+                    "foo!",
+                    "bar",
+                    "Hello world",
+                    sb.toString(),
+                    MimeType.HTML,
+                    _rm);
+            fail("Resources should reject paragraph over 32 fields.");
+         // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Must not contain more than 32 fields.",
+                e.getMessage());
+        }
+    }
+    /**
+     * Test.
+     */
+    public void testMax32Fields() {
+
+        // ARRANGE
+        StringBuilder sb = new StringBuilder();
+        sb.append("<fields>");
+        for (int a=0;a<32;a++) {
+            sb.append("<field name=\"test"+a+"\" type=\"html\"/>");
+        }
+        sb.append("<fields/>");
+
+        final TemplateEntity t =
+            new TemplateEntity(
+                new ResourceName("testName"),
+                "foo!",
+                "bar",
+                "Hello world",
+                sb.toString(),
+                MimeType.HTML,
+                _rm);
+
+        // ASSERT
+        assertEquals(new ResourceName("testName"), t.getName());
+        assertEquals(sb.toString(), t.getDefinition());
+    }
+
+
     private final RevisionMetadata _rm =
         new RevisionMetadata(
             new Date(), UserEntity.SYSTEM_USER, true, "Created.");

@@ -58,7 +58,7 @@ import ccc.plugins.s11n.json.SerializerFactory;
  */
 @Provider
 @Produces({"application/json", "text/html"})
-@Consumes("application/json")
+@Consumes({"application/json", "text/html"})
 public class S11nProvider<T>
     extends
         AbstractProvider
@@ -139,7 +139,11 @@ public class S11nProvider<T>
                       final InputStream is) throws IOException {
         try {
             final Serializer<T> s = SerializerFactory.create(clazz);
-            return s.read(readJson(mimetype, is));
+            String entity = readString(mimetype, is);
+            if (MediaType.TEXT_HTML_TYPE.equals(mimetype)) {
+                entity = entity.substring(12, entity.length()-14);
+            }
+            return s.read(new JsonImpl(entity));
 
         } catch (final RuntimeException e) { // FIXME: Choose correct type!
             throw new WebApplicationException(e);

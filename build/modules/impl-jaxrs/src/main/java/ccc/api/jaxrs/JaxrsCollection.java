@@ -57,9 +57,12 @@ public abstract class JaxrsCollection {
             final ClientResponseFailure ex = (ClientResponseFailure) e;
             try {
                 final ClientResponse<byte[]> r = ex.getResponse();
-                final String body = new String(r.getEntity(), "UTF-8");
-                return
-                    new RestExceptionMapper().fromResponse(body);
+                try {
+                    final String body = new String(r.getEntity(), "UTF-8");
+                    return new RestExceptionMapper().fromResponse(body);
+                } catch (final NullPointerException npe) {
+                    throw e;
+                }
             } catch (final UnsupportedEncodingException ee) {
                 throw new InternalError("Unsupported encoding.");
             }

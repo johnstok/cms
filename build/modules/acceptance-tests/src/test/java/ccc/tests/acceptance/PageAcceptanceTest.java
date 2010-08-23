@@ -27,17 +27,22 @@
 package ccc.tests.acceptance;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.Page;
+import ccc.api.core.PageCriteria;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
+import ccc.api.types.ParagraphType;
 import ccc.api.types.ResourceName;
+import ccc.api.types.SortOrder;
 
 
 /**
@@ -46,6 +51,28 @@ import ccc.api.types.ResourceName;
  * @author Civic Computing Ltd.
  */
 public class PageAcceptanceTest extends AbstractAcceptanceTest {
+
+
+    /**
+     * Test.
+     */
+    public void testSearchPages() {
+
+        // ARRANGE
+        final PageCriteria pc = new PageCriteria();
+        pc.matchParagraph("content", "%Control%");
+        pc.rangeParagraph("foo", (Date) null, null);
+        pc.sort("content", ParagraphType.TEXT, SortOrder.ASC);
+
+        // ACT
+        final PagedCollection<ResourceSummary> hits = getPages().list(pc, 1, 5);
+
+        // ASSERT
+        assertEquals(1, hits.getTotalCount());
+        assertEquals(1, hits.getElements().size());
+        assertEquals("Welcome", hits.getElements().get(0).getTitle());
+    }
+
 
     /**
      * Test.
@@ -74,6 +101,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         assertEquals(hw, pd.getParagraph("test").getText());
     }
 
+
     /**
      * Test.
      */
@@ -91,6 +119,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         // ASSERT
         assertNotNull("Page delta must not be null", pd);
     }
+
 
     /**
      * Test.
@@ -125,6 +154,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
             new ArrayList<Paragraph>(pd.getParagraphs());
         assertEquals(testPara, results.get(0));
     }
+
 
     /**
      * Test.
@@ -170,6 +200,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         assertEquals("test, regexp: \\d{1,3}", nokResult);
 
     }
+
 
     /**
      * Test.
@@ -220,4 +251,51 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         assertEquals("working copy", wc);
     }
 
+
+    /**
+     * Test.
+     */
+    public void testRetrieveReturnsCurrent() {
+
+        // ARRANGE
+        final ResourceSummary templateFolder =
+            getCommands().resourceForPath("/assets/templates");
+        final String name = UUID.randomUUID().toString();
+
+        final Template t = new Template();
+        t.setName(new ResourceName(name));
+        t.setParent(templateFolder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody("$resource.getParagraph(\"foo\").getText()");
+        t.setDefinition("<fields><field name=\"foo\" type=\"html\"/></fields>");
+        t.setMimeType(MimeType.HTML);
+        final ResourceSummary ts = getTemplates().create(t);
+
+        final ResourceSummary f = tempFolder();
+        final ResourceSummary page = tempPage(f.getId(), ts.getId());
+
+        final Page update = new Page();
+        update.setMajorChange(true);
+        update.setComment("");
+        final Set<Paragraph> paras = new HashSet<Paragraph>();
+        final Paragraph testPara = Paragraph.fromText("foo", "original");
+        paras.add(testPara);
+        update.setParagraphs(paras);
+
+        // ACT
+        getCommands().lock(page.getId());
+        getPages().update(page.getId(), update);
+
+        final Set<Paragraph> modparas = new HashSet<Paragraph>();
+        final Paragraph modPara = Paragraph.fromText("foo", "working copy");
+        modparas.add(modPara);
+        final Page modified = Page.delta(modparas);
+
+        getPages().updateWorkingCopy(page.getId(), modified);
+
+        // ASSERT
+        final Page testPage = getPages().retrieve(page.getId());
+        assertEquals("original", testPage.getParagraph("foo").getText());
+    }
 }

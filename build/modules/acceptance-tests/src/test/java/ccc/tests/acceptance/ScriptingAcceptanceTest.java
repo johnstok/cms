@@ -33,7 +33,6 @@ import ccc.api.core.File;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.MimeType;
-import ccc.commons.Environment;
 
 
 /**
@@ -50,7 +49,7 @@ public class ScriptingAcceptanceTest
     /**
      * Test.
      */
-    public void testHostnameProperty() {
+    public void testTextFilesCanBeExecutedAsJavascript() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -68,7 +67,7 @@ public class ScriptingAcceptanceTest
                     MimeType.TEXT,
                     true,
                     "",
-                    "print(hostname);"));
+                    "print('foo');"));
         getCommands().lock(script.getId());
         getCommands().updateMetadata(script.getId(), metadata);
 
@@ -76,7 +75,7 @@ public class ScriptingAcceptanceTest
         final String pContent = getBrowser().previewContent(script, false);
 
         // ASSERT
-        assertTrue(pContent.startsWith(Environment.getHostname()));
+        assertEquals("foo", pContent);
     }
 
 

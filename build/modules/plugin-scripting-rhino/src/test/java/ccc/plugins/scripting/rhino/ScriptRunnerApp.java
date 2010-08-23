@@ -46,9 +46,11 @@ public final class ScriptRunnerApp {
     /**
      * Application entry point.
      *
+     * @throws Exception If the script fails.
+     *
      * @param args Arguments to the application.
      */
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws Exception {
 
         final Charset utf8 = Charset.forName("UTF-8");
 
@@ -58,10 +60,10 @@ public final class ScriptRunnerApp {
                 utf8);
         final ScriptRunner sr = new ScriptRunner();
 
-        sr.eval(
+        sr.render(
             new Script(script, "test"),
-            new Context(),
-            new OutputStreamWriter(System.out, utf8));
+            new OutputStreamWriter(System.out, utf8),
+            new Context());
     }
 
 }

@@ -37,6 +37,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.log4j.Logger;
+
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.domain.Entity;
@@ -48,6 +50,9 @@ import ccc.domain.Entity;
  * @author Civic Computing Ltd.
  */
 class JpaRepository implements Repository {
+
+    private static final Logger LOG =
+        Logger.getLogger(JpaRepository.class);
 
     private final EntityManager _em;
 
@@ -97,6 +102,9 @@ class JpaRepository implements Repository {
                                final Map<String, Object> params) {
         DBC.require().greaterThan(0, pageNo);
         DBC.require().greaterThan(0, pageSize);
+
+        LOG.debug(queryString);
+        LOG.debug(params);
 
         final Query q = _em.createQuery(queryString);
         for (final Entry<String, Object> entry : params.entrySet()) {
@@ -165,6 +173,10 @@ class JpaRepository implements Repository {
     @Override
     public long scalarLong(final String queryString,
                            final Map<String, Object> params) {
+
+        LOG.debug(queryString);
+        LOG.debug(params);
+
         final Query q = _em.createQuery(queryString);
         for (final Entry<String, Object> entry : params.entrySet()) {
             q.setParameter(entry.getKey(), entry.getValue());

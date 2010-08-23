@@ -51,6 +51,11 @@ public final class Validations
     public String notValidXML(final String definition) {
         try {
             final Document d = XMLParser.parse(definition);
+            final NodeList fields = d.getElementsByTagName("field");
+            if (fields.getLength() > 32) {
+                return UI_CONSTANTS.tooManyFields();
+            }
+
             final NodeList l = d.getElementsByTagName("option");
             for (int n=0; n<l.getLength(); n++) {
                 final NamedNodeMap al = l.item(n).getAttributes();

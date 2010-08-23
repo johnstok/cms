@@ -51,6 +51,10 @@ public final class ImagePaths {
     public static final String FOLDER =
         "static/gxt/2.1.3/resources/images/gxt/icons/folder.gif";
 
+    /** FOLDER_GO : String. */
+    public static final String FOLDER_GO =
+        "static/images/icons/folder_go.gif";
+
     /** PAGE : String. */
     public static final String PAGE = "static/images/icons/page.gif";
 

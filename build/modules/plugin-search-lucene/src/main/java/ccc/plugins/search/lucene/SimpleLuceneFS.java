@@ -478,7 +478,7 @@ public class SimpleLuceneFS
         d.add(
             new Field(
                 SORT_FIELD_PREFIX+fieldName,
-                fieldValue.toLowerCase(_locale),
+                (null==fieldValue) ? null : fieldValue.toLowerCase(_locale),
                 Field.Store.NO,
                 Field.Index.NOT_ANALYZED));
     }

@@ -41,8 +41,12 @@ import java.util.List;
  * @author Civic Computing Ltd
  */
 public final class Paragraph implements Serializable {
+
     /** MAX_NAME_LENGTH : int. */
-    static final int MAX_NAME_LENGTH = 256;
+    public static final int MAX_NAME_LENGTH = 256;    // 2^8
+    /** MAX_TEXT_LENGTH : int. */
+    public static final int MAX_TEXT_LENGTH = 524288; // 2^19
+
 
     private String        _text;
     private ParagraphType _type;
@@ -63,6 +67,7 @@ public final class Paragraph implements Serializable {
 
     private void text(final String text) {
         require().notNull(text);
+        require().maxLength(text, MAX_TEXT_LENGTH);
         _text = text;
         _type = ParagraphType.TEXT;
     }

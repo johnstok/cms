@@ -35,16 +35,39 @@ import java.util.UUID;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class InvalidException
+public class InvalidException
     extends
         CCException {
 
     /** RESOURCE : String. */
-    protected static final String RESOURCE = "resource";
+    public static final String RESOURCE = "resource";
+    /** RESOLUTION : String. */
+    public static final String RESOLUTION = "resolution";
 
 
     /** Constructor. */
     public InvalidException() { super(); }
+
+
+    /**
+     * Constructor.
+     *
+     * @param message Description of the exception.
+     */
+    public InvalidException(final String message) {
+        super(message, null);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param message Description of the exception.
+     * @param cause   The cause of this exception.
+     */
+    public InvalidException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 
 
     /**
@@ -66,5 +89,15 @@ public abstract class InvalidException
      */
     public UUID getResource() {
         return UUID.fromString(getParam(RESOURCE));
+    }
+
+
+    /**
+     * Mutator for the resolution.
+     *
+     * @param resolution The resolution for this exception.
+     */
+    public void setResolution(final String resolution) {
+        addParam(RESOLUTION, resolution);
     }
 }

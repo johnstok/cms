@@ -29,10 +29,9 @@ package ccc.services.ejb3;
 import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -47,6 +46,7 @@ import javax.ejb.TransactionAttribute;
 import ccc.api.core.ACL;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
 import ccc.api.core.Revision;
@@ -54,6 +54,7 @@ import ccc.api.core.Template;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Duration;
 import ccc.api.types.ResourcePath;
+import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
@@ -75,7 +76,6 @@ import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionEntity;
 import ccc.domain.TemplateEntity;
 import ccc.domain.UserEntity;
-import ccc.persistence.ResourceCriteria;
 import ccc.persistence.ResourceRepository;
 import ccc.rest.extensions.ResourcesExt;
 
@@ -660,17 +660,57 @@ public class ResourcesEJB
     @Override
     @PermitAll
     public PagedCollection<ResourceSummary> list(final UUID parent,
-        final String tag,
-        final Long before,
-        final Long after,
-        final String mainMenu,
-        final String type,
-        final String locked,
-        final String published,
-        final String sort,
-        final SortOrder order,
-        final int pageNo,
-        final int pageSize) {
+                                                 final String tag,
+                                                 final Long before,
+                                                 final Long after,
+                                                 final String mainMenu,
+                                                 final String type,
+                                                 final String locked,
+                                                 final String published,
+                                                 final String sort,
+                                                 final SortOrder order,
+                                                 final int pageNo,
+                                                 final int pageSize) {
+        checkPermission(RESOURCE_READ);
+
+        final ResourceCriteria criteria = new ResourceCriteria();
+        criteria.setParent(parent);
+        criteria.setTag(tag);
+        criteria.setChangedBefore(
+            (null==before)?null:new Date(before.longValue()));
+        criteria.setChangedAfter(
+            (null==after)?null:new Date(after.longValue()));
+        criteria.setMainmenu(
+            (null==mainMenu) ? null : Boolean.valueOf(mainMenu));
+        final ResourceType t =
+            (null==type)
+                ? null
+                : ResourceType.valueOf(type.toUpperCase(Locale.US));
+        criteria.setType(t);
+        criteria.setPublished(
+            (null==published) ? null : Boolean.valueOf(published));
+        criteria.setLocked(
+            (null==locked) ? null : Boolean.valueOf(locked));
+        criteria.setSortField(sort);
+        criteria.setSortOrder(order);
+
+        return list(criteria, pageNo, pageSize);
+    }
+
+
+    @Deprecated
+    private ResourceRepository getResources() {
+        return getRepoFactory().createResourceRepository();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public PagedCollection<ResourceSummary> list(
+                                                final ResourceCriteria criteria,
+                                                final int pageNo,
+                                                final int pageSize) {
         checkPermission(RESOURCE_READ);
 
         UserEntity u = null;
@@ -680,7 +720,7 @@ public class ResourcesEJB
             Exceptions.swallow(e); // Leave user as NULL.
         }
 
-        final ResourceCriteria criteria = new ResourceCriteria();
+        final UUID parent = criteria.getParent();
         FolderEntity f = null;
         if (parent != null) {
             f =
@@ -691,24 +731,14 @@ public class ResourcesEJB
             criteria.setParent(parent);
         }
 
-        criteria.setTag(tag);
-        criteria.setChangedBefore(
-            (null==before)?null:new Date(before.longValue()));
-        criteria.setChangedAfter(
-            (null==after)?null:new Date(after.longValue()));
-        criteria.setMainmenu(mainMenu);
-        criteria.setType(type);
-        criteria.setPublished(published);
-        criteria.setLocked(locked);
-
         final List<ResourceSummary> list = ResourceEntity.mapResources(
             filterAccessibleTo(u,
                 getResources().list(criteria,
-                    f,
-                    sort,
-                    order,
-                    pageNo,
-                    pageSize)));
+                                    f,
+                                    criteria.getSortField(),
+                                    criteria.getSortOrder(),
+                                    pageNo,
+                                    pageSize)));
 
         final long count = getResources().totalCount(criteria, f);
 
@@ -716,22 +746,4 @@ public class ResourcesEJB
             new PagedCollection<ResourceSummary>(
                 count, ResourceSummary.class, list);
     }
-
-
-    private Collection<? extends ResourceEntity> filterAccessibleTo(
-                                        final UserEntity u,
-                                        final List<ResourceEntity> resources) {
-        final List<ResourceEntity> accessible = new ArrayList<ResourceEntity>();
-        for (final ResourceEntity r : resources) {
-            if (r.isReadableBy(u)) { accessible.add(r); }
-        }
-        return accessible;
-    }
-
-
-    @Deprecated
-    private ResourceRepository getResources() {
-        return getRepoFactory().createResourceRepository();
-    }
-
 }

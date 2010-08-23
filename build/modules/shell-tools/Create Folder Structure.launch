@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/shell-tools/src/main/java/ccc/cli/Create.java"/>
+<listEntry value="/client-shell/src/main/java/ccc/cli/Create.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -9,5 +9,5 @@
 <booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="ccc.cli.Create"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-u migration&#10;-p migration&#10;-a ash"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="shell-tools"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="client-shell"/>
 </launchConfiguration>

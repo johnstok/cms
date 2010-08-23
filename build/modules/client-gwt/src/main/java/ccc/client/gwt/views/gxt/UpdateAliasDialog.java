@@ -27,13 +27,14 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.VALIDATOR;
 
 import java.util.UUID;
 
 import ccc.api.core.Alias;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
@@ -107,7 +108,8 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                         public void handleEvent(final ComponentEvent be2) {
                             final ResourceSummary target =
                                 resourceSelect.selectedResource();
-                            if (target != null) {
+                            if (target != null
+                             && target.getType() != ResourceType.RANGE_FOLDER) {
                                 _targetId = target.getId();
                                 _targetName.setValue(target.getName());
                             }

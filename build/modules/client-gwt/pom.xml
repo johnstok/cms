@@ -44,6 +44,12 @@
                                     <jvmarg value="-Xss4M" />
                                     <arg value="-war" />
                                     <arg value="${basedir}/target/www" />
+                                    <arg value="-localWorkers" />
+                                    <arg value="2" />
+                                    <!-- 
+                                    <arg value="-compileReport" />
+                                    <arg value="-draftCompile" />
+                                    -->
                                     <arg value="ccc.client.gwt.ContentCreator" />
                                 </java>
 

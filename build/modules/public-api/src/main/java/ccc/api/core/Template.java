@@ -28,6 +28,7 @@ package ccc.api.core;
 
 import java.util.UUID;
 
+import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 
@@ -40,6 +41,9 @@ import ccc.api.types.ResourceName;
 public class Template
     extends
         Resource {
+
+    /** MAXIMUM_PARAGRAPHS : int. */
+    public static final int MAXIMUM_PARAGRAPHS = 32;
 
     private String   _body;
     private String   _definition;
@@ -82,6 +86,10 @@ public class Template
      * @param definition The definition to set.
      */
     public void setDefinition(final String definition) {
+        DBC.ensure().maxOccurrences(
+            definition.toLowerCase(),
+            "<field ",
+            MAXIMUM_PARAGRAPHS);
         _definition = definition;
     }
 
@@ -124,6 +132,10 @@ public class Template
                                       final String description,
                                       final String body,
                                       final String definition) {
+        DBC.ensure().maxOccurrences(
+            definition.toLowerCase(),
+            "<field ",
+            MAXIMUM_PARAGRAPHS);
         final Template t = new Template();
         t.setId(id);
         t.setName(name);

@@ -58,6 +58,8 @@ public abstract class AbstractValidations {
     public static final String VALID_URL = "(http://|https://)([a-zA-Z0-9]+\\."
             + "[a-zA-Z0-9\\-]+|[a-zA-Z0-9\\-]+)\\.[a-zA-Z0-9\\.]{2,9}(/"
             + "[a-zA-Z0-9\\.\\?=/#%&\\+-]+|/|)";
+    /** MAX_NUMBER_OF_PARAGRAPHS : int. */
+    public static final int MAX_NUMBER_OF_PARAGRAPHS = 32;
     /** UI_CONSTANTS : UIConstants. */
     protected static final UIConstants UI_CONSTANTS = I18n.UI_CONSTANTS;
     /** UI_MESSAGES : UIMessages. */

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/shell-tools/src/main/java/ccc/cli/FileUpload.java"/>
+<listEntry value="/client-shell/src/main/java/ccc/cli/FileUpload.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="ccc.cli.FileUpload"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-a ash&#10; -b&#10; -l /home/keith/Desktop/ACME/assets&#10; -o http://localhost:81/&#10; -p sup3r2008&#10; -r /assets&#10; -u super"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="shell-tools"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="client-shell"/>
 </launchConfiguration>

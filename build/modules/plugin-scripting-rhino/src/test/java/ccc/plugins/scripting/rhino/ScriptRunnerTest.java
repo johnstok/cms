@@ -32,6 +32,7 @@ import java.util.Collections;
 
 import junit.framework.TestCase;
 import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
 
 
@@ -46,18 +47,20 @@ public class ScriptRunnerTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testRunnerProvidesPrintFunction() {
+    public void testRunnerProvidesPrintFunction() throws Exception {
 
         // ARRANGE
         final ScriptRunner runner = new ScriptRunner();
         final StringWriter out = new StringWriter();
 
         // ACT
-        runner.eval(
+        runner.render(
             new Script("print('foo', 'bar');", "test"),
-            new Context(),
-            out);
+            out,
+            new Context());
 
         // ASSERT
         assertEquals("foobar", out.toString());
@@ -65,18 +68,20 @@ public class ScriptRunnerTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testContextAddedToScriptEnvironment() {
+    public void testContextAddedToScriptEnvironment() throws Exception {
 
         // ARRANGE
         final ScriptRunner runner = new ScriptRunner();
         final StringWriter out = new StringWriter();
 
         // ACT
-        runner.eval(
+        runner.render(
             new Script("out.write('foo');", "test"),
-            new Context().add("out", out),
-            new PrintWriter(out));
+            new PrintWriter(out),
+            new Context().add("out", out));
 
         // ASSERT
         assertEquals("foo", out.toString());
@@ -93,26 +98,28 @@ public class ScriptRunnerTest
 
         // ACT
         try {
-            runner.eval(
+            runner.render(
                 new Script(
                     "throw new java.lang.RuntimeException('Error message');",
                     "test"),
-                new Context(),
-                new PrintWriter(out));
+                new PrintWriter(out),
+                new Context());
             fail();
 
         // ASSERT
-        } catch (final RuntimeException e) {
+        } catch (final ProcessingException e) {
             assertEquals(
-                "java.lang.RuntimeException: Error message (test#1)",
+                "Error processing script 'test' [line number 1].",
                 e.getMessage());
         }
     }
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testRunnerCanBlockStaticAccess() {
+    public void testRunnerCanBlockStaticAccess() throws Exception {
 
         // ARRANGE
         final ScriptRunner runner = new ScriptRunner();
@@ -120,10 +127,10 @@ public class ScriptRunnerTest
 
         // ACT
         try {
-            runner.eval(
+            runner.render(
                 new Script("java.lang.System.exit(1)", "test"),
-                new Context(),
-                new PrintWriter(System.out));
+                new PrintWriter(System.out),
+                new Context());
 
         // ASSERT
         } catch (final RuntimeException e) {
@@ -135,8 +142,10 @@ public class ScriptRunnerTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testRunnerCanBlockReflectionAccess() {
+    public void testRunnerCanBlockReflectionAccess() throws Exception {
 
         // ARRANGE
         final ScriptRunner runner = new ScriptRunner();
@@ -144,13 +153,13 @@ public class ScriptRunnerTest
 
         // ACT
         try {
-            runner.eval(
+            runner.render(
                 new Script(
                     "o.getClass().forName('ccc.commons.MapRegistry')"
                         + ".newInstance()",
                     "test"),
-                new Context().add("o", new Object()),
-                new PrintWriter(System.out));
+                new PrintWriter(System.out),
+                new Context().add("o", new Object()));
 
         // ASSERT
         } catch (final RuntimeException e) {
@@ -162,8 +171,10 @@ public class ScriptRunnerTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testRunnerCanBlockStandardAccess() {
+    public void testRunnerCanBlockStandardAccess() throws Exception {
 
         // ARRANGE
         final ScriptRunner runner = new ScriptRunner();
@@ -171,11 +182,11 @@ public class ScriptRunnerTest
 
         // ACT
         try {
-            runner.eval(
+            runner.render(
                 new Script(
                     "print(new Packages.ccc.commons.MapRegistry());", "test"),
-                new Context(),
-                new PrintWriter(System.out));
+                new PrintWriter(System.out),
+                new Context());
 
             // ASSERT
         } catch (final RuntimeException e) {
@@ -187,8 +198,10 @@ public class ScriptRunnerTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testRunnerAllowsWhitelistedAccess() {
+    public void testRunnerAllowsWhitelistedAccess() throws Exception {
 
         // ARRANGE
         final ScriptRunner runner = new ScriptRunner();
@@ -197,11 +210,11 @@ public class ScriptRunnerTest
         final StringWriter out = new StringWriter();
 
         // ACT
-        runner.eval(
+        runner.render(
             new Script(
                 "print(new Packages.ccc.commons.MapRegistry());", "test"),
-            new Context(),
-            out);
+            out,
+            new Context());
 
         // ASSERT
         assertTrue(out.toString().startsWith("ccc.commons.MapRegistry@"));

@@ -91,32 +91,47 @@ public class FolderResourceTree extends AbstractResourceTree {
                                 }
                             }
                         }
-
                     }.execute();
                 } else {
-                    new GetChildrenPagedAction(
-                        ((BeanModel) loadConfig).<ResourceSummary>getBean(),
-                        1,
-                        Globals.MAX_FETCH,
-                        "name",
-                        SortOrder.ASC,
-                        ResourceType.FOLDER) {
-
-                        /** {@inheritDoc} */
-                        @Override protected void onFailure(final Throwable t) {
-                            InternalServices.EX_HANDLER.unexpectedError(
-                                t, I18n.USER_ACTIONS.unknownAction());
-                            callback.onFailure(t);
+                    ResourceSummary parent =
+                        ((BeanModel) loadConfig).<ResourceSummary>getBean();
+                    if (parent.getFolderCount() > Globals.MAX_FETCH) {
+                        List<ResourceSummary> children =
+                            createRangeFolders(parent.getFolderCount(), parent);
+                        callback.onSuccess(
+                            DataBinding.bindResourceSummary(children));
+                    } else {
+                        int page = 1;
+                        if (parent.getType() == ResourceType.RANGE_FOLDER) {
+                            parent.setId(parent.getParent());
+                            page = Integer.decode(parent.getAbsolutePath());
                         }
 
-                        @Override
-                        protected void execute(
-                                   final Collection<ResourceSummary> children,
-                                   final int totalCount) {
-                            callback.onSuccess(
-                                DataBinding.bindResourceSummary(children));
-                        }
-                    }.execute();
+                        new GetChildrenPagedAction(
+                            parent,
+                            page,
+                            Globals.MAX_FETCH,
+                            "name",
+                            SortOrder.ASC,
+                            ResourceType.FOLDER) {
+
+                            /** {@inheritDoc} */
+                            @Override protected void onFailure(final Throwable t) {
+                                InternalServices.EX_HANDLER.unexpectedError(
+                                    t, I18n.USER_ACTIONS.unknownAction());
+                                callback.onFailure(t);
+                            }
+
+                            @Override
+                            protected void execute(
+                                                   final Collection<ResourceSummary> children,
+                                                   final int totalCount) {
+                                callback.onSuccess(
+                                    DataBinding.bindResourceSummary(children));
+                            }
+                        }.execute();
+
+                    }
                 }
             }
         };

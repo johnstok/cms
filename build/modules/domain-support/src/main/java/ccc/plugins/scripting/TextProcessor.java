@@ -50,11 +50,13 @@ public interface TextProcessor {
      * @param template The template used to render the resource.
      * @param context Additional values that are passed to the template.
      *
+     * @throws ProcessingException If an error occurs during rendering.
+     *
      * @return The html rendering as a string.
      */
     // FIXME: Rename to eval().
     String render(final Script template,
-                  final Context context);
+                  final Context context) throws ProcessingException;
 
 
     /**
@@ -66,11 +68,13 @@ public interface TextProcessor {
      * @param output A valid {@link Writer}. The writer will be flushed when
      *  output is complete. The writer will not be closed.
      * @param context Additional values that are passed to the template.
+     *
+     * @throws ProcessingException If an error occurs during rendering.
      */
     // FIXME: Rename to eval().
     void render(final Script template,
                 final Writer output,
-                final Context context);
+                final Context context) throws ProcessingException;
 
 
     /**

@@ -28,6 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
 
@@ -150,17 +151,31 @@ public class LinkSelectionDialog extends AbstractEditDialog {
 
             if (selection.HasAncestorNode('A')) {
                 var link = selection.MoveToAncestorNode( 'A' ) ;
-                link.parentNode.removeChild(link);
+                if ( link )
+                    selection.SelectNode( link ) ;
+                link.href = selectedUrl;
+                link.setAttribute('_fcksavedurl', selectedUrl);
+                link.innerHTML = innerText;
+                link.title = title;
+                if (openInNew) {
+                    link.target = "_blank";
+                }
+                if (uuid != null) {
+                    link.setAttribute( 'class', "ccc:"+uuid) ;
+                } else {
+                    link.removeAttribute('class') ;
+                }
+            } else {
+                var linkURL = "<a href='"+selectedUrl+"' title='"+title+"'";
+                if (uuid != null) {
+                    linkURL = linkURL +" class='ccc:"+uuid+"'";
+                }
+                if (openInNew) {
+                    linkURL = linkURL +" target='_blank'";
+                }
+                linkURL = linkURL +">"+ innerText +"</a>";
+                return instance.InsertHtml(linkURL);
             }
-            var linkURL = "<a href=\""+selectedUrl+"\" title=\""+title+"\"";
-            if (uuid != null) {
-                linkURL = linkURL +" class=\"ccc:"+uuid+"\"";
-            }
-            if (openInNew) {
-                linkURL = linkURL +" target=\"_blank\"";
-            }
-            linkURL = linkURL +">"+ innerText +"</a>";
-            return instance.InsertHtml(linkURL);
         }
         return null;
 
@@ -177,7 +192,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                     jsniSetUrl(
                         Paragraph.escape(_linkPath.getValue()),
                         Paragraph.escape(_linkTitle.getValue()),
-                        Paragraph.escape(_linkInnerText.getValue()),
+                        _linkInnerText.getValue(),
                         _uuid,
                         _elementid,
                         _openInNew.getValue().booleanValue());
@@ -203,14 +218,18 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                 new Listener<ComponentEvent>() {
                 public void handleEvent(final ComponentEvent ce) {
                     _md = folderSelect.selectedResource();
-                    if (_md != null) {
+                    if (_md != null
+                       && _md.getType() != ResourceType.RANGE_FOLDER) {
                         final String appContext =
                             new GlobalsImpl()
                         .getSetting("application.context");
                         final String path =_md.getAbsolutePath();
                         _linkPath.setValue(appContext+path);
                         _linkTitle.setValue(_md.getTitle());
-                        _linkInnerText.setValue(_md.getTitle());
+                        if (_linkInnerText.getValue() == null
+                            || _linkInnerText.getValue().trim().isEmpty()) {
+                            _linkInnerText.setValue(_md.getTitle());
+                        }
                         _uuid =_md.getId().toString();
                     }
                 }});

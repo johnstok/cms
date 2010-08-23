@@ -27,24 +27,27 @@
 package ccc.plugins.scripting.velocity;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.app.event.MethodExceptionEventHandler;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 
 import ccc.api.core.ServiceLocator;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
+import ccc.plugins.scripting.AbstractTextProcessor;
 import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
-import ccc.plugins.scripting.TextProcessor;
 
 
 /**
@@ -53,23 +56,14 @@ import ccc.plugins.scripting.TextProcessor;
  * @author Civic Computing Ltd.
  */
 public class VelocityProcessor
-    implements
-        TextProcessor {
-
-
-    /** {@inheritDoc} */
-    public String render(final Script template,
-                         final Context context) {
-        final StringWriter renderedOutput = new StringWriter();
-        render(template, renderedOutput, context);
-        return renderedOutput.toString();
-    }
+    extends
+        AbstractTextProcessor {
 
 
     /** {@inheritDoc} */
     public void render(final Script template,
                        final Writer output,
-                       final Context ctxt) {
+                       final Context ctxt) throws ProcessingException {
 
         DBC.require().notNull(template);
         DBC.require().notNull(output);
@@ -99,10 +93,14 @@ public class VelocityProcessor
             "org.apache.velocity.runtime.log.Log4JLogChute");
         velocityProperties.setProperty(
             "runtime.log.logsystem.log4j.logger",
-            "ccc.rendering.velocity.Template");
+            "ccc.plugins.scripting.velocity.Template");
         velocityProperties.setProperty(
             "runtime.introspector.uberspect",
             "org.apache.velocity.util.introspection.SecureUberspector");
+        velocityProperties.setProperty(
+            "eventhandler.methodexception.class",
+            "ccc.plugins.scripting.velocity.VelocityProcessor"
+                + "$EntityNotFoundHandler");
 
         try {
             final VelocityContext context = new VelocityContext();
@@ -126,21 +124,26 @@ public class VelocityProcessor
             output.flush();
 
         } catch (final ParseErrorException e) {
-            handleException(e, template.getTitle());
+            handleException(
+                e,
+                "Velocity",
+                template.getTitle(),
+                e.getLineNumber(),
+                e.getColumnNumber());
         } catch (final MethodInvocationException e) {
-            handleException(e, template.getTitle());
+            handleException(
+                e,
+                "Velocity",
+                template.getTitle(),
+                e.getLineNumber(),
+                e.getColumnNumber());
         } catch (final ResourceNotFoundException e) {
-            handleException(e, template.getTitle());
+            handleException(e, "Velocity", template.getTitle(), -1, -1);
         } catch (final IOException e) {
-            handleException(e, template.getTitle());
+            handleException(e, "Velocity", template.getTitle(), -1, -1);
         } catch (final Exception e) {
-            handleException(e, template.getTitle());
+            handleException(e, "Velocity", template.getTitle(), -1, -1);
         }
-    }
-
-
-    private void handleException(final Exception e, final String title) {
-        throw new RuntimeException("Error in template '"+title+"'.", e);
     }
 
 
@@ -149,5 +152,32 @@ public class VelocityProcessor
     public void setWhitelist(final List<String> allowedClasses) {
         throw new UnsupportedOperationException(
             "Whitelists not supported by Velocity plugin.");
+    }
+
+
+    /**
+     * Velocity event handler to convert EntityNotFoundExceptions to NULL.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static class EntityNotFoundHandler
+        implements
+            MethodExceptionEventHandler {
+
+        private static final Logger LOG =
+            Logger.getLogger(EntityNotFoundHandler.class);
+
+        /** {@inheritDoc} */
+        @SuppressWarnings("unchecked") // Interface is not generic.
+        @Override
+        public Object methodException(final Class clazz,
+                                      final String methodName,
+                                      final Exception ex) throws Exception {
+            if (ex instanceof EntityNotFoundException) {
+                LOG.warn("Converted EntityNotFoundException to NULL.");
+                return null;
+            }
+            throw ex;
+        }
     }
 }

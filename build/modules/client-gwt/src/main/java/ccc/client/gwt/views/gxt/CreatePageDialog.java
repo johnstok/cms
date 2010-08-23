@@ -28,7 +28,6 @@ package ccc.client.gwt.views.gxt;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -304,8 +303,7 @@ public class CreatePageDialog
     /** {@inheritDoc} */
     @Override
     public ValidationResult getValidationResult() {
-        final ValidationResult result = new ValidationResult();
-        return result;
+        return _secondWizardPage.getValidationResult();
     }
 
     /**
@@ -350,8 +348,7 @@ public class CreatePageDialog
             _secondWizardPage.pageElements();
 
         final Set<Paragraph> paragraphs =
-            new HashSet<Paragraph>();
-        _secondWizardPage.extractValues(definitions, paragraphs);
+            _secondWizardPage.extractValues(definitions);
         return paragraphs;
     }
 

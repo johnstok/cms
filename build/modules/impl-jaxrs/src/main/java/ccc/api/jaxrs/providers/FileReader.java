@@ -58,7 +58,7 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.File;
-import ccc.api.exceptions.CCException;
+import ccc.api.exceptions.InvalidException;
 import ccc.api.types.DBC;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
@@ -125,14 +125,10 @@ public class FileReader
             final File f = parse(form);
             return f;
 
-        } catch (final RuntimeException e) {
+        } catch (final InvalidException e) {
             throw new WebApplicationException(
-                e,
-                new RestExceptionMapper().toResponse(
-                    new CCException(e.getMessage(), e),
-                    MimeType.HTML));
+                e, new RestExceptionMapper().toResponse(e, MimeType.HTML));
         }
-
     }
 
 

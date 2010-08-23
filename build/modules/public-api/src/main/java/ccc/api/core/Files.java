@@ -112,7 +112,7 @@ public interface Files {
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_COLLECTION)
     @Consumes("multipart/form-data")
-    @Produces({"application/json", "text/html"})
+    @Produces({"text/html", "application/json"})
     ResourceSummary create(File file);
 
 
@@ -126,7 +126,7 @@ public interface Files {
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_ELEMENT)
     @Consumes("multipart/form-data")
-    @Produces({"application/json", "text/html"})
+    @Produces({"text/html", "application/json"})
     ResourceSummary updateFile(@PathParam("id") UUID fileId, File file);
 
 

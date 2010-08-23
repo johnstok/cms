@@ -36,7 +36,9 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateWorkingCopyAction;
 import ccc.client.gwt.widgets.EditPagePanel;
@@ -62,7 +64,6 @@ public class UpdatePageDialog
     private final Template _template;
     private final ResourceTable _rt;
     private final EditPagePanel _panel;
-    private int _fckReadyCount = 0;
 
     private Button _saveDraftButton;
     private Button _applyNowButton;
@@ -90,30 +91,8 @@ public class UpdatePageDialog
         setLayout(new FitLayout());
 
         drawGUI(_modelData.getName());
-        // in case of FCKeditors add JS function for ready status checking.
-        if (_panel.getFCKCount()>0) {
-            _applyNowButton.disable();
-            _saveDraftButton.disable();
-            initJSNI(this);
-        }
     }
 
-    private static native String initJSNI(final UpdatePageDialog obj) /*-{
-        $wnd.FCKeditor_OnComplete = function(editorInstance) {
-            obj.@ccc.client.gwt.views.gxt.UpdatePageDialog::checkFCK()();
-        }
-    }-*/;
-
-    /**
-     * Enable save buttons when FCKEditors are ready.
-     */
-    public void checkFCK() {
-        _fckReadyCount++;
-        if (_fckReadyCount == _panel.getFCKCount()) {
-            _saveDraftButton.enable();
-            _applyNowButton.enable();
-        }
-    }
 
     private void drawGUI(final String pageName) {
         _panel.populateFields(_paras, pageName);
@@ -126,8 +105,8 @@ public class UpdatePageDialog
         addButton(createApplyNowButton());
     }
 
-    private Button createApplyNowButton() {
 
+    private Button createApplyNowButton() {
         _applyNowButton = new Button(
             getUiConstants().applyNow(),
             applyNowAction());
@@ -135,8 +114,8 @@ public class UpdatePageDialog
         return _applyNowButton;
     }
 
-    private Button createSaveDraftButton() {
 
+    private Button createSaveDraftButton() {
         _saveDraftButton = new Button(
             getUiConstants().saveDraft(),
             saveDraftAction());
@@ -144,27 +123,36 @@ public class UpdatePageDialog
         return _saveDraftButton;
     }
 
+
     private SelectionListener<ButtonEvent> applyNowAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final Page p = Page.delta(getParagraphs());
-                p.setTemplate(_panel.template().getId());
+                final ValidationResult vr = _panel.getValidationResult();
 
-                updatePage();
+                if (vr.isValid()) {
+                    updatePage();
+                } else {
+                    InternalServices.WINDOW.alert(vr.getErrorText());
+                }
             }
         };
     }
+
 
     private SelectionListener<ButtonEvent> saveDraftAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final Page p = Page.delta(getParagraphs());
-                p.setTemplate(_panel.template().getId());
+                final ValidationResult vr = _panel.getValidationResult();
 
-                saveDraft();
+                if (vr.isValid()) {
+                    saveDraft();
+                } else {
+                    InternalServices.WINDOW.alert(vr.getErrorText());
+                }
             }
         };
     }
+
 
     private void updatePage() {
         final PageCommentDialog commentDialog =
@@ -172,6 +160,7 @@ public class UpdatePageDialog
                                   UpdatePageDialog.this);
         commentDialog.show();
     }
+
 
     private void saveDraft() {
         final Page update = new Page();
@@ -195,6 +184,7 @@ public class UpdatePageDialog
         }.execute();
     }
 
+
     /**
      * Accessor.
      *
@@ -214,6 +204,7 @@ public class UpdatePageDialog
         return _panel;
     }
 
+
     /**
      * Accessor.
      *
@@ -223,10 +214,10 @@ public class UpdatePageDialog
         return _modelData;
     }
 
+
     private Set<Paragraph> getParagraphs() {
-        final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
         final List<PageElement> definitions = panel().pageElements();
-        _panel.extractValues(definitions, paragraphs);
+        final Set<Paragraph> paragraphs = _panel.extractValues(definitions);
         return paragraphs;
     }
 }

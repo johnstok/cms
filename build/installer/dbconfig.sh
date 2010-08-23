@@ -33,9 +33,9 @@ case "$dbtype" in
                 ;;
 esac
 
-$SED -i 's/<property name=\"hibernate.dialect\" value=\"[^\"]*\"/<property name=\"hibernate.dialect\" value=\"'"$dialect"'\"/' services-ejb3.jar/META-INF/persistence.xml
+$SED -i 's|<property name=\"hibernate.dialect\" value=\"[^\"]*\"|<property name=\"hibernate.dialect\" value=\"'"$dialect"'\"|' services-ejb3.jar/META-INF/persistence.xml
 
-$SED -i 's/<xa-datasource-property name=\"URL\">[^<]*<\/xa-datasource-property>/<xa-datasource-property name=\"URL\">'"$DB_URL"'<\/xa-datasource-property>/' database-ds.xml
-$SED -i 's/<xa-datasource-class>[^<]*<\/xa-datasource-class>/<xa-datasource-class>'"$datasource"'<\/xa-datasource-class>/' database-ds.xml
-$SED -i 's/<user-name>[^<]*<\/user-name>/<user-name>'"$DB_USERNAME"'<\/user-name>/' database-ds.xml
-$SED -i 's/<password>[^<]*<\/password>/<password>'"$DB_PASSWORD"'<\/password>/' database-ds.xml
+$SED -i 's|<xa-datasource-property name=\"URL\">[^<]*</xa-datasource-property>|<xa-datasource-property name=\"URL\">'"$DB_URL"'</xa-datasource-property>|' database-ds.xml
+$SED -i 's|<xa-datasource-class>[^<]*</xa-datasource-class>|<xa-datasource-class>'"$datasource"'</xa-datasource-class>|' database-ds.xml
+$SED -i 's|<user-name>[^<]*</user-name>|<user-name>'"$DB_USERNAME"'</user-name>|' database-ds.xml
+$SED -i 's|<password>[^<]*</password>|<password>'"$DB_PASSWORD"'</password>|' database-ds.xml

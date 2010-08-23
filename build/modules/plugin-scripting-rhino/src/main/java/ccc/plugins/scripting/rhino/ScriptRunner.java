@@ -29,18 +29,19 @@ package ccc.plugins.scripting.rhino;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
+import ccc.plugins.scripting.AbstractTextProcessor;
 import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
-import ccc.plugins.scripting.TextProcessor;
 
 
 /**
@@ -48,7 +49,9 @@ import ccc.plugins.scripting.TextProcessor;
  *
  * @author Civic Computing Ltd.
  */
-public class ScriptRunner implements TextProcessor {
+public class ScriptRunner
+    extends
+        AbstractTextProcessor {
 
     /** OUT : String. */
     static final String OUT = "ccc.scriptrunner.out";
@@ -60,16 +63,11 @@ public class ScriptRunner implements TextProcessor {
     private ArrayList<String> _allowedClasses = null;
 
 
-    /**
-     * Evaluate a string as Javascript.
-     *
-     * @param script The script to evaluate.
-     * @param context The script context.
-     * @param out The writer the script will write to.
-     */
-    public void eval(final Script script,
-                     final Context context,
-                     final Writer out) {
+    /** {@inheritDoc} */
+    @Override
+    public void render(final Script script,
+                       final Writer out,
+                       final Context context) throws ProcessingException {
 
         final org.mozilla.javascript.Context cx =
             org.mozilla.javascript.Context.enter();
@@ -93,6 +91,13 @@ public class ScriptRunner implements TextProcessor {
 
         } catch (final IOException e) {
             throw new RuntimeException("Error invoking script.", e);
+        } catch (final RhinoException e) {
+            handleException(
+                e,
+                "Rhino",
+                script.getTitle(),
+                e.lineNumber(),
+                e.columnNumber());
         } finally {
             org.mozilla.javascript.Context.exit();
         }
@@ -123,24 +128,6 @@ public class ScriptRunner implements TextProcessor {
         final Object jsValue =
             org.mozilla.javascript.Context.javaToJS(value, scope);
         ScriptableObject.putProperty(scope, key, jsValue);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String render(final Script template, final Context context) {
-        final StringWriter renderedOutput = new StringWriter();
-        render(template, renderedOutput, context);
-        return renderedOutput.toString();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void render(final Script template,
-                       final Writer output,
-                       final Context context) {
-        eval(template, context, output);
     }
 
 

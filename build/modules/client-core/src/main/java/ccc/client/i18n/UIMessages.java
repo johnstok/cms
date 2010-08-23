@@ -67,4 +67,12 @@ public interface UIMessages {
      * @return The constant, in the appropriate locale.
      */
     String templateWithNameAlreadyExistsInThisFolder(String name);
+
+    /**
+     * "Paragraph ''{0}'' is too long.".
+     *
+     * @param name The param to display.
+     * @return The constant, in the appropriate locale.
+     */
+    String paragraphTooLarge(String name);
 }

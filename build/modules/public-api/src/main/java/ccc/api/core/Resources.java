@@ -93,6 +93,23 @@ public interface Resources {
 
 
     /**
+     * List existing resources.
+     *
+     * @param criteria The criteria by which to filter resources.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
+     *
+     * @return A list of resources.
+     */
+    @POST
+    @Path(ccc.api.core.ResourceIdentifiers.Resource.SEARCH2)
+    PagedCollection<ResourceSummary> list(
+        ResourceCriteria criteria,
+        @QueryParam("page") @DefaultValue("1") int pageNo,
+        @QueryParam("count") @DefaultValue("20") int pageSize);
+
+
+    /**
      * Get the resource located at the specified path.
      *
      * @param resourceId The id of the existing resource.
@@ -174,6 +191,7 @@ public interface Resources {
      *
      * @return TemplateSummary.
      */
+    // TODO: Can't we get a resource's template from the resource object?
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
     Template computeTemplate(@PathParam("id") UUID resourceId);
 
@@ -197,16 +215,18 @@ public interface Resources {
      * @return A summary of the corresponding resource.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.SEARCH_LEGACY)
+    @Deprecated // Use the list method instead.
     ResourceSummary resourceForLegacyId(@PathParam("id") String legacyId);
 
     /**
-     * Look up the resource for a specified metadata key.
+     * Look up the resources for a specified metadata key.
      *
      * @param key The legacy id of the resource.
      *
      * @return A summary of the corresponding resource.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.SEARCH_METADATA)
+    @Deprecated // Use the list method instead.
     PagedCollection<ResourceSummary> resourceForMetadataKey(
         @PathParam("id") String key);
 

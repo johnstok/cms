@@ -57,6 +57,7 @@ public class ActionAcceptanceTest
     public void testCreateAction() {
 
         // ARRANGE
+        getActions().executeAll();
         final ResourceSummary rs = tempFolder();
 
         // ACT

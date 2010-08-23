@@ -77,32 +77,31 @@ public abstract class ResourceEntity
     extends
         Entity
     implements
-        SnapshotSupport<Resource> {
+        SnapshotSupport<Resource>, Lockable {
 
     private static final int MAXIMUM_TITLE_LENGTH = 256;
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
     private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
 
-    private String         _title             = getId().toString();
-    private ResourceName   _name              = ResourceName.escape(_title);
-    private TemplateEntity       _template          = null;
-    private FolderEntity         _parent            = null;
-    private Integer        _parentIndex       = null;
-    private UserEntity           _lockedBy          = null;
-    private final Set<String>    _tags              = new HashSet<String>();
-    private final Set<AccessPermission> _groupAcl   = new HashSet<AccessPermission>();
-    private final Set<AccessPermission> _userAcl    = new HashSet<AccessPermission>();
-    private UserEntity           _publishedBy       = null;
-    private boolean        _includeInMainMenu = false;
-    private Date           _dateCreated       = new Date();
-    private Date           _dateChanged       = _dateCreated;
-    private Duration       _cache             = null;
-    private String         _description       = "";
-    private boolean        _deleted           = false;
-    private UserEntity           _changedBy         = null;
-    private UserEntity           _createdBy         = null;
-    private final Map<String, String> _metadata = new HashMap<String, String>();
-
+    private String                      _title             = getId().toString();
+    private ResourceName                _name              = ResourceName.escape(_title);
+    private TemplateEntity              _template          = null;
+    private FolderEntity                _parent            = null;
+    private Integer                     _parentIndex       = null;
+    private UserEntity                  _lockedBy          = null;
+    private final Set<String>           _tags              = new HashSet<String>();
+    private final Set<AccessPermission> _groupAcl          = new HashSet<AccessPermission>();
+    private final Set<AccessPermission> _userAcl           = new HashSet<AccessPermission>();
+    private UserEntity                  _publishedBy       = null;
+    private boolean                     _includeInMainMenu = false;
+    private Date                        _dateCreated       = new Date();
+    private Date                        _dateChanged       = _dateCreated;
+    private Duration                    _cache             = null;
+    private String                      _description       = "";
+    private boolean                     _deleted           = false;
+    private UserEntity                  _changedBy         = null;
+    private UserEntity                  _createdBy         = null;
+    private final Map<String, String>   _metadata          = new HashMap<String, String>();
 
     /** Constructor: for persistence only. */
     protected ResourceEntity() { super(); }
@@ -285,11 +284,8 @@ public abstract class ResourceEntity
     }
 
 
-    /**
-     * Lock a resource.
-     *
-     * @param u The user who is locking the resource.
-     */
+    /** {@inheritDoc} */
+    @Override
     public void lock(final UserEntity u) {
         require().notNull(u);
         if (isLocked()) {
@@ -309,13 +305,8 @@ public abstract class ResourceEntity
     }
 
 
-    /**
-     * Unlock the resource.
-     * Only the user who locked the resource, or an administrator may call this
-     * method.
-     *
-     * @param user The user releasing the lock.
-     */
+    /** {@inheritDoc} */
+    @Override
     public void unlock(final UserEntity user) {
 
         if (!isLocked()) {
@@ -437,13 +428,8 @@ public abstract class ResourceEntity
     }
 
 
-    /**
-     * Confirm this resource is locked by the specified user.
-     * If this resource is locked by the specified user this method does
-     * nothing; otherwise an exception is thrown.
-     *
-     * @param user The user who should have the lock.
-     */
+    /** {@inheritDoc} */
+    @Override
     public void confirmLock(final UserEntity user) {
         if (!isLocked()) {
             throw new UnlockedException(getId());

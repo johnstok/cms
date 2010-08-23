@@ -28,6 +28,7 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.Link;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
@@ -73,7 +74,7 @@ public abstract class PageDeltaAction
     protected String getPath() {
         return
             Globals.API_URL
-            + _resource.self().build(new GWTTemplateEncoder());
+            + new Link(_resource.getLink(Page.WORKING_COPY)).build(new GWTTemplateEncoder());
     }
 
 

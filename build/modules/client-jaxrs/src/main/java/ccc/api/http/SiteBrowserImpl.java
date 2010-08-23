@@ -32,14 +32,16 @@ import java.io.IOException;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
 
 
 /**
- * TODO: Add a description for this type.
+ * A simple HTTP implementation of the site browser API.
  *
  * @author Civic Computing Ltd.
  */
@@ -50,6 +52,7 @@ public class SiteBrowserImpl
     private final HttpClient _httpClient;
     private final String _hostUrl;
     private final String _previewUrl;
+
 
     /**
      * Constructor.
@@ -64,6 +67,7 @@ public class SiteBrowserImpl
 
     }
 
+
     /** {@inheritDoc} */
     @Override
     public String previewContent(final ResourceSummary rs, final boolean wc) {
@@ -72,6 +76,25 @@ public class SiteBrowserImpl
                 _previewUrl
                 + rs.getAbsolutePath()
                 + ((wc) ? "?wc=" : ""));
+        return invoke(get);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String post(final ResourceSummary rs) {
+        return invoke(new PostMethod(_hostUrl+rs.getAbsolutePath()));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String get(final String absolutePath) {
+        return invoke(new GetMethod(_hostUrl+absolutePath));
+    }
+
+
+    private String invoke(final HttpMethod get) {
         try {
             _httpClient.executeMethod(get);
             final int status = get.getStatusCode();
@@ -88,5 +111,4 @@ public class SiteBrowserImpl
             get.releaseConnection();
         }
     }
-
 }

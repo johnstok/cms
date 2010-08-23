@@ -2,10 +2,10 @@
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
 <booleanAttribute key="com.mountainminds.eclemma.core.INPLACE_INSTRUMENTATION" value="false"/>
 <listAttribute key="com.mountainminds.eclemma.core.INSTRUMENTATION_PATHS">
-<listEntry value="/shell-tools/target/classes"/>
+<listEntry value="/client-shell/target/classes"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/shell-tools"/>
+<listEntry value="/client-shell"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="4"/>
@@ -14,10 +14,10 @@
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="com.mountainminds.eclemma.ui.launchGroup.coverage"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=shell-tools/src\/test\/java"/>
+<stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=client-shell/src\/test\/java"/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit3"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value=""/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="shell-tools"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="client-shell"/>
 </launchConfiguration>

@@ -105,6 +105,8 @@ public interface ResourceIdentifiers {
         String COLLECTION  = "/secure/pages";
         /** VALIDATOR : String. */
         String VALIDATOR   = COLLECTION + "/validator";
+        /** SEARCH : String. */
+        String SEARCH   = COLLECTION + "/search";
         /** ELEMENT : String. */
         String ELEMENT     = COLLECTION + "/{id}";
         /** WC : String. */
@@ -269,6 +271,8 @@ public interface ResourceIdentifiers {
         String PATH_WC            = COLLECTION + "/by-path-wc{path:.*}";
         /** SEARCH : String. */
         String SEARCH             = COLLECTION + "/search/{id}/{title}";
+        /** SEARCH : String. */
+        String SEARCH2             = COLLECTION + "/search2";
 
         /** ELEMENT : String. */
         String ELEMENT            = COLLECTION + "/{id}";

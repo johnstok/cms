@@ -295,11 +295,13 @@ public class UserTable extends TablePanel {
                 if (!UserTree.USERS.equals(_lastSelected.get("id"))) {
                     uc.setGroups((String) _lastSelected.get("id"));
                 }
-                uc.setUsername(_searchString.getValue().replace('*', '%'));
+                uc.setUsername(
+                    "%"+_searchString.getValue().replace('*', '%')+"%");
                 updatePager(uc);
             } else if (_radioGroup.getValue() == _emailRadio) {
                 final UserCriteria uc = new UserCriteria();
-                uc.setEmail(_searchString.getValue().replace('*', '%'));
+                uc.setEmail(
+                    "%"+_searchString.getValue().replace('*', '%')+"%");
                 updatePager(uc);
             }
         }

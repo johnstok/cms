@@ -30,6 +30,7 @@ import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
@@ -39,13 +40,19 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.Page;
+import ccc.api.core.PageCriteria;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.Pages;
 import ccc.api.core.ResourceSummary;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
+import ccc.commons.Exceptions;
 import ccc.domain.PageEntity;
 import ccc.domain.PageHelper;
+import ccc.domain.ResourceEntity;
 import ccc.domain.TemplateEntity;
+import ccc.domain.UserEntity;
 
 
 /**
@@ -126,6 +133,50 @@ public class PagesEJB
         return
             getRepoFactory()
                 .createResourceRepository()
+                .find(PageEntity.class, pageId).forCurrentRevision();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed(PAGE_UPDATE)
+    public Page retrieveWorkingCopy(final UUID pageId) {
+        return
+            getRepoFactory()
+                .createResourceRepository()
                 .find(PageEntity.class, pageId).deltaPage();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public PagedCollection<ResourceSummary> list(final PageCriteria criteria,
+                                                 final int pageNo,
+                                                 final int pageSize) {
+        checkPermission(RESOURCE_READ);
+
+        UserEntity u = null;
+        try {
+            u = currentUser();
+        } catch (final EntityNotFoundException e) {
+            Exceptions.swallow(e); // Leave user as NULL.
+        }
+
+        final List<ResourceSummary> list = ResourceEntity.mapResources(
+            filterAccessibleTo(
+                u,
+                getRepoFactory()
+                    .createResourceRepository()
+                    .list(criteria, pageNo, pageSize)));
+
+        final long count =
+            getRepoFactory()
+                .createResourceRepository()
+                .totalCount(criteria);
+
+        return
+            new PagedCollection<ResourceSummary>(
+                count, ResourceSummary.class, list);
     }
 }

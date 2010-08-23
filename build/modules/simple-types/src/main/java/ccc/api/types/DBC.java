@@ -232,4 +232,30 @@ public final class DBC {
         }
         return value;
     }
+
+    /**
+     * Assert that the specified string does not occur more than
+     * specified in the text.
+     *
+     * @param text The text to validate.
+     * @param item The string to search.
+     * @param max The maximum occurrences.
+     */
+    public void maxOccurrences(final String text,
+                               final String item,
+                               final int max) {
+        int count = 0;
+        int index = 0;
+        while (index != -1) {
+            index = text.indexOf(item, index+1);
+            if(index!=-1){
+                count++;
+            }
+        }
+        if (count>max) {
+            throw new IllegalArgumentException(
+                "Must not contain more than "+max+" fields.");
+        }
+
+    }
 }

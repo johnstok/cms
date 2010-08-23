@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.api.types.HttpStatusCode;
-import ccc.web.filters.ErrorHandlingFilter;
+import ccc.web.exceptions.RequestFailedException;
 import ccc.web.rendering.AuthenticationRequiredException;
 import ccc.web.rendering.NotFoundException;
 import ccc.web.rendering.RedirectRequiredException;
@@ -205,19 +205,23 @@ public class ErrorHandlingFilterTest
         try {
             f.doFilter(
                 new ServletRequestStub(
-                    "/context", "/servlet", "/path", new HashMap<String, String>()),
-                    _response,
-                    new FilterChain() {
-                    @Override
-                    public void doFilter(final ServletRequest request,
-                                         final ServletResponse response) {
-                        throw rootCause;
-                    }
-                });
+                    "/context",
+                    "/servlet",
+                    "/path",
+                    new HashMap<String, String>()),
+                _response,
+                new FilterChain() {
+                @Override
+                public void doFilter(final ServletRequest request,
+                                     final ServletResponse response) {
+                    throw rootCause;
+                }
+            });
 
         // ASSERT
-        } catch (final RuntimeException e) {
-            assertTrue(e.getMessage().startsWith("Unhandled servlet error: "));
+        } catch (final RequestFailedException e) {
+            assertTrue(
+                e.getMessage().startsWith("Failed to complete request: "));
             assertSame(rootCause, e.getCause());
         }
         verifyAll();

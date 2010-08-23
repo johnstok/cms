@@ -44,7 +44,7 @@ import javax.activation.MimetypesFileTypeMap;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.exceptions.CCException;
+import ccc.api.exceptions.InvalidException;
 import ccc.api.types.DBC;
 import ccc.api.types.HttpStatusCode;
 import ccc.api.types.MimeType;
@@ -219,7 +219,7 @@ public final class HTTP {
         try {
             return URLEncoder.encode(string, charset);
         } catch (final UnsupportedEncodingException e) {
-            throw new CCException("Invalid charset.", e);
+            throw new InvalidException("Invalid charset.", e);
         }
     }
 
@@ -237,7 +237,7 @@ public final class HTTP {
         try {
             return URLDecoder.decode(string, charset);
         } catch (final UnsupportedEncodingException e) {
-            throw new CCException("Invalid charset.", e);
+            throw new InvalidException("Invalid charset.", e);
         }
     }
 

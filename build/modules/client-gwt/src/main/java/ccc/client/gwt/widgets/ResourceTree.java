@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Globals;
 import ccc.client.gwt.binding.DataBinding;
@@ -81,9 +82,21 @@ public class ResourceTree extends AbstractResourceTree {
                         ? _root
                         : ((BeanModel) loadConfig).<ResourceSummary>getBean();
 
+                if (parent.getChildCount() > Globals.MAX_FETCH) {
+                    List<ResourceSummary> children =
+                        createRangeFolders(parent.getChildCount(), parent);
+                    callback.onSuccess(
+                        DataBinding.bindResourceSummary(children));
+                } else {
+                    int page = 1;
+                    if (parent.getType() == ResourceType.RANGE_FOLDER) {
+                        parent.setId(parent.getParent());
+                        page = Integer.decode(parent.getAbsolutePath());
+                    }
+
                     new GetChildrenPagedAction(
                         parent,
-                        1,
+                        page,
                         Globals.MAX_FETCH,
                         "name",
                         SortOrder.ASC,
@@ -96,12 +109,13 @@ public class ResourceTree extends AbstractResourceTree {
 
                         /** {@inheritDoc} */
                         @Override protected void execute(
-                                   final Collection<ResourceSummary> children,
-                                   final int count) {
+                                                         final Collection<ResourceSummary> children,
+                                                         final int count) {
                             callback.onSuccess(
                                 DataBinding.bindResourceSummary(children));
                         }
                     }.execute();
+                }
             }
         };
         return proxy;

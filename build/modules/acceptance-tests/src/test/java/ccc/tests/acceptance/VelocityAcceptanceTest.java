@@ -33,7 +33,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
-import ccc.commons.Environment;
 
 
 /**
@@ -44,34 +43,6 @@ import ccc.commons.Environment;
 public class VelocityAcceptanceTest
     extends
         AbstractAcceptanceTest {
-
-
-    /**
-     * Test.
-     */
-    public void testHostnameProperty() {
-
-        // ARRANGE
-        final ResourceSummary folder = tempFolder();
-
-        final Template t = new Template();
-        t.setName(new ResourceName("template"));
-        t.setParent(folder.getId());
-        t.setDescription("t-desc");
-        t.setTitle("t-title");
-        t.setBody("$hostname");
-        t.setDefinition("<fields/>");
-        t.setMimeType(MimeType.HTML);
-        final ResourceSummary template = getTemplates().create(t);
-
-        final ResourceSummary page = tempPage(folder.getId(), template.getId());
-
-        // ACT
-        final String pContent = getBrowser().previewContent(page, false);
-
-        // ASSERT
-        assertTrue(pContent.startsWith(Environment.getHostname()));
-    }
 
 
     /**

@@ -24,11 +24,16 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.persistence;
+package ccc.api.core;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+
+import ccc.api.types.ResourceType;
+import ccc.api.types.SortOrder;
 
 
 /**
@@ -42,10 +47,15 @@ public class ResourceCriteria implements Serializable {
     private String _tag = null;
     private Date _changedAfter = null;
     private Date _changedBefore = null;
-    private String _mainmenu = null;
-    private String _type = null;
-    private String _published = null;
-    private String _locked = null;
+    private Boolean _mainmenu = null;
+    private ResourceType _type = null;
+    private Boolean _published = null;
+    private Boolean _locked = null;
+
+    private String _sortField;
+    private SortOrder _sortOrder;
+    private Map<String, String> _metaMatches = new HashMap<String, String>();
+
 
     /**
      * Constructor.
@@ -61,7 +71,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return Returns the Type.
      */
-    public final String getType() {
+    public final ResourceType getType() {
         return _type;
     }
 
@@ -71,7 +81,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param type The type to set.
      */
-    public final void setType(final String type) {
+    public final void setType(final ResourceType type) {
         _type = type;
     }
 
@@ -81,7 +91,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return The parent.
      */
-    public UUID getParent() {
+    public final UUID getParent() {
         return _parent;
     }
 
@@ -90,7 +100,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return The tag.
      */
-    public String getTag() {
+    public final String getTag() {
         return _tag;
     }
 
@@ -99,7 +109,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return Date changed before.
      */
-    public Date getChangedBefore() {
+    public final Date getChangedBefore() {
         return
             (null==_changedBefore) ? null : new Date(_changedBefore.getTime());
     }
@@ -109,7 +119,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param date Date changed before.
      */
-    public void setChangedBefore(final Date date) {
+    public final void setChangedBefore(final Date date) {
         _changedBefore = (null==date) ? null : new Date(date.getTime());
     }
      /**
@@ -117,7 +127,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return Date changed after.
      */
-    public Date getChangedAfter() {
+    public final Date getChangedAfter() {
         return
             (null==_changedAfter) ? null : new Date(_changedAfter.getTime());
     }
@@ -126,7 +136,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param date Date changed after.
      */
-    public void setChangedAfter(final Date date) {
+    public final void setChangedAfter(final Date date) {
         _changedAfter =  (null==date) ? null : new Date(date.getTime());
     }
     /**
@@ -134,7 +144,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param tag The tag.
      */
-    public void setTag(final String tag) {
+    public final void setTag(final String tag) {
         _tag = tag;
     }
     /**
@@ -142,7 +152,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param parent The resource's parent.
      */
-    public void setParent(final UUID parent) {
+    public final void setParent(final UUID parent) {
         _parent = parent;
     }
 
@@ -151,7 +161,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param mainmenu Included in main menu.
      */
-    public void setMainmenu(final String mainmenu) {
+    public final void setMainmenu(final Boolean mainmenu) {
         _mainmenu = mainmenu;
     }
 
@@ -160,7 +170,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return  Included in main menu.
      */
-    public String getMainmenu() {
+    public final Boolean getMainmenu() {
         return _mainmenu;
     }
 
@@ -170,8 +180,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return Returns the published.
      */
-    public final String getPublished() {
-
+    public final Boolean getPublished() {
         return _published;
     }
 
@@ -182,8 +191,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param published The published to set.
      */
-    public final void setPublished(final String published) {
-
+    public final void setPublished(final Boolean published) {
         _published = published;
     }
 
@@ -194,8 +202,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @return Returns the locked.
      */
-    public final String getLocked() {
-
+    public final Boolean getLocked() {
         return _locked;
     }
 
@@ -206,9 +213,90 @@ public class ResourceCriteria implements Serializable {
      *
      * @param locked The locked to set.
      */
-    public final void setLocked(final String locked) {
-
+    public final void setLocked(final Boolean locked) {
         _locked = locked;
     }
 
+
+    /**
+     * Sort the results.
+     *
+     * @param field The paragraph to sort on.
+     * @param order The order to sort.
+     */
+    public final void sort(final String field, final SortOrder order) {
+        _sortField = field;
+        _sortOrder = order;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The order by which results will be sorted.
+     */
+    public final SortOrder getSortOrder() {
+        return _sortOrder;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The field on which to sort results.
+     */
+    public final String getSortField() {
+        return _sortField;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param sortField The field to sort on.
+     */
+    public final void setSortField(final String sortField) {
+        _sortField = sortField;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param sortOrder The order to sort in.
+     */
+    public final void setSortOrder(final SortOrder sortOrder) {
+        _sortOrder = sortOrder;
+    }
+
+
+    /**
+     * Match the specified metadatum.
+     *
+     * @param name The metadatum name.
+     * @param value The metadatum value.
+     */
+    public final void matchMetadatum(final String name, final String value) {
+        _metaMatches.put(name, value);
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The metadata to match.
+     */
+    public final Map<String, String> getMetadata() {
+        return new HashMap<String, String>(_metaMatches);
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param metadata The metadata to set.
+     */
+    public final void setMetadata(final Map<String, String> metadata) {
+        _metaMatches = new HashMap<String, String>(metadata);
+    }
 }

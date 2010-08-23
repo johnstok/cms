@@ -1,0 +1,36 @@
+<VirtualHost *:80>
+    # Hostname and port that the server uses to identify itself
+        ServerName cc7server  
+    # Email address that the server includes in error messages sent to the client   
+        ServerAdmin cc7admin
+
+	# Reverse proxy settings
+        ProxyRequests Off
+        <Proxy *>
+                Order deny,allow
+                Allow from all
+        </Proxy>
+
+        ProxyPass / http://localhost:8080/cc7/
+        ProxyPassReverse / http://localhost:8080/cc7/
+        ProxyPassReverseCookiePath /cc7 /
+
+    # Security checks
+        include /net/titan/disk/fs/1a/export/GLOBAL/apache/conf/alexios-security-v7.conf
+
+    # Reverse proxy caching
+        CacheEnable disk /
+
+    # Compression with browser specific settings. 
+        SetOutputFilter DEFLATE
+        BrowserMatch ^Mozilla/4 gzip-only-text/html
+        BrowserMatch ^Mozilla/4\.0[678] no-gzip
+        BrowserMatch \bMSIE\s(7|8) !no-gzip !gzip-only-text/html
+        DeflateCompressionLevel 9
+        Header append Vary User-Agent env=!dont-vary
+
+    # Logging
+        ErrorLog /var/log/apache2/error.log
+        LogLevel warn
+        CustomLog /var/log/apache2/access.log combined
+</VirtualHost>

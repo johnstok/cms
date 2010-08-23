@@ -40,6 +40,7 @@ import ccc.acceptance.client.HttpClientRequestExecutor;
 import ccc.acceptance.client.ServerTextParser;
 import ccc.acceptance.client.WindowStub;
 import ccc.api.core.API;
+import ccc.api.core.ActionSummary;
 import ccc.api.core.Actions;
 import ccc.api.core.Alias;
 import ccc.api.core.Aliases;
@@ -50,6 +51,7 @@ import ccc.api.core.Folders;
 import ccc.api.core.Group;
 import ccc.api.core.Groups;
 import ccc.api.core.Page;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.Pages;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
@@ -63,7 +65,9 @@ import ccc.api.http.ProxyServiceLocator;
 import ccc.api.http.SiteBrowser;
 import ccc.api.types.MimeType;
 import ccc.api.types.NormalisingEncoder;
+import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
+import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 import ccc.client.core.CoreEvents;
 import ccc.client.core.I18n;
@@ -74,6 +78,7 @@ import ccc.client.events.EventHandler;
 import ccc.client.i18n.ActionNameConstants;
 import ccc.client.i18n.UIConstants;
 import ccc.client.i18n.UIMessages;
+import ccc.client.validation.AbstractValidations;
 import ccc.commons.Testing;
 
 
@@ -98,6 +103,10 @@ public abstract class AbstractAcceptanceTest
     static {
         final API api = new API();
         api.addLink(API.ALIASES, "/secure/aliases");
+        api.addLink(API.USERS, "/secure/users");
+        api.addLink(API.PAGES, "/secure/pages");
+        api.addLink(API.FILES, "/secure/files");
+        api.addLink(API.FOLDERS, "/secure/folders");
         InternalServices.API = api;
 
         I18n.USER_ACTIONS =
@@ -132,6 +141,13 @@ public abstract class AbstractAcceptanceTest
                     }
                 }
             });
+
+        InternalServices.VALIDATOR = new AbstractValidations() {
+            @Override
+            public String notValidXML(final String definition) {
+                throw new UnsupportedOperationException("Method not implemented.");
+            }
+        };
     }
 
 
@@ -327,6 +343,9 @@ public abstract class AbstractAcceptanceTest
                                         "title",
                                         "",
                                         true);
+        page.setParagraphs(
+            Collections.singleton(
+                Paragraph.fromText("content", "test content")));
         return getPages().create(page);
     }
 
@@ -424,6 +443,18 @@ public abstract class AbstractAcceptanceTest
         _sl   = new ProxyServiceLocator(_hostUrl);
         InternalServices.EXECUTOR = createExecutor();
         getSecurity().login("migration", "migration");
+        InternalServices.ACTIONS = createActions();
+        InternalServices.GROUPS = createGroups();
+    }
+
+
+    private PagedCollection<Group> createGroups() {
+        return getGroups().query(null, 1, 1);
+    }
+
+
+    private PagedCollection<ActionSummary> createActions() {
+        return getActions().listPendingActions(null, SortOrder.ASC, 1, 1);
     }
 
 

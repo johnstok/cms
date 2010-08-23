@@ -44,6 +44,13 @@ read cc_password
 echo -n " CC initial user's email: "
 read cc_email
 
+echo
+echo "Apache Config"
+echo -n " CC URL: "
+read cc_url
+echo -n " CC admin contact email: "
+read cc_admin_email
+
 mkdir filestore
 chmod a+w filestore
 
@@ -57,6 +64,7 @@ cd cc-$cc_version
 ../$script_dir/rename.sh cc7 $app_name
 ../$script_dir/dbconfig.sh $db_type $db_url $db_user $db_password
 ../$script_dir/mailconfig.sh $mail_host $mail_username $mail_password
+../$script_dir/apacheconfig.sh $cc_url $cc_admin_email  $app_name
 cd ..
 
 echo

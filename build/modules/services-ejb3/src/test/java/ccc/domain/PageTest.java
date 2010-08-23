@@ -34,6 +34,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import ccc.api.core.Page;
+import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.commons.Exceptions;
@@ -335,8 +336,8 @@ public final class PageTest extends TestCase {
     public void testAdd32NewParagraphs() {
 
         // ARRANGE
-        final Paragraph[] paras = new Paragraph[PageEntity.MAXIMUM_PARAGRAPHS];
-        for (int a=0; a < PageEntity.MAXIMUM_PARAGRAPHS; a++) {
+        final Paragraph[] paras = new Paragraph[Template.MAXIMUM_PARAGRAPHS];
+        for (int a=0; a < Template.MAXIMUM_PARAGRAPHS; a++) {
             paras[a] =
                 Paragraph.fromText("header"+a, "<H1>Header"+a+"</H1>");
         }
@@ -347,7 +348,7 @@ public final class PageTest extends TestCase {
 
         // ASSERT
         assertEquals(
-            PageEntity.MAXIMUM_PARAGRAPHS,
+            Template.MAXIMUM_PARAGRAPHS,
             page.currentRevision().getParagraphs().size());
 
     }
@@ -359,8 +360,8 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Paragraph[] paras =
-            new Paragraph[PageEntity.MAXIMUM_PARAGRAPHS+1];
-        for (int a=0; a < PageEntity.MAXIMUM_PARAGRAPHS+1; a++) {
+            new Paragraph[Template.MAXIMUM_PARAGRAPHS+1];
+        for (int a=0; a < Template.MAXIMUM_PARAGRAPHS+1; a++) {
             paras[a] =
                 Paragraph.fromText("header"+a, "<H1>Header"+a+"</H1>");
         }

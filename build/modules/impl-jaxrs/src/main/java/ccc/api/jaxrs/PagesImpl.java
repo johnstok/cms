@@ -35,6 +35,8 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.api.core.Page;
+import ccc.api.core.PageCriteria;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.Pages;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
@@ -117,6 +119,30 @@ public class PagesImpl
     public void update(final UUID pageId, final Page json) {
         try {
             _pages.update(pageId, json);
+        } catch (final RuntimeException cfe) {
+            throw convertException(cfe);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Page retrieveWorkingCopy(final UUID pageId) {
+        try {
+            return _pages.retrieveWorkingCopy(pageId);
+        } catch (final RuntimeException cfe) {
+            throw convertException(cfe);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public PagedCollection<ResourceSummary> list(final PageCriteria criteria,
+                                                 final int pageNo,
+                                                 final int pageSize) {
+        try {
+            return _pages.list(criteria, pageNo, pageSize);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
