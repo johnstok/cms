@@ -20,9 +20,9 @@
         </dependency>
         
         <dependency>
-            <groupId>jboss</groupId>
-            <artifactId>jbossweb-service</artifactId>
-            <version>${lib.version.jboss-legacy}</version>
+            <groupId>org.jboss.jbossas</groupId>
+            <artifactId>jboss-as-tomcat</artifactId>
+            <version>${lib.version.jboss}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
