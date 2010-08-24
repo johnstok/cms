@@ -43,6 +43,7 @@ import org.apache.log4j.Logger;
 import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.SortTool;
 
+import ccc.api.core.Failure;
 import ccc.api.core.MemoryServiceLocator;
 import ccc.api.core.ServiceLocator;
 import ccc.api.core.User;
@@ -54,8 +55,8 @@ import ccc.commons.Environment;
 import ccc.commons.HTTP;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.markup.XHTML;
-import ccc.plugins.s11n.json.FailureSerializer;
 import ccc.plugins.s11n.json.JsonImpl;
+import ccc.plugins.s11n.json.SerializerFactory;
 import ccc.plugins.scripting.Context;
 import ccc.web.rendering.AuthenticationRequiredException;
 import ccc.web.rendering.NotFoundException;
@@ -188,7 +189,7 @@ public class ContentServlet
             throw new AuthenticationRequiredException(path);
         } catch (final CCException e) {
             final JsonImpl json = new JsonImpl();
-            new FailureSerializer().write(json, e.getFailure());
+            SerializerFactory.create(Failure.class).write(json, e.getFailure());
             LOG.warn(
                 "Exception retrieving path " + path
                 + " wc=" + workingCopy

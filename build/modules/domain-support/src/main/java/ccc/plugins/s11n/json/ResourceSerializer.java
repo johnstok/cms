@@ -39,7 +39,7 @@ import ccc.api.types.ResourceType;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class ResourceSerializer<T extends Resource>
+abstract class ResourceSerializer<T extends Resource>
     extends
         ResSerializer<T> {
 

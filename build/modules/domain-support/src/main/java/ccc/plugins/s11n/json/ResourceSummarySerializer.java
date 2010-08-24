@@ -40,7 +40,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceSummarySerializer implements Serializer<ResourceSummary> {
+class ResourceSummarySerializer implements Serializer<ResourceSummary> {
 
 
     /** {@inheritDoc} */

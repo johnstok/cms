@@ -34,7 +34,7 @@ import ccc.api.core.Alias;
  *
  * @author Civic Computing Ltd.
  */
-public class AliasSerializer
+class AliasSerializer
     extends
         ResourceSerializer<Alias> {
 

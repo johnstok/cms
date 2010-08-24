@@ -29,8 +29,8 @@ package ccc.commons;
 import java.io.Serializable;
 
 import junit.framework.TestCase;
-import ccc.plugins.s11n.Serializer;
-import ccc.plugins.s11n.json.ActionSerializer;
+import ccc.api.types.NormalisingEncoder;
+import ccc.api.types.Link.Encoder;
 
 
 /**
@@ -99,12 +99,12 @@ public class ReflectionTest
         // ARRANGE
 
         // ACT
-        final Serializer<?> s =
+        final Encoder s =
             Reflection.construct(
-                Serializer.class, "ccc.plugins.s11n.json.ActionSerializer");
+                Encoder.class, "ccc.api.types.NormalisingEncoder");
 
         // ASSERT
-        assertTrue(s instanceof ActionSerializer);
+        assertTrue(s instanceof NormalisingEncoder);
     }
 
 
@@ -116,14 +116,14 @@ public class ReflectionTest
         // ARRANGE
 
         // ACT
-        final Serializer<?> s =
+        final Encoder s =
             Reflection.construct(
-                Serializer.class,
-                "ccc.plugins.s11n.json.ActionSerializer",
+                Encoder.class,
+                "ccc.api.types.NormalisingEncoder",
                 new Object[] {});
 
         // ASSERT
-        assertTrue(s instanceof ActionSerializer);
+        assertTrue(s instanceof NormalisingEncoder);
     }
 
 
@@ -135,14 +135,14 @@ public class ReflectionTest
         // ARRANGE
 
         // ACT
-        final Serializer<?> s =
+        final Encoder s =
             Reflection.construct(
-                Serializer.class,
-                "ccc.plugins.s11n.json.ActionSerializer",
+                Encoder.class,
+                "ccc.api.types.NormalisingEncoder",
                 new Class[] {},
                 new Object[] {});
 
         // ASSERT
-        assertTrue(s instanceof ActionSerializer);
+        assertTrue(s instanceof NormalisingEncoder);
     }
 }

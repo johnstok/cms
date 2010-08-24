@@ -26,6 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import ccc.api.core.Failure;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
@@ -35,7 +36,7 @@ import ccc.client.core.RemoteException;
 import ccc.client.core.SessionTimeoutException;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.plugins.s11n.S11nException;
-import ccc.plugins.s11n.json.FailureSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -126,9 +127,10 @@ public class UpdateFileDialog extends AbstractEditDialog {
                         try {
                             InternalServices.EX_HANDLER.unexpectedError(
                                 new RemoteException(
-                                    new FailureSerializer().read(
-                                        InternalServices.PARSER.parseJson(
-                                            response))),
+                                    SerializerFactory.create(Failure.class)
+                                        .read(
+                                            InternalServices.PARSER.parseJson(
+                                                response))),
                                 getUiConstants().uploadFile());
 
                         // Assume success.

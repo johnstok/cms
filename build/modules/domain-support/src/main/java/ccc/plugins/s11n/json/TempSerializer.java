@@ -34,7 +34,7 @@ import ccc.api.core.Resource;
  *
  * @author Civic Computing Ltd.
  */
-public class TempSerializer
+class TempSerializer
     extends
         ResourceSerializer<Resource> {
 

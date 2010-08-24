@@ -40,7 +40,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class PagedCollectionSerializer<T>
+class PagedCollectionSerializer<T>
     implements
         Serializer<PagedCollection<T>> {
 

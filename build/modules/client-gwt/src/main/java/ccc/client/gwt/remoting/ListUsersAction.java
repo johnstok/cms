@@ -43,7 +43,7 @@ import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.PagedCollectionReader;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -128,8 +128,8 @@ public abstract class ListUsersAction
                             JSONParser.parse(response.getText()).isObject();
 
                         final PagedCollection<User> uc =
-                            PagedCollectionReader
-                            .read(new GwtJson(obj), User.class);
+                            SerializerFactory.create(PagedCollection.class)
+                            .read(new GwtJson(obj));
 
                         execute(uc);
                     }

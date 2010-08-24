@@ -34,8 +34,8 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.json.GroupSerializer;
 import ccc.plugins.s11n.json.Json;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -74,7 +74,7 @@ public class CreateGroupAction
     @Override
     protected String getBody() {
         final Json json = InternalServices.PARSER.newJson();
-        new GroupSerializer().write(json, _group);
+        SerializerFactory.create(Group.class).write(json, _group);
         return json.toString();
     }
 
@@ -83,7 +83,7 @@ public class CreateGroupAction
     @Override
     protected void onOK(final Response response) {
         final Group newGroup =
-            new GroupSerializer().read(
+            SerializerFactory.create(Group.class).read(
                 InternalServices.PARSER.parseJson(response.getText()));
 
         final Event<CommandType> event =

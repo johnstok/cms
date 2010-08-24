@@ -40,7 +40,7 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.TemplateSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -86,7 +86,7 @@ public abstract class CreateTemplateAction
     @Override
     protected String getBody() {
         final Json json = new GwtJson();
-        new TemplateSerializer().write(json, _delta);
+        SerializerFactory.create(Template.class).write(json, _delta);
         return json.toString();
     }
 

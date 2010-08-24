@@ -37,7 +37,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class AbstractSerializer<T>
+abstract class AbstractSerializer<T>
     implements
         Serializer<T> {
 

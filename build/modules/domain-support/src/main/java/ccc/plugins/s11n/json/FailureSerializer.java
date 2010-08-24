@@ -35,7 +35,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class FailureSerializer implements Serializer<Failure> {
+class FailureSerializer implements Serializer<Failure> {
 
 
     /** {@inheritDoc} */

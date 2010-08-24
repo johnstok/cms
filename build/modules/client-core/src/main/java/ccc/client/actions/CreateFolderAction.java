@@ -40,8 +40,8 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.json.FolderSerializer;
 import ccc.plugins.s11n.json.Json;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -92,7 +92,7 @@ public final class CreateFolderAction
         final Folder f = new Folder();
         f.setParent(parentFolder);
         f.setName(new ResourceName(name));
-        new FolderSerializer().write(json, f);
+        SerializerFactory.create(Folder.class).write(json, f);
 
         return
             new Request(

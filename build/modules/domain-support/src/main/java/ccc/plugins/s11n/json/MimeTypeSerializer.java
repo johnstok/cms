@@ -35,7 +35,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class MimeTypeSerializer
+class MimeTypeSerializer
     implements
         Serializer<MimeType> {
 

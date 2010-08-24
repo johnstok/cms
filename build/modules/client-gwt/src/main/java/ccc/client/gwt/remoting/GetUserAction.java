@@ -34,7 +34,7 @@ import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.UserSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -77,7 +77,8 @@ public abstract class GetUserAction
                         final JSONObject result =
                             JSONParser.parse(response.getText()).isObject();
                         final User user =
-                            new UserSerializer().read(new GwtJson(result));
+                            SerializerFactory.create(User.class)
+                            .read(new GwtJson(result));
                         execute(user);
                     }
                 });

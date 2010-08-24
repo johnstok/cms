@@ -40,7 +40,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class ActionSerializer implements Serializer<Action> {
+class ActionSerializer implements Serializer<Action> {
 
 
     /** {@inheritDoc} */

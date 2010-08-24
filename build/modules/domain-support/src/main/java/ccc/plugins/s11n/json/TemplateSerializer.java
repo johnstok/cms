@@ -35,7 +35,7 @@ import ccc.api.core.Template;
  *
  * @author Civic Computing Ltd.
  */
-public class TemplateSerializer
+class TemplateSerializer
     extends
         ResourceSerializer<Template> {
 

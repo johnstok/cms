@@ -35,7 +35,7 @@ import ccc.client.core.Response;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.views.gxt.EditUserDialog;
 import ccc.client.gwt.widgets.UserTable;
-import ccc.plugins.s11n.json.UserSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -82,7 +82,7 @@ public class OpenEditUserDialogAction
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
         final User delta =
-            new UserSerializer().read(new GwtJson(result));
+            SerializerFactory.create(User.class).read(new GwtJson(result));
         new EditUserDialog(delta, _userTable, _groups).show();
     }
 }

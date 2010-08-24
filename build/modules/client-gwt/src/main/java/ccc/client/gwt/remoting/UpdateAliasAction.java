@@ -31,7 +31,7 @@ import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.AliasSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 
 
@@ -69,7 +69,7 @@ public class UpdateAliasAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        new AliasSerializer().write(json, _details);
+        SerializerFactory.create(Alias.class).write(json, _details);
         return json.toString();
     }
 }

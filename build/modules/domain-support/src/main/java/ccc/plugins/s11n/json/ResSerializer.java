@@ -39,7 +39,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class ResSerializer<T extends Res>
+abstract class ResSerializer<T extends Res>
     implements
         Serializer<T> {
 

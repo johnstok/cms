@@ -34,7 +34,7 @@ import ccc.api.types.Link.Encoder;
 import ccc.client.events.Bus;
 import ccc.client.events.Event;
 import ccc.client.remoting.TextParser;
-import ccc.plugins.s11n.json.ResourceSummarySerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -256,7 +256,7 @@ public abstract class RemotingAction
      */
     protected ResourceSummary parseResourceSummary(final Response response) {
         return
-            new ResourceSummarySerializer().read(
+            SerializerFactory.create(ResourceSummary.class).read(
                 _parser.parseJson(response.getText()));
     }
 

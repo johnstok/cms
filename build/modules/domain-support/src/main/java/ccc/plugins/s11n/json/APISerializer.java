@@ -34,7 +34,7 @@ import ccc.api.core.API;
  *
  * @author Civic Computing Ltd.
  */
-public class APISerializer
+class APISerializer
     extends
         ResSerializer<API> {
 

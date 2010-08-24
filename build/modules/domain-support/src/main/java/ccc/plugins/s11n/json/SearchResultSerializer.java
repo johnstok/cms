@@ -39,7 +39,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class SearchResultSerializer implements Serializer<SearchResult> {
+class SearchResultSerializer implements Serializer<SearchResult> {
 
 
     /** {@inheritDoc} */

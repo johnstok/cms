@@ -27,6 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 import static ccc.client.core.InternalServices.*;
+import ccc.api.core.Failure;
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
@@ -40,8 +41,7 @@ import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.plugins.s11n.S11nException;
-import ccc.plugins.s11n.json.FailureSerializer;
-import ccc.plugins.s11n.json.ResourceSummarySerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -147,9 +147,10 @@ public class UploadFileDialog extends AbstractEditDialog {
                         try {
                             InternalServices.EX_HANDLER.unexpectedError(
                                 new RemoteException(
-                                    new FailureSerializer().read(
-                                        InternalServices.PARSER.parseJson(
-                                            response))),
+                                    SerializerFactory.create(Failure.class)
+                                        .read(
+                                            InternalServices.PARSER.parseJson(
+                                                response))),
                                 getUiConstants().uploadFile());
 
                         // Assume success.
@@ -158,7 +159,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                             final JSONObject json =
                                 JSONParser.parse(be.getResultHtml()).isObject();
                             final ResourceSummary rs =
-                                new ResourceSummarySerializer()
+                                SerializerFactory.create(ResourceSummary.class)
                                     .read(new GwtJson(json));
                             ssm.create(rs);
                         }

@@ -41,7 +41,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class ACLSerializer implements Serializer<ACL> {
+class ACLSerializer implements Serializer<ACL> {
 
 
     /** {@inheritDoc} */

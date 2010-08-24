@@ -38,7 +38,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class CommentSerializer implements Serializer<Comment> {
+class CommentSerializer implements Serializer<Comment> {
 
 
     /** {@inheritDoc} */

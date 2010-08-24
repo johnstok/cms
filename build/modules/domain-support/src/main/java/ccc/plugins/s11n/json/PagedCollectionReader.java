@@ -38,7 +38,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class PagedCollectionReader {
+class PagedCollectionReader {
 
     public static <T> PagedCollection<T> read(final Json json,
                                               final Class<T> elementClass) {

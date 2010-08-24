@@ -37,8 +37,8 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.json.CommentSerializer;
 import ccc.plugins.s11n.json.Json;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -81,7 +81,7 @@ public class UpdateCommentAction
         final String path = Globals.API_URL + comment.self();
 
         final Json json = InternalServices.PARSER.newJson();
-        new CommentSerializer().write(json, comment);
+        SerializerFactory.create(Comment.class).write(json, comment);
 
         return new Request(
             HttpMethod.PUT,

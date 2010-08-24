@@ -29,10 +29,11 @@ package ccc.domain;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.api.core.Page;
 import ccc.api.types.CommandType;
 import ccc.api.types.Username;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.plugins.s11n.json.PageSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -53,7 +54,8 @@ public class LogEntryTest
         // ARRANGE
         final PageEntity p = new PageEntity("foo", _rm);
         final JsonImpl json = new JsonImpl();
-        new PageSerializer().write(json, p.forCurrentRevision());
+        SerializerFactory.create(Page.class)
+            .write(json, p.forCurrentRevision());
 
         // ACT
         final LogEntry le = new LogEntry(_actor, CommandType.RESOURCE_RENAME,
@@ -77,7 +79,8 @@ public class LogEntryTest
         final String actionAsString = "TEST_ACTION_NAME";
         final PageEntity p = new PageEntity("foo", _rm);
         final JsonImpl json = new JsonImpl();
-        new PageSerializer().write(json, p.forCurrentRevision());
+        SerializerFactory.create(Page.class)
+            .write(json, p.forCurrentRevision());
 
         // ACT
         final LogEntry le = new LogEntry(_actor, actionAsString,

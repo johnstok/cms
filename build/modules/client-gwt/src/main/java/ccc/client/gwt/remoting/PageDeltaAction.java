@@ -37,7 +37,7 @@ import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.PageSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -93,7 +93,7 @@ public abstract class PageDeltaAction
                         final JSONObject result =
                             JSONParser.parse(response.getText()).isObject();
                         final Page delta =
-                            new PageSerializer().read(new GwtJson(result));
+                            SerializerFactory.create(Page.class).read(new GwtJson(result));
                         execute(delta);
                     }
                 });

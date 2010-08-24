@@ -42,10 +42,8 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.api.core.PagedCollection;
 import ccc.plugins.s11n.Serializer;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.plugins.s11n.json.PagedCollectionSerializer;
 import ccc.plugins.s11n.json.SerializerFactory;
 
 
@@ -65,12 +63,6 @@ public class S11nProvider<T>
     implements
         MessageBodyWriter<T>,
         MessageBodyReader<T> {
-
-    static {
-        SerializerFactory
-            .addSerializer(
-                PagedCollection.class, new PagedCollectionSerializer());
-    }
 
 
     /** {@inheritDoc} */

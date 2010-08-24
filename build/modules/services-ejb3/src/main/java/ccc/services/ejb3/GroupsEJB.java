@@ -42,12 +42,11 @@ import ccc.api.core.Group;
 import ccc.api.core.Groups;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.Permission;
-import ccc.api.types.SortOrder;
 import ccc.domain.GroupEntity;
 import ccc.domain.LogEntry;
 import ccc.persistence.GroupRepository;
-import ccc.plugins.s11n.json.GroupSerializer;
 import ccc.plugins.s11n.json.JsonImpl;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -78,7 +77,7 @@ public class GroupsEJB
         final Group result = g.createDto();
 
         final JsonImpl json = new JsonImpl();
-        new GroupSerializer().write(json, result);
+        SerializerFactory.create(Group.class).write(json, result);
 
         getRepoFactory().createLogEntryRepo().record(
             new LogEntry(
@@ -136,7 +135,7 @@ public class GroupsEJB
         final Group result = g.createDto();
 
         final JsonImpl json = new JsonImpl();
-        new GroupSerializer().write(json, result);
+        SerializerFactory.create(Group.class).write(json, result);
 
         getRepoFactory().createLogEntryRepo().record(
             new LogEntry(

@@ -30,8 +30,8 @@ import ccc.api.core.API;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.plugins.s11n.json.APISerializer;
 import ccc.plugins.s11n.json.Json;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -60,7 +60,7 @@ public class GetServicesAction
     @Override
     protected void onOK(final Response response) {
         final Json json = getParser().parseJson(response.getText());
-        final API api = new APISerializer().read(json);
+        final API api = SerializerFactory.create(API.class).read(json);
         InternalServices.API = api;
     }
 }

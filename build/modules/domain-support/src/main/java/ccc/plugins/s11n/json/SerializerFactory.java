@@ -41,6 +41,7 @@ import ccc.api.core.Folder;
 import ccc.api.core.Group;
 import ccc.api.core.Page;
 import ccc.api.core.PageCriteria;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
@@ -90,6 +91,8 @@ public final class SerializerFactory {
         addSerializer(Resource.class, new TempSerializer());
         addSerializer(User.class, new UserSerializer());
         addSerializer(PageCriteria.class, new PageCriteriaSerializer());
+        addSerializer(
+            PagedCollection.class, new PagedCollectionSerializer());
         addSerializer(
             ResourceCriteria.class,
             new ResourceCriteriaSerializer<ResourceCriteria>() {

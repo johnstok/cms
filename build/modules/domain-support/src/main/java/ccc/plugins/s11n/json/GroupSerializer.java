@@ -38,7 +38,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class GroupSerializer implements Serializer<Group> {
+class GroupSerializer implements Serializer<Group> {
 
 
     /** {@inheritDoc} */

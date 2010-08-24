@@ -35,7 +35,7 @@ import ccc.api.core.File;
  *
  * @author Civic Computing Ltd.
  */
-public class FileSerializer
+class FileSerializer
     extends
         ResourceSerializer<File> {
 

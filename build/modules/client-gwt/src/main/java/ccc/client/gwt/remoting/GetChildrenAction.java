@@ -34,7 +34,7 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GwtJson;
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.PagedCollectionSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.json.client.JSONParser;
 
@@ -65,7 +65,7 @@ public abstract class GetChildrenAction
         final Json json =
             new GwtJson(JSONParser.parse(response.getText()).isObject());
         final PagedCollection<ResourceSummary> rsCollection =
-            new PagedCollectionSerializer<ResourceSummary>().read(json);
+            SerializerFactory.create(PagedCollection.class).read(json);
         execute(rsCollection.getElements());
     }
 

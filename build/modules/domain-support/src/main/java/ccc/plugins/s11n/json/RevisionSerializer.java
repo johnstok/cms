@@ -37,7 +37,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class RevisionSerializer
+class RevisionSerializer
     implements
         Serializer<Revision> {
 

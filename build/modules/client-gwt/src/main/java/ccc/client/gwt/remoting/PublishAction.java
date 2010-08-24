@@ -35,7 +35,7 @@ import ccc.client.core.Response;
 import ccc.client.events.Event;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.ResourceSummarySerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 /**
  * Publish a resource.
@@ -75,7 +75,8 @@ public class PublishAction
     @Override
     protected void onOK(final Response response) {
         final Json json = InternalServices.PARSER.parseJson(response.getText());
-        final ResourceSummary rs = new ResourceSummarySerializer().read(json);
+        final ResourceSummary rs =
+            SerializerFactory.create(ResourceSummary.class).read(json);
         InternalServices.REMOTING_BUS.fireEvent(
             new Event<CommandType>(CommandType.RESOURCE_PUBLISH)
                 .addProperty("resource", rs));

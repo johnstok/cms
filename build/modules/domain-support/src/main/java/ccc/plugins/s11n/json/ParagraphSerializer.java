@@ -40,7 +40,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class ParagraphSerializer
+class ParagraphSerializer
     implements
         Serializer<Paragraph> {
 

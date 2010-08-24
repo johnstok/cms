@@ -38,7 +38,7 @@ import ccc.api.types.SortOrder;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class ResourceCriteriaSerializer<T extends ResourceCriteria>
+abstract class ResourceCriteriaSerializer<T extends ResourceCriteria>
     extends
         AbstractSerializer<T> {
 

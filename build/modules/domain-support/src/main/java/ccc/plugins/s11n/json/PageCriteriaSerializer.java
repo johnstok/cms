@@ -47,7 +47,7 @@ import ccc.api.types.SortOrder;
  *
  * @author Civic Computing Ltd.
  */
-public class PageCriteriaSerializer
+class PageCriteriaSerializer
     extends
         ResourceCriteriaSerializer<PageCriteria> {
 

@@ -47,7 +47,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class UserSerializer implements Serializer<User> {
+class UserSerializer implements Serializer<User> {
 
 
     /** {@inheritDoc} */

@@ -31,7 +31,7 @@ import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.TemplateSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -68,7 +68,7 @@ public class UpdateTemplateAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        new TemplateSerializer().write(json, _details);
+        SerializerFactory.create(Template.class).write(json, _details);
         return json.toString();
     }
 }

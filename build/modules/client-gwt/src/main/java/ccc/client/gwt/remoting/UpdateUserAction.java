@@ -34,7 +34,7 @@ import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.UserSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -69,7 +69,7 @@ public abstract class UpdateUserAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        new UserSerializer().write(json, _userDetails);
+        SerializerFactory.create(User.class).write(json, _userDetails);
         return json.toString();
     }
 

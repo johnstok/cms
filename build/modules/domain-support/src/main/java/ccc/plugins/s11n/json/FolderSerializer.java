@@ -34,7 +34,7 @@ import ccc.api.core.Folder;
  *
  * @author Civic Computing Ltd.
  */
-public class FolderSerializer
+class FolderSerializer
     extends
         ResourceSerializer<Folder> {
 

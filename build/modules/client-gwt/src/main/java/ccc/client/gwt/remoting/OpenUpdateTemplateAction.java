@@ -34,7 +34,7 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.views.gxt.EditTemplateDialog;
 import ccc.client.gwt.widgets.ResourceTable;
-import ccc.plugins.s11n.json.TemplateSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -76,7 +76,7 @@ public class OpenUpdateTemplateAction
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
         final Template delta =
-            new TemplateSerializer().read(new GwtJson(result));
+            SerializerFactory.create(Template.class).read(new GwtJson(result));
         new EditTemplateDialog(
             delta,
             _template,

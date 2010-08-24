@@ -35,7 +35,7 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class DurationSerializer implements Serializer<Duration> {
+class DurationSerializer implements Serializer<Duration> {
 
 
     /** {@inheritDoc} */

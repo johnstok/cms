@@ -38,7 +38,7 @@ import ccc.api.types.Paragraph;
  *
  * @author Civic Computing Ltd.
  */
-public class PageSerializer
+class PageSerializer
     extends
         ResourceSerializer<Page> {
 

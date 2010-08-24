@@ -30,6 +30,10 @@ import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Properties;
 
+import ccc.api.core.ActionSummary;
+import ccc.api.core.Comment;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.User;
 import ccc.api.types.CommandType;
 import ccc.commons.Resources;
 import ccc.domain.ActionEntity;
@@ -46,11 +50,8 @@ import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
 import ccc.plugins.PluginFactory;
-import ccc.plugins.s11n.json.ActionSummarySerializer;
-import ccc.plugins.s11n.json.CommentSerializer;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.plugins.s11n.json.ResourceSummarySerializer;
-import ccc.plugins.s11n.json.UserSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
@@ -405,28 +406,32 @@ public abstract class Command<T> {
 
     private String serializeAction(final ActionEntity action) {
         final JsonImpl json = new JsonImpl();
-        new ActionSummarySerializer().write(json, action.mapAction());
+        SerializerFactory.create(ActionSummary.class)
+            .write(json, action.mapAction());
         return json.getDetail();
     }
 
 
     private String serializeComment(final CommentEntity comment) {
         final JsonImpl json = new JsonImpl();
-        new CommentSerializer().write(json, comment.createDto());
+        SerializerFactory.create(Comment.class)
+            .write(json, comment.createDto());
         return json.getDetail();
     }
 
 
     private String serializeResource(final ResourceEntity resource) {
         final JsonImpl json = new JsonImpl();
-        new ResourceSummarySerializer().write(json, resource.mapResource());
+        SerializerFactory.create(ResourceSummary.class)
+            .write(json, resource.mapResource());
         return json.getDetail();
     }
 
 
     private String serializeUser(final UserEntity user) {
         final JsonImpl json = new JsonImpl();
-        new UserSerializer().write(json, user.toDto());
+        SerializerFactory.create(User.class)
+            .write(json, user.toDto());
         return json.getDetail();
     }
 }

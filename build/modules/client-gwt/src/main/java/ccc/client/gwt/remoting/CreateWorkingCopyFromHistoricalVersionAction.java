@@ -34,7 +34,7 @@ import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.views.gxt.HistoryDialog;
-import ccc.plugins.s11n.json.TempSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -64,7 +64,7 @@ public class CreateWorkingCopyFromHistoricalVersionAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        Link link = _dialog.getResource().revisions();
+        final Link link = _dialog.getResource().revisions();
         return link.build(new GWTTemplateEncoder());
     }
 
@@ -77,7 +77,7 @@ public class CreateWorkingCopyFromHistoricalVersionAction
         final GwtJson json = new GwtJson();
         final Resource r = new Resource();
         r.setRevision((int) _dialog.selectedItem().getIndex()); // FIXME
-        new TempSerializer().write(json, r);
+        SerializerFactory.create(Resource.class).write(json, r);
         return json.toString();
     }
 
