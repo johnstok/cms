@@ -147,7 +147,8 @@ public class UploadFileDialog extends AbstractEditDialog {
                         try {
                             InternalServices.EX_HANDLER.unexpectedError(
                                 new RemoteException(
-                                    SerializerFactory.create(Failure.class)
+                                    new SerializerFactory()
+                                        .create(Failure.class)
                                         .read(
                                             InternalServices.PARSER.parseJson(
                                                 response))),
@@ -159,7 +160,8 @@ public class UploadFileDialog extends AbstractEditDialog {
                             final JSONObject json =
                                 JSONParser.parse(be.getResultHtml()).isObject();
                             final ResourceSummary rs =
-                                SerializerFactory.create(ResourceSummary.class)
+                                new SerializerFactory()
+                                    .create(ResourceSummary.class)
                                     .read(new GwtJson(json));
                             ssm.create(rs);
                         }

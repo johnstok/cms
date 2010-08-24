@@ -37,7 +37,6 @@ import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.EditTextFileDialog;
 import ccc.client.gwt.widgets.ResourceTable;
 import ccc.client.presenters.EditTextFilePresenter;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -80,7 +79,7 @@ extends
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
         final File dto =
-            SerializerFactory.create(File.class).read(new GwtJson(result));
+            serializers().create(File.class).read(new GwtJson(result));
         if (dto.getContent() != null) {
             new EditTextFilePresenter(
                 new EditTextFileDialog(),

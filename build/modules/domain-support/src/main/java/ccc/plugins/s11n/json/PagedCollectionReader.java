@@ -45,7 +45,7 @@ class PagedCollectionReader {
         if (null==json) { return null; }
 
         final Serializer<T> serializer =
-            SerializerFactory.create(elementClass);
+            new SerializerFactory().create(elementClass);
 
         final ArrayList<T> elements = new ArrayList<T>();
         for (final Json jElem : json.getCollection(JsonKeys.ELEMENTS)) {
@@ -66,7 +66,7 @@ class PagedCollectionReader {
     public static <T> PagedCollection<T> read(final Json json,
                                               final String elementClass) {
         final Class<T> clazz =
-                (Class<T>) SerializerFactory.findClass(elementClass);
+                (Class<T>) new SerializerFactory().findClass(elementClass);
         return read(json, clazz);
     }
 }

@@ -53,6 +53,7 @@ import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.SearchResult;
 import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.Serializers;
 
 
 /**
@@ -60,13 +61,19 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public final class SerializerFactory {
+public final class SerializerFactory implements Serializers {
 
     // TODO: How can we constrain the wildcards to a single type?
-    private static final Map<Class<?>, Serializer<?>> SUPPORTED_CLASSES;
-    private static final Map<String, Class<?>>        SUPPORTED_NAMES;
+    private final Map<Class<?>, Serializer<?>> SUPPORTED_CLASSES;
+    private final Map<String, Class<?>>        SUPPORTED_NAMES;
 
-    static {
+
+    /**
+     * Constructor.
+     */
+    public SerializerFactory() {
+        super();
+
         SUPPORTED_CLASSES = new HashMap<Class<?>, Serializer<?>>();
         SUPPORTED_NAMES   = new HashMap<String, Class<?>>();
 
@@ -99,38 +106,13 @@ public final class SerializerFactory {
                 @Override protected ResourceCriteria createObject() {
                     return new ResourceCriteria();
                 }});
-
-    }
-
-    private SerializerFactory() { super(); }
-
-
-    /**
-     * Create a serializer for a specified class.
-     *
-     * @param <T> The type of serializer to create.
-     * @param clazz Class representing the type to serialize.
-     *
-     * @return The corresponding serializer or NULL if no serializer is
-     *  available.
-     */
-    @SuppressWarnings("unchecked") // TODO: Find a cleaner solution.
-    public static <T> Serializer<T> create(final Class<T> clazz) {
-        return (Serializer<T>) SUPPORTED_CLASSES.get(clazz);
     }
 
 
-    /**
-     * Create a serializer for a specified class.
-     *
-     * @param <T> The type of serializer to create.
-     * @param clazz Class representing the type to serialize.
-     *
-     * @return The corresponding serializer or NULL if no serializer is
-     *  available.
-     */
+    /** {@inheritDoc} */
+    @Override
     @SuppressWarnings("unchecked") // TODO: Find a cleaner solution.
-    public static <T> Serializer<T> create(final String clazz) {
+    public <T> Serializer<T> create(final Class<T> clazz) {
         return (Serializer<T>) SUPPORTED_CLASSES.get(clazz);
     }
 
@@ -142,33 +124,23 @@ public final class SerializerFactory {
      * @param clazz The class representing type T.
      * @param serializer The corresponding serializer.
      */
-    public static <T> void addSerializer(final Class<T> clazz,
+    public <T> void addSerializer(final Class<T> clazz,
                                          final Serializer<T> serializer) {
         SUPPORTED_CLASSES.put(clazz, serializer);
         SUPPORTED_NAMES.put(clazz.getName(), clazz);
     }
 
 
-    /**
-     * Query if a serializer is available for a specified class.
-     *
-     * @param clazz The class to check.
-     *
-     * @return True if a serializer is available; false otherwise.
-     */
-    public static boolean canCreate(final Class<?> clazz) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean canCreate(final Class<?> clazz) {
         return SUPPORTED_CLASSES.keySet().contains(clazz);
     }
 
 
-    /**
-     * Check if a class is supported by the serializer.
-     *
-     * @param name The name af the class to serialize.
-     *
-     * @return The corresponding class, or NULL if the name isn't supported.
-     */
-    public static Class<?> findClass(final String name) {
+    /** {@inheritDoc} */
+    @Override
+    public Class<?> findClass(final String name) {
         return SUPPORTED_NAMES.get(name);
     }
 }

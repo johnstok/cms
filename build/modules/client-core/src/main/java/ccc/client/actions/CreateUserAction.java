@@ -34,7 +34,6 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -68,7 +67,7 @@ public class CreateUserAction
     @Override
     protected String getBody() {
         final Json json = InternalServices.PARSER.newJson();
-        SerializerFactory.create(User.class).write(json, _userDelta);
+        serializers().create(User.class).write(json, _userDelta);
         return json.toString();
     }
 
@@ -76,7 +75,7 @@ public class CreateUserAction
     @Override
     protected void onOK(final Response response) {
         final User newUser =
-            SerializerFactory.create(User.class).read(
+            serializers().create(User.class).read(
                 InternalServices.PARSER.parseJson(response.getText()));
 
         final Event<CommandType> event =

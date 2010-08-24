@@ -42,7 +42,6 @@ import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -102,7 +101,7 @@ public final class CreateActionAction
                 .build(InternalServices.ENCODER);
 
         final Json json = InternalServices.PARSER.newJson();
-        SerializerFactory.create(Action.class).write(json, action);
+        serializers().create(Action.class).write(json, action);
 
         return
             new Request(

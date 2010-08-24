@@ -45,8 +45,8 @@ import ccc.api.types.Permission;
 import ccc.domain.GroupEntity;
 import ccc.domain.LogEntry;
 import ccc.persistence.GroupRepository;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -77,7 +77,8 @@ public class GroupsEJB
         final Group result = g.createDto();
 
         final JsonImpl json = new JsonImpl();
-        SerializerFactory.create(Group.class).write(json, result);
+        new PluginFactory()
+            .serializers().create(Group.class).write(json, result);
 
         getRepoFactory().createLogEntryRepo().record(
             new LogEntry(
@@ -135,7 +136,8 @@ public class GroupsEJB
         final Group result = g.createDto();
 
         final JsonImpl json = new JsonImpl();
-        SerializerFactory.create(Group.class).write(json, result);
+        new PluginFactory()
+        .serializers().create(Group.class).write(json, result);
 
         getRepoFactory().createLogEntryRepo().record(
             new LogEntry(

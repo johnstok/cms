@@ -41,7 +41,6 @@ import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -92,7 +91,7 @@ public final class CreateFolderAction
         final Folder f = new Folder();
         f.setParent(parentFolder);
         f.setName(new ResourceName(name));
-        SerializerFactory.create(Folder.class).write(json, f);
+        serializers().create(Folder.class).write(json, f);
 
         return
             new Request(

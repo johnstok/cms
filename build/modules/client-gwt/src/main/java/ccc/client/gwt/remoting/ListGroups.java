@@ -41,7 +41,6 @@ import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -110,7 +109,7 @@ public abstract class ListGroups
                     final JSONObject obj =
                         JSONParser.parse(response.getText()).isObject();
                     final PagedCollection<Group> groups =
-                        SerializerFactory.create(PagedCollection.class)
+                        serializers().create(PagedCollection.class)
                         .read(new GwtJson(obj));
 
                     execute(groups);

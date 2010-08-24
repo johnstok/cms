@@ -31,7 +31,6 @@ import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -67,7 +66,7 @@ public abstract class UpdateCacheDurationAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        SerializerFactory.create(Resource.class).write(json, _resource);
+        serializers().create(Resource.class).write(json, _resource);
         return json.toString();
     }
 }

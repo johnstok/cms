@@ -36,7 +36,6 @@ import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.json.client.JSONParser;
 
@@ -84,7 +83,7 @@ public abstract class ComputeTemplateAction
                 @Override
                 public void onOK(final Response response) {
                     final Template ts =
-                        SerializerFactory.create(Template.class).read(
+                        serializers().create(Template.class).read(
                             new GwtJson(
                                 JSONParser.parse(response.getText())
                                 .isObject()));

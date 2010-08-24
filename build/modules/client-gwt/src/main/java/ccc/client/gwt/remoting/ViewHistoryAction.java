@@ -37,7 +37,6 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.HistoryDialog;
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.json.client.JSONParser;
 
@@ -80,7 +79,7 @@ public final class ViewHistoryAction
                                 JSONParser.parse(
                                     response.getText()).isObject());
                         final PagedCollection<Revision> rsCollection =
-                            SerializerFactory.create(PagedCollection.class)
+                            serializers().create(PagedCollection.class)
                             .read(json);
                         execute();
 

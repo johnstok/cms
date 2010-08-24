@@ -32,7 +32,6 @@ import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -73,7 +72,7 @@ public class UpdateResourceAclAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        SerializerFactory.create(ACL.class).write(json, _acl);
+        serializers().create(ACL.class).write(json, _acl);
         return json.toString();
     }
 }

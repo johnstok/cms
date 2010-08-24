@@ -37,9 +37,9 @@ import ccc.api.exceptions.InvalidException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.HttpStatusCode;
 import ccc.api.types.MimeType;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.S11nException;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -104,7 +104,7 @@ public class RestExceptionMapper
 
         Failure f;
         try {
-            f = SerializerFactory.create(Failure.class)
+            f = new PluginFactory().serializers().create(Failure.class)
                 .read(new JsonImpl(body));
         } catch (final S11nException e) {
             throw new CCException(body);

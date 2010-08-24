@@ -39,7 +39,6 @@ import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -82,7 +81,7 @@ public final class CreateAliasAction
         final String path = Globals.API_URL+InternalServices.API.aliases();
 
         final Json json = InternalServices.PARSER.newJson();
-        SerializerFactory.create(Alias.class).write(json, alias);
+        serializers().create(Alias.class).write(json, alias);
 
         return
             new Request(

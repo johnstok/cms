@@ -189,7 +189,7 @@ public class ContentServlet
             throw new AuthenticationRequiredException(path);
         } catch (final CCException e) {
             final JsonImpl json = new JsonImpl();
-            SerializerFactory.create(Failure.class).write(json, e.getFailure());
+            new SerializerFactory().create(Failure.class).write(json, e.getFailure());
             LOG.warn(
                 "Exception retrieving path " + path
                 + " wc=" + workingCopy

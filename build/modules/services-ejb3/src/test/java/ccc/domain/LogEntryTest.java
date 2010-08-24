@@ -32,8 +32,8 @@ import junit.framework.TestCase;
 import ccc.api.core.Page;
 import ccc.api.types.CommandType;
 import ccc.api.types.Username;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -54,7 +54,7 @@ public class LogEntryTest
         // ARRANGE
         final PageEntity p = new PageEntity("foo", _rm);
         final JsonImpl json = new JsonImpl();
-        SerializerFactory.create(Page.class)
+        new PluginFactory().serializers().create(Page.class)
             .write(json, p.forCurrentRevision());
 
         // ACT
@@ -79,7 +79,7 @@ public class LogEntryTest
         final String actionAsString = "TEST_ACTION_NAME";
         final PageEntity p = new PageEntity("foo", _rm);
         final JsonImpl json = new JsonImpl();
-        SerializerFactory.create(Page.class)
+        new PluginFactory().serializers().create(Page.class)
             .write(json, p.forCurrentRevision());
 
         // ACT

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,54 +21,49 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
 
-import ccc.api.core.Alias;
-import ccc.client.core.HttpMethod;
-import ccc.client.core.RemotingAction;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GwtJson;
-
+package ccc.plugins.s11n;
 
 
 /**
- * Update an alias.
+ * Serializer factory.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateAliasAction
-    extends
-        RemotingAction {
-
-    private final Alias _details;
+public interface Serializers {
 
 
     /**
-     * Constructor.
+     * Create a serializer for a specified class.
      *
-     * @param details The new alias details.
+     * @param <T> The type of serializer to create.
+     * @param clazz Class representing the type to serialize.
+     *
+     * @return The corresponding serializer or NULL if no serializer is
+     *  available.
      */
-    public UpdateAliasAction(final Alias details) {
-        super(UI_CONSTANTS.updateAlias(), HttpMethod.PUT);
-        _details = details;
-    }
+    <T> Serializer<T> create(final Class<T> clazz);
 
 
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        return _details.self().build(new GWTTemplateEncoder());
-    }
+    /**
+     * Query if a serializer is available for a specified class.
+     *
+     * @param clazz The class to check.
+     *
+     * @return True if a serializer is available; false otherwise.
+     */
+    boolean canCreate(final Class<?> clazz);
 
 
-    /** {@inheritDoc} */
-    @Override
-    protected String getBody() {
-        final GwtJson json = new GwtJson();
-        serializers().create(Alias.class).write(json, _details);
-        return json.toString();
-    }
+    /**
+     * Check if a class is supported by the serializer.
+     *
+     * @param name The name of the class to serialize.
+     *
+     * @return The corresponding class, or NULL if the name isn't supported.
+     */
+    Class<?> findClass(final String name);
 }

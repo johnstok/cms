@@ -34,7 +34,6 @@ import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.views.gxt.HistoryDialog;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -77,7 +76,7 @@ public class CreateWorkingCopyFromHistoricalVersionAction
         final GwtJson json = new GwtJson();
         final Resource r = new Resource();
         r.setRevision((int) _dialog.selectedItem().getIndex()); // FIXME
-        SerializerFactory.create(Resource.class).write(json, r);
+        serializers().create(Resource.class).write(json, r);
         return json.toString();
     }
 

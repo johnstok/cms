@@ -127,7 +127,8 @@ public class UpdateFileDialog extends AbstractEditDialog {
                         try {
                             InternalServices.EX_HANDLER.unexpectedError(
                                 new RemoteException(
-                                    SerializerFactory.create(Failure.class)
+                                    new SerializerFactory()
+                                        .create(Failure.class)
                                         .read(
                                             InternalServices.PARSER.parseJson(
                                                 response))),

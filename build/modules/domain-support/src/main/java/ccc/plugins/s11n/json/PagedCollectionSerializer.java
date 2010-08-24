@@ -62,7 +62,7 @@ class PagedCollectionSerializer<T>
         json.set(JsonKeys.SIZE, Long.valueOf(instance.getTotalCount()));
         json.set(JsonKeys.TYPE, instance.getElementClass().getName());
         final Serializer<T> serializer =
-            SerializerFactory.create(instance.getElementClass());
+            new SerializerFactory().create(instance.getElementClass());
         final Collection<Json> jsonElements = new ArrayList<Json>();
         for (final T element : instance.getElements()) {
             jsonElements.add(serializer.write(json.create(), element));

@@ -42,9 +42,10 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.Serializers;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -64,6 +65,8 @@ public class S11nProvider<T>
         MessageBodyWriter<T>,
         MessageBodyReader<T> {
 
+    private final Serializers _serializers = new PluginFactory().serializers();
+
 
     /** {@inheritDoc} */
     @Override
@@ -82,7 +85,7 @@ public class S11nProvider<T>
                                final Type type,
                                final Annotation[] annotations,
                                final MediaType mediaType) {
-        return SerializerFactory.canCreate(clazz);
+        return _serializers.canCreate(clazz);
     }
 
 
@@ -95,7 +98,7 @@ public class S11nProvider<T>
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
-        final Serializer<T> s = (Serializer<T>) SerializerFactory.create(clazz);
+        final Serializer<T> s = (Serializer<T>) _serializers.create(clazz);
         final JsonImpl json = new JsonImpl();
         s.write(json, object);
 
@@ -117,7 +120,7 @@ public class S11nProvider<T>
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return SerializerFactory.canCreate(clazz);
+        return _serializers.canCreate(clazz);
     }
 
 
@@ -130,7 +133,7 @@ public class S11nProvider<T>
                       final MultivaluedMap<String, String> httpHeaders,
                       final InputStream is) throws IOException {
         try {
-            final Serializer<T> s = SerializerFactory.create(clazz);
+            final Serializer<T> s = _serializers.create(clazz);
             String entity = readString(mimetype, is);
             if (MediaType.TEXT_HTML_TYPE.equals(mimetype)) {
                 entity = entity.substring(12, entity.length()-14);

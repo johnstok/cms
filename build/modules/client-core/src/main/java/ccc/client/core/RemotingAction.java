@@ -34,6 +34,7 @@ import ccc.api.types.Link.Encoder;
 import ccc.client.events.Bus;
 import ccc.client.events.Event;
 import ccc.client.remoting.TextParser;
+import ccc.plugins.s11n.Serializers;
 import ccc.plugins.s11n.json.SerializerFactory;
 
 
@@ -46,12 +47,14 @@ public abstract class RemotingAction
     implements
         Action {
 
-    private String           _actionName;
-    private HttpMethod       _method;
-    private RequestExecutor  _executor = InternalServices.EXECUTOR;
-    private TextParser       _parser   = InternalServices.PARSER;
-    private Encoder          _encoder  = InternalServices.ENCODER;
-    private Bus<CommandType> _bus      = InternalServices.REMOTING_BUS;
+    private String            _actionName;
+    private HttpMethod        _method;
+
+    private final Serializers _serializers = new SerializerFactory();
+    private RequestExecutor   _executor    = InternalServices.EXECUTOR;
+    private TextParser        _parser      = InternalServices.PARSER;
+    private Encoder           _encoder     = InternalServices.ENCODER;
+    private Bus<CommandType>  _bus         = InternalServices.REMOTING_BUS;
 
 
     /**
@@ -256,7 +259,7 @@ public abstract class RemotingAction
      */
     protected ResourceSummary parseResourceSummary(final Response response) {
         return
-            SerializerFactory.create(ResourceSummary.class).read(
+            serializers().create(ResourceSummary.class).read(
                 _parser.parseJson(response.getText()));
     }
 
@@ -268,5 +271,10 @@ public abstract class RemotingAction
      */
     protected void fireEvent(final Event<CommandType> event) {
         _bus.fireEvent(event);
+    }
+
+
+    protected Serializers serializers() {
+        return _serializers;
     }
 }

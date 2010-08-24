@@ -38,7 +38,6 @@ import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -81,7 +80,7 @@ public final class CreatePageAction
         final String path =  Globals.API_URL+InternalServices.API.pages();
 
         final Json json = InternalServices.PARSER.newJson(); // FIXME: Broken.
-        SerializerFactory.create(Page.class).write(json, page);
+        serializers().create(Page.class).write(json, page);
 
         return
             new Request(

@@ -35,7 +35,6 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -70,7 +69,7 @@ public final class CreateTextFileAction
     @Override
     protected String getBody() {
         final Json json = InternalServices.PARSER.newJson();
-        SerializerFactory.create(File.class).write(json, _dto);
+        serializers().create(File.class).write(json, _dto);
         return json.toString();
     }
 

@@ -43,7 +43,6 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.json.client.JSONParser;
 
@@ -90,7 +89,7 @@ public abstract class GetTemplatesAction
                         final Json json =
                             new GwtJson(JSONParser.parse(response.getText()).isObject());
                         final PagedCollection<Template> rsCollection =
-                            SerializerFactory.create(PagedCollection.class).read(json);
+                            serializers().create(PagedCollection.class).read(json);
                         execute(rsCollection.getElements());
                     }
                 });

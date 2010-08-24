@@ -31,6 +31,7 @@ import static ccc.commons.Reflection.*;
 import java.io.InputStream;
 
 import ccc.plugins.multipart.MultipartFormData;
+import ccc.plugins.s11n.Serializers;
 import ccc.plugins.scripting.TextProcessor;
 import ccc.plugins.search.Index;
 import ccc.plugins.search.Indexer;
@@ -43,6 +44,14 @@ import ccc.plugins.security.Sessions;
  * @author Civic Computing Ltd.
  */
 public class PluginFactory {
+
+
+    public Serializers serializers() {
+        return
+            construct(
+                Serializers.class,
+                "ccc.plugins.s11n.json.SerializerFactory");
+    }
 
 
     public TextProcessor createTemplating() {

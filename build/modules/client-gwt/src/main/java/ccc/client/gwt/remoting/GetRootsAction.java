@@ -40,7 +40,6 @@ import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.json.client.JSONParser;
 
@@ -81,7 +80,7 @@ public abstract class GetRootsAction
                                 JSONParser.parse(
                                     response.getText()).isObject());
                         final PagedCollection<ResourceSummary> rsCollection =
-                            SerializerFactory.create(PagedCollection.class)
+                            serializers().create(PagedCollection.class)
                             .read(json);
                         onSuccess(rsCollection.getElements());
                     }

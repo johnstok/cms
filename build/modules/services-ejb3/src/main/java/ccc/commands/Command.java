@@ -50,8 +50,8 @@ import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
 import ccc.plugins.PluginFactory;
+import ccc.plugins.s11n.Serializers;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.plugins.s11n.json.SerializerFactory;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
@@ -65,6 +65,8 @@ import ccc.plugins.scripting.Script;
  * @author Civic Computing Ltd.
  */
 public abstract class Command<T> {
+
+    private final Serializers _serializers = new PluginFactory().serializers();
 
     private final ResourceRepository _repository;
     private final LogEntryRepository _audit;
@@ -406,7 +408,7 @@ public abstract class Command<T> {
 
     private String serializeAction(final ActionEntity action) {
         final JsonImpl json = new JsonImpl();
-        SerializerFactory.create(ActionSummary.class)
+        _serializers.create(ActionSummary.class)
             .write(json, action.mapAction());
         return json.getDetail();
     }
@@ -414,7 +416,7 @@ public abstract class Command<T> {
 
     private String serializeComment(final CommentEntity comment) {
         final JsonImpl json = new JsonImpl();
-        SerializerFactory.create(Comment.class)
+        _serializers.create(Comment.class)
             .write(json, comment.createDto());
         return json.getDetail();
     }
@@ -422,7 +424,7 @@ public abstract class Command<T> {
 
     private String serializeResource(final ResourceEntity resource) {
         final JsonImpl json = new JsonImpl();
-        SerializerFactory.create(ResourceSummary.class)
+        _serializers.create(ResourceSummary.class)
             .write(json, resource.mapResource());
         return json.getDetail();
     }
@@ -430,7 +432,7 @@ public abstract class Command<T> {
 
     private String serializeUser(final UserEntity user) {
         final JsonImpl json = new JsonImpl();
-        SerializerFactory.create(User.class)
+        _serializers.create(User.class)
             .write(json, user.toDto());
         return json.getDetail();
     }
