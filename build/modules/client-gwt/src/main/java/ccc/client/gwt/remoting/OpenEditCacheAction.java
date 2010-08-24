@@ -31,11 +31,8 @@ import ccc.api.types.Duration;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.EditCacheDialog;
-
-import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -65,8 +62,9 @@ public class OpenEditCacheAction
         final EditCacheDialog dialog =
             new EditCacheDialog(
                 _selectionModel.tableSelection(),
-                serializers().create(Duration.class).read(new GwtJson(
-                    JSONParser.parse(response.getText()).isObject())));
+                serializers()
+                    .create(Duration.class)
+                    .read(parse(response.getText())));
         dialog.show();
     }
 

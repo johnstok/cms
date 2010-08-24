@@ -34,6 +34,7 @@ import ccc.client.core.ImagePaths;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemoteException;
 import ccc.client.core.SessionTimeoutException;
+import ccc.client.gwt.core.GWTTextParser;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.plugins.s11n.S11nException;
 import ccc.plugins.s11n.json.SerializerFactory;
@@ -127,7 +128,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
                         try {
                             InternalServices.EX_HANDLER.unexpectedError(
                                 new RemoteException(
-                                    new SerializerFactory()
+                                    new SerializerFactory(new GWTTextParser())
                                         .create(Failure.class)
                                         .read(
                                             InternalServices.PARSER.parseJson(

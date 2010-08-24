@@ -31,12 +31,9 @@ import ccc.api.core.Template;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.views.gxt.EditTemplateDialog;
 import ccc.client.gwt.widgets.ResourceTable;
-
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
+import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -72,10 +69,9 @@ public class OpenUpdateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final JSONObject result =
-            JSONParser.parse(response.getText()).isObject();
+        final Json result = parse(response.getText());
         final Template delta =
-            serializers().create(Template.class).read(new GwtJson(result));
+            serializers().create(Template.class).read(result);
         new EditTemplateDialog(
             delta,
             _template,

@@ -61,14 +61,6 @@ public interface Json {
      * Mutator.
      *
      * @param key The key.
-     * @param values The value, as a collection of Jsonable objects.
-     */
-    void set(final String key, final Collection<? extends Jsonable> values);
-
-    /**
-     * Mutator.
-     *
-     * @param key The key.
      * @param bool The value, as a boolean.
      */
     void set(final String key, final Boolean bool);
@@ -112,14 +104,6 @@ public interface Json {
      * @param value The value, as a map of strings.
      */
     void set(final String key, final Map<String, String> value);
-
-    /**
-     * Mutator.
-     *
-     * @param key The key.
-     * @param value The value, as a {@link Jsonable} object.
-     */
-    void set(final String key, final Jsonable value);
 
     /**
      * Accessor.

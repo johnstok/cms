@@ -34,11 +34,11 @@ import ccc.api.core.Template;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.GwtJson;
 import ccc.plugins.s11n.json.Json;
 
 
@@ -84,7 +84,7 @@ public abstract class CreateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final Json json = new GwtJson();
+        final Json json = InternalServices.PARSER.newJson();
         serializers().create(Template.class).write(json, _delta);
         return json.toString();
     }

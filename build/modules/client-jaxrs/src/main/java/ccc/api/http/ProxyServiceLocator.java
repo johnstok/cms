@@ -58,7 +58,6 @@ import ccc.api.jaxrs.TemplatesImpl;
 import ccc.api.jaxrs.UsersImpl;
 import ccc.api.jaxrs.providers.BooleanProvider;
 import ccc.api.jaxrs.providers.FileReader;
-import ccc.api.jaxrs.providers.JsonableWriter;
 import ccc.api.jaxrs.providers.MetadataWriter;
 import ccc.api.jaxrs.providers.S11nProvider;
 import ccc.api.jaxrs.providers.StringCollectionWriter;
@@ -82,7 +81,6 @@ public class ProxyServiceLocator implements ServiceLocator {
         RegisterBuiltin.register(pFactory);
 
         // Writers
-        pFactory.addMessageBodyWriter(JsonableWriter.class);
         pFactory.addMessageBodyWriter(StringCollectionWriter.class);
         pFactory.addMessageBodyWriter(MetadataWriter.class);
         pFactory.addMessageBodyWriter(UUIDProvider.class);
@@ -94,7 +92,6 @@ public class ProxyServiceLocator implements ServiceLocator {
         // Readers
         pFactory.addMessageBodyReader(UUIDProvider.class);
         pFactory.addMessageBodyReader(BooleanProvider.class);
-        pFactory.addMessageBodyReader(JsonableWriter.class);
 
         pFactory.addMessageBodyReader(StringCollectionWriter.class);
         pFactory.addMessageBodyReader(MetadataWriter.class);

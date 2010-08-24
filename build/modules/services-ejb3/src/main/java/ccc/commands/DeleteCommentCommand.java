@@ -33,7 +33,6 @@ import ccc.api.types.CommandType;
 import ccc.domain.LogEntry;
 import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -74,7 +73,7 @@ public class DeleteCommentCommand
                 getType(),
                 happenedOn,
                 _commentId,
-                new JsonImpl().getDetail()));
+                "{}"));
 
         return null;
     }

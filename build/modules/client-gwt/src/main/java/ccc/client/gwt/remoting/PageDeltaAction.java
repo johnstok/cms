@@ -36,10 +36,7 @@ import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GwtJson;
-
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
+import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -89,10 +86,9 @@ public abstract class PageDeltaAction
                     /** {@inheritDoc} */
                     @Override
                     public void onOK(final Response response) {
-                        final JSONObject result =
-                            JSONParser.parse(response.getText()).isObject();
+                        final Json result = parse(response.getText());
                         final Page delta =
-                            serializers().create(Page.class).read(new GwtJson(result));
+                            serializers().create(Page.class).read(result);
                         execute(delta);
                     }
                 });

@@ -30,5 +30,5 @@
     <source path="api/core" />
     <source path="api/exceptions" />
     <source path="api/types" excludes="NormalisingEncoder.java" />
-    <source path="plugins/s11n" excludes="json/JsonImpl.java" />
+    <source path="plugins/s11n" excludes="json/JsonImpl.java,json/ServerTextParser.java" />
 </module>

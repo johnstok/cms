@@ -34,12 +34,9 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.UpdateResourceAclDialog;
-
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
+import ccc.plugins.s11n.json.Json;
 
 /**
  * Action to launch the 'update resource acl' dialog.
@@ -79,8 +76,8 @@ public final class OpenUpdateResourceAclAction
     @Override
     protected void onOK(final Response response) {
 
-        final JSONObject o = JSONParser.parse(response.getText()).isObject();
-        final ACL acl = serializers().create(ACL.class).read(new GwtJson(o));
+        final Json o = parse(response.getText());
+        final ACL acl = serializers().create(ACL.class).read(o);
 
         final ResourceSummary item = _selectionModel.tableSelection();
         new UpdateResourceAclDialog(

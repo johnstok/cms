@@ -140,7 +140,8 @@ public class ResponseHandlerAdapter
 
     private RemoteException toRemoteException(final Response response) {
         return new RemoteException(
-            new SerializerFactory().create(Failure.class).read(
-                InternalServices.PARSER.parseJson(response.getText())));
+            new SerializerFactory(InternalServices.PARSER)
+                .create(Failure.class)
+                .read(InternalServices.PARSER.parseJson(response.getText())));
     }
 }

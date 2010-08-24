@@ -29,7 +29,7 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.User;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
-import ccc.client.gwt.core.GwtJson;
+import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -63,7 +63,7 @@ public abstract class UpdateUserPasswordAction
 
     /** {@inheritDoc} */
     @Override protected String getBody() {
-        final GwtJson json = new GwtJson();
+        final Json json = newJson();
         serializers().create(User.class).write(json, _user);
         return json.toString();
     }

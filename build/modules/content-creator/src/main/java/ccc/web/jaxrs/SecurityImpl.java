@@ -42,7 +42,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import ccc.api.core.Security;
 import ccc.api.types.Permission;
 import ccc.plugins.PluginFactory;
-import ccc.plugins.s11n.json.JsonImpl;
+import ccc.plugins.s11n.json.Json;
 import ccc.plugins.security.Sessions;
 
 
@@ -114,9 +114,10 @@ public class SecurityImpl
         props.put("application.name", CCCProperties.getAppName());
         props.put("application.context", CCCProperties.getContextName());
 
-        final JsonImpl ss = new JsonImpl();
+        final Json ss =
+            new PluginFactory().serializers().textParser().newJson();
         ss.set("properties", props);
-        return ss.getDetail();
+        return ss.toString();
     }
 
 

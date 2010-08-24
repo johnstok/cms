@@ -30,7 +30,7 @@ import ccc.api.core.Page;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.GwtJson;
+import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -66,7 +66,7 @@ public class ValidateFieldAction
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final GwtJson json = new GwtJson();
+        final Json json = newJson();
         serializers().create(Page.class).write(json, _page);
         return json.toString();
     }

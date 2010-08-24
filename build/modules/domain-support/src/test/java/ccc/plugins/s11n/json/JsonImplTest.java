@@ -31,8 +31,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -243,41 +241,6 @@ public class JsonImplTest
 
         // ASSERT
         } catch (final S11nException e) { swallow(e); }
-    }
-
-    /**
-     * Test.
-     */
-    public void testAddEmptyCollection() {
-
-        // ARRANGE
-        final JsonImpl s = new JsonImpl();
-        final Collection<Jsonable> children = new ArrayList<Jsonable>();
-
-        // ACT
-        s.set("children", children);
-
-        // ASSERT
-        assertEquals("{\"children\":[]}", s.getDetail());
-    }
-
-    /**
-     * Test.
-     */
-    public void testAddCollection() {
-
-        // ARRANGE
-        final JsonImpl s = new JsonImpl();
-        final Collection<Jsonable> children = new ArrayList<Jsonable>();
-        children.add(
-            new Jsonable(){
-                @Override public void toJson(final Json json) { /* no op */ }});
-
-        // ACT
-        s.set("children", children);
-
-        // ASSERT
-        assertEquals("{\"children\":[{}]}", s.getDetail());
     }
 
     /**

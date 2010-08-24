@@ -37,10 +37,11 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemoteException;
 import ccc.client.core.SessionTimeoutException;
 import ccc.client.core.ValidationResult;
+import ccc.client.gwt.core.GWTTextParser;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.plugins.s11n.S11nException;
+import ccc.plugins.s11n.json.Json;
 import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -147,7 +148,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                         try {
                             InternalServices.EX_HANDLER.unexpectedError(
                                 new RemoteException(
-                                    new SerializerFactory()
+                                    new SerializerFactory(new GWTTextParser())
                                         .create(Failure.class)
                                         .read(
                                             InternalServices.PARSER.parseJson(
@@ -157,12 +158,13 @@ public class UploadFileDialog extends AbstractEditDialog {
                         // Assume success.
                         } catch (final S11nException e) {
                             hide();
-                            final JSONObject json =
-                                JSONParser.parse(be.getResultHtml()).isObject();
+                            final Json json =
+                                InternalServices.PARSER.parseJson(
+                                    be.getResultHtml());
                             final ResourceSummary rs =
-                                new SerializerFactory()
+                                new SerializerFactory(new GWTTextParser())
                                     .create(ResourceSummary.class)
-                                    .read(new GwtJson(json));
+                                    .read(json);
                             ssm.create(rs);
                         }
                     }

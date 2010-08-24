@@ -43,8 +43,9 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 import ccc.commons.IO;
+import ccc.plugins.PluginFactory;
+import ccc.plugins.s11n.Serializers;
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -53,6 +54,9 @@ import ccc.plugins.s11n.json.JsonImpl;
  * @author Civic Computing Ltd.
  */
 public class AbstractProvider {
+
+    private final Serializers _serializers = new PluginFactory().serializers();
+
 
     /**
      * Determine if a type is a collection of the specified class.
@@ -138,7 +142,7 @@ public class AbstractProvider {
     protected Json readJson(final MediaType mediaType,
                             final InputStream entityStream) throws IOException {
         final String body = readString(mediaType, entityStream);
-        final Json json = new JsonImpl(body);
+        final Json json = getSerializers().textParser().parseJson(body);
         return json;
     }
 
@@ -176,5 +180,15 @@ public class AbstractProvider {
             return (Class<T>) pType.getActualTypeArguments()[index];
         }
         throw new RuntimeException("Not a parameterized type: "+type);
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the serializer factory.
+     */
+    protected Serializers getSerializers() {
+        return _serializers;
     }
 }

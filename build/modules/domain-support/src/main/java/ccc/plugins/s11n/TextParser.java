@@ -24,21 +24,68 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.s11n.json;
+
+package ccc.plugins.s11n;
+
+import java.util.Map;
+
+import ccc.plugins.s11n.json.Json;
 
 
 /**
- * Further methods for serialisation.
- * FIXME: Merge into Jsonable.
+ * API for parsing text.
  *
  * @author Civic Computing Ltd.
  */
-public interface Jsonable2 extends Jsonable {
+public interface TextParser {
+
 
     /**
-     * Convert from JSON.
+     * Parse text into a JSON object.
      *
-     * @param json The JSON object to read from.
+     * @param text The text to parse.
+     *
+     * @return The corresponding JSON object.
      */
-    void fromJson(Json json);
+    Json parseJson(final String text);
+
+
+    /**
+     * Parse a string map into a JSON object.
+     *
+     * @param map The map to parse.
+     *
+     * @return The corresponding JSON object.
+     */
+    Json parseJson(final Map<String, String> map);
+
+
+    /**
+     * Parse text as a boolean.
+     *
+     * @param text The text to parse.
+     *
+     * @return A boolean.
+     */
+    @Deprecated
+    boolean parseBoolean(final String text);
+
+
+    /**
+     * Parse text as a map.
+     *
+     * @param text The text to parse.
+     *
+     * @return A map.
+     */
+    @Deprecated
+    Map<String, String> parseMapString(final String text);
+
+
+    /**
+     * Create a new JSON object.
+     *
+     * @return The new object.
+     */
+    Json newJson();
 }

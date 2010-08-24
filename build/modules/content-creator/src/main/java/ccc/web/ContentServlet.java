@@ -55,8 +55,8 @@ import ccc.commons.Environment;
 import ccc.commons.HTTP;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.markup.XHTML;
-import ccc.plugins.s11n.json.JsonImpl;
-import ccc.plugins.s11n.json.SerializerFactory;
+import ccc.plugins.s11n.Serializers;
+import ccc.plugins.s11n.json.Json;
 import ccc.plugins.scripting.Context;
 import ccc.web.rendering.AuthenticationRequiredException;
 import ccc.web.rendering.NotFoundException;
@@ -188,13 +188,14 @@ public class ContentServlet
             LOG.warn(e.getMessage());
             throw new AuthenticationRequiredException(path);
         } catch (final CCException e) {
-            final JsonImpl json = new JsonImpl();
-            new SerializerFactory().create(Failure.class).write(json, e.getFailure());
+            final Serializers sFactory = new PluginFactory().serializers();
+            final Json json = sFactory.textParser().newJson();
+            sFactory.create(Failure.class).write(json, e.getFailure());
             LOG.warn(
                 "Exception retrieving path " + path
                 + " wc=" + workingCopy
                 + ", v=" + version
-                + " " + json.getDetail());
+                + " " + json.toString());
             throw new NotFoundException();
         }
     }

@@ -51,7 +51,7 @@ import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.Serializers;
-import ccc.plugins.s11n.json.JsonImpl;
+import ccc.plugins.s11n.json.Json;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
@@ -407,33 +407,33 @@ public abstract class Command<T> {
 
 
     private String serializeAction(final ActionEntity action) {
-        final JsonImpl json = new JsonImpl();
+        final Json json = _serializers.textParser().newJson();
         _serializers.create(ActionSummary.class)
             .write(json, action.mapAction());
-        return json.getDetail();
+        return json.toString();
     }
 
 
     private String serializeComment(final CommentEntity comment) {
-        final JsonImpl json = new JsonImpl();
+        final Json json = _serializers.textParser().newJson();
         _serializers.create(Comment.class)
             .write(json, comment.createDto());
-        return json.getDetail();
+        return json.toString();
     }
 
 
     private String serializeResource(final ResourceEntity resource) {
-        final JsonImpl json = new JsonImpl();
+        final Json json = _serializers.textParser().newJson();
         _serializers.create(ResourceSummary.class)
             .write(json, resource.mapResource());
-        return json.getDetail();
+        return json.toString();
     }
 
 
     private String serializeUser(final UserEntity user) {
-        final JsonImpl json = new JsonImpl();
+        final Json json = _serializers.textParser().newJson();
         _serializers.create(User.class)
             .write(json, user.toDto());
-        return json.getDetail();
+        return json.toString();
     }
 }

@@ -42,10 +42,8 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.Serializer;
-import ccc.plugins.s11n.Serializers;
-import ccc.plugins.s11n.json.JsonImpl;
+import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -65,7 +63,7 @@ public class S11nProvider<T>
         MessageBodyWriter<T>,
         MessageBodyReader<T> {
 
-    private final Serializers _serializers = new PluginFactory().serializers();
+
 
 
     /** {@inheritDoc} */
@@ -85,7 +83,7 @@ public class S11nProvider<T>
                                final Type type,
                                final Annotation[] annotations,
                                final MediaType mediaType) {
-        return _serializers.canCreate(clazz);
+        return getSerializers().canCreate(clazz);
     }
 
 
@@ -98,15 +96,15 @@ public class S11nProvider<T>
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
-        final Serializer<T> s = (Serializer<T>) _serializers.create(clazz);
-        final JsonImpl json = new JsonImpl();
+        final Serializer<T> s = (Serializer<T>) getSerializers().create(clazz);
+        final Json json = getSerializers().textParser().newJson();
         s.write(json, object);
 
         final PrintWriter pw = createWriter(outputStream);
         if (MediaType.TEXT_HTML_TYPE.equals(mediaType)) {
             pw.print("<html><body>");
         }
-        pw.print(json.getDetail());
+        pw.print(json.toString());
         if (MediaType.TEXT_HTML_TYPE.equals(mediaType)) {
             pw.println("</body></html>");
         }
@@ -120,7 +118,7 @@ public class S11nProvider<T>
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return _serializers.canCreate(clazz);
+        return getSerializers().canCreate(clazz);
     }
 
 
@@ -133,12 +131,12 @@ public class S11nProvider<T>
                       final MultivaluedMap<String, String> httpHeaders,
                       final InputStream is) throws IOException {
         try {
-            final Serializer<T> s = _serializers.create(clazz);
+            final Serializer<T> s = getSerializers().create(clazz);
             String entity = readString(mimetype, is);
             if (MediaType.TEXT_HTML_TYPE.equals(mimetype)) {
                 entity = entity.substring(12, entity.length()-14);
             }
-            return s.read(new JsonImpl(entity));
+            return s.read(getSerializers().textParser().parseJson(entity));
 
         } catch (final RuntimeException e) { // FIXME: Choose correct type!
             throw new WebApplicationException(e);

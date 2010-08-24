@@ -32,6 +32,8 @@ import java.io.InputStream;
 
 import ccc.plugins.multipart.MultipartFormData;
 import ccc.plugins.s11n.Serializers;
+import ccc.plugins.s11n.TextParser;
+import ccc.plugins.s11n.json.ServerTextParser;
 import ccc.plugins.scripting.TextProcessor;
 import ccc.plugins.search.Index;
 import ccc.plugins.search.Indexer;
@@ -47,10 +49,20 @@ public class PluginFactory {
 
 
     public Serializers serializers() {
+        final Class<?>[] types = new Class<?>[] {
+            TextParser.class
+        };
+
+        final Object[] values = new Object[] {
+            new ServerTextParser()
+        };
+
         return
             construct(
                 Serializers.class,
-                "ccc.plugins.s11n.json.SerializerFactory");
+                "ccc.plugins.s11n.json.SerializerFactory",
+                types,
+                values);
     }
 
 

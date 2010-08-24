@@ -47,8 +47,6 @@ import javax.ws.rs.ext.Provider;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ccc.plugins.s11n.json.JsonImpl;
-
 
 
 /**
@@ -97,7 +95,7 @@ public class MetadataWriter
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
         final PrintWriter pw = createWriter(outputStream);
-        pw.println(new JsonImpl(object).getDetail());
+        pw.println(getSerializers().textParser().parseJson(object).toString());
         pw.flush();
     }
 

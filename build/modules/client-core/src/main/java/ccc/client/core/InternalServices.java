@@ -36,8 +36,8 @@ import ccc.api.types.CommandType;
 import ccc.api.types.Link.Encoder;
 import ccc.client.events.Bus;
 import ccc.client.events.SimpleBus;
-import ccc.client.remoting.TextParser;
 import ccc.client.validation.AbstractValidations;
+import ccc.plugins.s11n.TextParser;
 
 
 /**

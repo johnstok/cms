@@ -28,9 +28,11 @@ package ccc.plugins.s11n.json;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import ccc.api.core.PagedCollection;
 import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.Serializers;
 
 
 /**
@@ -44,12 +46,24 @@ class PagedCollectionSerializer<T>
     implements
         Serializer<PagedCollection<T>> {
 
+    private final Serializers _serializers;
+
+
+    /**
+     * Constructor.
+     *
+     * @param serializers The serializers for this serializer.
+     */
+    public PagedCollectionSerializer(final Serializers serializers) {
+        _serializers = serializers;
+    }
+
 
     /** {@inheritDoc} */
     @Override
     public PagedCollection<T> read(final Json json) {
         final String className = json.getString(JsonKeys.TYPE);
-        return PagedCollectionReader.read(json, className);
+        return read(json, className);
     }
 
 
@@ -62,7 +76,7 @@ class PagedCollectionSerializer<T>
         json.set(JsonKeys.SIZE, Long.valueOf(instance.getTotalCount()));
         json.set(JsonKeys.TYPE, instance.getElementClass().getName());
         final Serializer<T> serializer =
-            new SerializerFactory().create(instance.getElementClass());
+            _serializers.create(instance.getElementClass());
         final Collection<Json> jsonElements = new ArrayList<Json>();
         for (final T element : instance.getElements()) {
             jsonElements.add(serializer.write(json.create(), element));
@@ -70,5 +84,33 @@ class PagedCollectionSerializer<T>
         json.setJsons(JsonKeys.ELEMENTS, jsonElements);
 
         return json;
+    }
+
+
+    private <U> PagedCollection<U> read(final Json json,
+                                        final String elementClass) {
+
+        if (null == json) { return null; }
+
+        final Class<U> clazz = (Class<U>) _serializers.findClass(elementClass);
+
+        final Serializer<U> serializer = _serializers.create(clazz);
+
+        final ArrayList<U> elements = new ArrayList<U>();
+        for (final Json jElem : json.getCollection(JsonKeys.ELEMENTS)) {
+            elements.add(serializer.read(jElem));
+        }
+        final PagedCollection<U> c =
+            new PagedCollection<U>(
+                json.getLong(JsonKeys.SIZE).longValue(),
+                clazz,
+                elements);
+
+        final Map<String, String> links = json.getStringMap("links");
+        if (null != links) {
+            c.addLinks(links);
+        }
+
+        return c;
     }
 }

@@ -37,7 +37,6 @@ import org.apache.log4j.Logger;
 
 import ccc.acceptance.client.BundleWrapper;
 import ccc.acceptance.client.HttpClientRequestExecutor;
-import ccc.acceptance.client.ServerTextParser;
 import ccc.acceptance.client.WindowStub;
 import ccc.api.core.API;
 import ccc.api.core.ActionSummary;
@@ -81,6 +80,7 @@ import ccc.client.i18n.UIConstants;
 import ccc.client.i18n.UIMessages;
 import ccc.client.validation.AbstractValidations;
 import ccc.commons.Testing;
+import ccc.plugins.s11n.json.ServerTextParser;
 
 
 /**

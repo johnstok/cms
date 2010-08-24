@@ -32,12 +32,9 @@ import ccc.api.core.Group;
 import ccc.api.core.User;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.views.gxt.EditUserDialog;
 import ccc.client.gwt.widgets.UserTable;
-
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
+import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -78,10 +75,9 @@ public class OpenEditUserDialogAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final JSONObject result =
-            JSONParser.parse(response.getText()).isObject();
+        final Json result = parse(response.getText());
         final User delta =
-            serializers().create(User.class).read(new GwtJson(result));
+            serializers().create(User.class).read(result);
         new EditUserDialog(delta, _userTable, _groups).show();
     }
 }

@@ -66,4 +66,12 @@ public interface Serializers {
      * @return The corresponding class, or NULL if the name isn't supported.
      */
     Class<?> findClass(final String name);
+
+
+    /**
+     * Accessor.
+     *
+     * @return The text parser used by this serializer.
+     */
+    TextParser textParser();
 }

@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.Jsonable;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
@@ -51,7 +50,7 @@ import com.google.gwt.json.client.JSONValue;
  *
  * @author Civic Computing Ltd.
  */
-public class GwtJson
+class GwtJson
     implements
         Json {
 
@@ -203,21 +202,6 @@ public class GwtJson
 
     /** {@inheritDoc} */
     @Override
-    public void set(final String key,
-                    final Collection<? extends Jsonable> values) {
-        final JSONArray value = new JSONArray();
-        int i=0;
-        for (final Jsonable j : values) {
-            final GwtJson tmp = new GwtJson();
-            j.toJson(tmp);
-            value.set(i, tmp.getDelegate());
-            i++;
-        }
-        _delegate.put(key, value);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void set(final String key, final Boolean bool) {
         _delegate.put(
             key,
@@ -277,18 +261,6 @@ public class GwtJson
                 strings.put(value.getKey(), new JSONString(value.getValue()));
             }
             _delegate.put(key, strings);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void set(final String key, final Jsonable value) {
-        if (null==value) {
-            _delegate.put(key, JSONNull.getInstance());
-        } else {
-            final GwtJson o = new GwtJson();
-            value.toJson(o);
-            _delegate.put(key, o.getDelegate());
         }
     }
 

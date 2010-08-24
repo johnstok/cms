@@ -30,7 +30,6 @@ import ccc.api.core.Folder;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GwtJson;
 import ccc.plugins.s11n.json.Json;
 
 
@@ -67,7 +66,7 @@ public class UpdateFolderAction
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final Json json = new GwtJson();
+        final Json json = newJson();
         serializers().create(Folder.class).write(json, _folder);
         return json.toString();
     }

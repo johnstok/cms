@@ -54,6 +54,7 @@ import ccc.api.types.Paragraph;
 import ccc.api.types.SearchResult;
 import ccc.plugins.s11n.Serializer;
 import ccc.plugins.s11n.Serializers;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -63,19 +64,24 @@ import ccc.plugins.s11n.Serializers;
  */
 public final class SerializerFactory implements Serializers {
 
+    private final TextParser _textParser;
+
     // TODO: How can we constrain the wildcards to a single type?
-    private final Map<Class<?>, Serializer<?>> SUPPORTED_CLASSES;
-    private final Map<String, Class<?>>        SUPPORTED_NAMES;
+    private final Map<Class<?>, Serializer<?>> supportedClasses;
+    private final Map<String, Class<?>>        supportedNames;
 
 
     /**
      * Constructor.
+     *
+     * @param textParser The text parser to use.
      */
-    public SerializerFactory() {
+    public SerializerFactory(final TextParser textParser) {
         super();
 
-        SUPPORTED_CLASSES = new HashMap<Class<?>, Serializer<?>>();
-        SUPPORTED_NAMES   = new HashMap<String, Class<?>>();
+        _textParser = textParser;
+        supportedClasses = new HashMap<Class<?>, Serializer<?>>();
+        supportedNames   = new HashMap<String, Class<?>>();
 
         addSerializer(ACL.class, new ACLSerializer());
         addSerializer(Action.class, new ActionSerializer());
@@ -99,7 +105,7 @@ public final class SerializerFactory implements Serializers {
         addSerializer(User.class, new UserSerializer());
         addSerializer(PageCriteria.class, new PageCriteriaSerializer());
         addSerializer(
-            PagedCollection.class, new PagedCollectionSerializer());
+            PagedCollection.class, new PagedCollectionSerializer(this));
         addSerializer(
             ResourceCriteria.class,
             new ResourceCriteriaSerializer<ResourceCriteria>() {
@@ -113,7 +119,7 @@ public final class SerializerFactory implements Serializers {
     @Override
     @SuppressWarnings("unchecked") // TODO: Find a cleaner solution.
     public <T> Serializer<T> create(final Class<T> clazz) {
-        return (Serializer<T>) SUPPORTED_CLASSES.get(clazz);
+        return (Serializer<T>) supportedClasses.get(clazz);
     }
 
 
@@ -126,21 +132,28 @@ public final class SerializerFactory implements Serializers {
      */
     public <T> void addSerializer(final Class<T> clazz,
                                          final Serializer<T> serializer) {
-        SUPPORTED_CLASSES.put(clazz, serializer);
-        SUPPORTED_NAMES.put(clazz.getName(), clazz);
+        supportedClasses.put(clazz, serializer);
+        supportedNames.put(clazz.getName(), clazz);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public boolean canCreate(final Class<?> clazz) {
-        return SUPPORTED_CLASSES.keySet().contains(clazz);
+        return supportedClasses.keySet().contains(clazz);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Class<?> findClass(final String name) {
-        return SUPPORTED_NAMES.get(name);
+        return supportedNames.get(name);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public TextParser textParser() {
+        return _textParser;
     }
 }

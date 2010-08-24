@@ -33,8 +33,9 @@ import ccc.api.types.DBC;
 import ccc.api.types.Link.Encoder;
 import ccc.client.events.Bus;
 import ccc.client.events.Event;
-import ccc.client.remoting.TextParser;
 import ccc.plugins.s11n.Serializers;
+import ccc.plugins.s11n.TextParser;
+import ccc.plugins.s11n.json.Json;
 import ccc.plugins.s11n.json.SerializerFactory;
 
 
@@ -50,7 +51,8 @@ public abstract class RemotingAction
     private String            _actionName;
     private HttpMethod        _method;
 
-    private final Serializers _serializers = new SerializerFactory();
+    private final Serializers _serializers =
+        new SerializerFactory(InternalServices.PARSER);
     private RequestExecutor   _executor    = InternalServices.EXECUTOR;
     private TextParser        _parser      = InternalServices.PARSER;
     private Encoder           _encoder     = InternalServices.ENCODER;
@@ -277,4 +279,12 @@ public abstract class RemotingAction
     protected Serializers serializers() {
         return _serializers;
     }
+
+
+    protected Json parse(final String response) {
+        return InternalServices.PARSER.parseJson(response);
+    }
+
+
+    protected Json newJson() { return InternalServices.PARSER.newJson(); }
 }

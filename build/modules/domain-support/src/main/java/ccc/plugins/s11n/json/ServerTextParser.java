@@ -1,10 +1,8 @@
-package ccc.acceptance.client;
+package ccc.plugins.s11n.json;
 
 import java.util.Map;
 
-import ccc.client.remoting.TextParser;
-import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.JsonImpl;
+import ccc.plugins.s11n.TextParser;
 
 /**
  * Server implementation of the {@link TextParser} API.
@@ -15,17 +13,20 @@ public class ServerTextParser
     implements
         TextParser {
 
+
     /** {@inheritDoc} */
     @Override
     public Json parseJson(final String text) {
         return new JsonImpl(text);
     }
 
+
     /** {@inheritDoc} */
     @Override
     public boolean parseBoolean(final String text) {
         return Boolean.valueOf(text).booleanValue();
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -34,7 +35,15 @@ public class ServerTextParser
         return json.getStringMap("properties");
     }
 
+
     /** {@inheritDoc} */
     @Override
     public Json newJson() { return new JsonImpl(); }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Json parseJson(final Map<String, String> map) {
+        return new JsonImpl(map);
+    }
 }

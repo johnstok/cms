@@ -33,10 +33,7 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.gwt.core.GwtJson;
-
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
+import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -73,11 +70,9 @@ public abstract class GetUserAction
                     /** {@inheritDoc} */
                     @Override
                     public void onOK(final Response response) {
-                        final JSONObject result =
-                            JSONParser.parse(response.getText()).isObject();
+                        final Json json = parse(response.getText());
                         final User user =
-                            serializers().create(User.class)
-                            .read(new GwtJson(result));
+                            serializers().create(User.class).read(json);
                         execute(user);
                     }
                 });

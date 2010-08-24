@@ -30,12 +30,10 @@ import java.util.Collection;
 
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GwtJson;
 import ccc.plugins.s11n.json.Json;
-
-import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -62,7 +60,7 @@ public abstract class GetChildrenAction
     @Override
     protected void onOK(final Response response) {
         final Json json =
-            new GwtJson(JSONParser.parse(response.getText()).isObject());
+            InternalServices.PARSER.parseJson(response.getText());
         final PagedCollection<ResourceSummary> rsCollection =
             serializers().create(PagedCollection.class).read(json);
         execute(rsCollection.getElements());

@@ -46,7 +46,8 @@ import ccc.domain.GroupEntity;
 import ccc.domain.LogEntry;
 import ccc.persistence.GroupRepository;
 import ccc.plugins.PluginFactory;
-import ccc.plugins.s11n.json.JsonImpl;
+import ccc.plugins.s11n.Serializers;
+import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -76,9 +77,9 @@ public class GroupsEJB
 
         final Group result = g.createDto();
 
-        final JsonImpl json = new JsonImpl();
-        new PluginFactory()
-            .serializers().create(Group.class).write(json, result);
+        final Serializers sFactory = new PluginFactory().serializers();
+        final Json json = sFactory.textParser().newJson();
+        sFactory.create(Group.class).write(json, result);
 
         getRepoFactory().createLogEntryRepo().record(
             new LogEntry(
@@ -86,7 +87,7 @@ public class GroupsEJB
                 GROUP_CREATE,
                 new Date(),
                 g.getId(),
-                json.getDetail()));
+                json.toString()));
 
         return result;
     }
@@ -135,9 +136,9 @@ public class GroupsEJB
 
         final Group result = g.createDto();
 
-        final JsonImpl json = new JsonImpl();
-        new PluginFactory()
-        .serializers().create(Group.class).write(json, result);
+        final Serializers sFactory = new PluginFactory().serializers();
+        final Json json = sFactory.textParser().newJson();
+        sFactory.create(Group.class).write(json, result);
 
         getRepoFactory().createLogEntryRepo().record(
             new LogEntry(
@@ -145,7 +146,7 @@ public class GroupsEJB
                 GROUP_UPDATE,
                 new Date(),
                 g.getId(),
-                json.getDetail()));
+                json.toString()));
 
         return result;
     }

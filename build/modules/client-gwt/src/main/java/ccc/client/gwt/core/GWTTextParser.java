@@ -28,7 +28,7 @@ package ccc.client.gwt.core;
 
 import java.util.Map;
 
-import ccc.client.remoting.TextParser;
+import ccc.plugins.s11n.TextParser;
 import ccc.plugins.s11n.json.Json;
 
 import com.google.gwt.json.client.JSONBoolean;
@@ -75,4 +75,11 @@ public class GWTTextParser
     /** {@inheritDoc} */
     @Override
     public Json newJson() { return new GwtJson(); }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Json parseJson(final Map<String, String> map) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
 }

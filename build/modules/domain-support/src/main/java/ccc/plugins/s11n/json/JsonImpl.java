@@ -54,7 +54,7 @@ import ccc.plugins.s11n.S11nException;
  *
  * @author Civic Computing Ltd.
  */
-public class JsonImpl implements Serializable, Json {
+class JsonImpl implements Serializable, Json {
 
     private transient JSONObject _detail;
 
@@ -88,17 +88,6 @@ public class JsonImpl implements Serializable, Json {
         DBC.require().notNull(detail);
 
         _detail = detail;
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonable The object to convert to JSON.
-     */
-    public JsonImpl(final Jsonable jsonable) {
-        this();
-        DBC.require().notNull(jsonable);
-        jsonable.toJson(this);
     }
 
     /**
@@ -152,21 +141,6 @@ public class JsonImpl implements Serializable, Json {
     public void set(final String key, final String value) {
         try {
             _detail.put(key, (null==value) ? NULL : value);
-        } catch (final JSONException e) {
-            throw new S11nException(e);
-        }
-    }
-
-    /** {@inheritDoc} */
-    public void set(final String key,
-                    final Collection<? extends Jsonable> snapshots) {
-        try {
-            _detail.put(key, new JSONArray());
-            for (final Jsonable o : snapshots) {
-                final JsonImpl s = new JsonImpl();
-                o.toJson(s);
-                _detail.append(key, s._detail);
-            }
         } catch (final JSONException e) {
             throw new S11nException(e);
         }
@@ -247,21 +221,6 @@ public class JsonImpl implements Serializable, Json {
         }
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void set(final String key, final Jsonable value) {
-        try {
-            if (null==value) {
-                _detail.put(key, NULL);
-            } else {
-                final JsonImpl s = new JsonImpl();
-                value.toJson(s);
-                _detail.put(key, s._detail);
-            }
-        } catch (final JSONException e) {
-            throw new S11nException(e);
-        }
-    }
 
 
     /* ====================================================================

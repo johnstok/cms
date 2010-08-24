@@ -45,7 +45,6 @@ import ccc.api.jaxrs.TemplatesImpl;
 import ccc.api.jaxrs.UsersImpl;
 import ccc.api.jaxrs.providers.BooleanProvider;
 import ccc.api.jaxrs.providers.FileReader;
-import ccc.api.jaxrs.providers.JsonableWriter;
 import ccc.api.jaxrs.providers.MetadataWriter;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.jaxrs.providers.S11nProvider;
@@ -99,7 +98,6 @@ public class JaxrsConfiguration
         providers.add(EJBExceptionMapper.class);
         providers.add(UUIDProvider.class);
         providers.add(BooleanProvider.class);
-        providers.add(JsonableWriter.class);
         providers.add(MetadataWriter.class);
         providers.add(StringCollectionWriter.class);
         providers.add(UuidCollectionWriter.class);

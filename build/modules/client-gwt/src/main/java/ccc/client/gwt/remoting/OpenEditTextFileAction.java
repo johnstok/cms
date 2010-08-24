@@ -32,14 +32,11 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.EditTextFileDialog;
 import ccc.client.gwt.widgets.ResourceTable;
 import ccc.client.presenters.EditTextFilePresenter;
-
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
+import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -76,10 +73,9 @@ extends
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final JSONObject result =
-            JSONParser.parse(response.getText()).isObject();
+        final Json result = parse(response.getText());
         final File dto =
-            serializers().create(File.class).read(new GwtJson(result));
+            serializers().create(File.class).read(result);
         if (dto.getContent() != null) {
             new EditTextFilePresenter(
                 new EditTextFileDialog(),

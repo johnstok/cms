@@ -41,10 +41,7 @@ import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.GwtJson;
 import ccc.plugins.s11n.json.Json;
-
-import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -86,8 +83,7 @@ public abstract class GetTemplatesAction
 
                     /** {@inheritDoc} */
                     @Override public void onOK(final Response response) {
-                        final Json json =
-                            new GwtJson(JSONParser.parse(response.getText()).isObject());
+                        final Json json = parse(response.getText());
                         final PagedCollection<Template> rsCollection =
                             serializers().create(PagedCollection.class).read(json);
                         execute(rsCollection.getElements());
