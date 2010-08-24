@@ -221,8 +221,6 @@ public interface ResourceIdentifiers {
         String  COLLECTION  = "/secure/actions";
         /** ELEMENT : String. */
         String  ELEMENT     = "/{id}";
-        /** COMPLETED : String. */
-        String  COMPLETED   = "/completed";
         /** EXECUTE : String. */
         String  EXECUTE     = "/all";
     }

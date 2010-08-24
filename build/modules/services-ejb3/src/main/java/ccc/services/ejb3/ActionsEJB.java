@@ -26,8 +26,12 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.*;
-import static javax.ejb.TransactionAttributeType.*;
+import static ccc.api.types.Permission.ACTION_CANCEL;
+import static ccc.api.types.Permission.ACTION_CREATE;
+import static ccc.api.types.Permission.ACTION_EXECUTE;
+import static ccc.api.types.Permission.ACTION_LIST;
+import static ccc.api.types.Permission.ACTION_SCHEDULE;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 
 import java.util.Collection;
 import java.util.Date;
@@ -48,11 +52,15 @@ import javax.ejb.TransactionAttribute;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.Action;
+import ccc.api.core.ActionCriteria;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Actions;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Resources;
 import ccc.api.exceptions.CCException;
+import ccc.api.types.ActionStatus;
+import ccc.api.types.CommandType;
+import ccc.api.types.FailureCode;
 import ccc.api.types.SortOrder;
 import ccc.commands.CancelActionCommand;
 import ccc.commands.ScheduleActionCommand;
@@ -130,46 +138,33 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_LIST})
-    public PagedCollection<ActionSummary> listPendingActions(
-                                                    final String sort,
-                                                    final SortOrder sortOrder,
-                                                    final int pageNo,
-                                                    final int pageSize) {
+    public PagedCollection<ActionSummary> listActions(
+                                                final String username,
+                                                final CommandType commandType,
+                                                final FailureCode failureCode,
+                                                final ActionStatus status,
+                                                final Date executeAfter,
+                                                final String sort,
+                                                final SortOrder sortOrder,
+                                                final int pageNo,
+                                                final int pageSize) {
+        final ActionCriteria ac = new ActionCriteria(username,
+            commandType,
+            status,
+            failureCode,
+            executeAfter);
         final ActionRepository actions =
             getRepoFactory().createActionRepository();
         final PagedCollection<ActionSummary> dc =
             new PagedCollection<ActionSummary>(
-                actions.countPending(),
+                actions.countActions(ac),
                 ActionSummary.class,
                 ActionEntity.mapActions(
-                    actions.pending(sort, sortOrder, pageNo, pageSize)));
+                   actions.listActions(ac, sort, sortOrder, pageNo, pageSize)));
         addLinks(dc);
 
         return dc;
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({ACTION_LIST})
-    public PagedCollection<ActionSummary> listCompletedActions(
-                                                    final String sort,
-                                                    final SortOrder sortOrder,
-                                                    final int pageNo,
-                                                    final int pageSize) {
-        final ActionRepository actions =
-            getRepoFactory().createActionRepository();
-        final PagedCollection<ActionSummary> dc =
-            new PagedCollection<ActionSummary>(
-                actions.countCompleted(),
-                ActionSummary.class,
-                ActionEntity.mapActions(actions.completed(
-                    sort, sortOrder, pageNo, pageSize)));
-        addLinks(dc);
-
-        return dc;
-    }
-
 
     /** {@inheritDoc} */
     @Override
@@ -293,14 +288,9 @@ public class ActionsEJB
             ccc.api.core.ResourceIdentifiers.Action.COLLECTION
             + "?{-join|&|count,page,sort,order}");
         actions.addLink(
-            "pending",
+            "list",
             ccc.api.core.ResourceIdentifiers.Action.COLLECTION
-            + "?{-join|&|count,page,sort,order}");
-        actions.addLink(
-            "completed",
-            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
-            + ccc.api.core.ResourceIdentifiers.Action.COMPLETED
-            + "?{-join|&|count,page,sort,order}");
+            + "?{-join|&|status,count,page,sort,order}");
         actions.addLink(
             "execute_all",
             ccc.api.core.ResourceIdentifiers.Action.COLLECTION

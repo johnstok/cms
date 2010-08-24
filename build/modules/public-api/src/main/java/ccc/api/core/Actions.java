@@ -26,6 +26,7 @@
  */
 package ccc.api.core;
 
+import java.util.Date;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -38,6 +39,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import ccc.api.types.ActionStatus;
+import ccc.api.types.CommandType;
+import ccc.api.types.FailureCode;
 import ccc.api.types.SortOrder;
 
 
@@ -85,28 +89,17 @@ public interface Actions
      * @return A collection of action summaries, one per outstanding action.
      */
     @GET
-    PagedCollection<ActionSummary> listPendingActions(
+    PagedCollection<ActionSummary> listActions(
+        @QueryParam("username") String username,
+        @QueryParam("commandType") CommandType commandType,
+        @QueryParam("failureCode") FailureCode failureCode,
+        @QueryParam("status") ActionStatus status,
+        @QueryParam("executeAfter") Date executeAfter,
         @QueryParam("sort") @DefaultValue("status") String sort,
         @QueryParam("order") @DefaultValue("DESC") SortOrder sortOrder,
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize);
 
-
-    /**
-     * List all CCC actions that have been executed.
-     *
-     * @param sort The field to sort on.
-     * @param sortOrder The order results be sorted in.
-     * @param pageNo The page of results to return.
-     * @param pageSize The number of results in a page.
-     * @return A collection of action summaries, one per completed action.
-     */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Action.COMPLETED)
-    PagedCollection<ActionSummary> listCompletedActions(
-        @QueryParam("sort") @DefaultValue("status") String sort,
-        @QueryParam("order") @DefaultValue("DESC") SortOrder sortOrder,
-        @QueryParam("page") @DefaultValue("1") int pageNo,
-        @QueryParam("count") @DefaultValue("20") int pageSize);
 
 
     /**
@@ -125,4 +118,6 @@ public interface Actions
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
     ActionSummary retrieve(@PathParam("id") UUID actionId);
+
+
 }

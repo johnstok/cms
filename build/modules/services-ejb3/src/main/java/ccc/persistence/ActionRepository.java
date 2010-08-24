@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.core.ActionCriteria;
 import ccc.api.types.SortOrder;
 import ccc.domain.ActionEntity;
 
@@ -52,8 +53,9 @@ public interface ActionRepository {
     List<ActionEntity> latest(Date until);
 
     /**
-     * Retrieve subset of actions in the status SCHEDULED.
+     * Retrieve list of actions matching the criteria.
      *
+     * @param criteria The action criteria.
      * @param sort The field to sort on.
      * @param sortOrder The order results be sorted in.
      * @param pageNo The page of results to return.
@@ -61,41 +63,21 @@ public interface ActionRepository {
      *
      * @return A list of actions.
      */
-    List<ActionEntity> pending(String sort,
-        SortOrder sortOrder,
-        int pageNo,
-        int pageSize);
-
-    /**
-     * Retrieve subset of actions not in the status SCHEDULED.
-     *
-     * @param sort The field to sort on.
-     * @param sortOrder The order results be sorted in.
-     * @param pageNo The page of results to return.
-     * @param pageSize The number of results in a page.
-     *
-     * @return A list of actions.
-     */
-    List<ActionEntity> completed(String sort,
+    List<ActionEntity> listActions(ActionCriteria criteria,
+        String sort,
         SortOrder sortOrder,
         int pageNo,
         int pageSize);
 
 
     /**
-     * Count all actions not in the status SCHEDULED.
+     * Count all actions matching the criteria.
      *
+     * @param criteria The action criteria.
      * @return The number of actions.
      */
-    long countCompleted();
+    long countActions(ActionCriteria criteria);
 
-
-    /**
-     * Count all actions in the status SCHEDULED.
-     *
-     * @return The number of actions.
-     */
-    long countPending();
 
     /**
      * Find an action from its ID.

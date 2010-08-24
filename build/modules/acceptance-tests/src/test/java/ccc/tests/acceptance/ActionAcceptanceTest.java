@@ -68,7 +68,11 @@ public class ActionAcceptanceTest
                 new Date(ONE_DAY),
                 new HashMap<String, String>()));
         final PagedCollection<ActionSummary> pending =
-            getActions().listPendingActions("", SortOrder.ASC, 1, 20);
+            getActions().listActions(null, null, null, ActionStatus.SCHEDULED, null,
+                "",
+                SortOrder.ASC,
+                1,
+                20);
 
         // ASSERT
         assertEquals(1, pending.getTotalCount());

@@ -34,6 +34,7 @@ import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
+import ccc.api.core.ActionCriteria;
 import ccc.api.core.ActionSummary;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
@@ -41,7 +42,7 @@ import ccc.domain.ActionEntity;
 
 
 /**
- * TODO: Add a description for this type.
+ * A repository for action objects.
  *
  * @author Civic Computing Ltd.
  */
@@ -49,7 +50,7 @@ class ActionRepositoryImpl
     implements
         ActionRepository {
 
-    private Repository _repo;
+    private final Repository _repo;
 
     /**
      * Constructor.
@@ -95,16 +96,16 @@ class ActionRepositoryImpl
 
     /** {@inheritDoc} */
     @Override
-    public List<ActionEntity> completed(final String sort,
+    public List<ActionEntity> listActions(final ActionCriteria criteria,
+                                  final String sort,
                                   final SortOrder sortOrder,
                                   final int pageNo,
                                   final int pageSize) {
 
-        final StringBuffer query = new StringBuffer();
+        final StringBuilder query = new StringBuilder();
         final Map<String, Object> params = new HashMap<String, Object>();
 
-        query.append("from ccc.domain.ActionEntity a");
-        query.append(" WHERE a._status!='SCHEDULED'");
+        createQuery(query, criteria, params);
         query.append(" order by a.");
         query.append(mapSortColumn(sort));
         query.append(" ");
@@ -122,49 +123,38 @@ class ActionRepositoryImpl
 
     /** {@inheritDoc} */
     @Override
-    public long countCompleted() {
+    public long countActions(final ActionCriteria criteria) {
         final Map<String, Object> params = new HashMap<String, Object>();
-        final String query = "select count(*) from ccc.domain.ActionEntity a "
-            + " WHERE a._status!='SCHEDULED'";
-        return _repo.scalarLong(query, params);
+        final StringBuilder query = new StringBuilder("select count(*) ");
+        createQuery(query, criteria, params);
+        return _repo.scalarLong(query.toString(), params);
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    public long countPending() {
-        final Map<String, Object> params = new HashMap<String, Object>();
-        final String query = "SELECT count(*) FROM ccc.domain.ActionEntity a "
-                + " WHERE a._status='SCHEDULED'";
-        return _repo.scalarLong(query, params);
+    private void createQuery(final StringBuilder query,
+                             final ActionCriteria ac,
+                             final Map<String, Object> params) {
+        query.append(" from ccc.domain.ActionEntity a ");
+        if (ac.getStatus() != null) {
+            query.append(" WHERE a._status=:status");
+            params.put("status", ac.getStatus());
+        }
+        if (ac.getCommandType() != null) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" a._commandType=':commandType'");
+            params.put("commandType", ac.getCommandType());
+        }
+        if (ac.getUsername() != null) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" lower(a._username) like lower(:username)");
+            params.put("username", ac.getUsername());
+        }
+        if (ac.getFailureCode() != null) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" a._failureCode=:failureCode)");
+            params.put("failureCode", ac.getFailureCode());
+        }
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    public List<ActionEntity> pending(final String sort,
-                                      final SortOrder sortOrder,
-                                      final int pageNo,
-                                      final int pageSize) {
-
-        final StringBuffer query = new StringBuffer();
-        final Map<String, Object> params = new HashMap<String, Object>();
-
-        query.append("FROM ccc.domain.ActionEntity a ");
-        query.append("WHERE a._status='SCHEDULED'");
-        query.append(" ORDER BY a.");
-        query.append(mapSortColumn(sort));
-        query.append(" ");
-        query.append(sortOrder.name());
-
-        return
-            _repo.listDyn(
-                query.toString(),
-                ActionEntity.class,
-                pageNo,
-                pageSize,
-                params);
-    }
 
     private String mapSortColumn(final String sort) {
         if (ActionSummary.USERNAME.equals(sort)) {

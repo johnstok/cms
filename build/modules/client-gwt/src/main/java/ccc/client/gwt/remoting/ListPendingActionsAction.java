@@ -31,6 +31,7 @@ import java.util.Map;
 
 import ccc.api.core.ActionSummary;
 import ccc.api.core.PagedCollection;
+import ccc.api.types.ActionStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
@@ -53,10 +54,10 @@ public abstract class ListPendingActionsAction
     extends
         RemotingAction {
 
-    private int           _page;
-    private int           _count;
-    private SortOrder     _order;
-    private String        _sort;
+    private final int           _page;
+    private final int           _count;
+    private final SortOrder     _order;
+    private final String        _sort;
 
     /**
      * Constructor.
@@ -84,13 +85,14 @@ public abstract class ListPendingActionsAction
     @Override
     protected String getPath() {
         final Map<String, String[]> params = new HashMap<String, String[]>();
+        params.put("status",  new String[] {ActionStatus.SCHEDULED.name()});
         params.put("page",  new String[] {""+_page});
         params.put("count", new String[] {""+_count});
         params.put("sort",  new String[] {_sort});
         params.put("order", new String[] {_order.name()});
 
         final String path =
-            new Link(new GlobalsImpl().actions().getLink("pending"))
+            new Link(new GlobalsImpl().actions().getLink("list"))
             .build(params, new GWTTemplateEncoder());
         return path;
     }

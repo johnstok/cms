@@ -63,6 +63,7 @@ import ccc.api.core.User;
 import ccc.api.core.Users;
 import ccc.api.http.ProxyServiceLocator;
 import ccc.api.http.SiteBrowser;
+import ccc.api.types.ActionStatus;
 import ccc.api.types.MimeType;
 import ccc.api.types.NormalisingEncoder;
 import ccc.api.types.Paragraph;
@@ -454,7 +455,11 @@ public abstract class AbstractAcceptanceTest
 
 
     private PagedCollection<ActionSummary> createActions() {
-        return getActions().listPendingActions(null, SortOrder.ASC, 1, 1);
+        return getActions().listActions(null, null, null, ActionStatus.SCHEDULED, null,
+            null,
+            SortOrder.ASC,
+            1,
+            1);
     }
 
 

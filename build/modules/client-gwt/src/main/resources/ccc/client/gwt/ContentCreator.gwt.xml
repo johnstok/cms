@@ -44,8 +44,8 @@
     <extend-property name="locale" values="en_GB" />
 
     <!-- Compile only for Firefox 
-	<set-property name="user.agent" value="gecko1_8" />
     -->
+	<set-property name="user.agent" value="gecko1_8" />
 
 	<!-- Specify the app entry point class. -->
 	<entry-point class="ccc.client.gwt.widgets.ContentCreator" />

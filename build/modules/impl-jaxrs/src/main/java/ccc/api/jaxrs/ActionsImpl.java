@@ -26,6 +26,7 @@
  */
 package ccc.api.jaxrs;
 
+import java.util.Date;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -38,7 +39,10 @@ import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Actions;
 import ccc.api.core.PagedCollection;
+import ccc.api.types.ActionStatus;
+import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
+import ccc.api.types.FailureCode;
 import ccc.api.types.SortOrder;
 
 
@@ -69,35 +73,25 @@ public class ActionsImpl
         _delegate = DBC.require().notNull(actions);
     }
 
-
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<ActionSummary> listCompletedActions(
-                                                    final String sort,
-                                                    final SortOrder sortOrder,
-                                                    final int pageNo,
-                                                    final int pageSize) {
+    public PagedCollection<ActionSummary> listActions(
+                                                final String username,
+                                                final CommandType commandType,
+                                                final FailureCode failureCode,
+                                                final ActionStatus status,
+                                                final Date executeAfter,
+                                                final String sort,
+                                                final SortOrder sortOrder,
+                                                final int pageNo,
+                                                final int pageSize) {
         try {
-            return _delegate.listCompletedActions(
-                sort,
-                sortOrder,
-                pageNo,
-                pageSize);
-        } catch (final RuntimeException cfe) {
-            throw convertException(cfe);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public PagedCollection<ActionSummary> listPendingActions(
-                                                    final String sort,
-                                                    final SortOrder sortOrder,
-                                                    final int pageNo,
-                                                    final int pageSize) {
-        try {
-            return _delegate.listPendingActions(
+            return _delegate.listActions(
+                username,
+                commandType,
+                failureCode,
+                status,
+                executeAfter,
                 sort,
                 sortOrder,
                 pageNo,

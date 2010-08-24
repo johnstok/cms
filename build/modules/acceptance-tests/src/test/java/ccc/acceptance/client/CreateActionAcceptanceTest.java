@@ -34,6 +34,7 @@ import ccc.acceptance.client.views.CreateActionFake;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
@@ -57,22 +58,23 @@ public class CreateActionAcceptanceTest extends AbstractAcceptanceTest {
     public void testCreateActionSuccess() {
 
         // ARRANGE
-        Map<String, String> params = new HashMap<String, String>();
-        CreateAction view = new CreateActionFake(
+        final Map<String, String> params = new HashMap<String, String>();
+        final CreateAction view = new CreateActionFake(
             new Date(),
             CommandType.RESOURCE_PUBLISH,
             params);
 
-        ResourceSummary model = tempFolder();
+        final ResourceSummary model = tempFolder();
         getCommands().lock(model.getId());
 
-        CreateActionPresenter p =  new CreateActionPresenter(view, model);
+        final CreateActionPresenter p =  new CreateActionPresenter(view, model);
 
         // ACT
         p.save();
 
         // ASSERT
-        PagedCollection<ActionSummary> list = getActions().listPendingActions(
+        final PagedCollection<ActionSummary> list = getActions().listActions(
+                null, null, null, ActionStatus.SCHEDULED, null,
                 null,
                 SortOrder.ASC,
                 1,
@@ -80,7 +82,7 @@ public class CreateActionAcceptanceTest extends AbstractAcceptanceTest {
 
         assertNotNull("Pending actions list should not be null", list);
         ActionSummary found = null;
-        for (ActionSummary action : list.getElements()) {
+        for (final ActionSummary action : list.getElements()) {
             if (action.getSubjectPath().equals(model.getAbsolutePath())) {
                 found = action;
             }
