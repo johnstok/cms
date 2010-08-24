@@ -61,10 +61,6 @@ import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.commons.CharConversion;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.json.ACLSerializer;
-import ccc.plugins.s11n.json.DurationSerializer;
 
 
 /**
@@ -802,41 +798,41 @@ public abstract class ResourceEntity
     }
 
 
-    /** {@inheritDoc} */
-    @Override public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(JsonKeys.TITLE, getTitle());
-        json.set(JsonKeys.NAME, getName().toString());
-        json.set(
-            JsonKeys.TEMPLATE_ID,
-            (null==getTemplate()) ? null : getTemplate().getId().toString());
-        json.set(
-            JsonKeys.PARENT_ID,
-            (null==getParent()) ? null : getParent().getId().toString());
-        json.set(
-            JsonKeys.LOCKED_BY,
-            (null==getLockedBy()) ? null : getLockedBy().getId().toString());
-        json.setStrings(JsonKeys.TAGS, new ArrayList<String>(getTags()));
-        json.set(
-            JsonKeys.ACL,
-            new ACLSerializer().write(json.create(), getAcl()));
-        json.set(
-            JsonKeys.PUBLISHED_BY,
-            (null==getPublishedBy())
-                ? null
-                : getPublishedBy().getId().toString());
-        json.set(
-            JsonKeys.INCLUDE_IN_MAIN_MENU,
-            Boolean.valueOf(isIncludedInMainMenu()));
-        json.set(JsonKeys.DATE_CREATED, getDateCreated());
-        json.set(JsonKeys.DATE_CHANGED, getDateChanged());
-        json.set(
-            JsonKeys.CACHE_DURATION,
-            new DurationSerializer().write(json.create(), getCacheDuration()));
-        json.set(JsonKeys.DESCRIPTION, getDescription());
-        json.set(JsonKeys.TYPE, getType().name());
-        json.set(JsonKeys.DELETED, Boolean.valueOf(isDeleted()));
-    }
+//    /** {@inheritDoc} */
+//    @Override public void toJson(final Json json) {
+//        super.toJson(json);
+//        json.set(JsonKeys.TITLE, getTitle());
+//        json.set(JsonKeys.NAME, getName().toString());
+//        json.set(
+//            JsonKeys.TEMPLATE_ID,
+//            (null==getTemplate()) ? null : getTemplate().getId().toString());
+//        json.set(
+//            JsonKeys.PARENT_ID,
+//            (null==getParent()) ? null : getParent().getId().toString());
+//        json.set(
+//            JsonKeys.LOCKED_BY,
+//            (null==getLockedBy()) ? null : getLockedBy().getId().toString());
+//        json.setStrings(JsonKeys.TAGS, new ArrayList<String>(getTags()));
+//        json.set(
+//            JsonKeys.ACL,
+//            new ACLSerializer().write(json.create(), getAcl()));
+//        json.set(
+//            JsonKeys.PUBLISHED_BY,
+//            (null==getPublishedBy())
+//                ? null
+//                : getPublishedBy().getId().toString());
+//        json.set(
+//            JsonKeys.INCLUDE_IN_MAIN_MENU,
+//            Boolean.valueOf(isIncludedInMainMenu()));
+//        json.set(JsonKeys.DATE_CREATED, getDateCreated());
+//        json.set(JsonKeys.DATE_CHANGED, getDateChanged());
+//        json.set(
+//            JsonKeys.CACHE_DURATION,
+//            new DurationSerializer().write(json.create(), getCacheDuration()));
+//        json.set(JsonKeys.DESCRIPTION, getDescription());
+//        json.set(JsonKeys.TYPE, getType().name());
+//        json.set(JsonKeys.DELETED, Boolean.valueOf(isDeleted()));
+//    }
 
 
     /**

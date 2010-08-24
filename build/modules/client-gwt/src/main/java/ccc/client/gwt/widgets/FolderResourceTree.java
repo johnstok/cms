@@ -93,10 +93,10 @@ public class FolderResourceTree extends AbstractResourceTree {
                         }
                     }.execute();
                 } else {
-                    ResourceSummary parent =
+                    final ResourceSummary parent =
                         ((BeanModel) loadConfig).<ResourceSummary>getBean();
                     if (parent.getFolderCount() > Globals.MAX_FETCH) {
-                        List<ResourceSummary> children =
+                        final List<ResourceSummary> children =
                             createRangeFolders(parent.getFolderCount(), parent);
                         callback.onSuccess(
                             DataBinding.bindResourceSummary(children));
@@ -125,7 +125,7 @@ public class FolderResourceTree extends AbstractResourceTree {
                             @Override
                             protected void execute(
                                                    final Collection<ResourceSummary> children,
-                                                   final int totalCount) {
+                                                   final long totalCount) {
                                 callback.onSuccess(
                                     DataBinding.bindResourceSummary(children));
                             }

@@ -31,12 +31,9 @@ import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.domain.FolderEntity;
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.json.JsonImpl;
+import ccc.persistence.IRepositoryFactory;
 
 
 /**
@@ -44,52 +41,49 @@ import ccc.plugins.s11n.json.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-public class MoveResourceCommand {
+public class MoveResourceCommand
+    extends
+        Command<Void> {
 
-    private final ResourceRepository _repository;
-    private final LogEntryRepository _audit;
+    private final UUID _resourceId;
+    private final UUID _newParentId;
+
 
     /**
      * Constructor.
      *
-     * @param repository The ResourceDao used for CRUD operations, etc.
-     * @param audit The audit logger, for logging business actions.
-     */
-    public MoveResourceCommand(final ResourceRepository repository,
-                               final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
-    }
-
-    /**
-     * Move a resource to a new parent.
-     *
+     * @param repoFactory The repository factory for this command.
      * @param resourceId The id of the resource to move.
      * @param newParentId The id of the new parent.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
      */
-    public void execute(final UserEntity actor,
-                        final Date happenedOn,
-                        final UUID resourceId,
-                        final UUID newParentId) {
+    public MoveResourceCommand(final IRepositoryFactory repoFactory,
+                               final UUID resourceId,
+                               final UUID newParentId) {
+        super(repoFactory);
+        _resourceId = resourceId;
+        _newParentId = newParentId;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void doExecute(final UserEntity actor, final Date happenedOn) {
         final ResourceEntity resource =
-            _repository.find(ResourceEntity.class, resourceId);
+            getRepository().find(ResourceEntity.class, _resourceId);
         resource.confirmLock(actor);
 
         final FolderEntity newParent =
-            _repository.find(FolderEntity.class, newParentId);
+            getRepository().find(FolderEntity.class, _newParentId);
         resource.getParent().remove(resource);
         newParent.add(resource);
 
-        final LogEntry le =
-            new LogEntry(
-                actor,
-                CommandType.RESOURCE_MOVE,
-                happenedOn,
-                resourceId,
-                new JsonImpl(resource).getDetail());
-        _audit.record(le);
+        auditResourceCommand(actor, happenedOn, resource);
+
+        return null;
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.RESOURCE_MOVE; }
 }

@@ -175,8 +175,7 @@ public class ActionsEJB
     @Override
     @RolesAllowed({ACTION_CANCEL})
     public void cancel(final UUID actionId) {
-        new CancelActionCommand(getRepoFactory())
-            .execute(currentUser(), new Date(), actionId);
+        execute(new CancelActionCommand(getRepoFactory(), actionId));
     }
 
     /** {@inheritDoc} */
@@ -193,8 +192,7 @@ public class ActionsEJB
                     .find(ResourceEntity.class, action.getResourceId()),
                 action.getParameters());
 
-        new ScheduleActionCommand(getRepoFactory())
-            .execute(currentUser(), new Date(), a);
+        execute(new ScheduleActionCommand(getRepoFactory(), a));
 
         return a.mapAction();
     }

@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.s11n;
+package ccc.plugins.s11n.json;
 
 
 /**
@@ -41,7 +41,7 @@ package ccc.plugins.s11n;
  *
  * @author Civic Computing Ltd.
  */
-public final class JsonKeys {
+final class JsonKeys {
 
     private JsonKeys() { super(); }
 

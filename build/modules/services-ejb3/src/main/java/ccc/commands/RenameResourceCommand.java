@@ -32,12 +32,10 @@ import java.util.UUID;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -89,14 +87,7 @@ public class RenameResourceCommand
 
         resource.setName(new ResourceName(_name));
 
-        final LogEntry le =
-            new LogEntry(
-                actor,
-                getType(),
-                happenedOn,
-                resource.getId(),
-                new JsonImpl(resource).getDetail());
-        getAudit().record(le);
+        auditResourceCommand(actor, happenedOn, resource);
 
         return null;
     }

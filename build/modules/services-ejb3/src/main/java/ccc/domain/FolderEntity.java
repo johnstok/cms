@@ -42,8 +42,6 @@ import ccc.api.types.ResourceOrder;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.domain.sorting.Sorter;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -462,17 +460,6 @@ public final class FolderEntity
         for (final ResourceEntity r : getEntries()) {  // Recursive un-deletion.
             r.undelete();
         }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(
-            JsonKeys.INDEX_PAGE_ID,
-            (null==getIndexPage()) ? null : getIndexPage().getId().toString());
-        // Index folder entries?
     }
 
 

@@ -30,7 +30,6 @@ import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
@@ -75,8 +74,7 @@ public class UsersEJB
     @RolesAllowed(USER_CREATE)
     public User create(final User delta) {
         return
-            new CreateUserCommand(getRepoFactory())
-            .execute(currentUser(), new Date(), delta)
+            execute(new CreateUserCommand(getRepoFactory(), delta))
             .toDto();
     }
 
@@ -85,13 +83,8 @@ public class UsersEJB
     @Override
     @RolesAllowed(USER_UPDATE)
     public void update(final UUID userId, final User delta) {
-        new UpdateUserCommand(
-            getRepoFactory(),
-            userId,
-            delta)
-        .execute(
-            currentUser(),
-            new Date());
+        execute(
+            new UpdateUserCommand(getRepoFactory(), userId, delta));
     }
 
 
@@ -99,11 +92,9 @@ public class UsersEJB
     @Override
     @RolesAllowed(USER_UPDATE)
     public void updateUserPassword(final UUID userId, final User user) {
-        new UpdatePasswordAction(getRepoFactory()).execute(
-            currentUser(),
-            new Date(),
-            userId,
-            user.getPassword());
+        execute(
+            new UpdatePasswordAction(
+                getRepoFactory(), userId, user.getPassword()));
     }
 
 

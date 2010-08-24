@@ -47,8 +47,6 @@ import ccc.api.types.Link;
 import ccc.api.types.NormalisingEncoder;
 import ccc.api.types.Password;
 import ccc.api.types.Username;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.json.UserSerializer;
 
 
 /**
@@ -308,13 +306,6 @@ public class UserEntity
                                   final String password,
                                   final String salt) {
         return Arrays.equals(expected, hash(password, salt));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        new UserSerializer().write(json, toDto());
     }
 
 

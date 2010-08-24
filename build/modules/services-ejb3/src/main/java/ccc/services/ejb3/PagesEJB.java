@@ -102,7 +102,7 @@ public class PagesEJB
     @RolesAllowed(PAGE_UPDATE)
     public void updateWorkingCopy(final UUID pageId,
                                   final Page delta) {
-        new UpdateWorkingCopyCommand(getRepoFactory())
+        new UpdateWorkingCopyCommand(getRepoFactory(), pageId, -1)
             .execute(
                 currentUser(),
                 new Date(),

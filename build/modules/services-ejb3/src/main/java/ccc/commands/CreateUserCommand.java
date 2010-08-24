@@ -32,13 +32,8 @@ import java.util.UUID;
 import ccc.api.core.User;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
-import ccc.domain.LogEntry;
 import ccc.domain.UserEntity;
-import ccc.persistence.GroupRepository;
 import ccc.persistence.IRepositoryFactory;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.UserRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -46,53 +41,45 @@ import ccc.plugins.s11n.json.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateUserCommand {
+public class CreateUserCommand
+    extends
+        Command<UserEntity>{
 
-    private final UserRepository     _repository;
-    private final GroupRepository    _groups;
-    private final LogEntryRepository _audit;
+    private final User _delta;
 
     /**
      * Constructor.
      *
      * @param repoFactory The repository factory for this command.
+     * @param delta The properties for the new user.
      */
-    public CreateUserCommand(final IRepositoryFactory repoFactory) {
-        _repository = repoFactory.createUserRepo();
-        _audit = repoFactory.createLogEntryRepo();
-        _groups = repoFactory.createGroupRepo();
+    public CreateUserCommand(final IRepositoryFactory repoFactory,
+                             final User delta) {
+        super(repoFactory);
+        _delta = delta;
     }
 
-    /**
-     * Create new user.
-     *
-     * @param delta The properties for the new user.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     *
-     * @return Persisted user.
-     */
-    public UserEntity execute(final UserEntity actor,
-                        final Date happenedOn,
-                        final User delta) {
+
+    /** {@inheritDoc} */
+    @Override
+    protected UserEntity doExecute(final UserEntity actor,
+                                   final Date happenedOn) {
         final UserEntity user =
             new UserEntity(
-                delta.getUsername(), delta.getName(), delta.getPassword());
-        user.setEmail(new EmailAddress(delta.getEmail()));
-        for (final UUID groupId : delta.getGroups()) {
-            user.addGroup(_groups.find(groupId));
+                _delta.getUsername(), _delta.getName(), _delta.getPassword());
+        user.setEmail(new EmailAddress(_delta.getEmail()));
+        for (final UUID groupId : _delta.getGroups()) {
+            user.addGroup(getGroups().find(groupId));
         }
-        user.addMetadata(delta.getMetadata());
-        _repository.create(user);
+        user.addMetadata(_delta.getMetadata());
+        getUsers().create(user);
 
-        _audit.record(
-            new LogEntry(
-                actor,
-                CommandType.USER_CREATE,
-                happenedOn,
-                user.getId(),
-                new JsonImpl(user).getDetail()));
+        auditUserCommand(actor, happenedOn, user);
 
         return user;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.USER_CREATE; }
 }

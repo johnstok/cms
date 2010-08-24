@@ -46,7 +46,6 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.JsonImpl;
 
 
@@ -101,7 +100,7 @@ public class UuidCollectionWriter
             strings.add(uuid.toString());
         }
         final JsonImpl json = new JsonImpl();
-        json.setStrings(JsonKeys.ELEMENTS, strings);
+        json.setStrings(ELEMENTS, strings);
 
         final PrintWriter pw = new PrintWriter(outputStream);
         pw.println(json.getDetail());
@@ -130,10 +129,12 @@ public class UuidCollectionWriter
         final Json json = readJson(arg3, arg5);
         final List<UUID> uuids = new ArrayList<UUID>();
 
-        for (final String s : json.getStrings(JsonKeys.ELEMENTS)) {
+        for (final String s : json.getStrings(ELEMENTS)) {
             uuids.add(UUID.fromString(s));
         }
 
         return uuids;
     }
+
+    private static final String ELEMENTS = "elements";
 }

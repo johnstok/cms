@@ -26,7 +26,7 @@
  */
 package ccc.plugins.s11n.json;
 
-import static ccc.plugins.s11n.JsonKeys.*;
+import static ccc.plugins.s11n.json.JsonKeys.*;
 
 import java.util.Map;
 

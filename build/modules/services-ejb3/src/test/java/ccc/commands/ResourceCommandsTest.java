@@ -68,8 +68,8 @@ public class ResourceCommandsTest
         replayAll();
 
         // ACT
-        new IncludeInMainMenuCommand(getRepoFactory()).execute(
-            getUser(), new Date(), _r.getId(), true);
+        new IncludeInMainMenuCommand(getRepoFactory(), _r.getId(), true)
+            .execute(getUser(), new Date());
 
         // ASSERT
         verifyAll();
@@ -94,14 +94,14 @@ public class ResourceCommandsTest
         // ACT
         final Map<String, String> props = new HashMap<String, String>();
         props.put("bodyId", "example");
-        new UpdateResourceMetadataCommand(getRepoFactory()).execute(
-            getUser(),
-            new Date(),
+        new UpdateResourceMetadataCommand(
+            getRepoFactory(),
             _r.getId(),
             "newTitle",
             "newDesc",
             new HashSet<String>() {{ add("foo"); add("bar"); }},
-            props);
+            props)
+            .execute(getUser(), new Date());
 
         // ASSERT
         verifyAll();
@@ -142,8 +142,9 @@ public class ResourceCommandsTest
         replayAll();
 
         // ACT
-        new ChangeTemplateForResourceCommand(getRepoFactory()).execute(
-            getUser(), new Date(), _r.getId(), defaultTemplate.getId());
+        new ChangeTemplateForResourceCommand(
+            getRepoFactory(), _r.getId(), defaultTemplate.getId())
+            .execute(getUser(), new Date());
 
         // ASSERT
         verifyAll();
@@ -170,8 +171,8 @@ public class ResourceCommandsTest
         replayAll();
 
         // ACT
-        new MoveResourceCommand(getRepository(), getAudit()).execute(
-            getUser(), new Date(), _r.getId(), newParent.getId());
+        new MoveResourceCommand(getRepoFactory(), _r.getId(), newParent.getId())
+            .execute(getUser(), new Date());
 
         // ASSERT
         verifyAll();

@@ -33,12 +33,12 @@ import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
+import ccc.api.core.Comment;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
 import ccc.domain.CommentEntity;
 import ccc.domain.ResourceEntity;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -160,11 +160,12 @@ public class CommentRepositoryImpl
 
 
     private String mapSortColumn(final String sort) {
-        if (JsonKeys.AUTHOR.equals(sort)) {
+        if (Comment.AUTHOR.equals(sort)) {
             return "_author";
-        } else if (JsonKeys.URL.equals(sort)) {
+        } else if (Comment.URL.equals(sort)) {
             return "_url";
-        } else if (JsonKeys.DATE_CREATED.equals(sort)) {
+        } else if ("date-created".equals(sort) // Legacy.
+                   || Comment.DATE_CREATED.equals(sort)) {
             return "_timestamp";
         }
         return "_status";

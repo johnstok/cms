@@ -30,8 +30,6 @@ import ccc.api.core.Alias;
 import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceType;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -100,16 +98,6 @@ public class AliasEntity extends ResourceEntity {
             return null;
         }
         return _target;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(
-            JsonKeys.TARGET_ID,
-            (null==target()) ? null : target().getId().toString());
     }
 
 

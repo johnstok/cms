@@ -26,10 +26,10 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
@@ -37,11 +37,9 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.json.ResourceSummarySerializer;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.PagedCollectionSerializer;
 
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -104,23 +102,11 @@ RemotingAction{
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-
-        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
-
-        final int totalCount =
-            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
-
-        final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
-
-        final Collection<ResourceSummary> children =
-            new ArrayList<ResourceSummary>();
-        for (int i=0; i<result.size(); i++) {
-            children.add(
-                new ResourceSummarySerializer().read(
-                    new GwtJson(result.get(i).isObject())));
-        }
-
-        execute(children, totalCount);
+        final Json json =
+            new GwtJson(JSONParser.parse(response.getText()).isObject());
+        final PagedCollection<ResourceSummary> rsCollection =
+            new PagedCollectionSerializer<ResourceSummary>().read(json);
+        execute(rsCollection.getElements(), rsCollection.getTotalCount());
     }
 
     /**
@@ -130,5 +116,5 @@ RemotingAction{
      * @param totalCount The total comments available on the server.
      */
     protected abstract void execute(Collection<ResourceSummary> children,
-                                    int totalCount);
+                                    long totalCount);
 }

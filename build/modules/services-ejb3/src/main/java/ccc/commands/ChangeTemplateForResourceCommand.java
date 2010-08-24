@@ -30,14 +30,10 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.TemplateEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -45,53 +41,54 @@ import ccc.plugins.s11n.json.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-public class ChangeTemplateForResourceCommand {
+public class ChangeTemplateForResourceCommand
+    extends
+        Command<Void> {
 
-    private final ResourceRepository _repository;
-    private final LogEntryRepository _audit;
+    private final UUID _resourceId;
+    private final UUID _templateId;
+
 
     /**
      * Constructor.
      *
      * @param repoFactory The repository factory for this command.
-     */
-    public ChangeTemplateForResourceCommand(
-                                        final IRepositoryFactory repoFactory) {
-        _repository = repoFactory.createResourceRepository();
-        _audit = repoFactory.createLogEntryRepo();
-    }
-
-    /**
-     * Change the template for the specified resource.
-     *
      * @param resourceId The id of the resource to change.
      * @param templateId The id of template to set (NULL is allowed).
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
      */
-    public void execute(final UserEntity actor,
-                        final Date happenedOn,
-                        final UUID resourceId,
-                        final UUID templateId) {
+    public ChangeTemplateForResourceCommand(
+                                        final IRepositoryFactory repoFactory,
+                                        final UUID resourceId,
+                                        final UUID templateId) {
+        super(repoFactory);
+        _resourceId = resourceId;
+        _templateId = templateId;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void doExecute(final UserEntity actor, final Date happenedOn) {
         final ResourceEntity r =
-            _repository.find(ResourceEntity.class, resourceId);
+            getRepository().find(ResourceEntity.class, _resourceId);
         r.confirmLock(actor);
 
         final TemplateEntity t =
-            (null==templateId)
+            (null==_templateId)
                 ? null
-                : _repository.find(TemplateEntity.class, templateId);
+                : getRepository().find(TemplateEntity.class, _templateId);
 
         r.setTemplate(t);
 
-        final LogEntry le =
-            new LogEntry(
-                actor,
-                CommandType.RESOURCE_CHANGE_TEMPLATE,
-                happenedOn,
-                resourceId,
-                new JsonImpl(r).getDetail());
-        _audit.record(le);
+        auditResourceCommand(actor, happenedOn, r);
+
+        return null;
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() {
+        return CommandType.RESOURCE_CHANGE_TEMPLATE;
+    }
 }

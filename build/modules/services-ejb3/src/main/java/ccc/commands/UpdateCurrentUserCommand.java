@@ -38,7 +38,6 @@ import ccc.api.types.Password;
 import ccc.domain.LogEntry;
 import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -93,13 +92,7 @@ public class UpdateCurrentUserCommand
         current.clearMetadata();
         current.addMetadata(_delta.getMetadata());
 
-        getAudit().record(
-            new LogEntry(
-                actor,
-                getType(),
-                happenedOn,
-                _userId,
-                new JsonImpl(current).getDetail()));
+        auditUserCommand(actor, happenedOn, current);
 
         return null;
     }

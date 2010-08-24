@@ -30,7 +30,6 @@ import ccc.api.core.Revision;
 import ccc.api.types.CommandType;
 import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Serializer;
 
 

@@ -58,10 +58,10 @@ public class UserCommandTests
         replayAll();
 
         final CreateUserCommand cu =
-            new CreateUserCommand(getRepoFactory());
+            new CreateUserCommand(getRepoFactory(), _uDelta);
 
         // ACT
-        final UserEntity u = cu.execute(getUser(), now, _uDelta);
+        final UserEntity u = cu.execute(getUser(), now);
 
         // ASSERT
         verifyAll();
@@ -107,10 +107,11 @@ public class UserCommandTests
         replayAll();
 
         final UpdatePasswordAction up =
-            new UpdatePasswordAction(getRepoFactory());
+            new UpdatePasswordAction(
+                getRepoFactory(), getUser().getId(), "newPass");
 
         // ACT
-        up.execute(getUser(), now, getUser().getId(), "newPass");
+        up.execute(getUser(), now);
 
         // ASSERT
         verifyAll();

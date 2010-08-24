@@ -26,7 +26,7 @@
  */
 package ccc.plugins.s11n.json;
 
-import static ccc.plugins.s11n.JsonKeys.*;
+import static ccc.plugins.s11n.json.JsonKeys.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +40,6 @@ import java.util.UUID;
 import ccc.api.core.User;
 import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Serializer;
 
 

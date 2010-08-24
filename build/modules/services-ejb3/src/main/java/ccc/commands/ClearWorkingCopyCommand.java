@@ -31,13 +31,10 @@ import java.util.UUID;
 
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.CommandType;
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.domain.WCAware;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.json.JsonImpl;
+import ccc.persistence.IRepositoryFactory;
 
 
 /**
@@ -45,35 +42,31 @@ import ccc.plugins.s11n.json.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-public class ClearWorkingCopyCommand {
+public class ClearWorkingCopyCommand
+    extends
+        Command<Void> {
 
-    private final ResourceRepository _repository;
-    private final LogEntryRepository _audit;
+    private final UUID _resourceId;
+
 
     /**
      * Constructor.
      *
-     * @param repository The ResourceDao used for CRUD operations, etc.
-     * @param audit The audit logger, for logging business actions.
+     * @param repoFactory The repository factory for this command.
+     * @param resourceId The resource's id.
      */
-    public ClearWorkingCopyCommand(final ResourceRepository repository,
-                                   final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
+    public ClearWorkingCopyCommand(final IRepositoryFactory repoFactory,
+                                   final UUID resourceId) {
+        super(repoFactory);
+        _resourceId = resourceId;
     }
 
-    /**
-     * Clear a resource's working copy.
-     *
-     * @param resourceId The resource's id.
-     * @param actor The user that executed the command.
-     * @param happenedOn The date the command was executed.
-     */
-    public void execute(final UserEntity actor,
-                        final Date happenedOn,
-                        final UUID resourceId) {
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void doExecute(final UserEntity actor, final Date happenedOn) {
         final ResourceEntity r =
-            _repository.find(ResourceEntity.class, resourceId);
+            getRepository().find(ResourceEntity.class, _resourceId);
         r.confirmLock(actor);
 
         if (r instanceof WCAware<?>) {
@@ -83,12 +76,13 @@ public class ClearWorkingCopyCommand {
             throw new WorkingCopyNotSupportedException(r.getId());
         }
 
-        _audit.record(
-            new LogEntry(
-                actor,
-                CommandType.RESOURCE_CLEAR_WC,
-                happenedOn,
-                resourceId,
-                new JsonImpl(r).getDetail()));
+        auditResourceCommand(actor, happenedOn, r);
+
+        return null;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.RESOURCE_CLEAR_WC; }
 }

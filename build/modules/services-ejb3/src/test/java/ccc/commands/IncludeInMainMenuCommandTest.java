@@ -58,10 +58,11 @@ public class IncludeInMainMenuCommandTest
         replayAll();
 
         final IncludeInMainMenuCommand c =
-            new IncludeInMainMenuCommand(getRepository(), getAudit());
+            new IncludeInMainMenuCommand(
+                getRepository(), getAudit(), s.getId(), true);
 
         // ACT
-        c.execute(getUser(), getNow(), s.getId(), true);
+        c.execute(getUser(), getNow());
 
         // ASSERT
         verifyAll();
@@ -84,10 +85,11 @@ public class IncludeInMainMenuCommandTest
         replayAll();
 
         final IncludeInMainMenuCommand c =
-            new IncludeInMainMenuCommand(getRepository(), getAudit());
+            new IncludeInMainMenuCommand(
+                getRepository(), getAudit(), s.getId(), false);
 
         // ACT
-        c.execute(getUser(), getNow(), s.getId(), false);
+        c.execute(getUser(), getNow());
 
         // ASSERT
         verifyAll();

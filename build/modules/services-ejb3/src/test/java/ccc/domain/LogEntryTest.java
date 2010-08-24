@@ -32,6 +32,7 @@ import junit.framework.TestCase;
 import ccc.api.types.CommandType;
 import ccc.api.types.Username;
 import ccc.plugins.s11n.json.JsonImpl;
+import ccc.plugins.s11n.json.PageSerializer;
 
 
 /**
@@ -51,10 +52,12 @@ public class LogEntryTest
 
         // ARRANGE
         final PageEntity p = new PageEntity("foo", _rm);
+        final JsonImpl json = new JsonImpl();
+        new PageSerializer().write(json, p.forCurrentRevision());
 
         // ACT
         final LogEntry le = new LogEntry(_actor, CommandType.RESOURCE_RENAME,
-            _happenedOn, p.getId(), new JsonImpl(p).getDetail());
+            _happenedOn, p.getId(), json.getDetail());
 
         // ASSERT
         assertEquals(p.getId(), le.getSubjectId());
@@ -73,10 +76,12 @@ public class LogEntryTest
         // ARRANGE
         final String actionAsString = "TEST_ACTION_NAME";
         final PageEntity p = new PageEntity("foo", _rm);
+        final JsonImpl json = new JsonImpl();
+        new PageSerializer().write(json, p.forCurrentRevision());
 
         // ACT
         final LogEntry le = new LogEntry(_actor, actionAsString,
-            _happenedOn, p.getId(), new JsonImpl(p).getDetail());
+            _happenedOn, p.getId(), json.getDetail());
 
         // ASSERT
         assertEquals(p.getId(), le.getSubjectId());

@@ -31,12 +31,10 @@ import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.api.types.Duration;
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -78,14 +76,7 @@ public class UpdateCachingCommand
 
         r.setCacheDuration(_duration);
 
-        final LogEntry le =
-            new LogEntry(
-                actor,
-                getType(),
-                happenedOn,
-                r.getId(),
-                new JsonImpl(r).getDetail());
-        getAudit().record(le);
+        auditResourceCommand(actor, happenedOn, r);
 
         return null;
     }

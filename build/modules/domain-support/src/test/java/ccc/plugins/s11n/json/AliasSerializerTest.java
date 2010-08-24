@@ -26,54 +26,55 @@
  */
 package ccc.plugins.s11n.json;
 
-import static ccc.plugins.s11n.json.JsonKeys.*;
-import ccc.api.core.Template;
+import java.util.UUID;
+
+import junit.framework.TestCase;
+import ccc.api.core.Alias;
 import ccc.plugins.s11n.Json;
 
 
 /**
- * Serializer for {@link Template}s.
+ * Tests for the {@link AliasSerializer} class.
  *
  * @author Civic Computing Ltd.
  */
-public class TemplateSerializer
+public class AliasSerializerTest
     extends
-        ResourceSerializer<Template> {
+        TestCase {
 
 
-    /** {@inheritDoc} */
-    @Override
-    public Template read(final Json json) {
-        if (null==json) { return null; }
+    /**
+     * Test.
+     */
+    public void testConvertToJson() {
 
-        final Template t = super.read(json);
+        // ARRANGE
+        final Json json = new JsonImpl();
+        final UUID targetId = UUID.randomUUID();
+        final Alias a = new Alias();
+        a.setTargetId(targetId);
 
-        t.setDefinition(json.getString(DEFINITION));
-        t.setBody(json.getString(BODY));
-        t.setMimeType(new MimeTypeSerializer().read(json.getJson(MIME_TYPE)));
+        // ACT
+        new AliasSerializer().write(json, a);
 
-        return t;
+        // ASSERT
+        assertEquals(targetId, json.getId(JsonKeys.TARGET_ID));
     }
 
 
-    /** {@inheritDoc} */
-    @Override protected Template createObject() { return new Template(); }
+    /**
+     * Test.
+     */
+    public void testConvertToJsonWithMissingTarget() {
 
+        // ARRANGE
+        final Json json = new JsonImpl();
+        final Alias a = new Alias();
 
-    /** {@inheritDoc} */
-    @Override
-    public Json write(final Json json, final Template instance) {
-        if (null==instance) { return null; }
+        // ACT
+        new AliasSerializer().write(json, a);
 
-        super.write(json, instance);
-
-        json.set(DEFINITION, instance.getDefinition());
-        json.set(BODY,       instance.getBody());
-        json.set(
-            MIME_TYPE,
-            new MimeTypeSerializer().write(
-                json.create(), instance.getMimeType()));
-
-        return json;
+        // ASSERT
+        assertNull(json.getId(JsonKeys.TARGET_ID));
     }
 }

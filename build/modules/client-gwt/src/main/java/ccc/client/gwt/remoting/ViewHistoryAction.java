@@ -26,9 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
+import ccc.api.core.PagedCollection;
 import ccc.api.core.Revision;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
@@ -38,11 +36,9 @@ import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.HistoryDialog;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.json.RevisionSerializer;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.PagedCollectionSerializer;
 
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 /**
@@ -79,21 +75,17 @@ public final class ViewHistoryAction
                     /** {@inheritDoc} */
                     @Override public void onOK(
                                final ccc.client.core.Response response) {
+                        final Json json =
+                            new GwtJson(
+                                JSONParser.parse(
+                                    response.getText()).isObject());
+                        final PagedCollection<Revision> rsCollection =
+                            new PagedCollectionSerializer<Revision>()
+                            .read(json);
+                        execute();
 
-                        final JSONObject obj =
-                            JSONParser.parse(response.getText()).isObject();
-                        final JSONArray result =
-                            obj.get(JsonKeys.ELEMENTS).isArray();
-
-                        final Collection<Revision> history =
-                            new ArrayList<Revision>();
-                        for (int i=0; i<result.size(); i++) {
-                            history.add(
-                                new RevisionSerializer().read(
-                                    new GwtJson(result.get(i).isObject())));
-                        }
                         new HistoryDialog(
-                            history,
+                            rsCollection.getElements(),
                             _selectionModel.tableSelection().getType(),
                             _selectionModel)
                         .show();

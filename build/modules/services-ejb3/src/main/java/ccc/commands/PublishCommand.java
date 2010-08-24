@@ -32,12 +32,10 @@ import java.util.UUID;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -78,14 +76,7 @@ class PublishCommand extends Command<ResourceSummary> {
         r.publish(publishedBy);
         r.setDateChanged(happenedOn, publishedBy);
 
-        final LogEntry le =
-            new LogEntry(
-                publishedBy,
-                getType(),
-                happenedOn,
-                r.getId(),
-                new JsonImpl(r).getDetail());
-        getAudit().record(le);
+        auditResourceCommand(publishedBy, happenedOn, r);
 
         return r.mapResource();
     }

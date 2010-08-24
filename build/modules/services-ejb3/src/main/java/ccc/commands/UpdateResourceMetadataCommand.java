@@ -32,13 +32,9 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -46,59 +42,67 @@ import ccc.plugins.s11n.json.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateResourceMetadataCommand {
+public class UpdateResourceMetadataCommand
+    extends
+        Command<Void> {
 
-    private final ResourceRepository _repository;
-    private final LogEntryRepository _audit;
+    private final UUID                _id;
+    private final String              _title;
+    private final String              _description;
+    private final Set<String>         _tags;
+    private final Map<String, String> _metadata;
+
 
     /**
      * Constructor.
      *
      * @param repoFactory The repository factory for this command.
-     */
-    public UpdateResourceMetadataCommand(final IRepositoryFactory repoFactory) {
-        _repository = repoFactory.createResourceRepository();
-        _audit = repoFactory.createLogEntryRepo();
-    }
-
-    /**
-     * Update metadata of the resource.
-     *
      * @param id The resource to update.
      * @param metadata The new metadata to set.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
      * @param title The new title for the resource.
      * @param description The new description for the resource.
      * @param tags The new tags for the resource.
      */
-    public void execute(final UserEntity actor,
-                        final Date happenedOn,
-                        final UUID id,
-                        final String title,
-                        final String description,
-                        final Set<String> tags,
-                        final Map<String, String> metadata) {
-        final ResourceEntity r = _repository.find(ResourceEntity.class, id);
+    public UpdateResourceMetadataCommand(final IRepositoryFactory repoFactory,
+                                         final UUID id,
+                                         final String title,
+                                         final String description,
+                                         final Set<String> tags,
+                                         final Map<String, String> metadata) {
+        super(repoFactory);
+        _id = id;
+        _title = title;
+        _description = description;
+        _tags = tags;
+        _metadata = metadata;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void doExecute(final UserEntity actor, final Date happenedOn) {
+        final ResourceEntity r =
+            getRepository().find(ResourceEntity.class, _id);
         r.confirmLock(actor);
 
-        r.setTitle(title);
-        r.setDescription(description);
-        r.setTags(tags);
+        r.setTitle(_title);
+        r.setDescription(_description);
+        r.setTags(_tags);
 
         r.clearMetadata();
-        for (final Map.Entry<String, String> metadatum: metadata.entrySet()) {
+        for (final Map.Entry<String, String> metadatum: _metadata.entrySet()) {
             r.addMetadatum(metadatum.getKey(), metadatum.getValue());
         }
 
-        final LogEntry le =
-            new LogEntry(
-                actor,
-                CommandType.RESOURCE_UPDATE_METADATA,
-                happenedOn,
-                id,
-                new JsonImpl(r).getDetail());
-        _audit.record(le);
+        auditResourceCommand(actor, happenedOn, r);
+
+        return null;
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() {
+        return CommandType.RESOURCE_UPDATE_METADATA;
+    }
 }

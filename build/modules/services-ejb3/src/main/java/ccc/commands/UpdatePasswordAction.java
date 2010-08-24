@@ -30,12 +30,8 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
-import ccc.domain.LogEntry;
 import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.UserRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -43,44 +39,43 @@ import ccc.plugins.s11n.json.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdatePasswordAction {
+public class UpdatePasswordAction
+    extends
+        Command<Void> {
 
-    private final UserRepository     _repository;
-    private final LogEntryRepository _audit;
+    private final UUID _userId;
+    private final String _password;
+
 
     /**
      * Constructor.
      *
      * @param repoFactory The repository factory for this command.
-     */
-    public UpdatePasswordAction(final IRepositoryFactory repoFactory) {
-        _repository = repoFactory.createUserRepo();
-        _audit = repoFactory.createLogEntryRepo();
-    }
-
-
-    /**
-     * Update a user's password.
-     *
      * @param userId The user's id.
      * @param password The new password.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
      */
-    public void execute(final UserEntity actor,
-                        final Date happenedOn,
-                        final UUID userId,
-                        final String password) {
-        final UserEntity u =
-                _repository.find(userId);
-        u.setPassword(password);
-
-        final LogEntry le = new LogEntry(
-            actor,
-            CommandType.USER_CHANGE_PASSWORD,
-            happenedOn,
-            u.getId(),
-            new JsonImpl(u).getDetail());
-        _audit.record(le);
+    public UpdatePasswordAction(final IRepositoryFactory repoFactory,
+                                final UUID userId,
+                                final String password) {
+        super(repoFactory);
+        _userId = userId;
+        _password = password;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void doExecute(final UserEntity actor, final Date happenedOn) {
+        final UserEntity u = getUsers().find(_userId);
+        u.setPassword(_password);
+
+        auditUserCommand(actor, happenedOn, u);
+
+        return null;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.USER_CHANGE_PASSWORD; }
 }

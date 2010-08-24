@@ -196,14 +196,9 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_MOVE)
     public void move(final UUID resourceId, final UUID newParentId) {
-        new MoveResourceCommand(
-            getRepoFactory().createResourceRepository(),
-            getRepoFactory().createLogEntryRepo())
-        .execute(
-            currentUser(),
-            new Date(),
-            resourceId,
-            newParentId);
+        execute(
+            new MoveResourceCommand(
+                getRepoFactory(), resourceId, newParentId));
     }
 
 
@@ -254,12 +249,9 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
     public void createWorkingCopy(final UUID resourceId, final long index) {
-        new UpdateWorkingCopyCommand(getRepoFactory())
-            .execute(
-                currentUser(),
-                new Date(),
-                resourceId,
-                index);
+        execute(
+            new UpdateWorkingCopyCommand(
+                getRepoFactory(), resourceId, index));
     }
 
 
@@ -277,11 +269,9 @@ public class ResourcesEJB
     @RolesAllowed(RESOURCE_UPDATE)
     public void updateResourceTemplate(final UUID resourceId,
                                        final UUID templateId) {
-        new ChangeTemplateForResourceCommand(getRepoFactory()).execute(
-                currentUser(),
-                new Date(),
-                resourceId,
-                templateId);
+        execute(
+            new ChangeTemplateForResourceCommand(
+                getRepoFactory(), resourceId, templateId));
     }
 
 
@@ -299,8 +289,9 @@ public class ResourcesEJB
     @RolesAllowed(RESOURCE_MM)
     public void includeInMainMenu(final UUID resourceId,
                                   final boolean include) {
-        new IncludeInMainMenuCommand(getRepoFactory()).execute(
-                currentUser(), new Date(), resourceId, include);
+        execute(
+            new IncludeInMainMenuCommand(
+                getRepoFactory(), resourceId, include));
     }
 
 
@@ -343,18 +334,14 @@ public class ResourcesEJB
                                final String description,
                                final Set<String> tags,
                                final Map<String, String> metadata) {
-
-        final Date happenedOn = new Date();
-        final UUID actorId = currentUserId();
-
-        new UpdateResourceMetadataCommand(getRepoFactory()).execute(
-                userForId(actorId),
-                happenedOn,
+        execute(
+            new UpdateResourceMetadataCommand(
+                getRepoFactory(),
                 resourceId,
                 title,
                 description,
                 tags,
-                metadata);
+                metadata));
     }
 
 
@@ -422,11 +409,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
     public void clearWorkingCopy(final UUID resourceId) {
-        new ClearWorkingCopyCommand(
-            getRepoFactory().createResourceRepository(),
-            getRepoFactory().createLogEntryRepo())
-        .execute(
-            currentUser(), new Date(), resourceId);
+        execute(new ClearWorkingCopyCommand(getRepoFactory(), resourceId));
     }
 
 

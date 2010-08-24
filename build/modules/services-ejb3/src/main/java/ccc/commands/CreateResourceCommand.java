@@ -30,12 +30,10 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.FolderEntity;
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -83,31 +81,6 @@ abstract class CreateResourceCommand<T>
         folder.add(newResource);
         getRepository().create(newResource);
 
-        audit(newResource, actor, happenedOn);
-    }
-
-
-    /**
-     * Audit the creation of a resource.
-     *
-     * @param resource The newly created resource.
-     * @param actor The actor performing the command.
-     * @param happenedOn When the command was performed.
-     */
-    protected void audit(final ResourceEntity resource,
-                         final UserEntity actor,
-                         final Date happenedOn) {
-
-        final JsonImpl ss = new JsonImpl(resource);
-
-        final LogEntry le =
-            new LogEntry(
-                actor,
-                getType(),
-                happenedOn,
-                resource.getId(),
-                ss.getDetail());
-
-        getAudit().record(le);
+        auditResourceCommand(actor, happenedOn, newResource);
     }
 }

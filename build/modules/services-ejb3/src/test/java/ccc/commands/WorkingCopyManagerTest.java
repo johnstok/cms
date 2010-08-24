@@ -63,8 +63,8 @@ public class WorkingCopyManagerTest
         replayAll();
 
         // ACT
-        new ClearWorkingCopyCommand(getRepository(), getAudit()).execute(
-            getUser(), getNow(), p.getId());
+        new ClearWorkingCopyCommand(getRepoFactory(), p.getId())
+            .execute(getUser(), getNow());
 
         // ASSERT
         verifyAll();
@@ -95,8 +95,8 @@ public class WorkingCopyManagerTest
         replayAll();
 
         // ACT
-        new UpdateWorkingCopyCommand(getRepoFactory()).execute(
-            getUser(), getNow(), page.getId(), before);
+        new UpdateWorkingCopyCommand(getRepoFactory(), page.getId(), -1)
+            .execute(getUser(), getNow(), page.getId(), before);
 
         // ASSERT
         verifyAll();

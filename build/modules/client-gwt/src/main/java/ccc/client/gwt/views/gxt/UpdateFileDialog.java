@@ -34,7 +34,7 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemoteException;
 import ccc.client.core.SessionTimeoutException;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.InvalidSnapshotException;
 import ccc.plugins.s11n.json.FailureSerializer;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -122,14 +122,17 @@ public class UpdateFileDialog extends AbstractEditDialog {
                         final JSONObject o =
                             JSONParser.parse(response).isObject();
 
-                        if (o.containsKey(JsonKeys.CODE)) { // Error
+                        // Error.
+                        try {
                             InternalServices.EX_HANDLER.unexpectedError(
                                 new RemoteException(
                                     new FailureSerializer().read(
                                         InternalServices.PARSER.parseJson(
                                             response))),
                                 getUiConstants().uploadFile());
-                        } else {
+
+                        // Assume success.
+                        } catch (final InvalidSnapshotException e) {
                             hide();
                         }
                     }

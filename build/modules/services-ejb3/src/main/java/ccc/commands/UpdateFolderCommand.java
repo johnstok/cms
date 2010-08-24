@@ -33,12 +33,10 @@ import java.util.UUID;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.FolderEntity;
-import ccc.domain.LogEntry;
 import ccc.domain.PageEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -109,14 +107,7 @@ public class UpdateFolderCommand
 
         f.setDateChanged(happenedOn, actor);
 
-        final LogEntry le =
-            new LogEntry(
-                actor,
-                getType(),
-                happenedOn,
-                _folderId,
-                new JsonImpl(f).getDetail());
-        getAudit().record(le);
+        auditResourceCommand(actor, happenedOn, f);
 
         return null;
     }

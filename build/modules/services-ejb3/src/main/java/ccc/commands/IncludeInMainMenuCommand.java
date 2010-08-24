@@ -30,13 +30,11 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -44,20 +42,27 @@ import ccc.plugins.s11n.json.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-public class IncludeInMainMenuCommand {
+public class IncludeInMainMenuCommand
+    extends
+        Command<Void> {
 
-    private final ResourceRepository _repository;
-    private final LogEntryRepository _audit;
+    private final UUID    _id;
+    private final boolean _include;
 
 
     /**
      * Constructor.
      *
      * @param repoFactory The repository factory for this command.
+     * @param id The id of the resource to change.
+     * @param b True if the resource should be included; false otherwise.
      */
-    public IncludeInMainMenuCommand(final IRepositoryFactory repoFactory) {
-        _repository = repoFactory.createResourceRepository();
-        _audit = repoFactory.createLogEntryRepo();
+    public IncludeInMainMenuCommand(final IRepositoryFactory repoFactory,
+                                    final UUID id,
+                                    final boolean b) {
+        super(repoFactory);
+        _id = id;
+        _include = b;
     }
 
 
@@ -66,37 +71,39 @@ public class IncludeInMainMenuCommand {
      *
      * @param repository The resource repository.
      * @param audit      The audit log repository.
-     */
-    public IncludeInMainMenuCommand(final ResourceRepository repository,
-                                    final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
-    }
-
-    /**
-     * Specify whether this resource should be included in the main menu.
-     *
      * @param id The id of the resource to change.
      * @param b True if the resource should be included; false otherwise.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
      */
-    public void execute(final UserEntity actor,
-                        final Date happenedOn,
-                        final UUID id,
-                        final boolean b) {
-        final ResourceEntity r = _repository.find(ResourceEntity.class, id);
+    public IncludeInMainMenuCommand(final ResourceRepository repository,
+                                    final LogEntryRepository audit,
+                                    final UUID id,
+                                    final boolean b) {
+        super(repository, audit, null, null);
+        _id = id;
+        _include = b;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void doExecute(final UserEntity actor, final Date happenedOn) {
+        final ResourceEntity r =
+            getRepository().find(ResourceEntity.class, _id);
         r.confirmLock(actor);
 
-        r.setIncludedInMainMenu(b);
+        r.setIncludedInMainMenu(_include);
 
-        final CommandType command =
-            (b) ? CommandType.RESOURCE_INCLUDE_IN_MM
-                : CommandType.RESOURCE_REMOVE_FROM_MM;
+        auditResourceCommand(actor, happenedOn, r);
 
-        final LogEntry le =
-            new LogEntry(
-                actor, command, happenedOn, id, new JsonImpl(r).getDetail());
-        _audit.record(le);
+        return null;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() {
+        return
+            (_include) ? CommandType.RESOURCE_INCLUDE_IN_MM
+                       : CommandType.RESOURCE_REMOVE_FROM_MM;
     }
 }

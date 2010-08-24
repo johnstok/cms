@@ -83,7 +83,7 @@ public class ResourceTree extends AbstractResourceTree {
                         : ((BeanModel) loadConfig).<ResourceSummary>getBean();
 
                 if (parent.getChildCount() > Globals.MAX_FETCH) {
-                    List<ResourceSummary> children =
+                    final List<ResourceSummary> children =
                         createRangeFolders(parent.getChildCount(), parent);
                     callback.onSuccess(
                         DataBinding.bindResourceSummary(children));
@@ -109,8 +109,8 @@ public class ResourceTree extends AbstractResourceTree {
 
                         /** {@inheritDoc} */
                         @Override protected void execute(
-                                                         final Collection<ResourceSummary> children,
-                                                         final int count) {
+                                     final Collection<ResourceSummary> children,
+                                     final long count) {
                             callback.onSuccess(
                                 DataBinding.bindResourceSummary(children));
                         }

@@ -33,7 +33,6 @@ import ccc.api.core.Resource;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**

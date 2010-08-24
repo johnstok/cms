@@ -28,14 +28,12 @@ package ccc.commands;
 
 import java.util.Date;
 
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -84,25 +82,6 @@ abstract class UpdateResourceCommand<T>
                           final UserEntity actor,
                           final Date happenedOn) {
         resource.setDateChanged(happenedOn, actor);
-        audit(resource, happenedOn, actor);
-    }
-
-
-    private void audit(final ResourceEntity resource,
-                       final Date happenedOn,
-                       final UserEntity actor) {
-
-        final JsonImpl ss = new JsonImpl(resource);
-
-        // TODO Resolve type for RESOURCE_APPLY_WC commands?
-
-        final LogEntry le =
-            new LogEntry(
-                actor,
-                getType(),
-                happenedOn,
-                resource.getId(),
-                ss.getDetail());
-        getAudit().record(le);
+        auditResourceCommand(actor, happenedOn, resource);
     }
 }

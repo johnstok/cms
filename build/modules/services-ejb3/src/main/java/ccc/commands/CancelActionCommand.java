@@ -31,12 +31,8 @@ import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.domain.ActionEntity;
-import ccc.domain.LogEntry;
 import ccc.domain.UserEntity;
-import ccc.persistence.ActionRepository;
 import ccc.persistence.IRepositoryFactory;
-import ccc.persistence.LogEntryRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -44,41 +40,36 @@ import ccc.plugins.s11n.json.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-public class CancelActionCommand {
+public class CancelActionCommand extends Command<Void> {
 
-    private final ActionRepository _repository;
-    private final LogEntryRepository _audit;
+    private final UUID _actionId;
 
     /**
      * Constructor.
      *
      * @param repoFactory The repository factory for this command.
+     * @param actionId    The ID of the action to cancel.
      */
-    public CancelActionCommand(final IRepositoryFactory repoFactory) {
-        _repository = repoFactory.createActionRepository();
-        _audit = repoFactory.createLogEntryRepo();
+    public CancelActionCommand(final IRepositoryFactory repoFactory,
+                               final UUID actionId) {
+        super(repoFactory);
+        _actionId = actionId;
     }
 
 
-    /**
-     * Cancel an action.
-     *
-     * @param actionId The id of the action to cancel.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     */
-    public void execute(final UserEntity actor,
-                        final Date happenedOn,
-                        final UUID actionId) {
-        final ActionEntity a = _repository.find(actionId);
+    /** {@inheritDoc} */
+    @Override
+    protected Void doExecute(final UserEntity actor, final Date happenedOn) {
+        final ActionEntity a = getActions().find(_actionId);
         a.cancel();
 
-        _audit.record(
-            new LogEntry(
-                actor,
-                CommandType.ACTION_CANCEL,
-                happenedOn,
-                actionId,
-                new JsonImpl(a).getDetail()));
+        auditUserCommand(actor, happenedOn, a);
+
+        return null;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.ACTION_CANCEL; }
 }

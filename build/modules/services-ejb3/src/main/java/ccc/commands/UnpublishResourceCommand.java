@@ -31,12 +31,10 @@ import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -74,14 +72,7 @@ class UnpublishResourceCommand extends Command<Void> {
 
         r.unpublish();
 
-        final LogEntry le =
-            new LogEntry(
-                actor,
-                getType(),
-                happenedOn,
-                _resourceId,
-                new JsonImpl(r).getDetail());
-        getAudit().record(le);
+        auditResourceCommand(actor, happenedOn, r);
 
         return null;
     }

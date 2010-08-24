@@ -26,12 +26,12 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.core.File;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
@@ -41,11 +41,9 @@ import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.json.FileSerializer;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.PagedCollectionSerializer;
 
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -108,22 +106,15 @@ public abstract class GetImagesPagedAction
                     /** {@inheritDoc} */
                     @Override
                     public void onOK(final Response response) {
-                        final JSONObject obj =
-                            JSONParser.parse(response.getText()).isObject();
-
-                        final int totalCount =
-                          (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
-
-                        final JSONArray result =
-                            obj.get(JsonKeys.ELEMENTS).isArray();
-                        final Collection<File> files = new ArrayList<File>();
-                        for (int i=0; i<result.size(); i++) {
-                            files.add(
-                                new FileSerializer().read(
-                                    new GwtJson(result.get(i).isObject())));
-                        }
-
-                        execute(files, totalCount);
+                        final Json json =
+                            new GwtJson(
+                                JSONParser.parse(
+                                    response.getText()).isObject());
+                        final PagedCollection<File> rsCollection =
+                            new PagedCollectionSerializer<File>().read(json);
+                        execute(
+                            rsCollection.getElements(),
+                            rsCollection.getTotalCount());
                     }
                 });
     }
@@ -136,5 +127,5 @@ public abstract class GetImagesPagedAction
      * @param totalCount The total comments available on the server.
      */
     protected abstract void execute(Collection<File> images,
-                                    int totalCount);
+                                    long totalCount);
 }

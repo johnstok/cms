@@ -186,13 +186,13 @@ public class ResourceTable
                         /** {@inheritDoc} */
                         @Override protected void execute(
                                  final Collection<ResourceSummary> children,
-                                 final int totalCount) {
+                                 final long totalCount) {
                             final List<BeanModel> results =
                                 DataBinding.bindResourceSummary(children);
 
                             final PagingLoadResult<BeanModel> plr =
                                 new BasePagingLoadResult<BeanModel>(
-                            results, config.getOffset(), totalCount);
+                            results, config.getOffset(), (int) totalCount);
                             callback.onSuccess(plr);
                         }
                     }.execute();

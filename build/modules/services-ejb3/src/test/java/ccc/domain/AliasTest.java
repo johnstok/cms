@@ -31,9 +31,6 @@ import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
 import ccc.commons.Exceptions;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -42,41 +39,6 @@ import ccc.plugins.s11n.json.JsonImpl;
  * @author Civic Computing Ltd.
  */
 public class AliasTest extends TestCase {
-
-    /**
-     * Test.
-     */
-    public void testConvertToJson() {
-
-        // ARRANGE
-        final Json json = new JsonImpl();
-        final AliasEntity a = new AliasEntity();
-        final PageEntity p = new PageEntity();
-        a.target(p);
-
-        // ACT
-        a.toJson(json);
-
-        // ASSERT
-        assertEquals(p.getId(), json.getId(JsonKeys.TARGET_ID));
-    }
-
-
-    /**
-     * Test.
-     */
-    public void testConvertToJsonWithMissingTarget() {
-
-        // ARRANGE
-        final Json json = new JsonImpl();
-        final AliasEntity a = new AliasEntity();
-
-        // ACT
-        a.toJson(json);
-
-        // ASSERT
-        assertNull(json.getId(JsonKeys.TARGET_ID));
-    }
 
     /**
      * Test.

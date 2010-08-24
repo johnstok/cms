@@ -63,40 +63,40 @@ public final class SerializerFactory {
 
     // TODO: How can we constrain the wildcards to a single type?
     private static final Map<Class<?>, Serializer<?>> SUPPORTED_CLASSES;
+    private static final Map<String, Class<?>>        SUPPORTED_NAMES;
 
     static {
-        final Map<Class<?>, Serializer<?>> supported =
-            new HashMap<Class<?>, Serializer<?>>();
+        SUPPORTED_CLASSES = new HashMap<Class<?>, Serializer<?>>();
+        SUPPORTED_NAMES   = new HashMap<String, Class<?>>();
 
-        supported.put(ACL.class, new ACLSerializer());
-        supported.put(Action.class, new ActionSerializer());
-        supported.put(ActionSummary.class, new ActionSummarySerializer());
-        supported.put(Alias.class, new AliasSerializer());
-        supported.put(API.class, new APISerializer());
-        supported.put(Comment.class, new CommentSerializer());
-        supported.put(Duration.class, new DurationSerializer());
-        supported.put(Failure.class, new FailureSerializer());
-        supported.put(File.class, new FileSerializer());
-        supported.put(Folder.class, new FolderSerializer());
-        supported.put(Group.class, new GroupSerializer());
-        supported.put(MimeType.class, new MimeTypeSerializer());
-        supported.put(Page.class, new PageSerializer());
-        supported.put(Paragraph.class, new ParagraphSerializer());
-        supported.put(ResourceSummary.class, new ResourceSummarySerializer());
-        supported.put(Revision.class, new RevisionSerializer());
-        supported.put(SearchResult.class, new SearchResultSerializer());
-        supported.put(Template.class, new TemplateSerializer());
-        supported.put(Resource.class, new TempSerializer());
-        supported.put(User.class, new UserSerializer());
-        supported.put(PageCriteria.class, new PageCriteriaSerializer());
-        supported.put(
+        addSerializer(ACL.class, new ACLSerializer());
+        addSerializer(Action.class, new ActionSerializer());
+        addSerializer(ActionSummary.class, new ActionSummarySerializer());
+        addSerializer(Alias.class, new AliasSerializer());
+        addSerializer(API.class, new APISerializer());
+        addSerializer(Comment.class, new CommentSerializer());
+        addSerializer(Duration.class, new DurationSerializer());
+        addSerializer(Failure.class, new FailureSerializer());
+        addSerializer(File.class, new FileSerializer());
+        addSerializer(Folder.class, new FolderSerializer());
+        addSerializer(Group.class, new GroupSerializer());
+        addSerializer(MimeType.class, new MimeTypeSerializer());
+        addSerializer(Page.class, new PageSerializer());
+        addSerializer(Paragraph.class, new ParagraphSerializer());
+        addSerializer(ResourceSummary.class, new ResourceSummarySerializer());
+        addSerializer(Revision.class, new RevisionSerializer());
+        addSerializer(SearchResult.class, new SearchResultSerializer());
+        addSerializer(Template.class, new TemplateSerializer());
+        addSerializer(Resource.class, new TempSerializer());
+        addSerializer(User.class, new UserSerializer());
+        addSerializer(PageCriteria.class, new PageCriteriaSerializer());
+        addSerializer(
             ResourceCriteria.class,
             new ResourceCriteriaSerializer<ResourceCriteria>() {
                 @Override protected ResourceCriteria createObject() {
                     return new ResourceCriteria();
                 }});
 
-        SUPPORTED_CLASSES = supported;
     }
 
     private SerializerFactory() { super(); }
@@ -118,6 +118,21 @@ public final class SerializerFactory {
 
 
     /**
+     * Create a serializer for a specified class.
+     *
+     * @param <T> The type of serializer to create.
+     * @param clazz Class representing the type to serialize.
+     *
+     * @return The corresponding serializer or NULL if no serializer is
+     *  available.
+     */
+    @SuppressWarnings("unchecked") // TODO: Find a cleaner solution.
+    public static <T> Serializer<T> create(final String clazz) {
+        return (Serializer<T>) SUPPORTED_CLASSES.get(clazz);
+    }
+
+
+    /**
      * Add a new serializer.
      *
      * @param <T> The type to be serialized / deserialized.
@@ -127,6 +142,7 @@ public final class SerializerFactory {
     public static <T> void addSerializer(final Class<T> clazz,
                                          final Serializer<T> serializer) {
         SUPPORTED_CLASSES.put(clazz, serializer);
+        SUPPORTED_NAMES.put(clazz.getName(), clazz);
     }
 
 
@@ -139,5 +155,17 @@ public final class SerializerFactory {
      */
     public static boolean canCreate(final Class<?> clazz) {
         return SUPPORTED_CLASSES.keySet().contains(clazz);
+    }
+
+
+    /**
+     * Check if a class is supported by the serializer.
+     *
+     * @param name The name af the class to serialize.
+     *
+     * @return The corresponding class, or NULL if the name isn't supported.
+     */
+    public static Class<?> findClass(final String name) {
+        return SUPPORTED_NAMES.get(name);
     }
 }

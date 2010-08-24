@@ -188,12 +188,13 @@ public class MigrationEJB
                                        final UUID templateId,
                                        final UUID actorId,
                                        final Date happenedOn) {
-        new ChangeTemplateForResourceCommand(getRepoFactory())
-            .execute(
-                userForId(actorId),
-                happenedOn,
+        sudoExecute(
+            new ChangeTemplateForResourceCommand(
+                getRepoFactory(),
                 resourceId,
-                templateId);
+                templateId),
+            actorId,
+            happenedOn);
     }
 
 
@@ -204,8 +205,10 @@ public class MigrationEJB
                                   final boolean include,
                                   final UUID actorId,
                                   final Date happenedOn) {
-        new IncludeInMainMenuCommand(getRepoFactory())
-            .execute(userForId(actorId), happenedOn, resourceId, include);
+        sudoExecute(
+            new IncludeInMainMenuCommand(getRepoFactory(), resourceId, include),
+            actorId,
+            happenedOn);
     }
 
 
@@ -219,15 +222,16 @@ public class MigrationEJB
                                final Map<String, String> metadata,
                                final UUID actorId,
                                final Date happenedOn) {
-        new UpdateResourceMetadataCommand(getRepoFactory())
-            .execute(
-                userForId(actorId),
-                happenedOn,
+        sudoExecute(
+            new UpdateResourceMetadataCommand(
+                getRepoFactory(),
                 resourceId,
                 title,
                 description,
                 tags,
-                metadata);
+                metadata),
+            actorId,
+            happenedOn);
     }
 
 

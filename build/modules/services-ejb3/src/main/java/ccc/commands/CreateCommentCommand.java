@@ -35,11 +35,9 @@ import ccc.api.exceptions.InvalidException;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
 import ccc.domain.CommentEntity;
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -90,13 +88,7 @@ public class CreateCommentCommand
 
         getComments().create(c);
 
-        getAudit().record(
-            new LogEntry(
-                actor,
-                getType(),
-                happenedOn,
-                c.getId(),
-                new JsonImpl(c).getDetail()));
+        auditCommentCommand(actor, happenedOn, c);
 
         return c;
     }

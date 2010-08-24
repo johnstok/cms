@@ -145,13 +145,13 @@ public class CommentTable
         configs.add(gp);
 
         final ColumnConfig authorColumn = new ColumnConfig();
-        authorColumn.setId(DataBinding.CommentBeanModel.AUTHOR);
+        authorColumn.setId(Comment.AUTHOR);
         authorColumn.setHeader(UI_CONSTANTS.author());
         authorColumn.setWidth(COLUMN_WIDTH);
         configs.add(authorColumn);
 
         final ColumnConfig urlColumn = new ColumnConfig();
-        urlColumn.setId(DataBinding.CommentBeanModel.URL);
+        urlColumn.setId(Comment.URL);
         urlColumn.setHeader(UI_CONSTANTS.url());
         urlColumn.setWidth(COLUMN_WIDTH);
         configs.add(urlColumn);
@@ -159,13 +159,13 @@ public class CommentTable
         final ColumnConfig timestampColumn = new ColumnConfig();
         timestampColumn.setDateTimeFormat(
             DateTimeFormat.getMediumDateTimeFormat());
-        timestampColumn.setId(DataBinding.CommentBeanModel.DATE_CREATED);
+        timestampColumn.setId(Comment.DATE_CREATED);
         timestampColumn.setHeader(UI_CONSTANTS.dateCreated());
         timestampColumn.setWidth(COLUMN_WIDTH);
         configs.add(timestampColumn);
 
         final ColumnConfig statusColumn = new ColumnConfig();
-        statusColumn.setId(DataBinding.CommentBeanModel.STATUS);
+        statusColumn.setId(Comment.STATUS);
         statusColumn.setHeader(UI_CONSTANTS.status());
         statusColumn.setWidth(COLUMN_WIDTH);
         configs.add(statusColumn);
@@ -271,8 +271,7 @@ public class CommentTable
 
     private void updateComment(final Comment comment) {
         final BeanModel commentBinding =
-            _detailsStore.findModel(
-                DataBinding.CommentBeanModel.ID, comment.getId());
+            _detailsStore.findModel(Comment.ID, comment.getId());
         final BeanModel bm = DataBinding.bindCommentSummary(comment);
         commentBinding.setProperties(bm.getProperties());
         _detailsStore.update(commentBinding);

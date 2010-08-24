@@ -31,7 +31,6 @@ import java.util.Collection;
 
 import ccc.api.core.PagedCollection;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Serializer;
 
 
@@ -48,18 +47,10 @@ public class PagedCollectionSerializer<T>
 
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
     @Override
     public PagedCollection<T> read(final Json json) {
-        try {
-            final String className = json.getString(JsonKeys.TYPE);
-            final Class<T> elementClass =
-                (Class<T>) Class.forName(className);
-            return PagedCollectionReader.read(json, elementClass);
-
-        } catch (final ClassNotFoundException e) {
-            throw new RuntimeException("Paged collection type missing.", e);
-        }
+        final String className = json.getString(JsonKeys.TYPE);
+        return PagedCollectionReader.read(json, className);
     }
 
 

@@ -32,15 +32,11 @@ import java.util.UUID;
 import ccc.api.core.Page;
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.CommandType;
-import ccc.domain.LogEntry;
 import ccc.domain.PageEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.domain.WorkingCopySupport;
 import ccc.persistence.IRepositoryFactory;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -48,19 +44,27 @@ import ccc.plugins.s11n.json.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateWorkingCopyCommand {
+public class UpdateWorkingCopyCommand
+    extends
+        Command<Void> {
 
-    private final ResourceRepository      _repository;
-    private final LogEntryRepository _audit;
+    private final UUID _resourceId;
+    private final long _revisionNo;
 
     /**
      * Constructor.
      *
      * @param repoFactory The repository factory for this command.
+     * @param resourceId The page's id.
+     * @param revisionNo The revision that the working copy will be created
+     *  from.
      */
-    public UpdateWorkingCopyCommand(final IRepositoryFactory repoFactory) {
-        _repository = repoFactory.createResourceRepository();
-        _audit = repoFactory.createLogEntryRepo();
+    public UpdateWorkingCopyCommand(final IRepositoryFactory repoFactory,
+                                    final UUID resourceId,
+                                    final long revisionNo) {
+        super(repoFactory);
+        _resourceId = resourceId;
+        _revisionNo = revisionNo;
     }
 
     /**
@@ -75,51 +79,36 @@ public class UpdateWorkingCopyCommand {
                         final Date happenedOn,
                         final UUID resourceId,
                         final Page delta) {
-        final PageEntity r = _repository.find(PageEntity.class, resourceId);
+        final PageEntity r = getRepository().find(PageEntity.class, resourceId);
         r.confirmLock(actor);
 
         r.setOrUpdateWorkingCopy(delta);
 
-        _audit.record(
-            new LogEntry(
-                actor,
-                CommandType.RESOURCE_UPDATE_WC,
-                happenedOn,
-                resourceId,
-                new JsonImpl(r).getDetail()));
+        auditResourceCommand(actor, happenedOn, r);
     }
 
-    /**
-     * Updates the working copy.
-     *
-     * @param resourceId The page's id.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     * @param revisionNo The revision that the working copy will be created
-     *  from.
-     */
-    public void execute(final UserEntity actor,
-                        final Date happenedOn,
-                        final UUID resourceId,
-                        final long revisionNo) {
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void doExecute(final UserEntity actor, final Date happenedOn) {
         final ResourceEntity r =
-            _repository.find(ResourceEntity.class, resourceId);
+            getRepository().find(ResourceEntity.class, _resourceId);
         r.confirmLock(actor);
 
         if (r instanceof WorkingCopySupport<?, ?, ?>) {
             final WorkingCopySupport<?, ?, ?> wcAware =
                 (WorkingCopySupport<?, ?, ?>) r;
-            wcAware.setWorkingCopyFromRevision((int) revisionNo);
+            wcAware.setWorkingCopyFromRevision((int) _revisionNo);
 
-            _audit.record(
-                new LogEntry(
-                    actor,
-                    CommandType.RESOURCE_UPDATE_WC,
-                    happenedOn,
-                    resourceId,
-                    new JsonImpl(r).getDetail()));
-        } else {
-            throw new WorkingCopyNotSupportedException(r.getId());
+            auditResourceCommand(actor, happenedOn, r);
+
+            return null;
         }
+
+        throw new WorkingCopyNotSupportedException(r.getId());
     }
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.RESOURCE_UPDATE_WC; }
 }

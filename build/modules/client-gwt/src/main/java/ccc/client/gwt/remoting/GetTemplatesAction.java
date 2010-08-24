@@ -26,11 +26,11 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import ccc.api.core.PagedCollection;
 import ccc.api.core.Template;
 import ccc.api.types.Link;
 import ccc.client.core.Globals;
@@ -42,11 +42,9 @@ import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.json.TemplateSerializer;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.PagedCollectionSerializer;
 
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -89,21 +87,11 @@ public abstract class GetTemplatesAction
 
                     /** {@inheritDoc} */
                     @Override public void onOK(final Response response) {
-
-                        final JSONObject obj =
-                            JSONParser.parse(response.getText()).isObject();
-                        final JSONArray result =
-                            obj.get(JsonKeys.ELEMENTS).isArray();
-
-                        final Collection<Template> templates =
-                            new ArrayList<Template>();
-                        for (int i=0; i<result.size(); i++) {
-                            final Template t =
-                                new TemplateSerializer().read(
-                                    new GwtJson(result.get(i).isObject()));
-                            templates.add(t);
-                        }
-                        execute(templates);
+                        final Json json =
+                            new GwtJson(JSONParser.parse(response.getText()).isObject());
+                        final PagedCollection<Template> rsCollection =
+                            new PagedCollectionSerializer<Template>().read(json);
+                        execute(rsCollection.getElements());
                     }
                 });
     }

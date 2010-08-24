@@ -33,11 +33,9 @@ import ccc.api.core.ACL;
 import ccc.api.core.ACL.Entry;
 import ccc.api.types.CommandType;
 import ccc.domain.AccessPermission;
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -80,13 +78,7 @@ public class UpdateResourceAclCommand
         lookupGroups(r);
         lookupUsers(r);
 
-        final LogEntry le = new LogEntry(
-            actor,
-            CommandType.RESOURCE_CHANGE_ROLES,
-            happenedOn,
-            _id,
-            new JsonImpl(r).getDetail());
-        getAudit().record(le);
+        auditResourceCommand(actor, happenedOn, r);
 
         return null;
     }

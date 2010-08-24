@@ -43,7 +43,7 @@ import ccc.persistence.ResourceRepository;
  *
  * @author Civic Computing Ltd.
  */
-class CreateRootCommand extends CreateResourceCommand<Void> {
+class CreateRootCommand extends Command<Void> {
 
     private final FolderEntity _folder;
 
@@ -58,7 +58,7 @@ class CreateRootCommand extends CreateResourceCommand<Void> {
     public CreateRootCommand(final ResourceRepository repository,
                              final LogEntryRepository audit,
                              final FolderEntity folder) {
-        super(repository, audit);
+        super(repository, audit, null, null);
         _folder = folder; // TODO: Should create the folder in doExecute().
     }
 
@@ -78,7 +78,7 @@ class CreateRootCommand extends CreateResourceCommand<Void> {
             _folder.setDateChanged(happenedOn, actor);
             getRepository().create(_folder);
 
-            audit(_folder, actor, happenedOn);
+            auditResourceCommand(actor, happenedOn, _folder);
 
             return null;
         }

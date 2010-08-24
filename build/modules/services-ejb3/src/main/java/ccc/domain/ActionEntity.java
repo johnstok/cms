@@ -48,8 +48,6 @@ import ccc.api.types.CommandType;
 import ccc.api.types.FailureCode;
 import ccc.api.types.Link;
 import ccc.api.types.NormalisingEncoder;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -286,17 +284,17 @@ public class ActionEntity extends Entity {
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(JsonKeys.ACTOR_ID, getActor().getId());
-        json.set(JsonKeys.TYPE, getType().name());
-        json.set(JsonKeys.PARAMETERS, getParameters());
-        json.set(JsonKeys.SUBJECT_ID, getSubject().getId().toString());
-        json.set(JsonKeys.EXECUTE_AFTER, getExecuteAfter());
-        json.set(JsonKeys.STATUS, getStatus().name());
-        json.set(JsonKeys.CODE, (null==_code) ? null : _code.name());
-        json.set("failure-params", _params);
-    }
+//    /** {@inheritDoc} */
+//    @Override
+//    public void toJson(final Json json) {
+//        super.toJson(json);
+//        json.set(JsonKeys.ACTOR_ID, getActor().getId());
+//        json.set(JsonKeys.TYPE, getType().name());
+//        json.set(JsonKeys.PARAMETERS, getParameters());
+//        json.set(JsonKeys.SUBJECT_ID, getSubject().getId().toString());
+//        json.set(JsonKeys.EXECUTE_AFTER, getExecuteAfter());
+//        json.set(JsonKeys.STATUS, getStatus().name());
+//        json.set(JsonKeys.CODE, (null==_code) ? null : _code.name());
+//        json.set("failure-params", _params);
+//    }
 }

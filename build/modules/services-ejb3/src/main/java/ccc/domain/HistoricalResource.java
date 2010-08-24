@@ -31,8 +31,6 @@ import java.util.Map;
 
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 
@@ -134,13 +132,5 @@ public abstract class HistoricalResource<S, T extends RevisionEntity<S>>
      */
     public HashMap<Integer, T> revisions() {
         return new HashMap<Integer, T>(_history);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(JsonKeys.REVISION, Long.valueOf(_currentRev));
     }
 }

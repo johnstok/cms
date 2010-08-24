@@ -31,7 +31,6 @@ import java.util.Map;
 import ccc.api.core.Comment;
 import ccc.api.types.CommentStatus;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Serializer;
 
 

@@ -26,10 +26,10 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.api.core.Folder;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
@@ -39,11 +39,9 @@ import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.json.ResourceSummarySerializer;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.PagedCollectionSerializer;
 
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -57,6 +55,7 @@ public abstract class GetRootsAction
         RemotingAction {
 
 
+    /** {@inheritDoc} */
     @Override
     protected String getPath() {
         return Globals.API_URL+GlobalsImpl.getAPI().getLink(Folder.ROOTS);
@@ -77,20 +76,14 @@ public abstract class GetRootsAction
                     /** {@inheritDoc} */
                     @Override
                     public void onOK(final Response response) {
-                        final JSONObject obj =
-                            JSONParser.parse(response.getText()).isObject();
-
-                        final JSONArray results =
-                            obj.get(JsonKeys.ELEMENTS).isArray();
-
-                        final Collection<ResourceSummary> roots =
-                            new ArrayList<ResourceSummary>();
-                        for (int i=0; i<results.size(); i++) {
-                            roots.add(
-                                new ResourceSummarySerializer().read(
-                                    new GwtJson(results.get(i).isObject())));
-                        }
-                        onSuccess(roots);
+                        final Json json =
+                            new GwtJson(
+                                JSONParser.parse(
+                                    response.getText()).isObject());
+                        final PagedCollection<ResourceSummary> rsCollection =
+                            new PagedCollectionSerializer<ResourceSummary>()
+                            .read(json);
+                        onSuccess(rsCollection.getElements());
                     }
                 });
     }

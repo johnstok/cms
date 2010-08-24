@@ -30,12 +30,8 @@ import java.util.Date;
 
 import ccc.api.types.CommandType;
 import ccc.domain.ActionEntity;
-import ccc.domain.LogEntry;
 import ccc.domain.UserEntity;
-import ccc.persistence.ActionRepository;
 import ccc.persistence.IRepositoryFactory;
-import ccc.persistence.LogEntryRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -43,40 +39,38 @@ import ccc.plugins.s11n.json.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-public class ScheduleActionCommand {
+public class ScheduleActionCommand
+    extends
+        Command<Void> {
 
-    private final ActionRepository _repository;
-    private final LogEntryRepository _audit;
+    private final ActionEntity _action;
+
 
     /**
      * Constructor.
      *
      * @param repoFactory The repository factory for this command.
-     */
-    public ScheduleActionCommand(final IRepositoryFactory repoFactory) {
-        _repository = repoFactory.createActionRepository();
-        _audit = repoFactory.createLogEntryRepo();
-    }
-
-
-    /**
-     * Schedule an action.
-     *
      * @param action The action to schedule.
-     * @param actor The user that executed the command.
-     * @param happenedOn The date the command was executed.
      */
-    public void execute(final UserEntity actor,
-                        final Date happenedOn,
-                        final ActionEntity action) {
-        _repository.create(action);
-
-        _audit.record(
-            new LogEntry(
-                actor,
-                CommandType.ACTION_CREATE,
-                happenedOn,
-                action.getId(),
-                new JsonImpl(action).getDetail()));
+    public ScheduleActionCommand(final IRepositoryFactory repoFactory,
+                                 final ActionEntity action) {
+        super(repoFactory);
+        _action = action;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void doExecute(final UserEntity actor, final Date happenedOn) {
+        getActions().create(_action);
+
+        auditUserCommand(actor, happenedOn, _action);
+
+        return null;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.ACTION_CREATE; }
 }

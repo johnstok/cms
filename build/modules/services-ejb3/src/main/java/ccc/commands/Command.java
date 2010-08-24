@@ -32,7 +32,12 @@ import java.util.Properties;
 
 import ccc.api.types.CommandType;
 import ccc.commons.Resources;
+import ccc.domain.ActionEntity;
+import ccc.domain.CommentEntity;
+import ccc.domain.LogEntry;
+import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
+import ccc.persistence.ActionRepository;
 import ccc.persistence.CommentRepository;
 import ccc.persistence.DataRepository;
 import ccc.persistence.GroupRepository;
@@ -41,6 +46,11 @@ import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
 import ccc.plugins.PluginFactory;
+import ccc.plugins.s11n.json.ActionSummarySerializer;
+import ccc.plugins.s11n.json.CommentSerializer;
+import ccc.plugins.s11n.json.JsonImpl;
+import ccc.plugins.s11n.json.ResourceSummarySerializer;
+import ccc.plugins.s11n.json.UserSerializer;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
@@ -61,6 +71,7 @@ public abstract class Command<T> {
     private final DataRepository _data;
     private final GroupRepository _groups;
     private final CommentRepository _comments;
+    private final ActionRepository _actions;
 
 
     /**
@@ -82,6 +93,7 @@ public abstract class Command<T> {
         _data = data;
         _groups = null;
         _comments = null;
+        _actions = null;
     }
 
     /**
@@ -96,6 +108,7 @@ public abstract class Command<T> {
         _data       = repoFactory.createDataRepository();
         _groups     = repoFactory.createGroupRepo();
         _comments   = repoFactory.createCommentRepo();
+        _actions    = repoFactory.createActionRepository();
     }
 
     /**
@@ -263,6 +276,16 @@ public abstract class Command<T> {
     /**
      * Accessor.
      *
+     * @return Returns the actions repository.
+     */
+    protected ActionRepository getActions() {
+        return _actions;
+    }
+
+
+    /**
+     * Accessor.
+     *
      * @return Returns the groups repository.
      */
     protected GroupRepository getGroups() {
@@ -298,4 +321,112 @@ public abstract class Command<T> {
      * @return The type as an enum.
      */
     protected abstract CommandType getType();
+
+
+    /**
+     * Audit a change to an action.
+     *
+     * @param actor      The user the executed the command.
+     * @param happenedOn When the command was executed.
+     * @param action     The action that was changed.
+     */
+    protected void auditUserCommand(final UserEntity actor,
+                                    final Date happenedOn,
+                                    final ActionEntity action) {
+        getAudit().record(
+            new LogEntry(
+                actor,
+                getType(),
+                happenedOn,
+                action.getId(),
+                serializeAction(action)));
+    }
+
+
+    /**
+     * Audit a change to a user.
+     *
+     * @param actor      The user the executed the command.
+     * @param happenedOn When the command was executed.
+     * @param user       The user that was changed.
+     */
+    protected void auditUserCommand(final UserEntity actor,
+                                    final Date happenedOn,
+                                    final UserEntity user) {
+        getAudit().record(
+            new LogEntry(
+                actor,
+                getType(),
+                happenedOn,
+                user.getId(),
+                serializeUser(user)));
+    }
+
+
+    /**
+     * Audit a change to a resource.
+     *
+     * @param actor      The user the executed the command.
+     * @param happenedOn When the command was executed.
+     * @param resource   The resource that was changed.
+     */
+    protected void auditResourceCommand(final UserEntity actor,
+                                        final Date happenedOn,
+                                        final ResourceEntity resource) {
+        getAudit().record(
+            new LogEntry(
+                actor,
+                getType(),
+                happenedOn,
+                resource.getId(),
+                serializeResource(resource)));
+    }
+
+
+    /**
+     * Audit a change to a comment.
+     *
+     * @param actor      The user the executed the command.
+     * @param happenedOn When the command was executed.
+     * @param comment    The comment that was changed.
+     */
+    protected void auditCommentCommand(final UserEntity actor,
+                                       final Date happenedOn,
+                                       final CommentEntity comment) {
+        getAudit().record(
+            new LogEntry(
+                actor,
+                getType(),
+                happenedOn,
+                comment.getId(),
+                serializeComment(comment)));
+    }
+
+
+    private String serializeAction(final ActionEntity action) {
+        final JsonImpl json = new JsonImpl();
+        new ActionSummarySerializer().write(json, action.mapAction());
+        return json.getDetail();
+    }
+
+
+    private String serializeComment(final CommentEntity comment) {
+        final JsonImpl json = new JsonImpl();
+        new CommentSerializer().write(json, comment.createDto());
+        return json.getDetail();
+    }
+
+
+    private String serializeResource(final ResourceEntity resource) {
+        final JsonImpl json = new JsonImpl();
+        new ResourceSummarySerializer().write(json, resource.mapResource());
+        return json.getDetail();
+    }
+
+
+    private String serializeUser(final UserEntity user) {
+        final JsonImpl json = new JsonImpl();
+        new UserSerializer().write(json, user.toDto());
+        return json.getDetail();
+    }
 }

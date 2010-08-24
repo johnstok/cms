@@ -213,12 +213,12 @@ public class ImageSelectionPanel extends ContentPanel {
 
         @Override
         protected void execute(final Collection<File> images,
-                               final int totalCount) {
+                               final long totalCount) {
             final List<BeanModel> results =
                 loadModel(_image, images);
             final PagingLoadResult<BeanModel> plr =
                 new BasePagingLoadResult<BeanModel>(
-                    results, _config.getOffset(), totalCount);
+                    results, _config.getOffset(), (int) totalCount);
             _callback.onSuccess(plr);
         }
     }

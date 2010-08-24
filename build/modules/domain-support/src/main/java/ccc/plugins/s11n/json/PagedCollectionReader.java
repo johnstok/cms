@@ -31,7 +31,6 @@ import java.util.Map;
 
 import ccc.api.core.PagedCollection;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Serializer;
 
 
@@ -63,5 +62,12 @@ public class PagedCollectionReader {
         if (null!=links) { c.addLinks(links); }
 
         return c;
+    }
+
+    public static <T> PagedCollection<T> read(final Json json,
+                                              final String elementClass) {
+        final Class<T> clazz =
+                (Class<T>) SerializerFactory.findClass(elementClass);
+        return read(json, clazz);
     }
 }

@@ -31,10 +31,6 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -42,7 +38,7 @@ import ccc.plugins.s11n.json.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class Entity implements Serializable, Jsonable {
+public abstract class Entity implements Serializable {
 
     private long  _version = -1;
     private UUID  _id      = UUID.randomUUID();
@@ -139,15 +135,6 @@ public abstract class Entity implements Serializable, Jsonable {
     /** {@inheritDoc} */
     @Override
     public String toString() {
-        return new JsonImpl(this).getDetail();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @Deprecated
-    public void toJson(final Json json) {
-        json.set(JsonKeys.ID, getId().toString());
-        json.set(JsonKeys.VERSION, Long.valueOf(getVersion()));
+        return getClass().getSimpleName()+": "+getId();
     }
 }

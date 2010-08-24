@@ -33,12 +33,10 @@ import ccc.api.types.CommandType;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceName;
 import ccc.domain.FolderEntity;
-import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -87,14 +85,7 @@ public class DeleteResourceCommand extends Command<Void> {
         trash.add(resource);
         resource.unlock(actor);
 
-        final LogEntry le =
-            new LogEntry(
-                actor,
-                getType(),
-                happenedOn,
-                _resourceId,
-                new JsonImpl(resource).getDetail());
-        getAudit().record(le);
+        auditResourceCommand(actor, happenedOn, resource);
 
         return null;
     }

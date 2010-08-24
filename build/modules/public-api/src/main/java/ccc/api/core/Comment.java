@@ -221,4 +221,18 @@ public class Comment
      * @return A link to this comment.
      */
     public String self() { return getLink("self"); }
+
+    /*
+     * Property constants.
+     */
+    /** ID : String. */
+    public static final String ID           = "id";
+    /** AUTHOR : String. */
+    public static final String AUTHOR       = "author";
+    /** URL : String. */
+    public static final String URL          = "url";
+    /** DATE_CREATED : String. */
+    public static final String DATE_CREATED = "timestamp";
+    /** STATUS : String. */
+    public static final String STATUS       = "status";
 }

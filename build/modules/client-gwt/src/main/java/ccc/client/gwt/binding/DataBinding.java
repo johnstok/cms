@@ -315,16 +315,6 @@ public final class DataBinding {
      */
     @BEAN(Comment.class)
     public interface CommentBeanModel extends BeanModelMarker {
-        /** ID : String. */
-        String ID           = "id";
-        /** AUTHOR : String. */
-        String AUTHOR       = "author";
-        /** URL : String. */
-        String URL          = "url";
-        /** DATE_CREATED : String. */
-        String DATE_CREATED = "timestamp";
-        /** STATUS : String. */
-        String STATUS       = "status";
     }
 
 
