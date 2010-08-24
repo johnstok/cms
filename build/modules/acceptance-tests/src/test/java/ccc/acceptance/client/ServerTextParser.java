@@ -3,7 +3,7 @@ package ccc.acceptance.client;
 import java.util.Map;
 
 import ccc.client.remoting.TextParser;
-import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.Json;
 import ccc.plugins.s11n.json.JsonImpl;
 
 /**

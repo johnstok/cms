@@ -42,7 +42,7 @@ import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.Json;
 import ccc.plugins.s11n.json.PagedCollectionSerializer;
 
 import com.google.gwt.json.client.JSONParser;

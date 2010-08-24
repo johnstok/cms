@@ -29,7 +29,6 @@ package ccc.plugins.s11n.json;
 import ccc.api.core.Revision;
 import ccc.api.types.CommandType;
 import ccc.api.types.Username;
-import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.Serializer;
 
 

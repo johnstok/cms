@@ -34,7 +34,7 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemoteException;
 import ccc.client.core.SessionTimeoutException;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.plugins.s11n.InvalidSnapshotException;
+import ccc.plugins.s11n.S11nException;
 import ccc.plugins.s11n.json.FailureSerializer;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -132,7 +132,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
                                 getUiConstants().uploadFile());
 
                         // Assume success.
-                        } catch (final InvalidSnapshotException e) {
+                        } catch (final S11nException e) {
                             hide();
                         }
                     }

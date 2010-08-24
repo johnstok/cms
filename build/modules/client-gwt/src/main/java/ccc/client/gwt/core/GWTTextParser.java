@@ -29,7 +29,7 @@ package ccc.client.gwt.core;
 import java.util.Map;
 
 import ccc.client.remoting.TextParser;
-import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.Json;
 
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONObject;

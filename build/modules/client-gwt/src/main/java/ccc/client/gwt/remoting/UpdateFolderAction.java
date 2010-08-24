@@ -31,8 +31,8 @@ import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.json.FolderSerializer;
+import ccc.plugins.s11n.json.Json;
 
 
 /**

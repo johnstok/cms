@@ -38,8 +38,8 @@ import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.json.AliasSerializer;
+import ccc.plugins.s11n.json.Json;
 
 
 /**

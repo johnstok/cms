@@ -24,37 +24,20 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.s11n;
-
+package ccc.plugins.s11n.json;
 
 
 /**
- * Exception indicating an attempt to change a snapshot to an invalid state.
+ * API for serializing a class to JSON.
  *
  * @author Civic Computing Ltd.
  */
-public class InvalidSnapshotException
-    extends
-        RuntimeException {
+public interface Jsonable {
 
     /**
-     * Constructor.
+     * Convert to JSON.
      *
-     * @param cause The cause of the exception.
+     * @param json The JSON object to write to.
      */
-    public InvalidSnapshotException(final Throwable cause) {
-        super("Invalid snapshot", cause);
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param detail The details of the exception.
-     * @param cause The cause of the exception.
-     */
-    public InvalidSnapshotException(final String detail,
-                                    final Throwable cause) {
-        super("Invalid snapshot:\n"+detail, cause);
-    }
+    void toJson(Json json);
 }

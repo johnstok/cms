@@ -42,9 +42,9 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.plugins.s11n.Jsonable;
-import ccc.plugins.s11n.Jsonable2;
 import ccc.plugins.s11n.json.JsonImpl;
+import ccc.plugins.s11n.json.Jsonable;
+import ccc.plugins.s11n.json.Jsonable2;
 
 
 /**

@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.s11n;
+package ccc.plugins.s11n.json;
 
 
 /**

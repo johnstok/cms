@@ -27,17 +27,34 @@
 package ccc.plugins.s11n;
 
 
+
 /**
- * API for serializing a class to JSON.
+ * Exception indicating an attempt to change a snapshot to an invalid state.
  *
  * @author Civic Computing Ltd.
  */
-public interface Jsonable {
+public class S11nException
+    extends
+        RuntimeException {
 
     /**
-     * Convert to JSON.
+     * Constructor.
      *
-     * @param json The JSON object to write to.
+     * @param cause The cause of the exception.
      */
-    void toJson(Json json);
+    public S11nException(final Throwable cause) {
+        super("Invalid snapshot", cause);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param detail The details of the exception.
+     * @param cause The cause of the exception.
+     */
+    public S11nException(final String detail,
+                                    final Throwable cause) {
+        super("Invalid snapshot:\n"+detail, cause);
+    }
 }

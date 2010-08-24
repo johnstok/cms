@@ -37,9 +37,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.commons.Testing;
-import ccc.plugins.s11n.InvalidSnapshotException;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.S11nException;
 
 
 /**
@@ -181,7 +179,7 @@ public class JsonImplTest
             fail();
 
         // ASSERT
-        } catch (final InvalidSnapshotException e) { swallow(e); }
+        } catch (final S11nException e) { swallow(e); }
 
 
         // ACT
@@ -190,7 +188,7 @@ public class JsonImplTest
             fail();
 
         // ASSERT
-        } catch (final InvalidSnapshotException e) { swallow(e); }
+        } catch (final S11nException e) { swallow(e); }
 
 
         // ACT
@@ -199,7 +197,7 @@ public class JsonImplTest
             fail();
 
         // ASSERT
-        } catch (final InvalidSnapshotException e) { swallow(e); }
+        } catch (final S11nException e) { swallow(e); }
 
 
         // ACT
@@ -208,7 +206,7 @@ public class JsonImplTest
             fail();
 
         // ASSERT
-        } catch (final InvalidSnapshotException e) { swallow(e); }
+        } catch (final S11nException e) { swallow(e); }
 
 
         // ACT
@@ -217,7 +215,7 @@ public class JsonImplTest
             fail();
 
         // ASSERT
-        } catch (final InvalidSnapshotException e) { swallow(e); }
+        } catch (final S11nException e) { swallow(e); }
 
 
         // ACT
@@ -226,7 +224,7 @@ public class JsonImplTest
             fail();
 
         // ASSERT
-        } catch (final InvalidSnapshotException e) { swallow(e); }
+        } catch (final S11nException e) { swallow(e); }
 
 
         // ACT
@@ -235,7 +233,7 @@ public class JsonImplTest
             fail();
 
         // ASSERT
-        } catch (final InvalidSnapshotException e) { swallow(e); }
+        } catch (final S11nException e) { swallow(e); }
 
 
         // ACT
@@ -244,7 +242,7 @@ public class JsonImplTest
             fail();
 
         // ASSERT
-        } catch (final InvalidSnapshotException e) { swallow(e); }
+        } catch (final S11nException e) { swallow(e); }
     }
 
     /**

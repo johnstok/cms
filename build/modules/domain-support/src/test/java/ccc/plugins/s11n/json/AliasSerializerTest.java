@@ -30,7 +30,6 @@ import java.util.UUID;
 
 import junit.framework.TestCase;
 import ccc.api.core.Alias;
-import ccc.plugins.s11n.Json;
 
 
 /**

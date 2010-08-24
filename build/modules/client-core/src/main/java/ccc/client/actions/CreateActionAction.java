@@ -41,8 +41,8 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.json.ActionSerializer;
+import ccc.plugins.s11n.json.Json;
 
 
 /**

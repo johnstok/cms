@@ -27,7 +27,6 @@
 
 package ccc.plugins.s11n.json;
 
-import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.Serializer;
 
 

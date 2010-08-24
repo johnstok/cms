@@ -36,7 +36,6 @@ import ccc.api.types.CommandType;
 import ccc.api.types.FailureCode;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
-import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.Serializer;
 
 

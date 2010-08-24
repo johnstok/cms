@@ -39,7 +39,7 @@ import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.plugins.s11n.InvalidSnapshotException;
+import ccc.plugins.s11n.S11nException;
 import ccc.plugins.s11n.json.FailureSerializer;
 import ccc.plugins.s11n.json.ResourceSummarySerializer;
 
@@ -153,7 +153,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                                 getUiConstants().uploadFile());
 
                         // Assume success.
-                        } catch (final InvalidSnapshotException e) {
+                        } catch (final S11nException e) {
                             hide();
                             final JSONObject json =
                                 JSONParser.parse(be.getResultHtml()).isObject();

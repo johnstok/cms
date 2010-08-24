@@ -25,7 +25,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.plugins.s11n;
+package ccc.plugins.s11n.json;
 
 import java.math.BigDecimal;
 import java.util.Collection;

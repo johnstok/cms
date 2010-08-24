@@ -46,9 +46,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ccc.api.types.DBC;
-import ccc.plugins.s11n.InvalidSnapshotException;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.S11nException;
 
 
 /**
@@ -70,7 +68,7 @@ public class JsonImpl implements Serializable, Json {
         try {
             _detail = new JSONObject(detail);
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(detail, e);
+            throw new S11nException(detail, e);
         }
     }
 
@@ -134,7 +132,7 @@ public class JsonImpl implements Serializable, Json {
         try {
             _detail = new JSONObject(detail);
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -155,7 +153,7 @@ public class JsonImpl implements Serializable, Json {
         try {
             _detail.put(key, (null==value) ? NULL : value);
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -170,7 +168,7 @@ public class JsonImpl implements Serializable, Json {
                 _detail.append(key, s._detail);
             }
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -187,7 +185,7 @@ public class JsonImpl implements Serializable, Json {
                 }
             }
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -196,7 +194,7 @@ public class JsonImpl implements Serializable, Json {
         try {
             _detail.put(key, (null==value) ? NULL : value);
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -206,7 +204,7 @@ public class JsonImpl implements Serializable, Json {
             _detail.put(
                 key, (null==date) ? NULL : Long.valueOf(date.getTime()));
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -216,7 +214,7 @@ public class JsonImpl implements Serializable, Json {
             _detail.put(
                 key, (null==value) ? NULL : value.toString());
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -225,7 +223,7 @@ public class JsonImpl implements Serializable, Json {
         try {
             _detail.put(key, value);
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -236,7 +234,7 @@ public class JsonImpl implements Serializable, Json {
             // Javascript doesn't support decimals - store as a string.
             _detail.put(key, (null==value) ? NULL : value.toString());
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -245,7 +243,7 @@ public class JsonImpl implements Serializable, Json {
         try {
             _detail.put(key, (null==value) ? NULL : value);
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -261,7 +259,7 @@ public class JsonImpl implements Serializable, Json {
                 _detail.put(key, s._detail);
             }
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -275,7 +273,7 @@ public class JsonImpl implements Serializable, Json {
         try {
             return (String) fixNull(_detail.get(key));
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -295,7 +293,7 @@ public class JsonImpl implements Serializable, Json {
             return snapshots;
 
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -308,7 +306,7 @@ public class JsonImpl implements Serializable, Json {
             }
             return new Date(n.longValue());
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -317,7 +315,7 @@ public class JsonImpl implements Serializable, Json {
         try {
             return (Boolean) fixNull(_detail.get(key));
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -335,7 +333,7 @@ public class JsonImpl implements Serializable, Json {
         try {
             return (Integer) fixNull(_detail.get(key));
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -358,7 +356,7 @@ public class JsonImpl implements Serializable, Json {
             }
             return new JsonImpl(o);
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -396,7 +394,7 @@ public class JsonImpl implements Serializable, Json {
             return strings;
 
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -410,7 +408,7 @@ public class JsonImpl implements Serializable, Json {
             }
             return Long.valueOf(n.longValue());
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -434,7 +432,7 @@ public class JsonImpl implements Serializable, Json {
             return stringMap;
 
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -455,7 +453,7 @@ public class JsonImpl implements Serializable, Json {
                 _detail.put(key, s._detail);
             }
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 
@@ -470,7 +468,7 @@ public class JsonImpl implements Serializable, Json {
                 _detail.append(key, s._detail);
             }
         } catch (final JSONException e) {
-            throw new InvalidSnapshotException(e);
+            throw new S11nException(e);
         }
     }
 

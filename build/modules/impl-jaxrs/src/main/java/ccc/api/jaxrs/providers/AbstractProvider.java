@@ -43,7 +43,7 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 import ccc.commons.IO;
-import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.Json;
 import ccc.plugins.s11n.json.JsonImpl;
 
 

@@ -34,7 +34,7 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.Json;
 import ccc.plugins.s11n.json.ResourceSummarySerializer;
 
 /**
