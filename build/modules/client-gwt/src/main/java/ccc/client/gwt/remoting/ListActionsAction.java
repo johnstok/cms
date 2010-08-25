@@ -32,7 +32,6 @@ import java.util.Map;
 
 import ccc.api.core.ActionSummary;
 import ccc.api.core.PagedCollection;
-import ccc.api.types.ActionStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
@@ -44,15 +43,18 @@ import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.plugins.s11n.json.Json;
+import ccc.client.gwt.core.GwtJson;
+
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * Display the list of completed actions.
+ * Display the list of actions.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class ListCompletedActionsAction
+public abstract class ListActionsAction
     extends
         RemotingAction {
 
@@ -60,22 +62,26 @@ public abstract class ListCompletedActionsAction
     private final int           _count;
     private final SortOrder     _order;
     private final String        _sort;
+    private final String        _status;
 
     /**
      * Constructor.
      *
+     * @param status The status of actions to return.
      * @param page The page of results to return.
      * @param count The number of results in a page.
      * @param sort The field to sort on.
      * @param order The order results be sorted in.
      */
-    public ListCompletedActionsAction(final int page,
-                                      final int count,
-                                      final String sort,
-                                      final SortOrder order) {
+    public ListActionsAction(final String status,
+                             final int page,
+                             final int count,
+                             final String sort,
+                             final SortOrder order) {
         DBC.require().toBeTrue(page>0);
         DBC.require().toBeTrue(count>0);
 
+        _status = status;
         _page = page;
         _count = count;
         _sort = sort;
@@ -86,7 +92,7 @@ public abstract class ListCompletedActionsAction
     @Override
     protected String getPath() {
         final Map<String, String[]> params = new HashMap<String, String[]>();
-        params.put("status",  new String[] {ActionStatus.COMPLETE.name()});
+        params.put("status",  new String[] {""+_status});
         params.put("page",  new String[] {""+_page});
         params.put("count", new String[] {""+_count});
         params.put("sort",  new String[] {_sort});
@@ -112,10 +118,11 @@ public abstract class ListCompletedActionsAction
                     /** {@inheritDoc} */
                     @Override
                     public void onOK(final Response response) {
-                        final Json obj = parse(response.getText());
+                        final JSONObject obj =
+                            JSONParser.parse(response.getText()).isObject();
                         final PagedCollection<ActionSummary> actions =
                             serializers().create(PagedCollection.class)
-                            .read(obj);
+                            .read(new GwtJson(obj));
 
                         execute(
                             actions.getElements(),

@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ccc.api.core.ActionSummary;
-import ccc.api.core.PagedCollection;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.Permission;
@@ -39,8 +38,7 @@ import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.remoting.ListCompletedActionsAction;
-import ccc.client.gwt.remoting.ListPendingActionsAction;
+import ccc.client.gwt.remoting.ListActionsAction;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
@@ -201,12 +199,12 @@ public class ActionTable
                             (Style.SortDir.ASC==config.getSortDir())
                                 ? SortOrder.ASC
                                 : SortOrder.DESC;
-                        if (ActionTree.PENDING.equals(selected.get("id"))) {
-                            getPendingActions(callback, config, page, order)
-                                .execute();
-                        } else if (
-                            ActionTree.COMPLETED.equals(selected.get("id"))){
-                            getCompletedActions(callback, config, page, order)
+                        if (selected.get("id") != null) {
+                            getActions(callback,
+                                config,
+                                (String) selected.get("id"),
+                                page,
+                                order)
                                 .execute();
                         }
                     }
@@ -217,46 +215,15 @@ public class ActionTable
     }
 
 
-    private ListCompletedActionsAction getCompletedActions(
-                   final AsyncCallback<PagingLoadResult<BeanModel>> callback,
-                   final BasePagingLoadConfig config,
-                   final int page,
-                   final SortOrder order) {
-
-        return new ListCompletedActionsAction(page,
-                         config.getLimit(),
-                         config.getSortField(),
-                         order) {
-
-            /** {@inheritDoc} */
-            @Override
-            protected void onFailure(final Throwable t) {
-                callback.onFailure(t);
-            }
-
-            @Override
-            protected void execute(
-                       final List<ActionSummary> comments,
-                       final int totalCount) {
-
-                final List<BeanModel> results =
-                    DataBinding.bindActionSummary(comments);
-
-                final PagingLoadResult<BeanModel> plr =
-                    new BasePagingLoadResult<BeanModel>(
-                results, config.getOffset(), totalCount);
-                callback.onSuccess(plr);
-            }
-        };
-    }
-
-    private ListPendingActionsAction getPendingActions(
+    private ListActionsAction getActions(
          final AsyncCallback<PagingLoadResult<BeanModel>> callback,
          final BasePagingLoadConfig config,
+         final String status,
          final int page,
          final SortOrder order) {
 
-        return new ListPendingActionsAction(page,
+        return new ListActionsAction(status,
+            page,
             config.getLimit(),
             config.getSortField(),
             order) {
@@ -268,14 +235,13 @@ public class ActionTable
             }
 
             @Override
-            protected void execute(
-                               final PagedCollection<ActionSummary> actions) {
+            protected void execute(final List<ActionSummary> actions, final int totalCount) {
                 final List<BeanModel> results =
-                    DataBinding.bindActionSummary(actions.getElements());
+                    DataBinding.bindActionSummary(actions);
 
                 final PagingLoadResult<BeanModel> plr =
                     new BasePagingLoadResult<BeanModel>(
-                results, config.getOffset(), (int) actions.getTotalCount());
+                            results, config.getOffset(), totalCount);
                 callback.onSuccess(plr);
             }
         };

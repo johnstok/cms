@@ -80,8 +80,13 @@ public interface Actions
 
 
     /**
-     * List all CCC actions that haven't yet been executed.
+     * List of CCC actions.
      *
+     * @param username The username to match.
+     * @param commandType The command type to match.
+     * @param failureCode The failure code to match.
+     * @param status The action status code to match.
+     * @param executeAfter The execute after date to match.
      * @param sort The field to sort on.
      * @param sortOrder The order results be sorted in.
      * @param pageNo The page of results to return.

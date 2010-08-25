@@ -1576,4 +1576,18 @@ public interface UIConstants {
      * @return The constant, in the appropriate locale.
      */
     String tooManyFields();
+
+    /**
+     * "Failed.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String failed();
+
+    /**
+     * "Cancelled.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String cancelled();
 }

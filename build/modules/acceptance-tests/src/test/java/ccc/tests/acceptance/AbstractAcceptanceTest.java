@@ -455,7 +455,11 @@ public abstract class AbstractAcceptanceTest
 
 
     private PagedCollection<ActionSummary> createActions() {
-        return getActions().listActions(null, null, null, ActionStatus.SCHEDULED, null,
+        return getActions().listActions(null,
+            null,
+            null,
+            ActionStatus.SCHEDULED,
+            null,
             null,
             SortOrder.ASC,
             1,

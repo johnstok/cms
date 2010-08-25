@@ -87,4 +87,8 @@ public final class ImagePaths {
     /** EXCLAMATION : String. */
     public static final String EXCLAMATION =
         "static/images/icons/exclamation.gif";
+
+    /** CANCEL : String. */
+    public static final String CANCEL =
+        "static/images/icons/cancel.gif";
 }

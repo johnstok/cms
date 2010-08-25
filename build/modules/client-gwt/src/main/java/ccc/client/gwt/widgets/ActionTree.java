@@ -27,6 +27,7 @@
 
 package ccc.client.gwt.widgets;
 
+import ccc.api.types.ActionStatus;
 import ccc.client.core.I18n;
 import ccc.client.core.ImagePaths;
 import ccc.client.i18n.UIConstants;
@@ -46,9 +47,13 @@ public class ActionTree extends Tree {
     /** ACTIONS : String. */
     public static final String ACTIONS = "actions";
     /** PENDING : String. */
-    public static final String PENDING = "pending";
+    public static final String PENDING = ActionStatus.SCHEDULED.name();
     /** COMPLETED : String. */
-    public static final String COMPLETED = "completed";
+    public static final String COMPLETED = ActionStatus.COMPLETE.name();
+    /** FAILED : String. */
+    public static final String FAILED = ActionStatus.FAILED.name();
+    /** CANCELLED : String. */
+    public static final String CANCELLED = ActionStatus.CANCELLED.name();
 
     /** ACTION_TREE_HEIGHT : int.
         TODO read from a properties file */
@@ -88,6 +93,18 @@ public class ActionTree extends Tree {
         final ModelData completed =
             getNewItem(_uiConstants.completed(), COMPLETED, ImagePaths.ACCEPT);
         _store.add(actions, completed, ADD_ALL_CHILDREN);
+        _tree.setLeaf(completed, IS_LEAF);
+        _tree.setExpanded(completed, NOT_EXPANDED);
+
+        final ModelData failed =
+            getNewItem(_uiConstants.failed(), FAILED, ImagePaths.EXCLAMATION);
+        _store.add(actions, failed, ADD_ALL_CHILDREN);
+        _tree.setLeaf(completed, IS_LEAF);
+        _tree.setExpanded(completed, NOT_EXPANDED);
+
+        final ModelData cancelled =
+            getNewItem(_uiConstants.cancelled(), CANCELLED, ImagePaths.CANCEL);
+        _store.add(actions, cancelled, ADD_ALL_CHILDREN);
         _tree.setLeaf(completed, IS_LEAF);
         _tree.setExpanded(completed, NOT_EXPANDED);
     }

@@ -68,7 +68,11 @@ public class ActionAcceptanceTest
                 new Date(ONE_DAY),
                 new HashMap<String, String>()));
         final PagedCollection<ActionSummary> pending =
-            getActions().listActions(null, null, null, ActionStatus.SCHEDULED, null,
+            getActions().listActions(null,
+                null,
+                null,
+                ActionStatus.SCHEDULED,
+                null,
                 "",
                 SortOrder.ASC,
                 1,

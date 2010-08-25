@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.remoting;
 
+import java.util.List;
+
 import ccc.api.core.API;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Comment;
@@ -34,6 +36,7 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.Security;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
+import ccc.api.types.ActionStatus;
 import ccc.api.types.SortOrder;
 import ccc.client.concurrent.SimpleLatch;
 import ccc.client.core.Globals;
@@ -112,15 +115,19 @@ public class IsLoggedInAction
         }.execute();
 
 
-        new ListPendingActionsAction(1, 1, "", SortOrder.ASC) {
+        new ListActionsAction(ActionStatus.SCHEDULED.name(),
+            1,
+            1,
+            "",
+            SortOrder.ASC) {
             /** {@inheritDoc} */
             @Override
             protected String getPath() { return api.actions(); }
 
-            /** {@inheritDoc} */
             @Override
-            protected void execute(final PagedCollection<ActionSummary> actions) {
-                GlobalsImpl.actions(actions);
+            protected void execute(List<ActionSummary> actions, int totalCount) {
+                GlobalsImpl.actions(new PagedCollection<ActionSummary>(
+                        totalCount, ActionSummary.class, actions));
                 l.countDown();
             }
         }.execute();
