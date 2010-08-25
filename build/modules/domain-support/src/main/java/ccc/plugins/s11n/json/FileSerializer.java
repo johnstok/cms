@@ -26,8 +26,8 @@
  */
 package ccc.plugins.s11n.json;
 
-import static ccc.plugins.s11n.json.JsonKeys.*;
 import ccc.api.core.File;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -37,52 +37,43 @@ import ccc.api.core.File;
  */
 class FileSerializer
     extends
-        ResourceSerializer<File> {
+        BaseSerializer<File> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    FileSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public File read(final Json json) {
-        if (null==json) { return null; }
+    public File read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
-        final File f = super.read(json);
+        final File f = new File();
 
-        f.setMimeType(new MimeTypeSerializer().read(json.getJson(MIME_TYPE)));
-        f.setPath(json.getString(PATH));
-        f.setProperties(json.getStringMap(PROPERTIES));
-        f.setSize(json.getLong(JsonKeys.SIZE).longValue());
-        f.setData(json.getId(JsonKeys.DATA));
-        f.setMajorEdit(json.getBool(MAJOR_CHANGE).booleanValue());
-        f.setComment(json.getString(COMMENT));
-        f.setContent(json.getString(TEXT));
+        ResourceMappings.readRes(json, f);
+        ResourceMappings.readResource(json, f);
+        ResourceMappings.readFile(json, f);
 
         return f;
     }
 
 
     /** {@inheritDoc} */
-    @Override protected File createObject() { return new File(); }
-
-
-    /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final File instance) {
+    public String write(final File instance) {
         if (null==instance) { return null; }
 
-        super.write(json, instance);
+        final Json json = newJson();
 
-        json.set(
-            MIME_TYPE,
-            new MimeTypeSerializer().write(
-                json.create(), instance.getMimeType()));
-        json.set(PATH, instance.getPath());
-        json.set(PROPERTIES, instance.getProperties());
-        json.set(SIZE, Long.valueOf(instance.getSize()));
-        json.set(DATA, instance.getData());
-        json.set(MAJOR_CHANGE, Boolean.valueOf(instance.isMajorEdit()));
-        json.set(COMMENT, instance.getComment());
-        json.set(TEXT, instance.getContent());
+        ResourceMappings.writeRes(json, instance);
+        ResourceMappings.writeResource(json, instance);
+        ResourceMappings.writeFile(json, instance);
 
-        return json;
+        return json.toString();
     }
 }

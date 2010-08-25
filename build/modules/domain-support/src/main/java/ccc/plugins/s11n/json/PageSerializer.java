@@ -26,11 +26,8 @@
  */
 package ccc.plugins.s11n.json;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ccc.api.core.Page;
-import ccc.api.types.Paragraph;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -40,49 +37,42 @@ import ccc.api.types.Paragraph;
  */
 class PageSerializer
     extends
-        ResourceSerializer<Page> {
+        BaseSerializer<Page> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    PageSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public Page read(final Json json) {
-        if (null==json) { return null; }
+    public Page read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
-        final Page p = super.read(json);
+        final Page p = new Page();
 
-        final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
-        for (final Json jsonPara : json.getCollection(JsonKeys.PARAGRAPHS)) {
-            paragraphs.add(new ParagraphSerializer().read(jsonPara));
-        }
-        p.setParagraphs(paragraphs);
-        p.setComment(json.getString(JsonKeys.COMMENT));
-        p.setMajorChange(json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue());
+        ResourceMappings.readRes(json, p);
+        ResourceMappings.readResource(json, p);
+        ResourceMappings.readPage(json, p);
 
         return p;
     }
 
 
     /** {@inheritDoc} */
-    @Override protected Page createObject() { return new Page(); }
-
-
-    /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Page instance) {
+    public String write(final Page instance) {
         if (null==instance) { return null; }
+        final Json json = newJson();
 
-        super.write(json, instance);
+        ResourceMappings.writeRes(json, instance);
+        ResourceMappings.writeResource(json, instance);
+        ResourceMappings.writePage(json, instance);
 
-        json.setJsons(
-            JsonKeys.PARAGRAPHS,
-            new ParagraphSerializer().write(json, instance.getParagraphs()));
-        json.set(
-            JsonKeys.COMMENT,
-            instance.getComment());
-        json.set(
-            JsonKeys.MAJOR_CHANGE,
-            Boolean.valueOf(instance.isMajorChange()));
-
-        return json;
+        return json.toString();
     }
 }

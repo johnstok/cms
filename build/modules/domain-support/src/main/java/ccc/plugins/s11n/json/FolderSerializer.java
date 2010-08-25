@@ -27,6 +27,7 @@
 package ccc.plugins.s11n.json;
 
 import ccc.api.core.Folder;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -36,37 +37,43 @@ import ccc.api.core.Folder;
  */
 class FolderSerializer
     extends
-        ResourceSerializer<Folder> {
+        BaseSerializer<Folder> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    FolderSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public Folder read(final Json json) {
-        if (null==json) { return null; }
+    public Folder read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
-        final Folder f = super.read(json);
+        final Folder f = new Folder();
 
-        f.setIndexPage(json.getId(JsonKeys.INDEX_PAGE_ID));
-        f.setSortList(json.getStrings(JsonKeys.SORT_LIST));
+        ResourceMappings.readRes(json, f);
+        ResourceMappings.readResource(json, f);
+        ResourceMappings.readFolder(json, f);
 
         return f;
     }
 
 
     /** {@inheritDoc} */
-    @Override protected Folder createObject() { return new Folder(); }
-
-
-    /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Folder instance) {
+    public String write(final Folder instance) {
         if (null==instance) { return null; }
 
-        super.write(json, instance);
+        final Json json = newJson();
 
-        json.set(JsonKeys.INDEX_PAGE_ID, instance.getIndexPage());
-        json.setStrings(JsonKeys.SORT_LIST, instance.getSortList());
+        ResourceMappings.writeRes(json, instance);
+        ResourceMappings.writeResource(json, instance);
+        ResourceMappings.writeFolder(json, instance);
 
-        return json;
+        return json.toString();
     }
 }

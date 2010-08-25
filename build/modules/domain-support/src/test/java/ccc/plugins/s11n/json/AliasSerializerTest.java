@@ -48,13 +48,13 @@ public class AliasSerializerTest
     public void testConvertToJson() {
 
         // ARRANGE
-        final Json json = new JsonImpl();
         final UUID targetId = UUID.randomUUID();
         final Alias a = new Alias();
         a.setTargetId(targetId);
 
         // ACT
-        new AliasSerializer().write(json, a);
+        final Json json =  new JsonImpl(
+            new AliasSerializer(new ServerTextParser()).write(a));
 
         // ASSERT
         assertEquals(targetId, json.getId(JsonKeys.TARGET_ID));
@@ -67,11 +67,11 @@ public class AliasSerializerTest
     public void testConvertToJsonWithMissingTarget() {
 
         // ARRANGE
-        final Json json = new JsonImpl();
         final Alias a = new Alias();
 
         // ACT
-        new AliasSerializer().write(json, a);
+        final Json json =  new JsonImpl(
+            new AliasSerializer(new ServerTextParser()).write(a));
 
         // ASSERT
         assertNull(json.getId(JsonKeys.TARGET_ID));

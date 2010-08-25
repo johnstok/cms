@@ -27,7 +27,7 @@
 package ccc.plugins.s11n.json;
 
 import ccc.api.types.Duration;
-import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -35,16 +35,24 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-class DurationSerializer implements Serializer<Duration> {
+class DurationSerializer extends BaseSerializer<Duration> {
+
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    DurationSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public Duration read(final Json json) {
-        if (null==json) { return null; }
+    public Duration read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
-        final Duration d = new Duration();
-        d.setTime(json.getLong(JsonKeys.SECONDS).longValue());
+        final Duration d = read(json);
 
         return d;
     }
@@ -52,11 +60,27 @@ class DurationSerializer implements Serializer<Duration> {
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Duration instance) {
+    public String write(final Duration instance) {
         if (null==instance) { return null; }
 
-        json.set(JsonKeys.SECONDS, Long.valueOf(instance.getTime()));
+        final Json json = writeDuration(instance, newJson());
 
+        return json.toString();
+    }
+
+
+    static Duration read(final Json json) {
+        if (null==json) { return null; }
+
+        final Duration d = new Duration();
+        d.setTime(json.getLong(JsonKeys.SECONDS).longValue());
+        return d;
+    }
+
+
+    static Json writeDuration(final Duration instance, final Json json) {
+        if (null==instance) { return null; }
+        json.set(JsonKeys.SECONDS, Long.valueOf(instance.getTime()));
         return json;
     }
 }

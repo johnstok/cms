@@ -56,7 +56,6 @@ import ccc.commons.HTTP;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.markup.XHTML;
 import ccc.plugins.s11n.Serializers;
-import ccc.plugins.s11n.json.Json;
 import ccc.plugins.scripting.Context;
 import ccc.web.rendering.AuthenticationRequiredException;
 import ccc.web.rendering.NotFoundException;
@@ -189,13 +188,13 @@ public class ContentServlet
             throw new AuthenticationRequiredException(path);
         } catch (final CCException e) {
             final Serializers sFactory = new PluginFactory().serializers();
-            final Json json = sFactory.textParser().newJson();
-            sFactory.create(Failure.class).write(json, e.getFailure());
+            final String data =
+                sFactory.create(Failure.class).write(e.getFailure());
             LOG.warn(
                 "Exception retrieving path " + path
                 + " wc=" + workingCopy
                 + ", v=" + version
-                + " " + json.toString());
+                + " " + data);
             throw new NotFoundException();
         }
     }

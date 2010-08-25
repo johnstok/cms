@@ -26,8 +26,8 @@
  */
 package ccc.plugins.s11n.json;
 
-import static ccc.plugins.s11n.json.JsonKeys.*;
 import ccc.api.core.Template;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -37,42 +37,43 @@ import ccc.api.core.Template;
  */
 class TemplateSerializer
     extends
-        ResourceSerializer<Template> {
+        BaseSerializer<Template> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    TemplateSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public Template read(final Json json) {
-        if (null==json) { return null; }
+    public Template read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
-        final Template t = super.read(json);
+        final Template t = new Template();
 
-        t.setDefinition(json.getString(DEFINITION));
-        t.setBody(json.getString(BODY));
-        t.setMimeType(new MimeTypeSerializer().read(json.getJson(MIME_TYPE)));
+        ResourceMappings.readRes(json, t);
+        ResourceMappings.readResource(json, t);
+        ResourceMappings.readTemplate(json, t);
 
         return t;
     }
 
 
     /** {@inheritDoc} */
-    @Override protected Template createObject() { return new Template(); }
-
-
-    /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Template instance) {
+    public String write(final Template instance) {
         if (null==instance) { return null; }
 
-        super.write(json, instance);
+        final Json json = newJson();
 
-        json.set(DEFINITION, instance.getDefinition());
-        json.set(BODY,       instance.getBody());
-        json.set(
-            MIME_TYPE,
-            new MimeTypeSerializer().write(
-                json.create(), instance.getMimeType()));
+        ResourceMappings.writeRes(json, instance);
+        ResourceMappings.writeResource(json, instance);
+        ResourceMappings.writeTemplate(json, instance);
 
-        return json;
+        return json.toString();
     }
 }

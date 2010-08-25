@@ -27,10 +27,9 @@
 package ccc.plugins.s11n.json;
 
 import java.util.HashSet;
-import java.util.Map;
 
 import ccc.api.core.Group;
-import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -38,18 +37,26 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-class GroupSerializer implements Serializer<Group> {
+class GroupSerializer extends BaseSerializer<Group> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    GroupSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public Group read(final Json json) {
-        if (null==json) { return null; }
+    public Group read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
         final Group g = new Group();
 
-        final Map<String, String> links = json.getStringMap("links");
-        if (null!=links) { g.addLinks(links); }
+        ResourceMappings.readRes(json, g);
+
         g.setId(json.getId(JsonKeys.ID));
         g.setName(
             json.getString(JsonKeys.NAME));
@@ -62,14 +69,16 @@ class GroupSerializer implements Serializer<Group> {
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Group instance) {
+    public String write(final Group instance) {
         if (null==instance) { return null; }
+        final Json json = newJson();
 
-        json.set("links", instance.getLinks());
+        ResourceMappings.writeRes(json, instance);
+
         json.set(JsonKeys.ID, instance.getId());
         json.set(JsonKeys.NAME, instance.getName());
         json.setStrings(JsonKeys.PERMISSIONS, instance.getPermissions());
 
-        return json;
+        return json.toString();
     }
 }

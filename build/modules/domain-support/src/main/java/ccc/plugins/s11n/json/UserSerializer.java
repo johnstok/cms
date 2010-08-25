@@ -39,7 +39,7 @@ import java.util.UUID;
 
 import ccc.api.core.User;
 import ccc.api.types.Username;
-import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -47,18 +47,26 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-class UserSerializer implements Serializer<User> {
+class UserSerializer extends BaseSerializer<User> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    UserSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public User read(final Json json) {
-        if (null==json) { return null; }
+    public User read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
         final User u = new User();
 
-        final Map<String, String> links = json.getStringMap("links");
-        if (null!=links) { u.addLinks(links); }
+        ResourceMappings.readRes(json, u);
+
         u.setId(json.getId(ID));
         u.setEmail(json.getString(EMAIL));
         u.setName(json.getString(NAME));
@@ -86,10 +94,12 @@ class UserSerializer implements Serializer<User> {
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final User instance) {
+    public String write(final User instance) {
         if (null==instance) { return null; }
+        final Json json = newJson();
 
-        json.set("links", instance.getLinks());
+        ResourceMappings.writeRes(json, instance);
+
         json.set(ID, instance.getId());
         json.set(EMAIL, instance.getEmail());
         json.set(NAME, instance.getName());
@@ -103,7 +113,7 @@ class UserSerializer implements Serializer<User> {
         json.set(JsonKeys.PASSWORD, instance.getPassword());
         json.setStrings(PERMISSIONS, instance.getPermissions());
 
-        return json;
+        return json.toString();
     }
 
 

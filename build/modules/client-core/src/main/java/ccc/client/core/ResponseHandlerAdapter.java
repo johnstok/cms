@@ -142,6 +142,6 @@ public class ResponseHandlerAdapter
         return new RemoteException(
             new SerializerFactory(InternalServices.PARSER)
                 .create(Failure.class)
-                .read(InternalServices.PARSER.parseJson(response.getText())));
+                .read(response.getText()));
     }
 }

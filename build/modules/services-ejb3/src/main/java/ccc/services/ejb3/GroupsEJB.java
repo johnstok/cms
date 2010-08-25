@@ -47,7 +47,6 @@ import ccc.domain.LogEntry;
 import ccc.persistence.GroupRepository;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.Serializers;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -69,7 +68,7 @@ public class GroupsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(Permission.GROUP_CREATE)
-    public Group create(final Group comment) {
+    public Group create(final Group comment) { // FIXME: Factor into a command.
         final GroupEntity g = new GroupEntity(comment.getName());
         g.setPermissions(comment.getPermissions());
 
@@ -78,8 +77,7 @@ public class GroupsEJB
         final Group result = g.createDto();
 
         final Serializers sFactory = new PluginFactory().serializers();
-        final Json json = sFactory.textParser().newJson();
-        sFactory.create(Group.class).write(json, result);
+        final String data = sFactory.create(Group.class).write(result);
 
         getRepoFactory().createLogEntryRepo().record(
             new LogEntry(
@@ -87,7 +85,7 @@ public class GroupsEJB
                 GROUP_CREATE,
                 new Date(),
                 g.getId(),
-                json.toString()));
+                data));
 
         return result;
     }
@@ -137,8 +135,7 @@ public class GroupsEJB
         final Group result = g.createDto();
 
         final Serializers sFactory = new PluginFactory().serializers();
-        final Json json = sFactory.textParser().newJson();
-        sFactory.create(Group.class).write(json, result);
+        final String data = sFactory.create(Group.class).write(result);
 
         getRepoFactory().createLogEntryRepo().record(
             new LogEntry(
@@ -146,7 +143,7 @@ public class GroupsEJB
                 GROUP_UPDATE,
                 new Date(),
                 g.getId(),
-                json.toString()));
+                data));
 
         return result;
     }

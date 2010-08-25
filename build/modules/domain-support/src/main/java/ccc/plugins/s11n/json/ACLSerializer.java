@@ -33,7 +33,7 @@ import java.util.Set;
 
 import ccc.api.core.ACL;
 import ccc.api.core.ACL.Entry;
-import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -41,13 +41,21 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-class ACLSerializer implements Serializer<ACL> {
+class ACLSerializer extends BaseSerializer<ACL> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    ACLSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public ACL read(final Json json) {
-        if (null==json) { return null; }
+    public ACL read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
         final ACL d = new ACL();
         d.setGroups(unmap(json.getCollection(JsonKeys.GROUPS)));
@@ -59,13 +67,14 @@ class ACLSerializer implements Serializer<ACL> {
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final ACL instance) {
+    public String write(final ACL instance) {
         if (null==instance) { return null; }
+        final Json json = newJson();
 
         json.setJsons(JsonKeys.GROUPS, map(instance.getGroups(), json));
         json.setJsons(JsonKeys.USERS, map(instance.getUsers(), json));
 
-        return json;
+        return json.toString();
     }
 
 

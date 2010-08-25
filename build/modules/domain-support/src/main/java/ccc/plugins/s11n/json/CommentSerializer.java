@@ -26,11 +26,9 @@
  */
 package ccc.plugins.s11n.json;
 
-import java.util.Map;
-
 import ccc.api.core.Comment;
 import ccc.api.types.CommentStatus;
-import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -38,18 +36,26 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-class CommentSerializer implements Serializer<Comment> {
+class CommentSerializer extends BaseSerializer<Comment> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    CommentSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public Comment read(final Json json) {
-        if (null==json) { return null; }
+    public Comment read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
         final Comment c = new Comment();
 
-        final Map<String, String> links = json.getStringMap("links");
-        if (null!=links) { c.addLinks(links); }
+        ResourceMappings.readRes(json, c);
+
         c.setTimestamp(json.getDate(JsonKeys.DATE_CREATED));
         c.setResourceId(json.getId(JsonKeys.TARGET_ID));
         c.setBody(json.getString(JsonKeys.BODY));
@@ -65,8 +71,11 @@ class CommentSerializer implements Serializer<Comment> {
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Comment instance) {
+    public String write(final Comment instance) {
         if (null==instance) { return null; }
+        final Json json = newJson();
+
+        ResourceMappings.writeRes(json, instance);
 
         json.set("links", instance.getLinks());
         json.set(JsonKeys.DATE_CREATED, instance.getTimestamp());
@@ -78,6 +87,6 @@ class CommentSerializer implements Serializer<Comment> {
         json.set(JsonKeys.STATUS, instance.getStatus().name());
         json.set(JsonKeys.EMAIL, instance.getEmail());
 
-        return json;
+        return json.toString();
     }
 }

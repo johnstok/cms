@@ -48,6 +48,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.core.Template;
 import ccc.api.core.User;
+import ccc.api.types.DBC;
 import ccc.api.types.Duration;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
@@ -79,39 +80,56 @@ public final class SerializerFactory implements Serializers {
     public SerializerFactory(final TextParser textParser) {
         super();
 
-        _textParser = textParser;
+        _textParser = DBC.require().notNull(textParser);
         supportedClasses = new HashMap<Class<?>, Serializer<?>>();
         supportedNames   = new HashMap<String, Class<?>>();
 
-        addSerializer(ACL.class, new ACLSerializer());
-        addSerializer(Action.class, new ActionSerializer());
-        addSerializer(ActionSummary.class, new ActionSummarySerializer());
-        addSerializer(Alias.class, new AliasSerializer());
-        addSerializer(API.class, new APISerializer());
-        addSerializer(Comment.class, new CommentSerializer());
-        addSerializer(Duration.class, new DurationSerializer());
-        addSerializer(Failure.class, new FailureSerializer());
-        addSerializer(File.class, new FileSerializer());
-        addSerializer(Folder.class, new FolderSerializer());
-        addSerializer(Group.class, new GroupSerializer());
-        addSerializer(MimeType.class, new MimeTypeSerializer());
-        addSerializer(Page.class, new PageSerializer());
-        addSerializer(Paragraph.class, new ParagraphSerializer());
-        addSerializer(ResourceSummary.class, new ResourceSummarySerializer());
-        addSerializer(Revision.class, new RevisionSerializer());
-        addSerializer(SearchResult.class, new SearchResultSerializer());
-        addSerializer(Template.class, new TemplateSerializer());
-        addSerializer(Resource.class, new TempSerializer());
-        addSerializer(User.class, new UserSerializer());
-        addSerializer(PageCriteria.class, new PageCriteriaSerializer());
+        addSerializer(
+            ACL.class, new ACLSerializer(_textParser));
+        addSerializer(
+            Action.class, new ActionSerializer(_textParser));
+        addSerializer(
+            ActionSummary.class, new ActionSummarySerializer(_textParser));
+        addSerializer(
+            Alias.class, new AliasSerializer(_textParser));
+        addSerializer(
+            API.class, new APISerializer(_textParser));
+        addSerializer(
+            Comment.class, new CommentSerializer(_textParser));
+        addSerializer(
+            Duration.class, new DurationSerializer(_textParser));
+        addSerializer(
+            Failure.class, new FailureSerializer(_textParser));
+        addSerializer(
+            File.class, new FileSerializer(_textParser));
+        addSerializer(
+            Folder.class, new FolderSerializer(_textParser));
+        addSerializer(
+            Group.class, new GroupSerializer(_textParser));
+        addSerializer(
+            MimeType.class, new MimeTypeSerializer(_textParser));
+        addSerializer(
+            Page.class, new PageSerializer(_textParser));
+        addSerializer(
+            Paragraph.class, new ParagraphSerializer(_textParser));
+        addSerializer(
+            ResourceSummary.class, new ResourceSummarySerializer(_textParser));
+        addSerializer(
+            Revision.class, new RevisionSerializer(_textParser));
+        addSerializer(
+            SearchResult.class, new SearchResultSerializer(_textParser));
+        addSerializer(
+            Template.class, new TemplateSerializer(_textParser));
+        addSerializer(
+            Resource.class, new ResourceSerializer(_textParser));
+        addSerializer(
+            User.class, new UserSerializer(_textParser));
+        addSerializer(
+            PageCriteria.class, new PageCriteriaSerializer(_textParser));
+        addSerializer(
+            ResourceCriteria.class, new ResourceCriteriaSerializer(_textParser));
         addSerializer(
             PagedCollection.class, new PagedCollectionSerializer(this));
-        addSerializer(
-            ResourceCriteria.class,
-            new ResourceCriteriaSerializer<ResourceCriteria>() {
-                @Override protected ResourceCriteria createObject() {
-                    return new ResourceCriteria();
-                }});
     }
 
 

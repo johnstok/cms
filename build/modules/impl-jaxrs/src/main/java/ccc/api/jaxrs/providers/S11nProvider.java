@@ -43,7 +43,6 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import ccc.plugins.s11n.Serializer;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -97,14 +96,13 @@ public class S11nProvider<T>
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
         final Serializer<T> s = (Serializer<T>) getSerializers().create(clazz);
-        final Json json = getSerializers().textParser().newJson();
-        s.write(json, object);
+        final String body =  s.write(object);
 
         final PrintWriter pw = createWriter(outputStream);
         if (MediaType.TEXT_HTML_TYPE.equals(mediaType)) {
             pw.print("<html><body>");
         }
-        pw.print(json.toString());
+        pw.print(body);
         if (MediaType.TEXT_HTML_TYPE.equals(mediaType)) {
             pw.println("</body></html>");
         }
@@ -136,7 +134,7 @@ public class S11nProvider<T>
             if (MediaType.TEXT_HTML_TYPE.equals(mimetype)) {
                 entity = entity.substring(12, entity.length()-14);
             }
-            return s.read(getSerializers().textParser().parseJson(entity));
+            return s.read(entity);
 
         } catch (final RuntimeException e) { // FIXME: Choose correct type!
             throw new WebApplicationException(e);

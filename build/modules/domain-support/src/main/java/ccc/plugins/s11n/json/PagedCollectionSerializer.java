@@ -28,7 +28,6 @@ package ccc.plugins.s11n.json;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 import ccc.api.core.PagedCollection;
 import ccc.plugins.s11n.Serializer;
@@ -42,9 +41,7 @@ import ccc.plugins.s11n.Serializers;
  *
  * @author Civic Computing Ltd.
  */
-class PagedCollectionSerializer<T>
-    implements
-        Serializer<PagedCollection<T>> {
+class PagedCollectionSerializer<T> extends BaseSerializer<PagedCollection<T>> {
 
     private final Serializers _serializers;
 
@@ -55,13 +52,17 @@ class PagedCollectionSerializer<T>
      * @param serializers The serializers for this serializer.
      */
     public PagedCollectionSerializer(final Serializers serializers) {
+        super(serializers.textParser());
         _serializers = serializers;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<T> read(final Json json) {
+    public PagedCollection<T> read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
+
         final String className = json.getString(JsonKeys.TYPE);
         return read(json, className);
     }
@@ -69,28 +70,31 @@ class PagedCollectionSerializer<T>
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final PagedCollection<T> instance) {
+    public String write(final PagedCollection<T> instance) {
         if (null==instance) { return null; }
+        final Json json = newJson();
 
-        json.set("links", instance.getLinks());
+        ResourceMappings.writeRes(json, instance);
+
         json.set(JsonKeys.SIZE, Long.valueOf(instance.getTotalCount()));
         json.set(JsonKeys.TYPE, instance.getElementClass().getName());
         final Serializer<T> serializer =
             _serializers.create(instance.getElementClass());
         final Collection<Json> jsonElements = new ArrayList<Json>();
         for (final T element : instance.getElements()) {
-            jsonElements.add(serializer.write(json.create(), element));
+            // FIXME: Round-trips throw a String.
+            jsonElements.add(parse(serializer.write(element)));
         }
         json.setJsons(JsonKeys.ELEMENTS, jsonElements);
 
-        return json;
+        return json.toString();
     }
 
 
     private <U> PagedCollection<U> read(final Json json,
                                         final String elementClass) {
-
         if (null == json) { return null; }
+
 
         final Class<U> clazz = (Class<U>) _serializers.findClass(elementClass);
 
@@ -98,7 +102,8 @@ class PagedCollectionSerializer<T>
 
         final ArrayList<U> elements = new ArrayList<U>();
         for (final Json jElem : json.getCollection(JsonKeys.ELEMENTS)) {
-            elements.add(serializer.read(jElem));
+            // FIXME: Round-trips throw a String.
+            elements.add(serializer.read(jElem.toString()));
         }
         final PagedCollection<U> c =
             new PagedCollection<U>(
@@ -106,10 +111,7 @@ class PagedCollectionSerializer<T>
                 clazz,
                 elements);
 
-        final Map<String, String> links = json.getStringMap("links");
-        if (null != links) {
-            c.addLinks(links);
-        }
+        ResourceMappings.readRes(json, c);
 
         return c;
     }

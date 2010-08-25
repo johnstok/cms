@@ -27,16 +27,13 @@
 package ccc.plugins.s11n.json;
 
 import static ccc.plugins.s11n.json.JsonKeys.*;
-
-import java.util.Map;
-
 import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.FailureCode;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
-import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -44,18 +41,26 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-class ActionSummarySerializer implements Serializer<ActionSummary> {
+class ActionSummarySerializer extends BaseSerializer<ActionSummary> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    ActionSummarySerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public ActionSummary read(final Json json) {
-        if (null==json) { return null; }
+    public ActionSummary read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
         final ActionSummary s = new ActionSummary();
 
-        final Map<String, String> links = json.getStringMap("links");
-        if (null!=links) { s.addLinks(links); }
+        ResourceMappings.readRes(json, s);
+
         s.setId(json.getId(ID));
         s.setType(CommandType.valueOf(json.getString(TYPE)));
         s.setActorUsername(new Username(json.getString(USERNAME)));
@@ -74,10 +79,12 @@ class ActionSummarySerializer implements Serializer<ActionSummary> {
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final ActionSummary instance) {
+    public String write(final ActionSummary instance) {
         if (null==instance) { return null; }
+        final Json json = newJson();
 
-        json.set("links", instance.getLinks());
+        ResourceMappings.writeRes(json, instance);
+
         json.set(ID, instance.getId());
         json.set(TYPE, instance.getType().name());
         json.set(USERNAME, instance.getActorUsername().toString());
@@ -91,6 +98,6 @@ class ActionSummarySerializer implements Serializer<ActionSummary> {
                 ? null
                 : instance.getFailureCode().name());
 
-        return json;
+        return json.toString();
     }
 }

@@ -44,7 +44,6 @@ import ccc.api.core.Template;
 import ccc.api.core.User;
 import ccc.api.types.Duration;
 import ccc.plugins.s11n.Serializers;
-import ccc.plugins.s11n.json.Json;
 import ccc.plugins.s11n.json.SerializerFactory;
 
 
@@ -70,7 +69,7 @@ public class S11nHelper {
         return
             serializers()
                 .create(ResourceSummary.class)
-                .read(parse(response.getText()));
+                .read(response.getText());
     }
 
 
@@ -78,7 +77,7 @@ public class S11nHelper {
         return
             serializers()
                 .create(Template.class)
-                .read(parse(response.getText()));
+                .read(response.getText());
     }
 
 
@@ -87,7 +86,7 @@ public class S11nHelper {
         return
             serializers()
                 .create(PagedCollection.class)
-                .read(parse(response.getText()));
+                .read(response.getText());
     }
 
 
@@ -96,7 +95,7 @@ public class S11nHelper {
         return
             serializers()
                 .create(PagedCollection.class)
-                .read(parse(response.getText()));
+                .read(response.getText());
     }
 
 
@@ -104,7 +103,7 @@ public class S11nHelper {
         return
             serializers()
                 .create(PagedCollection.class)
-                .read(parse(response.getText()));
+                .read(response.getText());
     }
 
 
@@ -112,7 +111,7 @@ public class S11nHelper {
         return
             serializers()
                 .create(PagedCollection.class)
-                .read(parse(response.getText()));
+                .read(response.getText());
     }
 
 
@@ -120,7 +119,7 @@ public class S11nHelper {
         return
             serializers()
                 .create(PagedCollection.class)
-                .read(parse(response.getText()));
+                .read(response.getText());
     }
 
 
@@ -129,7 +128,7 @@ public class S11nHelper {
         return
             serializers()
                 .create(PagedCollection.class)
-                .read(parse(response.getText()));
+                .read(response.getText());
     }
 
 
@@ -137,7 +136,7 @@ public class S11nHelper {
         return
             serializers()
                 .create(PagedCollection.class)
-                .read(parse(response.getText()));
+                .read(response.getText());
     }
 
 
@@ -146,144 +145,114 @@ public class S11nHelper {
         return
             serializers()
                 .create(PagedCollection.class)
-                .read(parse(response.getText()));
+                .read(response.getText());
     }
 
 
     protected API readAPI(final Response response) {
-        return serializers().create(API.class).read(parse(response.getText()));
+        return serializers().create(API.class).read(response.getText());
     }
 
 
     protected ResourceSummary readResourceSummary(final Response response) {
         return serializers()
                 .create(ResourceSummary.class)
-                .read(parse(response.getText()));
+                .read(response.getText());
     }
 
 
     protected Duration readDuration(final Response response) {
-        return serializers().create(Duration.class).read(parse(response.getText()));
+        return serializers().create(Duration.class).read(response.getText());
     }
 
 
     protected Page readPage(final Response response) {
-        return serializers().create(Page.class).read(parse(response.getText()));
+        return serializers().create(Page.class).read(response.getText());
     }
 
 
     protected ACL readACL(final Response response) {
-        return serializers().create(ACL.class).read(parse(response.getText()));
+        return serializers().create(ACL.class).read(response.getText());
     }
 
 
     protected User readUser(final Response response) {
-        return serializers().create(User.class).read(parse(response.getText()));
+        return serializers().create(User.class).read(response.getText());
     }
 
 
     protected Group readGroup(final Response response) {
-        return serializers().create(Group.class).read(parse(response.getText()));
+        return serializers().create(Group.class).read(response.getText());
     }
 
 
     protected File readFile(final Response response) {
-        return serializers().create(File.class).read(parse(response.getText()));
+        return serializers().create(File.class).read(response.getText());
     }
 
 
     public ResourceSummary readResourceSummary(final String data) {
-        return serializers().create(ResourceSummary.class).read(parse(data));
+        return serializers().create(ResourceSummary.class).read(data);
     }
 
     public Failure readFailure(final String response) {
-        return serializers().create(Failure.class).read(parse(response));
+        return serializers().create(Failure.class).read(response);
     }
 
 
     protected String writeTemplate(final Template t) {
-        final Json json = InternalServices.PARSER.newJson();
-        serializers().create(Template.class).write(json, t);
-        return json.toString();
+        return serializers().create(Template.class).write(t);
     }
 
 
     protected String writeAlias(final Alias alias) {
-        final Json json = newJson();
-        serializers().create(Alias.class).write(json, alias);
-        return json.toString();
+        return serializers().create(Alias.class).write(alias);
     }
 
 
     protected String writePage(final Page page) {
-        final Json json = newJson();
-        serializers().create(Page.class).write(json, page);
-        return json.toString();
+        return serializers().create(Page.class).write(page);
     }
 
 
     protected String writeUser(final User user) {
-        final Json json = newJson();
-        serializers().create(User.class).write(json, user);
-        return json.toString();
+        return serializers().create(User.class).write(user);
     }
 
 
     protected String writeACL(final ACL acl) {
-        final Json json = newJson();
-        serializers().create(ACL.class).write(json, acl);
-        return json.toString();
+        return serializers().create(ACL.class).write(acl);
     }
 
 
     protected String writeResource(final Resource resource) {
-        final Json json = newJson();
-        serializers().create(Resource.class).write(json, resource);
-        return json.toString();
+        return serializers().create(Resource.class).write(resource);
     }
 
 
     protected String writeFolder(final Folder folder) {
-        final Json json = newJson();
-        serializers().create(Folder.class).write(json, folder);
-        return json.toString();
+        return serializers().create(Folder.class).write(folder);
     }
 
 
     protected String writeComment(final Comment comment) {
-        final Json json = newJson();
-        serializers().create(Comment.class).write(json, comment);
-        return json.toString();
+        return serializers().create(Comment.class).write(comment);
     }
 
     protected String writeFile(final File file) {
-        final Json json = newJson();
-        serializers().create(File.class).write(json, file);
-        return json.toString();
+        return serializers().create(File.class).write(file);
     }
 
 
     protected String writeAction(final ccc.api.core.Action action) {
-        final Json json = newJson();
-        serializers().create(ccc.api.core.Action.class).write(json, action);
-        return json.toString();
+        return serializers().create(ccc.api.core.Action.class).write(action);
     }
 
 
     protected String writeGroup(final Group group) {
-        final Json json = newJson();
-        serializers().create(Group.class).write(json, group);
-        return json.toString();
+        return serializers().create(Group.class).write(group);
     }
 
 
     private Serializers serializers() { return _serializers; }
-
-
-    private Json parse(final String response) {
-        return InternalServices.PARSER.parseJson(response);
-    }
-
-
-    private Json newJson() { return InternalServices.PARSER.newJson(); }
 }

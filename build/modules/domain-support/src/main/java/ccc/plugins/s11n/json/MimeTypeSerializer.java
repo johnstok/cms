@@ -27,7 +27,7 @@
 package ccc.plugins.s11n.json;
 
 import ccc.api.types.MimeType;
-import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -35,20 +35,23 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-class MimeTypeSerializer
-    implements
-        Serializer<MimeType> {
+class MimeTypeSerializer extends BaseSerializer<MimeType> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    MimeTypeSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public MimeType read(final Json json) {
-        if (null==json) { return null; }
+    public MimeType read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
-        final MimeType d =
-            new MimeType(
-                json.getString(JsonKeys.PRIMARY_TYPE),
-                json.getString(JsonKeys.SUB_TYPE));
+        final MimeType d = readMimeType(json);
 
         return d;
     }
@@ -56,13 +59,29 @@ class MimeTypeSerializer
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final MimeType instance) {
+    public String write(final MimeType instance) {
         if (null==instance) { return null; }
+        final Json json = newJson();
 
-        json.set(JsonKeys.PRIMARY_TYPE, instance.getPrimaryType());
-        json.set(JsonKeys.SUB_TYPE, instance.getSubType());
+        writeMimeType(json, instance);
 
-        return json;
+        return json.toString();
     }
 
+
+    static MimeType readMimeType(final Json json) {
+        if (null==json) { return null; }
+
+        final MimeType d =
+            new MimeType(
+                json.getString(JsonKeys.PRIMARY_TYPE),
+                json.getString(JsonKeys.SUB_TYPE));
+        return d;
+    }
+
+
+    static void writeMimeType(final Json json, final MimeType instance) {
+        json.set(JsonKeys.PRIMARY_TYPE, instance.getPrimaryType());
+        json.set(JsonKeys.SUB_TYPE, instance.getSubType());
+    }
 }

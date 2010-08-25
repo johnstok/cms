@@ -64,16 +64,14 @@ import com.google.gwt.user.client.ui.Image;
  */
 public class UploadFileDialog extends AbstractEditDialog {
 
-    private final S11nHelper _s11n = new S11nHelper();
-    private final TextField<String>   _fileName = new TextField<String>();
-    private final ResourceSummary _parent;
-    private final HiddenField<String> _path = new HiddenField<String>();
-    private final FileUploadField           _file = new FileUploadField();
-
-    private final CheckBox _majorEdit = new CheckBox();
-    private final TextArea _comment = new TextArea();
-
-    private final Image _image =
+    private final ResourceSummary     _parent;
+    private final S11nHelper          _s11n      = new S11nHelper();
+    private final TextField<String>   _fileName  = new TextField<String>();
+    private final HiddenField<String> _path      = new HiddenField<String>();
+    private final FileUploadField     _file      = new FileUploadField();
+    private final CheckBox            _majorEdit = new CheckBox();
+    private final TextArea            _comment   = new TextArea();
+    private final Image               _image     =
         new Image(ImagePaths.LARGE_LOADING);
 
     /**

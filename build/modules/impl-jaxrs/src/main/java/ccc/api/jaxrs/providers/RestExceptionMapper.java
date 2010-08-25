@@ -105,8 +105,7 @@ public class RestExceptionMapper
         Failure f;
         try {
             final Serializers sFactory = new PluginFactory().serializers();
-            f = sFactory.create(Failure.class)
-                        .read(sFactory.textParser().parseJson(body));
+            f = sFactory.create(Failure.class).read(body);
         } catch (final S11nException e) {
             throw new CCException(body);
         }

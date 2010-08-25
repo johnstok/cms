@@ -27,7 +27,6 @@
 
 package ccc.plugins.s11n;
 
-import ccc.plugins.s11n.json.Json;
 
 
 
@@ -43,21 +42,20 @@ public interface Serializer<T> {
     /**
      * Serialize to representation.
      *
-     * @param json The wire representation.
      * @param instance The object to serialize.
      *
-     * @return Returns the 'json' input param if the 'instance' param is not
-     * NULL; returns NULL otherwise.
+     * @return Returns the serialized form of the 'instance' param is not
+     *  NULL; returns NULL otherwise.
      */
-    Json write(final Json json, final T instance);
+    String write(final T instance);
 
     /**
      * Deserialize from a representation.
      *
-     * @param json The wire representation.
+     * @param data The wire representation.
      *
      * @return The corresponding object.
      */
-    T read(final Json json);
+    T read(final String data);
 
 }

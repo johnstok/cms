@@ -27,6 +27,7 @@
 package ccc.plugins.s11n.json;
 
 import ccc.api.core.Alias;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -36,35 +37,43 @@ import ccc.api.core.Alias;
  */
 class AliasSerializer
     extends
-        ResourceSerializer<Alias> {
+        BaseSerializer<Alias> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    AliasSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public Alias read(final Json json) {
-        if (null==json) { return null; }
+    public Alias read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
-        final Alias a = super.read(json);
+        final Alias a = new Alias();
 
-        a.setTargetId(json.getId(JsonKeys.TARGET_ID));
+        ResourceMappings.readRes(json, a);
+        ResourceMappings.readResource(json, a);
+        ResourceMappings.readAlias(json, a);
 
         return a;
     }
 
 
     /** {@inheritDoc} */
-    @Override protected Alias createObject() { return new Alias(); }
-
-
-    /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Alias instance) {
+    public String write(final Alias instance) {
         if (null==instance) { return null; }
 
-        super.write(json, instance);
+        final Json json = newJson();
 
-        json.set(JsonKeys.TARGET_ID, instance.getTargetId());
+        ResourceMappings.writeRes(json, instance);
+        ResourceMappings.writeResource(json, instance);
+        ResourceMappings.writeAlias(json, instance);
 
-        return json;
+        return json.toString();
     }
 }

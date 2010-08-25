@@ -29,7 +29,7 @@ package ccc.plugins.s11n.json;
 import ccc.api.core.Revision;
 import ccc.api.types.CommandType;
 import ccc.api.types.Username;
-import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -37,15 +37,21 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-class RevisionSerializer
-    implements
-        Serializer<Revision> {
+class RevisionSerializer extends BaseSerializer<Revision> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    RevisionSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public Revision read(final Json json) {
-        if (null==json) { return null; }
+    public Revision read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
         final Revision r =
             new Revision(
@@ -62,8 +68,9 @@ class RevisionSerializer
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Revision instance) {
+    public String write(final Revision instance) {
         if (null==instance) { return null; }
+        final Json json = newJson();
 
         json.set(JsonKeys.COMMAND, instance.getCommand().name());
         json.set(JsonKeys.USERNAME, instance.getActorUsername().toString());
@@ -72,7 +79,7 @@ class RevisionSerializer
         json.set(JsonKeys.INDEX, Long.valueOf(instance.getIndex()));
         json.set(JsonKeys.COMMENT, instance.getComment());
 
-        return json;
+        return json.toString();
     }
 
 }

@@ -31,7 +31,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.SearchResult;
-import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -39,13 +39,21 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-class SearchResultSerializer implements Serializer<SearchResult> {
+class SearchResultSerializer extends BaseSerializer<SearchResult> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    SearchResultSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public SearchResult read(final Json json) {
-        if (null==json) { return null; }
+    public SearchResult read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
         final Set<UUID> hits = new HashSet<UUID>();
         for (final String hit : json.getStrings("hits")) {
@@ -66,8 +74,9 @@ class SearchResultSerializer implements Serializer<SearchResult> {
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final SearchResult instance) {
+    public String write(final SearchResult instance) {
         if (null==instance) { return null; }
+        final Json json = newJson();
 
         final Set<String> hits = new HashSet<String>();
         for (final UUID hit : instance.hits()) {
@@ -80,6 +89,6 @@ class SearchResultSerializer implements Serializer<SearchResult> {
         json.set("terms", instance.getTerms());
         json.setStrings("hits", hits);
 
-        return json;
+        return json.toString();
     }
 }

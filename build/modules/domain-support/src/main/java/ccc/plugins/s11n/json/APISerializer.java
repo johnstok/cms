@@ -27,6 +27,7 @@
 package ccc.plugins.s11n.json;
 
 import ccc.api.core.API;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -36,9 +37,38 @@ import ccc.api.core.API;
  */
 class APISerializer
     extends
-        ResSerializer<API> {
+        BaseSerializer<API> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    APISerializer(final TextParser parser) { super(parser); }
+
 
     /** {@inheritDoc} */
     @Override
-    protected API createObject() { return new API(); }
+    public API read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
+
+        final API r = new API();
+
+        ResourceMappings.readRes(json, r);
+
+        return r;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String write(final API instance) {
+        if (null==instance) { return null; }
+        final Json json = newJson();
+
+        ResourceMappings.writeRes(json, instance);
+
+        return json.toString();
+    }
 }

@@ -32,7 +32,7 @@ import java.util.Set;
 
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
-import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -40,14 +40,39 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-class ParagraphSerializer
-    implements
-        Serializer<Paragraph> {
+class ParagraphSerializer extends BaseSerializer<Paragraph> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    ParagraphSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public Paragraph read(final Json json) {
+    public Paragraph read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
+
+        return read(json);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String write(final Paragraph instance) {
+        if (null==instance) { return null; }
+        final Json json = newJson();
+
+        writeParagraph(instance, json);
+
+        return json.toString();
+    }
+
+
+    static Paragraph read(final Json json) {
         if (null==json) { return null; }
 
         final String name = json.getString(JsonKeys.NAME);
@@ -78,27 +103,24 @@ class ParagraphSerializer
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public Json write(final Json json, final Paragraph instance) {
-        if (null==instance) { return null; }
-
+    static void writeParagraph(final Paragraph instance, final Json json) {
         json.set(JsonKeys.NAME, instance.getName());
         json.set(JsonKeys.TYPE, instance.getType().name());
         json.set(JsonKeys.TEXT, instance.getText());
         json.set(JsonKeys.BOOLEAN, instance.getBoolean());
         json.set(JsonKeys.DATE, instance.getDate());
-
-        return json;
     }
 
 
-    public Set<Json> write(final Json json, final Set<Paragraph> instance) {
+    static Set<Json> writeParagraphs(final Json json,
+                                     final Set<Paragraph> instance) {
         if (null==instance) { return null; }
 
         final Set<Json> jsons = new HashSet<Json>();
         for (final Paragraph p : instance) {
-            jsons.add(write(json.create(), p));
+            final Json pJson = json.create();
+            writeParagraph(p, pJson);
+            jsons.add(pJson);
         }
 
         return jsons;

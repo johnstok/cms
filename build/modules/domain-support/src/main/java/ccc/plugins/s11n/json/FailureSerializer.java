@@ -27,7 +27,7 @@
 package ccc.plugins.s11n.json;
 
 import ccc.api.core.Failure;
-import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -35,13 +35,21 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-class FailureSerializer implements Serializer<Failure> {
+class FailureSerializer extends BaseSerializer<Failure> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    FailureSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public Failure read(final Json json) {
-        if (null==json) { return null; }
+    public Failure read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
         final Failure f =
             new Failure(
@@ -55,13 +63,14 @@ class FailureSerializer implements Serializer<Failure> {
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Failure instance) {
+    public String write(final Failure instance) {
         if (null==instance) { return null; }
+        final Json json = newJson();
 
         json.set(JsonKeys.CODE, instance.getCode());
         json.set(JsonKeys.ID, instance.getExceptionId());
         json.set(JsonKeys.PARAMETERS, instance.getParams());
 
-        return json;
+        return json.toString();
     }
 }

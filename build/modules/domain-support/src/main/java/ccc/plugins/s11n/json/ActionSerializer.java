@@ -32,7 +32,7 @@ import java.util.UUID;
 
 import ccc.api.core.Action;
 import ccc.api.types.CommandType;
-import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -40,13 +40,21 @@ import ccc.plugins.s11n.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-class ActionSerializer implements Serializer<Action> {
+class ActionSerializer extends BaseSerializer<Action> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    ActionSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public Action read(final Json json) {
-        if (null==json) { return null; }
+    public Action read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
         final UUID resourceId =
             json.getId(JsonKeys.SUBJECT_ID);
@@ -65,14 +73,15 @@ class ActionSerializer implements Serializer<Action> {
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Action instance) {
+    public String write(final Action instance) {
         if (null==instance) { return null; }
+        final Json json = newJson();
 
         json.set(JsonKeys.SUBJECT_ID, instance.getResourceId());
         json.set(JsonKeys.COMMAND, instance.getCommand().name());
         json.set(JsonKeys.EXECUTE_AFTER, instance.getExecuteAfter());
         json.set(JsonKeys.PARAMETERS, instance.getParameters());
 
-        return json;
+        return json.toString();
     }
 }

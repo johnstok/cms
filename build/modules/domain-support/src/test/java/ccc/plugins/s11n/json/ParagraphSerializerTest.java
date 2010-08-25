@@ -26,8 +26,6 @@
  */
 package ccc.plugins.s11n.json;
 
-import static org.easymock.EasyMock.*;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -49,66 +47,61 @@ public class ParagraphSerializerTest
     /**
      * Test.
      */
-    public void testCreateSnapshot() {
+    public void testSerializeText() {
 
         // ARRANGE
         final Paragraph p = Paragraph.fromText("foo", "bar");
 
-        _json.set("name", "foo");
-        _json.set("type", "TEXT");
-        _json.set("text", "bar");
-        _json.set("boolean", (Boolean) null);
-        _json.set("date", (Date) null);
-        replay(_json);
-
         // ACT
-        new ParagraphSerializer().write(_json, p);
+        final Json json = new JsonImpl(
+            new ParagraphSerializer(new ServerTextParser()).write(p));
 
         // ASSERT
-        verify(_json);
+        assertEquals("foo", json.getString("name"));
+        assertEquals("TEXT", json.getString("type"));
+        assertEquals("bar", json.getString("text"));
+        assertNull(json.getBool("boolean"));
+        assertNull(json.getDate("date"));
     }
 
 
     /**
      * Test.
      */
-    public void testCreateNumberSnapshot() {
+    public void testSerializeNumber() {
 
         // ARRANGE
         final Paragraph p =
             Paragraph.fromNumber("foo", new BigDecimal("123.456"));
 
-        _json.set("name", "foo");
-        _json.set("type", "NUMBER");
-        _json.set("text", "123.456");
-        _json.set("boolean", (Boolean) null);
-        _json.set("date", (Date) null);
-        replay(_json);
-
         // ACT
-        new ParagraphSerializer().write(_json, p);
+        final Json json = new JsonImpl(
+            new ParagraphSerializer(new ServerTextParser()).write(p));
 
         // ASSERT
-        verify(_json);
+        assertEquals("foo", json.getString("name"));
+        assertEquals("NUMBER", json.getString("type"));
+        assertEquals("123.456", json.getString("text"));
+        assertNull(json.getBool("boolean"));
+        assertNull(json.getDate("date"));
     }
 
 
     /**
      * Test.
      */
-    public void testFromSnapshot() {
+    public void testDeserializeText() {
 
         // ARRANGE
-        expect(_json.getString("name")).andReturn("bar");
-        expect(_json.getString("type")).andReturn("TEXT");
-        expect(_json.getString("text")).andReturn("foo");
-        replay(_json);
+        final ParagraphSerializer serializer =
+            new ParagraphSerializer(new ServerTextParser());
+        final String pSer =
+            serializer.write(Paragraph.fromText("bar", "foo"));
 
         // ACT
-        final Paragraph p = new ParagraphSerializer().read(_json);
+        final Paragraph p = serializer.read(pSer);
 
         // ASSERT
-        verify(_json);
         assertEquals("bar", p.getName());
         assertEquals(ParagraphType.TEXT, p.getType());
         assertEquals("foo", p.getText());
@@ -120,19 +113,18 @@ public class ParagraphSerializerTest
     /**
      * Test.
      */
-    public void testFromNumberSnapshot() {
+    public void testDeserializeNumber() {
 
         // ARRANGE
-        expect(_json.getString("name")).andReturn("bar");
-        expect(_json.getString("type")).andReturn("NUMBER");
-        expect(_json.getString("text")).andReturn("123.456");
-        replay(_json);
+        final ParagraphSerializer serializer =
+            new ParagraphSerializer(new ServerTextParser());
+        final String pSer =
+            serializer.write(Paragraph.fromNumber("bar", 123.456));
 
         // ACT
-        final Paragraph p = new ParagraphSerializer().read(_json);
+        final Paragraph p = serializer.read(pSer);
 
         // ASSERT
-        verify(_json);
         assertEquals("bar", p.getName());
         assertEquals(ParagraphType.NUMBER, p.getType());
         assertEquals(new BigDecimal("123.456"), p.getNumber());
@@ -145,66 +137,42 @@ public class ParagraphSerializerTest
     /**
      * Test.
      */
-    public void testParagraphConstructorBooleanTypeJSON() {
+    public void testSerializeBoolean() {
 
-        final Paragraph p = Paragraph.fromText("foo", "bar");
+        // ARRANGE
+        final Paragraph p = Paragraph.fromBoolean("foo", true);
 
-        _json.set("name", "foo");
-        _json.set("type", "TEXT");
-        _json.set("text", "bar");
-        _json.set("boolean", (Boolean) null);
-        _json.set("date", (Date) null);
-        expect(_json.getString("name")).andReturn("bar");
-        expect(_json.getString("type")).andReturn("BOOLEAN");
-        expect(_json.getBool("boolean")).andReturn(true);
-        replay(_json);
-        new ParagraphSerializer().write(_json, p);
+        // ACT
+        final Json json = new JsonImpl(
+            new ParagraphSerializer(new ServerTextParser()).write(p));
 
-
-        final Paragraph p2 = new ParagraphSerializer().read(_json);
-        assertNull(p.getBoolean());
-        assertEquals(p2.getBoolean(), new Boolean(true));
-
+        // ASSERT
+        assertEquals("foo", json.getString("name"));
+        assertEquals("BOOLEAN", json.getString("type"));
+        assertNull(json.getString("text"));
+        assertTrue(json.getBool("boolean").booleanValue());
+        assertNull(json.getDate("date"));
     }
 
 
     /**
      * Test.
      */
-    public void testParagraphConstructorDateTypeJSON() {
+    public void testSerializeDate() {
 
-        final Date testDate = new Date(System.currentTimeMillis());
+        // ARRANGE
+        final Date now = new Date();
+        final Paragraph p = Paragraph.fromDate("foo", now);
 
-        final Paragraph p = Paragraph.fromDate("foo", testDate);
-        _json.set("name", "foo");
-        _json.set("type", "DATE");
-        _json.set("text", (String) null);
-        _json.set("boolean", (Boolean) null);
-        _json.set("date", testDate);
-        expect(_json.getString("name")).andReturn("bar");
-        expect(_json.getString("type")).andReturn("DATE");
-        expect(_json.getDate("date")).andReturn(testDate);
-        replay(_json);
-        new ParagraphSerializer().write(_json, p);
+        // ACT
+        final Json json = new JsonImpl(
+            new ParagraphSerializer(new ServerTextParser()).write(p));
 
-        final Paragraph p2 = new ParagraphSerializer().read(_json);
-        assertEquals(p2.getDate(), testDate);
+        // ASSERT
+        assertEquals("foo", json.getString("name"));
+        assertEquals("DATE", json.getString("type"));
+        assertNull(json.getString("text"));
+        assertNull(json.getBool("boolean"));
+        assertEquals(now, json.getDate("date"));
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected void setUp() {
-        _json = createStrictMock(Json.class);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected void tearDown() {
-        _json = null;
-    }
-
-
-    private Json _json;
 }

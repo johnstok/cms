@@ -29,27 +29,54 @@ package ccc.plugins.s11n.json;
 import ccc.api.core.ResourceCriteria;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
  * Serializer for {@link ResourceCriteria} objects.
  *
- * @param <T> The type of criteria object to serialize.
- *
  * @author Civic Computing Ltd.
  */
-abstract class ResourceCriteriaSerializer<T extends ResourceCriteria>
+class ResourceCriteriaSerializer
     extends
-        AbstractSerializer<T> {
+        BaseSerializer<ResourceCriteria> {
+
+    /**
+     * Constructor.
+     *
+     * @param parser The text parser for this serializer.
+     */
+    ResourceCriteriaSerializer(final TextParser parser) { super(parser); }
 
 
     /** {@inheritDoc} */
     @Override
-    public T read(final Json json) {
-        if (null==json) { return null; }
+    public ResourceCriteria read(final String data) {
+        if (null==data) { return null; }
+        final Json json = parse(data);
 
-        final T c = super.read(json);
+        final ResourceCriteria c = new ResourceCriteria();
 
+        readResourceCriteria(json, c);
+
+        return c;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String write(final ResourceCriteria instance) {
+        if (null==instance) { return null; }
+        final Json json = newJson();
+
+        writeResourceCriteria(json, instance);
+
+        return json.toString();
+    }
+
+
+    static void readResourceCriteria(final Json json,
+                                     final ResourceCriteria c) {
         c.setChangedAfter(json.getDate("changed-after"));
         c.setChangedBefore(json.getDate("changed-before"));
         c.setLocked(json.getBool(JsonKeys.LOCKED));
@@ -63,18 +90,11 @@ abstract class ResourceCriteriaSerializer<T extends ResourceCriteria>
         c.setTag(json.getString(JsonKeys.TAGS));
         final String t = json.getString(JsonKeys.TYPE);
         c.setType((null==t) ? null : ResourceType.valueOf(t));
-
-        return c;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public Json write(final Json json, final T instance) {
-        if (null==instance) { return null; }
-
-        super.write(json, instance);
-
+    static void writeResourceCriteria(final Json json,
+                                      final ResourceCriteria instance) {
         json.set("changed-after", instance.getChangedAfter());
         json.set("changed-before", instance.getChangedBefore());
         json.set(JsonKeys.LOCKED, instance.getLocked());
@@ -88,7 +108,5 @@ abstract class ResourceCriteriaSerializer<T extends ResourceCriteria>
         json.set(JsonKeys.TAGS, instance.getTag());
         final ResourceType t = instance.getType();
         json.set(JsonKeys.TYPE, (null==t) ? null : t.name());
-
-        return json;
     }
 }

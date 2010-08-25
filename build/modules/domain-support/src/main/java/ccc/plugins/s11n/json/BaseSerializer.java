@@ -26,53 +26,46 @@
  */
 package ccc.plugins.s11n.json;
 
-import java.util.Map;
-
-import ccc.api.core.Res;
 import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
- * Serializer for {@link Res}s.
+ * Helper class for serializers.
  *
- * @param <T> The type of {@link Res} to serialize.
+ * @param <T> The type of object to serialize.
  *
  * @author Civic Computing Ltd.
  */
-abstract class ResSerializer<T extends Res>
+public abstract class BaseSerializer<T>
     implements
         Serializer<T> {
 
-
-    /** {@inheritDoc} */
-    @Override
-    public T read(final Json json) {
-        if (null==json) { return null; }
-
-        final T r = createObject();
-
-        final Map<String, String> links = json.getStringMap("links");
-        if (null!=links) { r.addLinks(links); }
-
-        return r;
-    }
+    private final TextParser _parser;
 
 
     /**
-     * Create a new instance of type T.
+     * Constructor.
      *
-     * @return The newly created instance of T.
+     * @param parser The text parser for this serializer.
      */
-    protected abstract T createObject();
+    public BaseSerializer(final TextParser parser) { _parser = parser; }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public Json write(final Json json, final T instance) {
-        if (null==instance) { return null; }
+    /**
+     * Create a new container object.
+     *
+     * @return The container.
+     */
+    protected final Json newJson() { return _parser.newJson(); }
 
-        json.set("links", instance.getLinks());
 
-        return json;
-    }
+    /**
+     * Parse a string to JSON.
+     *
+     * @param data The string to parse.
+     *
+     * @return The corresponding JSON object.
+     */
+    protected Json parse(final String data) { return _parser.parseJson(data); }
 }

@@ -26,18 +26,16 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import ccc.api.core.Failure;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.ImagePaths;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemoteException;
+import ccc.client.core.S11nHelper;
 import ccc.client.core.SessionTimeoutException;
-import ccc.client.gwt.core.GWTTextParser;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.plugins.s11n.S11nException;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -61,14 +59,13 @@ import com.google.gwt.user.client.ui.Image;
  */
 public class UpdateFileDialog extends AbstractEditDialog {
 
-    private final HiddenField<String> _id = new HiddenField<String>();
-    private final FileUploadField           _file = new FileUploadField();
-    private final Image _image =
+    private final S11nHelper          _s11n      = new S11nHelper();
+    private final HiddenField<String> _id        = new HiddenField<String>();
+    private final FileUploadField     _file      = new FileUploadField();
+    private final Image               _image     =
         new Image(ImagePaths.LARGE_LOADING);
-
-    private final CheckBox _majorEdit = new CheckBox();
-    private final TextArea _comment = new TextArea();
-
+    private final CheckBox            _majorEdit = new CheckBox();
+    private final TextArea            _comment   = new TextArea();
 
     /**
      * Constructor.
@@ -128,11 +125,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
                         try {
                             InternalServices.EX_HANDLER.unexpectedError(
                                 new RemoteException(
-                                    new SerializerFactory(new GWTTextParser())
-                                        .create(Failure.class)
-                                        .read(
-                                            InternalServices.PARSER.parseJson(
-                                                response))),
+                                    _s11n.readFailure(response)),
                                 getUiConstants().uploadFile());
 
                         // Assume success.
