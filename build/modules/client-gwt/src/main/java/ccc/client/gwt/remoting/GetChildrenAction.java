@@ -28,12 +28,9 @@ package ccc.client.gwt.remoting;
 
 import java.util.Collection;
 
-import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -59,11 +56,7 @@ public abstract class GetChildrenAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final Json json =
-            InternalServices.PARSER.parseJson(response.getText());
-        final PagedCollection<ResourceSummary> rsCollection =
-            serializers().create(PagedCollection.class).read(json);
-        execute(rsCollection.getElements());
+        execute(parseResourceSummaries(response).getElements());
     }
 
 

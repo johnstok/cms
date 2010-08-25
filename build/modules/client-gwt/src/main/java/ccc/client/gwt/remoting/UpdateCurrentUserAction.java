@@ -30,7 +30,6 @@ import ccc.api.core.User;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -63,8 +62,6 @@ public abstract class UpdateCurrentUserAction
 
     /** {@inheritDoc} */
     @Override protected String getBody() {
-        final Json json = newJson();
-        serializers().create(User.class).write(json, _userDetails);
-        return json.toString();
+        return writeUser(_userDetails);
     }
 }

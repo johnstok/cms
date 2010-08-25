@@ -27,7 +27,6 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.types.Duration;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
@@ -46,6 +45,7 @@ public class OpenEditCacheAction
 
     private final SingleSelectionModel _selectionModel;
 
+
     /**
      * Constructor.
      *
@@ -56,17 +56,16 @@ public class OpenEditCacheAction
         _selectionModel = selectionModel;
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
         final EditCacheDialog dialog =
             new EditCacheDialog(
-                _selectionModel.tableSelection(),
-                serializers()
-                    .create(Duration.class)
-                    .read(parse(response.getText())));
+                _selectionModel.tableSelection(), readDuration(response));
         dialog.show();
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -77,6 +76,7 @@ public class OpenEditCacheAction
                 null);
         dialog.show();
     }
+
 
     /** {@inheritDoc} */
     @Override

@@ -33,7 +33,6 @@ import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.views.gxt.EditTemplateDialog;
 import ccc.client.gwt.widgets.ResourceTable;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -69,9 +68,7 @@ public class OpenUpdateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final Json result = parse(response.getText());
-        final Template delta =
-            serializers().create(Template.class).read(result);
+        final Template delta = parseTemplate(response);
         new EditTemplateDialog(
             delta,
             _template,

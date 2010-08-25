@@ -33,7 +33,6 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -70,9 +69,7 @@ public abstract class GetUserAction
                     /** {@inheritDoc} */
                     @Override
                     public void onOK(final Response response) {
-                        final Json json = parse(response.getText());
-                        final User user =
-                            serializers().create(User.class).read(json);
+                        final User user = readUser(response);
                         execute(user);
                     }
                 });

@@ -33,7 +33,6 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -47,6 +46,7 @@ public class EditTextFileAction
 
     private final File _dto;
 
+
     /**
      * Constructor.
      *
@@ -57,19 +57,18 @@ public class EditTextFileAction
         _dto = dto;
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
         return _dto.self().build(InternalServices.ENCODER);
     }
 
+
     /** {@inheritDoc} */
     @Override
-    protected String getBody() {
-        final Json json = InternalServices.PARSER.newJson();
-        serializers().create(File.class).write(json, _dto);
-        return json.toString();
-    }
+    protected String getBody() { return writeFile(_dto); }
+
 
     /** {@inheritDoc} */
     @Override

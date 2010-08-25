@@ -30,7 +30,6 @@ import ccc.api.core.Alias;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.plugins.s11n.json.Json;
 
 
 
@@ -67,8 +66,6 @@ public class UpdateAliasAction
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final Json json = newJson();
-        serializers().create(Alias.class).write(json, _details);
-        return json.toString();
+        return writeAlias(_details);
     }
 }

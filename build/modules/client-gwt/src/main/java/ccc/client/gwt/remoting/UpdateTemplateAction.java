@@ -30,7 +30,6 @@ import ccc.api.core.Template;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -66,8 +65,6 @@ public class UpdateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final Json json = newJson();
-        serializers().create(Template.class).write(json, _details);
-        return json.toString();
+        return writeTemplate(_details);
     }
 }

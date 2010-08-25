@@ -34,7 +34,6 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.plugins.s11n.json.Json;
 
 /**
  * Publish a resource.
@@ -73,9 +72,7 @@ public class PublishAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final Json json = InternalServices.PARSER.parseJson(response.getText());
-        final ResourceSummary rs =
-            serializers().create(ResourceSummary.class).read(json);
+        final ResourceSummary rs = readResourceSummary(response);
         InternalServices.REMOTING_BUS.fireEvent(
             new Event<CommandType>(CommandType.RESOURCE_PUBLISH)
                 .addProperty("resource", rs));

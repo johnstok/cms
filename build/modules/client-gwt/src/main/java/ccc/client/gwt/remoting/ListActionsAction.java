@@ -43,7 +43,6 @@ import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -115,10 +114,8 @@ public abstract class ListActionsAction
                     /** {@inheritDoc} */
                     @Override
                     public void onOK(final Response response) {
-                        final Json obj = parse(response.getText());
                         final PagedCollection<ActionSummary> actions =
-                            serializers().create(PagedCollection.class)
-                            .read(obj);
+                            readActionSummaryCollection(response);
 
                         execute(
                             actions.getElements(),

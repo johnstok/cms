@@ -30,7 +30,6 @@ import ccc.api.core.Resource;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.plugins.s11n.json.Json;
 
 
 
@@ -67,8 +66,6 @@ public class UpdateMetadataAction
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final Json json = newJson();
-        serializers().create(Resource.class).write(json, _resource);
-        return json.toString();
+        return writeResource(_resource);
     }
 }

@@ -27,16 +27,12 @@
 
 package ccc.client.core;
 
-import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.api.types.Link.Encoder;
 import ccc.client.events.Bus;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.Serializers;
 import ccc.plugins.s11n.TextParser;
-import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -45,14 +41,14 @@ import ccc.plugins.s11n.json.SerializerFactory;
  * @author Civic Computing Ltd.
  */
 public abstract class RemotingAction
+    extends
+        S11nHelper
     implements
         Action {
 
     private String            _actionName;
     private HttpMethod        _method;
 
-    private final Serializers _serializers =
-        new SerializerFactory(InternalServices.PARSER);
     private RequestExecutor   _executor    = InternalServices.EXECUTOR;
     private TextParser        _parser      = InternalServices.PARSER;
     private Encoder           _encoder     = InternalServices.ENCODER;
@@ -253,20 +249,6 @@ public abstract class RemotingAction
 
 
     /**
-     * Parse the response as a resource summary.
-     *
-     * @param response The response to parse.
-     *
-     * @return The resource summary.
-     */
-    protected ResourceSummary parseResourceSummary(final Response response) {
-        return
-            serializers().create(ResourceSummary.class).read(
-                _parser.parseJson(response.getText()));
-    }
-
-
-    /**
      * Submit an event to the event bus.
      *
      * @param event The event to submit.
@@ -274,17 +256,4 @@ public abstract class RemotingAction
     protected void fireEvent(final Event<CommandType> event) {
         _bus.fireEvent(event);
     }
-
-
-    protected Serializers serializers() {
-        return _serializers;
-    }
-
-
-    protected Json parse(final String response) {
-        return InternalServices.PARSER.parseJson(response);
-    }
-
-
-    protected Json newJson() { return InternalServices.PARSER.newJson(); }
 }

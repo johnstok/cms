@@ -29,7 +29,6 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.User;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -63,8 +62,6 @@ public abstract class UpdateUserPasswordAction
 
     /** {@inheritDoc} */
     @Override protected String getBody() {
-        final Json json = newJson();
-        serializers().create(User.class).write(json, _user);
-        return json.toString();
+        return writeUser(_user);
     }
 }

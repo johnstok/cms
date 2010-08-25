@@ -42,7 +42,6 @@ import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -119,14 +118,7 @@ public abstract class ListUsersAction
                 new ResponseHandlerAdapter(USER_ACTIONS.viewUsers()) {
                     /** {@inheritDoc} */
                     @Override public void onOK(final Response response) {
-
-                        final Json obj = parse(response.getText());
-
-                        final PagedCollection<User> uc =
-                            serializers().create(PagedCollection.class)
-                            .read(obj);
-
-                        execute(uc);
+                        execute(readUserCollection(response));
                     }
                 });
     }

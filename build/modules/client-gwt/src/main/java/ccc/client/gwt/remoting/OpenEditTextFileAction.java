@@ -36,7 +36,6 @@ import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.EditTextFileDialog;
 import ccc.client.gwt.widgets.ResourceTable;
 import ccc.client.presenters.EditTextFilePresenter;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -73,9 +72,7 @@ extends
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final Json result = parse(response.getText());
-        final File dto =
-            serializers().create(File.class).read(result);
+        final File dto = readFile(response);
         if (dto.getContent() != null) {
             new EditTextFilePresenter(
                 new EditTextFileDialog(),
@@ -85,5 +82,4 @@ extends
                 UI_CONSTANTS.noEditorForResource());
         }
     }
-
 }

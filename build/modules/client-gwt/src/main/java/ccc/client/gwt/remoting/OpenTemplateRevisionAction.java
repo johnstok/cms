@@ -32,7 +32,6 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.views.gxt.PreviewTemplateDialog;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -70,9 +69,7 @@ public class OpenTemplateRevisionAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final Json result = parse(response.getText());
-        final Template delta =
-            serializers().create(Template.class).read(result);
+        final Template delta = parseTemplate(response);
         new PreviewTemplateDialog(delta)
         .show();
     }

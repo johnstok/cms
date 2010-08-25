@@ -36,7 +36,6 @@ import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.UpdateResourceAclDialog;
-import ccc.plugins.s11n.json.Json;
 
 /**
  * Action to launch the 'update resource acl' dialog.
@@ -76,8 +75,7 @@ public final class OpenUpdateResourceAclAction
     @Override
     protected void onOK(final Response response) {
 
-        final Json o = parse(response.getText());
-        final ACL acl = serializers().create(ACL.class).read(o);
+        final ACL acl = readACL(response);
 
         final ResourceSummary item = _selectionModel.tableSelection();
         new UpdateResourceAclDialog(

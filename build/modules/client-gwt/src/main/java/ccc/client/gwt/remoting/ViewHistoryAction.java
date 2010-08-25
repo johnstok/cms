@@ -35,7 +35,6 @@ import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.HistoryDialog;
-import ccc.plugins.s11n.json.Json;
 
 /**
  * View resource's history.
@@ -67,15 +66,12 @@ public final class ViewHistoryAction
                 Globals.API_URL
                     + _selectionModel.tableSelection().revisionsPath(),
                 "",
-                new ResponseHandlerAdapter(UI_CONSTANTS.viewHistory()){
+                new ResponseHandlerAdapter(UI_CONSTANTS.viewHistory()) {
                     /** {@inheritDoc} */
                     @Override public void onOK(
                                final ccc.client.core.Response response) {
-                        final Json json = parse(response.getText());
                         final PagedCollection<Revision> rsCollection =
-                            serializers().create(PagedCollection.class)
-                            .read(json);
-                        execute();
+                            readRevisionCollection(response);
 
                         new HistoryDialog(
                             rsCollection.getElements(),

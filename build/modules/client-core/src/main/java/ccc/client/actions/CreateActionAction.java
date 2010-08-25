@@ -41,7 +41,6 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -100,14 +99,11 @@ public final class CreateActionAction
             + new Link(InternalServices.ACTIONS.getLink("self"))
                 .build(InternalServices.ENCODER);
 
-        final Json json = InternalServices.PARSER.newJson();
-        serializers().create(Action.class).write(json, action);
-
         return
             new Request(
                 HttpMethod.POST,
                 path,
-                json.toString(),
+                writeAction(action),
                 new ActionCreatedCallback());
     }
 

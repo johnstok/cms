@@ -31,7 +31,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -71,8 +70,6 @@ public class UpdateResourceAclAction
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final Json json = newJson();
-        serializers().create(ACL.class).write(json, _acl);
-        return json.toString();
+        return writeACL(_acl);
     }
 }

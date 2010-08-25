@@ -34,7 +34,6 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.views.gxt.EditUserDialog;
 import ccc.client.gwt.widgets.UserTable;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -75,9 +74,7 @@ public class OpenEditUserDialogAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final Json result = parse(response.getText());
-        final User delta =
-            serializers().create(User.class).read(result);
+        final User delta = readUser(response);
         new EditUserDialog(delta, _userTable, _groups).show();
     }
 }

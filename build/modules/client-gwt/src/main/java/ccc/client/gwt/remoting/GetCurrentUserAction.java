@@ -27,11 +27,9 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.User;
-import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -53,8 +51,7 @@ public class GetCurrentUserAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final Json json = InternalServices.PARSER.parseJson(response.getText());
-        final User user = serializers().create(User.class).read(json);
+        final User user = readUser(response);
         new GlobalsImpl().currentUser(user);
         new DrawMainWindowAction(user).execute();
     }

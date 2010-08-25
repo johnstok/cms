@@ -40,7 +40,6 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -84,20 +83,18 @@ public final class CreateFolderAction
      */
     // FIXME: Should pass a folder here.
     public Request createFolder(final String name,
-                                       final UUID parentFolder) {
+                                final UUID parentFolder) {
         final String path = Globals.API_URL+InternalServices.API.folders();
 
-        final Json json = InternalServices.PARSER.newJson();
         final Folder f = new Folder();
         f.setParent(parentFolder);
         f.setName(new ResourceName(name));
-        serializers().create(Folder.class).write(json, f);
 
         return
             new Request(
                 HttpMethod.POST,
                 path,
-                json.toString(),
+                writeFolder(f),
                 new FolderCreatedCallback(
                     I18n.UI_CONSTANTS.createFolder()));
     }

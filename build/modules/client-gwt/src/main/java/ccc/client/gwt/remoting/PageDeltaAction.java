@@ -36,7 +36,6 @@ import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -70,7 +69,8 @@ public abstract class PageDeltaAction
     protected String getPath() {
         return
             Globals.API_URL
-            + new Link(_resource.getLink(Page.WORKING_COPY)).build(new GWTTemplateEncoder());
+            + new Link(_resource.getLink(Page.WORKING_COPY))
+              .build(new GWTTemplateEncoder());
     }
 
 
@@ -86,9 +86,7 @@ public abstract class PageDeltaAction
                     /** {@inheritDoc} */
                     @Override
                     public void onOK(final Response response) {
-                        final Json result = parse(response.getText());
-                        final Page delta =
-                            serializers().create(Page.class).read(result);
+                        final Page delta = readPage(response);
                         execute(delta);
                     }
                 });

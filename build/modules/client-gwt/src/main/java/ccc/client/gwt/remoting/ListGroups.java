@@ -40,7 +40,6 @@ import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -103,11 +102,7 @@ public abstract class ListGroups
                 /** {@inheritDoc} */
                 @Override
                 public void onOK(final ccc.client.core.Response response) {
-                    final Json obj = parse(response.getText());
-                    final PagedCollection<Group> groups =
-                        serializers().create(PagedCollection.class).read(obj);
-
-                    execute(groups);
+                    execute(readGroups(response));
                 }
             });
     }

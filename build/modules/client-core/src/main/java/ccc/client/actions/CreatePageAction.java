@@ -37,7 +37,6 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -79,16 +78,12 @@ public final class CreatePageAction
     public Request createPage(final Page page) {
         final String path =  Globals.API_URL+InternalServices.API.pages();
 
-        final Json json = InternalServices.PARSER.newJson(); // FIXME: Broken.
-        serializers().create(Page.class).write(json, page);
-
         return
             new Request(
                 HttpMethod.POST,
                 path,
-                json.toString(),
-                new PageCreatedCallback(
-                    I18n.UI_CONSTANTS.createPage()));
+                writePage(page),
+                new PageCreatedCallback(I18n.UI_CONSTANTS.createPage()));
     }
 
 

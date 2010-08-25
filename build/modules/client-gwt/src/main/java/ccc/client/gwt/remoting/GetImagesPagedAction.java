@@ -35,13 +35,11 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
-import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -103,11 +101,8 @@ public abstract class GetImagesPagedAction
                     /** {@inheritDoc} */
                     @Override
                     public void onOK(final Response response) {
-                        final Json json =
-                            InternalServices.PARSER.parseJson(
-                                    response.getText());
                         final PagedCollection<File> rsCollection =
-                            serializers().create(PagedCollection.class).read(json);
+                            readFileSummaries(response);
                         execute(
                             rsCollection.getElements(),
                             rsCollection.getTotalCount());

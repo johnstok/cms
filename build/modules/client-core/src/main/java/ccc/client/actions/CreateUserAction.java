@@ -33,7 +33,6 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -47,6 +46,7 @@ public class CreateUserAction
 
     private final User _userDelta;
 
+
     /**
      * Constructor.
      *
@@ -57,30 +57,25 @@ public class CreateUserAction
         _userDelta = userDelta;
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
         return InternalServices.API.users();
     }
 
+
     /** {@inheritDoc} */
     @Override
-    protected String getBody() {
-        final Json json = InternalServices.PARSER.newJson();
-        serializers().create(User.class).write(json, _userDelta);
-        return json.toString();
-    }
+    protected String getBody() { return writeUser(_userDelta); }
+
 
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final User newUser =
-            serializers().create(User.class).read(
-                InternalServices.PARSER.parseJson(response.getText()));
-
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.USER_CREATE);
-        event.addProperty("user", newUser);
+        event.addProperty("user", readUser(response));
 
         fireEvent(event);
     }

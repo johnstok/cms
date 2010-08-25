@@ -33,11 +33,9 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
-import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -99,10 +97,8 @@ RemotingAction{
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final Json json =
-            InternalServices.PARSER.parseJson(response.getText());
         final PagedCollection<ResourceSummary> rsCollection =
-            serializers().create(PagedCollection.class).read(json);
+            parseResourceSummaries(response);
         execute(rsCollection.getElements(), rsCollection.getTotalCount());
     }
 

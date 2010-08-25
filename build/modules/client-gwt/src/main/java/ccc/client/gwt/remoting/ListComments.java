@@ -39,7 +39,6 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -105,13 +104,7 @@ public abstract class ListComments
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final Json obj = parse(response.getText());
-
-        final PagedCollection<Comment> comments =
-            serializers().create(PagedCollection.class)
-            .read(obj);
-
-        execute(comments);
+        execute(readComments(response));
     }
 
 

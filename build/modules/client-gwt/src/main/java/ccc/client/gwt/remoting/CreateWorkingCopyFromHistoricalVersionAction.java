@@ -29,12 +29,10 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.Resource;
 import ccc.api.types.Link;
 import ccc.client.core.HttpMethod;
-import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.views.gxt.HistoryDialog;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -74,11 +72,9 @@ public class CreateWorkingCopyFromHistoricalVersionAction
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final Json json = InternalServices.PARSER.newJson();
         final Resource r = new Resource();
         r.setRevision((int) _dialog.selectedItem().getIndex()); // FIXME
-        serializers().create(Resource.class).write(json, r);
-        return json.toString();
+        return writeResource(r);
     }
 
 

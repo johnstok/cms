@@ -30,7 +30,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.core.PagedCollection;
 import ccc.api.core.Template;
 import ccc.api.types.Link;
 import ccc.client.core.Globals;
@@ -41,7 +40,6 @@ import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -83,10 +81,7 @@ public abstract class GetTemplatesAction
 
                     /** {@inheritDoc} */
                     @Override public void onOK(final Response response) {
-                        final Json json = parse(response.getText());
-                        final PagedCollection<Template> rsCollection =
-                            serializers().create(PagedCollection.class).read(json);
-                        execute(rsCollection.getElements());
+                        execute(readTemplates(response).getElements());
                     }
                 });
     }

@@ -30,7 +30,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
-import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
@@ -81,16 +80,14 @@ public abstract class ComputeTemplateAction
                 /** {@inheritDoc} */
                 @Override
                 public void onOK(final Response response) {
-                    final Template ts =
-                        serializers().create(Template.class).read(
-                            InternalServices.PARSER.parseJson(
-                                response.getText()));
-                    template(ts);
+                    template(parseTemplate(response));
                 }
-
             });
     }
 
+
     protected abstract void noTemplate();
+
+
     protected abstract void template(Template t);
 }

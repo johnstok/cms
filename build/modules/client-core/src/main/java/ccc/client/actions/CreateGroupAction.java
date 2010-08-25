@@ -34,7 +34,6 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -71,23 +70,15 @@ public class CreateGroupAction
 
     /** {@inheritDoc} */
     @Override
-    protected String getBody() {
-        final Json json = InternalServices.PARSER.newJson();
-        serializers().create(Group.class).write(json, _group);
-        return json.toString();
-    }
+    protected String getBody() { return writeGroup(_group); }
 
 
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final Group newGroup =
-            serializers().create(Group.class).read(
-                InternalServices.PARSER.parseJson(response.getText()));
-
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.GROUP_CREATE);
-        event.addProperty("group", newGroup);
+        event.addProperty("group", readGroup(response));
 
         fireEvent(event);
     }
