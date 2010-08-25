@@ -54,14 +54,14 @@ public interface SearchEngine extends Scheduler {
      *
      * @param searchTerms The terms to match.
      * @param noOfResultsPerPage The number of results to return.
-     * @param page The page of results to return (first page has index of 0).
+     * @param page The page of results to return (first page has index of 1).
      * @return The SearchResult object with set entities and total count.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.SearchEngine.FIND)
     SearchResult find(
               @QueryParam("terms") String searchTerms,
               @QueryParam("count") @DefaultValue("20") int noOfResultsPerPage,
-              @QueryParam("page") @DefaultValue("0") int page);
+              @QueryParam("page") @DefaultValue("1") int page);
 
     /**
      * Find the results that match the specified search terms.
@@ -70,7 +70,7 @@ public interface SearchEngine extends Scheduler {
      * @param sort The field to sort on.
      * @param order The order of the sort.
      * @param resultCount The number of results to return.
-     * @param page The page of results to return (first page has index of 0).
+     * @param page The page of results to return (first page has index of 1).
      *
      * @return The SearchResult object with set entities and total count.
      */
@@ -80,21 +80,21 @@ public interface SearchEngine extends Scheduler {
               @QueryParam("sort") String sort,
               @QueryParam("order") @DefaultValue("ASC") SortOrder order,
               @QueryParam("count") @DefaultValue("20") int resultCount,
-              @QueryParam("page") @DefaultValue("0") int page);
+              @QueryParam("page") @DefaultValue("1") int page);
 
     /**
      * Find the results that are similar to the specified page.
      *
      * @param uuid The page to match.
      * @param noOfResultsPerPage The number of results to return.
-     * @param page The page of results to return (first page has index of 0).
+     * @param page The page of results to return (first page has index of 1).
      * @return The SearchResult object with set entities and total count.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.SearchEngine.SIMILAR)
     SearchResult similar(
               @QueryParam("uuid") final String uuid,
               @QueryParam("count") @DefaultValue("20")int noOfResultsPerPage,
-              @QueryParam("page") @DefaultValue("0") int page);
+              @QueryParam("page") @DefaultValue("1") int page);
 
     /**
      * Rebuild the search index.

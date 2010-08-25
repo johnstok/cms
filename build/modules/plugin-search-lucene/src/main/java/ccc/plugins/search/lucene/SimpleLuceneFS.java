@@ -88,7 +88,7 @@ public class SimpleLuceneFS
 
     private final String _indexPath;
     private IndexWriter _writer;
-    private Locale _locale = Locale.US;
+    private final Locale _locale = Locale.US;
 
 
     /**
@@ -106,6 +106,7 @@ public class SimpleLuceneFS
     public SearchResult find(final String searchTerms,
                              final int nofOfResultsPerPage,
                              final int pageNo) {
+        final int page = pageNo - 1;
         if (searchTerms == null || searchTerms.trim().equals("")) {
             return
                 new SearchResult(
@@ -113,12 +114,12 @@ public class SimpleLuceneFS
                     0,
                     nofOfResultsPerPage,
                     searchTerms,
-                    pageNo);
+                    page);
         }
 
-        final int maxHits = (pageNo+1)*nofOfResultsPerPage;
+        final int maxHits = (page+1)*nofOfResultsPerPage;
         final CapturingHandler capturingHandler =
-            new CapturingHandler(nofOfResultsPerPage, pageNo);
+            new CapturingHandler(nofOfResultsPerPage, page);
 
         find(searchTerms, maxHits, null, capturingHandler);
 
@@ -127,7 +128,7 @@ public class SimpleLuceneFS
             capturingHandler.getTotalResultsCount(),
             nofOfResultsPerPage,
             searchTerms,
-            pageNo);
+            page);
     }
 
 
@@ -138,7 +139,7 @@ public class SimpleLuceneFS
                              final SortOrder order,
                              final int nofOfResultsPerPage,
                              final int pageNo) {
-
+        final int page = pageNo - 1;
         final Sort sorter =
             new Sort(
                 new SortField(
@@ -151,12 +152,12 @@ public class SimpleLuceneFS
                     0,
                     nofOfResultsPerPage,
                     searchTerms,
-                    pageNo);
+                    page);
         }
 
-        final int maxHits = (pageNo+1)*nofOfResultsPerPage;
+        final int maxHits = (page+1)*nofOfResultsPerPage;
         final CapturingHandler capturingHandler =
-            new CapturingHandler(nofOfResultsPerPage, pageNo);
+            new CapturingHandler(nofOfResultsPerPage, page);
 
         find(searchTerms, maxHits, sorter, capturingHandler);
 
@@ -165,7 +166,7 @@ public class SimpleLuceneFS
             capturingHandler.getTotalResultsCount(),
             nofOfResultsPerPage,
             searchTerms,
-            pageNo);
+            page);
 
     }
 
@@ -175,11 +176,11 @@ public class SimpleLuceneFS
     public SearchResult similar(final String uuid,
                                 final int nofOfResultsPerPage,
                                 final int pageNo) {
-
-        final int maxHits = (pageNo+1)*nofOfResultsPerPage;
+        final int page = pageNo - 1;
+        final int maxHits = (page+1)*nofOfResultsPerPage;
 
         final CapturingHandler capturingHandler =
-            new CapturingHandler(nofOfResultsPerPage, pageNo);
+            new CapturingHandler(nofOfResultsPerPage, page);
         similar(uuid, maxHits, capturingHandler);
 
         return new SearchResult(
@@ -187,7 +188,7 @@ public class SimpleLuceneFS
             capturingHandler.getTotalResultsCount(),
             nofOfResultsPerPage,
             "uuid",
-            pageNo);
+            page);
 
     }
 

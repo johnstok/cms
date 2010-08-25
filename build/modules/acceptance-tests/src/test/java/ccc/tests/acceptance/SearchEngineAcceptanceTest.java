@@ -130,7 +130,7 @@ public class SearchEngineAcceptanceTest
 
         // ACT
         final SearchResult result =
-            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 1);
 
         // ASSERT
         assertEquals(1, result.totalResults());
@@ -154,7 +154,7 @@ public class SearchEngineAcceptanceTest
 
         // ACT
         final SearchResult result =
-            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 1);
 
         // ASSERT
         assertEquals(1, result.totalResults());
@@ -191,7 +191,7 @@ public class SearchEngineAcceptanceTest
 
         // ACT
         final SearchResult result =
-            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 1);
 
         // ASSERT
         assertEquals(1, result.totalResults());
@@ -215,7 +215,7 @@ public class SearchEngineAcceptanceTest
 
         // ACT
         final SearchResult result =
-            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 1);
 
         // ASSERT
         assertEquals(1, result.totalResults());
@@ -239,7 +239,7 @@ public class SearchEngineAcceptanceTest
 
         // ACT
         final SearchResult result =
-            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 1);
 
         // ASSERT
         assertEquals(1, result.totalResults());
@@ -314,7 +314,7 @@ public class SearchEngineAcceptanceTest
 
         // ACT
         final SearchResult result =
-            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 1);
 
         // ASSERT
         assertEquals(1, result.totalResults());
@@ -348,7 +348,7 @@ public class SearchEngineAcceptanceTest
 
         // ACT
         final SearchResult result =
-            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 1);
 
         // ASSERT
         assertEquals(1, result.totalResults());
@@ -380,7 +380,7 @@ public class SearchEngineAcceptanceTest
 
         // ACT
         final SearchResult result =
-            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 1);
 
         // ASSERT
         assertEquals(1, result.totalResults());

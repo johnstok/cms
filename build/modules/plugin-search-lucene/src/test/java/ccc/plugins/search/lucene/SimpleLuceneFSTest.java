@@ -64,7 +64,7 @@ public class SimpleLuceneFSTest
                 new File("target/test7/lucene").getAbsolutePath());
 
         // ACT
-        final SearchResult result = searchEngine.similar(null, 5, 0);
+        final SearchResult result = searchEngine.similar(null, 5, 1);
 
         // ASSERT
         assertEquals(0, result.totalResults());
@@ -82,7 +82,7 @@ public class SimpleLuceneFSTest
                 new File("target/test6/lucene").getAbsolutePath());
 
         // ACT
-        final SearchResult result = searchEngine.find("foo", 5, 0);
+        final SearchResult result = searchEngine.find("foo", 5, 1);
 
         // ASSERT
         assertEquals(0, result.totalResults());
@@ -111,7 +111,7 @@ public class SimpleLuceneFSTest
             "foo",
             new HashSet<Paragraph>());
         searchEngine.commitUpdate();
-        final SearchResult result = searchEngine.find("hi there!", 5, 0);
+        final SearchResult result = searchEngine.find("hi there!", 5, 1);
 
         // ASSERT
         assertEquals(0, result.totalResults());
@@ -129,7 +129,7 @@ public class SimpleLuceneFSTest
                 new File("target/test5/lucene").getAbsolutePath());
 
         // ACT
-        final SearchResult result = searchEngine.find("", 5, 0);
+        final SearchResult result = searchEngine.find("", 5, 1);
 
         // ASSERT
         assertEquals(0, result.totalResults());
@@ -159,7 +159,7 @@ public class SimpleLuceneFSTest
             "foo",
             new HashSet<Paragraph>());
         searchEngine.commitUpdate();
-        final SearchResult result = searchEngine.find("foo", 5, 0);
+        final SearchResult result = searchEngine.find("foo", 5, 1);
 
         // ASSERT
         assertEquals(1, result.totalResults());
@@ -218,7 +218,7 @@ public class SimpleLuceneFSTest
             new HashSet<Paragraph>());
         searchEngine.commitUpdate();
         final SearchResult result =
-            searchEngine.find("foo", "_title", SortOrder.ASC, 5, 0);
+            searchEngine.find("foo", "_title", SortOrder.ASC, 5, 1);
 
         // ASSERT
         assertEquals(4, result.totalResults());
@@ -275,10 +275,10 @@ public class SimpleLuceneFSTest
                 Paragraph.fromDate("bar", new Date(Long.MIN_VALUE))));
         searchEngine.commitUpdate();
         final SearchResult result =
-            searchEngine.find("foo", "_bar", SortOrder.ASC, 5, 0);
+            searchEngine.find("foo", "_bar", SortOrder.ASC, 5, 1);
 
         final SearchResult reversedResult =
-            searchEngine.find("foo", "_bar", SortOrder.DESC, 5, 0);
+            searchEngine.find("foo", "_bar", SortOrder.DESC, 5, 1);
 
         // ASSERT
         assertEquals(3, result.totalResults());
@@ -339,7 +339,7 @@ public class SimpleLuceneFSTest
             Collections.singleton(Paragraph.fromBoolean("bar", Boolean.TRUE)));
         searchEngine.commitUpdate();
         final SearchResult result =
-            searchEngine.find("foo", "_bar", SortOrder.ASC, 5, 0);
+            searchEngine.find("foo", "_bar", SortOrder.ASC, 5, 1);
 
         // ASSERT
         assertEquals(3, result.totalResults());
@@ -485,7 +485,7 @@ public class SimpleLuceneFSTest
             paras3);
         searchEngine.commitUpdate();
         final SearchResult result =
-            searchEngine.similar(id1.toString(), 5, 0);
+            searchEngine.similar(id1.toString(), 5, 1);
 
         // ASSERT
         assertEquals(2, result.totalResults());
@@ -518,7 +518,7 @@ public class SimpleLuceneFSTest
             "foo",
             new HashSet<Paragraph>());
         searchEngine.rollbackUpdate();
-        final SearchResult result = searchEngine.find("foo", 5, 0);
+        final SearchResult result = searchEngine.find("foo", 5, 1);
 
         // ASSERT
         assertEquals(0, result.totalResults());
@@ -557,12 +557,12 @@ public class SimpleLuceneFSTest
         searchEngine.commitUpdate();
 
         // ASSERT
-        SearchResult result = searchEngine.find("text:text", 5, 0);
+        SearchResult result = searchEngine.find("text:text", 5, 1);
         assertEquals(1, result.totalResults());
         assertEquals(result.hits().size(), 1);
         assertEquals(id, result.hits().iterator().next());
 
-        result = searchEngine.find("bool:true", 5, 0);
+        result = searchEngine.find("bool:true", 5, 1);
         assertEquals(1, result.totalResults());
         assertEquals(result.hits().size(), 1);
         assertEquals(id, result.hits().iterator().next());
@@ -574,12 +574,12 @@ public class SimpleLuceneFSTest
         sb.append(date.getTime());
         sb.append("]");
 
-        result = searchEngine.find(sb.toString(), 5, 0);
+        result = searchEngine.find(sb.toString(), 5, 1);
         assertEquals(1, result.totalResults());
         assertEquals(result.hits().size(), 1);
         assertEquals(id, result.hits().iterator().next());
 
-        result = searchEngine.find("num:[1.0 TO 1.0]", 5, 0);
+        result = searchEngine.find("num:[1.0 TO 1.0]", 5, 1);
         assertEquals(1, result.totalResults());
         assertEquals(result.hits().size(), 1);
         assertEquals(id, result.hits().iterator().next());

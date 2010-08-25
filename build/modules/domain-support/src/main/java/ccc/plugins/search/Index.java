@@ -42,7 +42,7 @@ public interface Index {
      *
      * @param searchTerms The terms to match.
      * @param resultCount The number of results to return.
-     * @param page The page of results to return (first page has index of 0).
+     * @param page The page of results to return (first page has index of 1).
      *
      * @return The SearchResult object with set entities and total count.
      */
@@ -55,7 +55,7 @@ public interface Index {
      * @param sort The field to sort on.
      * @param order The order of the sort.
      * @param resultCount The number of results to return.
-     * @param page The page of results to return (first page has index of 0).
+     * @param page The page of results to return (first page has index of 1).
      *
      * @return The SearchResult object with set entities and total count.
      */
@@ -70,7 +70,7 @@ public interface Index {
      *
      * @param uuid The UUID of the page to compare.
      * @param nofOfResultsPerPage The number of results to return.
-     * @param pageNo The page of results to return (first page has index of 0).
+     * @param pageNo The page of results to return (first page has index of 1).
      *
      * @return The SearchResult object with set entities and total count.
      */
