@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ccc.api.core.ActionSummary;
+import ccc.api.core.PagedCollection;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.Permission;
@@ -200,9 +201,13 @@ public class ActionTable
                                 ? SortOrder.ASC
                                 : SortOrder.DESC;
                         if (selected.get("id") != null) {
+                            String id = (String) selected.get("id");
+                            if (ActionTree.ACTIONS.equals(id)) {
+                                id = null;
+                            }
                             getActions(callback,
                                 config,
-                                (String) selected.get("id"),
+                                id,
                                 page,
                                 order)
                                 .execute();
@@ -235,13 +240,13 @@ public class ActionTable
             }
 
             @Override
-            protected void execute(final List<ActionSummary> actions, final int totalCount) {
+            protected void execute(final PagedCollection<ActionSummary> actions) {
                 final List<BeanModel> results =
-                    DataBinding.bindActionSummary(actions);
+                    DataBinding.bindActionSummary(actions.getElements());
 
                 final PagingLoadResult<BeanModel> plr =
                     new BasePagingLoadResult<BeanModel>(
-                            results, config.getOffset(), totalCount);
+                            results, config.getOffset(), (int) actions.getTotalCount());
                 callback.onSuccess(plr);
             }
         };

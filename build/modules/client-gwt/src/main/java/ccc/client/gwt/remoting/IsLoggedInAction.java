@@ -26,8 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.List;
-
 import ccc.api.core.API;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Comment;
@@ -127,9 +125,8 @@ public class IsLoggedInAction
             }
 
             @Override
-            protected void execute(final List<ActionSummary> actions, final int totalCount) {
-                GlobalsImpl.actions(new PagedCollection<ActionSummary>(
-                        totalCount, ActionSummary.class, actions));
+            protected void execute(final PagedCollection<ActionSummary> actions) {
+                GlobalsImpl.actions(actions);
                 l.countDown();
             }
         }.execute();

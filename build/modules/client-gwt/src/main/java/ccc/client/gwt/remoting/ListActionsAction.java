@@ -27,7 +27,6 @@
 package ccc.client.gwt.remoting;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import ccc.api.core.ActionSummary;
@@ -88,7 +87,7 @@ public abstract class ListActionsAction
     @Override
     protected String getPath() {
         final Map<String, String[]> params = new HashMap<String, String[]>();
-        params.put("status",  new String[] {""+_status});
+        params.put("status",  new String[] {_status});
         params.put("page",  new String[] {""+_page});
         params.put("count", new String[] {""+_count});
         params.put("sort",  new String[] {_sort});
@@ -117,9 +116,7 @@ public abstract class ListActionsAction
                         final PagedCollection<ActionSummary> actions =
                             readActionSummaryCollection(response);
 
-                        execute(
-                            actions.getElements(),
-                            (int) actions.getTotalCount());
+                        execute(actions);
                     }
                 });
     }
@@ -128,8 +125,6 @@ public abstract class ListActionsAction
      * Handle the result of a successful call.
      *
      * @param actions The page of actions returned.
-     * @param totalCount The total actions available on the server.
      */
-    protected abstract void execute(List<ActionSummary> actions,
-                                    int totalCount);
+    protected abstract void execute(PagedCollection<ActionSummary> actions);
 }
