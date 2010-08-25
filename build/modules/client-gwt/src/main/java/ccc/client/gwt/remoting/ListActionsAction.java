@@ -43,10 +43,7 @@ import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.GwtJson;
-
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
+import ccc.plugins.s11n.json.Json;
 
 
 /**
@@ -118,11 +115,10 @@ public abstract class ListActionsAction
                     /** {@inheritDoc} */
                     @Override
                     public void onOK(final Response response) {
-                        final JSONObject obj =
-                            JSONParser.parse(response.getText()).isObject();
+                        final Json obj = parse(response.getText());
                         final PagedCollection<ActionSummary> actions =
                             serializers().create(PagedCollection.class)
-                            .read(new GwtJson(obj));
+                            .read(obj);
 
                         execute(
                             actions.getElements(),

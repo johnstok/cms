@@ -122,10 +122,12 @@ public class IsLoggedInAction
             SortOrder.ASC) {
             /** {@inheritDoc} */
             @Override
-            protected String getPath() { return api.actions(); }
+            protected String getPath() {
+                return Globals.API_URL + api.actions();
+            }
 
             @Override
-            protected void execute(List<ActionSummary> actions, int totalCount) {
+            protected void execute(final List<ActionSummary> actions, final int totalCount) {
                 GlobalsImpl.actions(new PagedCollection<ActionSummary>(
                         totalCount, ActionSummary.class, actions));
                 l.countDown();
