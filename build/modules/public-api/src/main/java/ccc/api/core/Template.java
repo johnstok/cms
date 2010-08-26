@@ -153,4 +153,10 @@ public class Template
     /** REVISION : String. */
     public static final String REVISION = "revision";
 
+
+    /*
+     * Property names.
+     */
+    /** NAME : String. */
+    public static final String NAME = "name";
 }

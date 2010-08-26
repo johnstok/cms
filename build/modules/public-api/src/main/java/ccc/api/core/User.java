@@ -278,4 +278,13 @@ public class User
     public static final String PASSWORD = "password";
     /** SELF : String. */
     public static final String SELF = "self";
+
+
+    /*
+     * Property names.
+     */
+    /** EMAIL : String. */
+    public static final String EMAIL = "email";
+    /** USERNAME : String. */
+    public static final String USERNAME = "username";
 }

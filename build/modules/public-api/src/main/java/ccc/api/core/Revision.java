@@ -135,4 +135,19 @@ public final class Revision implements Serializable {
     public boolean isMajor() {
         return _isMajor;
     }
+
+
+    /*
+     * Property names.
+     */
+    /** USERNAME : String. */
+    public static final String USERNAME      = "actorUsername";
+    /** HAPPENED_ON : String. */
+    public static final String HAPPENED_ON   = "happenedOn";
+    /** COMMENT : String. */
+    public static final String COMMENT       = "comment";
+    /** IS_MAJOR_EDIT : String. */
+    public static final String IS_MAJOR_EDIT = "major";
+    /** INDEX : String. */
+    public static final String INDEX         = "index";
 }

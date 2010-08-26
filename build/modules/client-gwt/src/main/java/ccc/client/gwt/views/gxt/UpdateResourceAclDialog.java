@@ -152,7 +152,7 @@ public class UpdateResourceAclDialog
 
         _userStore.add(uData);
         _userGrid = new Grid<BeanModel>(_userStore, ucm);
-        _userGrid.setAutoExpandColumn(DataBinding.UserBeanModel.USERNAME);
+        _userGrid.setAutoExpandColumn(User.USERNAME);
         _userGrid.setSelectionModel(_userSM);
         _userGrid.addPlugin(_userSM);
         _userGrid.setBorders(false);
@@ -177,8 +177,8 @@ public class UpdateResourceAclDialog
             final BaseModelData d = new BaseModelData();
             for (final Entry e : _acl.getGroups()){
                 if (e.getPrincipal().equals(g.getId())) {
-                    d.set(DataBinding.GroupBeanModel.NAME, g.getName());
-                    d.set(DataBinding.GroupBeanModel.ID, g.getId());
+                    d.set(Group.NAME, g.getName());
+                    d.set(Group.ID, g.getId());
                     gData.add(d);
                 }
             }
@@ -195,7 +195,7 @@ public class UpdateResourceAclDialog
 
         _groupStore.add(gData);
         _groupGrid = new Grid<BaseModelData>(_groupStore, cm);
-        _groupGrid.setAutoExpandColumn(DataBinding.GroupBeanModel.NAME);
+        _groupGrid.setAutoExpandColumn(Group.NAME);
         _groupGrid.setSelectionModel(_groupSM);
         _groupGrid.addPlugin(_groupSM);
         _groupGrid.setBorders(false);
@@ -221,7 +221,7 @@ public class UpdateResourceAclDialog
 
         final ColumnConfig keyColumn =
             new ColumnConfig(
-                DataBinding.GroupBeanModel.NAME,
+                Group.NAME,
                 constants().name(),
                 100);
         final TextField<String> keyField = new TextField<String>();
@@ -239,7 +239,7 @@ public class UpdateResourceAclDialog
 
         final ColumnConfig keyColumn =
             new ColumnConfig(
-                DataBinding.UserBeanModel.USERNAME,
+                User.USERNAME,
                 constants().name(),
                 100);
         final TextField<String> keyField = new TextField<String>();

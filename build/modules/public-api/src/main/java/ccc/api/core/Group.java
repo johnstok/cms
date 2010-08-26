@@ -121,4 +121,14 @@ public class Group
      * @return A link to this group.
      */
     public String self() { return getLink("self"); }
+
+
+
+    /*
+     * Property names.
+     */
+    /** NAME : String. */
+    public static final String NAME = "name";
+    /** ID : String. */
+    public static final String ID   = "id";
 }

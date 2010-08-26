@@ -237,13 +237,13 @@ public class UserTable extends TablePanel {
         configs.add(gp);
 
         final ColumnConfig usernameColumn = new ColumnConfig();
-        usernameColumn.setId(DataBinding.UserBeanModel.USERNAME);
+        usernameColumn.setId(User.USERNAME);
         usernameColumn.setHeader(UI_CONSTANTS.username());
         usernameColumn.setWidth(COLUMN_WIDTH);
         configs.add(usernameColumn);
 
         final ColumnConfig emailColumn = new ColumnConfig();
-        emailColumn.setId(DataBinding.UserBeanModel.EMAIL);
+        emailColumn.setId(User.EMAIL);
         emailColumn.setHeader(UI_CONSTANTS.email());
         emailColumn.setWidth(COLUMN_WIDTH);
         configs.add(emailColumn);

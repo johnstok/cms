@@ -134,7 +134,7 @@ public class CreatePageDialog
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         final ColumnConfig templateNameColumn = new ColumnConfig();
-        templateNameColumn.setId(DataBinding.TemplateBeanModel.NAME);
+        templateNameColumn.setId(Template.NAME);
         templateNameColumn.setHeader(getUiConstants().name());
         templateNameColumn.setWidth(NAME_COLUMN_WIDTH);
         configs.add(templateNameColumn);
@@ -160,8 +160,7 @@ public class CreatePageDialog
         _templateGrid.addListener(Events.RowClick, gridEventlistener);
 
         _templatesStore.add(DataBinding.bindTemplateDelta(list));
-        _templatesStore.sort(
-            DataBinding.TemplateBeanModel.NAME, SortDir.ASC);
+        _templatesStore.sort(Template.NAME, SortDir.ASC);
 
         _templatePanel.setHeaderVisible(true);
         _templatePanel.setHeading(getUiConstants().template());

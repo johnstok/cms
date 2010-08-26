@@ -40,8 +40,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.core.Template;
 import ccc.api.core.User;
-import ccc.client.core.Globals;
-import ccc.client.gwt.core.GlobalsImpl;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.BeanModel;
@@ -62,8 +60,6 @@ public final class DataBinding {
     public static final String VALUE = "value";
     /** KEY : String. */
     public static final String KEY = "key";
-
-    private static final Globals GLOBALS = new GlobalsImpl();
 
 
     private DataBinding() { super(); }
@@ -281,8 +277,7 @@ public final class DataBinding {
      */
     @BEAN(Template.class)
     public interface TemplateBeanModel extends BeanModelMarker {
-        /** NAME : String. */
-        String NAME = "name";
+        /* No methods. */
     }
 
 
@@ -291,10 +286,7 @@ public final class DataBinding {
      */
     @BEAN(User.class)
     public interface UserBeanModel extends BeanModelMarker {
-        /** EMAIL : String. */
-        String EMAIL = "email";
-        /** USERNAME : String. */
-        String USERNAME = "username";
+        /* No methods. */
     }
 
 
@@ -303,10 +295,7 @@ public final class DataBinding {
      */
     @BEAN(Group.class)
     public interface GroupBeanModel extends BeanModelMarker {
-        /** NAME : String. */
-        String NAME = "name";
-        /** ID : String. */
-        String ID   = "id";
+        /* No methods. */
     }
 
 
@@ -315,6 +304,7 @@ public final class DataBinding {
      */
     @BEAN(Comment.class)
     public interface CommentBeanModel extends BeanModelMarker {
+        /* No methods. */
     }
 
 
@@ -323,16 +313,7 @@ public final class DataBinding {
      */
     @BEAN(Revision.class)
     public interface RevisionBeanModel extends BeanModelMarker {
-        /** USERNAME : String. */
-        String USERNAME      = "actorUsername";
-        /** HAPPENED_ON : String. */
-        String HAPPENED_ON   = "happenedOn";
-        /** COMMENT : String. */
-        String COMMENT       = "comment";
-        /** IS_MAJOR_EDIT : String. */
-        String IS_MAJOR_EDIT = "major";
-        /** INDEX : String. */
-        String INDEX         = "index";
+        /* No methods. */
     }
 
 
@@ -341,18 +322,7 @@ public final class DataBinding {
      */
     @BEAN(File.class)
     public interface FileBeanModel extends BeanModelMarker {
-        /** NAME : String. */
-        String NAME = "name";
-        /** PATH : String. */
-        String PATH = "path";
-        /** TITLE : String. */
-        String TITLE = "title";
-        /** SHORT_NAME : String. */
-        String SHORT_NAME = "title";
-        /** WIDTH : String. */
-        String WIDTH = "width";
-        /** HEIGHT : String. */
-        String HEIGHT = "height";
+        /* No methods. */
     }
 
 
@@ -361,6 +331,7 @@ public final class DataBinding {
      */
     @BEAN(ActionSummary.class)
     public interface ActionSummaryBeanModel extends BeanModelMarker {
+        /* No methods. */
     }
 
 
@@ -369,5 +340,6 @@ public final class DataBinding {
      */
     @BEAN(ResourceSummary.class)
     public interface ResourceSummaryBeanModel extends BeanModelMarker {
+        /* No methods. */
     }
 }

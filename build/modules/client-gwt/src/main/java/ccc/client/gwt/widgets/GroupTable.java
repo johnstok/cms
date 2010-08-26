@@ -138,7 +138,7 @@ public class GroupTable
         configs.add(gp);
 
         final ColumnConfig nameColumn = new ColumnConfig();
-        nameColumn.setId(DataBinding.GroupBeanModel.NAME);
+        nameColumn.setId(Group.NAME);
         nameColumn.setHeader(UI_CONSTANTS.name());
         nameColumn.setWidth(COLUMN_WIDTH);
         configs.add(nameColumn);
@@ -241,7 +241,7 @@ public class GroupTable
     private void updateGroup(final Group group) {
         final BeanModel gMD =
             _detailsStore.findModel(
-                DataBinding.GroupBeanModel.ID, group.getId());
+                Group.ID, group.getId());
         if (null!=gMD) {
             final BeanModel bm = DataBinding.bindGroupSummary(group);
             gMD.setProperties(bm.getProperties());

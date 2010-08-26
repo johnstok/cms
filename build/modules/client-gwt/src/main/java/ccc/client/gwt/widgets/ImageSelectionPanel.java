@@ -260,17 +260,17 @@ public class ImageSelectionPanel extends ContentPanel {
         return
             "<tpl for=\".\">"
             + "<div class=\"thumb-wrap\" id=\"{"
-            + DataBinding.FileBeanModel.NAME
+            + File.NAME
             + "}\" style=\"border: 1px solid white\">"
             + "<div class=\"thumb\">"
             + "<img src=\"preview/{"
-            + DataBinding.FileBeanModel.PATH
+            + File.PATH
             + "}?thumb=200\" title=\"{"
-            + DataBinding.FileBeanModel.TITLE + "}\"></div>"
+            + File.TITLE + "}\"></div>"
             + "<span class=\"x-editable\">{"
-            + DataBinding.FileBeanModel.SHORT_NAME + "} {"
-            + DataBinding.FileBeanModel.WIDTH + "}x{"
-            + DataBinding.FileBeanModel.HEIGHT + "}px</span></div>"
+            + File.SHORT_NAME + "} {"
+            + File.WIDTH + "}x{"
+            + File.HEIGHT + "}px</span></div>"
             + "</tpl>"
             + "<div class=\"x-clear\"></div>";
      }

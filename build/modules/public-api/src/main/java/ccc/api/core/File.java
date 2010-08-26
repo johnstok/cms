@@ -452,4 +452,21 @@ public final class File
     public static final String LIST_BINARY = "list_binary";
     /** SELF_BINARY : String. */
     public static final String SELF_BINARY = "self_binary";
+
+
+    /*
+     * Property names.
+     */
+    /** NAME : String. */
+    public static final String NAME = "name";
+    /** PATH : String. */
+    public static final String PATH = "path";
+    /** TITLE : String. */
+    public static final String TITLE = "title";
+    /** SHORT_NAME : String. */
+    public static final String SHORT_NAME = "title";
+    /** WIDTH : String. */
+    public static final String WIDTH = "width";
+    /** HEIGHT : String. */
+    public static final String HEIGHT = "height";
 }
