@@ -142,7 +142,7 @@ public final class SerializerFactory implements Serializers {
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked") // TODO: Find a cleaner solution.
-    public <T> Serializer<T> create(final Class<T> clazz) {
+    public <T> Serializer<T> create(final Class<? extends T> clazz) {
         return (Serializer<T>) supportedClasses.get(clazz);
     }
 

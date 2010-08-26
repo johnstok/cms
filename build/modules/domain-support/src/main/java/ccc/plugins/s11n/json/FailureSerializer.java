@@ -51,11 +51,7 @@ class FailureSerializer extends BaseSerializer<Failure> {
         if (null==data) { return null; }
         final Json json = parse(data);
 
-        final Failure f =
-            new Failure(
-                json.getId(JsonKeys.ID),
-                json.getString(JsonKeys.CODE),
-                json.getStringMap(JsonKeys.PARAMETERS));
+        final Failure f = read(json);
 
         return f;
     }
@@ -64,13 +60,27 @@ class FailureSerializer extends BaseSerializer<Failure> {
     /** {@inheritDoc} */
     @Override
     public String write(final Failure instance) {
+        return write(instance, newJson()).toString();
+    }
+
+
+    static Failure read(final Json json) {
+        if (null==json) { return null; }
+        return
+            new Failure(
+                json.getId(JsonKeys.ID),
+                json.getString(JsonKeys.CODE),
+                json.getStringMap(JsonKeys.PARAMETERS));
+    }
+
+
+    static Json write(final Failure instance, final Json json) {
         if (null==instance) { return null; }
-        final Json json = newJson();
 
         json.set(JsonKeys.CODE, instance.getCode());
         json.set(JsonKeys.ID, instance.getExceptionId());
         json.set(JsonKeys.PARAMETERS, instance.getParams());
 
-        return json.toString();
+        return json;
     }
 }

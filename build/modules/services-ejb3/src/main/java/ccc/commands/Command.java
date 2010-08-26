@@ -30,9 +30,9 @@ import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Properties;
 
-import ccc.api.core.ActionSummary;
+import ccc.api.core.Action;
 import ccc.api.core.Comment;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.api.core.User;
 import ccc.api.types.CommandType;
 import ccc.commons.Resources;
@@ -407,8 +407,8 @@ public abstract class Command<T> {
 
     private String serializeAction(final ActionEntity action) {
         return
-            _serializers.create(ActionSummary.class)
-                .write(action.mapAction());
+            _serializers.create(Action.class)
+                .write(action.detach());
     }
 
 
@@ -420,9 +420,10 @@ public abstract class Command<T> {
 
 
     private String serializeResource(final ResourceEntity resource) {
+        final Resource detached = resource.forCurrentRevision();
         return
-            _serializers.create(ResourceSummary.class)
-                .write(resource.mapResource());
+            _serializers.create(detached.getClass())
+                .write(detached);
     }
 
 

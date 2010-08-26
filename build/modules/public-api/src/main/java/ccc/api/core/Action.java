@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 
 
@@ -48,6 +49,9 @@ public class Action
     private CommandType         _command;
     private Date                _executeAfter;
     private Map<String, String> _parameters = new HashMap<String, String>();
+    private UUID                _actor;
+    private ActionStatus        _status;
+    private Failure             _failure;
 
 
     /**
@@ -112,5 +116,65 @@ public class Action
      */
     public final Map<String, String> getParameters() {
         return _parameters;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the actor.
+     */
+    public final UUID getActor() {
+        return _actor;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param actor The actor to set.
+     */
+    public final void setActor(final UUID actor) {
+        _actor = actor;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the status.
+     */
+    public final ActionStatus getStatus() {
+        return _status;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param status The status to set.
+     */
+    public final void setStatus(final ActionStatus status) {
+        _status = status;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the failure.
+     */
+    public final Failure getFailure() {
+        return _failure;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param failure The failure to set.
+     */
+    public final void setFailure(final Failure failure) {
+        _failure = failure;
     }
 }

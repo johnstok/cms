@@ -45,7 +45,7 @@ public interface Serializers {
      * @return The corresponding serializer or NULL if no serializer is
      *  available.
      */
-    <T> Serializer<T> create(final Class<T> clazz);
+    <T> Serializer<T> create(final Class<? extends T> clazz);
 
 
     /**

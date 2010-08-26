@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.core.Action;
+import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.plugins.s11n.TextParser;
 
@@ -67,6 +68,11 @@ class ActionSerializer extends BaseSerializer<Action> {
 
         final Action a = new Action(resourceId, command, execAfter, parameters);
 
+        a.setActor(json.getId(JsonKeys.ACTOR_ID));
+        final String status = json.getString(JsonKeys.STATUS);
+        a.setStatus((null==status) ? null : ActionStatus.valueOf(status));
+        a.setFailure(FailureSerializer.read(json.getJson(JsonKeys.FAILURE)));
+
         return a;
     }
 
@@ -81,6 +87,12 @@ class ActionSerializer extends BaseSerializer<Action> {
         json.set(JsonKeys.COMMAND, instance.getCommand().name());
         json.set(JsonKeys.EXECUTE_AFTER, instance.getExecuteAfter());
         json.set(JsonKeys.PARAMETERS, instance.getParameters());
+        json.set(JsonKeys.ACTOR_ID, instance.getActor());
+        final ActionStatus status = instance.getStatus();
+        json.set(JsonKeys.STATUS, (null==status) ? null : status.name());
+        json.set(
+            JsonKeys.FAILURE,
+            FailureSerializer.write(instance.getFailure(), newJson()));
 
         return json.toString();
     }

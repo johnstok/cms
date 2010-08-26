@@ -32,7 +32,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Failure;
 import ccc.api.exceptions.CycleDetectedException;
@@ -284,17 +286,25 @@ public class ActionEntity extends Entity {
     }
 
 
-//    /** {@inheritDoc} */
-//    @Override
-//    public void toJson(final Json json) {
-//        super.toJson(json);
-//        json.set(JsonKeys.ACTOR_ID, getActor().getId());
-//        json.set(JsonKeys.TYPE, getType().name());
-//        json.set(JsonKeys.PARAMETERS, getParameters());
-//        json.set(JsonKeys.SUBJECT_ID, getSubject().getId().toString());
-//        json.set(JsonKeys.EXECUTE_AFTER, getExecuteAfter());
-//        json.set(JsonKeys.STATUS, getStatus().name());
-//        json.set(JsonKeys.CODE, (null==_code) ? null : _code.name());
-//        json.set("failure-params", _params);
-//    }
+    /**
+     * Create a detached instance of this entity.
+     *
+     * @return An action representing this entity.
+     */
+    public Action detach() {
+        final Action a =
+            new Action(
+                getSubject().getId(),
+                getType(),
+                getExecuteAfter(),
+                getParameters());
+        a.setActor(getActor().getId());
+        a.setStatus(getStatus());
+        if (ActionStatus.FAILED==getStatus()) {
+            a.setFailure(
+                new Failure(
+                    UUID.fromString(getFailureId()), "<unknown>", getParams()));
+        }
+        return a;
+    }
 }
