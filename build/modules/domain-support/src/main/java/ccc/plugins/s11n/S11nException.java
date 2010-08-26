@@ -40,6 +40,15 @@ public class S11nException
     /**
      * Constructor.
      *
+     * @param detail The details of the exception.
+     */
+    public S11nException(final String detail) {
+        super(detail);
+    }
+
+    /**
+     * Constructor.
+     *
      * @param cause The cause of the exception.
      */
     public S11nException(final Throwable cause) {
@@ -53,8 +62,7 @@ public class S11nException
      * @param detail The details of the exception.
      * @param cause The cause of the exception.
      */
-    public S11nException(final String detail,
-                                    final Throwable cause) {
+    public S11nException(final String detail, final Throwable cause) {
         super("Invalid snapshot:\n"+detail, cause);
     }
 }

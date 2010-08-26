@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.plugins.s11n.S11nException;
 import ccc.plugins.s11n.json.Json;
 
 import com.google.gwt.json.client.JSONArray;
@@ -100,7 +101,7 @@ class GwtJson
     public Boolean getBool(final String key) {
         final JSONValue value = _delegate.get(key);
         if (null==value) {
-            throw new RuntimeException("Missing key: "+key);
+            throw new S11nException("Missing key: "+key);
         } else if (null!=value.isNull()) {
             return null;
         }
@@ -123,7 +124,7 @@ class GwtJson
     public Date getDate(final String key) {
         final JSONValue value = _delegate.get(key);
         if (null==value) {
-            throw new RuntimeException("Missing key: "+key);
+            throw new S11nException("Missing key: "+key);
         } else if (null!=value.isNull()) {
             return null;
         }
@@ -136,7 +137,7 @@ class GwtJson
     public BigDecimal getBigDecimal(final String key) {
         final JSONValue value = _delegate.get(key);
         if (null==value) {
-            throw new RuntimeException("Missing key: "+key);
+            throw new S11nException("Missing key: "+key);
         } else if (null!=value.isNull()) {
             return null;
         }
@@ -148,7 +149,7 @@ class GwtJson
     public UUID getId(final String key) {
         final JSONValue value = _delegate.get(key);
         if (null==value) {
-            throw new RuntimeException("Missing key: "+key);
+            throw new S11nException("Missing key: "+key);
         } else if (null!=value.isNull()) {
             return null;
         }
@@ -160,7 +161,7 @@ class GwtJson
     public Integer getInt(final String key) {
         final JSONValue value = _delegate.get(key);
         if (null==value) {
-            throw new RuntimeException("Missing key: "+key);
+            throw new S11nException("Missing key: "+key);
         } else if (null!=value.isNull()) {
             return null;
         }
@@ -173,7 +174,7 @@ class GwtJson
     public Json getJson(final String key) {
         final JSONValue value = _delegate.get(key);
         if (null==value) {
-            throw new RuntimeException("Missing key: "+key);
+            throw new S11nException("Missing key: "+key);
         } else if (null!=value.isNull()) {
             return null;
         }
@@ -185,7 +186,7 @@ class GwtJson
     public String getString(final String key) {
         final JSONValue value = _delegate.get(key);
         if (null==value) {
-            throw new RuntimeException("Missing key: "+key);
+            throw new S11nException("Missing key: "+key);
         } else if (null!=value.isNull()) {
             return null;
         }
@@ -285,7 +286,7 @@ class GwtJson
     public Collection<String> getStrings(final String key) {
         final JSONValue value = _delegate.get(key);
         if (null==value) {
-            throw new RuntimeException("Missing key: "+key);
+            throw new S11nException("Missing key: "+key);
         } else if (null!=value.isNull()) {
             return null;
         }
@@ -310,7 +311,7 @@ class GwtJson
     public Long getLong(final String key) {
         final JSONValue value = _delegate.get(key);
         if (null==value) {
-            throw new RuntimeException("Missing key: "+key);
+            throw new S11nException("Missing key: "+key);
         } else if (null!=value.isNull()) {
             return null;
         }
@@ -324,7 +325,7 @@ class GwtJson
         final Map<String, String> value = new HashMap<String, String>();
         final JSONValue v = _delegate.get(key);
         if (null==v) {
-            throw new RuntimeException("Missing key: "+key);
+            throw new S11nException("Missing key: "+key);
         } else if (null!=v.isNull()) {
             return null;
         }
