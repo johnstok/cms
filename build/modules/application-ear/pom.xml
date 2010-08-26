@@ -135,6 +135,11 @@
             <artifactId>plugins-security-jboss</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>plugin-mail-javamail</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Not required in the EAR. -->
         <dependency>

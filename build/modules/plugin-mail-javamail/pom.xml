@@ -6,25 +6,30 @@
         <groupId>com.civicuk.cc</groupId>
         <version>7.3.0-SNAPSHOT</version>
     </parent>
-    
     <properties>
         <parent_basedir>${basedir}/../..</parent_basedir>
     </properties>
-    
-    <artifactId>api-plugins</artifactId>
-    <name>api-plugins</name>
+    <artifactId>plugin-mail-javamail</artifactId>
+    <name>plugin-mail-javamail</name>
     
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>api-core</artifactId>
+            <artifactId>api-plugins</artifactId>
             <version>${project.version}</version>
         </dependency>
         
         <dependency>
-            <groupId>org.ccil.cowan.tagsoup</groupId>
-            <artifactId>tagsoup</artifactId>
-            <version>${lib.version.tagsoup}</version>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${lib.version.javamail}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jvnet.mock-javamail</groupId>
+            <artifactId>mock-javamail</artifactId>
+            <version>1.7</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     

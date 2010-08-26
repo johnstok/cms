@@ -27,6 +27,7 @@
 package ccc.plugins.mail.javamail;
 
 import java.util.Date;
+import java.util.Properties;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -58,6 +59,19 @@ public class JavaMailMailer
     private static final Logger LOG = Logger.getLogger(JavaMailMailer.class);
 
     private final Session _session;
+
+
+    /**
+     * Constructor.
+     */
+    public JavaMailMailer() {
+        final Properties config =
+            ccc.commons.Resources.readIntoProps("mail.properties");
+        LOG.debug("Mail configuration: "+config);
+
+        _session =
+            Session.getInstance(config, new PropertiesAuthenticator(config));
+    }
 
 
     /**

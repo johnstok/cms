@@ -117,6 +117,7 @@
         <module>modules/plugin-multipart-apache</module>
         <module>modules/plugin-security-jboss</module>
         <module>modules/plugin-s11n-json</module>
+        <module>modules/plugin-mail-javamail</module>
     </modules>
 
     <build>

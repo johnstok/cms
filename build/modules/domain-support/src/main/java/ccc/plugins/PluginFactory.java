@@ -30,6 +30,7 @@ import static ccc.commons.Reflection.*;
 
 import java.io.InputStream;
 
+import ccc.plugins.mail.Mailer;
 import ccc.plugins.multipart.MultipartFormData;
 import ccc.plugins.s11n.Serializers;
 import ccc.plugins.scripting.TextProcessor;
@@ -71,6 +72,14 @@ public class PluginFactory {
         } catch (final IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    public Mailer createMailer() {
+        return
+        construct(
+            Mailer.class,
+            "ccc.plugins.mail.javamail.JavaMailMailer");
     }
 
 
