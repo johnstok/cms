@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,39 +21,40 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.plugins.s11n.json;
 
-import ccc.api.core.Security;
-import ccc.client.core.RemotingAction;
-import ccc.client.gwt.core.GlobalsImpl;
-
+import ccc.plugins.s11n.TextParser;
 
 
 /**
- * Abstract action for property loading. Implement onOK method for accessing
- * map values. See LoginDialog or AboutDialog.
+ * Serializer for {@link Boolean}s.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class GetPropertyAction
-    extends
-        RemotingAction {
-
+class BooleanSerializer extends BaseSerializer<Boolean> {
 
     /**
      * Constructor.
+     *
+     * @param parser The text parser for this serializer.
      */
-    public GetPropertyAction() {
-        super(USER_ACTIONS.readProperties());
+    BooleanSerializer(final TextParser parser) { super(parser); }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Boolean read(final String data) {
+        return Boolean.valueOf(data);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() {
-        return GlobalsImpl.getAPI().getLink(Security.PROPERTIES);
+    public String write(final Boolean instance) {
+        if (null==instance) { return null; }
+        return instance.toString();
     }
 }

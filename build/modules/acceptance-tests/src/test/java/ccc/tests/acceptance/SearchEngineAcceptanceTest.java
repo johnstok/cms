@@ -57,7 +57,7 @@ public class SearchEngineAcceptanceTest
      *
      * @throws Exception If the test fails.
      */
-    public void testStartStopActionScheduler() throws Exception {
+    public void testStartStopSearchScheduler() throws Exception {
 
         // ARRANGE
 

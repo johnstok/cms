@@ -76,7 +76,7 @@ public class LoginAction
 
     /** {@inheritDoc} */
     @Override protected void onOK(final Response response) {
-        final boolean success = getParser().parseBoolean(response.getText());
+        final boolean success = readBoolean(response).booleanValue();
         if (success) {
             InternalServices.WINDOW.refresh();
         } else {

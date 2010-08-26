@@ -26,11 +26,14 @@
  */
 package ccc.api.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 
 
 /**
- * TODO: Add a description for this type.
+ * API entry point.
  *
  * @author Civic Computing Ltd.
  */
@@ -62,6 +65,9 @@ public class API
     public static final String ALIASES = "aliases";
     /** ACTIONS : String. */
     public static final String ACTIONS = "actions";
+
+    private Map<String, String> _props = new HashMap<String, String>();
+
 
     /**
      * Link.
@@ -146,4 +152,24 @@ public class API
      * @return A link to the users collection.
      */
     public String users() { return getLink(USERS); }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the props.
+     */
+    public Map<String, String> getProps() {
+        return _props;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param props The props to set.
+     */
+    public void setProps(final Map<String, String> props) {
+        _props = props;
+    }
 }

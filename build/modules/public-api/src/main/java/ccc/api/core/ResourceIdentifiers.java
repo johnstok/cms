@@ -73,8 +73,6 @@ public interface ResourceIdentifiers {
     public static interface Security {
         /** COLLECTION : String. */
         String COLLECTION = "/public/sessions";
-        /** PROPERTIES : String. */
-        String PROPERTIES = COLLECTION+"/allproperties";
         /** CURRENT : String. */
         String CURRENT    = COLLECTION+"/current";
     }

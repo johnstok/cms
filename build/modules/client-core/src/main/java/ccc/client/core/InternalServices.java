@@ -37,7 +37,7 @@ import ccc.api.types.Link.Encoder;
 import ccc.client.events.Bus;
 import ccc.client.events.SimpleBus;
 import ccc.client.validation.AbstractValidations;
-import ccc.plugins.s11n.TextParser;
+import ccc.plugins.s11n.Serializers;
 
 
 /**
@@ -52,7 +52,7 @@ public class InternalServices {
 
     public static AbstractValidations VALIDATOR;
     public static RequestExecutor     EXECUTOR;
-    public static TextParser          PARSER;
+    public static Serializers         SERIALIZERS;
     public static Encoder             ENCODER;
     public static ExceptionHandler    EX_HANDLER;
     public static Window              WINDOW;

@@ -27,6 +27,9 @@
 
 package ccc.web.jaxrs;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -86,11 +89,18 @@ public class ServicesImpl {
             ccc.api.core.Page.VALIDATOR,
             ccc.api.core.ResourceIdentifiers.Page.VALIDATOR);
 
-        api.addLink(ccc.api.core.Security.PROPERTIES, Security.PROPERTIES);
         api.addLink(ccc.api.core.Security.CURRENT,    Security.CURRENT);
         api.addLink(ccc.api.core.Security.COLLECTION, Security.COLLECTION+"?{-join|&|u,p}");
 
         api.addLink(ccc.api.core.File.LIST_BINARY, File.BINARY_COLLECTION);
+
+        final Map<String, String> props = new HashMap<String, String>();
+        props.put("buildNumber", CCCProperties.buildNumber());
+        props.put("ccc-version", CCCProperties.version());
+        props.put("timestamp", CCCProperties.timestamp());
+        props.put("application.name", CCCProperties.getAppName());
+        props.put("application.context", CCCProperties.getContextName());
+        api.setProps(props);
 
         return api;
     }

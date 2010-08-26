@@ -85,6 +85,10 @@ public final class SerializerFactory implements Serializers {
         supportedNames   = new HashMap<String, Class<?>>();
 
         addSerializer(
+            Boolean.class, new BooleanSerializer(_textParser));
+        addSerializer(
+            boolean.class, new BooleanSerializer(_textParser));
+        addSerializer(
             ACL.class, new ACLSerializer(_textParser));
         addSerializer(
             Action.class, new ActionSerializer(_textParser));
@@ -127,9 +131,11 @@ public final class SerializerFactory implements Serializers {
         addSerializer(
             PageCriteria.class, new PageCriteriaSerializer(_textParser));
         addSerializer(
-            ResourceCriteria.class, new ResourceCriteriaSerializer(_textParser));
+            ResourceCriteria.class,
+            new ResourceCriteriaSerializer(_textParser));
         addSerializer(
-            PagedCollection.class, new PagedCollectionSerializer(this));
+            PagedCollection.class,
+            new PagedCollectionSerializer(_textParser, this));
     }
 
 
@@ -166,12 +172,5 @@ public final class SerializerFactory implements Serializers {
     @Override
     public Class<?> findClass(final String name) {
         return supportedNames.get(name);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public TextParser textParser() {
-        return _textParser;
     }
 }

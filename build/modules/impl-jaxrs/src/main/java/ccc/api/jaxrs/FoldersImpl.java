@@ -83,7 +83,8 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public Boolean nameExistsInFolder(final UUID folderId, final String name) {
+    public ResourceSummary nameExistsInFolder(final UUID folderId,
+                                              final String name) {
         try {
             return _delegate.nameExistsInFolder(folderId, name);
         } catch (final RuntimeException cfe) {

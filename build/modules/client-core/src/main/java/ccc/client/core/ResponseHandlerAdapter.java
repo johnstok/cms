@@ -28,7 +28,6 @@ package ccc.client.core;
 
 import ccc.api.core.Failure;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -140,7 +139,7 @@ public class ResponseHandlerAdapter
 
     private RemoteException toRemoteException(final Response response) {
         return new RemoteException(
-            new SerializerFactory(InternalServices.PARSER)
+            InternalServices.SERIALIZERS
                 .create(Failure.class)
                 .read(response.getText()));
     }

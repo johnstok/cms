@@ -61,28 +61,6 @@ public interface TextParser {
 
 
     /**
-     * Parse text as a boolean.
-     *
-     * @param text The text to parse.
-     *
-     * @return A boolean.
-     */
-    @Deprecated
-    boolean parseBoolean(final String text);
-
-
-    /**
-     * Parse text as a map.
-     *
-     * @param text The text to parse.
-     *
-     * @return A map.
-     */
-    @Deprecated
-    Map<String, String> parseMapString(final String text);
-
-
-    /**
      * Create a new JSON object.
      *
      * @return The new object.

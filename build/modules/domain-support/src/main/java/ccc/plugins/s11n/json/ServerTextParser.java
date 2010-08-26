@@ -23,21 +23,6 @@ public class ServerTextParser
 
     /** {@inheritDoc} */
     @Override
-    public boolean parseBoolean(final String text) {
-        return Boolean.valueOf(text).booleanValue();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Map<String, String> parseMapString(final String text) {
-        final Json json = parseJson(text);
-        return json.getStringMap("properties");
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Json newJson() { return new JsonImpl(); }
 
 

@@ -31,7 +31,6 @@ import java.util.Map;
 import ccc.plugins.s11n.TextParser;
 import ccc.plugins.s11n.json.Json;
 
-import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
@@ -53,22 +52,6 @@ public class GWTTextParser
             JSONParser.parse(text).isObject();
         final Json json = new GwtJson(result);
         return json;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean parseBoolean(final String text) {
-        final JSONBoolean b = JSONParser.parse(text).isBoolean();
-        return b.booleanValue();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Map<String, String> parseMapString(final String text) {
-        final Json json = parseJson(text);
-        return json.getStringMap("properties");
     }
 
 

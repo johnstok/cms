@@ -32,6 +32,7 @@ import java.util.Collection;
 import ccc.api.core.PagedCollection;
 import ccc.plugins.s11n.Serializer;
 import ccc.plugins.s11n.Serializers;
+import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -49,10 +50,12 @@ class PagedCollectionSerializer<T> extends BaseSerializer<PagedCollection<T>> {
     /**
      * Constructor.
      *
+     * @param parser      The text parser for this serializer.
      * @param serializers The serializers for this serializer.
      */
-    public PagedCollectionSerializer(final Serializers serializers) {
-        super(serializers.textParser());
+    public PagedCollectionSerializer(final TextParser parser,
+                                     final Serializers serializers) {
+        super(parser);
         _serializers = serializers;
     }
 

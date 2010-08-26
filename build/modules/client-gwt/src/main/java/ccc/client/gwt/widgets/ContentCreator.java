@@ -46,7 +46,6 @@ import ccc.client.gwt.i18n.GWTErrorDescriptions;
 import ccc.client.gwt.i18n.GWTErrorResolutions;
 import ccc.client.gwt.i18n.GWTUIConstants;
 import ccc.client.gwt.i18n.GWTUIMessages;
-import ccc.client.gwt.remoting.GetPropertyAction;
 import ccc.client.gwt.remoting.IsLoggedInAction;
 import ccc.client.gwt.validation.Validations;
 import ccc.client.i18n.ActionNameConstants;
@@ -57,6 +56,7 @@ import ccc.client.i18n.ErrorResolutions;
 import ccc.client.i18n.UIConstants;
 import ccc.client.i18n.UIMessages;
 import ccc.client.remoting.GetServicesAction;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -92,17 +92,23 @@ public final class ContentCreator implements EntryPoint {
         GlobalsImpl.setCommandConstants(
             GWT.<CommandTypeConstants>create(GWTCommandTypeConstants.class));
 
-        InternalServices.VALIDATOR  = new Validations();
-        InternalServices.EXECUTOR   = new GwtRequestExecutor();
-        InternalServices.PARSER     = new GWTTextParser();
-        InternalServices.ENCODER    = new GWTTemplateEncoder();
-        InternalServices.WINDOW     = new GWTWindow();
-        InternalServices.EX_HANDLER =
+        InternalServices.VALIDATOR   = new Validations();
+        InternalServices.EXECUTOR    = new GwtRequestExecutor();
+        InternalServices.SERIALIZERS =
+            new SerializerFactory(new GWTTextParser());
+        InternalServices.ENCODER     = new GWTTemplateEncoder();
+        InternalServices.WINDOW      = new GWTWindow();
+        InternalServices.EX_HANDLER  =
             new GWTExceptionHandler(InternalServices.WINDOW);
 
-        if (null!=InternalServices.WINDOW.getParameter("dec")) { // 'dec' param is missing.
+        if (paramExists("dec")) {
             InternalServices.WINDOW.enableExitConfirmation();
         }
+    }
+
+
+    private boolean paramExists(final String paramName) {
+        return null!=InternalServices.WINDOW.getParameter(paramName);
     }
 
 
@@ -133,21 +139,10 @@ public final class ContentCreator implements EntryPoint {
             @Override
             protected void onOK(final Response response) {
                 super.onOK(response);
-                loadSettings();
+                _globals.setSettings(InternalServices.API.getProps());
+                new IsLoggedInAction().execute();
             }}.execute();
 
-    }
-
-
-    private void loadSettings() {
-        new GetPropertyAction() {
-            /** {@inheritDoc} */
-            @Override protected void onOK(final Response response) {
-                _globals.setSettings(
-                    getParser().parseMapString(response.getText()));
-                new IsLoggedInAction().execute();
-            }
-        }.execute();
     }
 
 

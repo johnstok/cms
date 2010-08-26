@@ -46,6 +46,7 @@ import ccc.commons.IO;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.Serializers;
 import ccc.plugins.s11n.json.Json;
+import ccc.plugins.s11n.json.ServerTextParser;
 
 
 /**
@@ -142,7 +143,7 @@ public class AbstractProvider {
     protected Json readJson(final MediaType mediaType,
                             final InputStream entityStream) throws IOException {
         final String body = readString(mediaType, entityStream);
-        final Json json = getSerializers().textParser().parseJson(body);
+        final Json json = new ServerTextParser().parseJson(body);
         return json;
     }
 

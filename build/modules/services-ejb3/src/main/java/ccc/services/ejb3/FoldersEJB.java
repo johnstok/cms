@@ -141,18 +141,20 @@ public class FoldersEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Boolean nameExistsInFolder(final UUID folderId, final String name) {
+    public ResourceSummary nameExistsInFolder(final UUID folderId,
+                                              final String name) {
         checkPermission(FOLDER_READ);
 
         // TODO: handle null folderId? (for root folders)
         // FIXME checkRead(f); ?
+        final ResourceEntity e =
+            getRepoFactory()
+                .createResourceRepository()
+                .find(FolderEntity.class, folderId)
+                .getEntryWithName(new ResourceName(name));
 
-        return
-            Boolean.valueOf(
-                getRepoFactory()
-                    .createResourceRepository()
-                    .find(FolderEntity.class, folderId)
-                    .hasEntryWithName(new ResourceName(name)));
+        return (null==e) ? null : e.mapResource();
+
     }
 
 

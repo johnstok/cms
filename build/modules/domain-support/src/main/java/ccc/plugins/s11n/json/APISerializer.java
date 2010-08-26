@@ -39,6 +39,9 @@ class APISerializer
     extends
         BaseSerializer<API> {
 
+    private static final String PROPERTIES = "properties";
+
+
     /**
      * Constructor.
      *
@@ -57,6 +60,8 @@ class APISerializer
 
         ResourceMappings.readRes(json, r);
 
+        r.setProps(json.getStringMap(PROPERTIES));
+
         return r;
     }
 
@@ -68,6 +73,8 @@ class APISerializer
         final Json json = newJson();
 
         ResourceMappings.writeRes(json, instance);
+
+        json.set(PROPERTIES, instance.getProps());
 
         return json.toString();
     }

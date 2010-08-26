@@ -68,9 +68,8 @@ public abstract class ResourceNameExistsAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final boolean nameExists =
-            InternalServices.PARSER.parseBoolean(response.getText());
-        execute(nameExists);
+        final ResourceSummary r = readResourceSummary(response);
+        execute(null!=r);
     }
 
     /**

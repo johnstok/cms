@@ -74,19 +74,8 @@ public interface Security {
     void logout();
 
 
-    /**
-     * Read the properties for the session.
-     *
-     * @return The properties as a string.
-     */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Security.PROPERTIES)
-    String readAllProperties();
-
-
     /** CURRENT : String. */
     String CURRENT = "current";
     /** COLLECTION : String. */
     String COLLECTION = "collection";
-    /** PROPERTIES : String. */
-    String PROPERTIES = "properties";
 }

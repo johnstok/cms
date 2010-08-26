@@ -32,7 +32,6 @@ import ccc.api.types.DBC;
 import ccc.api.types.Link.Encoder;
 import ccc.client.events.Bus;
 import ccc.client.events.Event;
-import ccc.plugins.s11n.TextParser;
 
 
 /**
@@ -50,7 +49,6 @@ public abstract class RemotingAction
     private HttpMethod        _method;
 
     private RequestExecutor   _executor    = InternalServices.EXECUTOR;
-    private TextParser        _parser      = InternalServices.PARSER;
     private Encoder           _encoder     = InternalServices.ENCODER;
     private Bus<CommandType>  _bus         = InternalServices.REMOTING_BUS;
 
@@ -101,29 +99,6 @@ public abstract class RemotingAction
      */
     public RemotingAction setExecutor(final RequestExecutor executor) {
         _executor = DBC.require().notNull(executor);
-        return this;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the parser.
-     */
-    public TextParser getParser() {
-        return _parser;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param parser The parser to set.
-     *
-     * @return A reference to 'this'.
-     */
-    public RemotingAction setParser(final TextParser parser) {
-        _parser = DBC.require().notNull(parser);
         return this;
     }
 

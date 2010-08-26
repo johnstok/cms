@@ -85,15 +85,4 @@ public class SecurityImpl2
             throw convertException(cfe);
         }
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String readAllProperties() {
-        try {
-            return _delegate.readAllProperties();
-        } catch (final RuntimeException cfe) {
-            throw convertException(cfe);
-        }
-    }
 }

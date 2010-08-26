@@ -108,13 +108,14 @@ public class FolderAcceptanceTest
         final ResourceSummary page = tempPage(f.getId(), template.getId());
 
         // ACT
-        final Boolean exists =
+        final ResourceSummary exists =
             getFolders().nameExistsInFolder(f.getId(), page.getName());
+        final ResourceSummary missing =
+            getFolders().nameExistsInFolder(f.getId(), "foo");
 
         // ASSERT
-        assertTrue("Name should exists in the folder", exists.booleanValue());
-        assertFalse("Name should not exists in the folder",
-            getFolders().nameExistsInFolder(f.getId(), "foo").booleanValue());
+        assertTrue("Name should exist in the folder",     null!=exists);
+        assertTrue("Name should not exist in the folder", null==missing);
     }
 
 

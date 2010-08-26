@@ -76,7 +76,8 @@ public interface Folders {
      *  false otherwise.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Folder.EXISTS)
-    Boolean nameExistsInFolder(@PathParam("id") final UUID folderId,
+    @Deprecated // Search with the absolute path instead.
+    ResourceSummary nameExistsInFolder(@PathParam("id") final UUID folderId,
                                @PathParam("name") final String name);
 
     /**

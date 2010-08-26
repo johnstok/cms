@@ -56,7 +56,6 @@ import ccc.api.jaxrs.SearchImpl;
 import ccc.api.jaxrs.SecurityImpl2;
 import ccc.api.jaxrs.TemplatesImpl;
 import ccc.api.jaxrs.UsersImpl;
-import ccc.api.jaxrs.providers.BooleanProvider;
 import ccc.api.jaxrs.providers.FileReader;
 import ccc.api.jaxrs.providers.MetadataWriter;
 import ccc.api.jaxrs.providers.S11nProvider;
@@ -87,12 +86,9 @@ public class ProxyServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyWriter(UuidCollectionWriter.class);
         pFactory.addMessageBodyWriter(FileReader.class);
         pFactory.addMessageBodyWriter(S11nProvider.class);
-        pFactory.addMessageBodyWriter(BooleanProvider.class);
 
         // Readers
         pFactory.addMessageBodyReader(UUIDProvider.class);
-        pFactory.addMessageBodyReader(BooleanProvider.class);
-
         pFactory.addMessageBodyReader(StringCollectionWriter.class);
         pFactory.addMessageBodyReader(MetadataWriter.class);
         pFactory.addMessageBodyReader(UuidCollectionWriter.class);

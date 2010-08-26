@@ -27,9 +27,6 @@
 
 package ccc.web.jaxrs;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
@@ -42,7 +39,6 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import ccc.api.core.Security;
 import ccc.api.types.Permission;
 import ccc.plugins.PluginFactory;
-import ccc.plugins.s11n.json.Json;
 import ccc.plugins.security.Sessions;
 
 
@@ -102,22 +98,6 @@ public class SecurityImpl
     @Override
     public void logout() {
         _request.getSession().invalidate();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public String readAllProperties() {
-        final Map<String, String> props = new HashMap<String, String>();
-        props.put("buildNumber", CCCProperties.buildNumber());
-        props.put("ccc-version", CCCProperties.version());
-        props.put("timestamp", CCCProperties.timestamp());
-        props.put("application.name", CCCProperties.getAppName());
-        props.put("application.context", CCCProperties.getContextName());
-
-        final Json ss =
-            new PluginFactory().serializers().textParser().newJson();
-        ss.set("properties", props);
-        return ss.toString();
     }
 
 

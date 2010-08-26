@@ -44,7 +44,6 @@ import ccc.api.core.Template;
 import ccc.api.core.User;
 import ccc.api.types.Duration;
 import ccc.plugins.s11n.Serializers;
-import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**
@@ -54,8 +53,7 @@ import ccc.plugins.s11n.json.SerializerFactory;
  */
 public class S11nHelper {
 
-    private final Serializers _serializers =
-        new SerializerFactory(InternalServices.PARSER);
+    private final Serializers _serializers = InternalServices.SERIALIZERS;
 
 
     /**
@@ -173,6 +171,11 @@ public class S11nHelper {
 
     protected ACL readACL(final Response response) {
         return serializers().create(ACL.class).read(response.getText());
+    }
+
+
+    protected Boolean readBoolean(final Response response) {
+        return serializers().create(Boolean.class).read(response.getText());
     }
 
 

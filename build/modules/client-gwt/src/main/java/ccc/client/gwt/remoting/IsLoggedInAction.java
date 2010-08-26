@@ -77,7 +77,7 @@ public class IsLoggedInAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        if (getParser().parseBoolean(response.getText())) {
+        if (readBoolean(response).booleanValue()) {
             InternalServices.WINDOW.enableExitConfirmation();
             loadServices();
         } else {

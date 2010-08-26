@@ -80,6 +80,7 @@ import ccc.client.i18n.UIConstants;
 import ccc.client.i18n.UIMessages;
 import ccc.client.validation.AbstractValidations;
 import ccc.commons.Testing;
+import ccc.plugins.s11n.json.SerializerFactory;
 import ccc.plugins.s11n.json.ServerTextParser;
 
 
@@ -126,7 +127,8 @@ public abstract class AbstractAcceptanceTest
         WINDOW = new WindowStub();
         InternalServices.WINDOW = WINDOW;
         InternalServices.ENCODER = new NormalisingEncoder();
-        InternalServices.PARSER = new ServerTextParser();
+        InternalServices.SERIALIZERS =
+            new SerializerFactory(new ServerTextParser());
 
         InternalServices.CORE_BUS.registerHandler(
             new EventHandler<CoreEvents>() {

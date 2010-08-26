@@ -26,12 +26,9 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import java.util.Map;
-
 import ccc.client.core.I18n;
-import ccc.client.core.Response;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.remoting.GetPropertyAction;
 
 
 /**
@@ -39,7 +36,7 @@ import ccc.client.gwt.remoting.GetPropertyAction;
  *
  * @author Civic Computing Ltd.
  */
-public class AboutDialog extends AbstractBaseDialog{
+public class AboutDialog extends AbstractBaseDialog {
 
     /** ABOUT_WIDTH : int. */
     private static final int ABOUT_WIDTH = 220;
@@ -60,20 +57,10 @@ public class AboutDialog extends AbstractBaseDialog{
         setMinWidth(ABOUT_WIDTH);
         setHeight(ABOUT_HEIGHT);
 
-        final GetPropertyAction action = new GetPropertyAction() {
-            /** {@inheritDoc} */
-            @Override
-            protected void onOK(final Response response) {
-                final Map<String, String> map =
-                    getParser().parseMapString(response.getText());
-
-                _version = map.get("ccc-version");
-                _build = map.get("buildNumber");
-                _application = map.get("application.name");
-                writeAboutText();
-            }
-        };
-        action.execute();
+        _version = InternalServices.API.getProps().get("ccc-version");
+        _build = InternalServices.API.getProps().get("buildNumber");
+        _application = InternalServices.API.getProps().get("application.name");
+        writeAboutText();
     }
 
     private void writeAboutText() {

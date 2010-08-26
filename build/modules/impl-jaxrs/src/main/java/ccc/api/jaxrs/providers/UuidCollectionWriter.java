@@ -46,6 +46,7 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import ccc.plugins.s11n.json.Json;
+import ccc.plugins.s11n.json.ServerTextParser;
 
 
 /**
@@ -98,7 +99,7 @@ public class UuidCollectionWriter
         for (final UUID uuid : object) {
             strings.add(uuid.toString());
         }
-        final Json json = getSerializers().textParser().newJson();
+        final Json json = new ServerTextParser().newJson();
         json.setStrings(ELEMENTS, strings);
 
         final PrintWriter pw = new PrintWriter(outputStream);
