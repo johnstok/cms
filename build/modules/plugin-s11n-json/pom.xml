@@ -9,26 +9,16 @@
     <properties>
         <parent_basedir>${basedir}/../..</parent_basedir>
     </properties>
-    <artifactId>client-core</artifactId>
-    <packaging>jar</packaging>
-    <name>client-core</name>
+    <artifactId>plugin-s11n-json</artifactId>
+    <name>plugin-s11n-json</name>
     
     <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>api-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>api-plugins</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>plugin-s11n-json</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+        
     </dependencies>
-
+    
 </project>

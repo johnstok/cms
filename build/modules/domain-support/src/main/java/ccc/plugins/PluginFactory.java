@@ -32,8 +32,6 @@ import java.io.InputStream;
 
 import ccc.plugins.multipart.MultipartFormData;
 import ccc.plugins.s11n.Serializers;
-import ccc.plugins.s11n.json.ServerTextParser;
-import ccc.plugins.s11n.json.TextParser;
 import ccc.plugins.scripting.TextProcessor;
 import ccc.plugins.search.Index;
 import ccc.plugins.search.Indexer;
@@ -49,20 +47,30 @@ public class PluginFactory {
 
 
     public Serializers serializers() {
-        final Class<?>[] types = new Class<?>[] {
-            TextParser.class
-        };
+        try {
+            final Class<?>[] types = new Class<?>[] {
+                Class.forName("ccc.plugins.s11n.json.TextParser")
+            };
 
-        final Object[] values = new Object[] {
-            new ServerTextParser()
-        };
+            final Object[] values = new Object[] {
+                Class
+                    .forName("ccc.plugins.s11n.json.ServerTextParser")
+                    .newInstance()
+            };
 
-        return
-            construct(
-                Serializers.class,
-                "ccc.plugins.s11n.json.SerializerFactory",
-                types,
-                values);
+            return
+                construct(
+                    Serializers.class,
+                    "ccc.plugins.s11n.json.SerializerFactory",
+                    types,
+                    values);
+        } catch (final ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (final InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (final IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

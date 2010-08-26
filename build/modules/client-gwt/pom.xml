@@ -32,6 +32,7 @@
                                     <pathelement location="${basedir}/../simple-types/src/main/java" />
                                     <pathelement location="${basedir}/../domain-support/src/main/java" />
                                     <pathelement location="${basedir}/../client-core/src/main/java" />
+                                    <pathelement location="${basedir}/../plugin-s11n-json/src/main/java" />
                                     <pathelement path="${compile_classpath}" />
                                 </path>
                                 <property name="gwt_compile_classpath" refid="gwt.compile.classpath" />
@@ -74,6 +75,7 @@
                             <additionalClasspathElement>${basedir}/src/test/resources</additionalClasspathElement>
                             <additionalClasspathElement>${basedir}/../public-api/src/main/java</additionalClasspathElement>
                             <additionalClasspathElement>${basedir}/../simple-types/src/main/java</additionalClasspathElement>
+                            <additionalClasspathElement>${basedir}/../plugin-s11n-json/src/main/java</additionalClasspathElement>
                         </additionalClasspathElements>
                         <includes>
                             <!-- Default surefire patterns. -->

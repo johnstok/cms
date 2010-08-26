@@ -26,6 +26,13 @@
             <artifactId>api-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- FIXME: Remove this dependency? -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>plugin-s11n-json</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
         
         <!-- JEE dependencies -->
         <dependency>
