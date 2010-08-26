@@ -28,6 +28,7 @@ package ccc.api.core;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
@@ -46,6 +47,7 @@ public class ActionCriteria implements Serializable {
     private ActionStatus _status;
     private FailureCode _failureCode;
     private Date _executeAfter;
+    private UUID _subject;
 
     /**
      * Constructor.
@@ -58,22 +60,25 @@ public class ActionCriteria implements Serializable {
     /**
      * Constructor.
      *
-     * @param username
-     * @param type
-     * @param status
-     * @param failureCode
-     * @param executeAfter
+     * @param username The username.
+     * @param commandType The command type.
+     * @param status The action status.
+     * @param failureCode The failure code.
+     * @param executeAfter The execute after date.
+     * @param subject The subject UUID.
      */
     public ActionCriteria(final String username,
                           final CommandType commandType,
                           final ActionStatus status,
                           final FailureCode failureCode,
-                          final Date executeAfter) {
+                          final Date executeAfter,
+                          final UUID subject) {
         _username = username;
         _commandType = commandType;
         _status = status;
         _failureCode = failureCode;
         _executeAfter = executeAfter;
+        _subject = subject;
     }
 
     /**
@@ -106,7 +111,7 @@ public class ActionCriteria implements Serializable {
     /**
      * Mutator.
      *
-     * @param type The type to set.
+     * @param commandType The type to set.
      */
     public void setCommandType(final CommandType commandType) {
         _commandType = commandType;
@@ -164,6 +169,25 @@ public class ActionCriteria implements Serializable {
      */
     public void setExecuteAfter(final Date executeAfter) {
         _executeAfter = executeAfter;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the subject date.
+     */
+    public UUID getSubject() {
+        return _subject;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param subject The subject to set.
+     */
+    public void setSubject(final UUID subject) {
+        _subject = subject;
     }
 
 }

@@ -36,9 +36,11 @@ import javax.persistence.EntityManager;
 
 import ccc.api.core.ActionCriteria;
 import ccc.api.core.ActionSummary;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
 import ccc.domain.ActionEntity;
+import ccc.domain.ResourceEntity;
 
 
 /**
@@ -140,7 +142,7 @@ class ActionRepositoryImpl
         }
         if (ac.getCommandType() != null) {
             query.append((params.size()>0) ? " and" : " where");
-            query.append(" a._commandType=':commandType'");
+            query.append(" a._type=:commandType");
             params.put("commandType", ac.getCommandType());
         }
         if (ac.getUsername() != null) {
@@ -150,8 +152,23 @@ class ActionRepositoryImpl
         }
         if (ac.getFailureCode() != null) {
             query.append((params.size()>0) ? " and" : " where");
-            query.append(" a._failureCode=:failureCode)");
+            query.append(" a._code=:failureCode");
             params.put("failureCode", ac.getFailureCode());
+        }
+        if (ac.getExecuteAfter() != null) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" a._executeAfter>:executeAfter");
+            params.put("executeAfter", ac.getExecuteAfter());
+        }
+        if (ac.getSubject() != null) {
+            final ResourceEntity rs =
+                _repo.find(ResourceEntity.class, ac.getSubject());
+            if (rs.isDeleted()) {
+                throw new EntityNotFoundException(rs.getId());
+            }
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" a._subject=:subject");
+            params.put("subject", rs);
         }
     }
 

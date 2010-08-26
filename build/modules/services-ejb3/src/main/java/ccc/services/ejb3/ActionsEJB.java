@@ -144,6 +144,7 @@ public class ActionsEJB
                                                 final FailureCode failureCode,
                                                 final ActionStatus status,
                                                 final Date executeAfter,
+                                                final UUID subject,
                                                 final String sort,
                                                 final SortOrder sortOrder,
                                                 final int pageNo,
@@ -152,7 +153,8 @@ public class ActionsEJB
             commandType,
             status,
             failureCode,
-            executeAfter);
+            executeAfter,
+            subject);
         final ActionRepository actions =
             getRepoFactory().createActionRepository();
         final PagedCollection<ActionSummary> dc =

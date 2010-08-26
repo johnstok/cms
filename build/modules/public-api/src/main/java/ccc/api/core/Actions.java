@@ -87,6 +87,7 @@ public interface Actions
      * @param failureCode The failure code to match.
      * @param status The action status code to match.
      * @param executeAfter The execute after date to match.
+     * @param subject The subject to match.
      * @param sort The field to sort on.
      * @param sortOrder The order results be sorted in.
      * @param pageNo The page of results to return.
@@ -100,6 +101,7 @@ public interface Actions
         @QueryParam("failureCode") FailureCode failureCode,
         @QueryParam("status") ActionStatus status,
         @QueryParam("executeAfter") Date executeAfter,
+        @QueryParam("subject") UUID subject,
         @QueryParam("sort") @DefaultValue("status") String sort,
         @QueryParam("order") @DefaultValue("DESC") SortOrder sortOrder,
         @QueryParam("page") @DefaultValue("1") int pageNo,

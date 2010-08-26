@@ -76,6 +76,7 @@ public class CreateActionAcceptanceTest extends AbstractAcceptanceTest {
         final PagedCollection<ActionSummary> list = getActions().listActions(
                 null, null, null, ActionStatus.SCHEDULED, null,
                 null,
+                null,
                 SortOrder.ASC,
                 1,
                 Globals.MAX_FETCH);
