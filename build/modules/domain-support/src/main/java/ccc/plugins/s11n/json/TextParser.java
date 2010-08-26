@@ -24,36 +24,33 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.core;
 
-import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.TextParser;
+package ccc.plugins.s11n.json;
 
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * Implementation of the {@link TextParser} API using the GWT library.
+ * API for parsing text.
  *
  * @author Civic Computing Ltd.
  */
-public class GWTTextParser
-    implements
-        TextParser {
+public interface TextParser {
 
 
-    /** {@inheritDoc} */
-    @Override
-    public Json parseJson(final String text) {
-        final JSONObject result =
-            JSONParser.parse(text).isObject();
-        final Json json = new GwtJson(result);
-        return json;
-    }
+    /**
+     * Parse text into a JSON object.
+     *
+     * @param text The text to parse.
+     *
+     * @return The corresponding JSON object.
+     */
+    Json parseJson(final String text);
 
 
-    /** {@inheritDoc} */
-    @Override
-    public Json newJson() { return new GwtJson(); }
+    /**
+     * Create a new JSON object.
+     *
+     * @return The new object.
+     */
+    Json newJson();
 }

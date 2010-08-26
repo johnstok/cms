@@ -29,7 +29,6 @@ package ccc.plugins.s11n.json;
 import java.util.HashSet;
 
 import ccc.api.core.Group;
-import ccc.plugins.s11n.TextParser;
 
 
 /**

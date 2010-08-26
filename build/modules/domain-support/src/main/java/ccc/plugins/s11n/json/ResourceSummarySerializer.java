@@ -31,7 +31,6 @@ import java.util.HashSet;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
-import ccc.plugins.s11n.TextParser;
 
 
 /**

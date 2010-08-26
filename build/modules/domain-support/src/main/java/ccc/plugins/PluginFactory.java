@@ -32,8 +32,8 @@ import java.io.InputStream;
 
 import ccc.plugins.multipart.MultipartFormData;
 import ccc.plugins.s11n.Serializers;
-import ccc.plugins.s11n.TextParser;
 import ccc.plugins.s11n.json.ServerTextParser;
+import ccc.plugins.s11n.json.TextParser;
 import ccc.plugins.scripting.TextProcessor;
 import ccc.plugins.search.Index;
 import ccc.plugins.search.Indexer;

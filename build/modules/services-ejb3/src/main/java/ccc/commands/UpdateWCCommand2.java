@@ -29,11 +29,10 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.exceptions.WorkingCopyNotSupportedException;
+import ccc.api.core.Page;
 import ccc.api.types.CommandType;
-import ccc.domain.ResourceEntity;
+import ccc.domain.PageEntity;
 import ccc.domain.UserEntity;
-import ccc.domain.WorkingCopySupport;
 import ccc.persistence.IRepositoryFactory;
 
 
@@ -42,12 +41,12 @@ import ccc.persistence.IRepositoryFactory;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateWorkingCopyCommand
+public class UpdateWCCommand2
     extends
         Command<Void> {
 
     private final UUID _resourceId;
-    private final long _revisionNo;
+    private final Page _delta;
 
 
     /**
@@ -55,38 +54,30 @@ public class UpdateWorkingCopyCommand
      *
      * @param repoFactory The repository factory for this command.
      * @param resourceId  The page's id.
-     * @param revisionNo  The revision that the working copy will be created
-     *  from.
+     * @param delta       The page delta to store in the page.
      */
-    public UpdateWorkingCopyCommand(final IRepositoryFactory repoFactory,
-                                    final UUID resourceId,
-                                    final long revisionNo) {
+    public UpdateWCCommand2(final IRepositoryFactory repoFactory,
+                            final UUID resourceId,
+                            final Page delta) {
         super(repoFactory);
         _resourceId = resourceId;
-        _revisionNo = revisionNo;
+        _delta = delta;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected Void doExecute(final UserEntity actor, final Date happenedOn) {
-        final ResourceEntity r =
-            getRepository().find(ResourceEntity.class, _resourceId);
+        final PageEntity r =
+            getRepository().find(PageEntity.class, _resourceId);
         r.confirmLock(actor);
 
-        if (r instanceof WorkingCopySupport<?, ?, ?>) {
-            final WorkingCopySupport<?, ?, ?> wcAware =
-                (WorkingCopySupport<?, ?, ?>) r;
-            wcAware.setWorkingCopyFromRevision((int) _revisionNo);
+        r.setOrUpdateWorkingCopy(_delta);
 
-            auditResourceCommand(actor, happenedOn, r);
+        auditResourceCommand(actor, happenedOn, r);
 
-            return null;
-        }
-
-        throw new WorkingCopyNotSupportedException(r.getId());
+        return null;
     }
-
 
     /** {@inheritDoc} */
     @Override

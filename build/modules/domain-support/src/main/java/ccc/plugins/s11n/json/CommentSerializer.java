@@ -28,7 +28,6 @@ package ccc.plugins.s11n.json;
 
 import ccc.api.core.Comment;
 import ccc.api.types.CommentStatus;
-import ccc.plugins.s11n.TextParser;
 
 
 /**

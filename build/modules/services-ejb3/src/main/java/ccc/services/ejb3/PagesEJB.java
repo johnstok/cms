@@ -29,7 +29,6 @@ package ccc.services.ejb3;
 import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,7 +45,7 @@ import ccc.api.core.Pages;
 import ccc.api.core.ResourceSummary;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.commands.UpdatePageCommand;
-import ccc.commands.UpdateWorkingCopyCommand;
+import ccc.commands.UpdateWCCommand2;
 import ccc.commons.Exceptions;
 import ccc.domain.PageEntity;
 import ccc.domain.PageHelper;
@@ -102,12 +101,7 @@ public class PagesEJB
     @RolesAllowed(PAGE_UPDATE)
     public void updateWorkingCopy(final UUID pageId,
                                   final Page delta) {
-        new UpdateWorkingCopyCommand(getRepoFactory(), pageId, -1)
-            .execute(
-                currentUser(),
-                new Date(),
-                pageId,
-                delta);
+        execute(new UpdateWCCommand2(getRepoFactory(), pageId, delta));
     }
 
 

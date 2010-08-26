@@ -31,7 +31,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.SearchResult;
-import ccc.plugins.s11n.TextParser;
 
 
 /**

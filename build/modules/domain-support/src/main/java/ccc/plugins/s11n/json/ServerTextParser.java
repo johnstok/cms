@@ -2,7 +2,6 @@ package ccc.plugins.s11n.json;
 
 import java.util.Map;
 
-import ccc.plugins.s11n.TextParser;
 
 /**
  * Server implementation of the {@link TextParser} API.
@@ -26,8 +25,13 @@ public class ServerTextParser
     public Json newJson() { return new JsonImpl(); }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Parse a string map into a JSON object.
+     *
+     * @param map The map to parse.
+     *
+     * @return The corresponding JSON object.
+     */
     public Json parseJson(final Map<String, String> map) {
         return new JsonImpl(map);
     }

@@ -95,8 +95,8 @@ public class WorkingCopyManagerTest
         replayAll();
 
         // ACT
-        new UpdateWorkingCopyCommand(getRepoFactory(), page.getId(), -1)
-            .execute(getUser(), getNow(), page.getId(), before);
+        new UpdateWCCommand2(getRepoFactory(), page.getId(), before)
+            .execute(getUser(), getNow());
 
         // ASSERT
         verifyAll();
