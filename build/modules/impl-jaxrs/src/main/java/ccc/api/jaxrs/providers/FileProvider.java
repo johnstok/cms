@@ -75,14 +75,14 @@ import ccc.plugins.multipart.MultipartFormData;
 @Provider
 @Consumes("multipart/form-data")
 @Produces("multipart/form-data")
-public class FileReader
+public class FileProvider
     extends
         AbstractProvider
     implements
         MessageBodyWriter<File>,
         MessageBodyReader<File> {
 
-    private static final Logger LOG = Logger.getLogger(FileReader.class);
+    private static final Logger LOG = Logger.getLogger(FileProvider.class);
 
     private static final String FILE        = "file";
     private static final String FILE_NAME   = "fileName";

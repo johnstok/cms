@@ -32,42 +32,44 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.plugins.s11n.json.Json;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import ccc.plugins.s11n.json.ServerTextParser;
 
 
+
 /**
- * A provider for a collection of UUIDs.
+ * A provider for string maps.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Produces("application/json")
-@Consumes("application/json")
-public class UuidCollectionWriter
+@Deprecated // FIXME: We should be sending a resource.
+public class MetadataProvider
     extends
         AbstractProvider
     implements
-        MessageBodyWriter<Collection<UUID>>,
-        MessageBodyReader<Collection<UUID>> {
+        MessageBodyWriter<Map<String, String>>,
+        MessageBodyReader<Map<String, String>> {
 
 
     /** {@inheritDoc} */
     @Override
-    public long getSize(final Collection<UUID> object,
+    public long getSize(final Map<String, String> object,
                         final Class<?> clazz,
                         final Type type,
                         final Annotation[] annotations,
@@ -81,29 +83,21 @@ public class UuidCollectionWriter
                                final Type type,
                                final Annotation[] annotations,
                                final MediaType mediaType) {
-        final boolean isWriteable = isCollectionOfType(UUID.class, type);
+        final boolean isWriteable = isMapOfType(String.class, type);
         return isWriteable;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void writeTo(final Collection<UUID> object,
+    public void writeTo(final Map<String, String> object,
                         final Class<?> clazz,
                         final Type type,
                         final Annotation[] annotations,
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
-
-        final List<String> strings = new ArrayList<String>();
-        for (final UUID uuid : object) {
-            strings.add(uuid.toString());
-        }
-        final Json json = new ServerTextParser().newJson();
-        json.setStrings(ELEMENTS, strings);
-
-        final PrintWriter pw = new PrintWriter(outputStream);
-        pw.println(json.toString());
+        final PrintWriter pw = createWriter(outputStream);
+        pw.println(new ServerTextParser().parseJson(object).toString());
         pw.flush();
     }
 
@@ -113,28 +107,31 @@ public class UuidCollectionWriter
                               final Type type,
                               final Annotation[] arg2,
                               final MediaType arg3) {
-        final boolean isReadable = isCollectionOfType(UUID.class, type);
-        return isReadable;
+        final boolean isReader = isMapOfType(String.class, type);
+        return isReader;
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     @Override
-    public Collection<UUID> readFrom(
-                                    final Class<Collection<UUID>> arg0,
+    public Map<String, String> readFrom(
+                                    final Class<Map<String, String>> arg0,
                                     final Type arg1,
                                     final Annotation[] arg2,
                                     final MediaType arg3,
                                     final MultivaluedMap<String, String> arg4,
                                     final InputStream arg5) throws IOException {
-        final Json json = readJson(arg3, arg5);
-        final List<UUID> uuids = new ArrayList<UUID>();
-
-        for (final String s : json.getStrings(ELEMENTS)) {
-            uuids.add(UUID.fromString(s));
+        try {
+            final JSONObject o = new JSONObject(readString(arg3, arg5));
+            final Map<String, String> stringMap = new HashMap<String, String>();
+            for (final Iterator<String> i = o.keys(); i.hasNext();) {
+                final String mapKey = i.next();
+                final String mapValue = (String) o.get(mapKey);
+                stringMap.put(mapKey, mapValue);
+            }
+            return stringMap;
+        } catch (final JSONException e) {
+            throw new WebApplicationException(e);
         }
-
-        return uuids;
     }
-
-    private static final String ELEMENTS = "elements";
 }

@@ -43,13 +43,13 @@ import ccc.api.jaxrs.ResourcesImpl;
 import ccc.api.jaxrs.SearchImpl;
 import ccc.api.jaxrs.TemplatesImpl;
 import ccc.api.jaxrs.UsersImpl;
-import ccc.api.jaxrs.providers.FileReader;
-import ccc.api.jaxrs.providers.MetadataWriter;
+import ccc.api.jaxrs.providers.FileProvider;
+import ccc.api.jaxrs.providers.MetadataProvider;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.jaxrs.providers.S11nProvider;
-import ccc.api.jaxrs.providers.StringCollectionWriter;
+import ccc.api.jaxrs.providers.StringCollectionProvider;
 import ccc.api.jaxrs.providers.UUIDProvider;
-import ccc.api.jaxrs.providers.UuidCollectionWriter;
+import ccc.api.jaxrs.providers.UuidCollectionProvider;
 import ccc.commons.JNDI;
 
 
@@ -100,10 +100,10 @@ public class JaxrsConfiguration
         providers.add(ServicesImpl.class);
 
         providers.add(UUIDProvider.class);
-        providers.add(MetadataWriter.class);
-        providers.add(StringCollectionWriter.class);
-        providers.add(UuidCollectionWriter.class);
-        providers.add(FileReader.class);
+        providers.add(MetadataProvider.class);
+        providers.add(StringCollectionProvider.class);
+        providers.add(UuidCollectionProvider.class);
+        providers.add(FileProvider.class);
         providers.add(S11nProvider.class);
 
         return providers;

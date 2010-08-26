@@ -58,7 +58,8 @@ import org.json.JSONException;
 @Provider
 @Produces("application/json")
 @Consumes("application/json")
-public class StringCollectionWriter
+@Deprecated // FIXME: We should be sending a resource.
+public class StringCollectionProvider
     extends
         AbstractProvider
     implements

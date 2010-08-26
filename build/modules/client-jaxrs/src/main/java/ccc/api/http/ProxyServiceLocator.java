@@ -56,12 +56,12 @@ import ccc.api.jaxrs.SearchImpl;
 import ccc.api.jaxrs.SecurityImpl2;
 import ccc.api.jaxrs.TemplatesImpl;
 import ccc.api.jaxrs.UsersImpl;
-import ccc.api.jaxrs.providers.FileReader;
-import ccc.api.jaxrs.providers.MetadataWriter;
+import ccc.api.jaxrs.providers.FileProvider;
+import ccc.api.jaxrs.providers.MetadataProvider;
 import ccc.api.jaxrs.providers.S11nProvider;
-import ccc.api.jaxrs.providers.StringCollectionWriter;
+import ccc.api.jaxrs.providers.StringCollectionProvider;
 import ccc.api.jaxrs.providers.UUIDProvider;
-import ccc.api.jaxrs.providers.UuidCollectionWriter;
+import ccc.api.jaxrs.providers.UuidCollectionProvider;
 
 
 /**
@@ -80,18 +80,18 @@ public class ProxyServiceLocator implements ServiceLocator {
         RegisterBuiltin.register(pFactory);
 
         // Writers
-        pFactory.addMessageBodyWriter(StringCollectionWriter.class);
-        pFactory.addMessageBodyWriter(MetadataWriter.class);
+        pFactory.addMessageBodyWriter(StringCollectionProvider.class);
+        pFactory.addMessageBodyWriter(MetadataProvider.class);
         pFactory.addMessageBodyWriter(UUIDProvider.class);
-        pFactory.addMessageBodyWriter(UuidCollectionWriter.class);
-        pFactory.addMessageBodyWriter(FileReader.class);
+        pFactory.addMessageBodyWriter(UuidCollectionProvider.class);
+        pFactory.addMessageBodyWriter(FileProvider.class);
         pFactory.addMessageBodyWriter(S11nProvider.class);
 
         // Readers
         pFactory.addMessageBodyReader(UUIDProvider.class);
-        pFactory.addMessageBodyReader(StringCollectionWriter.class);
-        pFactory.addMessageBodyReader(MetadataWriter.class);
-        pFactory.addMessageBodyReader(UuidCollectionWriter.class);
+        pFactory.addMessageBodyReader(StringCollectionProvider.class);
+        pFactory.addMessageBodyReader(MetadataProvider.class);
+        pFactory.addMessageBodyReader(UuidCollectionProvider.class);
         pFactory.addMessageBodyReader(S11nProvider.class);
 
         // String Converters

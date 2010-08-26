@@ -53,6 +53,7 @@ import org.jboss.resteasy.spi.StringConverter;
 @Provider
 @Consumes("application/json")
 @Produces("application/json")
+@Deprecated // FIXME: We should be sending a resource.
 public class UUIDProvider
     extends
         AbstractProvider

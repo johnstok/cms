@@ -26,6 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import ccc.api.core.API;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -57,9 +58,13 @@ public class AboutDialog extends AbstractBaseDialog {
         setMinWidth(ABOUT_WIDTH);
         setHeight(ABOUT_HEIGHT);
 
-        _version = InternalServices.API.getProps().get("ccc-version");
-        _build = InternalServices.API.getProps().get("buildNumber");
-        _application = InternalServices.API.getProps().get("application.name");
+        _version =
+            InternalServices.API.getProps().get(API.CCC_VERSION);
+        _build =
+            InternalServices.API.getProps().get(API.BUILD_NUMBER);
+        _application =
+            InternalServices.API.getProps().get(API.APPLICATION_NAME);
+
         writeAboutText();
     }
 

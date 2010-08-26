@@ -26,6 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import ccc.api.core.API;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceType;
@@ -222,7 +223,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                        && _md.getType() != ResourceType.RANGE_FOLDER) {
                         final String appContext =
                             new GlobalsImpl()
-                        .getSetting("application.context");
+                        .getSetting(API.APPLICATION_CONTEXT);
                         final String path =_md.getAbsolutePath();
                         _linkPath.setValue(appContext+path);
                         _linkTitle.setValue(_md.getTitle());

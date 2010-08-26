@@ -95,11 +95,11 @@ public class ServicesImpl {
         api.addLink(ccc.api.core.File.LIST_BINARY, File.BINARY_COLLECTION);
 
         final Map<String, String> props = new HashMap<String, String>();
-        props.put("buildNumber", CCCProperties.buildNumber());
-        props.put("ccc-version", CCCProperties.version());
-        props.put("timestamp", CCCProperties.timestamp());
-        props.put("application.name", CCCProperties.getAppName());
-        props.put("application.context", CCCProperties.getContextName());
+        props.put(API.BUILD_NUMBER, CCCProperties.buildNumber());
+        props.put(API.CCC_VERSION, CCCProperties.version());
+        props.put(API.TIMESTAMP, CCCProperties.timestamp());
+        props.put(API.APPLICATION_NAME, CCCProperties.getAppName());
+        props.put(API.APPLICATION_CONTEXT, CCCProperties.getContextName());
         api.setProps(props);
 
         return api;

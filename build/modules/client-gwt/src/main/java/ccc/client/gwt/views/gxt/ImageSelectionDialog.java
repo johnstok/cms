@@ -26,6 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import ccc.api.core.API;
 import ccc.api.core.File;
 import ccc.api.types.Paragraph;
 import ccc.client.core.I18n;
@@ -110,7 +111,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                 if (md != null) {
                     final String path = md.<File>getBean().getPath();
                     final String appContext =
-                        new GlobalsImpl().getSetting("application.context");
+                        new GlobalsImpl().getSetting(API.APPLICATION_CONTEXT);
                     _urlField.setValue(appContext + path);
                     _titleField.setValue(md.<File>getBean().getTitle());
                     _altField.setValue(md.<File>getBean().getTitle());

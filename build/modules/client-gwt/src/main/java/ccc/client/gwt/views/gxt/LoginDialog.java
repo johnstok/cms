@@ -26,6 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import ccc.api.core.API;
 import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.LoginAction;
@@ -62,7 +63,7 @@ public class LoginDialog extends AbstractEditDialog {
         LoginDialog.this.setHeading(
             constants().login()
             + " - "
-            + getGlobals().getSetting("application.name"));
+            + getGlobals().getSetting(API.APPLICATION_NAME));
 
         setPanelId("LoginPanel");
 

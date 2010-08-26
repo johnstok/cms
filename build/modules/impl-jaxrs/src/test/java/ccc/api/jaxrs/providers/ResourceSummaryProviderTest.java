@@ -48,8 +48,8 @@ public class ResourceSummaryProviderTest
     public void testSizeCantBeDetermined() {
 
         // ARRANGE
-        final StringCollectionWriter rsp =
-            new StringCollectionWriter();
+        final StringCollectionProvider rsp =
+            new StringCollectionProvider();
 
         // ACT
         final long size = rsp.getSize(null, null, null, null, null);
@@ -65,8 +65,8 @@ public class ResourceSummaryProviderTest
     public void testIsCollectionAcceptsExactMatch() {
 
         // ARRANGE
-        final StringCollectionWriter rsp =
-            new StringCollectionWriter();
+        final StringCollectionProvider rsp =
+            new StringCollectionProvider();
 
         // ACT
         final boolean condition = rsp.isCollectionOfType(Integer.class, _type);
@@ -82,8 +82,8 @@ public class ResourceSummaryProviderTest
     public void testIsCollectionAcceptsSupertypeMatch() {
 
         // ARRANGE
-        final StringCollectionWriter rsp =
-            new StringCollectionWriter();
+        final StringCollectionProvider rsp =
+            new StringCollectionProvider();
 
         // ACT
         final boolean condition = rsp.isCollectionOfType(Number.class, _type);
@@ -99,8 +99,8 @@ public class ResourceSummaryProviderTest
     public void testIsCollectionRejectsRegularClasses() {
 
         // ARRANGE
-        final StringCollectionWriter rsp =
-            new StringCollectionWriter();
+        final StringCollectionProvider rsp =
+            new StringCollectionProvider();
         final Type type = Object.class;
 
         // ACT

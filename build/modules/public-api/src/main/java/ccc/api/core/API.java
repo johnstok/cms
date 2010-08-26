@@ -41,6 +41,23 @@ public class API
     extends
         Res {
 
+    /*
+     * Property names
+     */
+    /** APPLICATION_CONTEXT : String. */
+    public static final String APPLICATION_CONTEXT = "application.context";
+    /** APPLICATION_NAME : String. */
+    public static final String APPLICATION_NAME = "application.name";
+    /** TIMESTAMP : String. */
+    public static final String TIMESTAMP = "timestamp";
+    /** CCC_VERSION : String. */
+    public static final String CCC_VERSION = "ccc-version";
+    /** BUILD_NUMBER : String. */
+    public static final String BUILD_NUMBER = "buildNumber";
+
+    /*
+     * Link names.
+     */
     /** RESOURCES : String. */
     public static final String RESOURCES = "resources";
     /** SEARCH : String. */

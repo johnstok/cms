@@ -43,7 +43,7 @@ import ccc.api.types.ResourceName;
 
 
 /**
- * Tests for the {@link FileReader} class.
+ * Tests for the {@link FileProvider} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -61,7 +61,7 @@ public class FileReaderTest
 
         // ARRANGE
         final DummyOutputStream es = new DummyOutputStream();
-        final FileReader fr = new FileReader();
+        final FileProvider fr = new FileProvider();
         final File f =
             new File(
                 MimeType.BINARY_DATA,
@@ -98,7 +98,7 @@ public class FileReaderTest
 
         // ARRANGE
         final DummyOutputStream es = new DummyOutputStream();
-        final FileReader fr = new FileReader();
+        final FileProvider fr = new FileProvider();
 
         // ACT
         try {
