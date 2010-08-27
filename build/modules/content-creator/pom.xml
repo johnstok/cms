@@ -92,12 +92,7 @@
         </dependency>
         
         <!-- JEE Libraries -->
-        <dependency>
-            <groupId>jboss</groupId>
-            <artifactId>jboss-ejb3x</artifactId>
-            <version>${lib.version.jboss-legacy}</version>
-            <scope>provided</scope>
-        </dependency>
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
@@ -117,9 +112,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>jboss</groupId>
-            <artifactId>jboss-j2ee</artifactId>
-            <version>${lib.version.jboss-legacy}</version>
+            <groupId>org.jboss.jbossas</groupId>
+            <artifactId>jboss-as-tomcat</artifactId>
+            <version>${lib.version.jboss}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

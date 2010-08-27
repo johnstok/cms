@@ -28,7 +28,6 @@
         <lib.version.velocity>1.6.2</lib.version.velocity>
         <lib.version.velocity-tools>1.4</lib.version.velocity-tools>
         <lib.version.jboss>5.1.0.GA</lib.version.jboss>
-        <lib.version.jboss-legacy>4.2.2.GA</lib.version.jboss-legacy>
         <lib.version.slf4j>1.5.8</lib.version.slf4j>
         <lib.version.h2>1.2.138</lib.version.h2>
         <lib.version.selenium>1.0.1</lib.version.selenium>
@@ -55,7 +54,7 @@
     <repositories>
         <repository>
             <id>jboss</id>
-            <url>http://repository.jboss.org/maven2</url>
+            <url>http://repository.jboss.org/nexus</url>
         </repository>
         <repository>
             <id>openqa.org</id>
