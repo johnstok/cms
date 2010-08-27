@@ -71,6 +71,13 @@ public class S11nHelper {
     }
 
 
+    /**
+     * Read a template from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding template.
+     */
     protected Template parseTemplate(final Response response) {
         return
             serializers()
@@ -79,6 +86,13 @@ public class S11nHelper {
     }
 
 
+    /**
+     * Read a collection of resource summaries from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding collection.
+     */
     protected PagedCollection<ResourceSummary> parseResourceSummaries(
                                                       final Response response) {
         return
@@ -88,6 +102,13 @@ public class S11nHelper {
     }
 
 
+    /**
+     * Read a collection of action summaries from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding collection.
+     */
     protected PagedCollection<ActionSummary> readActionSummaryCollection(
                                                       final Response response) {
         return
@@ -97,6 +118,13 @@ public class S11nHelper {
     }
 
 
+    /**
+     * Read a collection of files from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding collection.
+     */
     protected PagedCollection<File> readFileSummaries(final Response response) {
         return
             serializers()
@@ -105,6 +133,13 @@ public class S11nHelper {
     }
 
 
+    /**
+     * Read a collection of template from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding collection.
+     */
     protected PagedCollection<Template> readTemplates(final Response response) {
         return
             serializers()
@@ -113,6 +148,13 @@ public class S11nHelper {
     }
 
 
+    /**
+     * Read a collection of comments from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding collection.
+     */
     protected PagedCollection<Comment> readComments(final Response response) {
         return
             serializers()
@@ -121,15 +163,29 @@ public class S11nHelper {
     }
 
 
+    /**
+     * Read a collection of users from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding collection.
+     */
     protected PagedCollection<User> readUserCollection(
                                                       final Response response) {
         return
             serializers()
-                .create(PagedCollection.class)
+                .create(new PagedCollection(User.class).getClass())
                 .read(response.getText());
     }
 
 
+    /**
+     * Read a collection of groups from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding collection.
+     */
     protected PagedCollection<Group> readGroups(final Response response) {
         return
             serializers()
@@ -138,6 +194,13 @@ public class S11nHelper {
     }
 
 
+    /**
+     * Read a collection of revisions from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding collection.
+     */
     protected PagedCollection<Revision> readRevisionCollection(
                                                       final Response response) {
         return
@@ -147,11 +210,25 @@ public class S11nHelper {
     }
 
 
+    /**
+     * Read an API from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding API.
+     */
     protected API readAPI(final Response response) {
         return serializers().create(API.class).read(response.getText());
     }
 
 
+    /**
+     * Read a resource summary from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding resource summary.
+     */
     protected ResourceSummary readResourceSummary(final Response response) {
         return serializers()
                 .create(ResourceSummary.class)
@@ -159,99 +236,240 @@ public class S11nHelper {
     }
 
 
+    /**
+     * Read a duration from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding duration.
+     */
     protected Duration readDuration(final Response response) {
         return serializers().create(Duration.class).read(response.getText());
     }
 
 
+    /**
+     * Read a page from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding page.
+     */
     protected Page readPage(final Response response) {
         return serializers().create(Page.class).read(response.getText());
     }
 
 
+    /**
+     * Read an ACL from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding ACL.
+     */
     protected ACL readACL(final Response response) {
         return serializers().create(ACL.class).read(response.getText());
     }
 
 
+    /**
+     * Read a boolean from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding boolean.
+     */
     protected Boolean readBoolean(final Response response) {
         return serializers().create(Boolean.class).read(response.getText());
     }
 
 
+    /**
+     * Read a user from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding user.
+     */
     protected User readUser(final Response response) {
         return serializers().create(User.class).read(response.getText());
     }
 
 
+    /**
+     * Read a group from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding group.
+     */
     protected Group readGroup(final Response response) {
         return serializers().create(Group.class).read(response.getText());
     }
 
 
+    /**
+     * Read a file from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding file.
+     */
     protected File readFile(final Response response) {
         return serializers().create(File.class).read(response.getText());
     }
 
 
+    /**
+     * Read a resource summary from a string.
+     *
+     * @param data The data to read.
+     *
+     * @return The corresponding resource summary.
+     */
     public ResourceSummary readResourceSummary(final String data) {
         return serializers().create(ResourceSummary.class).read(data);
     }
 
+
+    /**
+     * Read a failure from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding failure.
+     */
     public Failure readFailure(final String response) {
         return serializers().create(Failure.class).read(response);
     }
 
 
+    /**
+     * Write a template to a string.
+     *
+     * @param t The template to write.
+     *
+     * @return The string representation.
+     */
     protected String writeTemplate(final Template t) {
         return serializers().create(Template.class).write(t);
     }
 
 
+    /**
+     * Write an alias to a string.
+     *
+     * @param alias The alias to write.
+     *
+     * @return The string representation.
+     */
     protected String writeAlias(final Alias alias) {
         return serializers().create(Alias.class).write(alias);
     }
 
 
+    /**
+     * Write a page to a string.
+     *
+     * @param page The page to write.
+     *
+     * @return The string representation.
+     */
     protected String writePage(final Page page) {
         return serializers().create(Page.class).write(page);
     }
 
 
+    /**
+     * Write a user to a string.
+     *
+     * @param user The user to write.
+     *
+     * @return The string representation.
+     */
     protected String writeUser(final User user) {
         return serializers().create(User.class).write(user);
     }
 
 
+    /**
+     * Write an ACL to a string.
+     *
+     * @param acl The ACL to write.
+     *
+     * @return The string representation.
+     */
     protected String writeACL(final ACL acl) {
         return serializers().create(ACL.class).write(acl);
     }
 
 
+    /**
+     * Write a resource to a string.
+     *
+     * @param resource The resource to write.
+     *
+     * @return The string representation.
+     */
     protected String writeResource(final Resource resource) {
         return serializers().create(Resource.class).write(resource);
     }
 
 
+    /**
+     * Write a folder to a string.
+     *
+     * @param folder The folder to write.
+     *
+     * @return The string representation.
+     */
     protected String writeFolder(final Folder folder) {
         return serializers().create(Folder.class).write(folder);
     }
 
 
+    /**
+     * Write a comment to a string.
+     *
+     * @param comment The comment to write.
+     *
+     * @return The string representation.
+     */
     protected String writeComment(final Comment comment) {
         return serializers().create(Comment.class).write(comment);
     }
 
+    /**
+     * Write a file to a string.
+     *
+     * @param file The file to write.
+     *
+     * @return The string representation.
+     */
     protected String writeFile(final File file) {
         return serializers().create(File.class).write(file);
     }
 
 
+    /**
+     * Write an action to a string.
+     *
+     * @param action The action to write.
+     *
+     * @return The string representation.
+     */
     protected String writeAction(final ccc.api.core.Action action) {
         return serializers().create(ccc.api.core.Action.class).write(action);
     }
 
 
+    /**
+     * Write a group to a string.
+     *
+     * @param group The group to write.
+     *
+     * @return The string representation.
+     */
     protected String writeGroup(final Group group) {
         return serializers().create(Group.class).write(group);
     }
