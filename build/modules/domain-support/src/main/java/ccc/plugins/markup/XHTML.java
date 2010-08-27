@@ -74,9 +74,7 @@ import ccc.api.types.DBC;
  *
  * @author Civic Computing Ltd
  */
-public final class XHTML {
-
-    private XHTML() { /* NO-OP */ }
+public final class XHTML implements Ixhtml {
 
     /**
      * An implementation of {@link EntityResolver} that reads xhtml dtd's from
@@ -182,13 +180,9 @@ public final class XHTML {
         }
     }
 
-    /**
-     * Test whether an xhtml page is valid.
-     *
-     * @param page The page to be validated, as an input stream.
-     * @return True if the page is valid, false otherwise.
-     */
-    public static boolean isValid(final InputStream page) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean isValid(final InputStream page) {
 
         try {
             final XhtmlErrorHandler errorHandler = new XhtmlErrorHandler();
@@ -206,16 +200,10 @@ public final class XHTML {
         }
     }
 
-    /**
-     * Apply an xPath expression to an xhtml page.
-     *
-     * @param page The page to which we'll apply the expression.
-     * @param xpathExpression The expression to apply.
-     * @return The results of evaluating the expression, as a String. See
-     *      {@link XPath#evaluate(String, Object)} for further details.
-     */
-    public static String evaluateXPath(final InputStream page,
-                                      final String xpathExpression) {
+    /** {@inheritDoc} */
+    @Override
+    public String evaluateXPath(final InputStream page,
+                                final String xpathExpression) {
 
         try {
             final Document doc = parse(page);
@@ -230,18 +218,10 @@ public final class XHTML {
         }
     }
 
-    /**
-     * Apply an xPath expression to an xhtml page.
-     * TODO: Rename method.
-     *
-     * @param doc The document to which we'll apply the expression.
-     * @param xpathExpression The expression to apply.
-     * @return The results of evaluating the expression, as a String. See
-     *      {@link XPath#evaluate(String, Object)} for further details.
-     */
-    public static NodeList evaluateXPathToNodeList(
-                                                 final Document doc,
-                                                 final String xpathExpression) {
+    /** {@inheritDoc} */
+    @Override
+    public NodeList evaluateXPathToNodeList(final Document doc,
+                                            final String xpathExpression) {
         try {
             final XPath xpath = createXPath();
 
@@ -278,20 +258,15 @@ public final class XHTML {
     }
 
 
-    /**
-     * Validate an xhtml page and print any errors to the specified
-     * {@link PrintStream}.
-     *
-     * @param page The page to validate.
-     * @param out The print stream to which errors will be written.
-     */
-    public static void printErrors(final InputStream page,
-                                   final PrintStream out) {
+    /** {@inheritDoc} */
+    @Override
+    public void printErrors(final InputStream page, final PrintStream out) {
 
         try {
             final XhtmlErrorHandler errorHandler = new XhtmlErrorHandler();
             final XhtmlEntityResolver resolver = new XhtmlEntityResolver();
-            final DocumentBuilder parser = XML.createParser(errorHandler, resolver);
+            final DocumentBuilder parser =
+                XML.createParser(errorHandler, resolver);
             parser.parse(page);
             for (final String error : errorHandler.errors()) {
                 out.println(error);
@@ -305,40 +280,18 @@ public final class XHTML {
         }
     }
 
-    /**
-     * Escape a html/xhtml string.
-     * <p>
-     * This method converts all HTML 4.01 'markup significant' characters to
-     * their equivalent entities, as follows:
-     * <ol>\u0022 -> &amp;quot;</ol>
-     * <ol>\u0026 -> &amp;amp;</ol>
-     * <ol>\u003c -> &amp;lt;</ol>
-     * <ol>\u003e -> &amp;gt;</ol>
-     *
-     * @param string The string to escape.
-     * @return The escaped string.
-     */
-    public static String escape(final String string) {
+    /** {@inheritDoc} */
+    @Override
+    public String escape(final String string) {
         return string.replace("\u0026", "&amp;")        // &
                      .replace("\u005C\u0022", "&quot;") // "
                      .replace("\u003c", "&lt;")         // <
                      .replace("\u003e", "&gt;");        // >
     }
 
-    /**
-     * Escape a html/xhtml character.
-     * <p>
-     * This method converts all HTML 4.01 'markup significant' characters to
-     * their equivalent entities, as follows:
-     * <ol>\u0022 -> &amp;quot;</ol>
-     * <ol>\u0026 -> &amp;amp;</ol>
-     * <ol>\u003c -> &amp;lt;</ol>
-     * <ol>\u003e -> &amp;gt;</ol>
-     *
-     * @param character The character to escape.
-     * @return The equivalent escaped characters.
-     */
-    public static char[] escape(final char character) {
+    /** {@inheritDoc} */
+    @Override
+    public char[] escape(final char character) {
         switch (character) {
             case '\u0026':
                 return "&amp;".toCharArray();
@@ -353,13 +306,9 @@ public final class XHTML {
         }
     }
 
-    /**
-     * Clean up invalid characters and HTML tags.
-     *
-     * @param content The content to clean up.
-     * @return Cleaned up content.
-     */
-    public static String cleanUpContent(final String content) {
+    /** {@inheritDoc} */
+    @Override
+    public String cleanUpContent(final String content) {
         String result = content;
         if (result != null) {
             result = result.replaceAll("[\\x00-\\x1f]", " ");
@@ -369,13 +318,9 @@ public final class XHTML {
     }
 
 
-    /**
-     * Sanitize a html/xhtml string.
-     *
-     * @param raw The un-sanitized string.
-     * @return The sanitized string.
-     */
-    public static String sanitize(final String raw) {
+    /** {@inheritDoc} */
+    @Override
+    public String sanitize(final String raw) {
 
         final XMLReader reader = new Parser();
         final WhitelistContentHandler ch = new WhitelistContentHandler();
@@ -408,14 +353,9 @@ public final class XHTML {
     }
 
 
-    /**
-     * Sanitize a string representation of a URL.
-     * <p>This method only allows correctly form HTTP URLs.
-     *
-     * @param raw The un-sanitized string.
-     * @return The input string or a zero length string if the URL is sanitized.
-     */
-    public static String sanitizeUrl(final String raw) {
+    /** {@inheritDoc} */
+    @Override
+    public String sanitizeUrl(final String raw) {
         try {
             final URI rawUrl = new URI(raw);
             if (!"http".equalsIgnoreCase(rawUrl.getScheme())) {
@@ -431,13 +371,9 @@ public final class XHTML {
     }
 
 
-    /**
-     * Fix a html/xhtml string.
-     *
-     * @param raw The un-fixed string.
-     * @return The fixed string.
-     */
-    static String fix(final String raw) {
+    /** {@inheritDoc} */
+    @Override
+    public String fix(final String raw) {
         try {
             final InputSource is = new InputSource(new StringReader(raw));
             final XMLReader reader = new Parser();

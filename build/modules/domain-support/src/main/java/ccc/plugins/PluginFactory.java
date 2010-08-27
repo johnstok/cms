@@ -31,6 +31,7 @@ import static ccc.commons.Reflection.*;
 import java.io.InputStream;
 
 import ccc.plugins.mail.Mailer;
+import ccc.plugins.markup.Ixhtml;
 import ccc.plugins.multipart.MultipartFormData;
 import ccc.plugins.s11n.Serializers;
 import ccc.plugins.scripting.TextProcessor;
@@ -45,6 +46,13 @@ import ccc.plugins.security.Sessions;
  * @author Civic Computing Ltd.
  */
 public class PluginFactory {
+
+    public Ixhtml html() {
+        return
+            construct(
+                Ixhtml.class,
+                "ccc.plugins.markup.XHTML");
+    }
 
 
     public Serializers serializers() {
@@ -77,9 +85,9 @@ public class PluginFactory {
 
     public Mailer createMailer() {
         return
-        construct(
-            Mailer.class,
-            "ccc.plugins.mail.javamail.JavaMailMailer");
+            construct(
+                Mailer.class,
+                "ccc.plugins.mail.javamail.JavaMailMailer");
     }
 
 

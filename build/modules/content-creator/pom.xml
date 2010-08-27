@@ -106,12 +106,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>${lib.version.javamail}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.jboss.jbossas</groupId>
             <artifactId>jboss-as-tomcat</artifactId>
             <version>${lib.version.jboss}</version>

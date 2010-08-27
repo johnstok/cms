@@ -57,7 +57,7 @@ final class EchoContentHandler
                                      final int start,
                                      final int length) {
         for (int i=start; i<(start+length); i++) {
-            _sb.append(XHTML.escape(ch[i]));
+            _sb.append(new XHTML().escape(ch[i]));
         }
         LOG.debug(new String(ch, start, length));
     }

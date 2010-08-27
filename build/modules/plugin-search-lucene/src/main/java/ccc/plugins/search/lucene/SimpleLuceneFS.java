@@ -67,7 +67,7 @@ import ccc.api.types.ResourcePath;
 import ccc.api.types.SearchResult;
 import ccc.api.types.SortOrder;
 import ccc.commons.Exceptions;
-import ccc.plugins.markup.XHTML;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.search.TextExtractor;
 
 
@@ -425,7 +425,7 @@ public class SimpleLuceneFS
             addStringField(
                 d,
                 paragraph.getName(),
-                XHTML.cleanUpContent(paragraph.getText()));
+                new PluginFactory().html().cleanUpContent(paragraph.getText()));
 
         } else if (paragraph.getType() == ParagraphType.NUMBER
                    && paragraph.getNumber() != null) {

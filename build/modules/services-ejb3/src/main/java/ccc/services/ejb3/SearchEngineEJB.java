@@ -60,7 +60,6 @@ import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.SettingsRepository;
 import ccc.plugins.PluginFactory;
-import ccc.plugins.markup.XHTML;
 import ccc.plugins.search.Index;
 import ccc.plugins.search.Indexer;
 import ccc.plugins.search.TextExtractor;
@@ -238,7 +237,8 @@ public class SearchEngineEJB
                     .createDataRepository();
                 dr.retrieve(f.getData(), extractor);
                 final String content =
-                    XHTML.cleanUpContent(f.getTitle()+" "+extractor.getText());
+                    new PluginFactory().html()
+                        .cleanUpContent(f.getTitle()+" "+extractor.getText());
                 lucene.createDocument(
                     f.getId(),
                     f.getAbsolutePath(),
@@ -276,7 +276,8 @@ public class SearchEngineEJB
         for (final Paragraph p : page.currentRevision().getParagraphs()) {
             if (ParagraphType.TEXT == p.getType() && p.getText() != null) {
                 sb.append(" ");
-                sb.append(XHTML.cleanUpContent(p.getText()));
+                sb.append(
+                    new PluginFactory().html().cleanUpContent(p.getText()));
             }
         }
         return sb.toString();

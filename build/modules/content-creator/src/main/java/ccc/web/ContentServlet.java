@@ -54,7 +54,6 @@ import ccc.commons.EnumTools;
 import ccc.commons.Environment;
 import ccc.commons.HTTP;
 import ccc.plugins.PluginFactory;
-import ccc.plugins.markup.XHTML;
 import ccc.plugins.s11n.Serializers;
 import ccc.plugins.scripting.Context;
 import ccc.web.rendering.AuthenticationRequiredException;
@@ -224,7 +223,7 @@ public class ContentServlet
         context.add("math",        Math.class);
         context.add("collections", Collections.class);
         context.add("calendar",    Calendar.class);
-        context.add("html",        XHTML.class);
+        context.add("html",        new PluginFactory().html());
         context.add("uuid",        UUID.class);
         context.add("enums",       new EnumTools());
         context.add("hostname",    Environment.getHostname());

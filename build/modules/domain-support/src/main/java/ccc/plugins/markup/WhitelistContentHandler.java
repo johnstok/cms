@@ -67,7 +67,7 @@ final class WhitelistContentHandler
 
         /* TODO: Handle multi-char code points. How?! */
         for (int i=start; i<(start+length); i++) {
-            _sb.append(XHTML.escape(ch[i]));
+            _sb.append(new XHTML().escape(ch[i]));
         }
     }
 
