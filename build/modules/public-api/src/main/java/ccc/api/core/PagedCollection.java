@@ -27,11 +27,12 @@
 package ccc.api.core;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
 /**
- * Wrapper class for a collection of DTOs.
+ * Paged collection of elements.
  *
  * @param <T> The type of the elements.
  *
@@ -39,12 +40,13 @@ import java.util.List;
  */
 public class PagedCollection<T>
     extends
-        Res {
+        Res
+    implements
+        Iterable<T> {
 
-    private long         _totalCount;
-    private List<T>      _elements;
+    private long           _totalCount;
+    private List<T>        _elements;
     private final Class<T> _elementClass;
-
 
     /**
      * Constructor.
@@ -80,7 +82,6 @@ public class PagedCollection<T>
      * @return Returns the total count.
      */
     public final long getTotalCount() {
-
         return _totalCount;
     }
 
@@ -103,4 +104,9 @@ public class PagedCollection<T>
     public Class<T> getElementClass() {
         return _elementClass;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Iterator<T> iterator() { return _elements.iterator(); }
 }
