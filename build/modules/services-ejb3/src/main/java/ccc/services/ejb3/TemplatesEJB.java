@@ -26,15 +26,11 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.TEMPLATE_CREATE;
 import static ccc.api.types.Permission.*;
-import static ccc.api.types.Permission.TEMPLATE_UPDATE;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.UUID;
 
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -57,7 +53,6 @@ import ccc.persistence.ResourceRepository;
 @Stateless(name=Templates.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(Templates.class)
-@RolesAllowed({})
 public final class TemplatesEJB
     extends
         AbstractEJB
@@ -73,8 +68,9 @@ public final class TemplatesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(TEMPLATE_READ)
     public Boolean templateNameExists(final String templateName) {
+        checkPermission(TEMPLATE_READ);
+
         try {
             getRepoFactory()
                 .createResourceRepository()
@@ -88,9 +84,10 @@ public final class TemplatesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(TEMPLATE_READ)
     public PagedCollection<Template> query(final int pageNo,
                                                final int pageSize) {
+        checkPermission(TEMPLATE_READ);
+
         final ResourceRepository repo =
             getRepoFactory().createResourceRepository();
 
@@ -104,8 +101,9 @@ public final class TemplatesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(TEMPLATE_CREATE)
     public ResourceSummary create(final Template template) {
+        checkPermission(TEMPLATE_CREATE);
+
         return
             execute(commands().createTemplateCommand(template))
             .mapResource();
@@ -114,9 +112,10 @@ public final class TemplatesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(TEMPLATE_UPDATE)
     public void update(final UUID templateId,
                                final Template delta) {
+        checkPermission(TEMPLATE_UPDATE);
+
         execute(
             new UpdateTemplateCommand(
                 getRepoFactory(),
@@ -133,7 +132,6 @@ public final class TemplatesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public Template retrieve(final UUID templateId) {
         checkPermission(TEMPLATE_READ);
         return
@@ -143,8 +141,8 @@ public final class TemplatesEJB
     }
 
 
+    /** {@inheritDoc} */
     @Override
-    @PermitAll
     public Template retrieveRevision(final UUID templateId,
                                      final int revision) {
         checkPermission(TEMPLATE_READ);

@@ -36,8 +36,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -62,7 +60,6 @@ import ccc.domain.UserEntity;
 @Stateless(name=Files.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(Files.class)
-@RolesAllowed({})
 public class FilesEJB
     extends
         AbstractEJB
@@ -72,9 +69,10 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({FILE_READ})
     public PagedCollection<File> getPagedImages(
             final UUID folderId, final int pageNo, final int pageSize) {
+        checkPermission(FILE_READ);
+
         final List<FileEntity> list =
             getRepoFactory()
                 .createResourceRepository()
@@ -90,7 +88,6 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public ResourceSummary create(final File file) {
         checkPermission(FILE_CREATE);
 
@@ -132,8 +129,9 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({FILE_UPDATE})
     public ResourceSummary updateFile(final UUID fileId, final File file) {
+        checkPermission(FILE_UPDATE);
+
         return
             new UpdateFileCommand(
                 getRepoFactory(),
@@ -155,8 +153,9 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({FILE_UPDATE})
     public void update(final UUID id, final File file) {
+        checkPermission(FILE_UPDATE);
+
         byte[] bytes;
         try {
             bytes = file.getContent().getBytes("UTF-8");
@@ -182,9 +181,10 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({FILE_CREATE})
     // FIXME: Removal of TextFileDto made this method a mess.
     public ResourceSummary createTextFile(final File file) {
+        checkPermission(FILE_CREATE);
+
         byte[] bytes;
         try {
             bytes = file.getContent().getBytes("UTF-8");
@@ -223,7 +223,6 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public File retrieve(final UUID fileId) {
         checkPermission(FILE_READ);
 
@@ -238,7 +237,6 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public void retrieve(final UUID file,
                          final StreamAction action) {
         checkPermission(FILE_READ);
@@ -257,7 +255,6 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public void retrieveRevision(final UUID file,
                                  final int revision,
                                  final StreamAction action) {
@@ -277,7 +274,6 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public void retrieveWorkingCopy(final UUID file,
                                     final StreamAction action) {
         checkPermission(FILE_READ);

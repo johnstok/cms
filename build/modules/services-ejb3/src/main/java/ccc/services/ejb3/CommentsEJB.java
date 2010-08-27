@@ -31,7 +31,6 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.UUID;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -56,7 +55,6 @@ import ccc.domain.ResourceEntity;
 @Stateless(name=Comments.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(Comments.class)
-@RolesAllowed({})
 public class CommentsEJB
     extends
         AbstractEJB
@@ -65,8 +63,9 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({COMMENT_CREATE})
     public Comment create(final Comment comment) {
+        checkPermission(COMMENT_CREATE);
+
         return
             execute(
                 new CreateCommentCommand(getRepoFactory(), comment))
@@ -76,8 +75,9 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({COMMENT_READ})
     public Comment retrieve(final UUID commentId) {
+        checkPermission(COMMENT_READ);
+
         return
             getRepoFactory()
                 .createCommentRepo()
@@ -87,8 +87,9 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({COMMENT_UPDATE})
     public Comment update(final UUID commentId, final Comment comment) {
+        checkPermission(COMMENT_UPDATE);
+
         return
             execute(
                 new UpdateCommentCommand(getRepoFactory(), commentId, comment))
@@ -98,21 +99,23 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({COMMENT_DELETE})
     public void delete(final UUID commentId) {
+        checkPermission(COMMENT_DELETE);
+
         execute(new DeleteCommentCommand(getRepoFactory(), commentId));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({COMMENT_READ})
     public PagedCollection<Comment> query(final UUID resourceId,
                                           final CommentStatus status,
                                           final String sort,
                                           final SortOrder sortOrder,
                                           final int pageNo,
                                           final int pageSize) {
+        checkPermission(COMMENT_READ);
+
         final ResourceEntity r =
             (null==resourceId)
                 ? null

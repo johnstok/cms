@@ -33,8 +33,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -76,8 +74,11 @@ import ccc.plugins.search.TextExtractor;
 @Stateless(name=SearchEngine.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(SearchEngine.class)
-@RolesAllowed({})
-public class SearchEngineEJB  implements SearchEngine {
+public class SearchEngineEJB
+    extends
+        AbstractEJB
+    implements
+        SearchEngine {
 
     private static final int TIMEOUT_DELAY_SECS = 60*60*1000;
     private static final int INITIAL_DELAY_SECS = 1;
@@ -106,7 +107,6 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public SearchResult find(final String searchTerms,
                              final int resultCount,
                              final int page) {
@@ -116,7 +116,6 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public SearchResult find(final String searchTerms,
                              final String sort,
                              final SortOrder order,
@@ -128,8 +127,9 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({SEARCH_REINDEX})
     public void index() {
+        checkPermission(SEARCH_REINDEX);
+
         final Indexer lucene = createIndexer();
         try {
             lucene.startUpdate();
@@ -156,8 +156,9 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({SEARCH_SCHEDULE})
     public void start() {
+        checkPermission(SEARCH_SCHEDULE);
+
         LOG.debug("Starting indexer.");
 
         if (isRunning()) {
@@ -172,9 +173,10 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({SEARCH_SCHEDULE})
     @SuppressWarnings("unchecked")
     public void stop() {
+        checkPermission(SEARCH_SCHEDULE);
+
         LOG.debug("Stopping indexer.");
         final Collection<Timer> c = _context.getTimerService().getTimers();
         for (final Timer t : c) {
@@ -188,9 +190,10 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({SEARCH_SCHEDULE})
     @SuppressWarnings("unchecked")
     public boolean isRunning() {
+        checkPermission(SEARCH_SCHEDULE);
+
         final Collection<Timer> c = _context.getTimerService().getTimers();
         for (final Timer t : c) {
             if (TIMER_NAME.equals(t.getInfo())) {
@@ -203,7 +206,6 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public SearchResult similar(final String uuid,
                                 final int noOfResultsPerPage,
                                 final int page) {

@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -89,7 +88,6 @@ import ccc.rest.extensions.ResourcesExt;
 @TransactionAttribute(REQUIRED)
 @Remote(ResourcesExt.class)
 @Local(Resources.class)
-@RolesAllowed({})
 public class ResourcesEJB
     extends
         AbstractEJB
@@ -103,14 +101,14 @@ public class ResourcesEJB
     @TransactionAttribute(REQUIRES_NEW)
     @RolesAllowed(ACTION_EXECUTE)
     public void executeAction(final UUID actionId) {
-            final ActionEntity a =
-                getRepoFactory().createActionRepository().find(actionId);
+        final ActionEntity a =
+            getRepoFactory().createActionRepository().find(actionId);
 
-            if (new Date().before(a.getExecuteAfter())) {
-                return; // Too early.
-            }
+        if (new Date().before(a.getExecuteAfter())) {
+            return; // Too early.
+        }
 
-            executeAction(a);
+        executeAction(a);
     }
 
 
@@ -183,7 +181,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public void lock(final UUID resourceId) {
         checkPermission(RESOURCE_LOCK);
 
@@ -194,8 +191,9 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_MOVE)
     public void move(final UUID resourceId, final UUID newParentId) {
+        checkPermission(RESOURCE_MOVE);
+
         execute(
             new MoveResourceCommand(
                 getRepoFactory(), resourceId, newParentId));
@@ -204,7 +202,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public ResourceSummary publish(final UUID resourceId) {
         checkPermission(RESOURCE_PUBLISH);
 
@@ -215,8 +212,9 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_RENAME)
     public void rename(final UUID resourceId, final String name) {
+        checkPermission(RESOURCE_RENAME);
+
         execute(
             new RenameResourceCommand(
                 getRepoFactory().createResourceRepository(),
@@ -228,7 +226,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public void unlock(final UUID resourceId) {
         checkPermission(RESOURCE_UNLOCK);
         execute(
@@ -238,8 +235,9 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_UNPUBLISH)
     public void unpublish(final UUID resourceId) {
+        checkPermission(RESOURCE_UNPUBLISH);
+
         execute(
             commands().unpublishResourceCommand(resourceId));
     }
@@ -247,8 +245,9 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_UPDATE)
     public void createWorkingCopy(final UUID resourceId, final long index) {
+        checkPermission(RESOURCE_UPDATE);
+
         execute(
             new UpdateWorkingCopyCommand(
                 getRepoFactory(), resourceId, index));
@@ -257,18 +256,20 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_UPDATE)
     public void createWorkingCopy(final UUID resourceId,
                                   final Resource pu) {
+        checkPermission(RESOURCE_UPDATE);
+
         createWorkingCopy(resourceId, pu.getRevision());
     }
 
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_UPDATE)
     public void updateResourceTemplate(final UUID resourceId,
                                        final UUID templateId) {
+        checkPermission(RESOURCE_UPDATE);
+
         execute(
             new ChangeTemplateForResourceCommand(
                 getRepoFactory(), resourceId, templateId));
@@ -277,18 +278,20 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_UPDATE)
     public void updateResourceTemplate(final UUID resourceId,
                                        final Resource pu) {
+        checkPermission(RESOURCE_UPDATE);
+
         updateResourceTemplate(resourceId, pu.getTemplate());
     }
 
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_MM)
     public void includeInMainMenu(final UUID resourceId,
                                   final boolean include) {
+        checkPermission(RESOURCE_MM);
+
         execute(
             new IncludeInMainMenuCommand(
                 getRepoFactory(), resourceId, include));
@@ -297,25 +300,28 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_MM)
     public void includeInMainMenu(final UUID resourceId) {
+        checkPermission(RESOURCE_MM);
+
         includeInMainMenu(resourceId, true);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_MM)
     public void excludeFromMainMenu(final UUID resourceId) {
+        checkPermission(RESOURCE_MM);
+
         includeInMainMenu(resourceId, false);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_UPDATE)
     public void updateMetadata(final UUID resourceId,
                                final Resource resource) {
+        checkPermission(RESOURCE_UPDATE);
+
 
         updateMetadata(
             resourceId,
@@ -328,12 +334,13 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_UPDATE)
     public void updateMetadata(final UUID resourceId,
                                final String title,
                                final String description,
                                final Set<String> tags,
                                final Map<String, String> metadata) {
+        checkPermission(RESOURCE_UPDATE);
+
         execute(
             new UpdateResourceMetadataCommand(
                 getRepoFactory(),
@@ -347,10 +354,11 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(SEARCH_CREATE)
     // FIXME: Move to SearchEngineEJB
     public ResourceSummary createSearch(final UUID parentId,
                                         final String title) {
+        checkPermission(SEARCH_CREATE);
+
         return
             commands().createSearchCommand(
                 parentId,
@@ -362,8 +370,9 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_ACL_UPDATE)
     public void changeAcl(final UUID resourceId, final ACL acl) {
+        checkPermission(RESOURCE_ACL_UPDATE);
+
         execute(
             new UpdateResourceAclCommand(getRepoFactory(), resourceId, acl));
     }
@@ -371,8 +380,9 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_UPDATE)
     public void applyWorkingCopy(final UUID resourceId) {
+        checkPermission(RESOURCE_UPDATE);
+
         execute(
             new ApplyWorkingCopyCommand(
                 getRepoFactory(),
@@ -384,9 +394,10 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_CACHE_UPDATE)
     public void updateCacheDuration(final UUID resourceId,
                                     final Duration duration) {
+        checkPermission(RESOURCE_CACHE_UPDATE);
+
         execute(
             new UpdateCachingCommand(
                 getRepoFactory().createResourceRepository(),
@@ -398,33 +409,37 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_CACHE_UPDATE)
     public void updateCacheDuration(final UUID resourceId,
                                     final Resource pu) {
+        checkPermission(RESOURCE_CACHE_UPDATE);
+
         updateCacheDuration(resourceId, pu.getCacheDuration());
     }
 
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_UPDATE)
     public void clearWorkingCopy(final UUID resourceId) {
+        checkPermission(RESOURCE_UPDATE);
+
         execute(new ClearWorkingCopyCommand(getRepoFactory(), resourceId));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_CACHE_UPDATE)
     public void deleteCacheDuration(final UUID id) {
+        checkPermission(RESOURCE_CACHE_UPDATE);
+
         updateCacheDuration(id, (Duration) null);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_DELETE)
     public void delete(final UUID resourceId) {
+        checkPermission(RESOURCE_DELETE);
+
         execute(commands().createDeleteResourceCmd(resourceId));
     }
 
@@ -436,8 +451,9 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_READ)
     public PagedCollection<Revision> history(final UUID resourceId) {
+        checkPermission(RESOURCE_READ);
+
         final List<Revision> revisions = RevisionEntity.mapRevisions(
             getRepoFactory()
             .createResourceRepository()
@@ -450,8 +466,9 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_READ)
     public ACL acl(final UUID resourceId) {
+        checkPermission(RESOURCE_READ);
+
         final ACL acl =
             getResources().find(ResourceEntity.class, resourceId).getAcl();
         return acl;
@@ -460,8 +477,9 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_READ)
     public Duration cacheDuration(final UUID resourceId) {
+        checkPermission(RESOURCE_READ);
+
         final ResourceEntity r =
             getResources().find(ResourceEntity.class, resourceId);
         return r.getCacheDuration();
@@ -470,8 +488,9 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_READ)
     public Template computeTemplate(final UUID resourceId) {
+        checkPermission(RESOURCE_READ);
+
         final ResourceEntity r =
             getResources().find(ResourceEntity.class, resourceId);
         final TemplateEntity t = r.computeTemplate(null);
@@ -481,8 +500,9 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_READ)
     public ResourceSummary resourceForPath(final String rootPath) {
+        checkPermission(RESOURCE_READ);
+
         return
             getResources().lookup(new ResourcePath(rootPath)).mapResource();
     }
@@ -490,7 +510,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public PagedCollection<ResourceSummary> resourceForMetadataKey(
         final String key) {
         checkPermission(RESOURCE_READ);
@@ -503,7 +522,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public ResourceSummary resourceForLegacyId(final String legacyId) {
         checkPermission(RESOURCE_READ);
         return getResources().lookupWithLegacyId(legacyId).mapResource();
@@ -517,7 +535,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public String getAbsolutePath(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
         return
@@ -530,7 +547,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public Resource resourceForPathSecure(final String rootPath) {
         checkPermission(RESOURCE_READ);
 
@@ -543,7 +559,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public Resource workingCopyForPath(final String rootPath) {
         checkPermission(RESOURCE_READ);
 
@@ -557,7 +572,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public Resource revisionForPath(final String path,
                                             final int version) {
         checkPermission(RESOURCE_READ);
@@ -572,7 +586,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public String fileContentsFromPath(final String absolutePath,
                                        final String charset) {
         checkPermission(RESOURCE_READ);
@@ -600,7 +613,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public Map<String, String> metadata(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
 
@@ -612,7 +624,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public ResourceSummary retrieve(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
 
@@ -625,7 +636,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public void createLogEntry(final UUID resourceId,
                                final String action,
                                final String detail) {
@@ -641,7 +651,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public PagedCollection<ResourceSummary> list(final UUID parent,
                                                  final String tag,
                                                  final Long before,
@@ -689,7 +698,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public PagedCollection<ResourceSummary> list(
                                                 final ResourceCriteria criteria,
                                                 final int pageNo,

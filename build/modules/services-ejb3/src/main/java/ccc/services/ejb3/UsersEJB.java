@@ -32,8 +32,6 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.Collection;
 import java.util.UUID;
 
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -61,7 +59,6 @@ import ccc.persistence.UserRepository;
 @Stateless(name=Users.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(Users.class)
-@RolesAllowed({})
 public class UsersEJB
     extends
         AbstractEJB
@@ -71,8 +68,9 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(USER_CREATE)
     public User create(final User delta) {
+        checkPermission(USER_CREATE);
+
         return
             execute(new CreateUserCommand(getRepoFactory(), delta))
             .toDto();
@@ -81,8 +79,9 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(USER_UPDATE)
     public void update(final UUID userId, final User delta) {
+        checkPermission(USER_UPDATE);
+
         execute(
             new UpdateUserCommand(getRepoFactory(), userId, delta));
     }
@@ -90,8 +89,9 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(USER_UPDATE)
     public void updateUserPassword(final UUID userId, final User user) {
+        checkPermission(USER_UPDATE);
+
         execute(
             new UpdatePasswordAction(
                 getRepoFactory(), userId, user.getPassword()));
@@ -100,8 +100,9 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(SELF_UPDATE)
     public void updateCurrent(final User user) {
+        checkPermission(SELF_UPDATE);
+
         execute(
             new UpdateCurrentUserCommand(
                 getRepoFactory(),
@@ -112,8 +113,9 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(USER_READ)
     public Boolean usernameExists(final Username username) {
+        checkPermission(USER_READ);
+
         return
             Boolean.valueOf(
                 getRepoFactory()
@@ -124,17 +126,17 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(USER_READ)
-    public PagedCollection<User> query(
-        final String username,
-        final String email,
-        final String groups,
-        final String metadataKey,
-        final String metadataValue,
-        final String sort,
-        final SortOrder order,
-        final int pageNo,
-        final int pageSize) {
+    public PagedCollection<User> query(final String username,
+                                       final String email,
+                                       final String groups,
+                                       final String metadataKey,
+                                       final String metadataValue,
+                                       final String sort,
+                                       final SortOrder order,
+                                       final int pageNo,
+                                       final int pageSize) {
+        checkPermission(USER_READ);
+
         final UserRepository userrepo = getRepoFactory().createUserRepo();
         final UserCriteria uc = new UserCriteria(
             username,
@@ -164,8 +166,9 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(USER_READ)
     public User retrieve(final UUID userId) {
+        checkPermission(USER_READ);
+
         return
             getRepoFactory()
                 .createUserRepo()
@@ -176,8 +179,9 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(USER_READ)
     public User userByLegacyId(final String legacyId) {
+        checkPermission(USER_READ);
+
         return
             getRepoFactory()
                 .createUserRepo()
@@ -187,8 +191,9 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(USER_READ)
     public Collection<String> listUserMetadataValuesWithKey(final String key) {
+        checkPermission(USER_READ);
+
         return
             getRepoFactory()
                 .createUserRepo()
@@ -198,7 +203,6 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public User retrieveCurrent() {
         try {
             return currentUser().toDto();

@@ -32,7 +32,6 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -52,7 +51,6 @@ import ccc.domain.AliasEntity;
 @Stateless(name=Aliases.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(Aliases.class)
-@RolesAllowed({})
 public class AliasesEJB
     extends
         AbstractEJB
@@ -62,23 +60,25 @@ public class AliasesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ALIAS_UPDATE})
     public void update(final UUID aliasId,
-                            final Alias delta) {
-            new UpdateAliasCommand(
-                getRepoFactory(),
-                delta.getTargetId(),
-                aliasId)
-            .execute(
-                currentUser(),
-                new Date());
+                       final Alias delta) {
+        checkPermission(ALIAS_UPDATE);
+
+        new UpdateAliasCommand(
+            getRepoFactory(),
+            delta.getTargetId(),
+            aliasId)
+        .execute(
+            currentUser(),
+            new Date());
     }
 
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ALIAS_CREATE})
     public ResourceSummary create(final Alias alias) {
+        checkPermission(ALIAS_CREATE);
+
         return commands()
             .createAliasCommand(alias)
             .execute(currentUser(), new Date())
@@ -88,8 +88,9 @@ public class AliasesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ALIAS_READ})
     public String aliasTargetName(final UUID aliasId) {
+        checkPermission(ALIAS_READ);
+
         final AliasEntity alias =
             getRepoFactory()
                 .createResourceRepository()

@@ -26,19 +26,14 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.ACTION_CANCEL;
-import static ccc.api.types.Permission.ACTION_CREATE;
-import static ccc.api.types.Permission.ACTION_EXECUTE;
-import static ccc.api.types.Permission.ACTION_LIST;
-import static ccc.api.types.Permission.ACTION_SCHEDULE;
-import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static ccc.api.types.Permission.*;
+import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
 import javax.ejb.EJBContext;
@@ -78,7 +73,6 @@ import ccc.rest.extensions.ResourcesExt;
 @Stateless(name=Actions.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(Actions.class)
-@RolesAllowed({})
 @RunAs(ACTION_EXECUTE)
 public class ActionsEJB
     extends
@@ -102,8 +96,9 @@ public class ActionsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ACTION_EXECUTE})
     public void executeAll() {
+        checkPermission(ACTION_EXECUTE);
+
         LOG.debug("Executing scheduled actions.");
 
         final List<ActionEntity> actions =
@@ -137,7 +132,6 @@ public class ActionsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ACTION_LIST})
     public PagedCollection<ActionSummary> listActions(
                                                 final String username,
                                                 final CommandType commandType,
@@ -149,6 +143,8 @@ public class ActionsEJB
                                                 final SortOrder sortOrder,
                                                 final int pageNo,
                                                 final int pageSize) {
+        checkPermission(ACTION_LIST);
+
         final ActionCriteria ac = new ActionCriteria(username,
             commandType,
             status,
@@ -170,15 +166,17 @@ public class ActionsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ACTION_CANCEL})
     public void cancel(final UUID actionId) {
+        checkPermission(ACTION_CANCEL);
+
         execute(new CancelActionCommand(getRepoFactory(), actionId));
     }
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ACTION_CREATE})
     public ActionSummary create(final Action action) {
+        checkPermission(ACTION_CREATE);
+
         final ActionEntity a =
             new ActionEntity(
                 action.getCommand(),
@@ -196,8 +194,9 @@ public class ActionsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ACTION_LIST})
     public ActionSummary retrieve(final UUID actionId) {
+        checkPermission(ACTION_LIST);
+
         return
             getRepoFactory()
                 .createActionRepository()
@@ -207,8 +206,9 @@ public class ActionsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ACTION_SCHEDULE})
     public void start() {
+        checkPermission(ACTION_SCHEDULE);
+
         LOG.debug("Starting scheduler.");
 
         if (isRunning()) {
@@ -224,8 +224,9 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    @RolesAllowed({ACTION_SCHEDULE})
     public void stop() {
+        checkPermission(ACTION_SCHEDULE);
+
         LOG.debug("Stopping scheduler.");
         final Collection<Timer> c = _context.getTimerService().getTimers();
         for (final Timer t : c) {
@@ -240,8 +241,9 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    @RolesAllowed({ACTION_SCHEDULE})
     public boolean isRunning() {
+        checkPermission(ACTION_SCHEDULE);
+
         final Collection<Timer> c = _context.getTimerService().getTimers();
         for (final Timer t : c) {
             if (TIMER_NAME.equals(t.getInfo())) {

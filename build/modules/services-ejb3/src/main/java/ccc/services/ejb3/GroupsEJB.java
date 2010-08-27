@@ -26,14 +26,13 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.CommandType.*;
+import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -41,7 +40,6 @@ import javax.ejb.TransactionAttribute;
 import ccc.api.core.Group;
 import ccc.api.core.Groups;
 import ccc.api.core.PagedCollection;
-import ccc.api.types.Permission;
 import ccc.domain.GroupEntity;
 import ccc.domain.LogEntry;
 import ccc.persistence.GroupRepository;
@@ -57,7 +55,6 @@ import ccc.plugins.s11n.Serializers;
 @Stateless(name=Groups.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(Groups.class)
-@RolesAllowed({})
 public class GroupsEJB
     extends
         AbstractEJB
@@ -67,8 +64,9 @@ public class GroupsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(Permission.GROUP_CREATE)
     public Group create(final Group comment) { // FIXME: Factor into a command.
+        checkPermission(GROUP_CREATE);
+
         final GroupEntity g = new GroupEntity(comment.getName());
         g.setPermissions(comment.getPermissions());
 
@@ -92,18 +90,19 @@ public class GroupsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(Permission.GROUP_READ)
     public Group retrieve(final UUID id) {
+        checkPermission(GROUP_READ);
+
         return getRepoFactory().createGroupRepo().find(id).createDto();
     }
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(Permission.GROUP_READ)
     public PagedCollection<Group> query(
         final String name,
         final int pageNo,
         final int pageSize) {
+        checkPermission(GROUP_READ);
 
         final GroupRepository gr = getRepoFactory().createGroupRepo();
         final long totalCount = gr.totalCount(name);
@@ -126,8 +125,9 @@ public class GroupsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(Permission.GROUP_UPDATE)
     public Group update(final UUID id, final Group group) {
+        checkPermission(GROUP_UPDATE);
+
         final GroupEntity g = getRepoFactory().createGroupRepo().find(id);
         g.setName(group.getName());
         g.setPermissions(group.getPermissions());

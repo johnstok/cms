@@ -32,8 +32,6 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.List;
 import java.util.UUID;
 
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -62,7 +60,6 @@ import ccc.domain.UserEntity;
 @Stateless(name=Pages.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(Pages.class)
-@RolesAllowed({})
 public class PagesEJB
     extends
         AbstractEJB
@@ -72,7 +69,6 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public ResourceSummary create(final Page page) {
         checkPermission(PAGE_CREATE);
         return
@@ -86,29 +82,32 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(PAGE_UPDATE)
     public void update(final UUID pageId, final Page delta) {
-            execute(
-                new UpdatePageCommand(
-                    getRepoFactory(),
-                    pageId,
-                    delta));
+        checkPermission(PAGE_UPDATE);
+
+        execute(
+            new UpdatePageCommand(
+                getRepoFactory(),
+                pageId,
+                delta));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(PAGE_UPDATE)
     public void updateWorkingCopy(final UUID pageId,
                                   final Page delta) {
+        checkPermission(PAGE_UPDATE);
+
         execute(new UpdateWCCommand2(getRepoFactory(), pageId, delta));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(PAGE_UPDATE)
     public String validate(final Page page) {
+        checkPermission(PAGE_UPDATE);
+
         final TemplateEntity t =
             getRepoFactory().createResourceRepository().find(
                 TemplateEntity.class, page.getTemplate());
@@ -120,7 +119,6 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public Page retrieve(final UUID pageId) {
         checkPermission(RESOURCE_READ);
 
@@ -133,8 +131,9 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(PAGE_UPDATE)
     public Page retrieveWorkingCopy(final UUID pageId) {
+        checkPermission(PAGE_UPDATE);
+
         return
             getRepoFactory()
                 .createResourceRepository()
@@ -144,7 +143,6 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public PagedCollection<ResourceSummary> list(final PageCriteria criteria,
                                                  final int pageNo,
                                                  final int pageSize) {

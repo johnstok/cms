@@ -34,8 +34,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -59,7 +57,6 @@ import ccc.domain.UserEntity;
 @Stateless(name=Folders.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(Folders.class)
-@RolesAllowed({})
 public class FoldersEJB
     extends
         AbstractEJB
@@ -69,7 +66,6 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public ResourceSummary create(final Folder folder) {
         checkPermission(FOLDER_CREATE);
 
@@ -81,7 +77,6 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public ResourceSummary createFolder(final UUID parentId,
                                         final String name,
                                         final String title,
@@ -107,8 +102,9 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(ROOT_CREATE)
     public ResourceSummary createRoot(final String name) {
+        checkPermission(ROOT_CREATE);
+
         final FolderEntity f = new FolderEntity(name);
         commands().createRootCommand(f)
                   .execute(currentUser(), new Date());
@@ -118,9 +114,10 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(FOLDER_UPDATE)
     public void update(final UUID folderId,
                              final Folder delta) {
+        checkPermission(FOLDER_UPDATE);
+
         final List<UUID> list = new ArrayList<UUID>();
 
         for (final String item : delta.getSortList()) {
@@ -140,7 +137,6 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public ResourceSummary nameExistsInFolder(final UUID folderId,
                                               final String name) {
         checkPermission(FOLDER_READ);
@@ -160,8 +156,9 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(FOLDER_READ)
     public PagedCollection<ResourceSummary> roots() {
+        checkPermission(FOLDER_READ);
+
         final List<ResourceSummary> roots = ResourceEntity.mapResources(
             getRepoFactory()
             .createResourceRepository()
@@ -178,7 +175,6 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
     public PagedCollection<ResourceSummary> getAccessibleChildren(
         final UUID folderId) {
         checkPermission(RESOURCE_READ);
