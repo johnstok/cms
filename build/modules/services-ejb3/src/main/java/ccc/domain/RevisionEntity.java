@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.api.core.Revision;
-import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 
 
@@ -43,13 +42,16 @@ import ccc.api.types.DBC;
  * @param <T>
  */
 public abstract class RevisionEntity<T> extends Entity {
+
     private Date _timestamp;
     private UserEntity _actor;
     private boolean _majorChange;
     private String _comment;
 
+
     /** Constructor: for persistence only. */
     protected RevisionEntity() { super(); }
+
 
     /**
      * Constructor.
@@ -112,15 +114,13 @@ public abstract class RevisionEntity<T> extends Entity {
         return _comment;
     }
 
+
     /**
      * Retrieve the revision's state.
      *
      * @return A delta describing this revision's state.
      */
     protected abstract T delta();
-
-
-
 
 
     /**
@@ -133,14 +133,12 @@ public abstract class RevisionEntity<T> extends Entity {
     public Revision mapRevision(final int index) {
         return
             new Revision(
-                CommandType.PAGE_UPDATE, // FIXME - hard coded for all revisions
                 getActor().getUsername(),
                 getTimestamp(),
                 index,
                 getComment(),
                 isMajorChange());
     }
-
 
 
     /**

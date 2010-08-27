@@ -29,7 +29,6 @@ package ccc.api.core;
 import java.io.Serializable;
 import java.util.Date;
 
-import ccc.api.types.CommandType;
 import ccc.api.types.Username;
 
 
@@ -38,52 +37,42 @@ import ccc.api.types.Username;
  *
  * @author Civic Computing Ltd.
  */
-public final class Revision implements Serializable {
-    private CommandType _command;
+public final class Revision
+    implements
+        Serializable {
+
     private Username _actorUsername;
     private Date _happenedOn;
     private long _index;
     private String _comment;
     private boolean _isMajor;
 
+
     /**
      * Constructor.
      */
     public Revision() { super(); }
 
+
     /**
      * Constructor.
      *
-     * @param command The action.
      * @param actorUsername The action's actor.
      * @param on The date of the action.
      * @param index The index of the action.
      * @param comment The comment of the action.
      * @param isMajorEdit Is the action a major edit.
      */
-    public Revision(final CommandType  command,
-                           final Username  actorUsername,
-                           final Date    on,
-                           final long    index,
-                           final String comment,
-                           final boolean isMajorEdit) {
-        _command = command;
+    public Revision(final Username  actorUsername,
+                    final Date    on,
+                    final long    index,
+                    final String comment,
+                    final boolean isMajorEdit) {
         _actorUsername = actorUsername;
         _happenedOn = new Date(on.getTime());
         _index = index;
         _comment = comment;
         _isMajor = isMajorEdit;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the action.
-     */
-    @Deprecated // This method is due to be removed in 7.3.0
-    public CommandType getCommand() {
-        return _command;
     }
 
 

@@ -27,7 +27,6 @@
 package ccc.plugins.s11n.json;
 
 import ccc.api.core.Revision;
-import ccc.api.types.CommandType;
 import ccc.api.types.Username;
 
 
@@ -54,12 +53,11 @@ class RevisionSerializer extends BaseSerializer<Revision> {
 
         final Revision r =
             new Revision(
-                CommandType.valueOf(json.getString(JsonKeys.COMMAND)),
                 new Username(json.getString(JsonKeys.USERNAME)),
-                json.getDate(JsonKeys.HAPPENED_ON),
-                json.getLong(JsonKeys.INDEX).longValue(),
-                json.getString(JsonKeys.COMMENT),
-                json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue());
+                json.getDate(HAPPENED_ON),
+                json.getLong(INDEX).longValue(),
+                json.getString(COMMENT),
+                json.getBool(MAJOR_CHANGE).booleanValue());
 
         return r;
     }
@@ -71,14 +69,19 @@ class RevisionSerializer extends BaseSerializer<Revision> {
         if (null==instance) { return null; }
         final Json json = newJson();
 
-        json.set(JsonKeys.COMMAND, instance.getCommand().name());
-        json.set(JsonKeys.USERNAME, instance.getActorUsername().toString());
-        json.set(JsonKeys.HAPPENED_ON, instance.getHappenedOn());
-        json.set(JsonKeys.MAJOR_CHANGE, Boolean.valueOf(instance.isMajor()));
-        json.set(JsonKeys.INDEX, Long.valueOf(instance.getIndex()));
-        json.set(JsonKeys.COMMENT, instance.getComment());
+        json.set(USERNAME, instance.getActorUsername().toString());
+        json.set(HAPPENED_ON, instance.getHappenedOn());
+        json.set(MAJOR_CHANGE, Boolean.valueOf(instance.isMajor()));
+        json.set(INDEX, Long.valueOf(instance.getIndex()));
+        json.set(COMMENT, instance.getComment());
 
         return json.toString();
     }
 
+
+    private static final String USERNAME = "username";
+    private static final String HAPPENED_ON = "happened-on";
+    private static final String MAJOR_CHANGE = "major-change";
+    private static final String INDEX = "index";
+    private static final String COMMENT = "comment";
 }

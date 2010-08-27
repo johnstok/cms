@@ -119,12 +119,8 @@ final class JsonKeys {
     public static final String COMMAND = "command";
     /** ACTOR_ID : String. */
     public static final String ACTOR_ID = "actor_id";
-    /** HAPPENED_ON : String. */
-    public static final String HAPPENED_ON = "happened-on";
     /** MAJOR_CHANGE : String. */
     public static final String MAJOR_CHANGE = "major-change";
-    /** INDEX : String. */
-    public static final String INDEX = "index";
     /** COMMENT : String. */
     public static final String COMMENT = "comment";
     /** EXECUTE_AFTER : String. */
