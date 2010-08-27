@@ -26,7 +26,6 @@
  */
 package ccc.client.core;
 
-import ccc.api.core.Failure;
 import ccc.client.events.Event;
 
 
@@ -70,7 +69,7 @@ public class ResponseHandlerAdapter
     /** {@inheritDoc} */
     @Override
     public void onBadRequest(final Response response) {
-        onFailed(toRemoteException(response));
+        onFailed(toException(response));
     }
 
 
@@ -84,39 +83,35 @@ public class ResponseHandlerAdapter
     /** {@inheritDoc} */
     @Override
     public void onUnsupported(final Response response) {
-        onFailed(
-            new RuntimeException(// TODO Add UnsupportedResponseException?
-                "Unsupported response: "
-                + response.getStatusCode() + " "
-                + response.getStatusText()));
+        onFailed(toException(response));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void onConflict(final Response response) {
-        onFailed(toRemoteException(response));
+        onFailed(toException(response));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void onError(final Response response) {
-        onFailed(toRemoteException(response));
+        onFailed(toException(response));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void onNotFound(final Response response) {
-        onFailed(toRemoteException(response));
+        onFailed(toException(response));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void onUnauthorized(final Response response) {
-        onFailed(toRemoteException(response));
+        onFailed(toException(response));
     }
 
 
@@ -137,10 +132,7 @@ public class ResponseHandlerAdapter
     }
 
 
-    private RemoteException toRemoteException(final Response response) {
-        return new RemoteException(
-            InternalServices.SERIALIZERS
-                .create(Failure.class)
-                .read(response.getText()));
+    private Throwable toException(final Response response) {
+        return new S11nHelper().readException(response);
     }
 }

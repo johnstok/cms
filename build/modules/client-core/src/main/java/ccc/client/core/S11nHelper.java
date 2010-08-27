@@ -42,7 +42,9 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.core.Template;
 import ccc.api.core.User;
+import ccc.api.types.DBC;
 import ccc.api.types.Duration;
+import ccc.plugins.s11n.S11nException;
 import ccc.plugins.s11n.Serializers;
 
 
@@ -53,7 +55,27 @@ import ccc.plugins.s11n.Serializers;
  */
 public class S11nHelper {
 
-    private final Serializers _serializers = InternalServices.SERIALIZERS;
+    private final Serializers _serializers;
+
+
+    /**
+     * Constructor.
+     *
+     * @param serializersAdapter
+     */
+    public S11nHelper() {
+        this(InternalServices.SERIALIZERS);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param serializers The serializer factory to use.
+     */
+    public S11nHelper(final Serializers serializers) {
+        _serializers = DBC.require().notNull(serializers);
+    }
 
 
     /**
@@ -341,6 +363,30 @@ public class S11nHelper {
      */
     public Failure readFailure(final String response) {
         return serializers().create(Failure.class).read(response);
+    }
+
+
+    /**
+     * Read an exception from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding exception.
+     */
+    public Throwable readException(final Response response) {
+        try {
+            return
+                new RemoteException(
+                    serializers()
+                        .create(Failure.class)
+                        .read(response.getText()));
+        } catch (final S11nException e) {
+            return
+                new RuntimeException(
+                    response.getStatusCode() + " "
+                    + response.getStatusText() + "\n\n"
+                    + response.getText());
+        }
     }
 
 
