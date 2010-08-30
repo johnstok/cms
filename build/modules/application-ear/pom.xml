@@ -140,6 +140,11 @@
             <artifactId>plugin-mail-javamail</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>plugin-markup-tagsoup</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Not required in the EAR. -->
         <dependency>

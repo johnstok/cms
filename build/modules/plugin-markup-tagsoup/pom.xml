@@ -6,19 +6,23 @@
         <groupId>com.civicuk.cc</groupId>
         <version>7.3.0-SNAPSHOT</version>
     </parent>
-    
     <properties>
         <parent_basedir>${basedir}/../..</parent_basedir>
     </properties>
-    
-    <artifactId>api-plugins</artifactId>
-    <name>api-plugins</name>
+    <artifactId>plugin-markup-tagsoup</artifactId>
+    <name>plugin-markup-tagsoup</name>
     
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>api-core</artifactId>
+            <artifactId>api-plugins</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.ccil.cowan.tagsoup</groupId>
+            <artifactId>tagsoup</artifactId>
+            <version>${lib.version.tagsoup}</version>
         </dependency>
     </dependencies>
     

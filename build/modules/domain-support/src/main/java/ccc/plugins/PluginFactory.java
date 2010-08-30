@@ -51,7 +51,7 @@ public class PluginFactory {
         return
             construct(
                 Ixhtml.class,
-                "ccc.plugins.markup.XHTML");
+                "ccc.plugins.markup.tagsoup.XHTML");
     }
 
 

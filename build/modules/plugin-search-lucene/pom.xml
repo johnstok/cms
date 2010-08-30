@@ -44,6 +44,13 @@
             <artifactId>lucene-queries</artifactId>
             <version>${lib.version.lucene}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>plugin-markup-tagsoup</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     
 </project>

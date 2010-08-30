@@ -35,6 +35,8 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
+import ccc.plugins.PluginFactory;
+
 /**
  * A SAX content handler that only operates on white-listed elements.
  *
@@ -43,7 +45,7 @@ import org.xml.sax.SAXException;
  *
  * @author Civic Computing Ltd.
  */
-final class WhitelistContentHandler
+public final class WhitelistContentHandler
     implements
         ContentHandler {
 
@@ -65,9 +67,11 @@ final class WhitelistContentHandler
             return;
         }
 
+        final Ixhtml xhtml = new PluginFactory().html();
+
         /* TODO: Handle multi-char code points. How?! */
         for (int i=start; i<(start+length); i++) {
-            _sb.append(new XHTML().escape(ch[i]));
+            _sb.append(xhtml.escape(ch[i]));
         }
     }
 
@@ -169,7 +173,7 @@ final class WhitelistContentHandler
      *
      * @return This content handler's buffer.
      */
-    StringBuffer buffer() { return _sb; }
+    public StringBuffer buffer() { return _sb; }
 
 
     /**

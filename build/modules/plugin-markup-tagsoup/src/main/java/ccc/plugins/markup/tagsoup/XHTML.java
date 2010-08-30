@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.markup;
+package ccc.plugins.markup.tagsoup;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,6 +68,9 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import ccc.api.types.DBC;
+import ccc.plugins.markup.Ixhtml;
+import ccc.plugins.markup.WhitelistContentHandler;
+import ccc.plugins.markup.XML;
 
 /**
  * Helper methods for working with XHTML.
@@ -95,7 +98,7 @@ public final class XHTML implements Ixhtml {
 
         private String dtdFilename(final String systemId) {
             final String[] pathElements = systemId.split("/");
-            return pathElements[pathElements.length - 1];
+            return "/ccc/plugins/markup/"+pathElements[pathElements.length - 1];
         }
     }
 

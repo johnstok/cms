@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.markup;
+package ccc.plugins.markup.tagsoup;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -158,7 +158,8 @@ public final class XHTMLTest extends TestCase {
         // ARRANGE
         final InputStream page =
             getClass()
-                .getResource("minimal-strict-document.xhtml")
+                .getResource(
+                    "/ccc/plugins/markup/minimal-strict-document.xhtml")
                 .openStream();
 
         // ACT
@@ -178,7 +179,8 @@ public final class XHTMLTest extends TestCase {
         // ARRANGE
         final InputStream page =
             getClass()
-                .getResource("minimal-strict-document.xhtml")
+                .getResource(
+                    "/ccc/plugins/markup/minimal-strict-document.xhtml")
                 .openStream();
 
         // ACT

@@ -32,6 +32,9 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
+import ccc.plugins.PluginFactory;
+
+
 /**
  * A SAX content handler that only operates on white-listed elements.
  * FIXME: Ignore all children of a blacklisted element? Stax may be a better
@@ -56,8 +59,9 @@ final class EchoContentHandler
     @Override public void characters(final char[] ch,
                                      final int start,
                                      final int length) {
+        final Ixhtml xhtml = new PluginFactory().html();
         for (int i=start; i<(start+length); i++) {
-            _sb.append(new XHTML().escape(ch[i]));
+            _sb.append(xhtml.escape(ch[i]));
         }
         LOG.debug(new String(ch, start, length));
     }
