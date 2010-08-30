@@ -235,7 +235,9 @@ public class ActionAcceptanceTest
         getActions().executeAll();
         final ResourceSummary rs = tempFolder();
         final Calendar cal = Calendar.getInstance();
-        cal.set(2010, 1, 2, 1, 2);
+        cal.set(2010, 1, 2, 0, 0, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
         final Calendar calEarly = Calendar.getInstance();
         calEarly.set(2009, 1, 2, 1, 2);
         final Calendar calLate = Calendar.getInstance();
@@ -285,11 +287,14 @@ public class ActionAcceptanceTest
                 20);
 
         // ASSERT
-        assertEquals(0, actionSame.getTotalCount());
+        assertEquals("Should return 0 with same exceute after date",
+        		0, actionSame.getTotalCount());
 
-        assertEquals(0, actionBefore.getTotalCount());
+        assertEquals("Should return 0 with later exceute after date",
+                     0, actionBefore.getTotalCount());
 
-        assertEquals(1, actionAfter.getTotalCount());
+        assertEquals("Should return 1 with earlier exceute after date",
+                     1, actionAfter.getTotalCount());
         final ActionSummary actual =
             actionAfter.getElements().iterator().next();
         assertEquals(rs.getAbsolutePath(), actual.getSubjectPath());
