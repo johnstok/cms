@@ -45,7 +45,7 @@ import ccc.plugins.PluginFactory;
  *
  * @author Civic Computing Ltd.
  */
-public final class WhitelistContentHandler
+final class WhitelistContentHandler
     implements
         ContentHandler {
 
@@ -67,7 +67,7 @@ public final class WhitelistContentHandler
             return;
         }
 
-        final Ixhtml xhtml = new PluginFactory().html();
+        final XHTML xhtml = new PluginFactory().html();
 
         /* TODO: Handle multi-char code points. How?! */
         for (int i=start; i<(start+length); i++) {

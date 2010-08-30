@@ -31,7 +31,7 @@ import static ccc.commons.Reflection.*;
 import java.io.InputStream;
 
 import ccc.plugins.mail.Mailer;
-import ccc.plugins.markup.Ixhtml;
+import ccc.plugins.markup.XHTML;
 import ccc.plugins.multipart.MultipartFormData;
 import ccc.plugins.s11n.Serializers;
 import ccc.plugins.scripting.TextProcessor;
@@ -47,11 +47,11 @@ import ccc.plugins.security.Sessions;
  */
 public class PluginFactory {
 
-    public Ixhtml html() {
+    public XHTML html() {
         return
             construct(
-                Ixhtml.class,
-                "ccc.plugins.markup.tagsoup.XHTML");
+                XHTML.class,
+                "ccc.plugins.markup.tagsoup.TagSoupXHTML");
     }
 
 

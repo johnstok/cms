@@ -33,14 +33,14 @@ import junit.framework.TestCase;
 
 
 /**
- * Tests for the {@link XHTML} class.
+ * Tests for the {@link TagSoupXHTML} class.
  *
  * TODO: Add tests for printErrors().
  * TODO: Add sanitization tests from the Antisamy project?
  *
  * @author Civic Computing Ltd
  */
-public final class XHTMLTest extends TestCase {
+public final class TagSoupXHTMLTest extends TestCase {
 
     /**
      * Test.
@@ -61,7 +61,7 @@ public final class XHTMLTest extends TestCase {
 
         // ACT
         for (final String badUrl : badUrls) {
-            final String sanitized = new XHTML().sanitizeUrl(badUrl);
+            final String sanitized = new TagSoupXHTML().sanitizeUrl(badUrl);
 
         // ASSERT
             assertEquals("", sanitized);
@@ -79,7 +79,7 @@ public final class XHTMLTest extends TestCase {
         for (final String[] example : XSS_EXAMPLES) {
 
         // ASSERT
-            assertEquals(example[0], new XHTML().sanitize(example[1]));
+            assertEquals(example[0], new TagSoupXHTML().sanitize(example[1]));
         }
     }
 
@@ -96,7 +96,7 @@ public final class XHTMLTest extends TestCase {
             + "</html>";
 
         // ACT
-        final String sanitized = new XHTML().sanitize(raw);
+        final String sanitized = new TagSoupXHTML().sanitize(raw);
 
         // ASSERT
         assertEquals("<p><b>Hello</b> <i>World</i></p>foo", sanitized);
@@ -112,7 +112,7 @@ public final class XHTMLTest extends TestCase {
             "<head>foo<script>bad();</script> <a>head-link</head><body />";
 
         // ACT
-        final String sanitized = new XHTML().sanitize(raw);
+        final String sanitized = new TagSoupXHTML().sanitize(raw);
 
         // ASSERT
         assertEquals("foo head-link", sanitized);
@@ -127,7 +127,7 @@ public final class XHTMLTest extends TestCase {
         final String raw = "&lt;foo&gt;bar&lt;/foo&gt;";
 
         // ACT
-        final String sanitized = new XHTML().sanitize(raw);
+        final String sanitized = new TagSoupXHTML().sanitize(raw);
 
         // ASSERT
         assertEquals("&lt;foo&gt;bar&lt;/foo&gt;", sanitized);
@@ -142,7 +142,7 @@ public final class XHTMLTest extends TestCase {
         final String badString = "<p id=\"e&m\">";
 
         // ACT
-        final String encodedString = new XHTML().escape(badString);
+        final String encodedString = new TagSoupXHTML().escape(badString);
 
         // ASSERT
         assertEquals("&lt;p id=&quot;e&amp;m&quot;&gt;", encodedString);
@@ -163,7 +163,7 @@ public final class XHTMLTest extends TestCase {
                 .openStream();
 
         // ACT
-        final boolean isValid = new XHTML().isValid(page);
+        final boolean isValid = new TagSoupXHTML().isValid(page);
 
         // ASSERT
         assertTrue("isValid found a valid document to be invalid.", isValid);
@@ -185,7 +185,7 @@ public final class XHTMLTest extends TestCase {
 
         // ACT
         final String titleCount =
-            new XHTML().evaluateXPath(page, "count(//xhtml:title)");
+            new TagSoupXHTML().evaluateXPath(page, "count(//xhtml:title)");
 
         // ASSERT
         assertEquals("1", titleCount);
@@ -302,7 +302,7 @@ public final class XHTMLTest extends TestCase {
 
     public static void main(final String[] args) {
         System.out.print(
-            new XHTML().fix(
+            new TagSoupXHTML().fix(
                 "<head>foo <a>head-link<script>bad();</script></head><body />")
         );
     }

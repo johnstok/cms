@@ -30,7 +30,6 @@ import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
 
 import ccc.plugins.PluginFactory;
 
@@ -59,7 +58,7 @@ final class EchoContentHandler
     @Override public void characters(final char[] ch,
                                      final int start,
                                      final int length) {
-        final Ixhtml xhtml = new PluginFactory().html();
+        final XHTML xhtml = new PluginFactory().html();
         for (int i=start; i<(start+length); i++) {
             _sb.append(xhtml.escape(ch[i]));
         }
@@ -97,8 +96,7 @@ final class EchoContentHandler
     /** {@inheritDoc} */
     @Override public void ignorableWhitespace(final char[] ch,
                                               final int start,
-                                              final int length)
-    throws SAXException {
+                                              final int length) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
@@ -117,8 +115,7 @@ final class EchoContentHandler
 
 
     /** {@inheritDoc} */
-    @Override public void skippedEntity(final String name)
-    throws SAXException {
+    @Override public void skippedEntity(final String name) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 

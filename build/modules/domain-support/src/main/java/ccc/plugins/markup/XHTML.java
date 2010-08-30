@@ -41,7 +41,7 @@ import org.w3c.dom.NodeList;
  *
  * @author Civic Computing Ltd.
  */
-public interface Ixhtml {
+public interface XHTML {
 
     /**
      * Test whether an xhtml page is valid.

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2010 Civic Computing Ltd
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,10 +21,11 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.markup.tagsoup;
+
+package ccc.plugins.markup;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +58,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.ccil.cowan.tagsoup.Parser;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
@@ -68,16 +68,16 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import ccc.api.types.DBC;
-import ccc.plugins.markup.Ixhtml;
-import ccc.plugins.markup.WhitelistContentHandler;
-import ccc.plugins.markup.XML;
+
 
 /**
- * Helper methods for working with XHTML.
+ * Abstract base class for {@link XHTML} implementations.
  *
- * @author Civic Computing Ltd
+ * @author Civic Computing Ltd.
  */
-public final class XHTML implements Ixhtml {
+public abstract class AbstractXHTML
+    implements
+        XHTML {
 
     /**
      * An implementation of {@link EntityResolver} that reads xhtml dtd's from
@@ -85,7 +85,7 @@ public final class XHTML implements Ixhtml {
      *
      * @author Civic Computing Ltd.
      */
-    static class XhtmlEntityResolver implements EntityResolver {
+    protected static class XhtmlEntityResolver implements EntityResolver {
 
         /** {@inheritDoc} */
         @Override
@@ -103,83 +103,99 @@ public final class XHTML implements Ixhtml {
     }
 
     /**
-     * An implementation of {@link ErrorHandler} that collects errors.
-     *
-     * @author Civic Computing Ltd
-     */
-    static class XhtmlErrorHandler implements ErrorHandler {
-        private Collection<String> _errors = new ArrayList<String>();
-
-        /** {@inheritDoc} */
-        public void warning(final SAXParseException e) {
-            _errors.add(constructErrorMessage(e));
-        }
-
-        /** {@inheritDoc} */
-        public void error(final SAXParseException e) {
-            _errors.add(constructErrorMessage(e));
-        }
-
-        /** {@inheritDoc} */
-        public void fatalError(final SAXParseException e) {
-            _errors.add(constructErrorMessage(e));
-        }
-
-        /** {@inheritDoc} */
-        Collection<String> getErrors() {
-            return _errors;
-        }
-
-        private String constructErrorMessage(final SAXParseException e) {
-            final StringBuffer fullMessage =
-                new StringBuffer()
-                    .append("Line: ") //$NON-NLS-1$
-                    .append(e.getLineNumber())
-                    .append(", Column: ") //$NON-NLS-1$
-                    .append(e.getColumnNumber())
-                    .append(", Error: ") //$NON-NLS-1$
-                    .append(e.getMessage());
-            return fullMessage.toString();
-        }
-
-        /**
-         * Accessor for the errors collection.
+         * An implementation of {@link ErrorHandler} that collects errors.
          *
-         * @return A collection of strings, one per error.
+         * @author Civic Computing Ltd
          */
-        public Collection<String> errors() {
-            return Collections.unmodifiableCollection(_errors);
-        }
-    }
+        protected static class XhtmlErrorHandler implements ErrorHandler {
+            private Collection<String> _errors = new ArrayList<String>();
 
-    /**
-     * An implementation of {@link NamespaceContext} that understands the
-     * 'xhtml' namespace.
-     *
-     * @author Civic Computing Ltd
-     */
-    static class XHTMLContext implements NamespaceContext {
+            /** {@inheritDoc} */
+            public void warning(final SAXParseException e) {
+                _errors.add(constructErrorMessage(e));
+            }
 
-        /** {@inheritDoc} */
-        public String getNamespaceURI(final String prefix) {
-            DBC.require().notNull(prefix);
-            if ("xhtml".equals(prefix)) {
-                return "http://www.w3.org/1999/xhtml";
-            } else if ("xml".equals(prefix)) {
-                return XMLConstants.XML_NS_URI;
-            } else {
-                return XMLConstants.NULL_NS_URI;
+            /** {@inheritDoc} */
+            public void error(final SAXParseException e) {
+                _errors.add(constructErrorMessage(e));
+            }
+
+            /** {@inheritDoc} */
+            public void fatalError(final SAXParseException e) {
+                _errors.add(constructErrorMessage(e));
+            }
+
+            /** {@inheritDoc} */
+            Collection<String> getErrors() {
+                return _errors;
+            }
+
+            private String constructErrorMessage(final SAXParseException e) {
+                final StringBuffer fullMessage =
+                    new StringBuffer()
+                        .append("Line: ") //$NON-NLS-1$
+                        .append(e.getLineNumber())
+                        .append(", Column: ") //$NON-NLS-1$
+                        .append(e.getColumnNumber())
+                        .append(", Error: ") //$NON-NLS-1$
+                        .append(e.getMessage());
+                return fullMessage.toString();
+            }
+
+            /**
+             * Accessor for the errors collection.
+             *
+             * @return A collection of strings, one per error.
+             */
+            public Collection<String> errors() {
+                return Collections.unmodifiableCollection(_errors);
             }
         }
 
-        /** {@inheritDoc} */
-        public String getPrefix(final String uri) {
-            throw new UnsupportedOperationException();
+    /**
+         * An implementation of {@link NamespaceContext} that understands the
+         * 'xhtml' namespace.
+         *
+         * @author Civic Computing Ltd
+         */
+        protected static class XHTMLContext implements NamespaceContext {
+
+            /** {@inheritDoc} */
+            public String getNamespaceURI(final String prefix) {
+                DBC.require().notNull(prefix);
+                if ("xhtml".equals(prefix)) {
+                    return "http://www.w3.org/1999/xhtml";
+                } else if ("xml".equals(prefix)) {
+                    return XMLConstants.XML_NS_URI;
+                } else {
+                    return XMLConstants.NULL_NS_URI;
+                }
+            }
+
+            /** {@inheritDoc} */
+            public String getPrefix(final String uri) {
+                throw new UnsupportedOperationException();
+            }
+
+            /** {@inheritDoc} */
+            public Iterator<?> getPrefixes(final String uri) {
+                throw new UnsupportedOperationException();
+            }
         }
 
-        /** {@inheritDoc} */
-        public Iterator<?> getPrefixes(final String uri) {
-            throw new UnsupportedOperationException();
+    private static Document parse(final InputStream page) {
+        try {
+            final DocumentBuilder builder =
+                XML.createParser(new XhtmlErrorHandler(),
+                             new XhtmlEntityResolver());
+            return builder.parse(page);
+
+        } catch (final ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        } catch (final SAXException e) {
+            throw new RuntimeException(e);
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -205,8 +221,7 @@ public final class XHTML implements Ixhtml {
 
     /** {@inheritDoc} */
     @Override
-    public String evaluateXPath(final InputStream page,
-                                final String xpathExpression) {
+    public String evaluateXPath(final InputStream page, final String xpathExpression) {
 
         try {
             final Document doc = parse(page);
@@ -223,8 +238,7 @@ public final class XHTML implements Ixhtml {
 
     /** {@inheritDoc} */
     @Override
-    public NodeList evaluateXPathToNodeList(final Document doc,
-                                            final String xpathExpression) {
+    public NodeList evaluateXPathToNodeList(final Document doc, final String xpathExpression) {
         try {
             final XPath xpath = createXPath();
 
@@ -237,22 +251,6 @@ public final class XHTML implements Ixhtml {
         }
     }
 
-    private static Document parse(final InputStream page) {
-        try {
-            final DocumentBuilder builder =
-                XML.createParser(new XhtmlErrorHandler(),
-                             new XhtmlEntityResolver());
-            return builder.parse(page);
-
-        } catch (final ParserConfigurationException e) {
-            throw new RuntimeException(e);
-        } catch (final SAXException e) {
-            throw new RuntimeException(e);
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private static XPath createXPath() {
         final XPathFactory xPathFactory = XPathFactory.newInstance();
         final XPath xpath = xPathFactory.newXPath();
@@ -260,6 +258,14 @@ public final class XHTML implements Ixhtml {
         return xpath;
     }
 
+    /**
+     * Constructor.
+     *
+     */
+    public AbstractXHTML() {
+
+        super();
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -320,12 +326,11 @@ public final class XHTML implements Ixhtml {
         return result;
     }
 
-
     /** {@inheritDoc} */
     @Override
     public String sanitize(final String raw) {
 
-        final XMLReader reader = new Parser();
+        final XMLReader reader = createHtmlParser();
         final WhitelistContentHandler ch = new WhitelistContentHandler();
 
         // FIXME: Allow lists? Allow tables?
@@ -355,7 +360,6 @@ public final class XHTML implements Ixhtml {
         }
     }
 
-
     /** {@inheritDoc} */
     @Override
     public String sanitizeUrl(final String raw) {
@@ -373,13 +377,12 @@ public final class XHTML implements Ixhtml {
         }
     }
 
-
     /** {@inheritDoc} */
     @Override
     public String fix(final String raw) {
         try {
             final InputSource is = new InputSource(new StringReader(raw));
-            final XMLReader reader = new Parser();
+            final XMLReader reader = createHtmlParser();
             final Transformer transformer =
                 TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -396,4 +399,11 @@ public final class XHTML implements Ixhtml {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Create a HTML parser.
+     *
+     * @return An XML reader for the parsed HTML.
+     */
+    protected abstract XMLReader createHtmlParser();
 }

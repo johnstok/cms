@@ -84,7 +84,7 @@ public final class XML {
      *
      * @throws ParserConfigurationException If the builder cannot be created.
      */
-    public static DocumentBuilder createParser(
+    static DocumentBuilder createParser(
                                     final ErrorHandler errorHandler,
                                     final EntityResolver entityResolver)
                                        throws ParserConfigurationException {
