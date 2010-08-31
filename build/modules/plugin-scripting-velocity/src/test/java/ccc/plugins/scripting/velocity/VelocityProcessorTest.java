@@ -26,7 +26,10 @@
  */
 package ccc.plugins.scripting.velocity;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.io.StringWriter;
 import java.util.Collections;
@@ -41,7 +44,6 @@ import ccc.api.core.MemoryServiceLocator;
 import ccc.api.core.Page;
 import ccc.api.core.Resources;
 import ccc.api.core.ServiceLocator;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Paragraph;
 import ccc.commons.Testing;
 import ccc.plugins.scripting.Context;
@@ -414,15 +416,9 @@ public class VelocityProcessorTest extends TestCase {
     }
 
 
-    /**
-     * Generate an entity not found exception.
-     */
-    public void list() {
-        throw new EntityNotFoundException(UUID.randomUUID());
-    }
 
 
     private TextProcessor _vp;
     private Resources _reader;
-    private MemoryServiceLocator _sl = new MemoryServiceLocator();
+    private final MemoryServiceLocator _sl = new MemoryServiceLocator();
 }

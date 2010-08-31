@@ -32,7 +32,6 @@ import javax.ws.rs.ext.ExceptionMapper;
 import ccc.api.core.Failure;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.ConflictException;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.InvalidException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.HttpStatusCode;
@@ -75,9 +74,6 @@ public class RestExceptionMapper
 
         } else if (e instanceof ConflictException) {
             statusCode = HttpStatusCode.CONFLICT;
-
-        } else if (e instanceof EntityNotFoundException) {
-            statusCode = HttpStatusCode.NOT_FOUND;
 
         } else if (e instanceof InvalidException) {
             statusCode = HttpStatusCode.BAD_REQUEST;

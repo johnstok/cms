@@ -26,8 +26,11 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.*;
-import static javax.ejb.TransactionAttributeType.*;
+import static ccc.api.types.Permission.COMMENT_CREATE;
+import static ccc.api.types.Permission.COMMENT_DELETE;
+import static ccc.api.types.Permission.COMMENT_READ;
+import static ccc.api.types.Permission.COMMENT_UPDATE;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 
 import java.util.UUID;
 
@@ -78,10 +81,13 @@ public class CommentsEJB
     public Comment retrieve(final UUID commentId) {
         checkPermission(COMMENT_READ);
 
-        return
-            getRepoFactory()
-                .createCommentRepo()
-                .retrieve(commentId).createDto();
+        final CommentEntity c = getRepoFactory()
+        .createCommentRepo()
+        .retrieve(commentId);
+        if (c == null) {
+            return null;
+        }
+        return c.createDto();
     }
 
 

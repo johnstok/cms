@@ -36,11 +36,11 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJBContext;
 import javax.ejb.TimerService;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.DBC;
 import ccc.commands.Command;
@@ -190,12 +190,7 @@ abstract class AbstractEJB {
 
         DBC.require().notNull(r);
 
-        UserEntity u = null;
-        try {
-            u = currentUser();
-        } catch (final EntityNotFoundException e) {
-            Exceptions.swallow(e); // Leave user as NULL.
-        }
+        final UserEntity u = currentUser();
 
         if (!r.isReadableBy(u)) {
             throw new UnauthorizedException(

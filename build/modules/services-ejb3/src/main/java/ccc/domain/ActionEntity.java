@@ -34,11 +34,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.persistence.EntityNotFoundException;
+
 import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Failure;
 import ccc.api.exceptions.CycleDetectedException;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.InsufficientPrivilegesException;
 import ccc.api.exceptions.LockMismatchException;
 import ccc.api.exceptions.ResourceExistsException;

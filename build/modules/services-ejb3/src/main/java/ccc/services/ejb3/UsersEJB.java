@@ -26,8 +26,11 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.*;
-import static javax.ejb.TransactionAttributeType.*;
+import static ccc.api.types.Permission.SELF_UPDATE;
+import static ccc.api.types.Permission.USER_CREATE;
+import static ccc.api.types.Permission.USER_READ;
+import static ccc.api.types.Permission.USER_UPDATE;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -40,7 +43,6 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
 import ccc.api.core.Users;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 import ccc.commands.CreateUserCommand;
@@ -204,11 +206,11 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     public User retrieveCurrent() {
-        try {
-            return currentUser().toDto();
-        } catch (final EntityNotFoundException e) {
+        final UserEntity current = currentUser();
+        if (current == null) {
             return null;
         }
+        return current.toDto();
     }
 
 }

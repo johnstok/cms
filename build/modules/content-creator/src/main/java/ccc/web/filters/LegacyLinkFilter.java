@@ -45,7 +45,6 @@ import org.apache.log4j.Logger;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
-import ccc.api.exceptions.CCException;
 import ccc.api.jaxrs.ResourcesImpl;
 import ccc.api.types.ResourcePath;
 import ccc.web.rendering.NotFoundException;
@@ -187,17 +186,16 @@ public final class LegacyLinkFilter
             + req.getServletPath()
             + req.getPathInfo());
 
-        try {
-            final ResourceSummary r =
-                new ResourcesImpl(_resources).resourceForLegacyId(legacyId);
-            final String resourcePath = r.getAbsolutePath();
-            LOG.debug("Fixed to path: "+resourcePath);
-
-            throw new RedirectRequiredException(resourcePath, true);
-
-        } catch (final CCException e) {
+        final ResourceSummary r =
+            new ResourcesImpl(_resources).resourceForLegacyId(legacyId);
+        if (r == null) {
             throw new NotFoundException();
         }
+        final String resourcePath = r.getAbsolutePath();
+        LOG.debug("Fixed to path: "+resourcePath);
+
+        throw new RedirectRequiredException(resourcePath, true);
+
     }
 
 

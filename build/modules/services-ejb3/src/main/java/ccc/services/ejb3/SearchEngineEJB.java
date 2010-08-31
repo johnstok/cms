@@ -26,8 +26,9 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.*;
-import static javax.ejb.TransactionAttributeType.*;
+import static ccc.api.types.Permission.SEARCH_REINDEX;
+import static ccc.api.types.Permission.SEARCH_SCHEDULE;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 
 import java.util.Collection;
 import java.util.List;
@@ -45,7 +46,6 @@ import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.SearchEngine;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
 import ccc.api.types.PredefinedResourceNames;
@@ -308,12 +308,10 @@ public class SearchEngineEJB
 
     private String getIndexPath() {
         final SettingsRepository settings = new SettingsRepository(_em);
-        Setting indexPath;
-        try {
-            indexPath = settings.find(Setting.Name.LUCENE_INDEX_PATH);
-        } catch (final EntityNotFoundException e) {
+        final Setting indexPath  = settings.find(Setting.Name.LUCENE_INDEX_PATH);
+        if (indexPath == null) {
             throw new RuntimeException(
-                "No setting for "+Setting.Name.LUCENE_INDEX_PATH, e);
+                "No setting for "+Setting.Name.LUCENE_INDEX_PATH);
         }
         final String indexPathValue = indexPath.getValue();
         return indexPathValue;

@@ -38,7 +38,6 @@ import javax.persistence.EntityManager;
 import ccc.api.core.PageCriteria;
 import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.Paragraph;
 import ccc.api.types.PredefinedResourceNames;
@@ -113,11 +112,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
     @Override
     public ResourceEntity lookup(final ResourcePath path) {
         final FolderEntity root = root(PredefinedResourceNames.CONTENT);
-        try {
-            return root.navigateTo(path);
-        } catch (final RuntimeException e) { // TODO: Dodgy?
-            throw new EntityNotFoundException((UUID) null);
-        }
+        return (root == null) ? null : root.navigateTo(path);
     }
 
 
@@ -269,8 +264,8 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
 
     private <T extends ResourceEntity> T discardDeleted(final T resource) {
-        if (resource.isDeleted()) {
-            throw new EntityNotFoundException(resource.getId());
+        if (resource == null || resource.isDeleted()) {
+            return null;
         }
         return resource;
     }

@@ -26,8 +26,23 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.*;
-import static javax.ejb.TransactionAttributeType.*;
+import static ccc.api.types.Permission.ACTION_EXECUTE;
+import static ccc.api.types.Permission.LOG_ENTRY_CREATE;
+import static ccc.api.types.Permission.RESOURCE_ACL_UPDATE;
+import static ccc.api.types.Permission.RESOURCE_CACHE_UPDATE;
+import static ccc.api.types.Permission.RESOURCE_DELETE;
+import static ccc.api.types.Permission.RESOURCE_LOCK;
+import static ccc.api.types.Permission.RESOURCE_MM;
+import static ccc.api.types.Permission.RESOURCE_MOVE;
+import static ccc.api.types.Permission.RESOURCE_PUBLISH;
+import static ccc.api.types.Permission.RESOURCE_READ;
+import static ccc.api.types.Permission.RESOURCE_RENAME;
+import static ccc.api.types.Permission.RESOURCE_UNLOCK;
+import static ccc.api.types.Permission.RESOURCE_UNPUBLISH;
+import static ccc.api.types.Permission.RESOURCE_UPDATE;
+import static ccc.api.types.Permission.SEARCH_CREATE;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static javax.ejb.TransactionAttributeType.REQUIRES_NEW;
 
 import java.util.Date;
 import java.util.List;
@@ -41,6 +56,7 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityNotFoundException;
 
 import ccc.api.core.ACL;
 import ccc.api.core.PagedCollection;
@@ -50,7 +66,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
 import ccc.api.core.Revision;
 import ccc.api.core.Template;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Duration;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
@@ -502,9 +517,12 @@ public class ResourcesEJB
     @Override
     public ResourceSummary resourceForPath(final String rootPath) {
         checkPermission(RESOURCE_READ);
-
-        return
-            getResources().lookup(new ResourcePath(rootPath)).mapResource();
+        final ResourceEntity r =
+            getResources().lookup(new ResourcePath(rootPath));
+        if (r == null) {
+            return null;
+        }
+        return r.mapResource();
     }
 
 
@@ -524,7 +542,11 @@ public class ResourcesEJB
     @Override
     public ResourceSummary resourceForLegacyId(final String legacyId) {
         checkPermission(RESOURCE_READ);
-        return getResources().lookupWithLegacyId(legacyId).mapResource();
+        final ResourceEntity r = getResources().lookupWithLegacyId(legacyId);
+        if (r == null) {
+            return null;
+        }
+        return r.mapResource();
     }
 
 
@@ -552,6 +574,9 @@ public class ResourcesEJB
 
         final ResourcePath rp = new ResourcePath(rootPath);
         final ResourceEntity r = getResources().lookup(rp);
+        if (r == null) {
+            return null;
+        }
         checkRead(r);
         return r.forCurrentRevision();
     }
@@ -565,6 +590,9 @@ public class ResourcesEJB
         final ResourcePath rp = new ResourcePath(rootPath);
         final ResourceEntity r =
             getResources().lookup(rp);
+        if (r == null) {
+            return null;
+        }
         checkRead(r);
         return r.forWorkingCopy();
     }
@@ -579,6 +607,9 @@ public class ResourcesEJB
         final ResourcePath rp = new ResourcePath(path);
         final ResourceEntity r =
             getResources().lookup(rp);
+        if (r == null) {
+            return null;
+        }
         checkRead(r);
         return r.forSpecificRevision(version);
     }
@@ -629,6 +660,9 @@ public class ResourcesEJB
 
         final ResourceEntity r =
             getResources().find(ResourceEntity.class, resourceId);
+        if (r == null) {
+            return null;
+        }
         checkRead(r);
 
         return r.mapResource();
@@ -704,12 +738,7 @@ public class ResourcesEJB
                                                 final int pageSize) {
         checkPermission(RESOURCE_READ);
 
-        UserEntity u = null;
-        try {
-            u = currentUser();
-        } catch (final EntityNotFoundException e) {
-            Exceptions.swallow(e); // Leave user as NULL.
-        }
+        final UserEntity u = currentUser();
 
         final UUID parent = criteria.getParent();
         FolderEntity f = null;

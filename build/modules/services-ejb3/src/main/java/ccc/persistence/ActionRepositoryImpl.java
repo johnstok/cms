@@ -36,7 +36,6 @@ import javax.persistence.EntityManager;
 
 import ccc.api.core.ActionCriteria;
 import ccc.api.core.ActionSummary;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
 import ccc.domain.ActionEntity;
@@ -163,8 +162,8 @@ class ActionRepositoryImpl
         if (ac.getSubject() != null) {
             final ResourceEntity rs =
                 _repo.find(ResourceEntity.class, ac.getSubject());
-            if (rs.isDeleted()) {
-                throw new EntityNotFoundException(rs.getId());
+            if (rs == null || rs.isDeleted()) {
+                return;
             }
             query.append((params.size()>0) ? " and" : " where");
             query.append(" a._subject=:subject");

@@ -43,7 +43,6 @@ import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Duration;
 import ccc.api.types.ResourceName;
 import ccc.api.types.SortOrder;
@@ -496,12 +495,8 @@ public class ResourceAcceptanceTest
         getCommands().delete(f.getId());
 
         // ASSERT
-        try {
-            getCommands().retrieve(f.getId());
-            fail();
-        } catch (final EntityNotFoundException e) {
-            assertEquals(f.getId(), e.getId());
-        }
+        final ResourceSummary resource = getCommands().retrieve(f.getId());
+        assertNull("Resource should be null", resource);
     }
 
     /**
@@ -516,7 +511,7 @@ public class ResourceAcceptanceTest
         }
 
         // ACT
-        PagedCollection<ResourceSummary> list = getCommands().list(f.getId(),
+        final PagedCollection<ResourceSummary> list = getCommands().list(f.getId(),
             null,
             null,
             null,

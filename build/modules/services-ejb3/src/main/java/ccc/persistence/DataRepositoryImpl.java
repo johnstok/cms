@@ -31,7 +31,6 @@ import java.io.InputStream;
 
 import javax.persistence.EntityManager;
 
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.StreamAction;
 import ccc.domain.Data;
@@ -46,7 +45,7 @@ import ccc.persistence.streams.CoreData;
  */
 class DataRepositoryImpl implements DataRepository {
 
-    private CoreData _cd;
+    private final CoreData _cd;
 
     /**
      * Constructor.
@@ -67,18 +66,18 @@ class DataRepositoryImpl implements DataRepository {
      * @return The file repository.
      */
     public static DataRepository onFileSystem(final EntityManager em) {
-        try {
-            final SettingsRepository settings = new SettingsRepository(em);
-            final Setting filestorePath =
-                settings.find(Setting.Name.FILE_STORE_PATH);
-            return
-                new DataRepositoryImpl(
-                    new FsCoreData(filestorePath.getValue()));
-
-        } catch (final EntityNotFoundException e) {
+        final SettingsRepository settings = new SettingsRepository(em);
+        final Setting filestorePath =
+            settings.find(Setting.Name.FILE_STORE_PATH);
+        if (filestorePath == null) {
             throw new RuntimeException(
                 "Setting missing: "+Setting.Name.FILE_STORE_PATH);
         }
+
+        return
+        new DataRepositoryImpl(
+            new FsCoreData(filestorePath.getValue()));
+
     }
 
 

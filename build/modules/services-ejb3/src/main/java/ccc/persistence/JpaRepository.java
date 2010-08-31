@@ -39,7 +39,6 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.domain.Entity;
 
@@ -72,9 +71,6 @@ class JpaRepository implements Repository {
     public <T extends Entity> T find(final Class<T> type, final UUID id) {
         DBC.require().notNull(id);
         final T entity = _em.find(type, id);
-        if (null==entity) {
-            throw new EntityNotFoundException(id);
-        }
         return entity;
     }
 
@@ -134,11 +130,10 @@ class JpaRepository implements Repository {
         for (int i=0; i<params.length; i++) {
             q.setParameter((i+1), params[i]);
         }
-
-        try { // Should we handle the possibility of multiple results?
+        try {
             return (T) q.getSingleResult();
         } catch (final NoResultException e) {
-            throw new EntityNotFoundException((UUID) null);
+            return null;
         }
     }
 
@@ -147,12 +142,8 @@ class JpaRepository implements Repository {
     public <T> boolean exists(final String queryName,
                               final Class<T> resultType,
                               final Object... params) {
-        try {
-            find(queryName, resultType, params);
-            return true;
-        } catch (final EntityNotFoundException e) {
-            return false;
-        }
+        final T entity = find(queryName, resultType, params);
+        return entity != null;
     }
 
     /** {@inheritDoc} */

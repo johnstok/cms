@@ -53,7 +53,7 @@ public final class FolderEntity
     extends
         ResourceEntity {
 
-    private Set<ResourceEntity> _entries = new HashSet<ResourceEntity>();
+    private final Set<ResourceEntity> _entries = new HashSet<ResourceEntity>();
     private PageEntity _indexPage = null;
 
 
@@ -217,6 +217,9 @@ public final class FolderEntity
 
             currentPosition =
                 currentPosition.as(FolderEntity.class).getEntryWithName2(name);
+            if (currentPosition == null) {
+                return null;
+            }
 
         }
         return currentPosition;
@@ -236,8 +239,7 @@ public final class FolderEntity
                 return entry;
             }
         }
-        throw new RuntimeException(
-            "No entry '"+name+"' in folder '"+getName()+"'");
+        return null;
     }
 
 

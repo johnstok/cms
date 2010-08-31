@@ -26,13 +26,14 @@
  */
 package ccc.persistence;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.util.Date;
-import java.util.UUID;
 
 import junit.framework.TestCase;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Paragraph;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceName;
@@ -61,7 +62,7 @@ public class ResourceDaoImplTest
      *
      * @throws Exception If the test fails.
      */
-    public void testLookupThrowsExceptionIfRootIsMissing() throws Exception {
+    public void testLookupReturnsNullIfRootIsMissing() throws Exception {
 
         // ARRANGE
         expect(
@@ -69,18 +70,14 @@ public class ResourceDaoImplTest
                 QueryNames.ROOT_BY_NAME,
                 FolderEntity.class,
                 new ResourceName(PredefinedResourceNames.CONTENT)))
-            .andThrow(new EntityNotFoundException((UUID) null));
+                .andReturn(null);
         replayAll();
 
         // ACT
-        try {
-            _rdao.lookup(new ResourcePath("/foo/bar"));
-            fail();
+        _rdao.lookup(new ResourcePath("/foo/bar"));
 
         // ASSERT
-        } catch (final EntityNotFoundException e) {
-            verifyAll();
-        }
+        verifyAll();
     }
 
 

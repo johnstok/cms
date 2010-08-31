@@ -26,8 +26,10 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.*;
-import static javax.ejb.TransactionAttributeType.*;
+import static ccc.api.types.Permission.PAGE_CREATE;
+import static ccc.api.types.Permission.PAGE_UPDATE;
+import static ccc.api.types.Permission.RESOURCE_READ;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 
 import java.util.List;
 import java.util.UUID;
@@ -41,10 +43,8 @@ import ccc.api.core.PageCriteria;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Pages;
 import ccc.api.core.ResourceSummary;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdateWCCommand2;
-import ccc.commons.Exceptions;
 import ccc.domain.PageEntity;
 import ccc.domain.PageHelper;
 import ccc.domain.ResourceEntity;
@@ -148,12 +148,7 @@ public class PagesEJB
                                                  final int pageSize) {
         checkPermission(RESOURCE_READ);
 
-        UserEntity u = null;
-        try {
-            u = currentUser();
-        } catch (final EntityNotFoundException e) {
-            Exceptions.swallow(e); // Leave user as NULL.
-        }
+        final UserEntity u = currentUser();
 
         final List<ResourceSummary> list = ResourceEntity.mapResources(
             filterAccessibleTo(

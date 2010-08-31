@@ -28,7 +28,6 @@ package ccc.commands;
 
 import java.util.Date;
 
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.types.CommandType;
 import ccc.domain.FolderEntity;
@@ -67,21 +66,19 @@ class CreateRootCommand extends Command<Void> {
     @Override
     public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
-        try {
-            final ResourceEntity possibleRoot =
-                getRepository().root(_folder.getName().toString());
+        final ResourceEntity possibleRoot =
+            getRepository().root(_folder.getName().toString());
+        if (possibleRoot != null) {
             throw new ResourceExistsException(
-                possibleRoot.getId(), possibleRoot.getName());
-
-        } catch (final EntityNotFoundException e) {
-            _folder.setDateCreated(happenedOn, actor);
-            _folder.setDateChanged(happenedOn, actor);
-            getRepository().create(_folder);
-
-            auditResourceCommand(actor, happenedOn, _folder);
-
-            return null;
+            possibleRoot.getId(), possibleRoot.getName());
         }
+        _folder.setDateCreated(happenedOn, actor);
+        _folder.setDateChanged(happenedOn, actor);
+        getRepository().create(_folder);
+
+        auditResourceCommand(actor, happenedOn, _folder);
+
+        return null;
     }
 
 

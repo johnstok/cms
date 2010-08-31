@@ -28,9 +28,7 @@ package ccc.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
 
@@ -53,7 +51,7 @@ public abstract class WorkingCopySupport<T extends RevisionEntity<U>,
     implements
         WCAware<U> {
 
-    private List<V> _wc = new ArrayList<V>();
+    private final List<V> _wc = new ArrayList<V>();
 
 
     /** Constructor: for persistence only. */
@@ -101,7 +99,7 @@ public abstract class WorkingCopySupport<T extends RevisionEntity<U>,
      */
     public V getWorkingCopy() {
         if (!hasWorkingCopy()) {
-            throw new EntityNotFoundException((UUID) null);
+            return null;
         }
         return _wc.get(0);
     }

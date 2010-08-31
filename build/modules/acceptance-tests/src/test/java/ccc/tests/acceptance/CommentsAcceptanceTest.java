@@ -30,7 +30,6 @@ import java.util.Date;
 
 import ccc.api.core.Comment;
 import ccc.api.core.ResourceSummary;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.CommentStatus;
 
 
@@ -96,12 +95,8 @@ public class CommentsAcceptanceTest
         getComments().delete(c.getId());
 
         // ASSERT
-        try {
-            getComments().retrieve(c.getId());
-            fail();
-        } catch (final EntityNotFoundException e) {
-            assertEquals(c.getId(), e.getId());
-        }
+        final Comment comm = getComments().retrieve(c.getId());
+        assertNull("Comment should be null", comm);
     }
 
 

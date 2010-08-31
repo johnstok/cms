@@ -34,7 +34,6 @@ import ccc.api.core.File;
 import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
 import ccc.domain.FileEntity;
@@ -174,18 +173,12 @@ public class CommandFactory {
     public Command<FolderEntity> createFolderCommand(final UUID parentId,
                                               final String name,
                                               final String title) {
-
-        try {
-            return new CreateFolderCommand(
-                _repository,
-                _audit,
-                parentId,
-                name,
-                title);
-        } catch (final EntityNotFoundException e) {
-            // FIXME
-            throw new RuntimeException(e);
-        }
+        return new CreateFolderCommand(
+            _repository,
+            _audit,
+            parentId,
+            name,
+            title);
     }
 
 

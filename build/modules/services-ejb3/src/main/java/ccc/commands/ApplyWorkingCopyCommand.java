@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.CommandType;
 import ccc.domain.FileEntity;
@@ -79,10 +78,8 @@ public class ApplyWorkingCopyCommand
     public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        ResourceEntity r = null;
-        try {
-            r = getRepository().find(PageEntity.class, _id);
-        } catch (final EntityNotFoundException e) {
+        ResourceEntity r  = getRepository().find(PageEntity.class, _id);
+        if (null == r) {
             r = getRepository().find(FileEntity.class, _id);
         }
         r.confirmLock(actor);

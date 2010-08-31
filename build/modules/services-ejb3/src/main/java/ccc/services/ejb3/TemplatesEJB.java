@@ -26,8 +26,10 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.*;
-import static javax.ejb.TransactionAttributeType.*;
+import static ccc.api.types.Permission.TEMPLATE_CREATE;
+import static ccc.api.types.Permission.TEMPLATE_READ;
+import static ccc.api.types.Permission.TEMPLATE_UPDATE;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 
 import java.util.UUID;
 
@@ -39,7 +41,6 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.core.Templates;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.TemplateEntity;
 import ccc.persistence.ResourceRepository;
@@ -71,14 +72,10 @@ public final class TemplatesEJB
     public Boolean templateNameExists(final String templateName) {
         checkPermission(TEMPLATE_READ);
 
-        try {
-            getRepoFactory()
-                .createResourceRepository()
-                .template(templateName);
-            return Boolean.TRUE;
-        } catch (final EntityNotFoundException e) {
-            return Boolean.FALSE;
-        }
+        final TemplateEntity template = getRepoFactory()
+        .createResourceRepository()
+        .template(templateName);
+        return template != null;
     }
 
 
