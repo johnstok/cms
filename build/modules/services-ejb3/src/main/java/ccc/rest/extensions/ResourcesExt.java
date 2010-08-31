@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.core.Resource;
 import ccc.api.types.Duration;
 
 
@@ -49,8 +50,10 @@ public interface ResourcesExt
      *
      * @param resourceId The id of the resource to update.
      * @param templateId The new template to set for the resource.
+     *
+     * @return The updated resource.
      */
-    void updateResourceTemplate(UUID resourceId, UUID templateId);
+    Resource updateResourceTemplate(UUID resourceId, UUID templateId);
 
 
     /**

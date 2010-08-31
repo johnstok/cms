@@ -50,6 +50,9 @@ public abstract class GetRootsAction
         RemotingAction {
 
 
+    public GetRootsAction() { super(USER_ACTIONS.internalAction()); }
+
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {

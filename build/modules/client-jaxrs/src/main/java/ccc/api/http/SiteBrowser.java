@@ -26,6 +26,7 @@
  */
 package ccc.api.http;
 
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 
 
@@ -47,6 +48,16 @@ public interface SiteBrowser {
     String previewContent(final ResourceSummary rs, final boolean wc);
 
     /**
+     * Preview how the specified resource will be rendered.
+     *
+     * @param r The resource to render.
+     * @param wc True if the working copy should be rendered; false otherwise.
+     *
+     * @return The rendered resource as a String.
+     */
+    String previewContent(final Resource r, final boolean wc);
+
+    /**
      * Send an HTTP post to a resource.
      *
      * @param rs The resource to request.
@@ -56,9 +67,18 @@ public interface SiteBrowser {
     String post(final ResourceSummary rs);
 
     /**
+     * Send an HTTP post to a resource.
+     *
+     * @param rs The resource to request.
+     *
+     * @return The rendered resource as a String.
+     */
+    String post(final Resource r);
+
+    /**
      * Send an HTTP GET for a path.
      *
-     * @param path The path to GET.
+     * @param absolutePath The path to GET.
      *
      * @return The response body, as a string.
      */

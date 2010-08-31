@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourcePath;
@@ -480,5 +481,12 @@ public class ResourceTable
                 DataBinding.bindResourceSummary(rs).getProperties());
             update(tBean.<ResourceSummary>getBean());
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void create(final Resource model) {
+        throw new UnsupportedOperationException("Method not implemented.");
     }
 }

@@ -35,7 +35,6 @@ import ccc.api.core.Alias;
 import ccc.api.core.File;
 import ccc.api.core.Page;
 import ccc.api.core.Resource;
-import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
@@ -59,7 +58,7 @@ public class ContentServletAcceptanceTest
     public void testRequestForSecurePageReturnsPage() {
 
         // ARRANGE
-        final ResourceSummary simple =
+        final Resource simple =
             getCommands().resourceForPath("/assets/templates/simple");
 
         final ACL.Entry aclEntry = new ACL.Entry();
@@ -67,8 +66,8 @@ public class ContentServletAcceptanceTest
         aclEntry.setReadable(true);
         aclEntry.setWriteable(true);
 
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary p = tempPage(parent.getId(), simple.getId());
+        final Resource parent = getCommands().resourceForPath("");
+        final Page p = tempPage(parent.getId(), simple.getId());
         getCommands().lock(p.getId());
         getCommands().publish(p.getId());
         getCommands().changeAcl(
@@ -95,8 +94,8 @@ public class ContentServletAcceptanceTest
         aclEntry.setReadable(true);
         aclEntry.setWriteable(true);
 
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary p = tempPage(parent.getId(), null);
+        final Resource parent = getCommands().resourceForPath("");
+        final Page p = tempPage(parent.getId(), null);
         getCommands().lock(p.getId());
         getCommands().publish(p.getId());
         getCommands().changeAcl(
@@ -120,10 +119,10 @@ public class ContentServletAcceptanceTest
     public void testWorkingCopiesCanBePreviewed() {
 
         // ARRANGE
-        final ResourceSummary simple =
+        final Resource simple =
             getCommands().resourceForPath("/assets/templates/simple");
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary p = tempPage(parent.getId(), simple.getId());
+        final Resource parent = getCommands().resourceForPath("");
+        final Page p = tempPage(parent.getId(), simple.getId());
         getCommands().lock(p.getId());
         final Page pWc = getPages().retrieveWorkingCopy(p.getId());
         pWc.setParagraphs(
@@ -171,11 +170,11 @@ public class ContentServletAcceptanceTest
         metadata.setMetadata(
             Collections.singletonMap("legacyId", String.valueOf(id)));
 
-        final ResourceSummary simple =
+        final Resource simple =
             getCommands().resourceForPath("/assets/templates/simple");
 
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary p = tempPage(parent.getId(), simple.getId());
+        final Resource parent = getCommands().resourceForPath("");
+        final Page p = tempPage(parent.getId(), simple.getId());
         getCommands().lock(p.getId());
         getCommands().publish(p.getId());
         getCommands().updateMetadata(p.getId(), metadata);
@@ -194,11 +193,11 @@ public class ContentServletAcceptanceTest
     public void testUnpublishedPagesCanBePreviewed() {
 
         // ARRANGE
-        final ResourceSummary simple =
+        final Resource simple =
             getCommands().resourceForPath("/assets/templates/simple");
 
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary p = tempPage(parent.getId(), simple.getId());
+        final Resource parent = getCommands().resourceForPath("");
+        final Page p = tempPage(parent.getId(), simple.getId());
         getCommands().lock(p.getId());
 
         // ACT
@@ -215,8 +214,8 @@ public class ContentServletAcceptanceTest
     public void testRequestForUnpublishedPageReturns404() {
 
         // ARRANGE
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary p = tempPage(parent.getId(), null);
+        final Resource parent = getCommands().resourceForPath("");
+        final Page p = tempPage(parent.getId(), null);
         getCommands().lock(p.getId());
 
         // ACT
@@ -238,11 +237,11 @@ public class ContentServletAcceptanceTest
 
         // ARRANGE
         final ResourceName aliasName = new ResourceName(uid());
-        final ResourceSummary welcome =
+        final Resource welcome =
             getCommands().resourceForPath("/welcome");
         final Alias alias =
             new Alias(welcome.getParent(), aliasName, welcome.getId());
-        final ResourceSummary as = getAliases().create(alias);
+        final Alias as = getAliases().create(alias);
         getCommands().lock(as.getId());
         getCommands().publish(as.getId());
 
@@ -282,9 +281,9 @@ public class ContentServletAcceptanceTest
         metadata.setTags(new HashSet<String>());
         metadata.setMetadata(Collections.singletonMap("executable", "true"));
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder =
+        final Resource filesFolder =
             getCommands().resourceForPath("");
-        final ResourceSummary script =
+        final File script =
             getFiles().createTextFile(
                 new File(
                     filesFolder.getId(),
@@ -322,9 +321,9 @@ public class ContentServletAcceptanceTest
         metadata.setTags(new HashSet<String>());
         metadata.setMetadata(Collections.singletonMap("executable", "true"));
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder =
+        final Resource filesFolder =
             getCommands().resourceForPath("/files");
-        final ResourceSummary script =
+        final File script =
             getFiles().createTextFile(
                 new File(
                     filesFolder.getId(),
@@ -362,9 +361,9 @@ public class ContentServletAcceptanceTest
         metadata.setTags(new HashSet<String>());
         metadata.setMetadata(Collections.singletonMap("executable", "true"));
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder =
+        final Resource filesFolder =
             getCommands().resourceForPath("/files");
-        final ResourceSummary script =
+        final File script =
             getFiles().createTextFile(
                 new File(
                     filesFolder.getId(),
@@ -397,9 +396,9 @@ public class ContentServletAcceptanceTest
         metadata.setTags(new HashSet<String>());
         metadata.setMetadata(Collections.singletonMap("executable", "true"));
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder =
+        final Resource filesFolder =
             getCommands().resourceForPath("/files");
-        final ResourceSummary script =
+        final File script =
             getFiles().createTextFile(
                 new File(
                     filesFolder.getId(),

@@ -128,9 +128,9 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateCurrent(final User user) {
+    public User updateCurrent(final User user) {
         try {
-            _delegate.updateCurrent(user);
+            return _delegate.updateCurrent(user);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
@@ -139,9 +139,9 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID userId, final User delta) {
+    public User update(final UUID userId, final User delta) {
         try {
-            _delegate.update(userId, delta);
+            return _delegate.update(userId, delta);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }

@@ -133,7 +133,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary retrieve(final UUID resourceId) {
+    public Resource retrieve(final UUID resourceId) {
         try {
             return _delegate.retrieve(resourceId);
         } catch (final RuntimeException cfe) {
@@ -166,7 +166,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary resourceForPath(final String path) {
+    public Resource resourceForPath(final String path) {
         try {
             return _delegate.resourceForPath(path);
         } catch (final RuntimeException cfe) {
@@ -211,9 +211,9 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void applyWorkingCopy(final UUID resourceId) {
+    public Resource applyWorkingCopy(final UUID resourceId) {
         try {
-            _delegate.applyWorkingCopy(resourceId);
+            return _delegate.applyWorkingCopy(resourceId);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
@@ -222,10 +222,10 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateResourceTemplate(final UUID resourceId,
+    public Resource updateResourceTemplate(final UUID resourceId,
                                        final Resource pu) {
         try {
-            _delegate.updateResourceTemplate(resourceId, pu);
+            return _delegate.updateResourceTemplate(resourceId, pu);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
@@ -256,7 +256,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary publish(final UUID resourceId) {
+    public Resource publish(final UUID resourceId) {
         try {
             return _delegate.publish(resourceId);
         } catch (final RuntimeException cfe) {

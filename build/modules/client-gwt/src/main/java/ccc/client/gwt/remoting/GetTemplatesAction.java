@@ -59,6 +59,7 @@ public abstract class GetTemplatesAction
      * @param actionName Local-specific name for the action.
      */
     public GetTemplatesAction(final String actionName) {
+        super(actionName);
         _name = actionName;
     }
 

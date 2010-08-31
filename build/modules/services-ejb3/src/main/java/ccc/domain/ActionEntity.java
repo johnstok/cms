@@ -299,6 +299,7 @@ public class ActionEntity extends Entity {
                 getType(),
                 getExecuteAfter(),
                 getParameters());
+        a.setId(getId());
         a.setActor(getActor().getId());
         a.setStatus(getStatus());
         if (ActionStatus.FAILED==getStatus()) {

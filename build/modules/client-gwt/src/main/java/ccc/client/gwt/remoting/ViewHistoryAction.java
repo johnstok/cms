@@ -30,6 +30,7 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.Revision;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.I18n;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
@@ -53,6 +54,7 @@ public final class ViewHistoryAction
      * @param selectionModel The selection model.
      */
     public ViewHistoryAction(final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.viewHistory());
         _selectionModel = selectionModel;
     }
 

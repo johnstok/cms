@@ -29,7 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.domain.ResourceEntity;
@@ -43,7 +43,7 @@ import ccc.persistence.ResourceRepository;
  *
  * @author Civic Computing Ltd.
  */
-class PublishCommand extends Command<ResourceSummary> {
+class PublishCommand extends Command<Resource> {
 
     private final UUID _resourceId;
 
@@ -66,7 +66,7 @@ class PublishCommand extends Command<ResourceSummary> {
 
     /** {@inheritDoc} */
     @Override
-    protected ResourceSummary doExecute(final UserEntity publishedBy,
+    protected Resource doExecute(final UserEntity publishedBy,
                                         final Date happenedOn) {
 
         final ResourceEntity r =
@@ -78,7 +78,7 @@ class PublishCommand extends Command<ResourceSummary> {
 
         auditResourceCommand(publishedBy, happenedOn, r);
 
-        return r.mapResource();
+        return r.forCurrentRevision();
     }
 
 

@@ -72,9 +72,11 @@ public class EditTextFileAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onNoContent(final Response response) {
+    protected void onOK(final Response response) {
+        final File f = readFile(response);
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.FILE_UPDATE);
+        event.addProperty("file", f);
         InternalServices.REMOTING_BUS.fireEvent(event);
     }
 }

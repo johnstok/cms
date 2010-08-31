@@ -29,6 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.core.Resource;
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.CommandType;
 import ccc.domain.FileEntity;
@@ -47,7 +48,7 @@ import ccc.persistence.IRepositoryFactory;
  */
 public class ApplyWorkingCopyCommand
     extends
-        UpdateResourceCommand<Void> {
+        UpdateResourceCommand<Resource> {
 
     private final UUID _id;
     private final String _comment;
@@ -75,7 +76,7 @@ public class ApplyWorkingCopyCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final UserEntity actor,
+    public Resource doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
         ResourceEntity r  = getRepository().find(PageEntity.class, _id);
@@ -95,7 +96,7 @@ public class ApplyWorkingCopyCommand
 
         update(r, actor, happenedOn);
 
-        return null;
+        return r.forCurrentRevision();
     }
 
 

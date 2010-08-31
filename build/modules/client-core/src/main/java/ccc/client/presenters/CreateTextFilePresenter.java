@@ -27,7 +27,7 @@
 package ccc.client.presenters;
 
 import ccc.api.core.File;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Folder;
 import ccc.api.types.CommandType;
 import ccc.api.types.MimeType;
 import ccc.client.actions.CreateTextFileAction;
@@ -45,7 +45,7 @@ import ccc.client.views.CreateTextFile;
  */
 public class CreateTextFilePresenter
     extends
-        AbstractPresenter<CreateTextFile, ResourceSummary>
+        AbstractPresenter<CreateTextFile, Folder>
     implements
         Editable {
 
@@ -57,7 +57,7 @@ public class CreateTextFilePresenter
      * @param model Model implementation.
      */
     public CreateTextFilePresenter(final CreateTextFile view,
-                                   final ResourceSummary model) {
+                                   final Folder model) {
         super(view, model);
         getView().show(this);
     }

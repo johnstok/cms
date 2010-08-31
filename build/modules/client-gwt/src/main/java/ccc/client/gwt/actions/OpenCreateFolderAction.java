@@ -26,9 +26,12 @@
  */
 package ccc.client.gwt.actions;
 
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.Action;
+import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.CreateFolderDialog;
 import ccc.client.presenters.CreateFolderPresenter;
@@ -39,8 +42,8 @@ import ccc.client.presenters.CreateFolderPresenter;
  * @author Civic Computing Ltd.
  */
 public final class OpenCreateFolderAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -50,18 +53,38 @@ public final class OpenCreateFolderAction
      * @param selectionModel The selection model to use.
      */
     public OpenCreateFolderAction(final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.createFolder());
         _selectionModel = selectionModel;
     }
 
+
     /** {@inheritDoc} */
-    public void execute() {
+    @Override
+    protected boolean beforeExecute() {
         final ResourceSummary item = _selectionModel.treeSelection();
+
         if (item == null) {
             InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
-        } else {
-            new CreateFolderPresenter(
-                new CreateFolderDialog(),
-                item);
+            return false;
         }
+
+        return true;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return
+            _selectionModel.treeSelection().delete().build(
+                InternalServices.ENCODER);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onOK(final Response response) {
+        final Resource item = readResource(response);
+        new CreateFolderPresenter(new CreateFolderDialog(), item);
     }
 }

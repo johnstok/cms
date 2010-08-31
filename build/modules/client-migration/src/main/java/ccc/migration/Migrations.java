@@ -40,10 +40,12 @@ import org.apache.log4j.Logger;
 import ccc.api.core.Folder;
 import ccc.api.core.Page;
 import ccc.api.core.PagedCollection;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.ServiceLocator;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.cli.Migrate.Options;
 import ccc.rest.extensions.ResourcesExt;
@@ -57,12 +59,12 @@ import ccc.services.Migration;
 public class Migrations extends BaseMigrations {
     private static Logger log = Logger.getLogger(Migrations.class);
 
-    private final ResourceSummary _contentRoot;
-    private final ResourceSummary _templateFolder;
-    private final ResourceSummary _filesFolder;
-    private final ResourceSummary _contentImagesFolder;
-    private final ResourceSummary _assetsImagesFolder;
-    private final ResourceSummary _cssFolder;
+    private final Resource _contentRoot;
+    private final Resource _templateFolder;
+    private final Resource _filesFolder;
+    private final Resource _contentImagesFolder;
+    private final Resource _assetsImagesFolder;
+    private final Resource _cssFolder;
 
     private Set<Integer>    _menuItems;
 
@@ -161,14 +163,18 @@ public class Migrations extends BaseMigrations {
     }
 
 
+    private void publishRecursive(final Resource resource) {
+        publishRecursive(resource.getId(), resource.getType());
+    }
+
     // TODO: Move under command-resourceDao?
-    private void publishRecursive(final ResourceSummary resource) {
-        getResources().lock(UUID.fromString(resource.getId().toString()));
-        getResources().publish(resource.getId());
-        if ("FOLDER".equals(resource.getType().name())) {
+    private void publishRecursive(final UUID id, final ResourceType type) {
+        getResources().lock(id);
+        getResources().publish(id);
+        if (ResourceType.FOLDER==type) {
             final PagedCollection<ResourceSummary> children =
                 getResources().list(
-                    resource.getId(),
+                    id,
                     null,
                     null,
                     null,
@@ -181,10 +187,10 @@ public class Migrations extends BaseMigrations {
                     1,
                     1000);
             for (final ResourceSummary child : children.getElements()) {
-                publishRecursive(child);
+                publishRecursive(child.getId(), child.getType());
             }
         }
-        getResources().unlock(resource.getId());
+        getResources().unlock(id);
     }
 
 

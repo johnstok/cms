@@ -47,7 +47,7 @@ import ccc.persistence.IRepositoryFactory;
  */
 public class UpdateCurrentUserCommand
     extends
-        Command<Void> {
+        Command<User> {
 
     private final UUID _userId;
     private final User _delta;
@@ -70,7 +70,7 @@ public class UpdateCurrentUserCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final UserEntity actor,
+    public User doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
         final UserEntity current = getUsers().find(_userId);
@@ -94,7 +94,7 @@ public class UpdateCurrentUserCommand
 
         auditUserCommand(actor, happenedOn, current);
 
-        return null;
+        return current.toDto();
     }
 
 

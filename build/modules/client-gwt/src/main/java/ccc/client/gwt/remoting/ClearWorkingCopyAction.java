@@ -57,6 +57,7 @@ public class ClearWorkingCopyAction
      * @param selectionModel The selection model for this action.
      */
     public ClearWorkingCopyAction(final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.deleteWorkingCopy());
         _selectionModel = selectionModel;
     }
 

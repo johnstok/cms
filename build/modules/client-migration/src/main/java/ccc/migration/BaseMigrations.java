@@ -46,6 +46,7 @@ import ccc.api.core.Folders;
 import ccc.api.core.Group;
 import ccc.api.core.Groups;
 import ccc.api.core.Page;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
 import ccc.api.core.ServiceLocator;
@@ -290,7 +291,7 @@ public class BaseMigrations {
                                       final ResourceBean r,
                                       final ResourceSummary rs,
                                       final LogEntryBean le,
-                                      final ResourceSummary templateFolder) {
+                                      final Resource templateFolder) {
         final String templateName = r.displayTemplate();
         final String templateDescription = r.templateDescription();
 

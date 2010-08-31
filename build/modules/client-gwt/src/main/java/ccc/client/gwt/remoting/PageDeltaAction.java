@@ -59,6 +59,7 @@ public abstract class PageDeltaAction
      */
     public PageDeltaAction(final String actionName,
                            final ResourceSummary resource) {
+        super(actionName);
         _name = actionName;
         _resource = resource;
     }

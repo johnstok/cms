@@ -69,6 +69,7 @@ public final class CreateActionAction
                               final CommandType command,
                               final Date executeAfter,
                               final Map<String, String> actionParameters) {
+        super(I18n.UI_CONSTANTS.createAction());
         _resourceId = resourceId;
         _command = command;
         _executeAfter = executeAfter;

@@ -52,7 +52,7 @@ import ccc.api.core.Groups;
 import ccc.api.core.Page;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Pages;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.api.core.Resources;
 import ccc.api.core.SearchEngine;
 import ccc.api.core.Security;
@@ -314,7 +314,7 @@ public abstract class AbstractAcceptanceTest
      *
      * @return The template's summary.
      */
-    protected ResourceSummary dummyTemplate(final ResourceSummary parent) {
+    protected Template dummyTemplate(final Folder parent) {
         final String templateName = UUID.randomUUID().toString();
 
         final Template t = new Template();
@@ -337,7 +337,7 @@ public abstract class AbstractAcceptanceTest
      *
      * @return The summary for the page.
      */
-    protected ResourceSummary tempPage(final UUID parentFolder,
+    protected Page tempPage(final UUID parentFolder,
                                        final UUID template) {
         final String name = UUID.randomUUID().toString();
         final Page page = new Page(parentFolder,
@@ -357,9 +357,9 @@ public abstract class AbstractAcceptanceTest
      *
      * @return The folder's summary.
      */
-    protected ResourceSummary tempFolder() {
+    protected Folder tempFolder() {
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content = getCommands().resourceForPath("");
+        final Resource content = getCommands().resourceForPath("");
         return getFolders().create(
             new Folder(content.getId(), new ResourceName(fName)));
     }
@@ -370,9 +370,9 @@ public abstract class AbstractAcceptanceTest
      *
      * @return The alias' summary.
      */
-    protected ResourceSummary tempAlias() {
+    protected Alias tempAlias() {
         final String name = UUID.randomUUID().toString();
-        final ResourceSummary folder = getCommands().resourceForPath("");
+        final Resource folder = getCommands().resourceForPath("");
         final Alias alias =
             new Alias(
                 folder.getId(), new ResourceName(name), folder.getId());
@@ -467,6 +467,16 @@ public abstract class AbstractAcceptanceTest
             SortOrder.ASC,
             1,
             1);
+    }
+
+
+    protected User findUser(final String username) {
+        final User u =
+            getUsers().query(
+                username,  null, null, null, null, null, null, 1, 1)
+            .iterator()
+            .next();
+        return u;
     }
 
 

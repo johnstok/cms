@@ -38,7 +38,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.PagedCollection;
-import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.core.Templates;
 import ccc.commands.UpdateTemplateCommand;
@@ -98,26 +97,27 @@ public final class TemplatesEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary create(final Template template) {
+    public Template create(final Template template) {
         checkPermission(TEMPLATE_CREATE);
 
         return
             execute(commands().createTemplateCommand(template))
-            .mapResource();
+            .forCurrentRevision();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID templateId,
+    public Template update(final UUID templateId,
                                final Template delta) {
         checkPermission(TEMPLATE_UPDATE);
 
-        execute(
-            new UpdateTemplateCommand(
-                getRepoFactory(),
-                templateId,
-                delta));
+        return
+            execute(
+                new UpdateTemplateCommand(
+                    getRepoFactory(),
+                    templateId,
+                    delta));
     }
 
 

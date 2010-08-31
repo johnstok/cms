@@ -28,8 +28,9 @@ package ccc.tests.acceptance;
 
 import java.nio.charset.Charset;
 
-import ccc.api.core.ResourceSummary;
-import ccc.api.types.Username;
+import ccc.api.core.Folder;
+import ccc.api.core.Resource;
+import ccc.api.core.User;
 import ccc.cli.FileUpload;
 import ccc.cli.Scheduling;
 import ccc.commons.Resources;
@@ -59,7 +60,8 @@ public class ShellToolsAcceptanceTest
     public void testSuccessfulFileUpload() throws Exception {
 
         // ARRANGE
-        final ResourceSummary f = tempFolder();
+        final User u = getUsers().retrieveCurrent();
+        final Folder f = tempFolder();
 
         final FileUpload fu = new FileUpload();
         fu.setUsername("migration");
@@ -74,7 +76,7 @@ public class ShellToolsAcceptanceTest
         fu.run();
 
         // ASSERT
-        final ResourceSummary rs =
+        final Resource rs =
             getCommands().resourceForPath(
                 f.getAbsolutePath()+"/example/hello.txt");
         final String contents =
@@ -86,7 +88,7 @@ public class ShellToolsAcceptanceTest
                 Resources.open("upload/example/hello.txt"),
                 Charset.forName("UTF-8")),
             contents);
-        assertEquals(new Username("migration"), rs.getPublishedBy());
+        assertEquals(u.getId(), rs.getPublishedBy());
     }
 
 

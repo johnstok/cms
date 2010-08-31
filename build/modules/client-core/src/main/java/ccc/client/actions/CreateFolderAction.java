@@ -29,7 +29,6 @@ package ccc.client.actions;
 import java.util.UUID;
 
 import ccc.api.core.Folder;
-import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.client.core.Globals;
@@ -61,6 +60,7 @@ public final class CreateFolderAction
      * @param parentFolder The folder's parent folder.
      */
     public CreateFolderAction(final UUID parentFolder, final String name) {
+        super(I18n.UI_CONSTANTS.createFolder());
         _parentFolder = parentFolder;
         _name = name;
     }
@@ -119,7 +119,7 @@ public final class CreateFolderAction
         /** {@inheritDoc} */
         @Override
         public void onOK(final ccc.client.core.Response response) {
-            final ResourceSummary rs = parseResourceSummary(response);
+            final Folder rs = readFolder(response);
             final Event<CommandType> event =
                 new Event<CommandType>(CommandType.FOLDER_CREATE);
             event.addProperty("resource", rs);

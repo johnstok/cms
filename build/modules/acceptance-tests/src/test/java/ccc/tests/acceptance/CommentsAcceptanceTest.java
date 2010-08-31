@@ -29,7 +29,7 @@ package ccc.tests.acceptance;
 import java.util.Date;
 
 import ccc.api.core.Comment;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Folder;
 import ccc.api.types.CommentStatus;
 
 
@@ -49,7 +49,7 @@ public class CommentsAcceptanceTest
     public void testCreateComment() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
         final Comment c =
             new Comment(
                 "keith",
@@ -79,7 +79,7 @@ public class CommentsAcceptanceTest
     public void testDeleteComment() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
         final Comment comment =
             new Comment(
                 "keith",
@@ -106,7 +106,7 @@ public class CommentsAcceptanceTest
     public void testUpdateComment() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
         final Comment comment =
             new Comment(
                 "keith",

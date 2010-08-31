@@ -26,15 +26,15 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
+import ccc.api.types.Link;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.gwt.core.GWTTemplateEncoder;
 
 
 /**
@@ -46,8 +46,9 @@ public abstract class ComputeTemplateAction
     extends
         RemotingAction {
 
-    private final ResourceSummary _resource;
+    private final Link _resourceLink;
     private final String _name;
+
 
     /**
      * Constructor.
@@ -56,10 +57,12 @@ public abstract class ComputeTemplateAction
      * @param resource The resource to invoke.
      */
     public ComputeTemplateAction(final String actionName,
-                                 final ResourceSummary resource) {
-        _name     = actionName;
-        _resource = resource;
+                                 final Link resource) {
+        super(actionName);
+        _name         = actionName;
+        _resourceLink = resource;
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -67,7 +70,7 @@ public abstract class ComputeTemplateAction
         return new Request(
             HttpMethod.GET,
             Globals.API_URL
-                + _resource.uriTemplate().build(new GWTTemplateEncoder()),
+                + _resourceLink.build(InternalServices.ENCODER),
             "",
             new ResponseHandlerAdapter(_name) {
 

@@ -28,7 +28,7 @@ package ccc.client.actions;
 
 import java.util.UUID;
 
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourcePath;
@@ -52,7 +52,7 @@ public class RenameAction
         RemotingAction {
 
     private final String _name;
-    private final ResourceSummary _resource;
+    private final Resource _resource;
     private final ResourcePath _newPath;
 
 
@@ -63,9 +63,10 @@ public class RenameAction
      * @param name The new name for this resource.
      * @param newPath The updated absolute path to the resource.
      */
-    public RenameAction(final ResourceSummary resource,
+    public RenameAction(final Resource resource,
                         final String name,
                         final ResourcePath newPath) {
+        super(I18n.UI_CONSTANTS.rename());
         _resource = DBC.require().notNull(resource);
         _name     = DBC.require().notEmpty(name);
         _newPath  = DBC.require().notNull(newPath);

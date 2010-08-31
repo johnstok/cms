@@ -69,37 +69,39 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary create(final Page page) {
+    public Page create(final Page page) {
         checkPermission(PAGE_CREATE);
         return
             execute(
                 commands().createPageCommand(
                     page.getParent(),
                     page))
-                .mapResource();
+                .forCurrentRevision();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID pageId, final Page delta) {
+    public Page update(final UUID pageId, final Page delta) {
         checkPermission(PAGE_UPDATE);
 
-        execute(
-            new UpdatePageCommand(
-                getRepoFactory(),
-                pageId,
-                delta));
+        return
+            execute(
+                new UpdatePageCommand(
+                    getRepoFactory(),
+                    pageId,
+                    delta));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateWorkingCopy(final UUID pageId,
+    public Page updateWorkingCopy(final UUID pageId,
                                   final Page delta) {
         checkPermission(PAGE_UPDATE);
 
-        execute(new UpdateWCCommand2(getRepoFactory(), pageId, delta));
+        return
+            execute(new UpdateWCCommand2(getRepoFactory(), pageId, delta));
     }
 
 

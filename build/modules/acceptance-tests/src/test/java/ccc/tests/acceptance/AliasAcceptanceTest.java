@@ -29,7 +29,7 @@ package ccc.tests.acceptance;
 import java.util.UUID;
 
 import ccc.api.core.Alias;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Folder;
 import ccc.api.types.ResourceName;
 
 
@@ -48,8 +48,8 @@ public class AliasAcceptanceTest
     public void testUpdateAlias() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
-        final ResourceSummary rs = tempAlias();
+        final Folder folder = tempFolder();
+        final Alias rs = tempAlias();
 
         // ACT
         getCommands().lock(rs.getId());
@@ -57,7 +57,7 @@ public class AliasAcceptanceTest
 
         // ASSERT
         final String targetName = getAliases().aliasTargetName(rs.getId());
-        assertEquals(targetName, folder.getName());
+        assertEquals(targetName, folder.getName().toString());
     }
 
 
@@ -67,18 +67,18 @@ public class AliasAcceptanceTest
     public void testCreateAlias() {
 
         final String name = UUID.randomUUID().toString();
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
         final Alias alias =
             new Alias(
                 folder.getId(), new ResourceName(name), folder.getId());
 
         // ACT
-        final ResourceSummary rs = getAliases().create(alias);
+        final Alias rs = getAliases().create(alias);
 
         // ASSERT
         final String targetName = getAliases().aliasTargetName(rs.getId());
-        assertEquals(name, rs.getName());
+        assertEquals(name, rs.getName().toString());
         assertEquals(folder.getId(), rs.getParent());
-        assertEquals(targetName, folder.getName());
+        assertEquals(targetName, folder.getName().toString());
     }
 }

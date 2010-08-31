@@ -31,8 +31,8 @@ import static ccc.client.core.InternalServices.*;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.core.Folder;
 import ccc.api.core.Page;
-import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.CommandType;
 import ccc.api.types.Paragraph;
@@ -53,7 +53,7 @@ import ccc.client.views.CreatePage;
  */
 public class CreatePagePresenter
     extends
-        AbstractPresenter<CreatePage, ResourceSummary>
+        AbstractPresenter<CreatePage, Folder>
     implements
         Editable {
 
@@ -65,7 +65,7 @@ public class CreatePagePresenter
      * @param model Model implementation.
      */
     public CreatePagePresenter(final CreatePage view,
-                               final ResourceSummary model) {
+                               final Folder model) {
         super(view, model);
         getView().show(this);
     }

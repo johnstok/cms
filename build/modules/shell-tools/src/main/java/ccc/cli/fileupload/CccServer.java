@@ -35,8 +35,9 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.Files;
+import ccc.api.core.Folder;
 import ccc.api.core.Folders;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.api.core.Resources;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.types.MimeType;
@@ -120,7 +121,7 @@ public class CccServer implements Server {
                              final boolean publish) {
 
         try {
-            final ResourceSummary rs =
+            final Folder rs =
                 _folders.createFolder(
                     UUID.fromString(parentFolder.toString()),
                     name,
@@ -137,7 +138,7 @@ public class CccServer implements Server {
     /** {@inheritDoc} */
     @Override
     public UUID getRoot() {
-        final ResourceSummary rs =
+        final Resource rs =
             _resources.resourceForPath(_rootPath.toString());
         return UUID.fromString(rs.getId().toString());
     }

@@ -26,7 +26,7 @@
  */
 package ccc.client.presenters;
 
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
@@ -46,7 +46,7 @@ import ccc.client.views.RenameResource;
  */
 public class RenameResourcePresenter
     extends
-        AbstractPresenter<RenameResource, ResourceSummary>
+        AbstractPresenter<RenameResource, Resource>
     implements
         Editable {
 
@@ -58,10 +58,10 @@ public class RenameResourcePresenter
      * @param model Model implementation.
      */
     public RenameResourcePresenter(final RenameResource view,
-                                   final ResourceSummary model) {
+                                   final Resource model) {
         super(view, model);
 
-        getView().setName(getModel().getName());
+        getView().setName(getModel().getName().toString());
         getView().show(this);
     }
 

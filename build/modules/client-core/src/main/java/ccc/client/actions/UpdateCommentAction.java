@@ -57,6 +57,7 @@ public class UpdateCommentAction
      * @param comment The updated comment.
      */
     public UpdateCommentAction(final Comment comment) {
+        super(I18n.UI_CONSTANTS.updateComment());
         _comment = DBC.require().notNull(comment);
     }
 

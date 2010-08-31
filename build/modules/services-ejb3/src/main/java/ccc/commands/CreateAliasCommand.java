@@ -29,6 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.core.Alias;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.domain.AliasEntity;
@@ -45,7 +46,7 @@ import ccc.persistence.ResourceRepository;
  */
 class CreateAliasCommand
     extends
-        CreateResourceCommand<AliasEntity> {
+        CreateResourceCommand<Alias> {
 
     private final UUID _parentFolder;
     private final UUID _targetId;
@@ -74,7 +75,7 @@ class CreateAliasCommand
 
     /** {@inheritDoc} */
     @Override
-    public AliasEntity doExecute(final UserEntity actor,
+    public Alias doExecute(final UserEntity actor,
                            final Date happenedOn) {
         final ResourceEntity target =
             getRepository().find(ResourceEntity.class, _targetId);
@@ -85,7 +86,7 @@ class CreateAliasCommand
 
         create(actor, happenedOn, _parentFolder, a);
 
-        return a;
+        return a.forCurrentRevision();
     }
 
 

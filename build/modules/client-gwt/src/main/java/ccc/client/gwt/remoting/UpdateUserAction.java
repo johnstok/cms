@@ -29,6 +29,7 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.User;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.I18n;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
@@ -52,6 +53,7 @@ public abstract class UpdateUserAction
      * @param userDetails The updated user details.
      */
     public UpdateUserAction(final User userDetails) {
+        super(I18n.UI_CONSTANTS.editUser());
         _userDetails = userDetails;
     }
 

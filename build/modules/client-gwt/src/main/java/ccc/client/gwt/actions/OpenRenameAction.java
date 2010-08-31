@@ -26,8 +26,13 @@
  */
 package ccc.client.gwt.actions;
 
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.Action;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.RenameDialog;
 import ccc.client.presenters.RenameResourcePresenter;
@@ -38,8 +43,8 @@ import ccc.client.presenters.RenameResourcePresenter;
  * @author Civic Computing Ltd.
  */
 public final class OpenRenameAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -49,12 +54,41 @@ public final class OpenRenameAction
      * @param selectionModel The selection model.
      */
     public OpenRenameAction(final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.rename());
         _selectionModel = selectionModel;
     }
 
+
     /** {@inheritDoc} */
-    public void execute() {
+    @Override
+    protected boolean beforeExecute() {
         final ResourceSummary item = _selectionModel.tableSelection();
-        new RenameResourcePresenter(new RenameDialog(), item);
+
+        if (item == null) {
+            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
+            return false;
+        }
+
+        return true;
+    }
+
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return
+            Globals.API_URL
+            + _selectionModel.tableSelection().self().build(
+                InternalServices.ENCODER);
+    }
+
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onOK(final Response response) {
+        final Resource r = readResource(response);
+        new RenameResourcePresenter(new RenameDialog(), r);
     }
 }

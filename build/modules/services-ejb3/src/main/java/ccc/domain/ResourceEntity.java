@@ -875,9 +875,20 @@ public abstract class ResourceEntity
             (null==computeTemplate(null))
                 ? null
                 : computeTemplate(null).getId());
+        dto.setTemplate2(
+            (null==getTemplate())
+                ? null
+                : getTemplate().getId());
         dto.setTitle(getTitle());
         dto.setType(getType());
         dto.setVisible(isVisible());
+        boolean hasWorkingCopy = false;
+        if (getType() == ResourceType.PAGE) {
+            hasWorkingCopy = (as(PageEntity.class).hasWorkingCopy());
+        } else if (getType() == ResourceType.FILE) {
+            hasWorkingCopy = (as(FileEntity.class).hasWorkingCopy());
+        }
+        dto.setWcAvailable(hasWorkingCopy);
 
         dto.addLink(
             Resource.METADATA,
@@ -891,6 +902,17 @@ public abstract class ResourceEntity
             Resource.DURATION,
             new Link(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
             .build("id", getId().toString(), new NormalisingEncoder()));
+        dto.addLink(
+            Resource.NAME,
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.NAME)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        if (ResourceType.FOLDER==getType()) {
+            dto.addLink(
+                Folder.EXISTS,
+                new Link(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
+                .build("id", getId().toString(), new NormalisingEncoder())
+                + "/{name}/exists"); // FIXME: How to only replace one param
+        }
     }
 
 
@@ -1012,10 +1034,6 @@ public abstract class ResourceEntity
         rs.addLink(
             Resource.WC,
             new Link(ccc.api.core.ResourceIdentifiers.Resource.WC)
-            .build("id", getId().toString(), new NormalisingEncoder()));
-        rs.addLink(
-            Resource.NAME,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.NAME)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.DELETE,

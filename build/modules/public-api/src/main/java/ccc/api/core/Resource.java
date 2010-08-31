@@ -68,8 +68,10 @@ public class Resource
     private int                 _revision;
     private Set<String>         _tags;
     private UUID                _template;
+    private UUID                _template2;
     private String              _title;
     private ResourceType        _type;
+    private boolean             _wcAvailable;
 
 
     /**
@@ -662,6 +664,16 @@ public class Resource
     }
 
 
+    /**
+     * Link.
+     *
+     * @return A link to this resource's name.
+     */
+    public Link rename() {
+        return new Link(getLink(NAME));
+    }
+
+
     /** NAME : String. */
     public static final String NAME = "name";
     /** WC_APPLY : String. */
@@ -694,4 +706,44 @@ public class Resource
     public static final String SELF = "self";
     /** DELETE : String. */
     public static final String DELETE = "delete";
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public UUID getTemplate2() {
+        return _template2;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param template2 The template2 to set.
+     */
+    public final void setTemplate2(final UUID template2) {
+        _template2 = template2;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param wcAvailable Is there a working copy for this resource.
+     */
+    public void setWcAvailable(final boolean wcAvailable) {
+        _wcAvailable = wcAvailable;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns True if the resource has a working copy; false otherwise.
+     */
+    public final boolean isWcAvailable() {
+        return _wcAvailable;
+    }
 }

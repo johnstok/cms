@@ -27,7 +27,6 @@
 package ccc.client.actions;
 
 import ccc.api.core.Page;
-import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
@@ -57,6 +56,7 @@ public final class CreatePageAction
      * @param page The page's content.
      */
     public CreatePageAction(final Page page) {
+        super(I18n.UI_CONSTANTS.createPage());
         _page = page;
     }
 
@@ -106,7 +106,7 @@ public final class CreatePageAction
         /** {@inheritDoc} */
         @Override
         public void onOK(final ccc.client.core.Response response) {
-            final ResourceSummary rs = parseResourceSummary(response);
+            final Page rs = readPage(response);
             final Event<CommandType> event =
                 new Event<CommandType>(CommandType.PAGE_CREATE);
             event.addProperty("resource", rs);

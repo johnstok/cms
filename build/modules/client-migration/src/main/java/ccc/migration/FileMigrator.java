@@ -32,7 +32,7 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 
 
 /**
@@ -79,8 +79,8 @@ public class FileMigrator {
      * @param contentImagesFolder The folder that images should be uploaded to.
      */
     void migrateManagedFilesAndImages(
-                                  final ResourceSummary filesFolder,
-                                  final ResourceSummary contentImagesFolder) {
+                                  final Resource filesFolder,
+                                  final Resource contentImagesFolder) {
         final Map<String, LegacyFile> files =_legacyQueries.selectFiles();
         for (final Map.Entry<String, LegacyFile> legacyFile
             : files.entrySet()) {
@@ -111,7 +111,7 @@ public class FileMigrator {
      *
      * @param assetsImagesFolder The folder that files should be uploaded to.
      */
-    void migrateImages(final ResourceSummary assetsImagesFolder) {
+    void migrateImages(final Resource assetsImagesFolder) {
         final Map<String, LegacyFile> managedImages =
             _legacyQueries.selectImages();
         final File imageDir = new File(_imagesSourcePath);
@@ -160,7 +160,7 @@ public class FileMigrator {
      *
      * @param cssFolder The folder that css files should be uploaded to.
      */
-    void migrateCss(final ResourceSummary cssFolder) {
+    void migrateCss(final Resource cssFolder) {
         final String cssPath = _cssSourcePath;
         final File cssDir = new File(cssPath);
         if (!cssDir.exists()) {

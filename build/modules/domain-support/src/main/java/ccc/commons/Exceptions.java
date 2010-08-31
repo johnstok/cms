@@ -81,4 +81,26 @@ public final class Exceptions {
     public static void swallow(@SuppressWarnings("unused") final Throwable t) {
         /* NO-OP */
     }
+
+
+    /**
+     * Convert a checked exception as a runtime exception.
+     *
+     * @param t The exception to convert.
+     */
+    public static void chuck(final Throwable t) {
+        /*
+         * See the follwoing for details:
+         * http://james-iry.blogspot.com/2010/08/
+         * on-removing-java-checked-exceptions-by.html
+         */
+        Exceptions.<RuntimeException>pervertException(t);
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Throwable> void pervertException(
+                                                   final Throwable x) throws T {
+       throw (T) x;
+    }
 }

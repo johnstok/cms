@@ -106,7 +106,7 @@ public class ActionsImpl
 
     /** {@inheritDoc} */
     @Override
-    public ActionSummary create(final Action action) {
+    public Action create(final Action action) {
         try {
             return _delegate.create(action);
         } catch (final RuntimeException cfe) {
@@ -139,7 +139,7 @@ public class ActionsImpl
 
     /** {@inheritDoc} */
     @Override
-    public ActionSummary retrieve(final UUID actionId) {
+    public Action retrieve(final UUID actionId) {
         try {
             return _delegate.retrieve(actionId);
         } catch (final RuntimeException cfe) {

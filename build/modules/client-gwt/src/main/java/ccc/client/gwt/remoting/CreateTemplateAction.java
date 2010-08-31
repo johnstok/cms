@@ -29,7 +29,6 @@ package ccc.client.gwt.remoting;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
@@ -75,9 +74,10 @@ public abstract class CreateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final ResourceSummary rs = parseResourceSummary(response);
-        execute(rs);
+        final Template t = readTemplate(response);
+        execute(t);
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -90,5 +90,5 @@ public abstract class CreateTemplateAction
      *
      * @param template The newly created template.
      */
-    protected abstract void execute(ResourceSummary template);
+    protected abstract void execute(Template template);
 }

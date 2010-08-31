@@ -37,7 +37,6 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import ccc.api.core.File;
 import ccc.api.core.Files;
 import ccc.api.core.PagedCollection;
-import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
 import ccc.api.types.StreamAction;
 
@@ -82,9 +81,9 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID id, final File file) {
+    public File update(final UUID id, final File file) {
         try {
-            _files.update(id, file);
+            return _files.update(id, file);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
@@ -92,7 +91,7 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createTextFile(final File textFile) {
+    public File createTextFile(final File textFile) {
         try {
             return _files.createTextFile(textFile);
         } catch (final RuntimeException cfe) {
@@ -114,7 +113,7 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary create(final File file) {
+    public File create(final File file) {
         try {
             return _files.create(file);
         } catch (final RuntimeException cfe) {
@@ -157,7 +156,7 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary updateFile(final UUID fileId, final File file) {
+    public File updateFile(final UUID fileId, final File file) {
         try {
             return _files.updateFile(fileId, file);
         } catch (final RuntimeException cfe) {

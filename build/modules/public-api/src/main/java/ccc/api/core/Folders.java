@@ -96,7 +96,7 @@ public interface Folders {
      * @return A resource summary describing the new folder.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Folder.COLLECTION)
-    ResourceSummary create(Folder folder);
+    Folder create(Folder folder);
 
     /**
      * Update the specified folder.
@@ -105,7 +105,7 @@ public interface Folders {
      * @param delta The updated details of the folder.
      */
     @PUT @Path(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
-    void update(@PathParam("id") UUID folderId, Folder delta);
+    Folder update(@PathParam("id") UUID folderId, Folder delta);
 
 
     /**
@@ -120,10 +120,10 @@ public interface Folders {
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Folder.DEPRECATED)
     @Deprecated
-    ResourceSummary createFolder(@QueryParam("id") UUID parentId,
-                                 @QueryParam("name") String name,
-                                 @QueryParam("title") String title,
-                                 @QueryParam("publish") boolean publish);
+    Folder createFolder(@QueryParam("id") UUID parentId,
+                        @QueryParam("name") String name,
+                        @QueryParam("title") String title,
+                        @QueryParam("publish") boolean publish);
 
 
     /**
@@ -135,5 +135,5 @@ public interface Folders {
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Folder.ROOT_NAME)
     // FIXME Post a 'folder' DTO.
-    ResourceSummary createRoot(@PathParam("name") String name);
+    Folder createRoot(@PathParam("name") String name);
 }

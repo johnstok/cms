@@ -43,7 +43,7 @@ import ccc.persistence.IRepositoryFactory;
  */
 public class UpdateWCCommand2
     extends
-        Command<Void> {
+        Command<Page> {
 
     private final UUID _resourceId;
     private final Page _delta;
@@ -67,7 +67,7 @@ public class UpdateWCCommand2
 
     /** {@inheritDoc} */
     @Override
-    protected Void doExecute(final UserEntity actor, final Date happenedOn) {
+    protected Page doExecute(final UserEntity actor, final Date happenedOn) {
         final PageEntity r =
             getRepository().find(PageEntity.class, _resourceId);
         r.confirmLock(actor);
@@ -76,7 +76,7 @@ public class UpdateWCCommand2
 
         auditResourceCommand(actor, happenedOn, r);
 
-        return null;
+        return r.forCurrentRevision();
     }
 
     /** {@inheritDoc} */

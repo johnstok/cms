@@ -28,10 +28,13 @@ package ccc.client.gwt.actions;
 
 import java.util.Collection;
 
+import ccc.api.core.Folder;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
-import ccc.client.core.Action;
+import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.CreatePageDialog;
@@ -43,8 +46,8 @@ import ccc.client.presenters.CreatePagePresenter;
  * @author Civic Computing Ltd.
  */
 public final class OpenCreatePageAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -54,22 +57,44 @@ public final class OpenCreatePageAction
      * @param selectionModel The selection model to use.
      */
     public OpenCreatePageAction(final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.createPage());
         _selectionModel = selectionModel;
     }
 
+
     /** {@inheritDoc} */
-    public void execute() {
+    @Override
+    protected boolean beforeExecute() {
         final ResourceSummary item = _selectionModel.treeSelection();
+
         if (item == null) {
             InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
-            return;
+            return false;
         }
+
+        return true;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return
+            _selectionModel.treeSelection().delete().build(
+                InternalServices.ENCODER);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onOK(final Response response) {
+        final Folder f = readFolder(response);
         new GetTemplatesAction(UI_CONSTANTS.createPage()){
             @Override protected void execute(
                                  final Collection<Template> templates) {
                 new CreatePagePresenter(
-                    new CreatePageDialog(templates, item),
-                    item);
+                    new CreatePageDialog(templates),
+                    f);
             }
         }.execute();
     }

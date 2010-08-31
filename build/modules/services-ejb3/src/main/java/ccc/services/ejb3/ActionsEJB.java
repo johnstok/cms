@@ -174,7 +174,7 @@ public class ActionsEJB
 
     /** {@inheritDoc} */
     @Override
-    public ActionSummary create(final Action action) {
+    public Action create(final Action action) {
         checkPermission(ACTION_CREATE);
 
         final ActionEntity a =
@@ -189,18 +189,18 @@ public class ActionsEJB
 
         execute(new ScheduleActionCommand(getRepoFactory(), a));
 
-        return a.mapAction();
+        return a.detach();
     }
 
     /** {@inheritDoc} */
     @Override
-    public ActionSummary retrieve(final UUID actionId) {
+    public Action retrieve(final UUID actionId) {
         checkPermission(ACTION_LIST);
 
         return
             getRepoFactory()
                 .createActionRepository()
-                .find(actionId).mapAction();
+                .find(actionId).detach();
     }
 
 

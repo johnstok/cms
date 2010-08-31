@@ -44,7 +44,7 @@ import ccc.persistence.IRepositoryFactory;
  */
 public class UpdatePageCommand
     extends
-        UpdateResourceCommand<Void> {
+        UpdateResourceCommand<Page> {
 
     private final UUID      _id;
     private final Page _delta;
@@ -67,7 +67,7 @@ public class UpdatePageCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final UserEntity actor, final Date happenedOn) {
+    public Page doExecute(final UserEntity actor, final Date happenedOn) {
 
         final PageEntity page = getRepository().find(PageEntity.class, _id);
         page.confirmLock(actor);
@@ -84,7 +84,7 @@ public class UpdatePageCommand
 
         update(page, actor, happenedOn);
 
-        return null;
+        return page.forCurrentRevision();
     }
 
 

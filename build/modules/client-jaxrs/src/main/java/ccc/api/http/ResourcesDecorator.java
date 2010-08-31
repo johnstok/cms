@@ -30,7 +30,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.core.BaseClientResponse;
 
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.api.core.Resources;
 import ccc.api.jaxrs.ResourcesImpl;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
@@ -71,7 +71,7 @@ class ResourcesDecorator
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
-    public ResourceSummary resourceForPath(final String path) {
+    public Resource resourceForPath(final String path) {
         /* This method works around an encoding issue in REST-EASY 1.1. */
         final String uri =
             ccc.api.core.ResourceIdentifiers.Resource.SEARCH_PATH_SIMPLE
@@ -86,8 +86,7 @@ class ResourcesDecorator
         }
 
         if (response.getStatus() == HttpStatusCode.OK) {
-            return
-            (ResourceSummary) response.getEntity(ResourceSummary.class);
+            return (Resource) response.getEntity(Resource.class);
         }
         final String errorEntity =
             (String) response.getEntity(String.class);

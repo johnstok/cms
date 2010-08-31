@@ -39,7 +39,7 @@ import ccc.api.types.Username;
 
 /**
  * A summary of a resource.
- * TODO: remove all mutators?
+ * TODO: remove all mutators.
  *
  * @author Civic Computing Ltd.
  */
@@ -48,18 +48,21 @@ public final class ResourceSummary extends Res {
     private UUID         _id;
     private UUID         _parent;
     private String       _name;
-    private Username     _publishedBy;
-    private String       _title;
-    private Username     _lockedBy;
     private ResourceType _type;
-    private int          _childCount;
-    private int          _folderCount;
-    private boolean      _includeInMainMenu;
-    private boolean      _hasWorkingCopy;
+    private boolean      _isVisible;
     private Date         _dateCreated;
     private Date         _dateChanged;
-    private boolean      _isVisible;
+    private boolean      _hasWorkingCopy;
+    private boolean      _includeInMainMenu;
 
+    // Add to Resource
+    private Username     _publishedBy;
+    private Username     _lockedBy;
+    private int          _childCount;
+    private int          _folderCount;
+
+    // Remove
+    private String       _title;
     private Username     _createdBy;
     private Username     _changedBy;
     private UUID         _templateId;
@@ -596,20 +599,21 @@ public final class ResourceSummary extends Res {
     /**
      * Link.
      *
-     * @return A link to this resource's name.
+     * @return A link to this resource's working copy.
      */
-    public Link rename() {
-        return new Link(getLink(Resource.NAME));
+    public Link wc() {
+        return new Link(getLink(Resource.WC));
     }
 
 
     /**
      * Link.
      *
-     * @return A link to this resource's working copy.
+     * @return A link to delete this resource.
      */
-    public Link wc() {
-        return new Link(getLink(Resource.WC));
+    @Deprecated
+    public Link delete() {
+        return new Link(getLink(Resource.DELETE));
     }
 
 
@@ -814,7 +818,9 @@ public final class ResourceSummary extends Res {
         return _isVisible;
     }
 
-
+    /*
+     * Properties.
+     */
     /** UUID : String. */
     public static final String UUID          = "id";
     /** PARENT : String. */

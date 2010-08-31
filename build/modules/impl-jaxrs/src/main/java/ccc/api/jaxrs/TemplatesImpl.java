@@ -35,7 +35,6 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.api.core.PagedCollection;
-import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.core.Templates;
 import ccc.api.types.DBC;
@@ -105,10 +104,10 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID templateId,
+    public Template update(final UUID templateId,
                                final Template delta) {
         try {
-            _templates.update(templateId, delta);
+            return _templates.update(templateId, delta);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
@@ -117,7 +116,7 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary create(final Template template) {
+    public Template create(final Template template) {
         try {
             return _templates.create(template);
         } catch (final RuntimeException cfe) {
@@ -127,7 +126,7 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Template retrieveRevision(UUID templateId, int revision) {
+    public Template retrieveRevision(final UUID templateId, final int revision) {
         try {
             return _templates.retrieveRevision(templateId, revision);
         } catch (final RuntimeException cfe) {

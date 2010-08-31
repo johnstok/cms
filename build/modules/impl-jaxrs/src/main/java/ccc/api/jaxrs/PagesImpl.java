@@ -83,7 +83,7 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary create(final Page page) {
+    public Page create(final Page page) {
         try {
             return _pages.create(page);
         } catch (final RuntimeException cfe) {
@@ -105,9 +105,9 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateWorkingCopy(final UUID pageId, final Page delta) {
+    public Page updateWorkingCopy(final UUID pageId, final Page delta) {
         try {
-            _pages.updateWorkingCopy(pageId, delta);
+            return _pages.updateWorkingCopy(pageId, delta);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
@@ -116,9 +116,9 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID pageId, final Page json) {
+    public Page update(final UUID pageId, final Page json) {
         try {
-            _pages.update(pageId, json);
+            return _pages.update(pageId, json);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }

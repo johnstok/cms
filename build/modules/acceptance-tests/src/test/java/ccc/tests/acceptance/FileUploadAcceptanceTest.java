@@ -34,8 +34,8 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import ccc.api.core.File;
+import ccc.api.core.Folder;
 import ccc.api.core.Resource;
-import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.exceptions.UnlockedException;
@@ -59,9 +59,9 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content =
+        final Resource content =
             getCommands().resourceForPath("");
-        final ResourceSummary file =
+        final File file =
             getFiles().createTextFile(
                 new File(
                     content.getId(),
@@ -79,9 +79,9 @@ public class FileUploadAcceptanceTest
         getCommands().clearWorkingCopy(file.getId());
 
         // ASSERT
-        final ResourceSummary fWC = getCommands().retrieve(file.getId());
+        final Resource fWC = getCommands().retrieve(file.getId());
         assertEquals("Hello!", getBrowser().previewContent(file, false));
-        assertFalse(fWC.isHasWorkingCopy());
+        assertFalse(fWC.isWcAvailable());
     }
 
     /**
@@ -91,8 +91,8 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content = getCommands().resourceForPath("");
-        final ResourceSummary file =
+        final Resource content = getCommands().resourceForPath("");
+        final File file =
             getFiles().createTextFile(
                 new File(
                     content.getId(),
@@ -127,10 +127,10 @@ public class FileUploadAcceptanceTest
         // Create working copy from rev 0.
         getCommands().createWorkingCopy(
             file.getId(), new Resource(Long.valueOf(0)));
-        ResourceSummary fWC = getCommands().retrieve(file.getId());
+        Resource fWC = getCommands().retrieve(file.getId());
         assertEquals("Update!", getBrowser().previewContent(file, false));
         assertEquals("Hello!", getBrowser().previewContent(file, true));
-        assertTrue(fWC.isHasWorkingCopy());
+        assertTrue(fWC.isWcAvailable());
 
         // Apply working copy
         getCommands().applyWorkingCopy(file.getId());
@@ -143,7 +143,7 @@ public class FileUploadAcceptanceTest
         assertEquals(2, rev3.getIndex());
         assertEquals("Hello!", getBrowser().previewContent(file, false));
         fWC = getCommands().retrieve(file.getId());
-        assertFalse(fWC.isHasWorkingCopy());
+        assertFalse(fWC.isWcAvailable());
     }
 
     /**
@@ -153,7 +153,7 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = "log4j.properties";
-        final ResourceSummary filesFolder = tempFolder();
+        final Folder filesFolder = tempFolder();
         final File f = new File(
             new MimeType("application", "octet-stream"),
             null,
@@ -170,11 +170,11 @@ public class FileUploadAcceptanceTest
         f.setPublished(false);
 
         // ACT
-        final ResourceSummary rs = getFiles().create(f);
+        final File rs = getFiles().create(f);
 
         // ASSERT
         final File actual = getFiles().retrieve(rs.getId());
-        assertEquals(fName, rs.getName());
+        assertEquals(fName, rs.getName().toString());
         assertEquals(filesFolder.getId(), rs.getParent());
         assertEquals(null, actual.getComment());
     }
@@ -186,11 +186,11 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder =
+        final Resource filesFolder =
             getCommands().resourceForPath("/files");
 
         // ACT
-        final ResourceSummary rs =
+        final File rs =
             getFiles().createTextFile(
                 new File(
                     filesFolder.getId(),
@@ -201,7 +201,7 @@ public class FileUploadAcceptanceTest
                     "Hello!"));
 
         // ASSERT
-        assertEquals(fName, rs.getName());
+        assertEquals(fName, rs.getName().toString());
         assertEquals("/files/"+fName, rs.getAbsolutePath());
         assertEquals("Hello!", getBrowser().previewContent(rs, false));
         final File f = getFiles().retrieve(rs.getId());
@@ -216,9 +216,9 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder =
+        final Resource filesFolder =
             getCommands().resourceForPath("/files");
-        final ResourceSummary rs =
+        final File rs =
             getFiles().createTextFile(
                 new File(
                     filesFolder.getId(),
@@ -245,7 +245,7 @@ public class FileUploadAcceptanceTest
 
 
         // ASSERT
-        assertEquals(fName, rs.getName());
+        assertEquals(fName, rs.getName().toString());
         assertEquals("/files/"+fName, rs.getAbsolutePath());
         assertEquals("Hello!", getBrowser().previewContent(rs, false));
     }
@@ -258,9 +258,9 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder =
+        final Resource filesFolder =
             getCommands().resourceForPath("/files");
-        final ResourceSummary rs =
+        final File rs =
             getFiles().createTextFile(
                 new File(
                     filesFolder.getId(),
@@ -291,9 +291,9 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder =
+        final Resource filesFolder =
             getCommands().resourceForPath("/files");
-        final ResourceSummary rs =
+        final File rs =
             getFiles().createTextFile(
                 new File(
                     filesFolder.getId(),
@@ -308,7 +308,7 @@ public class FileUploadAcceptanceTest
             new MimeType("text", "plain"),
             null,
             rs.getId(),
-            new ResourceName(rs.getName()),
+            rs.getName(),
             rs.getTitle(),
             new HashMap<String, String>()
         );
@@ -334,9 +334,9 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder =
+        final Resource filesFolder =
             getCommands().resourceForPath("/files");
-        final ResourceSummary rs =
+        final File rs =
             getFiles().createTextFile(
                 new File(
                     filesFolder.getId(),
@@ -368,9 +368,9 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder =
+        final Resource filesFolder =
             getCommands().resourceForPath("/files");
-        final ResourceSummary rs =
+        final File rs =
             getFiles().createTextFile(
                 new File(
                     filesFolder.getId(),
@@ -413,9 +413,9 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder =
+        final Resource filesFolder =
             getCommands().resourceForPath("/files");
-        final ResourceSummary rs =
+        final File rs =
             getFiles().createTextFile(
                 new File(
                     filesFolder.getId(),

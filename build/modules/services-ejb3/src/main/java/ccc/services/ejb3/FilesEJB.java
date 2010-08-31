@@ -43,7 +43,6 @@ import javax.ejb.TransactionAttribute;
 import ccc.api.core.File;
 import ccc.api.core.Files;
 import ccc.api.core.PagedCollection;
-import ccc.api.core.ResourceSummary;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.StreamAction;
 import ccc.commands.UpdateFileCommand;
@@ -88,7 +87,7 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary create(final File file) {
+    public File create(final File file) {
         checkPermission(FILE_CREATE);
 
         final UserEntity u = currentUser();
@@ -123,37 +122,35 @@ public class FilesEJB
             f.unlock(u);
         }
 
-        return f.mapResource();
+        return f.forCurrentRevision();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary updateFile(final UUID fileId, final File file) {
+    public File updateFile(final UUID fileId, final File file) {
         checkPermission(FILE_UPDATE);
 
         return
-            new UpdateFileCommand(
-                getRepoFactory(),
-                fileId,
-                new File(
-                    file.getMimeType(),
-                    null,
-                    file.getSize(),
-                    file.getProperties()),
-                file.getComment(),
-                file.isMajorEdit(),
-                file.getInputStream())
-            .execute(
-                currentUser(),
-                new Date())
-            .mapResource();
+            execute(
+                new UpdateFileCommand(
+                    getRepoFactory(),
+                    fileId,
+                    new File(
+                        file.getMimeType(),
+                        null,
+                        file.getSize(),
+                        file.getProperties()),
+                    file.getComment(),
+                    file.isMajorEdit(),
+                    file.getInputStream()))
+            .forCurrentRevision();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID id, final File file) {
+    public File update(final UUID id, final File file) {
         checkPermission(FILE_UPDATE);
 
         byte[] bytes;
@@ -176,13 +173,13 @@ public class FilesEJB
         f.setMajorEdit(file.isMajorEdit());
         f.setComment(file.getComment());
 
-        updateFile(f.getId(), f);
+        return updateFile(f.getId(), f);
     }
 
     /** {@inheritDoc} */
     @Override
     // FIXME: Removal of TextFileDto made this method a mess.
-    public ResourceSummary createTextFile(final File file) {
+    public File createTextFile(final File file) {
         checkPermission(FILE_CREATE);
 
         byte[] bytes;

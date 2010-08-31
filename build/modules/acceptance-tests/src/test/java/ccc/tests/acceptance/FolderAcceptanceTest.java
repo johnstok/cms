@@ -33,8 +33,11 @@ import java.util.UUID;
 
 import ccc.api.core.ACL;
 import ccc.api.core.Folder;
+import ccc.api.core.Page;
 import ccc.api.core.PagedCollection;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
+import ccc.api.core.Template;
 import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
 import ccc.api.exceptions.UnauthorizedException;
@@ -62,15 +65,15 @@ public class FolderAcceptanceTest
         final String fName = UUID.randomUUID().toString();
         final String cn1 = "a-"+UUID.randomUUID().toString();
         final String cn2 = "b-"+UUID.randomUUID().toString();
-        final ResourceSummary content =
+        final Resource content =
             getCommands().resourceForPath("");
-        final ResourceSummary testFolder =
+        final Folder testFolder =
             getFolders().create(
                 new Folder(content.getId(), new ResourceName(fName)));
-        final ResourceSummary child1 =
+        final Folder child1 =
             getFolders().create(
                 new Folder(testFolder.getId(), new ResourceName(cn1)));
-        final ResourceSummary child2 =
+        final Folder child2 =
             getFolders().create(
                 new Folder(testFolder.getId(), new ResourceName(cn2)));
 
@@ -102,14 +105,14 @@ public class FolderAcceptanceTest
     public void testNameExistsInFolder() {
 
         // ARRANGE
-        final ResourceSummary f = tempFolder();
-        final ResourceSummary template =
-            dummyTemplate(getCommands().resourceForPath(""));
-        final ResourceSummary page = tempPage(f.getId(), template.getId());
+        final Folder f = tempFolder();
+        final Template template = dummyTemplate(f);
+        final Page page = tempPage(f.getId(), template.getId());
 
         // ACT
         final ResourceSummary exists =
-            getFolders().nameExistsInFolder(f.getId(), page.getName());
+            getFolders().nameExistsInFolder(
+                f.getId(), page.getName().toString());
         final ResourceSummary missing =
             getFolders().nameExistsInFolder(f.getId(), "foo");
 
@@ -125,15 +128,11 @@ public class FolderAcceptanceTest
     public void testGetChildrenManualOrder() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
-        final ResourceSummary template =
-            dummyTemplate(getCommands().resourceForPath(""));
-        final ResourceSummary page1 =
-            tempPage(folder.getId(), template.getId());
-        final ResourceSummary page2 =
-            tempPage(folder.getId(), template.getId());
-        final ResourceSummary page3 =
-            tempPage(folder.getId(), template.getId());
+        final Folder folder = tempFolder();
+        final Template template = dummyTemplate(folder);
+        final Page page1 = tempPage(folder.getId(), template.getId());
+        final Page page2 = tempPage(folder.getId(), template.getId());
+        final Page page3 = tempPage(folder.getId(), template.getId());
 
         // ACT
         getCommands().lock(folder.getId());
@@ -141,12 +140,13 @@ public class FolderAcceptanceTest
         sl.add(page2.getId().toString());
         sl.add(page1.getId().toString());
         sl.add(page3.getId().toString());
+        sl.add(template.getId().toString());
 
         final Folder fd = new Folder();
         fd.setSortList(sl);
 
         getFolders().update(folder.getId(), fd);
-        final ResourceSummary updated = getCommands().retrieve(folder.getId());
+        final Resource updated = getCommands().retrieve(folder.getId());
 
         final PagedCollection<ResourceSummary> children =
             getCommands().list(folder.getId(),
@@ -179,28 +179,26 @@ public class FolderAcceptanceTest
     public void testChangeFolderIndexPage() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
-        final ResourceSummary template =
-            dummyTemplate(getCommands().resourceForPath(""));
-        final ResourceSummary page = tempPage(folder.getId(), template.getId());
+        final Folder folder = tempFolder();
+        final Template template = dummyTemplate(folder);
+        final Page page = tempPage(folder.getId(), template.getId());
 
         // ACT
         getCommands().lock(folder.getId());
         final List<String> sortList  = new ArrayList<String>();
         sortList.add(page.getId().toString());
+        sortList.add(template.getId().toString());
 
         final Folder fd = new Folder();
         fd.setSortList(sortList);
         fd.setIndexPage(page.getId());
 
-        getFolders().update(folder.getId(), fd);
-        final ResourceSummary updated = getCommands().retrieve(folder.getId());
+        final Folder updated = getFolders().update(folder.getId(), fd);
 
         // ASSERT
         assertNull(folder.getLockedBy());
         assertNotNull(updated.getLockedBy());
-        assertEquals(page.getId(), updated.getIndexPageId());
-        assertEquals(1, updated.getChildCount());
+        assertEquals(page.getId(), updated.getIndexPage());
     }
 
 
@@ -210,7 +208,7 @@ public class FolderAcceptanceTest
     public void testSecurityBlocksFolderRead() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
         final User user = tempUser();
         final User me = getUsers().retrieveCurrent();
         final ACL acl = new ACL();

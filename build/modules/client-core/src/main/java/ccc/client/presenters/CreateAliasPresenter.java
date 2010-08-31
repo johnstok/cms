@@ -27,7 +27,7 @@
 package ccc.client.presenters;
 
 import ccc.api.core.Alias;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.client.actions.CreateAliasAction;
@@ -48,7 +48,7 @@ import ccc.client.views.CreateAlias;
  */
 public class CreateAliasPresenter
     extends
-        AbstractPresenter<CreateAlias, ResourceSummary>
+        AbstractPresenter<CreateAlias, Resource>
     implements
         Editable {
 
@@ -60,9 +60,9 @@ public class CreateAliasPresenter
      * @param model Model implementation.
      */
     public CreateAliasPresenter(final CreateAlias view,
-                                final ResourceSummary model) {
+                                final Resource model) {
         super(view, model);
-        getView().setTargetName(model.getName());
+        getView().setTargetName(model.getName().toString());
         getView().show(this);
     }
 

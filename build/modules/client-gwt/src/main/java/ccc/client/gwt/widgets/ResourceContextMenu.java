@@ -457,7 +457,7 @@ public class ResourceContextMenu
     private void updatePage(final ResourceSummary item) {
         // Get the template for the page.
         new ComputeTemplateAction(
-            getConstants().updateContent(), item) {
+            getConstants().updateContent(), item.uriTemplate()) {
 
             /** {@inheritDoc} */
             @Override

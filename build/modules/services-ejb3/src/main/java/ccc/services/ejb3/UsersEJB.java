@@ -81,11 +81,12 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID userId, final User delta) {
+    public User update(final UUID userId, final User delta) {
         checkPermission(USER_UPDATE);
 
-        execute(
-            new UpdateUserCommand(getRepoFactory(), userId, delta));
+        return
+            execute(new UpdateUserCommand(getRepoFactory(), userId, delta))
+            .toDto();
     }
 
 
@@ -102,14 +103,15 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    public void updateCurrent(final User user) {
+    public User updateCurrent(final User user) {
         checkPermission(SELF_UPDATE);
 
-        execute(
-            new UpdateCurrentUserCommand(
-                getRepoFactory(),
-                currentUserId(),
-                user));
+        return
+            execute(
+                new UpdateCurrentUserCommand(
+                    getRepoFactory(),
+                    currentUserId(),
+                    user));
     }
 
 

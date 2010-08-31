@@ -56,6 +56,7 @@ public abstract class UniqueUsernameAction
      * @param username The username to check.
      */
     public UniqueUsernameAction(final Username username) {
+        super(USER_ACTIONS.checkUniqueUsername());
         _username = username;
     }
 

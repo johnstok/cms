@@ -30,6 +30,7 @@ import java.util.Collection;
 
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.types.Permission;
@@ -302,9 +303,6 @@ public class MainMenu
                     public void create(final ResourceSummary model) {
                         /* No-op */
                     }
-                    public void delete(final ResourceSummary model) {
-                        /* No-op */
-                    }
                     public void move(final ResourceSummary model,
                                      final ResourceSummary newParent,
                                      final ResourceSummary oldParent) {
@@ -318,6 +316,9 @@ public class MainMenu
                             "Method not implemented.");
                     }
                     public void update(final ResourceSummary model) {
+                        /* No-op */
+                    }
+                    public void create(final Resource model) {
                         /* No-op */
                     }
 

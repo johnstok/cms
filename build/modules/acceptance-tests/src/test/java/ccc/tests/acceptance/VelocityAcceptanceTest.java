@@ -29,7 +29,8 @@ package ccc.tests.acceptance;
 import java.util.Calendar;
 import java.util.UUID;
 
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Folder;
+import ccc.api.core.Page;
 import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -51,7 +52,7 @@ public class VelocityAcceptanceTest
     public void testUuidProperty() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
         final UUID uuid = UUID.randomUUID();
 
         final Template t = new Template();
@@ -62,9 +63,9 @@ public class VelocityAcceptanceTest
         t.setBody("$uuid.fromString('"+uuid+"')");
         t.setDefinition("<fields/>");
         t.setMimeType(MimeType.HTML);
-        final ResourceSummary template = getTemplates().create(t);
+        final Template template = getTemplates().create(t);
 
-        final ResourceSummary page = tempPage(folder.getId(), template.getId());
+        final Page page = tempPage(folder.getId(), template.getId());
 
         // ACT
         final String pContent = getBrowser().previewContent(page, false);
@@ -80,7 +81,7 @@ public class VelocityAcceptanceTest
     public void testHtmlProperty() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
 
         final Template t = new Template();
         t.setName(new ResourceName("template"));
@@ -90,9 +91,9 @@ public class VelocityAcceptanceTest
         t.setBody("$html.escape('<>')");
         t.setDefinition("<fields/>");
         t.setMimeType(MimeType.HTML);
-        final ResourceSummary template = getTemplates().create(t);
+        final Template template = getTemplates().create(t);
 
-        final ResourceSummary page = tempPage(folder.getId(), template.getId());
+        final Page page = tempPage(folder.getId(), template.getId());
 
         // ACT
         final String pContent = getBrowser().previewContent(page, false);
@@ -108,7 +109,7 @@ public class VelocityAcceptanceTest
     public void testCalendarProperty() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
 
         final Template t = new Template();
         t.setName(new ResourceName("template"));
@@ -118,9 +119,9 @@ public class VelocityAcceptanceTest
         t.setBody("$calendar.getInstance().getTimeZone().getID()");
         t.setDefinition("<fields/>");
         t.setMimeType(MimeType.HTML);
-        final ResourceSummary template = getTemplates().create(t);
+        final Template template = getTemplates().create(t);
 
-        final ResourceSummary page = tempPage(folder.getId(), template.getId());
+        final Page page = tempPage(folder.getId(), template.getId());
 
         // ACT
         final String pContent = getBrowser().previewContent(page, false);
@@ -136,7 +137,7 @@ public class VelocityAcceptanceTest
     public void testRandomProperty() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
 
         final Template t = new Template();
         t.setName(new ResourceName("template"));
@@ -146,9 +147,9 @@ public class VelocityAcceptanceTest
         t.setBody("$random.nextInt(10)");
         t.setDefinition("<fields/>");
         t.setMimeType(MimeType.HTML);
-        final ResourceSummary template = getTemplates().create(t);
+        final Template template = getTemplates().create(t);
 
-        final ResourceSummary page = tempPage(folder.getId(), template.getId());
+        final Page page = tempPage(folder.getId(), template.getId());
 
         // ACT
         final String pContent = getBrowser().previewContent(page, false);

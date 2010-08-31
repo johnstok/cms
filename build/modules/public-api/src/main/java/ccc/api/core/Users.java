@@ -130,7 +130,7 @@ public interface Users {
      * @param delta The changes to apply.
      */
     @PUT @Path(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
-    void update(@PathParam("id") UUID userId, User delta);
+    User update(@PathParam("id") UUID userId, User delta);
 
 
     /**
@@ -140,6 +140,7 @@ public interface Users {
      * @param user New details for the user.
      */
     @PUT @Path(ccc.api.core.ResourceIdentifiers.User.PASSWORD)
+    @Deprecated // Just use update()
     void updateUserPassword(@PathParam("id") UUID userId, User user);
 
     /**
@@ -148,7 +149,7 @@ public interface Users {
      * @param user New details for the user.
      */
     @PUT @Path(ccc.api.core.ResourceIdentifiers.User.ME)
-    void updateCurrent(User user);
+    User updateCurrent(User user);
 
 
     /**

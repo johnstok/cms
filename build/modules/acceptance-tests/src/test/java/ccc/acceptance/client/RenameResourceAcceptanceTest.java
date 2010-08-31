@@ -27,7 +27,8 @@
 package ccc.acceptance.client;
 
 import ccc.acceptance.client.views.RenameResourceFake;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Folder;
+import ccc.api.core.Resource;
 import ccc.client.presenters.RenameResourcePresenter;
 import ccc.client.views.RenameResource;
 import ccc.tests.acceptance.AbstractAcceptanceTest;
@@ -47,20 +48,19 @@ public class RenameResourceAcceptanceTest extends AbstractAcceptanceTest {
     public void testRenameSuccess() {
 
         // ARRANGE
-        ResourceSummary model = tempFolder();
+        final String name = uid();
+        final Folder model = tempFolder();
         getCommands().lock(model.getId());
-        RenameResource view = new RenameResourceFake();
-        String renamed = model.getName()+"2";
-        model.setName(renamed);
-        view.setName(renamed);
-
-        RenameResourcePresenter p = new RenameResourcePresenter(view, model);
+        final RenameResource view = new RenameResourceFake();
+        final RenameResourcePresenter p =
+            new RenameResourcePresenter(view, model);
+        view.setName(name);
 
         // ACT
         p.save();
 
         // ASSERT
-        ResourceSummary resource = getCommands().retrieve(model.getId());
-        assertEquals(renamed, resource.getName());
+        final Resource resource = getCommands().retrieve(model.getId());
+        assertEquals(name, resource.getName().toString());
     }
 }

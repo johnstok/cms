@@ -32,8 +32,8 @@ import java.util.HashMap;
 
 import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
+import ccc.api.core.Folder;
 import ccc.api.core.PagedCollection;
-import ccc.api.core.ResourceSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.FailureCode;
@@ -60,7 +60,7 @@ public class ActionAcceptanceTest
 
         // ARRANGE
         getActions().executeAll();
-        final ResourceSummary rs = tempFolder();
+        final Folder rs = tempFolder();
 
         // ACT
         getActions().create(
@@ -94,8 +94,8 @@ public class ActionAcceptanceTest
     public void testCancelAction() {
 
         // ARRANGE
-        final ResourceSummary rs = tempFolder();
-        final ActionSummary a = getActions().create(
+        final Folder rs = tempFolder();
+        final Action a = getActions().create(
             new Action(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
@@ -106,7 +106,7 @@ public class ActionAcceptanceTest
         getActions().cancel(a.getId());
 
         // ASSERT
-        final ActionSummary cancelled = getActions().retrieve(a.getId());
+        final Action cancelled = getActions().retrieve(a.getId());
         assertEquals(ActionStatus.CANCELLED, cancelled.getStatus());
     }
 
@@ -117,9 +117,9 @@ public class ActionAcceptanceTest
     public void testExecuteAction() {
         // ARRANGE
         final Date time =  new Date(new Date().getTime()-ONE_SECOND);
-        final ResourceSummary rs = tempFolder();
+        final Folder rs = tempFolder();
         getCommands().lock(rs.getId());
-        final ActionSummary a = getActions().create(
+        final Action a = getActions().create(
             new Action(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
@@ -130,7 +130,7 @@ public class ActionAcceptanceTest
         getActions().executeAll();
 
         // ASSERT
-        final ActionSummary completed = getActions().retrieve(a.getId());
+        final Action completed = getActions().retrieve(a.getId());
         assertEquals(ActionStatus.COMPLETE, completed.getStatus());
     }
 
@@ -141,8 +141,8 @@ public class ActionAcceptanceTest
     public void testFailingAction() {
         // ARRANGE
         final Date epoch =  new Date(0);
-        final ResourceSummary rs = tempFolder();
-        final ActionSummary a = getActions().create(
+        final Folder rs = tempFolder();
+        final Action a = getActions().create(
             new Action(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
@@ -153,7 +153,7 @@ public class ActionAcceptanceTest
         getActions().executeAll();
 
         // ASSERT
-        final ActionSummary failed = getActions().retrieve(a.getId());
+        final Action failed = getActions().retrieve(a.getId());
         assertEquals(ActionStatus.FAILED, failed.getStatus());
     }
 
@@ -165,9 +165,9 @@ public class ActionAcceptanceTest
 
         // ARRANGE
         final Date time =  new Date(0);
-        final ResourceSummary rs = tempFolder();
+        final Folder rs = tempFolder();
         getCommands().lock(rs.getId());
-        final ActionSummary a = getActions().create(
+        final Action a = getActions().create(
             new Action(
                 rs.getId(),
                 CommandType.RESOURCE_DELETE,
@@ -178,7 +178,7 @@ public class ActionAcceptanceTest
         getActions().executeAll();
 
         // ASSERT
-        final ActionSummary completed = getActions().retrieve(a.getId());
+        final Action completed = getActions().retrieve(a.getId());
         assertEquals(ActionStatus.COMPLETE, completed.getStatus());
     }
 
@@ -233,7 +233,7 @@ public class ActionAcceptanceTest
 
         // ARRANGE
         getActions().executeAll();
-        final ResourceSummary rs = tempFolder();
+        final Folder rs = tempFolder();
         final Calendar cal = Calendar.getInstance();
         cal.set(2010, 1, 2, 0, 0, 0);
         cal.set(Calendar.MILLISECOND, 0);
@@ -308,7 +308,7 @@ public class ActionAcceptanceTest
 
         // ARRANGE
         getActions().executeAll();
-        final ResourceSummary rs = tempFolder();
+        final Folder rs = tempFolder();
 
         // ACT
         getActions().create(
@@ -342,8 +342,8 @@ public class ActionAcceptanceTest
     public void testActionListFailingAction() {
         // ARRANGE
         final Date epoch =  new Date(0);
-        final ResourceSummary rs = tempFolder();
-        final ActionSummary a = getActions().create(
+        final Folder rs = tempFolder();
+        final Action a = getActions().create(
             new Action(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,

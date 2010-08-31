@@ -26,7 +26,8 @@
  */
 package ccc.client.presenters;
 
-import ccc.api.core.ResourceSummary;
+import java.util.UUID;
+
 import ccc.api.types.CommandType;
 import ccc.client.actions.CreateActionAction;
 import ccc.client.core.AbstractPresenter;
@@ -43,7 +44,7 @@ import ccc.client.views.CreateAction;
  */
 public class CreateActionPresenter
     extends
-        AbstractPresenter<CreateAction, ResourceSummary>
+        AbstractPresenter<CreateAction, UUID>
     implements
         Editable {
 
@@ -55,7 +56,7 @@ public class CreateActionPresenter
      * @param model Model implementation.
      */
     public CreateActionPresenter(final CreateAction view,
-                                 final ResourceSummary model) {
+                                 final UUID model) {
         super(view, model);
         getView().show(this);
     }
@@ -74,7 +75,7 @@ public class CreateActionPresenter
         if (vr.isValid()) {
 
             new CreateActionAction(
-                getModel().getId(),
+                getModel(),
                 getView().getCommandType(),
                 getView().getDate(),
                 getView().getActionParameters())
@@ -88,7 +89,6 @@ public class CreateActionPresenter
     /** {@inheritDoc} */
     @Override
     public void handle(final Event<CommandType> event) {
-
         switch (event.getType()) {
             case ACTION_CREATE:
                 dispose();

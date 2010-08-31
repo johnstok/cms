@@ -30,19 +30,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
-import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.remoting.ComputeTemplateAction;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.PageElement;
+import ccc.client.presenters.CreatePagePresenter;
 import ccc.client.views.CreatePage;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
@@ -80,7 +80,7 @@ public class CreatePageDialog
     implements
         CreatePage {
 
-    private Editable _presenter;
+    private CreatePagePresenter _presenter;
 
     private static final int SCROLLBAR_WIDTH = 20;
     private static final int DEFAULT_MARGIN = 5;
@@ -107,15 +107,16 @@ public class CreatePageDialog
         new ContentPanel(new RowLayout());
     private final ContentPanel _templatePanel =
         new ContentPanel(new RowLayout());
+    private CheckBox _useDefaultTemplate;
 
     private Template _template = null;
+    private Template _t2 = null;
 
 
     private final Text _description = new Text("");
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
 
-    private final ResourceSummary _parent;
 
     /**
      * Constructor.
@@ -123,13 +124,10 @@ public class CreatePageDialog
      * @param item
      *
      * @param list List of templates.
-     * @param parent The Folder in which page will created.
      */
-    public CreatePageDialog(final Collection<Template> list,
-                            final ResourceSummary parent) {
+    public CreatePageDialog(final Collection<Template> list) {
         super(I18n.UI_CONSTANTS.createPage(),
               new GlobalsImpl());
-        _parent = parent;
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
@@ -164,7 +162,8 @@ public class CreatePageDialog
 
         _templatePanel.setHeaderVisible(true);
         _templatePanel.setHeading(getUiConstants().template());
-        _templatePanel.add(new DefaultCheckBox());
+        _useDefaultTemplate = new DefaultCheckBox();
+        _templatePanel.add(_useDefaultTemplate);
         _templatePanel.add(_templateGrid);
 
         final BorderLayoutData centerData =
@@ -219,34 +218,9 @@ public class CreatePageDialog
      * @author Civic Computing Ltd.
      */
     private class DefaultCheckBox extends CheckBox {
-        private Template _t2 = null;
-
         DefaultCheckBox() {
             setBoxLabel(getUiConstants().useDefaultTemplate());
             setId(getUiConstants().useDefaultTemplate());
-
-            new ComputeTemplateAction(
-                getUiConstants().createPage(), _parent) {
-
-                /** {@inheritDoc} */
-                @Override
-                protected void noTemplate() {
-                    setValue(Boolean.FALSE);
-                    disable();
-                    _templateGrid.enable();
-                    _description.setText("");
-                }
-
-                /** {@inheritDoc} */
-                @Override protected void template(final Template t) {
-                    _t2 = t;
-                    setValue(Boolean.TRUE);
-                    _templateGrid.disable();
-                    _templateGrid.getSelectionModel().deselectAll();
-                    updateSecondPage(_t2);
-                }
-
-            }.execute();
 
             addListener(Events.Change, new Listener<FieldEvent>() {
                 public void handleEvent(final FieldEvent be) {
@@ -294,9 +268,30 @@ public class CreatePageDialog
 
     /** {@inheritDoc} */
     @Override
-    public void show(final Editable presenter) {
+    public void show(final CreatePagePresenter presenter) {
         _presenter = presenter;
+
+        final UUID t = getPresenter().getModel().getTemplate();
+
+        if(null==t) {
+            _useDefaultTemplate.setValue(Boolean.FALSE);
+            _useDefaultTemplate.disable();
+            _templateGrid.enable();
+            _description.setText("");
+        } else {
+            final Template _t2 = findTemplate(t);
+            _useDefaultTemplate.setValue(Boolean.TRUE);
+            _templateGrid.disable();
+            _templateGrid.getSelectionModel().deselectAll();
+            updateSecondPage(_t2);
+        }
+
         super.show();
+    }
+
+
+    private Template findTemplate(final UUID t) {
+        return _templatesStore.findModel(ResourceSummary.UUID, t).getBean();
     }
 
     /** {@inheritDoc} */
@@ -310,7 +305,7 @@ public class CreatePageDialog
      *
      * @return Returns the presenter.
      */
-    Editable getPresenter() {
+    CreatePagePresenter getPresenter() {
         return _presenter;
     }
 

@@ -302,7 +302,7 @@ public class EditTemplateDialog
 
                 new CreateTemplateAction(delta){
                         @Override protected void execute(
-                                     final ResourceSummary template) {
+                                     final Template template) {
                             _ssm.create(template);
                             hide();
                         }

@@ -27,6 +27,8 @@
 package ccc.acceptance.client;
 
 import ccc.acceptance.client.views.CreateAliasFake;
+import ccc.api.core.Folder;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.client.presenters.CreateAliasPresenter;
 import ccc.tests.acceptance.AbstractAcceptanceTest;
@@ -47,9 +49,11 @@ public class CreateAliasAcceptanceTest
     public void testCreateAliasSuccess() {
 
         // ARRANGE
-        final ResourceSummary rs = getCommands().resourceForPath("");
-        final ResourceSummary welcome =
-            getCommands().resourceForPath("/welcome");
+        final String exists =
+            getCommands().resourceForPath("").getLinks().get(Folder.EXISTS);
+        final ResourceSummary rs = new ResourceSummary();
+        rs.addLink(Folder.EXISTS, exists);
+        final Resource welcome = getCommands().resourceForPath("/welcome");
 
         final CreateAliasPresenter p =
             new CreateAliasPresenter(

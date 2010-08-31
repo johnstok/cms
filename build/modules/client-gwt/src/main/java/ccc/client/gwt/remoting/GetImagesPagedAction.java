@@ -68,6 +68,7 @@ public abstract class GetImagesPagedAction
                                 final ResourceSummary parent,
                                 final int pageNo,
                                 final int pageSize) {
+        super(actionName);
         _name = actionName;
         _parent = parent;
         _pageNo = pageNo;

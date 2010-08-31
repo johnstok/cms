@@ -29,6 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.core.Alias;
 import ccc.api.types.CommandType;
 import ccc.domain.AliasEntity;
 import ccc.domain.ResourceEntity;
@@ -43,7 +44,7 @@ import ccc.persistence.IRepositoryFactory;
  */
 public class UpdateAliasCommand
     extends
-        UpdateResourceCommand<Void> {
+        UpdateResourceCommand<Alias> {
 
     private final UUID _targetId;
     private final UUID _aliasId;
@@ -66,7 +67,7 @@ public class UpdateAliasCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final UserEntity actor,
+    public Alias doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
         final AliasEntity alias =
@@ -79,7 +80,7 @@ public class UpdateAliasCommand
 
         update(alias, actor, happenedOn);
 
-        return null;
+        return alias.forCurrentRevision();
     }
 
 

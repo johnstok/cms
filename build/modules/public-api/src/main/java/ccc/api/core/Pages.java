@@ -93,7 +93,7 @@ public interface Pages {
      * @param delta The changes to apply.
      */
     @PUT @Path(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
-    void update(@PathParam("id") UUID pageId, Page delta);
+    Page update(@PathParam("id") UUID pageId, Page delta);
 
 
     /**
@@ -103,7 +103,7 @@ public interface Pages {
      * @param delta The changes to apply.
      */
     @PUT @Path(ccc.api.core.ResourceIdentifiers.Page.WC)
-    void updateWorkingCopy(@PathParam("id") UUID pageId, Page delta);
+    Page updateWorkingCopy(@PathParam("id") UUID pageId, Page delta);
 
 
     /**
@@ -114,7 +114,7 @@ public interface Pages {
      * @return A resource summary describing the new page.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Page.COLLECTION)
-    ResourceSummary create(Page page);
+    Page create(Page page);
 
 
     /**

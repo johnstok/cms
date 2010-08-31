@@ -57,6 +57,7 @@ public class ApplyWorkingCopyAction
      * @param selectionModel The selection model.
      */
     public ApplyWorkingCopyAction(final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.applyWorkingCopy());
         _selectionModel = selectionModel;
     }
 
@@ -73,8 +74,7 @@ public class ApplyWorkingCopyAction
             Globals.API_URL
                 + rs.wc().build(new GWTTemplateEncoder()),
             "",
-            new WCAppliedCallback(
-                I18n.UI_CONSTANTS.applyWorkingCopy(), rs));
+            new WCAppliedCallback(getActionName(), rs));
     }
 
 

@@ -51,6 +51,7 @@ public abstract class GetUserAction
      * @param userPath The path to the user on the server.
      */
     public GetUserAction(final String userPath) {
+        super(USER_ACTIONS.internalAction());
         _userPath = userPath;
     }
 

@@ -61,7 +61,7 @@ public final class OpenCreateActionAction
         } else {
             new CreateActionPresenter(
                 new CreateActionDialog(),
-                item);
+                item.getId());
         }
     }
 }

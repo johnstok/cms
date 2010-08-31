@@ -27,7 +27,6 @@
 package ccc.client.actions;
 
 import ccc.api.core.File;
-import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
@@ -74,7 +73,7 @@ public final class CreateTextFileAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final ResourceSummary rs = parseResourceSummary(response);
+        final File rs = readFile(response);
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.FILE_CREATE);
         event.addProperty("resource", rs);

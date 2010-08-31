@@ -73,10 +73,10 @@ public interface Actions
      *
      * @param action The action to create.
      *
-     * @return A summary of the new action.
+     * @return The new action.
      */
     @POST
-    ActionSummary create(Action action);
+    Action create(Action action);
 
 
     /**
@@ -121,10 +121,10 @@ public interface Actions
      *
      * @param actionId The action's ID.
      *
-     * @return A summary of the action.
+     * @return The action.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
-    ActionSummary retrieve(@PathParam("id") UUID actionId);
+    Action retrieve(@PathParam("id") UUID actionId);
 
 
 }

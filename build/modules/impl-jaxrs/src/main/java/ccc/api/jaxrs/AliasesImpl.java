@@ -36,7 +36,6 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.api.core.Alias;
 import ccc.api.core.Aliases;
-import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
 
 
@@ -81,9 +80,9 @@ public class AliasesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID aliasId, final Alias delta) {
+    public Alias update(final UUID aliasId, final Alias delta) {
         try {
-            _delegate.update(aliasId, delta);
+            return _delegate.update(aliasId, delta);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
@@ -92,7 +91,7 @@ public class AliasesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary create(final Alias alias) {
+    public Alias create(final Alias alias) {
         try {
             return _delegate.create(alias);
         } catch (final RuntimeException cfe) {

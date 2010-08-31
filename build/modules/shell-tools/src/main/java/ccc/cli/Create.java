@@ -41,7 +41,6 @@ import ccc.api.core.Folders;
 import ccc.api.core.Page;
 import ccc.api.core.Pages;
 import ccc.api.core.Resource;
-import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
 import ccc.api.core.Template;
 import ccc.api.core.Templates;
@@ -93,13 +92,13 @@ public final class Create extends CccApp {
             final Templates templates = sl.getTemplates();
             final Pages pages = sl.getPages();
 
-            final ResourceSummary content = folders.createRoot(CONTENT);
+            final Folder content = folders.createRoot(CONTENT);
             folders.createRoot(TRASH);
 
-            final ResourceSummary assets = folders.create(
+            final Folder assets = folders.create(
                 new Folder(content.getId(), new ResourceName(ASSETS)));
 
-            final ResourceSummary tFolder = folders.create(
+            final Folder tFolder = folders.create(
                 new Folder(assets.getId(), new ResourceName(TEMPLATES)));
             folders.create(
                 new Folder(assets.getId(), new ResourceName(CSS)));
@@ -151,7 +150,7 @@ public final class Create extends CccApp {
             t.setDescription("Simple template with a single HTML field.");
             t.setMimeType(MimeType.HTML);
             t.setParent(tFolder.getId());
-            final ResourceSummary ts = templates.create(t);
+            final Template ts = templates.create(t);
 
             final Page p = new Page();
             p.setParagraphs(
@@ -164,7 +163,7 @@ public final class Create extends CccApp {
             p.setTemplate(ts.getId());
             p.setTitle("Welcome");
             p.setParent(content.getId());
-            final ResourceSummary ps = pages.create(p);
+            final Page ps = pages.create(p);
             resources.lock(ps.getId());
             resources.publish(ps.getId());
             resources.unlock(ps.getId());

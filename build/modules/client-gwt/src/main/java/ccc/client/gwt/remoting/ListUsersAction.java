@@ -73,6 +73,7 @@ public abstract class ListUsersAction
                      final int pageSize,
                      final String sort,
                      final SortOrder order) {
+        super(USER_ACTIONS.viewUsers());
         _uc = uc;
         _pageNo = pageNo;
         _pageSize = pageSize;

@@ -106,7 +106,7 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary create(final Folder folder) {
+    public Folder create(final Folder folder) {
         try {
             return _delegate.create(folder);
         } catch (final RuntimeException cfe) {
@@ -117,9 +117,9 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID folderId, final Folder delta) {
+    public Folder update(final UUID folderId, final Folder delta) {
         try {
-            _delegate.update(folderId, delta);
+            return _delegate.update(folderId, delta);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
@@ -128,10 +128,10 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFolder(final UUID parentId,
-                                        final String name,
-                                        final String title,
-                                        final boolean publish) {
+    public Folder createFolder(final UUID parentId,
+                               final String name,
+                               final String title,
+                               final boolean publish) {
         try {
             return _delegate.createFolder(parentId, name, title, publish);
         } catch (final RuntimeException cfe) {
@@ -142,7 +142,7 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createRoot(final String name) {
+    public Folder createRoot(final String name) {
         try {
             return _delegate.createRoot(name);
         } catch (final RuntimeException cfe) {

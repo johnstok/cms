@@ -30,8 +30,8 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import ccc.api.core.File;
+import ccc.api.core.Folder;
 import ccc.api.core.Resource;
-import ccc.api.core.ResourceSummary;
 import ccc.api.types.MimeType;
 
 
@@ -52,14 +52,14 @@ public class ScriptingAcceptanceTest
     public void testTextFilesCanBeExecutedAsJavascript() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
 
         final Resource metadata = new Resource();
         metadata.setTitle("fail.js");
         metadata.setDescription("fail.js");
         metadata.setTags(new HashSet<String>());
         metadata.setMetadata(Collections.singletonMap("executable", "true"));
-        final ResourceSummary script =
+        final File script =
             getFiles().createTextFile(
                 new File(
                     folder.getId(),
@@ -85,14 +85,14 @@ public class ScriptingAcceptanceTest
     public void testRandomProperty() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
 
         final Resource metadata = new Resource();
         metadata.setTitle("fail.js");
         metadata.setDescription("fail.js");
         metadata.setTags(new HashSet<String>());
         metadata.setMetadata(Collections.singletonMap("executable", "true"));
-        final ResourceSummary script =
+        final File script =
             getFiles().createTextFile(
                 new File(
                     folder.getId(),

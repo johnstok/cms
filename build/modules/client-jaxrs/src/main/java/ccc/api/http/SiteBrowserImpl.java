@@ -36,6 +36,7 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
 
@@ -82,7 +83,26 @@ public class SiteBrowserImpl
 
     /** {@inheritDoc} */
     @Override
+    public String previewContent(final Resource rs, final boolean wc) {
+        final GetMethod get =
+            new GetMethod(
+                _previewUrl
+                + rs.getAbsolutePath()
+                + ((wc) ? "?wc=" : ""));
+        return invoke(get);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
     public String post(final ResourceSummary rs) {
+        return invoke(new PostMethod(_hostUrl+rs.getAbsolutePath()));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String post(final Resource rs) {
         return invoke(new PostMethod(_hostUrl+rs.getAbsolutePath()));
     }
 

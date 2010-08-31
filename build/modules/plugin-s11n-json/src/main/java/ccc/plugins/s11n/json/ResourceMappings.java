@@ -65,6 +65,7 @@ public class ResourceMappings {
             DurationSerializer.writeDuration(
                 instance.getCacheDuration(), json.create());
 
+        json.set(ResourceSerializer.WORKING_COPY, instance.isWcAvailable());
         json.set(JsonKeys.ABSOLUTE_PATH, instance.getAbsolutePath());
         json.set(JsonKeys.CACHE_DURATION, durationJson);
         json.set(JsonKeys.DATE_CHANGED, instance.getDateChanged());
@@ -88,6 +89,7 @@ public class ResourceMappings {
         json.set(JsonKeys.REVISION, Long.valueOf(instance.getRevision()));
         json.setStrings(JsonKeys.TAGS, instance.getTags());
         json.set(JsonKeys.TEMPLATE_ID, instance.getTemplate());
+        json.set(JsonKeys.TEMPLATE_ID+"2", instance.getTemplate2());
         json.set(JsonKeys.TITLE, instance.getTitle());
         json.set(
             JsonKeys.TYPE,
@@ -95,6 +97,8 @@ public class ResourceMappings {
     }
 
     public static void readResource(final Json json, final Resource r) {
+        r.setWcAvailable(
+            json.getBool(ResourceSerializer.WORKING_COPY).booleanValue());
         r.setAbsolutePath(json.getString(JsonKeys.ABSOLUTE_PATH));
         r.setCacheDuration(
             DurationSerializer.read(json.getJson(JsonKeys.CACHE_DURATION)));
@@ -118,6 +122,7 @@ public class ResourceMappings {
         final Collection<String> tags = json.getStrings(JsonKeys.TAGS);
         r.setTags((null==tags) ? null : new HashSet<String>(tags));
         r.setTemplate(json.getId(JsonKeys.TEMPLATE_ID));
+        r.setTemplate2(json.getId(JsonKeys.TEMPLATE_ID+"2"));
         r.setTitle(json.getString(JsonKeys.TITLE));
         final String type = json.getString(JsonKeys.TYPE);
         r.setType((null==type) ? null : ResourceType.valueOf(type));

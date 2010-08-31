@@ -67,6 +67,7 @@ class ActionSerializer extends BaseSerializer<Action> {
 
         final Action a = new Action(resourceId, command, execAfter, parameters);
 
+        a.setId(json.getId(JsonKeys.ID));
         a.setActor(json.getId(JsonKeys.ACTOR_ID));
         final String status = json.getString(JsonKeys.STATUS);
         a.setStatus((null==status) ? null : ActionStatus.valueOf(status));
@@ -82,6 +83,8 @@ class ActionSerializer extends BaseSerializer<Action> {
         if (null==instance) { return null; }
         final Json json = newJson();
 
+        json.set(JsonKeys.ID, instance.getId());
+        json.set(JsonKeys.SUBJECT_ID, instance.getResourceId());
         json.set(JsonKeys.SUBJECT_ID, instance.getResourceId());
         json.set(JsonKeys.COMMAND, instance.getCommand().name());
         json.set(JsonKeys.EXECUTE_AFTER, instance.getExecuteAfter());

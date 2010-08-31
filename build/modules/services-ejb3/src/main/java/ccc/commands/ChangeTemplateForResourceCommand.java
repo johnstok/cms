@@ -29,6 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.core.Resource;
 import ccc.api.types.CommandType;
 import ccc.domain.ResourceEntity;
 import ccc.domain.TemplateEntity;
@@ -43,7 +44,7 @@ import ccc.persistence.IRepositoryFactory;
  */
 public class ChangeTemplateForResourceCommand
     extends
-        Command<Void> {
+        Command<Resource> {
 
     private final UUID _resourceId;
     private final UUID _templateId;
@@ -68,7 +69,7 @@ public class ChangeTemplateForResourceCommand
 
     /** {@inheritDoc} */
     @Override
-    protected Void doExecute(final UserEntity actor, final Date happenedOn) {
+    protected Resource doExecute(final UserEntity actor, final Date happenedOn) {
         final ResourceEntity r =
             getRepository().find(ResourceEntity.class, _resourceId);
         r.confirmLock(actor);
@@ -82,7 +83,7 @@ public class ChangeTemplateForResourceCommand
 
         auditResourceCommand(actor, happenedOn, r);
 
-        return null;
+        return r.forCurrentRevision();
     }
 
 

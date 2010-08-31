@@ -27,7 +27,9 @@
 package ccc.acceptance.client;
 
 import ccc.acceptance.client.views.ChangeResourceTemplateFake;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Folder;
+import ccc.api.core.Resource;
+import ccc.api.core.Template;
 import ccc.client.presenters.ChangeResourceTemplatePresenter;
 import ccc.client.views.ChangeResourceTemplate;
 import ccc.tests.acceptance.AbstractAcceptanceTest;
@@ -48,21 +50,20 @@ public class ChangeResourceTemplateAcceptanceTest
     public void testChangeTemplateSuccess() {
 
         // ARRANGE
-        ChangeResourceTemplate view = new ChangeResourceTemplateFake();
-        ResourceSummary model = tempFolder();
+        final ChangeResourceTemplate view = new ChangeResourceTemplateFake();
+        final Folder model = tempFolder();
         getCommands().lock(model.getId());
-        ResourceSummary template = dummyTemplate(model);
-        view.setSelectedTemplate(template.getId());
-        model.setTemplateId(template.getId());
-
-        ChangeResourceTemplatePresenter p =
+        final Template template = dummyTemplate(model);
+        final ChangeResourceTemplatePresenter p =
             new ChangeResourceTemplatePresenter(view, model, null);
+
+        view.setSelectedTemplate(template.getId());
 
         // ACT
         p.save();
 
         // ASSERT
-        ResourceSummary folder = getCommands().retrieve(model.getId());
-        assertEquals(template.getId(), folder.getTemplateId());
+        final Resource folder = getCommands().retrieve(model.getId());
+        assertEquals(template.getId(), folder.getTemplate2());
     }
 }

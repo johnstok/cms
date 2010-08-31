@@ -31,8 +31,10 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.acceptance.client.views.CreatePageFake;
+import ccc.api.core.Folder;
 import ccc.api.core.Page;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
+import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
 import ccc.client.presenters.CreatePagePresenter;
 import ccc.client.views.CreatePage;
@@ -54,31 +56,31 @@ public class CreatePageAcceptanceTest extends AbstractAcceptanceTest {
 
         // ARRANGE
 
-        ResourceSummary model = tempFolder();
-        ResourceSummary testTemplate = dummyTemplate(model);
+        final Folder model = tempFolder();
+        final Template testTemplate = dummyTemplate(model);
 
-        Set<Paragraph> paragraphs = new HashSet<Paragraph>();
+        final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
         paragraphs.add(Paragraph.fromText("content", "sample text"));
 
-        CreatePage view = new CreatePageFake(
+        final CreatePage view = new CreatePageFake(
             "testname"+UUID.randomUUID().toString(),
             true,
             "testComment",
             paragraphs,
             getTemplates().retrieve(testTemplate.getId()));
 
-        CreatePagePresenter p = new CreatePagePresenter(view, model);
+        final CreatePagePresenter p = new CreatePagePresenter(view, model);
 
         // ACT
         p.save();
 
         // ASSERT
-        ResourceSummary pr = getCommands().resourceForPath(
+        final Resource pr = getCommands().resourceForPath(
             model.getAbsolutePath()+"/"+view.getName());
 
-        Page page = getPages().retrieve(pr.getId());
+        final Page page = getPages().retrieve(pr.getId());
 
-        assertEquals(view.getName(), pr.getName());
+        assertEquals(view.getName(), pr.getName().toString());
         assertEquals("sample text", page.getParagraph("content").getText());
 
     }

@@ -26,9 +26,12 @@
  */
 package ccc.client.gwt.actions;
 
+import ccc.api.core.Folder;
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.Action;
+import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.CreateTextFileDialog;
 import ccc.client.presenters.CreateTextFilePresenter;
@@ -39,8 +42,8 @@ import ccc.client.presenters.CreateTextFilePresenter;
  * @author Civic Computing Ltd.
  */
 public final class OpenCreateTextFileAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -50,18 +53,38 @@ public final class OpenCreateTextFileAction
      * @param selectionModel The selection model to use.
      */
     public OpenCreateTextFileAction(final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.createTextFile());
         _selectionModel = selectionModel;
     }
 
+
     /** {@inheritDoc} */
-    public void execute() {
+    @Override
+    protected boolean beforeExecute() {
         final ResourceSummary item = _selectionModel.treeSelection();
+
         if (item == null) {
             InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
-        } else {
-            new CreateTextFilePresenter(
-                new CreateTextFileDialog(),
-                item);
+            return false;
         }
+
+        return true;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return
+            _selectionModel.treeSelection().delete().build(
+                InternalServices.ENCODER);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onOK(final Response response) {
+        final Folder f = readFolder(response);
+        new CreateTextFilePresenter(new CreateTextFileDialog(), f);
     }
 }

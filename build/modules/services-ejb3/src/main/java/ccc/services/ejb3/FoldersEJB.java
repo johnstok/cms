@@ -66,7 +66,7 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary create(final Folder folder) {
+    public Folder create(final Folder folder) {
         checkPermission(FOLDER_CREATE);
 
         return createFolder(
@@ -77,7 +77,7 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFolder(final UUID parentId,
+    public Folder createFolder(final UUID parentId,
                                         final String name,
                                         final String title,
                                         final boolean publish) {
@@ -96,26 +96,26 @@ public class FoldersEJB
             f.unlock(u);
         }
 
-        return f.mapResource();
+        return f.forCurrentRevision();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createRoot(final String name) {
+    public Folder createRoot(final String name) {
         checkPermission(ROOT_CREATE);
 
         final FolderEntity f = new FolderEntity(name);
         commands().createRootCommand(f)
                   .execute(currentUser(), new Date());
-        return f.mapResource();
+        return f.forCurrentRevision();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID folderId,
-                             final Folder delta) {
+    public Folder update(final UUID folderId,
+                         final Folder delta) {
         checkPermission(FOLDER_UPDATE);
 
         final List<UUID> list = new ArrayList<UUID>();
@@ -124,14 +124,13 @@ public class FoldersEJB
             list.add(UUID.fromString(item));
         }
 
-        new UpdateFolderCommand(
-            getRepoFactory(),
-            folderId,
-            delta.getIndexPage(),
-            list)
-        .execute(
-            currentUser(),
-             new Date());
+        return
+            execute(
+                new UpdateFolderCommand(
+                    getRepoFactory(),
+                    folderId,
+                    delta.getIndexPage(),
+                    list));
     }
 
 

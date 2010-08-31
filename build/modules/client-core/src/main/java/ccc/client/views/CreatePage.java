@@ -31,16 +31,16 @@ import java.util.Set;
 
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
-import ccc.client.core.Editable;
 import ccc.client.core.Validatable;
 import ccc.client.core.View;
+import ccc.client.presenters.CreatePagePresenter;
 
 /**
  * MVP view for creating a page.
  *
  * @author Civic Computing Ltd.
  */
-public interface CreatePage extends View<Editable>, Validatable {
+public interface CreatePage extends View<CreatePagePresenter>, Validatable {
 
     /**
      * Display an alert with the specified message.

@@ -30,7 +30,7 @@ package ccc.acceptance.client;
 import java.util.UUID;
 
 import ccc.acceptance.client.views.CreateFolderFake;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.client.presenters.CreateFolderPresenter;
 import ccc.client.views.CreateFolder;
 import ccc.tests.acceptance.AbstractAcceptanceTest;
@@ -51,7 +51,7 @@ public class CreateFolderAcceptanceTest extends AbstractAcceptanceTest {
 
         // ARRANGE
         final String name = "testFolder"+UUID.randomUUID().toString();
-        final ResourceSummary model = getCommands().resourceForPath("");
+        final Resource model = getCommands().resourceForPath("");
         final CreateFolder view = new CreateFolderFake();
         view.setName(name);
         final CreateFolderPresenter p = new CreateFolderPresenter(view, model);
@@ -60,8 +60,8 @@ public class CreateFolderAcceptanceTest extends AbstractAcceptanceTest {
         p.save();
 
         // ASSERT
-        final ResourceSummary folder = getCommands().resourceForPath("/"+name);
+        final Resource folder = getCommands().resourceForPath("/"+name);
         assertNotNull("Folder should exist", folder);
-        assertEquals(name, folder.getName());
+        assertEquals(name, folder.getName().toString());
     }
 }

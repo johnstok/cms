@@ -26,7 +26,7 @@
  */
 package ccc.client.presenters;
 
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.api.types.CommandType;
 import ccc.client.actions.CreateFolderAction;
 import ccc.client.core.AbstractPresenter;
@@ -44,7 +44,7 @@ import ccc.client.views.CreateFolder;
  */
 public class CreateFolderPresenter
     extends
-        AbstractPresenter<CreateFolder, ResourceSummary>
+        AbstractPresenter<CreateFolder, Resource>
     implements
         Editable {
 
@@ -56,7 +56,7 @@ public class CreateFolderPresenter
      * @param model Model implementation.
      */
     public CreateFolderPresenter(final CreateFolder view,
-                                 final ResourceSummary model) {
+                                 final Resource model) {
         super(view, model);
         getView().show(this);
     }

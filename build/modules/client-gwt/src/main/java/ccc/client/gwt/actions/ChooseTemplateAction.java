@@ -28,11 +28,14 @@ package ccc.client.gwt.actions;
 
 import java.util.Collection;
 
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.ResourceType;
-import ccc.client.core.Action;
+import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.ChooseTemplateDialog;
@@ -44,8 +47,8 @@ import ccc.client.presenters.ChangeResourceTemplatePresenter;
  * @author Civic Computing Ltd.
  */
 public final class ChooseTemplateAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -56,27 +59,48 @@ public final class ChooseTemplateAction
      */
     public ChooseTemplateAction(
           final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.chooseTemplate());
         _selectionModel = selectionModel;
     }
 
+
     /** {@inheritDoc} */
-    public void execute() {
+    @Override
+    protected boolean beforeExecute() {
         final ResourceSummary item = _selectionModel.tableSelection();
 
         if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
-            return;
+            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
+            return false;
         }
 
-        if (ResourceType.PAGE==item.getType()
-            || ResourceType.FOLDER==item.getType()
-            || ResourceType.SEARCH==item.getType()) {
+        return true;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return
+            _selectionModel.tableSelection().delete().build(
+                InternalServices.ENCODER);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onOK(final Response response) {
+        final Resource r = readResource(response);
+
+        if (ResourceType.PAGE==r.getType()
+            || ResourceType.FOLDER==r.getType()
+            || ResourceType.SEARCH==r.getType()) {
             new GetTemplatesAction(UI_CONSTANTS.chooseTemplate()){
                 @Override protected void execute(
                                  final Collection<Template> templates) {
                     new ChangeResourceTemplatePresenter(
                         new ChooseTemplateDialog(),
-                        item,
+                        r,
                         templates);
                 }
             }.execute();

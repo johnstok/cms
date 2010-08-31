@@ -72,7 +72,7 @@ public class UpdateResourceTemplateAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onNoContent(final Response response) {
+    protected void onOK(final Response response) {
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.RESOURCE_CHANGE_TEMPLATE);
         event.addProperty("resource", _resource.getId());

@@ -33,9 +33,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.core.Folder;
 import ccc.api.core.Page;
 import ccc.api.core.PageCriteria;
 import ccc.api.core.PagedCollection;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.MimeType;
@@ -81,7 +83,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
 
         // ARRANGE
         final String hw = "Hello World"; // Unicode non-breaking space.
-        final ResourceSummary f = tempFolder();
+        final Folder f = tempFolder();
         final String name = UUID.randomUUID().toString();
         final Page page = new Page(f.getId(),
             name,
@@ -94,7 +96,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         }});
 
         // ACT
-        final ResourceSummary ps = getPages().create(page);
+        final Page ps = getPages().create(page);
 
         // ASSERT
         final Page pd = getPages().retrieve(ps.getId());
@@ -108,10 +110,9 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
     public void testPageDelta() {
 
         // ARRANGE
-        final ResourceSummary f = tempFolder();
-        final ResourceSummary template =
-            dummyTemplate(getCommands().resourceForPath(""));
-        final ResourceSummary page = tempPage(f.getId(), template.getId());
+        final Folder f = tempFolder();
+        final Template template = dummyTemplate(f);
+        final Page page = tempPage(f.getId(), template.getId());
 
         // ACT
         final Page pd = getPages().retrieve(page.getId());
@@ -127,10 +128,9 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
     public void testUpdatePage() {
 
         // ARRANGE
-        final ResourceSummary f = tempFolder();
-        final ResourceSummary template =
-            dummyTemplate(getCommands().resourceForPath(""));
-        final ResourceSummary page = tempPage(f.getId(), template.getId());
+        final Folder f = tempFolder();
+        final Template template = dummyTemplate(f);
+        final Page page = tempPage(f.getId(), template.getId());
 
         final Set<Paragraph> paras = new HashSet<Paragraph>();
         final Paragraph testPara =
@@ -162,7 +162,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
     public void testValidateFields() {
 
         // ARRANGE
-        final ResourceSummary f = tempFolder();
+        final Folder f = tempFolder();
         final Template t = new Template();
         t.setParent(f.getId());
         t.setName(new ResourceName("example"));
@@ -174,7 +174,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
             + "<field name=\"test\" type=\"text_field\" regexp=\"\\d{1,3}\"/>"
             + "</fields>");
         t.setBody("empty");
-        final ResourceSummary ts = getTemplates().create(t);
+        final Template ts = getTemplates().create(t);
 
         final Paragraph invalidPara = Paragraph.fromText("test", "fail");
         final Paragraph validPara = Paragraph.fromText("test", "12");
@@ -208,7 +208,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
     public void testUpdateWorkingCopy() {
 
         // ARRANGE
-        final ResourceSummary templateFolder =
+        final Resource templateFolder =
             getCommands().resourceForPath("/assets/templates");
         final String name = UUID.randomUUID().toString();
 
@@ -220,10 +220,10 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         t.setBody("$resource.getParagraph(\"foo\").getText()");
         t.setDefinition("<fields><field name=\"foo\" type=\"html\"/></fields>");
         t.setMimeType(MimeType.HTML);
-        final ResourceSummary ts = getTemplates().create(t);
+        final Template ts = getTemplates().create(t);
 
-        final ResourceSummary f = tempFolder();
-        final ResourceSummary page = tempPage(f.getId(), ts.getId());
+        final Folder f = tempFolder();
+        final Page page = tempPage(f.getId(), ts.getId());
 
         final Page update = new Page();
         update.setMajorChange(true);
@@ -258,7 +258,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
     public void testRetrieveReturnsCurrent() {
 
         // ARRANGE
-        final ResourceSummary templateFolder =
+        final Resource templateFolder =
             getCommands().resourceForPath("/assets/templates");
         final String name = UUID.randomUUID().toString();
 
@@ -270,10 +270,10 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         t.setBody("$resource.getParagraph(\"foo\").getText()");
         t.setDefinition("<fields><field name=\"foo\" type=\"html\"/></fields>");
         t.setMimeType(MimeType.HTML);
-        final ResourceSummary ts = getTemplates().create(t);
+        final Template ts = getTemplates().create(t);
 
-        final ResourceSummary f = tempFolder();
-        final ResourceSummary page = tempPage(f.getId(), ts.getId());
+        final Folder f = tempFolder();
+        final Page page = tempPage(f.getId(), ts.getId());
 
         final Page update = new Page();
         update.setMajorChange(true);

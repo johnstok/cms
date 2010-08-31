@@ -96,7 +96,7 @@ public interface Templates {
      * @param delta The changes to apply.
      */
     @PUT @Path(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
-    void update(
+    Template update(
         @PathParam("id") UUID templateId, Template delta);
 
     /**
@@ -107,7 +107,7 @@ public interface Templates {
      * @return A resource summary describing the new template.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Template.COLLECTION)
-    ResourceSummary create(Template template);
+    Template create(Template template);
 
     /**
      * Retrieve a template revision.

@@ -45,6 +45,7 @@ public class Action
     implements
         Serializable {
 
+    private UUID                _id;
     private UUID                _resourceId;
     private CommandType         _command;
     private Date                _executeAfter;
@@ -176,5 +177,25 @@ public class Action
      */
     public final void setFailure(final Failure failure) {
         _failure = failure;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the id.
+     */
+    public UUID getId() {
+        return _id;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param id The id to set.
+     */
+    public void setId(final UUID id) {
+        _id = id;
     }
 }

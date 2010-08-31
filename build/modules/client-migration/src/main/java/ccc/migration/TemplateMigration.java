@@ -32,7 +32,7 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.api.core.Template;
 import ccc.api.core.Templates;
 import ccc.api.exceptions.CCException;
@@ -67,7 +67,7 @@ public class TemplateMigration {
 
     private void createTemplate(final String templateName,
                                 final String templateDescription,
-                                final ResourceSummary templateFolder) {
+                                final Resource templateFolder) {
 
         final StringBuilder sb = new StringBuilder("<fields>\n");
 
@@ -105,7 +105,7 @@ public class TemplateMigration {
      */
     public UUID getTemplate(final ResourceName templateName,
                             final String templateDescription,
-                            final ResourceSummary templateFolder) {
+                            final Resource templateFolder) {
 
         final Set<Template> templates =
             new HashSet<Template>(_templateApi.query(1, 999).getElements());

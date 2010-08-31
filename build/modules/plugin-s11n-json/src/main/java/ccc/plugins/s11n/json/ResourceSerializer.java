@@ -38,6 +38,9 @@ class ResourceSerializer
     extends
         BaseSerializer<Resource> {
 
+    /** WORKING_COPY : String. */
+    static final String WORKING_COPY = "working-copy";
+
     /**
      * Constructor.
      *

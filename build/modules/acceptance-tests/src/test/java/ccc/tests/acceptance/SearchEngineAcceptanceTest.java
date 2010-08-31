@@ -33,9 +33,9 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import ccc.api.core.Folder;
 import ccc.api.core.Page;
 import ccc.api.core.Resource;
-import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
 import ccc.api.types.SearchResult;
 import ccc.api.types.SortOrder;
@@ -114,8 +114,8 @@ public class SearchEngineAcceptanceTest
 
         // ARRANGE
         final String searchTerm = "veryunlikelysearchterm"+uid();
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary page   = tempPage(parent.getId(), null);
+        final Resource parent = getCommands().resourceForPath("");
+        final Page page   = tempPage(parent.getId(), null);
 
         final Resource metadata = new Resource();
         metadata.setTitle(searchTerm);
@@ -144,8 +144,8 @@ public class SearchEngineAcceptanceTest
     public void testIdSearch() {
 
         // ARRANGE
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary page   = tempPage(parent.getId(), null);
+        final Resource parent = getCommands().resourceForPath("");
+        final Page page = tempPage(parent.getId(), null);
         final String searchTerm = "id:"+page.getId();
 
         updateMetadata(page);
@@ -168,8 +168,8 @@ public class SearchEngineAcceptanceTest
     public void testPathSearch() {
 
         // ARRANGE
-        final ResourceSummary parent = tempFolder();
-        final ResourceSummary page   = tempPage(parent.getId(), null);
+        final Folder parent = tempFolder();
+        final Page page = tempPage(parent.getId(), null);
         final String searchTerm = "path:/content"+parent.getAbsolutePath()+"*";
 
         final Resource metadata = new Resource();
@@ -205,8 +205,8 @@ public class SearchEngineAcceptanceTest
     public void testNameSearch() {
 
         // ARRANGE
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary page   = tempPage(parent.getId(), null);
+        final Resource parent = getCommands().resourceForPath("");
+        final Page page = tempPage(parent.getId(), null);
         final String searchTerm = "name:"+page.getName();
 
         updateMetadata(page);
@@ -229,8 +229,8 @@ public class SearchEngineAcceptanceTest
     public void testTitleSearch() {
 
         // ARRANGE
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary page   = tempPage(parent.getId(), null);
+        final Resource parent = getCommands().resourceForPath("");
+        final Page page = tempPage(parent.getId(), null);
         page.setTitle("searchTitle"+page.getId());
         updateMetadata(page);
         final String searchTerm = "title:"+page.getTitle();
@@ -295,13 +295,12 @@ public class SearchEngineAcceptanceTest
     public void testDateSearch() {
 
         // ARRANGE
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary pageResource   = tempPage(parent.getId(), null);
-        final Page page =  getPages().retrieve(pageResource.getId());
+        final Resource parent = getCommands().resourceForPath("");
+        final Page page = tempPage(parent.getId(), null);
 
         final Date testDate = new Date();
 
-        updateMetadata(pageResource);
+        updateMetadata(page);
         final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
         paragraphs.add(Paragraph.fromDate("testDate", testDate));
 
@@ -328,15 +327,14 @@ public class SearchEngineAcceptanceTest
     public void testNumericSearch() {
 
         // ARRANGE
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary pageResource   = tempPage(parent.getId(), null);
-        final Page page =  getPages().retrieve(pageResource.getId());
+        final Resource parent = getCommands().resourceForPath("");
+        final Page page = tempPage(parent.getId(), null);
 
         final int testInt = new Random().nextInt();
 
         final BigDecimal testNumber = new BigDecimal(testInt);
 
-        updateMetadata(pageResource);
+        updateMetadata(page);
         final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
         paragraphs.add(Paragraph.fromNumber("testNumber", testNumber));
 
@@ -362,13 +360,12 @@ public class SearchEngineAcceptanceTest
     public void testBooleanSearch() {
 
         // ARRANGE
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary pageResource   = tempPage(parent.getId(), null);
-        final Page page =  getPages().retrieve(pageResource.getId());
+        final Resource parent = getCommands().resourceForPath("");
+        final Page page = tempPage(parent.getId(), null);
 
         final int testInt = new Random().nextInt();
 
-        updateMetadata(pageResource);
+        updateMetadata(page);
         final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
         paragraphs.add(Paragraph.fromBoolean("testBoolean"+testInt, false));
 
@@ -388,7 +385,7 @@ public class SearchEngineAcceptanceTest
     }
 
 
-    private void updateMetadata(final ResourceSummary page) {
+    private void updateMetadata(final Resource page) {
         final Resource metadata = new Resource();
         metadata.setTitle(page.getTitle());
         metadata.setDescription("");

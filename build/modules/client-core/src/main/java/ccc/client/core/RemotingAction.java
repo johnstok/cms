@@ -53,10 +53,10 @@ public abstract class RemotingAction
     private Bus<CommandType>  _bus         = InternalServices.REMOTING_BUS;
 
 
-    /**
-     * Constructor.
-     */
-    public RemotingAction() { super(); }
+//    /**
+//     * Constructor.
+//     */
+//    public RemotingAction() { super(); }
 
 
     /**

@@ -69,6 +69,7 @@ public abstract class ListGroups
                       final int pageSize,
                       final String sort,
                       final SortOrder order) {
+        super(USER_ACTIONS.unknownAction());
         _pageNo = pageNo;
         _pageSize = pageSize;
         _sort = sort;

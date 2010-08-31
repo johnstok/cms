@@ -26,6 +26,7 @@
  */
 package ccc.client.gwt.core;
 
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 
 
@@ -81,4 +82,13 @@ public interface SingleSelectionModel {
      */
     @Deprecated
     void create(ResourceSummary model);
+
+
+    /**
+     * Create a new model resource.
+     *
+     * @param model The model to create.
+     */
+    @Deprecated
+    void create(Resource model);
 }

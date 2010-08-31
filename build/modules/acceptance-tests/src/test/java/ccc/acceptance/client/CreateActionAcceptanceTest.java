@@ -32,8 +32,8 @@ import java.util.Map;
 
 import ccc.acceptance.client.views.CreateActionFake;
 import ccc.api.core.ActionSummary;
+import ccc.api.core.Folder;
 import ccc.api.core.PagedCollection;
-import ccc.api.core.ResourceSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceType;
@@ -64,10 +64,11 @@ public class CreateActionAcceptanceTest extends AbstractAcceptanceTest {
             CommandType.RESOURCE_PUBLISH,
             params);
 
-        final ResourceSummary model = tempFolder();
-        getCommands().lock(model.getId());
+        final Folder f = tempFolder();
+        getCommands().lock(f.getId());
 
-        final CreateActionPresenter p =  new CreateActionPresenter(view, model);
+        final CreateActionPresenter p =
+            new CreateActionPresenter(view, f.getId());
 
         // ACT
         p.save();
@@ -84,13 +85,13 @@ public class CreateActionAcceptanceTest extends AbstractAcceptanceTest {
         assertNotNull("Pending actions list should not be null", list);
         ActionSummary found = null;
         for (final ActionSummary action : list.getElements()) {
-            if (action.getSubjectPath().equals(model.getAbsolutePath())) {
+            if (action.getSubjectPath().equals(f.getAbsolutePath())) {
                 found = action;
             }
         }
 
         assertNotNull("Action should be in list of pending actions", found);
         assertEquals(ResourceType.FOLDER, found.getSubjectType());
-        assertEquals(model.getAbsolutePath(), found.getSubjectPath());
+        assertEquals(f.getAbsolutePath(), found.getSubjectPath());
     }
 }

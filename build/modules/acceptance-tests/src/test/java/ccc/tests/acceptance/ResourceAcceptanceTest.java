@@ -41,6 +41,7 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
+import ccc.api.core.Template;
 import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
 import ccc.api.types.Duration;
@@ -89,19 +90,19 @@ public class ResourceAcceptanceTest
     public void testUnlockResource() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
         final User us = getUsers().retrieveCurrent();
 
         // ACT
         getCommands().lock(folder.getId());
-        final ResourceSummary locked = getCommands().retrieve(folder.getId());
+        final Resource locked = getCommands().retrieve(folder.getId());
 
         getCommands().unlock(folder.getId());
-        final ResourceSummary unlocked = getCommands().retrieve(folder.getId());
+        final Resource unlocked = getCommands().retrieve(folder.getId());
 
         // ASSERT
         assertNull(folder.getLockedBy());
-        assertEquals(us.getUsername(), locked.getLockedBy());
+        assertEquals(us.getId(), locked.getLockedBy());
         assertNull(unlocked.getLockedBy());
     }
 
@@ -112,14 +113,14 @@ public class ResourceAcceptanceTest
     public void testMoveResource() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
-        final ResourceSummary assets =
+        final Folder folder = tempFolder();
+        final Resource assets =
             getCommands().resourceForPath("/assets");
 
         // ACT
         getCommands().lock(folder.getId());
         getCommands().move(folder.getId(), assets.getId());
-        final ResourceSummary moved = getCommands().retrieve(folder.getId());
+        final Resource moved = getCommands().retrieve(folder.getId());
 
         // ASSERT
         assertEquals("/assets/"+folder.getName(), moved.getAbsolutePath());
@@ -132,10 +133,10 @@ public class ResourceAcceptanceTest
     public void testMoveSecondResourceFromFolder() {
 
         //ARRANGE
-        final ResourceSummary firstFolder = tempFolder();
-        final ResourceSummary secondFolder = tempFolder();
+        final Folder firstFolder = tempFolder();
+        final Folder secondFolder = tempFolder();
 
-        final ResourceSummary childFolder1 = getFolders().create(
+        final Folder childFolder1 = getFolders().create(
             new Folder(firstFolder.getId(),
             new ResourceName(UUID.randomUUID().toString())));
         getFolders().create(
@@ -147,7 +148,7 @@ public class ResourceAcceptanceTest
         getCommands().move(childFolder1.getId(), secondFolder.getId());
 
         // ASSERT
-        final ResourceSummary content = getCommands().resourceForPath("");
+        final Resource content = getCommands().resourceForPath("");
         final PagedCollection<ResourceSummary> children =
             getCommands().list(
                 content.getId(),
@@ -174,7 +175,7 @@ public class ResourceAcceptanceTest
     public void testUpdateResourceMetadata() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
         final Map<String, String> origData =
             getCommands().metadata(folder.getId());
 
@@ -188,7 +189,7 @@ public class ResourceAcceptanceTest
         // ACT
         getCommands().lock(folder.getId());
         getCommands().updateMetadata(folder.getId(), md);
-        final ResourceSummary updated = getCommands().retrieve(folder.getId());
+        final Resource updated = getCommands().retrieve(folder.getId());
         final Map<String, String> newData =
             getCommands().metadata(folder.getId());
 
@@ -213,7 +214,7 @@ public class ResourceAcceptanceTest
     public void testUpdateAclUsers() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
         final User user = tempUser();
         final ACL acl = new ACL();
         final Entry e = new Entry();
@@ -241,7 +242,7 @@ public class ResourceAcceptanceTest
     public void testUpdateResourceAcl() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
         final ACL origAcl =
             getCommands().acl(folder.getId());
         final Entry e = new Entry();
@@ -282,10 +283,10 @@ public class ResourceAcceptanceTest
         // ARRANGE
 
         // ACT
-        final ResourceSummary contentRoot = getCommands().resourceForPath("");
+        final Resource contentRoot = getCommands().resourceForPath("");
 
         // ASSERT
-        assertEquals("content", contentRoot.getName());
+        assertEquals("content", contentRoot.getName().toString());
         assertNull(contentRoot.getParent());
     }
 
@@ -296,17 +297,16 @@ public class ResourceAcceptanceTest
     public void testLockResource() {
 
         // ARRANGE
-
-        final ResourceSummary contentRoot = getCommands().resourceForPath("");
+        final Resource contentRoot = getCommands().resourceForPath("");
 
         // ACT
         getCommands().lock(contentRoot.getId());
 
         // ASSERT
         final User currentUser = getUsers().retrieveCurrent();
-        final ResourceSummary updatedRoot =
+        final Resource updatedRoot =
             getCommands().retrieve(contentRoot.getId());
-        assertEquals(currentUser.getUsername(), updatedRoot.getLockedBy());
+        assertEquals(currentUser.getId(), updatedRoot.getLockedBy());
         getCommands().unlock(contentRoot.getId());
     }
 
@@ -317,27 +317,18 @@ public class ResourceAcceptanceTest
     public void testChangeResourceTemplate() {
 
         // ARRANGE
-
-        final ResourceSummary folder = getCommands().resourceForPath("");
-        final ResourceSummary ts = dummyTemplate(folder);
+        final Folder folder = tempFolder();
+        final Template ts = dummyTemplate(folder);
         getCommands().lock(folder.getId());
 
         // ACT
-        try {
-            getCommands().updateResourceTemplate(
-                folder.getId(), new Resource(ts.getId()));
-        } finally {
-            try {
-                getCommands().unlock(folder.getId());
-            } catch (final Exception e) {
-                LOG.warn("Failed to unlock resource.", e);
-            }
-        }
+        getCommands().updateResourceTemplate(
+            folder.getId(), new Resource(ts.getId()));
 
         // ASSERT
-        final ResourceSummary updatedFolder =
+        final Resource updatedFolder =
             getCommands().retrieve(folder.getId());
-        assertEquals(ts.getId(), updatedFolder.getTemplateId());
+        assertEquals(ts.getId(), updatedFolder.getTemplate2());
     }
 
 
@@ -347,7 +338,7 @@ public class ResourceAcceptanceTest
     public void testUpdateCacheDuration() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
         final Duration origDuration =
             getCommands().cacheDuration(folder.getId());
         final Resource duration =
@@ -382,18 +373,18 @@ public class ResourceAcceptanceTest
     public void testRename() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
         final String newName = UUID.randomUUID().toString();
 
         // ACT
         getCommands().lock(folder.getId());
 
         getCommands().rename(folder.getId(), newName);
-        final ResourceSummary renamed = getCommands().retrieve(folder.getId());
+        final Resource renamed = getCommands().retrieve(folder.getId());
 
         // ASSERT
         assertFalse(newName.equals(folder.getName()));
-        assertEquals(newName, renamed.getName());
+        assertEquals(newName, renamed.getName().toString());
 
     }
 
@@ -404,23 +395,23 @@ public class ResourceAcceptanceTest
     public void testIncludeInMainMenu() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
 
         // ACT
         getCommands().lock(folder.getId());
 
         getCommands().includeInMainMenu(folder.getId());
-        final ResourceSummary included = getCommands().retrieve(folder.getId());
+        final Resource included = getCommands().retrieve(folder.getId());
 
         getCommands().excludeFromMainMenu(folder.getId());
-        final ResourceSummary excluded = getCommands().retrieve(folder.getId());
+        final Resource excluded = getCommands().retrieve(folder.getId());
 
         // ASSERT
-        assertFalse(folder.isIncludeInMainMenu());
+        assertFalse(folder.isInMainMenu());
         assertNull(folder.getLockedBy());
-        assertTrue(included.isIncludeInMainMenu());
+        assertTrue(included.isInMainMenu());
         assertNotNull(included.getLockedBy());
-        assertFalse(excluded.isIncludeInMainMenu());
+        assertFalse(excluded.isInMainMenu());
         assertNotNull(excluded.getLockedBy());
     }
 
@@ -431,17 +422,17 @@ public class ResourceAcceptanceTest
     public void testPublish() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
 
         // ACT
         getCommands().lock(folder.getId());
 
         getCommands().publish(folder.getId());
-        final ResourceSummary published =
+        final Resource published =
             getCommands().retrieve(folder.getId());
 
         getCommands().unpublish(folder.getId());
-        final ResourceSummary unpublished =
+        final Resource unpublished =
             getCommands().retrieve(folder.getId());
 
         // ASSERT
@@ -460,7 +451,7 @@ public class ResourceAcceptanceTest
     public void testResourceForLegacyId() {
 
         // ARRANGE
-        final ResourceSummary f = tempFolder();
+        final Folder f = tempFolder();
 
         final String id = ""+new Random().nextInt(MAX_RANDOM_VALUE);
 
@@ -477,7 +468,7 @@ public class ResourceAcceptanceTest
         final ResourceSummary legacy = getCommands().resourceForLegacyId(id);
 
         // ASSERT
-        assertEquals(f.getName(), legacy.getName());
+        assertEquals(f.getName().toString(), legacy.getName());
         assertEquals(f.getId(), legacy.getId());
     }
 
@@ -488,16 +479,18 @@ public class ResourceAcceptanceTest
     public void testSimpleDelete() {
 
         // ARRANGE
-        final ResourceSummary f = tempFolder();
+        final Folder f = tempFolder();
 
         // ACT
         getCommands().lock(f.getId());
         getCommands().delete(f.getId());
 
         // ASSERT
-        final ResourceSummary resource = getCommands().retrieve(f.getId());
+        final Resource resource = getCommands().retrieve(f.getId());
         assertNull("Resource should be null", resource);
     }
+
+
 
     /**
      * Test.
@@ -505,7 +498,7 @@ public class ResourceAcceptanceTest
     public void testListOver1000() {
 
         // ARRANGE
-        final ResourceSummary f = tempFolder();
+        final Folder f = tempFolder();
         for (int i=0;i<1100;i++) {
             tempPage(f.getId(), null);
         }

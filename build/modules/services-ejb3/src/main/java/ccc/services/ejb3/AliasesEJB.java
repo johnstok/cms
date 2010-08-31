@@ -29,7 +29,6 @@ package ccc.services.ejb3;
 import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
-import java.util.Date;
 import java.util.UUID;
 
 import javax.ejb.Local;
@@ -38,7 +37,6 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.Alias;
 import ccc.api.core.Aliases;
-import ccc.api.core.ResourceSummary;
 import ccc.commands.UpdateAliasCommand;
 import ccc.domain.AliasEntity;
 
@@ -60,29 +58,25 @@ public class AliasesEJB
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID aliasId,
+    public Alias update(final UUID aliasId,
                        final Alias delta) {
         checkPermission(ALIAS_UPDATE);
 
-        new UpdateAliasCommand(
-            getRepoFactory(),
-            delta.getTargetId(),
-            aliasId)
-        .execute(
-            currentUser(),
-            new Date());
+        return
+            execute(
+                new UpdateAliasCommand(
+                    getRepoFactory(),
+                    delta.getTargetId(),
+                    aliasId));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary create(final Alias alias) {
+    public Alias create(final Alias alias) {
         checkPermission(ALIAS_CREATE);
 
-        return commands()
-            .createAliasCommand(alias)
-            .execute(currentUser(), new Date())
-            .mapResource();
+        return execute(commands().createAliasCommand(alias));
     }
 
 

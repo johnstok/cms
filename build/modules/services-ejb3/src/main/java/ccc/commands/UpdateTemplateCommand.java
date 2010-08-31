@@ -44,7 +44,7 @@ import ccc.persistence.IRepositoryFactory;
  */
 public class UpdateTemplateCommand
     extends
-        UpdateResourceCommand<Void> {
+        UpdateResourceCommand<Template> {
 
     private final UUID _templateId;
     private final Template _delta;
@@ -68,7 +68,7 @@ public class UpdateTemplateCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final UserEntity actor,
+    public Template doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
         final TemplateEntity template =
@@ -82,7 +82,7 @@ public class UpdateTemplateCommand
 
         update(template, actor, happenedOn);
 
-        return null;
+        return template.forCurrentRevision();
     }
 
 

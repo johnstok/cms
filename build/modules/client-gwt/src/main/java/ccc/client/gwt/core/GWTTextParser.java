@@ -26,9 +26,11 @@
  */
 package ccc.client.gwt.core;
 
+import ccc.plugins.s11n.S11nException;
 import ccc.plugins.s11n.json.Json;
 import ccc.plugins.s11n.json.TextParser;
 
+import com.google.gwt.json.client.JSONException;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
@@ -46,10 +48,14 @@ public class GWTTextParser
     /** {@inheritDoc} */
     @Override
     public Json parseJson(final String text) {
-        final JSONObject result =
-            JSONParser.parse(text).isObject();
-        final Json json = new GwtJson(result);
-        return json;
+        try {
+            final JSONObject result =
+                JSONParser.parse(text).isObject();
+            final Json json = new GwtJson(result);
+            return json;
+        } catch (final JSONException e) {
+            throw new S11nException(e);
+        }
     }
 
 

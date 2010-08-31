@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.core.Folder;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.FolderEntity;
@@ -46,7 +47,7 @@ import ccc.persistence.IRepositoryFactory;
  */
 public class UpdateFolderCommand
     extends
-        UpdateResourceCommand<Void> {
+        UpdateResourceCommand<Folder> {
 
     private final UUID _folderId;
     private final FolderEntity _folder;
@@ -76,8 +77,8 @@ public class UpdateFolderCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final UserEntity actor,
-                          final Date happenedOn) {
+    public Folder doExecute(final UserEntity actor,
+                            final Date happenedOn) {
 
         final FolderEntity f =
             getRepository().find(FolderEntity.class, _folderId);
@@ -109,7 +110,7 @@ public class UpdateFolderCommand
 
         auditResourceCommand(actor, happenedOn, f);
 
-        return null;
+        return f.forCurrentRevision();
     }
 
 

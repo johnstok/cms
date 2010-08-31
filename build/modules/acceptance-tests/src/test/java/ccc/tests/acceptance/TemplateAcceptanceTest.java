@@ -28,7 +28,8 @@ package ccc.tests.acceptance;
 
 import java.util.UUID;
 
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Folder;
+import ccc.api.core.Resource;
 import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -48,7 +49,7 @@ public class TemplateAcceptanceTest extends
     public void testCreateTemplate() {
 
         // ARRANGE
-        final ResourceSummary templateFolder =
+        final Resource templateFolder =
             getCommands().resourceForPath("/assets/templates");
         final String name = UUID.randomUUID().toString();
 
@@ -62,12 +63,12 @@ public class TemplateAcceptanceTest extends
         t.setMimeType(MimeType.HTML);
 
         // ACT
-        final ResourceSummary ts = getTemplates().create(t);
+        final Template ts = getTemplates().create(t);
 
         // ASSERT
         assertEquals("/assets/templates/"+name, ts.getAbsolutePath());
         assertEquals("t-desc", ts.getDescription());
-        assertEquals(name, ts.getName());
+        assertEquals(name, ts.getName().toString());
         assertEquals("t-title", ts.getTitle());
     }
 
@@ -77,7 +78,7 @@ public class TemplateAcceptanceTest extends
     public void testTemplateDelta() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
+        final Folder folder = tempFolder();
         final String name = UUID.randomUUID().toString();
 
         final Template t = new Template();
@@ -90,7 +91,7 @@ public class TemplateAcceptanceTest extends
         t.setMimeType(MimeType.HTML);
 
         // ACT
-        final ResourceSummary ts = getTemplates().create(t);
+        final Template ts = getTemplates().create(t);
 
         // ACT
         final Template fetched = getTemplates().retrieve(ts.getId());
@@ -107,11 +108,12 @@ public class TemplateAcceptanceTest extends
     public void testTemplateNameExists() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
-        final ResourceSummary t = dummyTemplate(folder);
+        final Folder folder = tempFolder();
+        final Template t = dummyTemplate(folder);
 
         // ACT
-        final Boolean exists = getTemplates().templateNameExists(t.getName());
+        final Boolean exists =
+            getTemplates().templateNameExists(t.getName().toString());
 
         //ASSERT
         assertTrue("Template should exists", exists.booleanValue());
@@ -125,8 +127,8 @@ public class TemplateAcceptanceTest extends
     public void testUpdateTemplate() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
-        final ResourceSummary t = dummyTemplate(folder);
+        final Folder folder = tempFolder();
+        final Template t = dummyTemplate(folder);
 
         final Template delta = new Template();
         delta.setBody("newBody");
@@ -153,8 +155,8 @@ public class TemplateAcceptanceTest extends
     public void testRetrieveTemplateRevision() {
 
         // ARRANGE
-        final ResourceSummary folder = tempFolder();
-        final ResourceSummary t = dummyTemplate(folder);
+        final Folder folder = tempFolder();
+        final Template t = dummyTemplate(folder);
 
         final Template delta = new Template();
         delta.setBody("newBody");
@@ -166,8 +168,8 @@ public class TemplateAcceptanceTest extends
         getTemplates().update(t.getId(), delta);
 
         // ACT
-        Template original = getTemplates().retrieveRevision(t.getId(), 0);
-        Template updated = getTemplates().retrieveRevision(t.getId(), 1);
+        final Template original = getTemplates().retrieveRevision(t.getId(), 0);
+        final Template updated = getTemplates().retrieveRevision(t.getId(), 1);
 
         // ASSERT
         assertEquals("newBody", updated.getBody());

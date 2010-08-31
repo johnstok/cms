@@ -73,6 +73,7 @@ public abstract class ListActionsAction
                              final int count,
                              final String sort,
                              final SortOrder order) {
+        super(USER_ACTIONS.viewActions());
         DBC.require().toBeTrue(page>0);
         DBC.require().toBeTrue(count>0);
 

@@ -30,7 +30,8 @@ import java.util.UUID;
 
 import ccc.acceptance.client.views.CreateTextFileFake;
 import ccc.api.core.File;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Folder;
+import ccc.api.core.Resource;
 import ccc.client.presenters.CreateTextFilePresenter;
 import ccc.client.views.CreateTextFile;
 import ccc.tests.acceptance.AbstractAcceptanceTest;
@@ -50,22 +51,23 @@ public class CreateTextFileAcceptanceTest extends AbstractAcceptanceTest {
     public void testCreateTextFileSuccess() {
 
         // ARRANGE
-        ResourceSummary model = tempFolder();
-        CreateTextFile view = new CreateTextFileFake("text text text",
+        final Folder model = tempFolder();
+        final CreateTextFile view = new CreateTextFileFake("text text text",
             "file"+UUID.randomUUID().toString(),
             "text",
             "html",
             "test comment",
             true);
-        CreateTextFilePresenter p = new CreateTextFilePresenter(view, model);
+        final CreateTextFilePresenter p =
+            new CreateTextFilePresenter(view, model);
 
         // ACT
         p.save();
 
         // ASSERT
-        ResourceSummary rs = getCommands().resourceForPath(
+        final Resource rs = getCommands().resourceForPath(
             model.getAbsolutePath()+"/"+view.getName());
-        File file = getFiles().retrieve(rs.getId());
+        final File file = getFiles().retrieve(rs.getId());
         assertEquals("text text text", file.getContent());
         assertEquals("test comment", file.getComment());
         assertEquals("text", file.getMimeType().getPrimaryType());

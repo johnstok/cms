@@ -117,7 +117,7 @@ public interface Resources {
      * @return A summary of the resource or null if not found.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.ELEMENT)
-    ResourceSummary retrieve(@PathParam("id") UUID resourceId);
+    Resource retrieve(@PathParam("id") UUID resourceId);
 
 
     /**
@@ -204,7 +204,7 @@ public interface Resources {
      * @return A summary of the corresponding resource or null if not found.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.SEARCH_PATH)
-    ResourceSummary resourceForPath(@PathParam("path") String path);
+    Resource resourceForPath(@PathParam("path") String path);
 
 
     /**
@@ -260,7 +260,7 @@ public interface Resources {
      * @param resourceId The id of the resource.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.WC)
-    void applyWorkingCopy(@PathParam("id") UUID resourceId);
+    Resource applyWorkingCopy(@PathParam("id") UUID resourceId);
 
 
     /**
@@ -270,7 +270,7 @@ public interface Resources {
      * @param template DTO specifying the new template to set for the resource.
      */
     @PUT @Path(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
-    void updateResourceTemplate(
+    Resource updateResourceTemplate(
         @PathParam("id") UUID resourceId,
         Resource template);
 
@@ -300,7 +300,7 @@ public interface Resources {
      * @param resourceId The id of the resource to update.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH)
-    ResourceSummary publish(@PathParam("id") UUID resourceId); // FIXME: Should return a Resource.
+    Resource publish(@PathParam("id") UUID resourceId);
 
 
     /**

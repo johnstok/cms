@@ -245,6 +245,30 @@ public class S11nHelper {
 
 
     /**
+     * Read a resource from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding resource.
+     */
+    protected Resource readResource(final Response response) {
+        return serializers().create(Resource.class).read(response.getText());
+    }
+
+
+    /**
+     * Read a folder from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding folder.
+     */
+    protected Folder readFolder(final Response response) {
+        return serializers().create(Folder.class).read(response.getText());
+    }
+
+
+    /**
      * Read a resource summary from a response.
      *
      * @param response The response to read.
@@ -339,6 +363,30 @@ public class S11nHelper {
      */
     protected File readFile(final Response response) {
         return serializers().create(File.class).read(response.getText());
+    }
+
+
+    /**
+     * Read a file from a response.
+     *
+     * @param data The response to read.
+     *
+     * @return The corresponding file.
+     */
+    public File readFile(final String data) {
+        return serializers().create(File.class).read(data);
+    }
+
+
+    /**
+     * Read a template from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding template.
+     */
+    protected Template readTemplate(final Response response) {
+        return serializers().create(Template.class).read(response.getText());
     }
 
 

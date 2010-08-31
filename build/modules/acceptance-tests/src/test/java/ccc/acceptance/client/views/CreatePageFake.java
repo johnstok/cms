@@ -30,8 +30,8 @@ import java.util.Set;
 
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
-import ccc.client.core.Editable;
 import ccc.client.core.ValidationResult;
+import ccc.client.presenters.CreatePagePresenter;
 import ccc.client.views.CreatePage;
 
 
@@ -50,6 +50,7 @@ public class CreatePageFake implements CreatePage {
     private Object _presenter;
     private boolean _showing;
     private final ValidationResult _validationResult = new ValidationResult();
+
 
     /**
      * Constructor.
@@ -72,52 +73,67 @@ public class CreatePageFake implements CreatePage {
         _template = template;
     }
 
+
+    /** {@inheritDoc} */
     @Override
     public void alert(final String message) {
-
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+
+    /** {@inheritDoc} */
     @Override
     public String getComment() {
         return _comment;
     }
 
+
+    /** {@inheritDoc} */
     @Override
     public boolean getMajorEdit() {
         return _majorEdit;
     }
 
+
+    /** {@inheritDoc} */
     @Override
     public String getName() {
         return _name;
     }
 
+
+    /** {@inheritDoc} */
     @Override
     public Set<Paragraph> getParagraphs() {
         return _paragraphs;
     }
 
+
+    /** {@inheritDoc} */
     @Override
     public Template getSelectedTemplate() {
         return _template;
     }
 
+
+    /** {@inheritDoc} */
     @Override
     public void hide() {
         _presenter = null;
         _showing   = false;
     }
 
+
+    /** {@inheritDoc} */
     @Override
-    public void show(final Editable presenter) {
+    public void show(final CreatePagePresenter presenter) {
         _presenter = presenter;
         _showing   = true;
     }
+
 
     @Override
     public ValidationResult getValidationResult() {
         return _validationResult;
     }
-
 }

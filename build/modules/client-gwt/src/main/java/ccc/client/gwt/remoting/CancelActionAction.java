@@ -60,6 +60,7 @@ public class CancelActionAction
      * @param table The action table to work with.
      */
     public CancelActionAction(final ActionTable table) {
+        super(I18n.UI_CONSTANTS.cancel());
         _table = table;
     }
 

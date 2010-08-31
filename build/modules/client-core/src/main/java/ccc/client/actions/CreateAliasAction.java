@@ -58,6 +58,7 @@ public final class CreateAliasAction
      * @param alias The new alias to create.
      */
     public CreateAliasAction(final Alias alias) {
+        super(I18n.UI_CONSTANTS.createAlias());
         _alias = alias;
     }
 

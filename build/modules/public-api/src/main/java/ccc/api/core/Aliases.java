@@ -70,7 +70,7 @@ public interface Aliases {
      * @return A resource summary describing the new alias.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Alias.COLLECTION)
-    ResourceSummary create(Alias alias);
+    Alias create(Alias alias);
 
 
     /**
@@ -80,5 +80,5 @@ public interface Aliases {
      * @param delta The changes to apply.
      */
     @PUT @Path(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
-    void update(@PathParam("id") UUID aliasId, Alias delta);
+    Alias update(@PathParam("id") UUID aliasId, Alias delta);
 }

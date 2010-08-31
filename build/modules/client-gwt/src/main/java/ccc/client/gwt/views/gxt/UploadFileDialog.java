@@ -151,7 +151,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                         } catch (final S11nException e) {
                             hide();
                             ssm.create(
-                                _s11n.readResourceSummary(be.getResultHtml()));
+                                _s11n.readFile(be.getResultHtml()));
                         }
                     }
                 }

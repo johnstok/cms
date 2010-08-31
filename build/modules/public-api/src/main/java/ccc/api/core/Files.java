@@ -77,7 +77,7 @@ public interface Files {
      * @param file The new file representation.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
-    void update(@PathParam("id") UUID id, File file);
+    File update(@PathParam("id") UUID id, File file);
 
 
     /**
@@ -100,7 +100,7 @@ public interface Files {
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.File.COLLECTION)
     @Deprecated
-    ResourceSummary createTextFile(File textFile);
+    File createTextFile(File textFile);
 
 
     /**
@@ -113,7 +113,7 @@ public interface Files {
     @POST @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_COLLECTION)
     @Consumes("multipart/form-data")
     @Produces({"text/html", "application/json"})
-    ResourceSummary create(File file);
+    File create(File file);
 
 
     /**
@@ -127,7 +127,7 @@ public interface Files {
     @POST @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_ELEMENT)
     @Consumes("multipart/form-data")
     @Produces({"text/html", "application/json"})
-    ResourceSummary updateFile(@PathParam("id") UUID fileId, File file);
+    File updateFile(@PathParam("id") UUID fileId, File file);
 
 
     /**

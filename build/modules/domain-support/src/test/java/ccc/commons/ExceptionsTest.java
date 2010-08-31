@@ -39,6 +39,28 @@ import junit.framework.TestCase;
  */
 public final class ExceptionsTest extends TestCase {
 
+
+    /**
+     * Test.
+     */
+    public void testConvertCheckedToUnchecked() {
+
+        // ARRANGE
+        final String message = "Checked";
+
+        // ACT
+        try {
+            Exceptions.chuck(new Exception(message));
+
+        // ASSERT
+        } catch (final RuntimeException e) {
+            fail();
+        } catch (final Exception e) {
+            assertEquals(message, e.getMessage());
+        }
+
+    }
+
     /**
      * Test.
      */

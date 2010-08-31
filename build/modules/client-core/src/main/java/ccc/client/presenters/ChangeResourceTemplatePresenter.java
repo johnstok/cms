@@ -29,7 +29,6 @@ package ccc.client.presenters;
 import java.util.Collection;
 
 import ccc.api.core.Resource;
-import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.CommandType;
 import ccc.client.actions.UpdateResourceTemplateAction;
@@ -46,7 +45,7 @@ import ccc.client.views.ChangeResourceTemplate;
  */
 public class ChangeResourceTemplatePresenter
     extends
-        AbstractPresenter<ChangeResourceTemplate, ResourceSummary>
+        AbstractPresenter<ChangeResourceTemplate, Resource>
     implements
         Editable {
 
@@ -60,12 +59,12 @@ public class ChangeResourceTemplatePresenter
      */
     public ChangeResourceTemplatePresenter(
                                final ChangeResourceTemplate view,
-                               final ResourceSummary model,
+                               final Resource model,
                                final Collection<Template> templates) {
         super(view, model);
 
         getView().setTemplates(templates);
-        getView().setSelectedTemplate(getModel().getTemplateId());
+        getView().setSelectedTemplate(getModel().getTemplate2());
         getView().show(this);
     }
 

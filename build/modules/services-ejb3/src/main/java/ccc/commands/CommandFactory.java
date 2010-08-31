@@ -32,16 +32,16 @@ import java.util.UUID;
 import ccc.api.core.Alias;
 import ccc.api.core.File;
 import ccc.api.core.Page;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.api.core.Template;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
 import ccc.domain.FileEntity;
 import ccc.domain.FolderEntity;
 import ccc.domain.PageEntity;
-import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Search;
+import ccc.domain.TemplateEntity;
 import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
@@ -100,7 +100,7 @@ public class CommandFactory {
      *
      * @return The corresponding command.
      */
-    public Command<? extends ResourceEntity> createTemplateCommand(
+    public Command<TemplateEntity> createTemplateCommand(
                                                 final Template template) {
         return new CreateTemplateCommand(
             _repository,
@@ -116,8 +116,7 @@ public class CommandFactory {
      *
      * @return The corresponding command.
      */
-    public Command<? extends ResourceEntity> createAliasCommand(
-                                                        final Alias alias) {
+    public Command<Alias> createAliasCommand(final Alias alias) {
         return new CreateAliasCommand(
             _repository,
             _audit,
@@ -241,7 +240,7 @@ public class CommandFactory {
      *
      * @return The corresponding command.
      */
-    public Command<ResourceSummary> publishResource(final UUID resourceId) {
+    public Command<Resource> publishResource(final UUID resourceId) {
         return new PublishCommand(
             _repository,
             _audit,

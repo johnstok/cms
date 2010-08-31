@@ -30,7 +30,7 @@ import java.util.UUID;
 
 import ccc.acceptance.client.views.EditTextFileFake;
 import ccc.api.core.File;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Folder;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.client.presenters.EditTextFilePresenter;
@@ -52,20 +52,20 @@ public class EditTextFileAcceptanceTest extends AbstractAcceptanceTest {
     public void testEditTextFileSuccess() {
 
         // ARRANGE
-        ResourceSummary parent = tempFolder();
-        EditTextFile view = new EditTextFileFake("",
+        final Folder parent = tempFolder();
+        final EditTextFile view = new EditTextFileFake("",
             "",
             "",
             "",
             false);
 
-        File textFile = new File(parent.getId(),
+        final File textFile = new File(parent.getId(),
             "content", new MimeType("text", "html"), true, "none", "nocontent");
         textFile.setName(
             new ResourceName("testFile"+UUID.randomUUID().toString()));
-        ResourceSummary fileRs = getFiles().createTextFile(textFile);
+        final File fileRs = getFiles().createTextFile(textFile);
         getCommands().lock(fileRs.getId());
-        EditTextFilePresenter p = new EditTextFilePresenter(view,
+        final EditTextFilePresenter p = new EditTextFilePresenter(view,
             getFiles().retrieve(fileRs.getId()));
 
         view.setText("another text");
@@ -76,7 +76,7 @@ public class EditTextFileAcceptanceTest extends AbstractAcceptanceTest {
         p.save();
 
         // ASSERT
-        File file = getFiles().retrieve(fileRs.getId());
+        final File file = getFiles().retrieve(fileRs.getId());
         assertEquals("plain", file.getMimeType().getSubType());
         assertEquals("application", file.getMimeType().getPrimaryType());
         assertEquals("another text", file.getContent());

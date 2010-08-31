@@ -58,6 +58,7 @@ public abstract class GetAbsolutePathAction
      */
     public GetAbsolutePathAction(final String actionName,
                                  final ResourceSummary resource) {
+        super(actionName);
         _name = actionName;
         _resource = resource;
     }

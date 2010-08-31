@@ -26,23 +26,8 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.ACTION_EXECUTE;
-import static ccc.api.types.Permission.LOG_ENTRY_CREATE;
-import static ccc.api.types.Permission.RESOURCE_ACL_UPDATE;
-import static ccc.api.types.Permission.RESOURCE_CACHE_UPDATE;
-import static ccc.api.types.Permission.RESOURCE_DELETE;
-import static ccc.api.types.Permission.RESOURCE_LOCK;
-import static ccc.api.types.Permission.RESOURCE_MM;
-import static ccc.api.types.Permission.RESOURCE_MOVE;
-import static ccc.api.types.Permission.RESOURCE_PUBLISH;
-import static ccc.api.types.Permission.RESOURCE_READ;
-import static ccc.api.types.Permission.RESOURCE_RENAME;
-import static ccc.api.types.Permission.RESOURCE_UNLOCK;
-import static ccc.api.types.Permission.RESOURCE_UNPUBLISH;
-import static ccc.api.types.Permission.RESOURCE_UPDATE;
-import static ccc.api.types.Permission.SEARCH_CREATE;
-import static javax.ejb.TransactionAttributeType.REQUIRED;
-import static javax.ejb.TransactionAttributeType.REQUIRES_NEW;
+import static ccc.api.types.Permission.*;
+import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
 import java.util.List;
@@ -217,7 +202,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary publish(final UUID resourceId) {
+    public Resource publish(final UUID resourceId) {
         checkPermission(RESOURCE_PUBLISH);
 
         return execute(
@@ -281,23 +266,24 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    public void updateResourceTemplate(final UUID resourceId,
-                                       final UUID templateId) {
+    public Resource updateResourceTemplate(final UUID resourceId,
+                                        final UUID templateId) {
         checkPermission(RESOURCE_UPDATE);
 
-        execute(
-            new ChangeTemplateForResourceCommand(
-                getRepoFactory(), resourceId, templateId));
+        return
+            execute(
+                new ChangeTemplateForResourceCommand(
+                    getRepoFactory(), resourceId, templateId));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateResourceTemplate(final UUID resourceId,
-                                       final Resource pu) {
+    public Resource updateResourceTemplate(final UUID resourceId,
+                                           final Resource pu) {
         checkPermission(RESOURCE_UPDATE);
 
-        updateResourceTemplate(resourceId, pu.getTemplate());
+        return updateResourceTemplate(resourceId, pu.getTemplate());
     }
 
 
@@ -395,15 +381,16 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    public void applyWorkingCopy(final UUID resourceId) {
+    public Resource applyWorkingCopy(final UUID resourceId) {
         checkPermission(RESOURCE_UPDATE);
 
-        execute(
-            new ApplyWorkingCopyCommand(
-                getRepoFactory(),
-                resourceId,
-                null,
-                false));
+        return
+            execute(
+                new ApplyWorkingCopyCommand(
+                    getRepoFactory(),
+                    resourceId,
+                    null,
+                    false));
     }
 
 
@@ -515,14 +502,16 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary resourceForPath(final String rootPath) {
+    public Resource resourceForPath(final String rootPath) {
         checkPermission(RESOURCE_READ);
+
         final ResourceEntity r =
             getResources().lookup(new ResourcePath(rootPath));
+
         if (r == null) {
             return null;
         }
-        return r.mapResource();
+        return r.forCurrentRevision();
     }
 
 
@@ -655,7 +644,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary retrieve(final UUID resourceId) {
+    public Resource retrieve(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
 
         final ResourceEntity r =
@@ -665,7 +654,7 @@ public class ResourcesEJB
         }
         checkRead(r);
 
-        return r.mapResource();
+        return r.forCurrentRevision();
     }
 
     /** {@inheritDoc} */

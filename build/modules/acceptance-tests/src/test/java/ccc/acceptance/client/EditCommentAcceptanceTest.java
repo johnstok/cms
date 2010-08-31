@@ -30,7 +30,9 @@ import java.util.Date;
 
 import ccc.acceptance.client.views.CommentViewFake;
 import ccc.api.core.Comment;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Folder;
+import ccc.api.core.Page;
+import ccc.api.core.Template;
 import ccc.api.types.CommentStatus;
 import ccc.client.presenters.UpdateCommentPresenter;
 import ccc.client.views.ICommentView;
@@ -51,21 +53,22 @@ public class EditCommentAcceptanceTest extends AbstractAcceptanceTest {
     public void testEditCommentSuccess() {
 
         //ARRANGE
-        ResourceSummary parent = tempFolder();
-        ResourceSummary template = dummyTemplate(parent);
-        ResourceSummary pr = tempPage(parent.getId(), template.getId());
+        final Folder parent = tempFolder();
+        final Template template = dummyTemplate(parent);
+        final Page pr = tempPage(parent.getId(), template.getId());
         getCommands().lock(pr.getId());
-        Comment comment =
+        final Comment comment =
             new Comment("author",
                 "btext",
                 pr.getId(),
                 new Date(),
                 "http://foo.foo");
         comment.setEmail("foo@civicuk.com");
-        Comment model = getComments().create(comment);
+        final Comment model = getComments().create(comment);
 
-        ICommentView view = new CommentViewFake();
-        UpdateCommentPresenter p = new UpdateCommentPresenter(view, model);
+        final ICommentView view = new CommentViewFake();
+        final UpdateCommentPresenter p =
+            new UpdateCommentPresenter(view, model);
         view.setBody2("new text");
         view.setEmail("new@civicuk.com");
         view.setAuthor("new");
@@ -76,7 +79,7 @@ public class EditCommentAcceptanceTest extends AbstractAcceptanceTest {
         p.save();
 
         // ASSERT
-        Comment c = getComments().retrieve(model.getId());
+        final Comment c = getComments().retrieve(model.getId());
         assertEquals("new text", c.getBody());
         assertEquals("new", c.getAuthor());
         assertEquals("http://new.civicuk.com", c.getUrl());

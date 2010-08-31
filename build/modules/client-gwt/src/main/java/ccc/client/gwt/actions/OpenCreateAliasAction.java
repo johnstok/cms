@@ -26,9 +26,13 @@
  */
 package ccc.client.gwt.actions;
 
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.Action;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.CreateAliasDialog;
 import ccc.client.presenters.CreateAliasPresenter;
@@ -39,8 +43,8 @@ import ccc.client.presenters.CreateAliasPresenter;
  * @author Civic Computing Ltd.
  */
 public final class OpenCreateAliasAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -50,18 +54,39 @@ public final class OpenCreateAliasAction
      * @param selectionModel The selection model.
      */
     public OpenCreateAliasAction(final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.createAlias());
         _selectionModel = selectionModel;
     }
 
+
     /** {@inheritDoc} */
-    public void execute() {
+    @Override
+    protected boolean beforeExecute() {
         final ResourceSummary item = _selectionModel.tableSelection();
+
         if (item == null) {
             InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
-        } else {
-            new CreateAliasPresenter(
-                new CreateAliasDialog(),
-                item);
+            return false;
         }
+
+        return true;
+    }
+
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return
+            Globals.API_URL
+            + _selectionModel.tableSelection().self().build(
+                InternalServices.ENCODER);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void onOK(final Response response) {
+        final Resource item = readResource(response);
+        new CreateAliasPresenter(new CreateAliasDialog(), item);
     }
 }
