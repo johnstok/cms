@@ -114,7 +114,7 @@ public interface Resources {
      *
      * @param resourceId The id of the existing resource.
      *
-     * @return A summary of the resource.
+     * @return A summary of the resource or null if not found.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.ELEMENT)
     ResourceSummary retrieve(@PathParam("id") UUID resourceId);
@@ -201,7 +201,7 @@ public interface Resources {
      *
      * @param path The absolute path.
      *
-     * @return A summary of the corresponding resource.
+     * @return A summary of the corresponding resource or null if not found.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.SEARCH_PATH)
     ResourceSummary resourceForPath(@PathParam("path") String path);
@@ -212,7 +212,7 @@ public interface Resources {
      *
      * @param legacyId The legacy id of the resource.
      *
-     * @return A summary of the corresponding resource.
+     * @return A summary of the corresponding resource or null if not found.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.SEARCH_LEGACY)
     @Deprecated // Use the list method instead.
@@ -424,7 +424,7 @@ public interface Resources {
      *
      * @param path The absolute path.
      *
-     * @return A summary of the corresponding resource.
+     * @return A summary of the corresponding resource or null if not found.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.PATH_SECURE)
     @Deprecated
@@ -440,7 +440,7 @@ public interface Resources {
      * @param path The absolute path.
      * @param version The version number of the resource to retrieve.
      *
-     * @return A summary of the corresponding resource.
+     * @return A summary of the corresponding resource or null if not found.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.PATH_SECURE)
     @Deprecated
