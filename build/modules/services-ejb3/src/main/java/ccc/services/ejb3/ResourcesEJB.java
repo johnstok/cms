@@ -41,7 +41,6 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityNotFoundException;
 
 import ccc.api.core.ACL;
 import ccc.api.core.PagedCollection;
@@ -65,7 +64,6 @@ import ccc.commands.UpdateCachingCommand;
 import ccc.commands.UpdateResourceAclCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
-import ccc.commons.Exceptions;
 import ccc.commons.streams.ReadToStringAction;
 import ccc.domain.ActionEntity;
 import ccc.domain.FileEntity;
@@ -613,19 +611,18 @@ public class ResourcesEJB
         final StringBuilder sb = new StringBuilder();
         final ResourcePath rp = new ResourcePath(absolutePath);
 
-        try {
-            final ResourceEntity r = getResources().lookup(rp);
-            if (r instanceof FileEntity) {
-                final FileEntity f = (FileEntity) r;
-                if (f.isText()) {
-                    getRepoFactory().createDataRepository().retrieve(
-                        f.getData(),
-                        new ReadToStringAction(sb, charset)
-                    );
-                }
+        final ResourceEntity r = getResources().lookup(rp);
+        if (r == null) {
+            return null;
+        }
+        if (r instanceof FileEntity) {
+            final FileEntity f = (FileEntity) r;
+            if (f.isText()) {
+                getRepoFactory().createDataRepository().retrieve(
+                    f.getData(),
+                    new ReadToStringAction(sb, charset)
+                );
             }
-        } catch (final EntityNotFoundException e) {
-            Exceptions.swallow(e);
         }
         return sb.toString();
     }

@@ -412,7 +412,7 @@ public interface Resources {
      * @param absolutePath The absolute path to the resource.
      * @param charset The character set for the file.
      *
-     * @return The contents as a string.
+     * @return The contents as a string or null if not found.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.TEXT)
     String fileContentsFromPath(@PathParam("path") String absolutePath,
