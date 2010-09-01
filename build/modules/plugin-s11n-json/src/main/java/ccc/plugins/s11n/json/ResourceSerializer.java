@@ -58,6 +58,7 @@ class ResourceSerializer
         final Resource r = new Resource();
 
         ResourceMappings.readRes(json, r);
+        ResourceSummarySerializer.readResSummary(json, r);
         ResourceMappings.readResource(json, r);
 
         return r;
@@ -72,6 +73,7 @@ class ResourceSerializer
         final Json json = newJson();
 
         ResourceMappings.writeRes(json, instance);
+        ResourceSummarySerializer.writeResSummary(instance, json);
         ResourceMappings.writeResource(json, instance);
 
         return json.toString();

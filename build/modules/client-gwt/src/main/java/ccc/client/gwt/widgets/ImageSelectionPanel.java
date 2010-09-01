@@ -118,7 +118,7 @@ public class ImageSelectionPanel extends ContentPanel {
                             _folderField.setValue(
                                 (null==_folder)
                                     ? null
-                                    : _folder.getName());
+                                    : _folder.getName().toString());
                             _pagerBar.refresh();
                         }});
                     folderSelect.show();

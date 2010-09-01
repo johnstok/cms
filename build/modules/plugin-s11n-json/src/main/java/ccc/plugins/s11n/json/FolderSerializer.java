@@ -55,6 +55,7 @@ class FolderSerializer
         final Folder f = new Folder();
 
         ResourceMappings.readRes(json, f);
+        ResourceSummarySerializer.readResSummary(json, f);
         ResourceMappings.readResource(json, f);
         ResourceMappings.readFolder(json, f);
 
@@ -70,6 +71,7 @@ class FolderSerializer
         final Json json = newJson();
 
         ResourceMappings.writeRes(json, instance);
+        ResourceSummarySerializer.writeResSummary(instance, json);
         ResourceMappings.writeResource(json, instance);
         ResourceMappings.writeFolder(json, instance);
 

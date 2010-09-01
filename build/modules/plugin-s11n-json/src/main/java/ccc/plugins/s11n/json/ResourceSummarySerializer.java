@@ -26,9 +26,11 @@
  */
 package ccc.plugins.s11n.json;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
 
@@ -57,40 +59,7 @@ class ResourceSummarySerializer extends BaseSerializer<ResourceSummary> {
         final ResourceSummary s = new ResourceSummary();
 
         ResourceMappings.readRes(json, s);
-
-        s.setId(json.getId(JsonKeys.ID));
-        s.setParent(json.getId(JsonKeys.PARENT_ID));
-        s.setName(json.getString(JsonKeys.NAME));
-        s.setPublishedBy(
-            (null==json.getString(JsonKeys.PUBLISHED_BY))
-                ? null
-                : new Username(json.getString(JsonKeys.PUBLISHED_BY)));
-        s.setTitle(json.getString(JsonKeys.TITLE));
-        s.setLockedBy(
-            (null==json.getString(JsonKeys.LOCKED_BY))
-                ? null
-                : new Username(json.getString(JsonKeys.LOCKED_BY)));
-        s.setType(ResourceType.valueOf(json.getString(JsonKeys.TYPE)));
-        s.setChildCount(json.getInt(JsonKeys.CHILD_COUNT));
-        s.setFolderCount(json.getInt(JsonKeys.FOLDER_COUNT));
-        s.setIncludeInMainMenu(json.getBool(JsonKeys.INCLUDE_IN_MAIN_MENU));
-        s.setHasWorkingCopy(json.getBool(JsonKeys.HAS_WORKING_COPY));
-        s.setDateCreated(json.getDate(JsonKeys.DATE_CREATED));
-        s.setDateChanged(json.getDate(JsonKeys.DATE_CHANGED));
-        s.setTemplateId(json.getId(JsonKeys.TEMPLATE_ID));
-        s.setTags(new HashSet<String>(json.getStrings(JsonKeys.TAGS)));
-        s.setAbsolutePath(json.getString(JsonKeys.ABSOLUTE_PATH));
-        s.setIndexPageId(json.getId(JsonKeys.INDEX_PAGE_ID));
-        s.setDescription(json.getString(JsonKeys.DESCRIPTION));
-        s.setCreatedBy(
-            (null==json.getString(JsonKeys.CREATED_BY))
-                ? null
-                : new Username(json.getString(JsonKeys.CREATED_BY)));
-        s.setChangedBy(
-            (null==json.getString(JsonKeys.CHANGED_BY))
-            ? null
-                : new Username(json.getString(JsonKeys.CHANGED_BY)));
-        s.setVisible(json.getBool(JsonKeys.VISIBLE).booleanValue());
+        readResSummary(json, s);
 
         return s;
     }
@@ -103,11 +72,64 @@ class ResourceSummarySerializer extends BaseSerializer<ResourceSummary> {
         final Json json = newJson();
 
         ResourceMappings.writeRes(json, instance);
+        writeResSummary(instance, json);
+
+        return json.toString();
+    }
+
+
+    static void readResSummary(final Json json, final ResourceSummary s) {
+
+        s.setId(json.getId(JsonKeys.ID));
+        s.setParent(json.getId(JsonKeys.PARENT_ID));
+        final String name = json.getString(JsonKeys.NAME);
+        s.setName((null==name) ? null : new ResourceName(name));
+        s.setPublishedBy(
+            (null==json.getString(JsonKeys.PUBLISHED_BY))
+            ? null
+                : new Username(json.getString(JsonKeys.PUBLISHED_BY)));
+        s.setTitle(json.getString(JsonKeys.TITLE));
+        s.setLockedBy(
+            (null==json.getString(JsonKeys.LOCKED_BY))
+            ? null
+                : new Username(json.getString(JsonKeys.LOCKED_BY)));
+        final String type = json.getString(JsonKeys.TYPE);
+        s.setType((null==type) ? null : ResourceType.valueOf(type));
+        s.setChildCount(json.getInt(JsonKeys.CHILD_COUNT));
+        s.setFolderCount(json.getInt(JsonKeys.FOLDER_COUNT));
+        s.setIncludeInMainMenu(json.getBool(JsonKeys.INCLUDE_IN_MAIN_MENU));
+        s.setHasWorkingCopy(json.getBool(JsonKeys.HAS_WORKING_COPY));
+        s.setDateCreated(json.getDate(JsonKeys.DATE_CREATED));
+        s.setDateChanged(json.getDate(JsonKeys.DATE_CHANGED));
+        s.setTemplateId(json.getId(JsonKeys.TEMPLATE_ID));
+        final Collection<String> tags = json.getStrings(JsonKeys.TAGS);
+        s.setTags((null==tags) ? null : new HashSet<String>(tags));
+        s.setAbsolutePath(json.getString(JsonKeys.ABSOLUTE_PATH));
+        s.setIndexPageId(json.getId(JsonKeys.INDEX_PAGE_ID));
+        s.setDescription(json.getString(JsonKeys.DESCRIPTION));
+        s.setCreatedBy(
+            (null==json.getString(JsonKeys.CREATED_BY))
+            ? null
+                : new Username(json.getString(JsonKeys.CREATED_BY)));
+        s.setChangedBy(
+            (null==json.getString(JsonKeys.CHANGED_BY))
+            ? null
+                : new Username(json.getString(JsonKeys.CHANGED_BY)));
+        s.setVisible(json.getBool(JsonKeys.VISIBLE).booleanValue());
+    }
+
+
+    static void writeResSummary(final ResourceSummary instance,
+                                 final Json json) {
 
         json.set(JsonKeys.ID, instance.getId());
-        json.set(JsonKeys.NAME, instance.getName());
+        json.set(
+            JsonKeys.NAME,
+            (null==instance.getName()) ? null : instance.getName().toString());
         json.set(JsonKeys.PARENT_ID, instance.getParent());
-        json.set(JsonKeys.TYPE, instance.getType().name());
+        json.set(
+            JsonKeys.TYPE,
+            (null==instance.getType()) ? null : instance.getType().name());
         json.set(
             JsonKeys.LOCKED_BY,
             (null==instance.getLockedBy())
@@ -147,9 +169,7 @@ class ResourceSummarySerializer extends BaseSerializer<ResourceSummary> {
             (null==instance.getChangedBy())
                 ? null
                 : instance.getChangedBy().toString());
-        json.set(JsonKeys.VISIBLE, instance.isVisible());
-
-        return json.toString();
+        json.set(JsonKeys.VISIBLE, Boolean.valueOf(instance.isVisible()));
     }
 
 }

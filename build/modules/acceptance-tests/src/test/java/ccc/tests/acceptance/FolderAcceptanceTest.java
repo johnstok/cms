@@ -165,8 +165,8 @@ public class FolderAcceptanceTest
             new ArrayList<ResourceSummary>(children.getElements());
 
         // ASSERT
-        assertNull(folder.getLockedBy());
-        assertNotNull(updated.getLockedBy());
+        assertNull(folder.getLockedById());
+        assertNotNull(updated.getLockedById());
         assertEquals(page2.getId(), list.get(0).getId());
         assertEquals(page1.getId(), list.get(1).getId());
         assertEquals(page3.getId(), list.get(2).getId());
@@ -196,8 +196,8 @@ public class FolderAcceptanceTest
         final Folder updated = getFolders().update(folder.getId(), fd);
 
         // ASSERT
-        assertNull(folder.getLockedBy());
-        assertNotNull(updated.getLockedBy());
+        assertNull(folder.getLockedById());
+        assertNotNull(updated.getLockedById());
         assertEquals(page.getId(), updated.getIndexPage());
     }
 
@@ -255,8 +255,9 @@ public class FolderAcceptanceTest
 
         // ASSERT
         assertEquals(1, roots.getTotalCount());
-        assertEquals(PredefinedResourceNames.CONTENT,
-            roots.getElements().get(0).getName());
+        assertEquals(
+            PredefinedResourceNames.CONTENT,
+            roots.getElements().get(0).getName().toString());
 
     }
 

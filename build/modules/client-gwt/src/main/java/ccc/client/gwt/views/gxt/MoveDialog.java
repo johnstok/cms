@@ -87,7 +87,7 @@ public class MoveDialog extends AbstractEditDialog {
         setPanelId("MovePanel");
 
         _targetName.setFieldLabel(constants().target());
-        _targetName.setValue(item.getName());
+        _targetName.setValue(item.getName().toString());
         _targetName.setReadOnly(true);
         _targetName.disable();
         addField(_targetName);
@@ -113,7 +113,7 @@ public class MoveDialog extends AbstractEditDialog {
                             _parentFolder.setValue(
                                 (null==_parent)
                                     ? null
-                                    : _parent.getName());
+                                    : _parent.getName().toString());
                         }});
                     folderSelect.show();
                 }});

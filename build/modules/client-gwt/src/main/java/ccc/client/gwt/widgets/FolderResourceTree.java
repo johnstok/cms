@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Globals;
@@ -84,7 +85,8 @@ public class FolderResourceTree extends AbstractResourceTree {
                         protected void onSuccess(
                                      final Collection<ResourceSummary> roots) {
                             for (final ResourceSummary rr : roots) {
-                                if (rr.getName().equals("content")) {
+                                if (PredefinedResourceNames.CONTENT.equals(
+                                        rr.getName().toString())) {
                                     callback.onSuccess(
                                         DataBinding.bindResourceSummary(
                                             Collections.singletonList(rr)));

@@ -34,6 +34,7 @@ import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.types.Permission;
+import ccc.api.types.ResourceName;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Action;
 import ccc.client.core.Globals;
@@ -171,7 +172,7 @@ public class MainMenu
                         @Override protected void onSuccess(
                                       final Collection<ResourceSummary> roots) {
                             for (final ResourceSummary root : roots) {
-                                if (rootName.equals(root.getName())) {
+                                if (rootName.equals(root.getName().toString())) {
                                     addRootMenuItems(root, rootMenu);
                                 }
                             }
@@ -189,7 +190,7 @@ public class MainMenu
     private void addRootMenuItems(final ResourceSummary root,
                                   final Menu rootMenu) {
         final SingleSelectionModel ssm = createSsm(root);
-        final String name = root.getName();
+        final ResourceName name = root.getName();
 
         rootMenu.add(rootDetailMenuItem(root, name));
 
@@ -271,7 +272,7 @@ public class MainMenu
     }
 
     private MenuItem rootDetailMenuItem(final ResourceSummary root,
-                                        final String name) {
+                                        final ResourceName name) {
 
         return createMenuItem(
             "details-root-"+name,

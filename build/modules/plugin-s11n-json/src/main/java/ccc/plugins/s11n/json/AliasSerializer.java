@@ -55,6 +55,7 @@ class AliasSerializer
         final Alias a = new Alias();
 
         ResourceMappings.readRes(json, a);
+        ResourceSummarySerializer.readResSummary(json, a);
         ResourceMappings.readResource(json, a);
         ResourceMappings.readAlias(json, a);
 
@@ -70,6 +71,7 @@ class AliasSerializer
         final Json json = newJson();
 
         ResourceMappings.writeRes(json, instance);
+        ResourceSummarySerializer.writeResSummary(instance, json);
         ResourceMappings.writeResource(json, instance);
         ResourceMappings.writeAlias(json, instance);
 

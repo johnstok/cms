@@ -116,12 +116,6 @@ public class FilesEJB
                 file.getInputStream())
             .execute(u, dateCreated);
 
-        if (file.isPublished()) {
-            f.lock(u);
-            commands().publishResource(f.getId()).execute(u, dateCreated);
-            f.unlock(u);
-        }
-
         return f.forCurrentRevision();
     }
 
@@ -201,7 +195,6 @@ public class FilesEJB
         f.setParent(file.getParent());
         f.setInputStream(new ByteArrayInputStream(bytes));
         f.setSize(bytes.length);
-        f.setPublished(false);
         f.setMajorEdit(file.isMajorEdit());
         f.setComment(file.getComment());
         f.setDateCreated(new Date());

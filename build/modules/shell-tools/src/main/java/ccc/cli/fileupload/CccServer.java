@@ -29,6 +29,8 @@ package ccc.cli.fileupload;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -89,25 +91,43 @@ public class CccServer implements Server {
                            final boolean publish) {
 
         try {
-            final MimeType type = HTTP.determineMimetype(localFile.getName());
+            final InputStream is = new FileInputStream(localFile);
+            try {
+                final MimeType type =
+                    HTTP.determineMimetype(localFile.getName());
 
-            final ccc.api.core.File f = new ccc.api.core.File(
-                type,
-                null,
-                null,
-                ResourceName.escape(localFile.getName()),
-                localFile.getName(),
-                new HashMap<String, String>()
-            );
+                final ccc.api.core.File f = new ccc.api.core.File(
+                    type,
+                    null,
+                    null,
+                    ResourceName.escape(localFile.getName()),
+                    localFile.getName(),
+                    new HashMap<String, String>()
+                );
 
-            f.setDescription(localFile.getName());
-            f.setParent(parentFolder);
-            f.setInputStream(new FileInputStream(localFile));
-            f.setSize(localFile.length());
-            f.setPublished(publish);
-            f.setComment("Uploaded.");
+                f.setDescription(localFile.getName());
+                f.setParent(parentFolder);
+                f.setInputStream(is);
+                f.setSize(localFile.length());
+                f.setComment("Uploaded.");
 
-            _uploader.create(f);
+                final Resource created = _uploader.create(f);
+
+                if (publish) {
+                    _resources.lock(created.getId());
+                    _resources.publish(created.getId());
+                    _resources.unlock(created.getId());
+                }
+            } finally {
+                try {
+                    is.close();
+                } catch (final IOException e) {
+                    LOG.warn(
+                        "Error closing stream on "+localFile.getAbsolutePath(),
+                        e);
+                }
+            }
+
         } catch (final FileNotFoundException e) {
             LOG.warn("Failed to upload file: "+localFile.getAbsolutePath(), e);
         }

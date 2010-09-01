@@ -64,7 +64,7 @@ public class ChangeResourceTemplatePresenter
         super(view, model);
 
         getView().setTemplates(templates);
-        getView().setSelectedTemplate(getModel().getTemplate2());
+        getView().setSelectedTemplate(getModel().getTemplateId());
         getView().show(this);
     }
 

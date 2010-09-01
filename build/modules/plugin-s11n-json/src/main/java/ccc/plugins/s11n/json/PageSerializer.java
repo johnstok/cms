@@ -55,6 +55,7 @@ class PageSerializer
         final Page p = new Page();
 
         ResourceMappings.readRes(json, p);
+        ResourceSummarySerializer.readResSummary(json, p);
         ResourceMappings.readResource(json, p);
         ResourceMappings.readPage(json, p);
 
@@ -69,6 +70,7 @@ class PageSerializer
         final Json json = newJson();
 
         ResourceMappings.writeRes(json, instance);
+        ResourceSummarySerializer.writeResSummary(instance, json);
         ResourceMappings.writeResource(json, instance);
         ResourceMappings.writePage(json, instance);
 

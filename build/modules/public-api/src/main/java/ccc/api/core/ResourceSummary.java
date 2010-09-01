@@ -33,6 +33,7 @@ import java.util.UUID;
 
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
+import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
 
@@ -43,105 +44,33 @@ import ccc.api.types.Username;
  *
  * @author Civic Computing Ltd.
  */
-public final class ResourceSummary extends Res {
+public class ResourceSummary extends Res {
 
     private UUID         _id;
     private UUID         _parent;
-    private String       _name;
+    private ResourceName _name;
     private ResourceType _type;
     private boolean      _isVisible;
     private Date         _dateCreated;
     private Date         _dateChanged;
     private boolean      _hasWorkingCopy;
     private boolean      _includeInMainMenu;
-
-    // Add to Resource
     private Username     _publishedBy;
     private Username     _lockedBy;
     private int          _childCount;
     private int          _folderCount;
-
-    // Remove
+    private String       _absolutePath;
     private String       _title;
+
+    // Move to Resource
     private Username     _createdBy;
     private Username     _changedBy;
     private UUID         _templateId;
     private Set<String>  _tags;
-    private String       _absolutePath;
-    private UUID         _indexPageId;
     private String       _description;
 
-    /**
-     * Constructor.
-     */
-    public ResourceSummary() { super(); }
-
-
-    /**
-     * Constructor.
-     *
-     * @param id The resource's id.
-     * @param parent The resource's parent folder id.
-     * @param name The resource's name.
-     * @param publishedBy The user that published the resource.
-     * @param title The resource's title.
-     * @param lockedBy The user that locked the resource.
-     * @param type The type of the resource.
-     * @param childCount The number of children the resource has.
-     * @param folderCount The number of folders the resource contains.
-     * @param includeInMainMenu Is the resource included in the main menu.
-     * @param hasWorkingCopy Does the resource have a working copy.
-     * @param dateCreated When was the resource created.
-     * @param dateChanged When was the resource last changed.
-     * @param templateId The id of the resource's template.
-     * @param tags The resource's tags.
-     * @param absolutePath The resource's absolute path.
-     * @param indexPageId The id of the index page.
-     * @param description The description of the resource.
-     * @param createdBy The user who created the resource.
-     * @param changedBy The user who changed the resource.
-     */
-    public ResourceSummary(final UUID id,
-                           final UUID parent,
-                           final String name,
-                           final Username publishedBy,
-                           final String title,
-                           final Username lockedBy,
-                           final ResourceType type,
-                           final int childCount,
-                           final int folderCount,
-                           final boolean includeInMainMenu,
-                           final boolean hasWorkingCopy,
-                           final Date dateCreated,
-                           final Date dateChanged,
-                           final UUID templateId,
-                           final Set<String> tags,
-                           final String absolutePath,
-                           final UUID indexPageId,
-                           final String description,
-                           final Username createdBy,
-                           final Username changedBy) {
-        _id = id;
-        _parent = parent;
-        _name = name;
-        _publishedBy = publishedBy;
-        _title = title;
-        _lockedBy = lockedBy;
-        _type = type;
-        _childCount = childCount;
-        _folderCount = folderCount;
-        _includeInMainMenu = includeInMainMenu;
-        _hasWorkingCopy = hasWorkingCopy;
-        _dateCreated = new Date(dateCreated.getTime());
-        _dateChanged = new Date(dateChanged.getTime());
-        _templateId = templateId;
-        _tags = tags;
-        _absolutePath = absolutePath;
-        _indexPageId = indexPageId;
-        _description = description;
-        _createdBy = createdBy;
-        _changedBy = changedBy;
-    }
+    // Move to Folder
+    private UUID         _indexPageId;
 
 
     /**
@@ -169,7 +98,7 @@ public final class ResourceSummary extends Res {
      *
      * @return Returns the name.
      */
-    public String getName() {
+    public ResourceName getName() {
         return _name;
     }
 
@@ -279,7 +208,10 @@ public final class ResourceSummary extends Res {
      * @return Returns the dateCreated.
      */
     public Date getDateCreated() {
-        return new Date(_dateCreated.getTime());
+        return
+            (null==_dateCreated)
+                ? null
+                : new Date(_dateCreated.getTime());
     }
 
 
@@ -289,7 +221,10 @@ public final class ResourceSummary extends Res {
      * @return Returns the dateChanged.
      */
     public Date getDateChanged() {
-        return new Date(_dateChanged.getTime());
+        return
+            (null==_dateChanged)
+                ? null
+                : new Date(_dateChanged.getTime());
     }
 
 
@@ -328,7 +263,7 @@ public final class ResourceSummary extends Res {
      *
      * @param name The name to set.
      */
-    public void setName(final String name) {
+    public void setName(final ResourceName name) {
         _name = name;
     }
 
@@ -399,7 +334,10 @@ public final class ResourceSummary extends Res {
      * @param tags The tags to set.
      */
     public void setTags(final Set<String> tags) {
-        _tags = tags;
+        _tags =
+            (null==tags)
+                ? new HashSet<String>()
+                : new HashSet<String>(tags);
     }
 
 
@@ -556,7 +494,10 @@ public final class ResourceSummary extends Res {
      * @param dateCreated The dateCreated to set.
      */
     public void setDateCreated(final Date dateCreated) {
-        _dateCreated = dateCreated;
+        _dateCreated =
+            (null==dateCreated)
+                ? null
+                : new Date(dateCreated.getTime());
     }
 
 
@@ -566,7 +507,10 @@ public final class ResourceSummary extends Res {
      * @param dateChanged The dateChanged to set.
      */
     public void setDateChanged(final Date dateChanged) {
-        _dateChanged = dateChanged;
+        _dateChanged =
+            (null==dateChanged)
+                ? null
+                : dateChanged;
     }
 
 

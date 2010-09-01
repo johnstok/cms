@@ -88,7 +88,7 @@ public class ShellToolsAcceptanceTest
                 Resources.open("upload/example/hello.txt"),
                 Charset.forName("UTF-8")),
             contents);
-        assertEquals(u.getId(), rs.getPublishedBy());
+        assertEquals(u.getId(), rs.getPublishedById());
     }
 
 

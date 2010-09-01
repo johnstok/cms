@@ -35,6 +35,7 @@ import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceName;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
@@ -94,7 +95,7 @@ public class UpdatePageDialog
     }
 
 
-    private void drawGUI(final String pageName) {
+    private void drawGUI(final ResourceName pageName) {
         _panel.populateFields(_paras, pageName);
         _panel.layout();
 

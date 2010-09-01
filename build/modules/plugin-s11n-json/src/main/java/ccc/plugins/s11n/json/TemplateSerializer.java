@@ -55,6 +55,7 @@ class TemplateSerializer
         final Template t = new Template();
 
         ResourceMappings.readRes(json, t);
+        ResourceSummarySerializer.readResSummary(json, t);
         ResourceMappings.readResource(json, t);
         ResourceMappings.readTemplate(json, t);
 
@@ -70,6 +71,7 @@ class TemplateSerializer
         final Json json = newJson();
 
         ResourceMappings.writeRes(json, instance);
+        ResourceSummarySerializer.writeResSummary(instance, json);
         ResourceMappings.writeResource(json, instance);
         ResourceMappings.writeTemplate(json, instance);
 

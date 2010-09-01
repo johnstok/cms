@@ -48,8 +48,6 @@ import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
 import ccc.api.types.Range;
-import ccc.api.types.ResourceName;
-import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 
 
@@ -65,67 +63,24 @@ public class ResourceMappings {
             DurationSerializer.writeDuration(
                 instance.getCacheDuration(), json.create());
 
-        json.set(ResourceSerializer.WORKING_COPY, instance.isWcAvailable());
-        json.set(JsonKeys.ABSOLUTE_PATH, instance.getAbsolutePath());
         json.set(JsonKeys.CACHE_DURATION, durationJson);
-        json.set(JsonKeys.DATE_CHANGED, instance.getDateChanged());
-        json.set(JsonKeys.DATE_CREATED, instance.getDateCreated());
-        json.set(JsonKeys.DESCRIPTION, instance.getDescription());
-        json.set(JsonKeys.ID, instance.getId());
-        json.set(
-            JsonKeys.INCLUDE_IN_MAIN_MENU,
-            Boolean.valueOf(instance.isInMainMenu()));
-        json.set(JsonKeys.LOCKED, Boolean.valueOf(instance.isLocked()));
-        json.set(JsonKeys.PUBLISHED, Boolean.valueOf(instance.isPublished()));
         json.set(JsonKeys.SECURE, Boolean.valueOf(instance.isSecure()));
-        json.set(JsonKeys.VISIBLE, Boolean.valueOf(instance.isVisible()));
-        json.set(JsonKeys.LOCKED_BY, instance.getLockedBy());
+        json.set(JsonKeys.LOCKED_BY+"-id", instance.getLockedById());
         json.set(JsonKeys.METADATA, instance.getMetadata());
-        json.set(
-            JsonKeys.NAME,
-            (null==instance.getName()) ? null : instance.getName().toString());
-        json.set(JsonKeys.PARENT_ID, instance.getParent());
-        json.set(JsonKeys.PUBLISHED_BY, instance.getPublishedBy());
+        json.set(JsonKeys.PUBLISHED_BY+"-id", instance.getPublishedById());
         json.set(JsonKeys.REVISION, Long.valueOf(instance.getRevision()));
-        json.setStrings(JsonKeys.TAGS, instance.getTags());
-        json.set(JsonKeys.TEMPLATE_ID, instance.getTemplate());
-        json.set(JsonKeys.TEMPLATE_ID+"2", instance.getTemplate2());
-        json.set(JsonKeys.TITLE, instance.getTitle());
-        json.set(
-            JsonKeys.TYPE,
-            (null==instance.getType()) ? null : instance.getType().name());
+        json.set(JsonKeys.TEMPLATE_ID+"2", instance.getTemplate());
     }
 
     public static void readResource(final Json json, final Resource r) {
-        r.setWcAvailable(
-            json.getBool(ResourceSerializer.WORKING_COPY).booleanValue());
-        r.setAbsolutePath(json.getString(JsonKeys.ABSOLUTE_PATH));
         r.setCacheDuration(
             DurationSerializer.read(json.getJson(JsonKeys.CACHE_DURATION)));
-        r.setDateChanged(json.getDate(JsonKeys.DATE_CHANGED));
-        r.setDateCreated(json.getDate(JsonKeys.DATE_CREATED));
-        r.setDescription(json.getString(JsonKeys.DESCRIPTION));
-        r.setId(json.getId(JsonKeys.ID));
-        r.setInMainMenu(
-            json.getBool(JsonKeys.INCLUDE_IN_MAIN_MENU).booleanValue());
-        r.setLocked(json.getBool(JsonKeys.LOCKED).booleanValue());
-        r.setPublished(json.getBool(JsonKeys.PUBLISHED).booleanValue());
         r.setSecure(json.getBool(JsonKeys.SECURE).booleanValue());
-        r.setVisible(json.getBool(JsonKeys.VISIBLE).booleanValue());
-        r.setLockedBy(json.getId(JsonKeys.LOCKED_BY));
         r.setMetadata(json.getStringMap(JsonKeys.METADATA));
-        final String name = json.getString(JsonKeys.NAME);
-        r.setName((null==name) ? null : new ResourceName(name));
-        r.setParent(json.getId(JsonKeys.PARENT_ID));
-        r.setPublishedBy(json.getId(JsonKeys.PUBLISHED_BY));
         r.setRevision(json.getInt(JsonKeys.REVISION).intValue());
-        final Collection<String> tags = json.getStrings(JsonKeys.TAGS);
-        r.setTags((null==tags) ? null : new HashSet<String>(tags));
-        r.setTemplate(json.getId(JsonKeys.TEMPLATE_ID));
-        r.setTemplate2(json.getId(JsonKeys.TEMPLATE_ID+"2"));
-        r.setTitle(json.getString(JsonKeys.TITLE));
-        final String type = json.getString(JsonKeys.TYPE);
-        r.setType((null==type) ? null : ResourceType.valueOf(type));
+        r.setLockedBy(json.getId(JsonKeys.LOCKED_BY+"-id"));
+        r.setPublishedBy(json.getId(JsonKeys.PUBLISHED_BY+"-id"));
+        r.setTemplate(json.getId(JsonKeys.TEMPLATE_ID+"2"));
     }
 
     public static void writeTemplate(final Json json, final Template instance) {

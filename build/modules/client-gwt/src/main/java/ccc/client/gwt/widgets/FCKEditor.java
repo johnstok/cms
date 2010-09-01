@@ -216,7 +216,7 @@ public class FCKEditor extends LayoutContainer {
             protected void onSuccess(final Collection<ResourceSummary> roots) {
                 ResourceSummary rs = null;
                 for (final ResourceSummary rr : roots) {
-                    if (rr.getName().equals("content")) {
+                    if (rr.getName().toString().equals("content")) {
                         rs = rr;
                     }
                 }

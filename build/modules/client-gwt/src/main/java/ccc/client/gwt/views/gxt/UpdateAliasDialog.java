@@ -27,7 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.core.InternalServices.VALIDATOR;
+import static ccc.client.core.InternalServices.*;
 
 import java.util.UUID;
 
@@ -87,7 +87,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
 
         _aliasName.setFieldLabel(constants().name());
         _aliasName.setId("AliasName");
-        _aliasName.setValue(_alias.getName());
+        _aliasName.setValue(_alias.getName().toString());
         _aliasName.setReadOnly(true);
         _aliasName.disable();
         addField(_aliasName);
@@ -111,7 +111,8 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                             if (target != null
                              && target.getType() != ResourceType.RANGE_FOLDER) {
                                 _targetId = target.getId();
-                                _targetName.setValue(target.getName());
+                                _targetName.setValue(
+                                    target.getName().toString());
                             }
                         }});
                     resourceSelect.show();

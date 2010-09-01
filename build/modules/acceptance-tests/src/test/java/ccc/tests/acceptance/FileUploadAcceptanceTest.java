@@ -81,7 +81,7 @@ public class FileUploadAcceptanceTest
         // ASSERT
         final Resource fWC = getCommands().retrieve(file.getId());
         assertEquals("Hello!", getBrowser().previewContent(file, false));
-        assertFalse(fWC.isWcAvailable());
+        assertFalse(fWC.isHasWorkingCopy());
     }
 
     /**
@@ -130,7 +130,7 @@ public class FileUploadAcceptanceTest
         Resource fWC = getCommands().retrieve(file.getId());
         assertEquals("Update!", getBrowser().previewContent(file, false));
         assertEquals("Hello!", getBrowser().previewContent(file, true));
-        assertTrue(fWC.isWcAvailable());
+        assertTrue(fWC.isHasWorkingCopy());
 
         // Apply working copy
         getCommands().applyWorkingCopy(file.getId());
@@ -143,7 +143,7 @@ public class FileUploadAcceptanceTest
         assertEquals(2, rev3.getIndex());
         assertEquals("Hello!", getBrowser().previewContent(file, false));
         fWC = getCommands().retrieve(file.getId());
-        assertFalse(fWC.isWcAvailable());
+        assertFalse(fWC.isHasWorkingCopy());
     }
 
     /**
@@ -167,7 +167,6 @@ public class FileUploadAcceptanceTest
         f.setParent(filesFolder.getId());
         f.setInputStream(new ByteArrayInputStream(new byte[] {0, 1, 2, 3, 4}));
         f.setSize(5);
-        f.setPublished(false);
 
         // ACT
         final File rs = getFiles().create(f);
@@ -316,7 +315,6 @@ public class FileUploadAcceptanceTest
         f.setParent(rs.getParent());
         f.setInputStream(new ByteArrayInputStream(updateBytes));
         f.setSize(updateBytes.length);
-        f.setPublished(false);
         f.setComment("Test update.");
 
         // ACT

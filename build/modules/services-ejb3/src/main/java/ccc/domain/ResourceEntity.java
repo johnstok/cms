@@ -798,42 +798,6 @@ public abstract class ResourceEntity
     }
 
 
-//    /** {@inheritDoc} */
-//    @Override public void toJson(final Json json) {
-//        super.toJson(json);
-//        json.set(JsonKeys.TITLE, getTitle());
-//        json.set(JsonKeys.NAME, getName().toString());
-//        json.set(
-//            JsonKeys.TEMPLATE_ID,
-//            (null==getTemplate()) ? null : getTemplate().getId().toString());
-//        json.set(
-//            JsonKeys.PARENT_ID,
-//            (null==getParent()) ? null : getParent().getId().toString());
-//        json.set(
-//            JsonKeys.LOCKED_BY,
-//            (null==getLockedBy()) ? null : getLockedBy().getId().toString());
-//        json.setStrings(JsonKeys.TAGS, new ArrayList<String>(getTags()));
-//        json.set(
-//            JsonKeys.ACL,
-//            new ACLSerializer().write(json.create(), getAcl()));
-//        json.set(
-//            JsonKeys.PUBLISHED_BY,
-//            (null==getPublishedBy())
-//                ? null
-//                : getPublishedBy().getId().toString());
-//        json.set(
-//            JsonKeys.INCLUDE_IN_MAIN_MENU,
-//            Boolean.valueOf(isIncludedInMainMenu()));
-//        json.set(JsonKeys.DATE_CREATED, getDateCreated());
-//        json.set(JsonKeys.DATE_CHANGED, getDateChanged());
-//        json.set(
-//            JsonKeys.CACHE_DURATION,
-//            new DurationSerializer().write(json.create(), getCacheDuration()));
-//        json.set(JsonKeys.DESCRIPTION, getDescription());
-//        json.set(JsonKeys.TYPE, getType().name());
-//        json.set(JsonKeys.DELETED, Boolean.valueOf(isDeleted()));
-//    }
-
 
     /**
      * Accessor.
@@ -854,65 +818,64 @@ public abstract class ResourceEntity
      * @param dto The DTO to populate.
      */
     protected void setDtoProps(final Resource dto) {
+        setSummaryProps(dto);
+
         /* These methods are in alphabetical order, for simplicity. */
-        dto.setAbsolutePath(getAbsolutePath().removeTop().toString());
         dto.setCacheDuration(computeCache());
-        dto.setDateChanged(getDateChanged());
-        dto.setDateCreated(getDateCreated());
-        dto.setDescription(getDescription());
-        dto.setId(getId());
-        dto.setInMainMenu(isIncludedInMainMenu());
-        dto.setLocked(isLocked());
         dto.setLockedBy((isLocked()) ? getLockedBy().getId() : null);
         dto.setMetadata(computeMetadata());
-        dto.setName(getName());
-        dto.setParent((null==getParent())?null:getParent().getId());
-        dto.setPublished(isPublished());
         dto.setPublishedBy((isPublished()) ? getPublishedBy().getId() : null);
         dto.setSecure(isSecure());
-        dto.setTags(getTags());
         dto.setTemplate(
             (null==computeTemplate(null))
                 ? null
                 : computeTemplate(null).getId());
-        dto.setTemplate2(
-            (null==getTemplate())
-                ? null
-                : getTemplate().getId());
-        dto.setTitle(getTitle());
-        dto.setType(getType());
-        dto.setVisible(isVisible());
+    }
+
+
+    private void setSummaryProps(final ResourceSummary rs) {
+        /* These methods are in alphabetical order, for simplicity. */
+        int childCount = 0;
+        int folderCount = 0;
+        UUID indexPage = null;
         boolean hasWorkingCopy = false;
-        if (getType() == ResourceType.PAGE) {
+        if (getType() == ResourceType.FOLDER) {
+            childCount = as(FolderEntity.class).getEntries().size();
+            folderCount = as(FolderEntity.class).getFolders().size();
+            indexPage = (null==as(FolderEntity.class).getIndexPage())
+            ? null : as(FolderEntity.class).getIndexPage().getId();
+        } else if (getType() == ResourceType.PAGE) {
             hasWorkingCopy = (as(PageEntity.class).hasWorkingCopy());
         } else if (getType() == ResourceType.FILE) {
             hasWorkingCopy = (as(FileEntity.class).hasWorkingCopy());
         }
-        dto.setWcAvailable(hasWorkingCopy);
 
-        dto.addLink(
-            Resource.METADATA,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
-                .build("id", getId().toString(), new NormalisingEncoder()));
-        dto.addLink(
-            Resource.TEMPLATE,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
-            .build("id", getId().toString(), new NormalisingEncoder()));
-        dto.addLink(
-            Resource.DURATION,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
-            .build("id", getId().toString(), new NormalisingEncoder()));
-        dto.addLink(
-            Resource.NAME,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.NAME)
-            .build("id", getId().toString(), new NormalisingEncoder()));
-        if (ResourceType.FOLDER==getType()) {
-            dto.addLink(
-                Folder.EXISTS,
-                new Link(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
-                .build("id", getId().toString(), new NormalisingEncoder())
-                + "/{name}/exists"); // FIXME: How to only replace one param
-        }
+        rs.setAbsolutePath(getAbsolutePath().removeTop().toString());
+        rs.setChangedBy(
+            (getChangedBy() != null) ? getChangedBy().getUsername() : null);
+        rs.setChildCount(childCount);
+        rs.setCreatedBy(
+            (getCreatedBy() != null) ? getCreatedBy().getUsername() : null);
+        rs.setDateChanged(getDateChanged());
+        rs.setDateCreated(getDateCreated());
+        rs.setDescription(getDescription());
+        rs.setFolderCount(folderCount);
+        rs.setHasWorkingCopy(hasWorkingCopy);
+        rs.setId(getId());
+        rs.setIncludeInMainMenu(isIncludedInMainMenu());
+        rs.setIndexPageId(indexPage);
+        rs.setLockedBy((isLocked()) ? getLockedBy().getUsername() : null);
+        rs.setName(getName());
+        rs.setParent((null==getParent()) ? null : getParent().getId());
+        rs.setPublishedBy((isPublished())
+            ? getPublishedBy().getUsername() : null);
+        rs.setTags(getTags());
+        rs.setTemplateId((null==getTemplate()) ? null : getTemplate().getId());
+        rs.setTitle(getTitle());
+        rs.setType(getType());
+        rs.setVisible(isVisible());
+
+        addLinks(rs);
     }
 
 
@@ -939,49 +902,17 @@ public abstract class ResourceEntity
      * @return The corresponding summary.
      */
     public ResourceSummary mapResource() {
-        int childCount = 0;
-        int folderCount = 0;
-        UUID indexPage = null;
-        boolean hasWorkingCopy = false;
-        if (getType() == ResourceType.FOLDER) {
-            childCount = as(FolderEntity.class).getEntries().size();
-            folderCount = as(FolderEntity.class).getFolders().size();
-            indexPage = (null==as(FolderEntity.class).getIndexPage())
-                ? null : as(FolderEntity.class).getIndexPage().getId();
-        } else if (getType() == ResourceType.PAGE) {
-            hasWorkingCopy = (as(PageEntity.class).hasWorkingCopy());
-        } else if (getType() == ResourceType.FILE) {
-            hasWorkingCopy = (as(FileEntity.class).hasWorkingCopy());
-        }
+        final ResourceSummary rs = new ResourceSummary();
+        setSummaryProps(rs);
+        return rs;
+    }
 
-        final ResourceSummary rs =
-            new ResourceSummary(
-                getId(),
-                (null==getParent()) ? null : getParent().getId(),
-                getName().toString(),
-                (isPublished())
-                    ? getPublishedBy().getUsername() : null,
-                getTitle(),
-                (isLocked()) ? getLockedBy().getUsername() : null,
-                getType(),
-                childCount,
-                folderCount,
-                isIncludedInMainMenu(),
-                hasWorkingCopy,
-                getDateCreated(),
-                getDateChanged(),
-                (null==getTemplate()) ? null : getTemplate().getId(),
-                getTags(),
-                getAbsolutePath().removeTop().toString(),
-                indexPage,
-                getDescription(),
-                (getCreatedBy() != null)
-                    ? getCreatedBy().getUsername() : null,
-                (getChangedBy() != null)
-                    ? getChangedBy().getUsername() : null
-            );
-        rs.setVisible(isVisible());
 
+    private void addLinks(final ResourceSummary rs) {
+        rs.addLink(
+            Resource.NAME,
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.NAME)
+            .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.REVISIONS,
             new Link(ccc.api.core.ResourceIdentifiers.Resource.REVISIONS)
@@ -1107,8 +1038,6 @@ public abstract class ResourceEntity
             default:
                 break;
         }
-
-        return rs;
     }
 
 

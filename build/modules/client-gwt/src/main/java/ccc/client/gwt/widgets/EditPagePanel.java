@@ -120,8 +120,8 @@ public class EditPagePanel
      * @param pageName The name of the page.
      */
     public void populateFields(final Set<Paragraph> paras,
-                               final String pageName) {
-        _name.setValue(pageName);
+                               final ResourceName pageName) {
+        _name.setValue(pageName.toString());
         _name.setReadOnly(true);
         _name.disable();
 

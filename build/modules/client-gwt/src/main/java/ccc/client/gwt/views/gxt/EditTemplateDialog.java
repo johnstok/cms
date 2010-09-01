@@ -166,7 +166,7 @@ public class EditTemplateDialog
         _name.setReadOnly(true);
         _name.disable();
 
-        _name.setValue(proxy.getName());
+        _name.setValue(proxy.getName().toString());
         _mimePrimary.setValue(model.getMimeType().getPrimaryType());
         _mimeSub.setValue(model.getMimeType().getSubType());
         refresh();

@@ -64,6 +64,6 @@ public class ChangeResourceTemplateAcceptanceTest
 
         // ASSERT
         final Resource folder = getCommands().retrieve(model.getId());
-        assertEquals(template.getId(), folder.getTemplate2());
+        assertEquals(template.getId(), folder.getTemplateId());
     }
 }

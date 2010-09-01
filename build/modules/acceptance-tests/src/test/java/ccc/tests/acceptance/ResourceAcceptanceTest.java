@@ -101,9 +101,9 @@ public class ResourceAcceptanceTest
         final Resource unlocked = getCommands().retrieve(folder.getId());
 
         // ASSERT
-        assertNull(folder.getLockedBy());
-        assertEquals(us.getId(), locked.getLockedBy());
-        assertNull(unlocked.getLockedBy());
+        assertNull(folder.getLockedById());
+        assertEquals(us.getId(), locked.getLockedById());
+        assertNull(unlocked.getLockedById());
     }
 
 
@@ -306,7 +306,7 @@ public class ResourceAcceptanceTest
         final User currentUser = getUsers().retrieveCurrent();
         final Resource updatedRoot =
             getCommands().retrieve(contentRoot.getId());
-        assertEquals(currentUser.getId(), updatedRoot.getLockedBy());
+        assertEquals(currentUser.getId(), updatedRoot.getLockedById());
         getCommands().unlock(contentRoot.getId());
     }
 
@@ -328,7 +328,7 @@ public class ResourceAcceptanceTest
         // ASSERT
         final Resource updatedFolder =
             getCommands().retrieve(folder.getId());
-        assertEquals(ts.getId(), updatedFolder.getTemplate2());
+        assertEquals(ts.getId(), updatedFolder.getTemplateId());
     }
 
 
@@ -407,12 +407,12 @@ public class ResourceAcceptanceTest
         final Resource excluded = getCommands().retrieve(folder.getId());
 
         // ASSERT
-        assertFalse(folder.isInMainMenu());
-        assertNull(folder.getLockedBy());
-        assertTrue(included.isInMainMenu());
-        assertNotNull(included.getLockedBy());
-        assertFalse(excluded.isInMainMenu());
-        assertNotNull(excluded.getLockedBy());
+        assertFalse(folder.isIncludeInMainMenu());
+        assertNull(folder.getLockedById());
+        assertTrue(included.isIncludeInMainMenu());
+        assertNotNull(included.getLockedById());
+        assertFalse(excluded.isIncludeInMainMenu());
+        assertNotNull(excluded.getLockedById());
     }
 
 
@@ -436,12 +436,12 @@ public class ResourceAcceptanceTest
             getCommands().retrieve(folder.getId());
 
         // ASSERT
-        assertNull(folder.getPublishedBy());
-        assertNull(folder.getLockedBy());
-        assertNotNull(published.getPublishedBy());
-        assertNotNull(published.getLockedBy());
-        assertNull(unpublished.getPublishedBy());
-        assertNotNull(unpublished.getLockedBy());
+        assertNull(folder.getPublishedById());
+        assertNull(folder.getLockedById());
+        assertNotNull(published.getPublishedById());
+        assertNotNull(published.getLockedById());
+        assertNull(unpublished.getPublishedById());
+        assertNotNull(unpublished.getLockedById());
     }
 
 
@@ -468,7 +468,7 @@ public class ResourceAcceptanceTest
         final ResourceSummary legacy = getCommands().resourceForLegacyId(id);
 
         // ASSERT
-        assertEquals(f.getName().toString(), legacy.getName());
+        assertEquals(f.getName(), legacy.getName());
         assertEquals(f.getId(), legacy.getId());
     }
 

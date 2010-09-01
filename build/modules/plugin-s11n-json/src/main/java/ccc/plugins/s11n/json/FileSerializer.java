@@ -55,6 +55,7 @@ class FileSerializer
         final File f = new File();
 
         ResourceMappings.readRes(json, f);
+        ResourceSummarySerializer.readResSummary(json, f);
         ResourceMappings.readResource(json, f);
         ResourceMappings.readFile(json, f);
 
@@ -70,6 +71,7 @@ class FileSerializer
         final Json json = newJson();
 
         ResourceMappings.writeRes(json, instance);
+        ResourceSummarySerializer.writeResSummary(instance, json);
         ResourceMappings.writeResource(json, instance);
         ResourceMappings.writeFile(json, instance);
 

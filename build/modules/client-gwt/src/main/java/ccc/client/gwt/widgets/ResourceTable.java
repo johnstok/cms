@@ -34,6 +34,7 @@ import java.util.UUID;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
+import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
@@ -439,7 +440,7 @@ public class ResourceTable
                 md1.setAbsolutePath(
                     event.<ResourcePath>getProperty("path").toString());
                 md1.setName(
-                    event.<String>getProperty("name"));
+                    new ResourceName(event.<String>getProperty("name")));
                 update(md1);
                 break;
 

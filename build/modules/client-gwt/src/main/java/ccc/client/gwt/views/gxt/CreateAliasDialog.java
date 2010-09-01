@@ -106,7 +106,7 @@ public class CreateAliasDialog
                             _parentFolder.setValue(
                                 (null==_parent)
                                     ? null
-                                    : _parent.getName());
+                                    : _parent.getName().toString());
                         }});
                     folderSelect.show();
                 }});

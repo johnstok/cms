@@ -89,7 +89,6 @@ public class FileProvider
     private static final String TITLE       = "title";
     private static final String DESCRIPTION = "description";
     private static final String PATH        = "path";
-    private static final String PUBLISH     = "publish";
     private static final String LAST_UPDATE = "lastUpdate";
     private static final String COMMENT     = "comment";
     private static final String MAJOR_EDIT  = "majorEdit";
@@ -141,7 +140,6 @@ public class FileProvider
         final String title       = form.getString(TITLE);
         final String description = form.getString(DESCRIPTION);
         final String path        = form.getString(PATH);
-        final String publish     = form.getString(PUBLISH);
         final String lastUpdate  = form.getString(LAST_UPDATE);
         final String cItem       = form.getString(COMMENT);
         final String bItem       = form.getString(MAJOR_EDIT);
@@ -152,8 +150,6 @@ public class FileProvider
             (bItem == null) ? false : true;
         final UUID parentId =
             (null==path) ? null : UUID.fromString(path);
-        final boolean p =
-            (null==publish) ? false : Boolean.parseBoolean(publish);
         final ResourceName fName =
             (null==name) ? null : new ResourceName(name);
 
@@ -181,7 +177,6 @@ public class FileProvider
         );
         f.setComment(comment);
         f.setMajorEdit(isMajorEdit);
-        f.setPublished(p);
         f.setParent(parentId);
         f.setDescription(descriptionString);
         f.setDateCreated(lastUpdateDate);
@@ -271,7 +266,6 @@ public class FileProvider
             addPart(parts, FILE_NAME,   t.getName().toString());
             addPart(parts, PATH,        t.getParent().toString());
             addPart(parts, MAJOR_EDIT,  t.isMajorEdit());
-            addPart(parts, PUBLISH,     t.isPublished());
             addPart(parts, LAST_UPDATE, t.getDateChanged());
 
             final FilePart fp = new FilePart(FILE, new SimplePart(t));

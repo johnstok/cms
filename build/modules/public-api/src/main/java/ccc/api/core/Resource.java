@@ -26,7 +26,6 @@
  */
 package ccc.api.core;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -36,8 +35,6 @@ import java.util.UUID;
 import ccc.api.types.DBC;
 import ccc.api.types.Duration;
 import ccc.api.types.Link;
-import ccc.api.types.ResourceName;
-import ccc.api.types.ResourceType;
 
 
 /**
@@ -47,31 +44,17 @@ import ccc.api.types.ResourceType;
  */
 public class Resource
     extends
-        Res {
+        ResourceSummary {
 
-    private String              _absolutePath;
     private Duration            _cacheDuration;
-    private Date                _dateChanged;
-    private Date                _dateCreated;
-    private String              _description;
-    private UUID                _id;
-    private boolean             _inMainMenu;
-    private boolean             _isLocked;
-    private boolean             _isPublished;
-    private boolean             _isSecure;
-    private boolean             _isVisible;
-    private UUID                _lockedBy;
     private Map<String, String> _metadata = new HashMap<String, String>();
-    private ResourceName        _name;
-    private UUID                _parent;
-    private UUID                _publishedBy;
     private int                 _revision;
-    private Set<String>         _tags;
-    private UUID                _template;
-    private UUID                _template2;
-    private String              _title;
-    private ResourceType        _type;
-    private boolean             _wcAvailable;
+    private UUID                _template; // Computed template.
+
+    // Move to ResourceSummary
+    private boolean             _isSecure;
+    private UUID                _lockedBy;
+    private UUID                _publishedBy;
 
 
     /**
@@ -114,8 +97,8 @@ public class Resource
      */
     @Deprecated
     public Resource(final Duration cacheDuration,
-                                   final Long revision,
-                                   final UUID templateId) {
+                    final Long revision,
+                    final UUID templateId) {
         _revision = revision.intValue();
         _cacheDuration = cacheDuration;
         _template = templateId;
@@ -145,72 +128,12 @@ public class Resource
 
 
     /**
-     * Is the resource visible.
-     *
-     * @return True if the resource is visible, false otherwise.
-     */
-    public final boolean isVisible() {
-        return _isVisible;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return The resource's type.
-     */
-    public final ResourceType getType() {
-        return _type;
-    }
-
-
-    /**
-     * Accessor for the file's description.
-     *
-     * @return The description as a string.
-     */
-    public final String getDescription() {
-        return _description;
-    }
-
-
-    /**
-     * Accessor for name.
-     *
-     * @return The name for this resource, as a {@link ResourceName}.
-     */
-    public final ResourceName getName() {
-        return _name;
-    }
-
-
-    /**
      * Compute the cache duration for this resource.
      *
      * @return The computed duration.
      */
     public final Duration getCacheDuration() {
         return _cacheDuration;
-    }
-
-
-    /**
-     * Accessor for the date the resource last changed.
-     *
-     * @return The date the resource last changed.
-     */
-    public final Date getDateChanged() {
-        return _dateChanged;
-    }
-
-
-    /**
-     * Accessor for the date the resource was created.
-     *
-     * @return The date of creation.
-     */
-    public final Date getDateCreated() {
-        return _dateCreated;
     }
 
 
@@ -228,30 +151,10 @@ public class Resource
     /**
      * Accessor.
      *
-     * @return The resource's id.
-     */
-    public final UUID getId() {
-        return _id;
-    }
-
-
-    /**
-     * Accessor for 'include in main menu' property.
-     *
-     * @return True if the resource should be included, false otherwise.
-     */
-    public final boolean isInMainMenu() {
-        return _inMainMenu;
-    }
-
-
-    /**
-     * Accessor.
-     *
      * @return True if the resource is locked, false otherwise.
      */
     public final boolean isLocked() {
-        return _isLocked;
+        return null != _lockedBy;
     }
 
 
@@ -261,7 +164,7 @@ public class Resource
      * @return True if the resource is published, false otherwise.
      */
     public final boolean isPublished() {
-        return _isPublished;
+        return _publishedBy != null;
     }
 
 
@@ -271,7 +174,7 @@ public class Resource
      * @return The user that locked the resource or false if the resource is not
      *  locked.
      */
-    public final UUID getLockedBy() {
+    public final UUID getLockedById() {
         return _lockedBy;
     }
 
@@ -289,111 +192,11 @@ public class Resource
     /**
      * Accessor.
      *
-     * @return The parent folder for the resource.
-     */
-    public final UUID getParent() {
-        return _parent;
-    }
-
-
-    /**
-     * Accessor.
-     *
      * @return The user that published the resource or null if the resource
      *  isn't published.
      */
-    public final UUID getPublishedBy() {
+    public final UUID getPublishedById() {
         return _publishedBy;
-    }
-
-
-    /**
-     * Accessor for a resource's tags.
-     *
-     * @return The tags for this resource as a list.
-     */
-    public final Set<String> getTags() {
-        return _tags;
-    }
-
-
-    /**
-     * Accessor for the title.
-     *
-     * @return The content's title, as a string.
-     */
-    public final String getTitle() {
-        return _title;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return The absolute path to the resource.
-     */
-    public final String getAbsolutePath() {
-        return _absolutePath;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param title The title to set.
-     */
-    public void setTitle(final String title) {
-        _title = title;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param id The id to set.
-     */
-    public void setId(final UUID id) {
-        _id = id;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param name The name to set.
-     */
-    public void setName(final ResourceName name) {
-        _name = name;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param description The description to set.
-     */
-    public void setDescription(final String description) {
-        _description = description;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param parent The parent to set.
-     */
-    public void setParent(final UUID parent) {
-        _parent = parent;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param type The type to set.
-     */
-    public void setType(final ResourceType type) {
-        _type = type;
     }
 
 
@@ -421,31 +224,9 @@ public class Resource
     /**
      * Mutator.
      *
-     * @param absolutePath The absolutePath to set.
-     */
-    public void setAbsolutePath(final String absolutePath) {
-        _absolutePath = absolutePath;
-    }
-
-
-    /**
-     * Mutator.
-     *
      * @param tags The tags to set.
      */
-    public void setTags(final Set<String> tags) {
-        _tags =
-            (null==tags)
-                ? new HashSet<String>()
-                : new HashSet<String>(tags);
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param tags The tags to set.
-     */
+    @Override
     public void setTags(final String tags) {
         setTags(parseTagString(tags));
     }
@@ -493,62 +274,10 @@ public class Resource
     /**
      * Mutator.
      *
-     * @param isPublished The isPublished to set.
-     */
-    public void setPublished(final boolean isPublished) {
-        _isPublished = isPublished;
-    }
-
-
-    /**
-     * Mutator.
-     *
      * @param lockedBy The lockedBy to set.
      */
     public void setLockedBy(final UUID lockedBy) {
         _lockedBy = lockedBy;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param isLocked The isLocked to set.
-     */
-    public void setLocked(final boolean isLocked) {
-        _isLocked = isLocked;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param dateCreated The dateCreated to set.
-     */
-    public void setDateCreated(final Date dateCreated) {
-        _dateCreated = dateCreated;
-    }
-
-
-
-    /**
-     * Mutator.
-     *
-     * @param dateChanged The dateChanged to set.
-     */
-    public void setDateChanged(final Date dateChanged) {
-        _dateChanged = dateChanged;
-    }
-
-
-
-    /**
-     * Mutator.
-     *
-     * @param isVisible The isVisible to set.
-     */
-    public void setVisible(final boolean isVisible) {
-        _isVisible = isVisible;
     }
 
 
@@ -570,17 +299,6 @@ public class Resource
      */
     public void setCacheDuration(final Duration cacheDuration) {
         _cacheDuration = cacheDuration;
-    }
-
-
-
-    /**
-     * Mutator.
-     *
-     * @param inMainMenu The inMainMenu to set.
-     */
-    public void setInMainMenu(final boolean inMainMenu) {
-        _inMainMenu = inMainMenu;
     }
 
 
@@ -629,6 +347,7 @@ public class Resource
      *
      * @return A link to this resource's metadata.
      */
+    @Override
     public Link uriMetadata() {
         return new Link(getLink(METADATA));
     }
@@ -639,6 +358,7 @@ public class Resource
      *
      * @return A link to this resource's template.
      */
+    @Override
     public Link uriTemplate() {
         return new Link(getLink(TEMPLATE));
     }
@@ -649,6 +369,7 @@ public class Resource
      *
      * @return A link to this resource's duration.
      */
+    @Override
     public Link duration() {
         return new Link(getLink(DURATION));
     }
@@ -659,6 +380,7 @@ public class Resource
      *
      * @return A link to this resource.
      */
+    @Override
     public final Link self() {
         return new Link(getLink(SELF));
     }
@@ -706,44 +428,4 @@ public class Resource
     public static final String SELF = "self";
     /** DELETE : String. */
     public static final String DELETE = "delete";
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public UUID getTemplate2() {
-        return _template2;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param template2 The template2 to set.
-     */
-    public final void setTemplate2(final UUID template2) {
-        _template2 = template2;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param wcAvailable Is there a working copy for this resource.
-     */
-    public void setWcAvailable(final boolean wcAvailable) {
-        _wcAvailable = wcAvailable;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns True if the resource has a working copy; false otherwise.
-     */
-    public final boolean isWcAvailable() {
-        return _wcAvailable;
-    }
 }

@@ -31,15 +31,21 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.DataBinding;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
+import com.extjs.gxt.ui.client.data.BaseModelStringProvider;
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.BeanModel;
+import com.extjs.gxt.ui.client.data.Loader;
 import com.extjs.gxt.ui.client.data.ModelIconProvider;
 import com.extjs.gxt.ui.client.data.RpcProxy;
+import com.extjs.gxt.ui.client.data.TreeLoadEvent;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
@@ -76,6 +82,16 @@ public abstract class AbstractResourceTree {
         _tree.setDisplayProperty(ResourceSummary.NAME);
         _tree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         _tree.setStyleAttribute("background", "white");
+        _tree.setLabelProvider(
+            new BaseModelStringProvider<BeanModel>()); // Avoid cast to String.
+
+        _loader.addListener(
+            Loader.LoadException,
+            new Listener<TreeLoadEvent>() {
+                @Override public void handleEvent(final TreeLoadEvent be) {
+                    InternalServices.EX_HANDLER.unexpectedError(
+                        be.exception, I18n.USER_ACTIONS.internalAction());
+                }});
 
         _tree.setIconProvider(
             new ModelIconProvider<BeanModel>() {
@@ -301,17 +317,18 @@ public abstract class AbstractResourceTree {
      * @param parent The parent folder.
      * @return The list of range folders.
      */
-    protected List<ResourceSummary> createRangeFolders(int count,
+    protected List<ResourceSummary> createRangeFolders(final int count,
         final ResourceSummary parent) {
 
-        List<ResourceSummary> children =
+        final List<ResourceSummary> children =
             new ArrayList<ResourceSummary>();
         int page = 1;
         for (int i = 0; i < count; i=i+Globals.MAX_FETCH) {
-            ResourceSummary rs = new ResourceSummary();
-            rs.setName(""+(i+1)+" ... "+((i+Globals.MAX_FETCH) > count
+            final ResourceSummary rs = new ResourceSummary();
+            rs.setName(new ResourceName(
+                ""+(i+1)+" ... "+((i+Globals.MAX_FETCH) > count
                     ? count
-                    : i+Globals.MAX_FETCH));
+                    : i+Globals.MAX_FETCH)));
             rs.setParent(parent.getId());
             rs.setId(parent.getId());
             rs.setAbsolutePath(""+page);
