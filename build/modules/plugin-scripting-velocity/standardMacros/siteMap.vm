@@ -1,0 +1,23 @@
+## Sitemap
+#macro(printChildren $parent)
+  #set($children=$resources.list(
+    parent.getId(),
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    "true",
+    "title",
+    $enums.of("ccc.api.types.SortOrder", "ASC"),
+    1,
+    200).getElements())
+  <ul>
+  #foreach($child in $children)
+    <li><a href="$child.getAbsolutePath()">$child.getTitle()</a>
+    #if("FOLDER"==$child.getType().toString()) #printChildren($child) #end
+    </li>
+  #end
+  </ul>
+#end

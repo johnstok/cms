@@ -1,0 +1,26 @@
+## RSS feed, displays page summaries of $resourceList.
+#macro(rssFeed)
+#set($resourceList = $resources.resourceForMetadataKey("toRSS"))
+<rss version="2.0">
+<channel> 
+    <title>a title  for rss</title>     
+    <link>http://yoursiteurl.com</link> 
+    <description></description> 
+    <pubDate>$dateTool.format('EEE, dd MMM yyyy HH:mm:ss Z', $resource.getDateChanged())</pubDate>
+  <generator>http://www.contentcontrol.com/</generator>
+    <language>en</language>
+    #foreach ($pageRS in $resourceList)
+      #if($pageRS.isIncludeInMainMenu() && $pageRS.getType() == "PAGE")
+        #set($page = $pages.retrieve($pageRS.getId()))
+  <item> 
+        <title>$pageRS.getTitle()</title>         
+        <link>http://yoursiteurl.com$pageRS.getAbsolutePath()</link>
+        <guid>http://yoursiteurl.com$pageRS.getAbsolutePath()</guid>
+        <pubDate>$dateTool.format('EEE, dd MMM yyyy HH:mm:ss Z', $pageRS.getDateChanged())</pubDate>
+        <description>$page.getParagraph("Summary").getText()</description> 
+    </item>  
+    #end
+  #end
+  </channel>
+</rss>
+#end
