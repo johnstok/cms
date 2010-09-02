@@ -26,6 +26,12 @@
  */
 package ccc.tests.acceptance;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -158,4 +164,91 @@ public class VelocityAcceptanceTest
         assertTrue(0 <= Integer.valueOf(pContent).intValue());
         assertTrue(10 > Integer.valueOf(pContent).intValue());
     }
+
+    /**
+     * Test.
+     * @throws IOException Exception.
+     */
+    public void testGetStyleMacro() throws IOException {
+
+        // ARRANGE
+        final StringBuffer macroContent = new StringBuffer();
+        macroContent.append(
+            readFile("../application-ear/templates/default.vm"));
+        macroContent.append("\n\n #getStyle()");
+        final Folder folder = tempFolder();
+
+        final Template t = new Template();
+        t.setName(new ResourceName("template"));
+        t.setParent(folder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody(macroContent.toString());
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
+        final Template template = getTemplates().create(t);
+
+        final Page page = tempPage(folder.getId(), template.getId());
+
+        // ACT
+        final String pContent = getBrowser().previewContent(page, false);
+
+        // ASSERT
+        assertEquals("default", pContent.trim());
+    }
+
+    /**
+     * Test.
+     * @throws IOException Exception.
+     */
+    public void testBreadCrumbMacro() throws IOException {
+
+        // ARRANGE
+        final StringBuffer macroContent = new StringBuffer();
+        macroContent.append(
+            readFile("../application-ear/templates/default.vm"));
+        macroContent.append("\n");
+        macroContent.append(
+            readFile("../application-ear/templates/breadCrumb.vm"));
+        macroContent.append("\n\n #breadcrumb()");
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        folder.setTitle("first");
+        getCommands().updateMetadata(folder.getId(), folder);
+
+        final Template t = new Template();
+        t.setName(new ResourceName("template"));
+        t.setParent(folder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody(macroContent.toString());
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
+        final Template template = getTemplates().create(t);
+
+        final Page page = tempPage(folder.getId(), template.getId());
+        getCommands().lock(page.getId());
+        page.setTitle("second");
+        getCommands().updateMetadata(page.getId(), page);
+
+        // ACT
+        final String pContent = getBrowser().previewContent(page, false);
+
+        // ASSERT
+        assertEquals("<a href=\"/"+folder.getName()
+            +"\">first</a>\n&nbsp;&gt;&nbsp;\nsecond", pContent.trim());
+    }
+
+    private static String readFile(final String path) throws IOException {
+        final FileInputStream stream = new FileInputStream(new File(path));
+        try {
+            final FileChannel fc = stream.getChannel();
+            final MappedByteBuffer bb =
+                fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+            return Charset.defaultCharset().decode(bb).toString();
+        } finally {
+            stream.close();
+        }
+    }
+
 }

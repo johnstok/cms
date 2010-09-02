@@ -1,28 +1,28 @@
 ## Bread crumb, uses populateCrumb macro.
 #macro (breadcrumb)
-  #set($crumbElements = [])
-  #populateCrumb($resource)
-  $collections.reverse($crumbElements)
-  #set($last = $crumbElements.size())
-  #set($index = 1)
-  #foreach ($element in $crumbElements)
-    #if ($element.getName().equals($resource.getName()))
-      $element.getTitle()
-    #else
-      <a href="$element.getAbsolutePath()">$element.getTitle()</a>
-    #end
-    #if($index < $last)
-      &nbsp;&gt;&nbsp;
-    #end
-    #set($index = $index + 1)
-  #end
+#set($crumbElements = [])
+#populateCrumb($resource)
+$collections.reverse($crumbElements)
+#set($last = $crumbElements.size())
+#set($index = 1)
+#foreach ($element in $crumbElements)
+#if ($element.getName().equals($resource.getName()))
+$element.getTitle()
+#else
+<a href="$element.getAbsolutePath()">$element.getTitle()</a>
+#end
+#if($index < $last)
+&nbsp;&gt;&nbsp;
+#end
+#set($index = $index + 1)
+#end
 #end
 
 #macro (populateCrumb $temp)
-  #if($temp.getParent())
-    #call($crumbElements.add($temp))
-    #set($papa = $resources.resource($temp.getParent()))
-    #populateCrumb($papa)
-  #end
+#if($temp.getParent())
+#call($crumbElements.add($temp))
+#set($papa = $resources.retrieve($temp.getParent()))
+#populateCrumb($papa)
+#end
 #end
 
