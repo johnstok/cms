@@ -239,6 +239,68 @@ public class VelocityAcceptanceTest
             +"\">first</a>\n&nbsp;&gt;&nbsp;\nsecond", pContent.trim());
     }
 
+    /**
+     * Test.
+     * @throws IOException Exception.
+     */
+    public void testMenuTagMacro() throws IOException {
+
+        // ARRANGE
+        final StringBuffer macroContent = new StringBuffer();
+        macroContent.append(
+            readFile("../application-ear/templates/default.vm"));
+        macroContent.append("\n");
+        macroContent.append(
+            readFile("../application-ear/templates/mainMenu.vm"));
+        macroContent.append("\n\n #menuTag()");
+
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        folder.setTitle("first");
+        getCommands().updateMetadata(folder.getId(), folder);
+        getCommands().publish(folder.getId());
+        getCommands().includeInMainMenu(folder.getId());
+
+        final String fName = UUID.randomUUID().toString();
+        final Folder f2 = getFolders().create(
+            new Folder(folder.getId(), new ResourceName(fName)));
+        getCommands().lock(f2.getId());
+        f2.setTitle("second");
+        getCommands().updateMetadata(f2.getId(), f2);
+        getCommands().publish(f2.getId());
+        getCommands().includeInMainMenu(f2.getId());
+
+        final Template t = new Template();
+        t.setName(new ResourceName("template"));
+        t.setParent(folder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody(macroContent.toString());
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
+        final Template template = getTemplates().create(t);
+
+        final Page page = tempPage(f2.getId(), template.getId());
+        getCommands().lock(page.getId());
+        page.setTitle("third");
+        getCommands().publish(page.getId());
+        getCommands().includeInMainMenu(page.getId());
+        getCommands().updateMetadata(page.getId(), page);
+
+        // ACT
+        final String pContent = getBrowser().previewContent(page, false);
+
+        // ASSERT
+        assertTrue("Should not have 'first' entry"
+            ,  pContent.indexOf("first") == -1);
+        assertTrue("Should have 'second' entry"
+            ,  pContent.indexOf("second") != -1);
+        assertTrue("Should have 'third' entry"
+            ,  pContent.indexOf("third") != -1);
+        assertTrue("'second' should be before 'third'"
+            ,  pContent.indexOf("second") <  pContent.indexOf("third"));
+    }
+
     private static String readFile(final String path) throws IOException {
         final FileInputStream stream = new FileInputStream(new File(path));
         try {
