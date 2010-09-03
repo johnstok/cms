@@ -26,20 +26,12 @@
             <artifactId>api-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- FIXME: Remove this dependency? -->
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>plugin-s11n-json</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
         
-        <!-- JEE dependencies -->
-        
+        <!-- Provided -->
         <dependency>
-	        <groupId>org.jboss.jbossas</groupId>
-            <artifactId>jboss-as-tomcat</artifactId>
-            <version>${lib.version.jboss}</version>
+            <groupId>org.jboss.javaee</groupId>
+            <artifactId>jboss-javaee</artifactId>
+            <version>${lib.version.jee}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -47,6 +39,20 @@
             <artifactId>ejb3-persistence</artifactId>
             <version>${lib.version.hibernate-ejb3}</version>
             <scope>provided</scope>
+        </dependency>
+        
+        <!-- Test -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>plugin-s11n-json</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${lib.version.h2}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     

@@ -92,7 +92,6 @@
         </dependency>
         
         <!-- JEE Libraries -->
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
@@ -100,15 +99,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>jta</artifactId>
-            <version>${lib.version.javax-txn}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.jbossas</groupId>
-            <artifactId>jboss-as-tomcat</artifactId>
-            <version>${lib.version.jboss}</version>
+          <groupId>org.jboss.javaee</groupId>
+          <artifactId>jboss-javaee</artifactId>
+          <version>${lib.version.jee}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

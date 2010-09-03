@@ -28,6 +28,7 @@
         <lib.version.velocity>1.6.2</lib.version.velocity>
         <lib.version.velocity-tools>1.4</lib.version.velocity-tools>
         <lib.version.jboss>5.1.0.GA</lib.version.jboss>
+        <lib.version.jee>5.0.1.GA</lib.version.jee>
         <lib.version.slf4j>1.5.8</lib.version.slf4j>
         <lib.version.h2>1.2.138</lib.version.h2>
         <lib.version.selenium>1.0.1</lib.version.selenium>
@@ -43,29 +44,12 @@
         <lib.version.commons-fileupload>1.2.1</lib.version.commons-fileupload>
         <lib.version.gwt-math>2.1</lib.version.gwt-math>
         <lib.version.resteasy>1.1.GA</lib.version.resteasy>
-        <lib.version.javax-txn>1.1</lib.version.javax-txn>
         
         <!-- CCC properties should be 'ccc.{prop-name}' -->
         <ccc-version>${project.version}</ccc-version>
         
         <parent_basedir>${basedir}</parent_basedir>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>jboss</id>
-            <url>http://repository.jboss.org/nexus</url>
-        </repository>
-        <repository>
-            <id>openqa.org</id>
-            <url>http://archiva.openqa.org/repository/releases</url>
-        </repository>
-        <repository>
-            <id>compass-project.org</id>
-            <name>Compass</name>
-            <url>http://repo.compass-project.org</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
@@ -78,13 +62,6 @@
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
             <version>${lib.version.easymock}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${lib.version.h2}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
