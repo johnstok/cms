@@ -27,7 +27,8 @@
 
 package ccc.web;
 
-import static ccc.commons.Strings.*;
+import static ccc.commons.Strings.nvl;
+import static ccc.commons.Strings.removeTrailing;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -49,6 +50,7 @@ import ccc.api.core.User;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.ResourcePath;
+import ccc.commons.CCObjectFactory;
 import ccc.commons.EnumTools;
 import ccc.commons.Environment;
 import ccc.commons.HTTP;
@@ -229,6 +231,7 @@ public class ContentServlet
         context.add("hostname",    Environment.getHostname());
         context.add("dateTool",    new DateTool()); // FIXME: Remove.
         context.add("sortTool",    new SortTool()); // FIXME: Remove.
+        context.add("CCObjectFactory", CCObjectFactory.class);
 
         return context;
     }
