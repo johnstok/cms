@@ -394,6 +394,7 @@ public class ResourcesImpl
     @Override
     public PagedCollection<ResourceSummary> list(
                                                 final UUID parent,
+                                                final String name,
                                                 final String tag,
                                                 final Long before,
                                                 final Long after,
@@ -407,6 +408,7 @@ public class ResourcesImpl
                                                 final int pageSize) {
         try {
             return _delegate.list(parent,
+                name,
                 tag,
                 before,
                 after,

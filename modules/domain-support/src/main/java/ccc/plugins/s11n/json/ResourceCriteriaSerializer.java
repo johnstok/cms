@@ -51,7 +51,7 @@ public abstract class ResourceCriteriaSerializer<T extends ResourceCriteria>
         if (null==json) { return null; }
 
         final T c = super.read(json);
-
+        c.setName(json.getString("name"));
         c.setChangedAfter(json.getDate("changed-after"));
         c.setChangedBefore(json.getDate("changed-before"));
         c.setLocked(json.getBool(JsonKeys.LOCKED));
@@ -76,7 +76,7 @@ public abstract class ResourceCriteriaSerializer<T extends ResourceCriteria>
         if (null==instance) { return null; }
 
         super.write(json, instance);
-
+        json.set("name", instance.getName());
         json.set("changed-after", instance.getChangedAfter());
         json.set("changed-before", instance.getChangedBefore());
         json.set(JsonKeys.LOCKED, instance.getLocked());

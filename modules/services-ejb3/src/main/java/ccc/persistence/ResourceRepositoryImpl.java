@@ -614,6 +614,11 @@ class ResourceRepositoryImpl implements ResourceRepository {
                 query.append(" r._lockedBy is null");
             }
         }
+        if (null!=criteria.getName()) {
+            query.append((params.size()>0) ? " AND" : " WHERE");
+            query.append(" lower(r._name) like lower(:name)");
+            params.put("name", criteria.getName());
+        }
 
         query.append((params.size()>0) ? " AND" : " WHERE");
         query.append(" r._deleted = :deleted");

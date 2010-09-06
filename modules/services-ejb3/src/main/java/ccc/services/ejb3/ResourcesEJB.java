@@ -26,8 +26,23 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.*;
-import static javax.ejb.TransactionAttributeType.*;
+import static ccc.api.types.Permission.ACTION_EXECUTE;
+import static ccc.api.types.Permission.LOG_ENTRY_CREATE;
+import static ccc.api.types.Permission.RESOURCE_ACL_UPDATE;
+import static ccc.api.types.Permission.RESOURCE_CACHE_UPDATE;
+import static ccc.api.types.Permission.RESOURCE_DELETE;
+import static ccc.api.types.Permission.RESOURCE_LOCK;
+import static ccc.api.types.Permission.RESOURCE_MM;
+import static ccc.api.types.Permission.RESOURCE_MOVE;
+import static ccc.api.types.Permission.RESOURCE_PUBLISH;
+import static ccc.api.types.Permission.RESOURCE_READ;
+import static ccc.api.types.Permission.RESOURCE_RENAME;
+import static ccc.api.types.Permission.RESOURCE_UNLOCK;
+import static ccc.api.types.Permission.RESOURCE_UNPUBLISH;
+import static ccc.api.types.Permission.RESOURCE_UPDATE;
+import static ccc.api.types.Permission.SEARCH_CREATE;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static javax.ejb.TransactionAttributeType.REQUIRES_NEW;
 
 import java.util.Date;
 import java.util.List;
@@ -660,6 +675,7 @@ public class ResourcesEJB
     @Override
     @PermitAll
     public PagedCollection<ResourceSummary> list(final UUID parent,
+                                                 final String name,
                                                  final String tag,
                                                  final Long before,
                                                  final Long after,
@@ -674,6 +690,7 @@ public class ResourcesEJB
         checkPermission(RESOURCE_READ);
 
         final ResourceCriteria criteria = new ResourceCriteria();
+        criteria.setName(name);
         criteria.setParent(parent);
         criteria.setTag(tag);
         criteria.setChangedBefore(

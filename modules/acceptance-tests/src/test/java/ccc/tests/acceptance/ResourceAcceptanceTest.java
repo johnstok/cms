@@ -159,6 +159,7 @@ public class ResourceAcceptanceTest
                 null,
                 null,
                 null,
+                null,
                 "name",
                 SortOrder.ASC,
                 1,
@@ -517,6 +518,7 @@ public class ResourceAcceptanceTest
 
         // ACT
         PagedCollection<ResourceSummary> list = getCommands().list(f.getId(),
+            null,
             null,
             null,
             null,
