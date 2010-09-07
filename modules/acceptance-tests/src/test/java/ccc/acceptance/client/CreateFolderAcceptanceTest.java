@@ -60,7 +60,7 @@ public class CreateFolderAcceptanceTest extends AbstractAcceptanceTest {
         p.save();
 
         // ASSERT
-        ResourceSummary folder = getCommands().resourceForPath("/+name");
+        ResourceSummary folder = getCommands().resourceForPath("/"+name);
         assertNotNull("Folder should exist", folder);
         assertEquals(name, folder.getName());
     }
