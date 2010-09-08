@@ -216,7 +216,9 @@ public class ResourceTable
      *
      */
     public void reload() {
-        _detailsStore.getLoader().load();
+        if (_detailsStore.getLoader() != null) {
+            _detailsStore.getLoader().load();
+        }
     }
 
     private void createColumnConfigs(final List<ColumnConfig> configs) {

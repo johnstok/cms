@@ -37,7 +37,10 @@ import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.KeyListener;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 
 
@@ -55,6 +58,9 @@ public class FolderToolBar
 
     private final UIConstants _constants = I18n.UI_CONSTANTS;
     private final TextField<String> _filterString = new TextField<String>();
+    private final Button _searchButton;
+
+    private final ResourceTable _ssm;
 
     /**
      * Constructor.
@@ -62,6 +68,8 @@ public class FolderToolBar
      * @param ssm The selection model to use.
      */
     FolderToolBar(final ResourceTable ssm) {
+        _ssm = ssm;
+
         addSeparator(null);
         addButton(Permission.FILE_CREATE,
             "uploadFile",
@@ -98,11 +106,26 @@ public class FolderToolBar
             @Override
             public void componentKeyPress(ComponentEvent event) {
                 if (event.getKeyCode() == ENTER_KEY) {
-                    ssm.reload();
+                    _ssm.reload();
                 }
             }
         });
         add(_filterString);
+        _searchButton = new Button(_constants.search());
+        _searchButton.addListener(Events.Select, new SearchListener());
+        add(_searchButton);
+    }
+
+    /**
+     * Listener for user search.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private final class SearchListener implements Listener<ComponentEvent> {
+
+        public void handleEvent(final ComponentEvent be) {
+            _ssm.reload();
+        }
     }
 
     /**
