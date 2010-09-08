@@ -27,6 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceType;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -67,7 +68,8 @@ public class ResourceSelectionDialog extends Window {
      *
      * @param targetRoot ResourceSummary root
      */
-    public ResourceSelectionDialog(final ResourceSummary targetRoot) {
+    public ResourceSelectionDialog(final ResourceSummary targetRoot,
+                                   final ResourceType type) {
         setModal(true);
         setBodyStyle("backgroundColor: white;");
         setHeading(I18n.UI_CONSTANTS.selectResource());
@@ -80,13 +82,13 @@ public class ResourceSelectionDialog extends Window {
         treeTab.setScrollMode(Scroll.AUTOY);
         tabPanel.add(treeTab);
 
-        tt = new SearchResourceTable(targetRoot);
+        tt = new SearchResourceTable(targetRoot, type);
         searchTab.add(tt);
         searchTab.setLayout(new FitLayout());
         searchTab.setScrollMode(Scroll.AUTOY);
         tabPanel.add(searchTab);
 
-        _tree = new ResourceTree(targetRoot, _globals);
+        _tree = new ResourceTree(targetRoot, type);
         treeTab.add(_tree.asComponent());
 
         final Button save = new Button(

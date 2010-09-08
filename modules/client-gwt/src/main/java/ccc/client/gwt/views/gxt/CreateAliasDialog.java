@@ -27,7 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.VALIDATOR;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
@@ -93,8 +93,8 @@ public class CreateAliasDialog
             Events.TriggerClick,
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be) {
-                    final FolderSelectionDialog folderSelect =
-                        new FolderSelectionDialog();
+                    final ResourceSelectionDialog folderSelect =
+                        new ResourceSelectionDialog(null, null); // FIXME!!!
                     folderSelect.addListener(Events.Hide,
                         new Listener<WindowEvent>() {
                         public void handleEvent(final WindowEvent be2) {
@@ -102,7 +102,7 @@ public class CreateAliasDialog
                             if (null==b) { // 'X' button clicked.
                                 return;
                             }
-                            _parent = folderSelect.selectedFolder();
+                            _parent = folderSelect.selectedResource();
                             _parentFolder.setValue(
                                 (null==_parent)
                                     ? null

@@ -32,10 +32,12 @@ import java.util.List;
 
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.remoting.GetImagesPagedAction;
-import ccc.client.gwt.views.gxt.FolderSelectionDialog;
+import ccc.client.gwt.remoting.GetRootsAction;
+import ccc.client.gwt.views.gxt.ResourceSelectionDialog;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
@@ -104,24 +106,38 @@ public class ImageSelectionPanel extends ContentPanel {
             Events.TriggerClick,
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be) {
-                    final FolderSelectionDialog folderSelect =
-                        new FolderSelectionDialog();
-                    folderSelect.addListener(
-                        Events.Hide,
-                        new Listener<WindowEvent>() {
-                        public void handleEvent(final WindowEvent be2) {
-                            final Button b = be2.getButtonClicked();
-                            if (null==b) { // 'X' button clicked.
-                                return;
+                    new GetRootsAction() {
+                        @Override
+                        protected void onSuccess(
+                                     final Collection<ResourceSummary> roots) {
+
+                            for (final ResourceSummary rr : roots) {
+                                if (rr.getName().equals("content")) {
+                                    final ResourceSelectionDialog folderSelect =
+                                        new ResourceSelectionDialog(rr,
+                                            ResourceType.FOLDER);
+                                    folderSelect.addListener(
+                                        Events.Hide,
+                                        new Listener<WindowEvent>() {
+                                            public void handleEvent(final WindowEvent be2) {
+                                                final Button b = be2.getButtonClicked();
+                                                if (null==b) { // 'X' button clicked.
+                                                    return;
+                                                }
+                                                _folder = folderSelect.selectedResource();
+                                                _folderField.setValue(
+                                                    (null==_folder)
+                                                    ? null
+                                                        : _folder.getName());
+                                                _pagerBar.refresh();
+                                            }});
+                                    folderSelect.show();
+                                }
                             }
-                            _folder = folderSelect.selectedFolder();
-                            _folderField.setValue(
-                                (null==_folder)
-                                    ? null
-                                    : _folder.getName());
-                            _pagerBar.refresh();
-                        }});
-                    folderSelect.show();
+                        }
+                    }.execute();
+
+
                 }});
         toolBar.add(new Text(I18n.UI_CONSTANTS.folder()));
         toolBar.add(_folderField);

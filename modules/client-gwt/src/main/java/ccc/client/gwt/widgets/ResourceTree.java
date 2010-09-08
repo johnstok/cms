@@ -49,19 +49,19 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class ResourceTree extends AbstractResourceTree {
 
-    private final Globals _globals;
     private final ResourceSummary _root;
+    private final ResourceType _type;
 
     /**
      * Constructor.
      *
      * @param root The root of the tree.
-     * @param globals IGlobals implementation.
+     * @param type The resource type to show.
      */
-    public ResourceTree(final ResourceSummary root, final Globals globals) {
-
+    public ResourceTree(final ResourceSummary root,
+                        final ResourceType type) {
+        _type = type;
         _root = root;
-        _globals = globals;
         load();
     }
 
@@ -101,7 +101,7 @@ public class ResourceTree extends AbstractResourceTree {
                         Globals.MAX_FETCH,
                         "name",
                         SortOrder.ASC,
-                        null) {
+                        _type) {
 
                         /** {@inheritDoc} */
                         @Override protected void onFailure(final Throwable t) {

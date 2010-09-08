@@ -102,7 +102,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be1) {
                     final ResourceSelectionDialog resourceSelect =
-                        new ResourceSelectionDialog(_targetRoot);
+                        new ResourceSelectionDialog(_targetRoot, null);
                     resourceSelect.addListener(Events.Hide,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent be2) {

@@ -26,8 +26,9 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.VALIDATOR;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceType;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
@@ -100,8 +101,8 @@ public class MoveDialog extends AbstractEditDialog {
             Events.TriggerClick,
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be) {
-                    final FolderSelectionDialog folderSelect =
-                        new FolderSelectionDialog();
+                    final ResourceSelectionDialog folderSelect =
+                        new ResourceSelectionDialog(item, ResourceType.FOLDER);
                     folderSelect.addListener(Events.Hide,
                         new Listener<WindowEvent>() {
                         public void handleEvent(final WindowEvent ce) {
@@ -109,7 +110,7 @@ public class MoveDialog extends AbstractEditDialog {
                             if (null==b) { // 'X' button clicked.
                                 return;
                             }
-                            _parent = folderSelect.selectedFolder();
+                            _parent = folderSelect.selectedResource();
                             _parentFolder.setValue(
                                 (null==_parent)
                                     ? null

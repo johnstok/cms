@@ -84,7 +84,7 @@ public class ResourceTable
         new ListStore<BeanModel>();
 
     private final ResourceSummary _root;
-    private final FolderResourceTree _tree;
+    private final ResourceTree _tree;
     private final Grid<BeanModel> _grid;
     private final PagingToolBar _pagerBar;
     private final FolderToolBar toolBar;
@@ -96,7 +96,7 @@ public class ResourceTable
      * @param tree FolderResourceTree
      */
     ResourceTable(final ResourceSummary root,
-        final FolderResourceTree tree) {
+        final ResourceTree tree) {
 
         InternalServices.REMOTING_BUS.registerHandler(this);
 

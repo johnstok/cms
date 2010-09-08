@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.remoting.GetResourcesPagedAction;
@@ -84,6 +85,7 @@ public class SearchResourceTable
     private final PagingToolBar _pagerBar;
     private final ToolBar _toolBar;
     private final TextField<String> _filterString = new TextField<String>();
+    private final ResourceType _type;
 
 
     private final Button _searchButton;
@@ -92,9 +94,11 @@ public class SearchResourceTable
      * Constructor.
      *
      * @param root ResourceSummary
+     * @param type ResourceType
      */
-    public SearchResourceTable(final ResourceSummary root) {
-
+    public SearchResourceTable(final ResourceSummary root,
+                               final ResourceType type) {
+        _type = type;
         _root = root;
         _toolBar = new ToolBar();
         _filterString.addKeyListener(new KeyListener() {
@@ -139,6 +143,7 @@ public class SearchResourceTable
         final RpcProxy<PagingLoadResult<BeanModel>> proxy =
             new RpcProxy<PagingLoadResult<BeanModel>>() {
 
+
             @Override
             protected void load(final Object loadConfig,
                                 final AsyncCallback<PagingLoadResult
@@ -166,7 +171,7 @@ public class SearchResourceTable
                         config.getLimit(),
                         config.getSortField(),
                         order,
-                        null) {
+                        _type) {
                         /** {@inheritDoc} */
                         @Override protected void onFailure(final Throwable t) {
                             callback.onFailure(t);
