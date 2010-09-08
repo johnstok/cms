@@ -51,7 +51,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 public class ResourceSelectionDialog extends Window {
 
     /** DIALOG_HEIGHT : int. */
-    private static final int DIALOG_HEIGHT = 225;
+    private static final int DIALOG_HEIGHT = 396;
     /** DIALOG_WIDTH : int. */
     private static final int DIALOG_WIDTH = 400;
     private final ResourceTree _tree;
@@ -81,9 +81,8 @@ public class ResourceSelectionDialog extends Window {
         tabPanel.add(treeTab);
 
         tt = new SearchResourceTable(targetRoot);
-        tt.setHeight(160);
         searchTab.add(tt);
-        searchTab.setHeight(200);
+        searchTab.setLayout(new FitLayout());
         searchTab.setScrollMode(Scroll.AUTOY);
         tabPanel.add(searchTab);
 

@@ -46,8 +46,11 @@ import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.KeyListener;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -82,6 +85,9 @@ public class SearchResourceTable
     private final ToolBar _toolBar;
     private final TextField<String> _filterString = new TextField<String>();
 
+
+    private final Button _searchButton;
+
     /**
      * Constructor.
      *
@@ -100,6 +106,9 @@ public class SearchResourceTable
             }
         });
         _toolBar.add(_filterString);
+        _searchButton = new Button(UI_CONSTANTS.search());
+        _searchButton.addListener(Events.Select, new SearchListener());
+        _toolBar.add(_searchButton);
 
         setTopComponent(_toolBar);
         setHeading(UI_CONSTANTS.resourceDetails());
@@ -273,6 +282,17 @@ public class SearchResourceTable
             return value;
         }
         return value+"%";
+    }
+
+    /**
+     * Listener for user search.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private final class SearchListener implements Listener<ComponentEvent> {
+        public void handleEvent(final ComponentEvent be) {
+            _detailsStore.getLoader().load();
+        }
     }
 
 }
