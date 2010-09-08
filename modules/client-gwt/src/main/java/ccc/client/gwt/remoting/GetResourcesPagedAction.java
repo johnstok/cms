@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.Link;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.core.RemotingAction;
@@ -46,15 +47,15 @@ import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * Get paged child resources for specified folder.
+ * Get paged resources.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class GetChildrenPagedAction
+public abstract class GetResourcesPagedAction
 extends
 RemotingAction{
 
-    private final ResourceSummary _parent;
+    private final Link _link;
     private final int _pageNo;
     private final int _pageSize;
     private final String _sort;
@@ -65,7 +66,7 @@ RemotingAction{
     /**
      * Constructor.
      *
-     * @param parent The parent folder.
+     * @param link The link to use for the search.
      * @param name The name of the resource.
      * @param pageNo The page to display.
      * @param pageSize The number of results per page.
@@ -73,7 +74,7 @@ RemotingAction{
      * @param order The sort order (ASC/DESC).
      * @param type The resource type to fetch, null for all.
      */
-    public GetChildrenPagedAction(final ResourceSummary parent,
+    public GetResourcesPagedAction(final Link link,
                                   final String name,
                                   final int pageNo,
                                   final int pageSize,
@@ -81,7 +82,7 @@ RemotingAction{
                                   final SortOrder order,
                                   final ResourceType type) {
         super(UI_CONSTANTS.getChildrenPaged());
-        _parent = parent;
+        _link = link;
         _name = name;
         _pageNo = pageNo;
         _pageSize = pageSize;
@@ -95,14 +96,13 @@ RemotingAction{
     protected String getPath() {
         final HashMap<String, String[]> params =
             new HashMap<String, String[]>();
-        params.put("parent", new String[] {_parent.getId().toString()});
         params.put("name", new String[] {_name});
         params.put("sort", new String[] {_sort});
         params.put("order", new String[] {_order.name()});
         params.put("page", new String[] {""+_pageNo});
         params.put("count", new String[] {""+_pageSize});
         params.put("type", new String[] {(null==_type) ? null : _type.name()});
-        return _parent.list().build(params, new GWTTemplateEncoder());
+        return _link.build(params, new GWTTemplateEncoder());
     }
 
 

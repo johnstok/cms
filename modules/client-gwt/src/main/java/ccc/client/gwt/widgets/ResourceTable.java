@@ -64,7 +64,6 @@ import com.extjs.gxt.ui.client.widget.grid.GridViewConfig;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
-import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -88,7 +87,7 @@ public class ResourceTable
     private final FolderResourceTree _tree;
     private final Grid<BeanModel> _grid;
     private final PagingToolBar _pagerBar;
-
+    private final FolderToolBar toolBar;
 
     /**
      * Constructor.
@@ -103,7 +102,7 @@ public class ResourceTable
 
         _root = root;
         _tree = tree;
-        final ToolBar toolBar = new FolderToolBar(this);
+        toolBar = new FolderToolBar(this);
         setTopComponent(toolBar);
         setHeading(UI_CONSTANTS.resourceDetails());
         setLayout(new FitLayout());
@@ -171,8 +170,10 @@ public class ResourceTable
                             ? SortOrder.ASC
                             : SortOrder.DESC;
 
+                    String name = toolBar.getFilter();
                     new GetChildrenPagedAction(
                         folder,
+                        name,
                         page,
                         config.getLimit(),
                         config.getSortField(),
@@ -210,6 +211,13 @@ public class ResourceTable
         _grid.reconfigure(_detailsStore, cm);
     }
 
+    /**
+     * Reloads the detail store.
+     *
+     */
+    public void reload() {
+        _detailsStore.getLoader().load();
+    }
 
     private void createColumnConfigs(final List<ColumnConfig> configs) {
 

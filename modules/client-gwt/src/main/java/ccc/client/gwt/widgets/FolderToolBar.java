@@ -36,6 +36,10 @@ import ccc.client.gwt.actions.OpenCreateTextFileAction;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.i18n.UIConstants;
 
+import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.KeyListener;
+import com.extjs.gxt.ui.client.widget.form.TextField;
+
 
 /**
  * A toolbar providing actions for a {@link SingleSelectionModel}.
@@ -46,14 +50,18 @@ public class FolderToolBar
     extends
         AbstractToolBar {
 
+    /** ENTER_KEY : int. */
+    private static final int ENTER_KEY = 13;
+
     private final UIConstants _constants = I18n.UI_CONSTANTS;
+    private final TextField<String> _filterString = new TextField<String>();
 
     /**
      * Constructor.
      *
      * @param ssm The selection model to use.
      */
-    FolderToolBar(final SingleSelectionModel ssm) {
+    FolderToolBar(final ResourceTable ssm) {
         addSeparator(null);
         addButton(Permission.FILE_CREATE,
             "uploadFile",
@@ -84,5 +92,32 @@ public class FolderToolBar
             _constants.createTextFile(),
             new OpenCreateTextFileAction(ssm));
         addSeparator(Permission.FILE_CREATE);
+
+
+        _filterString.addKeyListener(new KeyListener() {
+            @Override
+            public void componentKeyPress(ComponentEvent event) {
+                if (event.getKeyCode() == ENTER_KEY) {
+                    ssm.reload();
+                }
+            }
+        });
+        add(_filterString);
+    }
+
+    /**
+     * Return the filter string value, appended with % if necessary.
+     *
+     * @return The filter string.
+     */
+    public String getFilter() {
+        String value =  _filterString.getValue();
+        if (value == null) {
+            return "%";
+        }
+        if (value.endsWith("%")) {
+            return value;
+        }
+        return value+"%";
     }
 }

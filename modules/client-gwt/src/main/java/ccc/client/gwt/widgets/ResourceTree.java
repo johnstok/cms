@@ -96,6 +96,7 @@ public class ResourceTree extends AbstractResourceTree {
 
                     new GetChildrenPagedAction(
                         parent,
+                        null,
                         page,
                         Globals.MAX_FETCH,
                         "name",

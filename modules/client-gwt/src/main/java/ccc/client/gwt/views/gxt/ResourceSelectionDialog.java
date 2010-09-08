@@ -31,10 +31,13 @@ import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.ResourceTree;
+import ccc.client.gwt.widgets.SearchResourceTable;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.TabItem;
+import com.extjs.gxt.ui.client.widget.TabPanel;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -54,6 +57,11 @@ public class ResourceSelectionDialog extends Window {
     private final ResourceTree _tree;
     private final Globals _globals = new GlobalsImpl();
 
+    private final TabPanel tabPanel = new TabPanel();
+    private final TabItem treeTab = new TabItem("Tree");
+    private final TabItem searchTab = new TabItem("Search");
+    private final SearchResourceTable tt;
+
     /**
      * Constructor.
      *
@@ -62,15 +70,25 @@ public class ResourceSelectionDialog extends Window {
     public ResourceSelectionDialog(final ResourceSummary targetRoot) {
         setModal(true);
         setBodyStyle("backgroundColor: white;");
-        setScrollMode(Scroll.AUTOY);
         setHeading(I18n.UI_CONSTANTS.selectResource());
         setWidth(DIALOG_WIDTH);
         setMinWidth(Globals.MIN_WIDTH);
         setHeight(DIALOG_HEIGHT);
         setLayout(new FitLayout());
 
+        treeTab.setHeight(200);
+        treeTab.setScrollMode(Scroll.AUTOY);
+        tabPanel.add(treeTab);
+
+        tt = new SearchResourceTable(targetRoot);
+        tt.setHeight(160);
+        searchTab.add(tt);
+        searchTab.setHeight(200);
+        searchTab.setScrollMode(Scroll.AUTOY);
+        tabPanel.add(searchTab);
+
         _tree = new ResourceTree(targetRoot, _globals);
-        add(_tree.asComponent());
+        treeTab.add(_tree.asComponent());
 
         final Button save = new Button(
             I18n.UI_CONSTANTS.save(),
@@ -80,16 +98,21 @@ public class ResourceSelectionDialog extends Window {
                 }
             }
         );
+
+        add(tabPanel);
         save.setId("ResourceSelectSave");
         addButton(save);
     }
 
     /**
-     * Accessor for selected folder.
+     * Accessor for selected resource.
      *
-     * @return Returns the selected folder as {@link FolderDTO}
+     * @return Returns the selected resource as {@link ResourceSummary}
      */
     public ResourceSummary selectedResource() {
-        return _tree.getSelectedItem();
+        if (tabPanel.getSelectedItem() == treeTab) {
+            return _tree.getSelectedItem();
+        }
+        return tt.tableSelection();
     }
 }

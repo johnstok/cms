@@ -27,7 +27,7 @@
 
 package ccc.domain;
 
-import static ccc.api.types.DBC.*;
+import static ccc.api.types.DBC.require;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -1012,7 +1012,7 @@ public abstract class ResourceEntity
             Resource.LIST,
             new Link(ccc.api.core.ResourceIdentifiers.Resource.COLLECTION)
             .build("id", getId().toString(), new NormalisingEncoder())
-            +"?{-join|&|parent,sort,order,page,count,type}");
+            +"?{-join|&|parent,name,sort,order,page,count,type}");
         rs.addLink(
             Resource.WC,
             new Link(ccc.api.core.ResourceIdentifiers.Resource.WC)
