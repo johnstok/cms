@@ -49,12 +49,10 @@ import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.WindowEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.ListView;
 import com.extjs.gxt.ui.client.widget.Text;
-import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
@@ -108,36 +106,30 @@ public class ImageSelectionPanel extends ContentPanel {
                 public void handleEvent(final ComponentEvent be) {
                     new GetRootsAction() {
                         @Override
-                        protected void onSuccess(
-                                     final Collection<ResourceSummary> roots) {
+                        protected void onSuccess(final ResourceSummary root) {
 
-                            for (final ResourceSummary rr : roots) {
-                                if (rr.getName().equals("content")) {
-                                    final ResourceSelectionDialog folderSelect =
-                                        new ResourceSelectionDialog(rr,
-                                            ResourceType.FOLDER);
-                                    folderSelect.addListener(
-                                        Events.Hide,
-                                        new Listener<WindowEvent>() {
-                                            public void handleEvent(final WindowEvent be2) {
-                                                final Button b = be2.getButtonClicked();
-                                                if (null==b) { // 'X' button clicked.
-                                                    return;
-                                                }
-                                                _folder = folderSelect.selectedResource();
-                                                _folderField.setValue(
-                                                    (null==_folder)
-                                                    ? null
-                                                        : _folder.getName());
-                                                _pagerBar.refresh();
-                                            }});
-                                    folderSelect.show();
-                                }
-                            }
+                            final ResourceSelectionDialog folderSelect =
+                                new ResourceSelectionDialog(root,
+                                    ResourceType.FOLDER);
+                            folderSelect.addListener(
+                                Events.Hide,
+                                new Listener<ComponentEvent>() {
+                                    public void handleEvent(final ComponentEvent ce) {
+                                        ResourceSummary _md = folderSelect.selectedResource();
+                                        if (_md != null
+                                           && _md.getType() != ResourceType.RANGE_FOLDER) {
+
+                                        _folder = _md;
+                                        _folderField.setValue(
+                                            (null==_folder)
+                                            ? null
+                                                : _folder.getName());
+                                        _pagerBar.refresh();
+                                        }
+                                    }});
+                            folderSelect.show();
                         }
                     }.execute();
-
-
                 }});
         toolBar.add(new Text(I18n.UI_CONSTANTS.folder()));
         toolBar.add(_folderField);

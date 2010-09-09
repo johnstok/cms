@@ -26,8 +26,6 @@
  */
 package ccc.client.gwt.widgets;
 
-import java.util.Collection;
-
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
@@ -168,11 +166,9 @@ public class MainMenu
                     new GetRootsAction() {
                         // TODO: Do we really have to go to the server for this?
                         @Override protected void onSuccess(
-                                      final Collection<ResourceSummary> roots) {
-                            for (final ResourceSummary root : roots) {
-                                if (rootName.equals(root.getName())) {
-                                    addRootMenuItems(root, rootMenu);
-                                }
+                                      final ResourceSummary root) {
+                            if (rootName.equals(root.getName())) {
+                                addRootMenuItems(root, rootMenu);
                             }
                         }
                     }.execute();

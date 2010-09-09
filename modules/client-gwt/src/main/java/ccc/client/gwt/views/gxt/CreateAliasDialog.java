@@ -29,11 +29,13 @@ package ccc.client.gwt.views.gxt;
 
 import static ccc.client.core.InternalServices.VALIDATOR;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceType;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.remoting.GetRootsAction;
 import ccc.client.views.CreateAlias;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -41,8 +43,6 @@ import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.event.WindowEvent;
-import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 
@@ -93,22 +93,32 @@ public class CreateAliasDialog
             Events.TriggerClick,
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be) {
-                    final ResourceSelectionDialog folderSelect =
-                        new ResourceSelectionDialog(null, null); // FIXME!!!
-                    folderSelect.addListener(Events.Hide,
-                        new Listener<WindowEvent>() {
-                        public void handleEvent(final WindowEvent be2) {
-                            final Button b = be2.getButtonClicked();
-                            if (null==b) { // 'X' button clicked.
-                                return;
-                            }
-                            _parent = folderSelect.selectedResource();
-                            _parentFolder.setValue(
-                                (null==_parent)
-                                    ? null
-                                    : _parent.getName());
-                        }});
-                    folderSelect.show();
+                    new GetRootsAction() {
+                        // TODO: Do we really have to go to the server for this?
+                        @Override protected void onSuccess(
+                                      final ResourceSummary root) {
+                            final ResourceSelectionDialog folderSelect =
+                                new ResourceSelectionDialog(root,
+                                    ResourceType.FOLDER);
+                            folderSelect.addListener(Events.Hide,
+                                new Listener<ComponentEvent>() {
+                                public void handleEvent(final ComponentEvent ce) {
+                                    ResourceSummary _md = folderSelect.selectedResource();
+                                    if (_md != null
+                                       && _md.getType() != ResourceType.RANGE_FOLDER) {
+
+                                    _parent = _md;
+                                    _parentFolder.setValue(
+                                        (null==_parent)
+                                        ? null
+                                            : _parent.getName());
+                                    }
+                                }});
+                            folderSelect.show();
+                        }
+                    }.execute();
+
+
                 }});
         addField(_parentFolder);
     }

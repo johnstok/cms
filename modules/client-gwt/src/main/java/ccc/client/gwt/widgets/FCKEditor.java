@@ -14,8 +14,6 @@
 
 package ccc.client.gwt.widgets;
 
-import java.util.Collection;
-
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.I18n;
 import ccc.client.gwt.remoting.GetRootsAction;
@@ -213,14 +211,8 @@ public class FCKEditor extends LayoutContainer {
                                  final boolean openInNew) {
         new GetRootsAction() { // TODO: UseGetResourceForPathAction instead.
             @Override
-            protected void onSuccess(final Collection<ResourceSummary> roots) {
-                ResourceSummary rs = null;
-                for (final ResourceSummary rr : roots) {
-                    if (rr.getName().equals("content")) {
-                        rs = rr;
-                    }
-                }
-                new LinkSelectionDialog(rs,
+            protected void onSuccess(final ResourceSummary root) {
+                new LinkSelectionDialog(root,
                                         elementID,
                                         url,
                                         title,

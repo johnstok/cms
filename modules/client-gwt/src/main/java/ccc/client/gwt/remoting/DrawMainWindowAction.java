@@ -26,8 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.Collection;
-
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.client.gwt.widgets.LeftRightPane;
@@ -66,7 +64,7 @@ public final class DrawMainWindowAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onSuccess(final Collection<ResourceSummary> arg0) {
+    protected void onSuccess(final ResourceSummary arg0) {
         final LeftRightPane contentPane = new LeftRightPane();
         contentPane.setRightHandPane(new ContentPanel());
         contentPane.setLeftHandPane(

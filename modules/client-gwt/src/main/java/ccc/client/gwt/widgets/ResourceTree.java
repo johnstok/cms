@@ -28,6 +28,7 @@
 package ccc.client.gwt.widgets;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import ccc.api.core.ResourceSummary;
@@ -74,48 +75,51 @@ public class ResourceTree extends AbstractResourceTree {
 
             @Override
             protected void load(
-                final Object loadConfig,
-                final AsyncCallback<List<BeanModel>> callback) {
+                                final Object loadConfig,
+                                final AsyncCallback<List<BeanModel>> callback) {
 
-                final ResourceSummary parent =
-                    (null==loadConfig || !(loadConfig instanceof BeanModel))
-                        ? _root
-                        : ((BeanModel) loadConfig).<ResourceSummary>getBean();
-
-                if (parent.getChildCount() > Globals.MAX_FETCH) {
-                    List<ResourceSummary> children =
-                        createRangeFolders(parent.getChildCount(), parent);
+                if (null==loadConfig || !(loadConfig instanceof BeanModel)) {
                     callback.onSuccess(
-                        DataBinding.bindResourceSummary(children));
+                        DataBinding.bindResourceSummary(
+                            Collections.singletonList(_root)));
                 } else {
-                    int page = 1;
-                    if (parent.getType() == ResourceType.RANGE_FOLDER) {
-                        parent.setId(parent.getParent());
-                        page = Integer.decode(parent.getAbsolutePath());
+                    final ResourceSummary parent =
+                        ((BeanModel) loadConfig).<ResourceSummary>getBean();
+                    if (parent.getChildCount() > Globals.MAX_FETCH) {
+                        List<ResourceSummary> children =
+                            createRangeFolders(parent.getChildCount(), parent);
+                        callback.onSuccess(
+                            DataBinding.bindResourceSummary(children));
+                    } else {
+                        int page = 1;
+                        if (parent.getType() == ResourceType.RANGE_FOLDER) {
+                            parent.setId(parent.getParent());
+                            page = Integer.decode(parent.getAbsolutePath());
+                        }
+
+                        new GetChildrenPagedAction(
+                            parent,
+                            null,
+                            page,
+                            Globals.MAX_FETCH,
+                            "name",
+                            SortOrder.ASC,
+                            _type) {
+
+                            /** {@inheritDoc} */
+                            @Override protected void onFailure(final Throwable t) {
+                                callback.onFailure(t);
+                            }
+
+                            /** {@inheritDoc} */
+                            @Override protected void execute(
+                                                             final Collection<ResourceSummary> children,
+                                                             final int count) {
+                                callback.onSuccess(
+                                    DataBinding.bindResourceSummary(children));
+                            }
+                        }.execute();
                     }
-
-                    new GetChildrenPagedAction(
-                        parent,
-                        null,
-                        page,
-                        Globals.MAX_FETCH,
-                        "name",
-                        SortOrder.ASC,
-                        _type) {
-
-                        /** {@inheritDoc} */
-                        @Override protected void onFailure(final Throwable t) {
-                            callback.onFailure(t);
-                        }
-
-                        /** {@inheritDoc} */
-                        @Override protected void execute(
-                                                         final Collection<ResourceSummary> children,
-                                                         final int count) {
-                            callback.onSuccess(
-                                DataBinding.bindResourceSummary(children));
-                        }
-                    }.execute();
                 }
             }
         };

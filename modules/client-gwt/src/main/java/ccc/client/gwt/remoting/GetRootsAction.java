@@ -26,9 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import ccc.api.core.Folder;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
@@ -48,7 +45,7 @@ import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * Action for retrieving the roots.
+ * Action for retrieving the root.
  *
  * @author Civic Computing Ltd.
  */
@@ -83,14 +80,10 @@ public abstract class GetRootsAction
                         final JSONArray results =
                             obj.get(JsonKeys.ELEMENTS).isArray();
 
-                        final Collection<ResourceSummary> roots =
-                            new ArrayList<ResourceSummary>();
-                        for (int i=0; i<results.size(); i++) {
-                            roots.add(
-                                new ResourceSummarySerializer().read(
-                                    new GwtJson(results.get(i).isObject())));
+                        if (results.size() > 0) {
+                            onSuccess(new ResourceSummarySerializer().read(
+                                new GwtJson(results.get(0).isObject())));
                         }
-                        onSuccess(roots);
                     }
                 });
     }
@@ -99,7 +92,7 @@ public abstract class GetRootsAction
     /**
      * Execute this action.
      *
-     * @param roots The root resources returned by the server.
+     * @param root The root resource returned by the server.
      */
-    protected abstract void onSuccess(final Collection<ResourceSummary> roots);
+    protected abstract void onSuccess(final ResourceSummary root);
 }
