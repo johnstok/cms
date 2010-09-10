@@ -878,7 +878,8 @@ public class EditPagePanel
                             pTitle.substring(0, pTitle.length()-1)));
                 }
             } else if (FieldType.TEXT == c.fieldType()) {
-                if (c.field().getValue().length() > Paragraph.MAX_TEXT_LENGTH) {
+                if (c.field().getValue() != null &&
+                    c.field().getValue().length() > Paragraph.MAX_TEXT_LENGTH) {
                     final String pTitle = c.field().getFieldLabel();
                     vResult.addError(
                         I18n.UI_MESSAGES.paragraphTooLarge(pTitle));
