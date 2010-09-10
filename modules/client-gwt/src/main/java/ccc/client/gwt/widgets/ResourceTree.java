@@ -85,9 +85,9 @@ public class ResourceTree extends AbstractResourceTree {
                 } else {
                     final ResourceSummary parent =
                         ((BeanModel) loadConfig).<ResourceSummary>getBean();
-                    if (parent.getChildCount() > Globals.MAX_FETCH) {
+                    if (getChildCount(parent) > Globals.MAX_FETCH) {
                         List<ResourceSummary> children =
-                            createRangeFolders(parent.getChildCount(), parent);
+                            createRangeFolders(getChildCount(parent), parent);
                         callback.onSuccess(
                             DataBinding.bindResourceSummary(children));
                     } else {
@@ -132,10 +132,15 @@ public class ResourceTree extends AbstractResourceTree {
         return new BaseTreeLoader<BeanModel>(createProxy()) {
             @Override
             public boolean hasChildren(final BeanModel parent) {
-                final int childCount =
-                    parent.<ResourceSummary>getBean().getChildCount();
-                return childCount > 0;
+                return getChildCount(parent.<ResourceSummary>getBean()) > 0;
             }
         };
+    }
+
+    private int getChildCount(final ResourceSummary parent) {
+        if (_type == ResourceType.FOLDER) {
+            return parent.getFolderCount();
+        }
+        return parent.getChildCount();
     }
 }
