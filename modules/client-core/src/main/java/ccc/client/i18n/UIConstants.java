@@ -1576,4 +1576,11 @@ public interface UIConstants {
      * @return The constant, in the appropriate locale.
      */
     String tooManyFields();
+
+    /**
+     * "Tree.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String tree();
 }

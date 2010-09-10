@@ -30,7 +30,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.ResourceTree;
 import ccc.client.gwt.widgets.SearchResourceTable;
 
@@ -56,11 +55,10 @@ public class ResourceSelectionDialog extends Window {
     /** DIALOG_WIDTH : int. */
     private static final int DIALOG_WIDTH = 400;
     private final ResourceTree _tree;
-    private final Globals _globals = new GlobalsImpl();
 
     private final TabPanel tabPanel = new TabPanel();
-    private final TabItem treeTab = new TabItem("Tree");
-    private final TabItem searchTab = new TabItem("Search");
+    private final TabItem treeTab = new TabItem(I18n.UI_CONSTANTS.tree());
+    private final TabItem searchTab = new TabItem(I18n.UI_CONSTANTS.search());
     private final SearchResourceTable tt;
 
     /**
