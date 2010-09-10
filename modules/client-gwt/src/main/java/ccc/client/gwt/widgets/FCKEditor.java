@@ -68,6 +68,7 @@ import com.google.gwt.user.client.ui.Frame;
  */
 public class FCKEditor extends LayoutContainer {
 
+    private static final int HTML_HEIGHT            = 30;
     private final UIConstants         _uiConstants  = I18n.UI_CONSTANTS;
     private final Frame               _editorFrame  = new Frame();
     private final ToggleButton        _toggleButton = new ToggleButton();
@@ -101,7 +102,11 @@ public class FCKEditor extends LayoutContainer {
         _htmlArea.setBorders(true);
         _htmlArea.setHtml(_html);
         _htmlArea.setToolTip(_tooltip);
-        _htmlArea.setAutoHeight(true);
+        if (_html.isEmpty()) {
+            _htmlArea.setHeight(HTML_HEIGHT);
+        } else {
+            _htmlArea.setAutoHeight(true);
+        }
         add(_htmlArea);
 
         _toggleButton.setText(_uiConstants.edit());
@@ -286,6 +291,11 @@ public class FCKEditor extends LayoutContainer {
         _toggleButton.setText(_uiConstants.edit());
         _html = getHTML();
         _htmlArea.setHtml(_html);
+        if (_html.isEmpty()) {
+            _htmlArea.setHeight(HTML_HEIGHT);
+        } else {
+            _htmlArea.setAutoHeight(true);
+        }
         remove(_configBox);
         remove(_inputBox);
         remove(_editorFrame);
