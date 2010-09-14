@@ -351,10 +351,10 @@ class ResourceRepositoryImpl implements ResourceRepository {
             criteria.getSortField(),
             criteria.getSortOrder(),
             query);
-
-        if (criteria.isSortedByPara()) {
-            appendParaSort(criteria, hasRegularSort, query);
-        }
+// CC-1202
+//        if (criteria.isSortedByPara()) {
+//            appendParaSort(criteria, hasRegularSort, query);
+//        }
 
         return
             _repository.listDyn(
@@ -365,30 +365,30 @@ class ResourceRepositoryImpl implements ResourceRepository {
                 params);
     }
 
-
-    private void appendParaSort(final PageCriteria criteria,
-                                final boolean hasRegularSort,
-                                final StringBuffer query) {
-        final String sName = safeName(criteria.getParaSortField());
-        query.append(hasRegularSort ? "," : " ORDER BY");
-        query.append(" ps_"+sName+".");
-        switch (criteria.getParaSortType()) {
-            case BOOLEAN:
-                query.append("_boolean ");
-                break;
-            case NUMBER:
-            case TEXT:
-                query.append("_text ");
-                break;
-            case DATE:
-                query.append("_date ");
-                break;
-            default:
-                throw new RuntimeException(
-                    "Unsupported sort type: "+criteria.getType());
-        }
-        query.append(criteria.getParaSortOrder());
-    }
+// CC-1202
+//    private void appendParaSort(final PageCriteria criteria,
+//                                final boolean hasRegularSort,
+//                                final StringBuffer query) {
+//        final String sName = safeName(criteria.getParaSortField());
+//        query.append(hasRegularSort ? "," : " ORDER BY");
+//        query.append(" ps_"+sName+".");
+//        switch (criteria.getParaSortType()) {
+//            case BOOLEAN:
+//                query.append("_boolean ");
+//                break;
+//            case NUMBER:
+//            case TEXT:
+//                query.append("_text ");
+//                break;
+//            case DATE:
+//                query.append("_date ");
+//                break;
+//            default:
+//                throw new RuntimeException(
+//                    "Unsupported sort type: "+criteria.getType());
+//        }
+//        query.append(criteria.getParaSortOrder());
+//    }
 
 
     /** {@inheritDoc} */
@@ -454,16 +454,17 @@ class ResourceRepositoryImpl implements ResourceRepository {
             query.append(", IN (p._content) "+cName);
         }
 
-        if (criteria.isSortedByPara()) {
-            final String sName = safeName(criteria.getParaSortField());
-            final String cName = "ps_"+sName;
-            final String pnParam = "psn_"+sName;
-
-
-            query.append(", IN (p._content) "+cName);
-            query.append(" WHERE "+cName+"._name=:"+pnParam);
-            params.put(pnParam, criteria.getParaSortField());
-        }
+// CC-1202
+//        if (criteria.isSortedByPara()) {
+//            final String sName = safeName(criteria.getParaSortField());
+//            final String cName = "ps_"+sName;
+//            final String pnParam = "psn_"+sName;
+//
+//
+//            query.append(", IN (p._content) "+cName);
+//            query.append(" WHERE "+cName+"._name=:"+pnParam);
+//            params.put(pnParam, criteria.getParaSortField());
+//        }
 
         for (final Paragraph p : criteria.getParaMatches()) {
             final String pName = safeName(p.getName());

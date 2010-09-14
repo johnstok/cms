@@ -47,8 +47,8 @@ public class PageCriteria
     extends
         ResourceCriteria {
 
-    private Set<Paragraph> _paraMatches = new HashSet<Paragraph>();
-    private Map<String, Range<?>> _paraRanges = new HashMap<String, Range<?>>();
+    private final Set<Paragraph> _paraMatches = new HashSet<Paragraph>();
+    private final Map<String, Range<?>> _paraRanges = new HashMap<String, Range<?>>();
 
     private String _sortField;
     private SortOrder _sortOrder;
@@ -234,93 +234,93 @@ public class PageCriteria
         _paraRanges.putAll(paraRanges);
     }
 
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the sortField.
-     */
-    public String getParaSortField() {
-        return _sortField;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param sortField The sortField to set.
-     */
-    public void setParaSortField(final String sortField) {
-        _sortField = sortField;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the sortOrder.
-     */
-    public SortOrder getParaSortOrder() {
-        return _sortOrder;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param sortOrder The sortOrder to set.
-     */
-    public void setParaSortOrder(final SortOrder sortOrder) {
-        _sortOrder = sortOrder;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the sort type.
-     */
-    public ParagraphType getParaSortType() {
-        return _sortType;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param sortType The sort type to set.
-     */
-    public void setParaSortType(final ParagraphType sortType) {
-        _sortType = sortType;
-    }
-
-
-    /**
-     * Query.
-     *
-     * @return Returns true if results should be sorted; false otherwise.
-     */
-    public boolean isSortedByPara() {
-        return
-            null!=_sortField
-            && _sortField.trim().length()>0
-            && null!=_sortOrder
-            && _sortType!=null;
-    }
-
-
-    /**
-     * Sort the results.
-     *
-     * @param field The paragraph to sort on.
-     * @param type  The type of the paragraph sorted on.
-     * @param order The order to sort.
-     */
-    public final void sort(final String field,
-                           final ParagraphType type,
-                           final SortOrder order) {
-        setParaSortField(field);
-        setParaSortOrder(order);
-        setParaSortType(type);
-    }
+// CC-1202
+//    /**
+//     * Accessor.
+//     *
+//     * @return Returns the sortField.
+//     */
+//    public String getParaSortField() {
+//        return _sortField;
+//    }
+//
+//
+//    /**
+//     * Mutator.
+//     *
+//     * @param sortField The sortField to set.
+//     */
+//    public void setParaSortField(final String sortField) {
+//        _sortField = sortField;
+//    }
+//
+//
+//    /**
+//     * Accessor.
+//     *
+//     * @return Returns the sortOrder.
+//     */
+//    public SortOrder getParaSortOrder() {
+//        return _sortOrder;
+//    }
+//
+//
+//    /**
+//     * Mutator.
+//     *
+//     * @param sortOrder The sortOrder to set.
+//     */
+//    public void setParaSortOrder(final SortOrder sortOrder) {
+//        _sortOrder = sortOrder;
+//    }
+//
+//
+//    /**
+//     * Accessor.
+//     *
+//     * @return Returns the sort type.
+//     */
+//    public ParagraphType getParaSortType() {
+//        return _sortType;
+//    }
+//
+//
+//    /**
+//     * Mutator.
+//     *
+//     * @param sortType The sort type to set.
+//     */
+//    public void setParaSortType(final ParagraphType sortType) {
+//        _sortType = sortType;
+//    }
+//
+//
+//    /**
+//     * Query.
+//     *
+//     * @return Returns true if results should be sorted; false otherwise.
+//     */
+//    public boolean isSortedByPara() {
+//        return
+//            null!=_sortField
+//            && _sortField.trim().length()>0
+//            && null!=_sortOrder
+//            && _sortType!=null;
+//    }
+//
+//
+//    /**
+//     * Sort the results.
+//     *
+//     * @param field The paragraph to sort on.
+//     * @param type  The type of the paragraph sorted on.
+//     * @param order The order to sort.
+//     */
+//    public final void sort(final String field,
+//                           final ParagraphType type,
+//                           final SortOrder order) {
+//        setParaSortField(field);
+//        setParaSortOrder(order);
+//        setParaSortType(type);
+//    }
 }

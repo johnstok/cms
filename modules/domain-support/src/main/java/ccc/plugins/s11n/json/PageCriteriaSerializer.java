@@ -37,9 +37,7 @@ import java.util.Set;
 
 import ccc.api.core.PageCriteria;
 import ccc.api.types.Paragraph;
-import ccc.api.types.ParagraphType;
 import ccc.api.types.Range;
-import ccc.api.types.SortOrder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -99,16 +97,16 @@ public class PageCriteriaSerializer
             paragraphs.add(new ParagraphSerializer().read(jsonPara));
         }
         p.setParaMatches(paragraphs);
-
-        p.setParaSortField(json.getString("para-sort-field"));
-
-        final String pSortOrder = json.getString("para-sort-order");
-        p.setParaSortOrder(
-            (null==pSortOrder) ? null : SortOrder.valueOf(pSortOrder));
-
-        final String pSortType = json.getString("para-sort-type");
-        p.setParaSortType(
-            (null==pSortType) ? null : ParagraphType.valueOf(pSortType));
+// CC-1202
+//        p.setParaSortField(json.getString("para-sort-field"));
+//
+//        final String pSortOrder = json.getString("para-sort-order");
+//        p.setParaSortOrder(
+//            (null==pSortOrder) ? null : SortOrder.valueOf(pSortOrder));
+//
+//        final String pSortType = json.getString("para-sort-type");
+//        p.setParaSortType(
+//            (null==pSortType) ? null : ParagraphType.valueOf(pSortType));
 
         return p;
     }
@@ -157,14 +155,14 @@ public class PageCriteriaSerializer
         json.setJsons(
             JsonKeys.PARAGRAPHS,
             new ParagraphSerializer().write(json, instance.getParaMatches()));
-
-        json.set("para-sort-field", instance.getParaSortField());
-
-        final SortOrder o = instance.getParaSortOrder();
-        json.set("para-sort-order", (null==o) ? null : o.name());
-
-        final ParagraphType t = instance.getParaSortType();
-        json.set("para-sort-type", (null==t) ? null : t.name());
+// CC-1202
+//        json.set("para-sort-field", instance.getParaSortField());
+//
+//        final SortOrder o = instance.getParaSortOrder();
+//        json.set("para-sort-order", (null==o) ? null : o.name());
+//
+//        final ParagraphType t = instance.getParaSortType();
+//        json.set("para-sort-type", (null==t) ? null : t.name());
 
         return json;
     }
