@@ -28,16 +28,19 @@ package ccc.client.gwt.remoting;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
+import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.Link;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
+import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.json.ResourceCriteriaSerializer;
 import ccc.plugins.s11n.json.ResourceSummarySerializer;
 
 import com.google.gwt.json.client.JSONArray;
@@ -54,13 +57,12 @@ public abstract class GetChildrenPagedAction
 extends
 RemotingAction{
 
-    private final ResourceSummary _parent;
+
     private final int _pageNo;
     private final int _pageSize;
-    private final String _sort;
-    private final SortOrder _order;
-    private final ResourceType _type;
-    private final String _name;
+
+    private final ResourceCriteria  _criteria;
+
 
     /**
      * Constructor.
@@ -80,29 +82,40 @@ RemotingAction{
                                   final String sort,
                                   final SortOrder order,
                                   final ResourceType type) {
-        super(UI_CONSTANTS.getChildrenPaged());
-        _parent = parent;
-        _name = name;
+        super(UI_CONSTANTS.getChildrenPaged(), HttpMethod.POST);
+
+        _criteria = new ResourceCriteria();
+        _criteria.setParent(parent.getId());
+        _criteria.setName(name);
         _pageNo = pageNo;
         _pageSize = pageSize;
-        _sort = sort;
-        _order = order;
-        _type = type;
+        _criteria.setSortField(sort);
+        _criteria.setSortOrder(order);
+        _criteria.setType(type);
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        final HashMap<String, String[]> params =
-            new HashMap<String, String[]>();
-        params.put("parent", new String[] {_parent.getId().toString()});
-        params.put("name", new String[] {_name});
-        params.put("sort", new String[] {_sort});
-        params.put("order", new String[] {_order.name()});
-        params.put("page", new String[] {""+_pageNo});
-        params.put("count", new String[] {""+_pageSize});
-        params.put("type", new String[] {(null==_type) ? null : _type.name()});
-        return _parent.list().build(params, new GWTTemplateEncoder());
+        return
+        new Link(ccc.api.core.ResourceIdentifiers.Resource.SEARCH2)
+        .build(new GWTTemplateEncoder());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getBody() {
+        final GwtJson json = new GwtJson();
+
+        ResourceCriteriaSerializer<ResourceCriteria> rcs = new ResourceCriteriaSerializer<ResourceCriteria>() {
+            @Override protected ResourceCriteria createObject() {
+                return new ResourceCriteria();
+            }};
+        rcs.write(json, _criteria);
+        json.set("page", ""+_pageNo);
+        json.set("count", ""+_pageSize);
+        return json.toString();
     }
 
 

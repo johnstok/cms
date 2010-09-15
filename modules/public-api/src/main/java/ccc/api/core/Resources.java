@@ -61,7 +61,6 @@ public interface Resources {
      * List existing resources. Leave field to null if not applicable.
      *
      * @param parent Filter resources by parent.
-     * @param name Filter resources by name.
      * @param tag Filter resources by tag.
      * @param before Include only resources created before this date.
      * @param after Include only resources created after this date.
@@ -80,7 +79,6 @@ public interface Resources {
     @Path(ccc.api.core.ResourceIdentifiers.Resource.COLLECTION)
     PagedCollection<ResourceSummary> list(
         @QueryParam("parent") UUID parent,
-        @QueryParam("name") String name,
         @QueryParam("tag") String tag,
         @QueryParam("before") Long before,
         @QueryParam("after") Long after,

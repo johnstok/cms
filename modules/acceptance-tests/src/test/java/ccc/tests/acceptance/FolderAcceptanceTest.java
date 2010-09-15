@@ -81,7 +81,6 @@ public class FolderAcceptanceTest
                 null,
                 null,
                 null,
-                null,
                 "folder",
                 null,
                 null,
@@ -157,7 +156,6 @@ public class FolderAcceptanceTest
                 null,
                 null,
                 null,
-                null,
                 "manual",
                 SortOrder.ASC,
                 1,
@@ -226,7 +224,6 @@ public class FolderAcceptanceTest
         // ACT
         try {
            getCommands().list(folder.getId(),
-                    null,
                     null,
                     null,
                     null,

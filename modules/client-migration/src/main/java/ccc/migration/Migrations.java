@@ -176,7 +176,6 @@ public class Migrations extends BaseMigrations {
                     null,
                     null,
                     null,
-                    null,
                     "name",
                     SortOrder.ASC,
                     1,

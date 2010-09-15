@@ -675,7 +675,6 @@ public class ResourcesEJB
     @Override
     @PermitAll
     public PagedCollection<ResourceSummary> list(final UUID parent,
-                                                 final String name,
                                                  final String tag,
                                                  final Long before,
                                                  final Long after,
@@ -690,7 +689,6 @@ public class ResourcesEJB
         checkPermission(RESOURCE_READ);
 
         final ResourceCriteria criteria = new ResourceCriteria();
-        criteria.setName(name);
         criteria.setParent(parent);
         criteria.setTag(tag);
         criteria.setChangedBefore(
