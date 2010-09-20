@@ -31,10 +31,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 import junit.framework.TestCase;
 import ccc.commons.Resources;
+import ccc.domain.CCCException;
 import ccc.domain.Data;
 
 
@@ -46,6 +48,34 @@ import ccc.domain.Data;
 public class FsCoreDataTest
     extends
         TestCase {
+
+
+    /**
+     * Test.
+     */
+    public void testCloseDuringWriteCausesException() {
+
+        // ARRANGE
+        final FsCoreData cd = new FsCoreData(FILESTORE.getAbsolutePath()) {
+            /** {@inheritDoc} */
+            @Override OutputStream createOutputStream(final File f) {
+                return new TestOutputStream();
+            }
+        };
+
+        // ACT
+        try {
+            cd.create(
+                new ByteArrayInputStream(HELLO_WORLD), HELLO_WORLD.length);
+            fail();
+
+        // ASSERT
+        } catch (final CCCException e) {
+            assertEquals(
+                "java.io.IOException: No space left on device",
+                e.getMessage());
+        }
+    }
 
 
     /**
@@ -81,7 +111,7 @@ public class FsCoreDataTest
             new FsCoreData(EXISTING.getAbsolutePath());
             fail();
 
-            // ASSERT
+        // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals(
                 "Path is not a directory: "+EXISTING.getAbsolutePath(),
@@ -150,8 +180,6 @@ public class FsCoreDataTest
                     "Hello World!", Resources.readIntoString(is, UTF8));
             }
         });
-
-
     }
 
 
@@ -172,5 +200,31 @@ public class FsCoreDataTest
             throw new RuntimeException(e);
         }
         FILESTORE.mkdir();
+    }
+
+
+    /**
+     * Test output stream that fails to close.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private static class TestOutputStream extends OutputStream {
+
+        /**
+         * Constructor.
+         */
+        TestOutputStream() { super(); }
+
+
+        /** {@inheritDoc} */
+        @Override
+        public void write(final int b) { /* No Op */ }
+
+
+        /** {@inheritDoc} */
+        @Override
+        public void close() throws IOException {
+            throw new IOException("No space left on device");
+        }
     }
 }

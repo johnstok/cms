@@ -33,6 +33,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
 
@@ -55,6 +56,7 @@ class FsCoreData
     private static final Logger LOG = Logger.getLogger(FsCoreData.class);
 
     private final File _root;
+
 
     /**
      * Constructor.
@@ -85,23 +87,28 @@ class FsCoreData
         LOG.debug("Created file store: "+_root.getAbsolutePath());
     }
 
+
     /** {@inheritDoc} */
     @Override
     public Data create(final InputStream dataStream, final int length) {
         final Data d = new Data();
         final File dir = mkdir(d);
         final File f = new File(dir, d.id().toString());
+        if (f.exists()) {
+            throw new CCCException("File exists: "+f.getAbsolutePath());
+        }
 
         try {
-            final FileOutputStream fos = new FileOutputStream(f);
+            final OutputStream fos = createOutputStream(f);
 
             try {
                 IO.copy(dataStream, fos);
+                fos.flush();
+                fos.close();
+
             } catch (final Exception e) {
                 LOG.error("Error writing to file "+f.getAbsolutePath(), e);
                 throw e;
-            } finally {
-                attemptClose(f, fos);
             }
             LOG.debug("Wrote data to file store: "+f.getAbsolutePath());
 
@@ -115,6 +122,20 @@ class FsCoreData
         }
 
         return d;
+    }
+
+
+    /**
+     * Create an output stream on the specified file.
+     *
+     * @param f The file to output to.
+     *
+     * @return An output stream on the specified file.
+     *
+     * @throws FileNotFoundException If stream creation fails.
+     */
+    OutputStream createOutputStream(final File f) throws FileNotFoundException {
+        return new FileOutputStream(f);
     }
 
 
