@@ -80,7 +80,7 @@ public class ResourceSelectionDialog extends Window {
         treeTab.setScrollMode(Scroll.AUTOY);
         tabPanel.add(treeTab);
 
-        tt = new SearchResourceTable(targetRoot, type);
+        tt = new SearchResourceTable(type);
         searchTab.add(tt);
         searchTab.setLayout(new FitLayout());
         searchTab.setScrollMode(Scroll.AUTOY);

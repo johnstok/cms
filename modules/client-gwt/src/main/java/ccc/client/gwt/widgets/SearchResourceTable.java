@@ -34,7 +34,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.remoting.GetResourcesPagedAction;
+import ccc.client.gwt.remoting.GetChildrenPagedAction;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -80,7 +80,6 @@ public class SearchResourceTable
     private ListStore<BeanModel> _detailsStore =
         new ListStore<BeanModel>();
 
-    private final ResourceSummary _root;
     private final Grid<BeanModel> _grid;
     private final PagingToolBar _pagerBar;
     private final ToolBar _toolBar;
@@ -93,13 +92,10 @@ public class SearchResourceTable
     /**
      * Constructor.
      *
-     * @param root ResourceSummary
      * @param type ResourceType
      */
-    public SearchResourceTable(final ResourceSummary root,
-                               final ResourceType type) {
+    public SearchResourceTable(final ResourceType type) {
         _type = type;
-        _root = root;
         _toolBar = new ToolBar();
         _filterString.addKeyListener(new KeyListener() {
             @Override
@@ -164,30 +160,30 @@ public class SearchResourceTable
                             : SortOrder.DESC;
 
                     String name = getFilter();
-                    new GetResourcesPagedAction(
-                        _root.list(),
+                    new GetChildrenPagedAction(
+                        null,
                         name,
                         page,
                         config.getLimit(),
                         config.getSortField(),
                         order,
                         _type) {
-                        /** {@inheritDoc} */
-                        @Override protected void onFailure(final Throwable t) {
-                            callback.onFailure(t);
-                        }
 
                         /** {@inheritDoc} */
                         @Override protected void execute(
-                                 final Collection<ResourceSummary> children,
-                                 final int totalCount) {
+                                                         final Collection<ResourceSummary> children,
+                                                         final int totalCount) {
                             final List<BeanModel> results =
                                 DataBinding.bindResourceSummary(children);
 
                             final PagingLoadResult<BeanModel> plr =
                                 new BasePagingLoadResult<BeanModel>(
-                            results, config.getOffset(), totalCount);
+                                        results, config.getOffset(), totalCount);
                             callback.onSuccess(plr);
+                        }
+                        /** {@inheritDoc} */
+                        @Override protected void onFailure(final Throwable t) {
+                            callback.onFailure(t);
                         }
                     }.execute();
                 }

@@ -28,6 +28,8 @@ package ccc.client.gwt.remoting;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
@@ -85,7 +87,7 @@ RemotingAction{
         super(UI_CONSTANTS.getChildrenPaged(), HttpMethod.POST);
 
         _criteria = new ResourceCriteria();
-        _criteria.setParent(parent.getId());
+        _criteria.setParent((parent == null) ? null : parent.getId());
         _criteria.setName(name);
         _pageNo = pageNo;
         _pageSize = pageSize;
@@ -98,9 +100,14 @@ RemotingAction{
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
+        final Map<String, String[]> params = new HashMap<String, String[]>();
+        params.put("count", new String[] {""+_pageSize});
+        params.put("page", new String[] {""+_pageNo});
+
         return
-        new Link(ccc.api.core.ResourceIdentifiers.Resource.SEARCH2)
-        .build(new GWTTemplateEncoder());
+        new Link(ccc.api.core.ResourceIdentifiers.Resource.SEARCH2
+            + "?{-join|&|count,page,sort,order}")
+        .build(params, new GWTTemplateEncoder());
     }
 
     /** {@inheritDoc} */
@@ -108,13 +115,12 @@ RemotingAction{
     protected String getBody() {
         final GwtJson json = new GwtJson();
 
-        ResourceCriteriaSerializer<ResourceCriteria> rcs = new ResourceCriteriaSerializer<ResourceCriteria>() {
+        ResourceCriteriaSerializer<ResourceCriteria> rcs =
+            new ResourceCriteriaSerializer<ResourceCriteria>() {
             @Override protected ResourceCriteria createObject() {
                 return new ResourceCriteria();
             }};
-        rcs.write(json, _criteria);
-        json.set("page", ""+_pageNo);
-        json.set("count", ""+_pageSize);
+            rcs.write(json, _criteria);
         return json.toString();
     }
 
