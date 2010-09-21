@@ -165,7 +165,10 @@ public class CreateActionDialog
         }
         if (null==_dtPicker.getDate()) {
             result.addError(getUiConstants().pleaseSpecifyDateAndTime());
+        } else if (_dtPicker.getDate().before(new Date())) {
+            result.addError(getUiConstants().dateCannotBeInPast());
         }
+
         return result;
     }
 
