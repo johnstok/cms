@@ -26,7 +26,7 @@
  */
 package ccc.cli;
 
-import static ccc.commons.Exceptions.swallow;
+import static ccc.commons.Exceptions.*;
 
 import java.nio.charset.Charset;
 import java.sql.Connection;
@@ -58,7 +58,7 @@ public class Schema
         CccApp {
 
     private static final int    NEW_DB_VERSION = -1;
-    private static final int    LATEST_DB_VERSION = 2;
+    private static final int    LATEST_DB_VERSION = 3;
     private static final Logger LOG = Logger.getLogger(Schema.class);
 
     @Option(
@@ -288,7 +288,7 @@ public class Schema
      * @param args String array of application arguments.
      */
     public static final void main(final String[] args) {
-        Schema s = parseOptions(args, Schema.class);
+        final Schema s = parseOptions(args, Schema.class);
         s.create();
     }
 

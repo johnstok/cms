@@ -373,7 +373,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
                 break;
             case NUMBER:
             case TEXT:
-                query.append("_text ");
+                query.append("sortableText ");
                 break;
             case DATE:
                 query.append("_date ");

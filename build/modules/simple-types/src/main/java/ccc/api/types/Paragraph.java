@@ -42,10 +42,12 @@ import java.util.List;
  */
 public final class Paragraph implements Serializable {
 
+    /** MAX_SORTABLE_LENGTH : int. */
+    private static final int MAX_SORTABLE_LENGTH = 1024;
     /** MAX_NAME_LENGTH : int. */
-    public static final int MAX_NAME_LENGTH = 256;    // 2^8
+    public static final int  MAX_NAME_LENGTH     = 256;    // 2^8
     /** MAX_TEXT_LENGTH : int. */
-    public static final int MAX_TEXT_LENGTH = 524288; // 2^19
+    public static final int  MAX_TEXT_LENGTH     = 524288; // 2^19
 
 
     private String        _text;
@@ -372,4 +374,19 @@ public final class Paragraph implements Serializable {
         }
         return list;
     }
+
+
+    @SuppressWarnings("unused") // Used for persistence.
+    private String getSortableText() {
+        if (ParagraphType.TEXT!=_type || null==_text) { return null; }
+        final int sortableLength =
+            (_text.length()>MAX_SORTABLE_LENGTH)
+                ? MAX_SORTABLE_LENGTH
+                : _text.length();
+        return _text.substring(0, sortableLength);
+    }
+
+
+    @SuppressWarnings("unused") // Used for persistence.
+    private void setSortableText(final String text) { /* No Op */ }
 }
