@@ -90,6 +90,9 @@ public class CreateActionDialog
                 if (null==_dtPicker.getDate()) {
                     getUiConstants().pleaseSpecifyDateAndTime();
                     return;
+                } else if (_dtPicker.getDate().before(new Date())) {
+                    getUiConstants().dateCannotBeInPast();
+        	        return;
                 }
 
                 new CreateActionAction(

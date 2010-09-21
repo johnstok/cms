@@ -1739,4 +1739,13 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Update group")
     String updateGroup();
+
+    /**
+     * "Date cannot be in past.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Date cannot be in past.")
+    String dateCannotBeInPast();
+
 }
