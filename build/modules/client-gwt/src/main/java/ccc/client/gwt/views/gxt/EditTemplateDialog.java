@@ -316,8 +316,7 @@ public class EditTemplateDialog
 
                 new UpdateTemplateAction(delta) {
                     /** {@inheritDoc} */
-                    @Override protected void onNoContent(
-                                             final Response response) {
+                    @Override protected void onOK(final Response response) {
                         _ssm.update(_proxy);
                         hide();
                     }

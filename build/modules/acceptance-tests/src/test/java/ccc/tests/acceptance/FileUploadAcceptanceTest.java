@@ -390,7 +390,7 @@ public class FileUploadAcceptanceTest
     /**
      * Test.
      */
-    public void testGetFileContentsIsEmptyForMissingPath() {
+    public void testGetFileContentsIsNullForMissingPath() {
 
         // ARRANGE
 
@@ -400,7 +400,7 @@ public class FileUploadAcceptanceTest
                 "/this/path/doesnt/exist", "UTF-8");
 
         // ASSERT
-        assertEquals("", content);
+        assertNull(content);
     }
 
 

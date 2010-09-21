@@ -57,6 +57,11 @@ public class VelocityProcessor
         AbstractTextProcessor {
 
 
+    /** TEMPLATE_LOG_CATEGORY : String. */
+    static final String TEMPLATE_LOG_CATEGORY =
+        "ccc.plugins.scripting.velocity.Template";
+
+
     /** {@inheritDoc} */
     public void render(final Script template,
                        final Writer output,
@@ -90,7 +95,7 @@ public class VelocityProcessor
             "org.apache.velocity.runtime.log.Log4JLogChute");
         velocityProperties.setProperty(
             "runtime.log.logsystem.log4j.logger",
-            "ccc.plugins.scripting.velocity.Template");
+            TEMPLATE_LOG_CATEGORY);
         velocityProperties.setProperty(
             "runtime.introspector.uberspect",
             "org.apache.velocity.util.introspection.SecureUberspector");

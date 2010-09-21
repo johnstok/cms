@@ -32,6 +32,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import org.apache.commons.collections.ExtendedProperties;
+import org.apache.log4j.Logger;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 
@@ -46,6 +47,8 @@ import ccc.api.core.Resources;
 public class CCCResourceLoader
     extends
         ResourceLoader {
+    private static final Logger LOG =
+        Logger.getLogger(VelocityProcessor.TEMPLATE_LOG_CATEGORY);
 
     /** {@inheritDoc} */
     @Override
@@ -61,17 +64,23 @@ public class CCCResourceLoader
             (Resources) rsvc.getApplicationAttribute("ccc-reader");
 
         if (null==resources) {
+//            LOG.error("Resource reader is missing!");
             return new ByteArrayInputStream(new byte[0]);
         }
 
-        // TODO: Throw resource not found exception?
         final String contents =
             resources.fileContentsFromPath(absolutePath, "UTF8");
+
+        if (null==contents) {
+            LOG.warn("Template refers to missing resource: "+absolutePath);
+            return new ByteArrayInputStream(new byte[0]);
+        }
 
         try {
             return new ByteArrayInputStream(contents.getBytes("UTF8"));
         } catch (final UnsupportedEncodingException e) {
-            throw new RuntimeException("UTF-8 encoding not supported!", e);
+            LOG.warn("Failed to read resource as UTF-8: "+absolutePath);
+            return new ByteArrayInputStream(new byte[0]);
         }
     }
 
