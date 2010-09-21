@@ -24,11 +24,8 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.api.core;
 
-import ccc.api.core.PageCriteria;
-import ccc.api.core.ResourceCriteria;
-import ccc.api.core.UserCriteria;
 
 
 /**
@@ -36,8 +33,8 @@ import ccc.api.core.UserCriteria;
  *
  * @author Civic Computing Ltd.
  */
-public class CCObjectFactory {
-    private CCObjectFactory() {
+public final class ObjectFactory {
+    private ObjectFactory() {
         // NO-OP
     }
 
@@ -67,5 +64,6 @@ public class CCObjectFactory {
     public static UserCriteria createUserCriteria() {
         return new UserCriteria();
     }
+
 
 }

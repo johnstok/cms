@@ -45,12 +45,12 @@ import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.SortTool;
 
 import ccc.api.core.MemoryServiceLocator;
+import ccc.api.core.ObjectFactory;
 import ccc.api.core.ServiceLocator;
 import ccc.api.core.User;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.ResourcePath;
-import ccc.commons.CCObjectFactory;
 import ccc.commons.EnumTools;
 import ccc.commons.Environment;
 import ccc.commons.HTTP;
@@ -231,7 +231,7 @@ public class ContentServlet
         context.add("hostname",    Environment.getHostname());
         context.add("dateTool",    new DateTool()); // FIXME: Remove.
         context.add("sortTool",    new SortTool()); // FIXME: Remove.
-        context.add("CCObjectFactory", CCObjectFactory.class);
+        context.add("apiTypes",    ObjectFactory.class);
 
         return context;
     }
