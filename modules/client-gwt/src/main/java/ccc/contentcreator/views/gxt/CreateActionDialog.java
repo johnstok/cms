@@ -43,6 +43,7 @@ import com.extjs.gxt.ui.client.widget.form.TimeField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Window;
 
 
 /**
@@ -84,15 +85,15 @@ public class CreateActionDialog
             public void componentSelected(final ButtonEvent ce) {
 
                 if (null==_createAction.commandType()) {
-                    getUiConstants().pleaseChooseAnAction();
+                    Window.alert(getUiConstants().pleaseChooseAnAction());
                     return;
                 }
                 if (null==_dtPicker.getDate()) {
-                    getUiConstants().pleaseSpecifyDateAndTime();
+                    Window.alert(getUiConstants().pleaseSpecifyDateAndTime());
                     return;
                 } else if (_dtPicker.getDate().before(new Date())) {
-                    getUiConstants().dateCannotBeInPast();
-        	        return;
+                    Window.alert(getUiConstants().dateCannotBeInPast());
+                    return;
                 }
 
                 new CreateActionAction(
