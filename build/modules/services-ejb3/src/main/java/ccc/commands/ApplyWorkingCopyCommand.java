@@ -32,12 +32,9 @@ import java.util.UUID;
 import ccc.api.core.Resource;
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.CommandType;
-import ccc.domain.FileEntity;
-import ccc.domain.PageEntity;
-import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UserEntity;
-import ccc.domain.WCAware;
+import ccc.domain.WorkingCopySupport;
 import ccc.persistence.IRepositoryFactory;
 
 
@@ -77,22 +74,17 @@ public class ApplyWorkingCopyCommand
     /** {@inheritDoc} */
     @Override
     public Resource doExecute(final UserEntity actor,
-                          final Date happenedOn) {
+                              final Date happenedOn) {
 
-        ResourceEntity r  = getRepository().find(PageEntity.class, _id);
-        if (null == r) {
-            r = getRepository().find(FileEntity.class, _id);
-        }
+        final WorkingCopySupport<?, ?, ?> r = getRepository().findWcAware(_id);
+
+        if (null==r) { throw new WorkingCopyNotSupportedException(_id); }
+
         r.confirmLock(actor);
 
-        if (r instanceof WCAware<?>) {
-            final WCAware<?> wcAware = (WCAware<?>) r;
-            final RevisionMetadata rm =
-                new RevisionMetadata(happenedOn, actor, _isMajorEdit, _comment);
-            wcAware.applyWorkingCopy(rm);
-        } else {
-            throw new WorkingCopyNotSupportedException(r.getId());
-        }
+        final RevisionMetadata rm =
+            new RevisionMetadata(happenedOn, actor, _isMajorEdit, _comment);
+        r.applyWorkingCopy(rm);
 
         update(r, actor, happenedOn);
 

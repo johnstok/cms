@@ -38,6 +38,7 @@ import javax.persistence.EntityManager;
 import ccc.api.core.PageCriteria;
 import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
+import ccc.api.exceptions.CCException;
 import ccc.api.types.DBC;
 import ccc.api.types.Paragraph;
 import ccc.api.types.PredefinedResourceNames;
@@ -55,6 +56,7 @@ import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionEntity;
 import ccc.domain.Search;
 import ccc.domain.TemplateEntity;
+import ccc.domain.WorkingCopySupport;
 
 
 /**
@@ -754,5 +756,22 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     private String safeName(final String unsafe) {
         return ResourceName.escape(unsafe).toString();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public WorkingCopySupport<?, ?, ?> findWcAware(final UUID id) {
+        final List<WorkingCopySupport> results =
+            discardDeleted(
+                _repository.list(
+                    QueryNames.WC_BY_ID,
+                    WorkingCopySupport.class,
+                    id));
+        if (results.size()<1) { return null; }
+        if (results.size()>1) {
+            throw new CCException("Multiple resources with ID: "+id);
+        }
+        return results.get(0);
     }
 }

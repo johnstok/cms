@@ -40,6 +40,7 @@ import ccc.domain.PageEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionEntity;
 import ccc.domain.TemplateEntity;
+import ccc.domain.WorkingCopySupport;
 
 
 /**
@@ -230,4 +231,13 @@ public interface ResourceRepository {
      * @return The count.
      */
     long templateCount();
+
+    /**
+     * Find an entity that supports working copies.
+     *
+     * @param id The ID of the entity to find.
+     *
+     * @return The corresponding entity or NULL if no such object exists.
+     */
+    WorkingCopySupport<?, ?, ?> findWcAware(UUID id);
 }

@@ -85,4 +85,7 @@ final class QueryNames {
 
     /** SETTING_WITH_NAME : String. */
     public static final String SETTINGS_WITH_NAME = "settings-with-name";
+
+    /** WC_BY_ID : String. */
+    public static final String WC_BY_ID = "wc-by-id";
 }
