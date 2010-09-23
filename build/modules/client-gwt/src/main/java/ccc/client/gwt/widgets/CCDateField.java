@@ -27,6 +27,7 @@
 package ccc.client.gwt.widgets;
 
 import ccc.api.types.Paragraph;
+import ccc.client.widgets.PageElement;
 
 import com.extjs.gxt.ui.client.widget.form.DateField;
 

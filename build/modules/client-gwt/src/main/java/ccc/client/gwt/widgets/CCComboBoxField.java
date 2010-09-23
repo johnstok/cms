@@ -29,6 +29,8 @@ package ccc.client.gwt.widgets;
 import java.util.List;
 
 import ccc.api.types.Paragraph;
+import ccc.client.widgets.Option;
+import ccc.client.widgets.PageElement;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.store.ListStore;

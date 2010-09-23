@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.widgets;
+package ccc.client.widgets;
 
 import ccc.api.types.Paragraph;
 import ccc.client.core.ValidationResult;

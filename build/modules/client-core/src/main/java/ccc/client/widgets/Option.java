@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.widgets;
+package ccc.client.widgets;
 
 
 /**
@@ -32,7 +32,7 @@ package ccc.client.gwt.widgets;
  *
  * @author Civic Computing Ltd.
  */
-final class Option {
+public final class Option {
 
     private final String _title;
     private final String _value;

@@ -36,6 +36,8 @@ import ccc.api.types.ResourceName;
 import ccc.client.core.I18n;
 import ccc.client.core.Validatable;
 import ccc.client.core.ValidationResult;
+import ccc.client.widgets.Option;
+import ccc.client.widgets.PageElement;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.widget.Component;

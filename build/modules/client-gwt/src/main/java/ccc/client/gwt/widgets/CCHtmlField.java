@@ -29,6 +29,7 @@ package ccc.client.gwt.widgets;
 import ccc.api.types.Paragraph;
 import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
+import ccc.client.widgets.PageElement;
 
 
 /**

@@ -36,4 +36,5 @@
     <source path="client/remoting" />
     <source path="client/validation" />
     <source path="client/views" />
+    <source path="client/widgets" />
 </module>

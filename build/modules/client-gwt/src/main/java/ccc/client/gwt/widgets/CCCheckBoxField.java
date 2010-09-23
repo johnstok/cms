@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ccc.api.types.Paragraph;
+import ccc.client.widgets.Option;
+import ccc.client.widgets.PageElement;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
