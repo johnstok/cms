@@ -488,6 +488,6 @@ public class ResourceTable
     /** {@inheritDoc} */
     @Override
     public void create(final Resource model) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        create((ResourceSummary) model);
     }
 }

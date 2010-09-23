@@ -41,7 +41,6 @@ import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.EditPagePanel;
-import ccc.client.gwt.widgets.PageElement;
 import ccc.client.presenters.CreatePagePresenter;
 import ccc.client.views.CreatePage;
 
@@ -253,7 +252,7 @@ public class CreatePageDialog
 
     private void updateSecondPage(final Template t) {
         _template = t;
-        final EditPagePanel second = new EditPagePanel(t);
+        final EditPagePanel second = new EditPagePanel(t.getDefinition());
         replaceCard(_secondWizardPage, second);
         _secondWizardPage = second;
         _description.setText(t.getDescription());
@@ -318,7 +317,7 @@ public class CreatePageDialog
     /** {@inheritDoc} */
     @Override
     public String getName() {
-        return _secondWizardPage.name().getValue();
+        return _secondWizardPage.getName().getValue();
     }
 
 
@@ -337,13 +336,7 @@ public class CreatePageDialog
     /** {@inheritDoc} */
     @Override
     public Set<Paragraph> getParagraphs() {
-
-        final List<PageElement> definitions =
-            _secondWizardPage.pageElements();
-
-        final Set<Paragraph> paragraphs =
-            _secondWizardPage.extractValues(definitions);
-        return paragraphs;
+        return _secondWizardPage.getValues();
     }
 
 }

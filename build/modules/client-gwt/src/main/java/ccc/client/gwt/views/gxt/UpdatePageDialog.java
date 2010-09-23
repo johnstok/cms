@@ -28,7 +28,6 @@
 package ccc.client.gwt.views.gxt;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import ccc.api.core.Page;
@@ -43,7 +42,6 @@ import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateWorkingCopyAction;
 import ccc.client.gwt.widgets.EditPagePanel;
-import ccc.client.gwt.widgets.PageElement;
 import ccc.client.gwt.widgets.ResourceTable;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -87,7 +85,7 @@ public class UpdatePageDialog
         _modelData = rt().tableSelection();
         _paras = new HashSet<Paragraph>(page.getParagraphs());
         _template = template;
-        _panel = new EditPagePanel(_template);
+        _panel = new EditPagePanel(_template.getDefinition());
 
         setLayout(new FitLayout());
 
@@ -96,7 +94,8 @@ public class UpdatePageDialog
 
 
     private void drawGUI(final ResourceName pageName) {
-        _panel.populateFields(_paras, pageName);
+        _panel.setName(pageName);
+        _panel.setValues(_paras);
         _panel.layout();
 
         add(_panel);
@@ -216,9 +215,5 @@ public class UpdatePageDialog
     }
 
 
-    private Set<Paragraph> getParagraphs() {
-        final List<PageElement> definitions = panel().pageElements();
-        final Set<Paragraph> paragraphs = _panel.extractValues(definitions);
-        return paragraphs;
-    }
+    private Set<Paragraph> getParagraphs() { return _panel.getValues(); }
 }

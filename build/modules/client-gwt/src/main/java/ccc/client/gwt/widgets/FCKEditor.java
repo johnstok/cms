@@ -29,6 +29,7 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.button.ToggleButton;
 import com.extjs.gxt.ui.client.widget.form.HiddenField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -78,6 +79,7 @@ public class FCKEditor extends LayoutContainer {
     private final Html                _htmlArea     = new Html();
     private final String              _elementID;
     private final String              _tooltip;
+    private final String              _label;
 
     private boolean _enabled = false;
     private String _html = "";
@@ -85,13 +87,24 @@ public class FCKEditor extends LayoutContainer {
     /**
      * Constructor.
      *
-     * @param html The HTML to be edited.
+     * @param html      The HTML to be edited.
      * @param cssHeight The height of the editor in pixels.
-     * @param tooltip The editor's tool-tip.
+     * @param tooltip   The editor's tool-tip.
+     * @param label     The editor's label.
      */
     public FCKEditor(final String html,
                      final String cssHeight,
-                     final String tooltip) {
+                     final String tooltip,
+                     final String label) {
+        _label = label;
+
+        if (null!=_label) {
+            final Text fieldName = new Text(_label+":");
+            fieldName.setTagName("label");
+            fieldName.setStyleName("x-form-item-label");
+            add(fieldName);
+        }
+
         _html = html;
         _tooltip = tooltip;
         setLayout(new FitLayout());
@@ -316,4 +329,12 @@ public class FCKEditor extends LayoutContainer {
      * @return The content length, as an integer.
      */
     public int getLength() { return getHTML().length(); }
+
+
+    /**
+     * Get the editor's label.
+     *
+     * @return The label as a string.
+     */
+    public String getLabel() { return _label; }
 }
