@@ -45,7 +45,7 @@ import com.extjs.gxt.ui.client.data.BeanModel;
 
 
 /**
- * A resource chooser on a template field.
+ * An image chooser on a template field.
  *
  * @author Civic Computing Ltd.
  */
@@ -64,8 +64,8 @@ public class CCImageField
      * @param desc   The field's description.
      */
     public CCImageField(final String name,
-                           final String title,
-                           final String desc) {
+                        final String title,
+                        final String desc) {
         super(name);
 
         final ImageTriggerField image = new ImageTriggerField();

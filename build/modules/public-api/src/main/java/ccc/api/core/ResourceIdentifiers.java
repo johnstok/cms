@@ -268,11 +268,9 @@ public interface ResourceIdentifiers {
         /** SEARCH : String. */
         String SEARCH             = COLLECTION + "/search/{id}/{title}";
         /** SEARCH : String. */
-        String SEARCH2             = COLLECTION + "/search2";
-
+        String SEARCH2            = COLLECTION + "/search2";
         /** ELEMENT : String. */
         String ELEMENT            = COLLECTION + "/{id}";
-
         /** PATH : String. */
         String PATH               = ELEMENT + "/path";
         /** REVISIONS : String. */

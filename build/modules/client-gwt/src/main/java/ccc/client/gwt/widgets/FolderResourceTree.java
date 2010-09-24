@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceType;
@@ -82,7 +83,7 @@ public class FolderResourceTree extends AbstractResourceTree {
                     new GetRootsAction() {
                         @Override
                         protected void onSuccess(
-                                     final Collection<ResourceSummary> roots) {
+                                 final PagedCollection<ResourceSummary> roots) {
                             for (final ResourceSummary rr : roots) {
                                 if (PredefinedResourceNames.CONTENT.equals(
                                         rr.getName().toString())) {

@@ -94,4 +94,19 @@ public class ResourceTriggerField
      * @return The selected resource.
      */
     public ResourceSummary getTarget() { return _target; }
+
+
+    /**
+     * Mutator.
+     *
+     * @param target The target to set.
+     */
+    public void setTarget(final ResourceSummary target) {
+        _target = target;
+        if (null!=_target) {
+            setValue(_target.getName().toString());
+        } else {
+            setValue(null);
+        }
+    }
 }

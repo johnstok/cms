@@ -162,9 +162,15 @@ public class FoldersEJB
             getRepoFactory()
             .createResourceRepository()
             .roots());
-        return
+
+        final PagedCollection<ResourceSummary> rootCollection =
             new PagedCollection<ResourceSummary>(
                 roots.size(), ResourceSummary.class, roots);
+        rootCollection.addLink(
+            "element",
+            ccc.api.core.ResourceIdentifiers.Resource.ELEMENT);
+
+        return rootCollection;
     }
 
     /* ====================================================================

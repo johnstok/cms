@@ -226,6 +226,8 @@ public class EditPagePanel
                 pe = new CCListField(name, title, desc, options);
             } else if ("image".equals(type)) {
                 pe = new CCImageField(name, title, desc);
+            } else if ("resource".equals(type)) {
+                pe = new CCResourceField(name, title, desc, _targetRoot);
             } else if ("number".equals(type)) {
                 pe = new CCNumberField(name, title, desc);
             }

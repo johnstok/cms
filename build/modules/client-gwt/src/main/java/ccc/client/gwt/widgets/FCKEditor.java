@@ -14,8 +14,7 @@
 
 package ccc.client.gwt.widgets;
 
-import java.util.Collection;
-
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.I18n;
 import ccc.client.gwt.remoting.GetRootsAction;
@@ -226,7 +225,8 @@ public class FCKEditor extends LayoutContainer {
                                  final boolean openInNew) {
         new GetRootsAction() { // TODO: UseGetResourceForPathAction instead.
             @Override
-            protected void onSuccess(final Collection<ResourceSummary> roots) {
+            protected void onSuccess(
+                                 final PagedCollection<ResourceSummary> roots) {
                 ResourceSummary rs = null;
                 for (final ResourceSummary rr : roots) {
                     if (rr.getName().toString().equals("content")) {

@@ -26,10 +26,10 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.Collection;
-
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.widgets.LeftRightPane;
 import ccc.client.gwt.widgets.MainMenu;
 import ccc.client.gwt.widgets.ResourceNavigator;
@@ -66,12 +66,13 @@ public final class DrawMainWindowAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onSuccess(final Collection<ResourceSummary> arg0) {
+    protected void onSuccess(final PagedCollection<ResourceSummary> roots) {
+        InternalServices.ROOTS = roots;
         final LeftRightPane contentPane = new LeftRightPane();
         contentPane.setRightHandPane(new ContentPanel());
         contentPane.setLeftHandPane(
             new ResourceNavigator(contentPane,
-                arg0,
+                roots.getElements(),
                 _user));
 
         final Viewport vp =

@@ -31,6 +31,7 @@ import ccc.api.core.ActionSummary;
 import ccc.api.core.Comment;
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.types.CommandType;
 import ccc.api.types.Link.Encoder;
@@ -57,9 +58,10 @@ public class InternalServices {
     public static ExceptionHandler    EX_HANDLER;
     public static Window              WINDOW;
 
-    public static API                            API;
-    public static PagedCollection<ActionSummary> ACTIONS;
-    public static PagedCollection<Group>         GROUPS;
-    public static PagedCollection<User>          USERS;
-    public static PagedCollection<Comment>       COMMENTS;
+    public static API                              API;
+    public static PagedCollection<ActionSummary>   ACTIONS;
+    public static PagedCollection<Group>           GROUPS;
+    public static PagedCollection<User>            USERS;
+    public static PagedCollection<Comment>         COMMENTS;
+    public static PagedCollection<ResourceSummary> ROOTS;
 }

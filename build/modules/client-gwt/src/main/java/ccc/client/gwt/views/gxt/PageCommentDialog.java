@@ -130,9 +130,7 @@ public class PageCommentDialog extends AbstractEditDialog {
 
         new UpdatePageAction(update) {
                 /** {@inheritDoc} */
-                @Override protected void onNoContent(
-                                             final Response response) {
-
+                @Override protected void onOK(final Response response) {
                     md.setHasWorkingCopy(false);
                     _updatePageDialog.rt().update(md);
                     hide();

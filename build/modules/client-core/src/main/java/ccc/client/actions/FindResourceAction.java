@@ -24,65 +24,64 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.actions;
 
-import ccc.api.core.Folder;
-import ccc.api.core.PagedCollection;
+import java.util.UUID;
+
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.Globals;
-import ccc.client.core.HttpMethod;
+import ccc.api.types.Link;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
-import ccc.client.core.Request;
 import ccc.client.core.Response;
-import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
- * Action for retrieving the roots.
+ * Find a resource using its ID.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class GetRootsAction
+public abstract class FindResourceAction
     extends
         RemotingAction {
 
+    private UUID _resourceId;
 
-    public GetRootsAction() { super(USER_ACTIONS.internalAction()); }
-
+    /**
+     * Constructor.
+     *
+     * @param resourceId The resource ID to look up.
+     */
+    public FindResourceAction(final UUID resourceId) {
+        super(USER_ACTIONS.unknownAction());
+        _resourceId = resourceId;
+    }
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Globals.API_URL+GlobalsImpl.getAPI().getLink(Folder.ROOTS);
+        return
+            new Link(InternalServices.ROOTS.getLink("element")).build(
+            "id", _resourceId.toString(), InternalServices.ENCODER);
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onOK(final Response response) {
+        final ResourceSummary r = readResourceSummary(response);
+        execute(r);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
-
-        return
-            new Request(
-                HttpMethod.GET,
-                getPath(),
-                "",
-                new ResponseHandlerAdapter(USER_ACTIONS.internalAction()) {
-
-                    /** {@inheritDoc} */
-                    @Override
-                    public void onOK(final Response response) {
-                        onSuccess(parseResourceSummaries(response));
-                    }
-                });
-    }
+    protected void onNoContent(final Response response) { execute(null); }
 
 
     /**
-     * Execute this action.
+     * Handle a successful execution.
      *
-     * @param roots The root resources returned by the server.
+     * @param resource The corresponding resource or NULL if none exists.
      */
-    protected abstract void onSuccess(
-                                  final PagedCollection<ResourceSummary> roots);
+    protected abstract void execute(ResourceSummary resource);
 }
