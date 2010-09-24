@@ -36,13 +36,6 @@ import ccc.client.gwt.actions.OpenCreateTextFileAction;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.i18n.UIConstants;
 
-import com.extjs.gxt.ui.client.event.ComponentEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.KeyListener;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.TextField;
-
 
 /**
  * A toolbar providing actions for a {@link SingleSelectionModel}.
@@ -53,14 +46,8 @@ public class FolderToolBar
     extends
         AbstractToolBar {
 
-    /** ENTER_KEY : int. */
-    private static final int ENTER_KEY = 13;
-
     private final UIConstants _constants = I18n.UI_CONSTANTS;
-    private final TextField<String> _filterString = new TextField<String>();
-    private final Button _searchButton;
 
-    private final ResourceTable _ssm;
 
     /**
      * Constructor.
@@ -68,7 +55,6 @@ public class FolderToolBar
      * @param ssm The selection model to use.
      */
     FolderToolBar(final ResourceTable ssm) {
-        _ssm = ssm;
 
         addSeparator(null);
         addButton(Permission.FILE_CREATE,
@@ -100,47 +86,5 @@ public class FolderToolBar
             _constants.createTextFile(),
             new OpenCreateTextFileAction(ssm));
         addSeparator(Permission.FILE_CREATE);
-
-
-        _filterString.addKeyListener(new KeyListener() {
-            @Override
-            public void componentKeyPress(ComponentEvent event) {
-                if (event.getKeyCode() == ENTER_KEY) {
-                    _ssm.reload();
-                }
-            }
-        });
-        add(_filterString);
-        _searchButton = new Button(_constants.search());
-        _searchButton.addListener(Events.Select, new SearchListener());
-        add(_searchButton);
-    }
-
-    /**
-     * Listener for user search.
-     *
-     * @author Civic Computing Ltd.
-     */
-    private final class SearchListener implements Listener<ComponentEvent> {
-
-        public void handleEvent(final ComponentEvent be) {
-            _ssm.reload();
-        }
-    }
-
-    /**
-     * Return the filter string value, appended with % if necessary.
-     *
-     * @return The filter string.
-     */
-    public String getFilter() {
-        String value =  _filterString.getValue();
-        if (value == null) {
-            return "%";
-        }
-        if (value.endsWith("%")) {
-            return value;
-        }
-        return value+"%";
     }
 }

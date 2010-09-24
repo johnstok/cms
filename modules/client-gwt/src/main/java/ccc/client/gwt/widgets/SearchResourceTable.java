@@ -27,32 +27,20 @@
 package ccc.client.gwt.widgets;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
-import ccc.api.types.SortOrder;
-import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.remoting.GetChildrenPagedAction;
 
-import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
+import com.extjs.gxt.ui.client.data.BaseFilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
-import com.extjs.gxt.ui.client.data.RpcProxy;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.KeyListener;
-import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
@@ -60,10 +48,11 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.GridView;
 import com.extjs.gxt.ui.client.widget.grid.GridViewConfig;
+import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
+import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -83,11 +72,7 @@ public class SearchResourceTable
     private final Grid<BeanModel> _grid;
     private final PagingToolBar _pagerBar;
     private final ToolBar _toolBar;
-    private final TextField<String> _filterString = new TextField<String>();
-    private final ResourceType _type;
 
-
-    private final Button _searchButton;
 
     /**
      * Constructor.
@@ -95,20 +80,7 @@ public class SearchResourceTable
      * @param type ResourceType
      */
     public SearchResourceTable(final ResourceType type) {
-        _type = type;
         _toolBar = new ToolBar();
-        _filterString.addKeyListener(new KeyListener() {
-            @Override
-            public void componentKeyPress(ComponentEvent event) {
-                if (event.getKeyCode() == ENTER_KEY) {
-                    _detailsStore.getLoader().load();
-                }
-            }
-        });
-        _toolBar.add(_filterString);
-        _searchButton = new Button(UI_CONSTANTS.search());
-        _searchButton.addListener(Events.Select, new SearchListener());
-        _toolBar.add(_searchButton);
 
         setTopComponent(_toolBar);
         setHeading(UI_CONSTANTS.resourceDetails());
@@ -119,85 +91,36 @@ public class SearchResourceTable
         createColumnConfigs(configs);
 
         final ColumnModel cm = new ColumnModel(configs);
-        _grid = new Grid<BeanModel>(_detailsStore, cm);
-        setUpGrid();
-
-        add(_grid);
 
         _pagerBar = new PagingToolBar(PAGING_ROW_COUNT);
         setBottomComponent(_pagerBar);
-        displayResourcesFor();
-    }
 
+        final ResourceProxy proxy =  new ResourceProxy(null, type);
 
-    /**
-     * Updated this table to render the children of the specified TreeItem.
-     *
-     */
-    public void displayResourcesFor() {
-
-        final RpcProxy<PagingLoadResult<BeanModel>> proxy =
-            new RpcProxy<PagingLoadResult<BeanModel>>() {
-
-
+        final PagingLoader<PagingLoadResult<BeanModel>> loader =
+            new BasePagingLoader<PagingLoadResult<BeanModel>>(proxy) {
             @Override
-            protected void load(final Object loadConfig,
-                                final AsyncCallback<PagingLoadResult
-                                <BeanModel>> callback) {
-                if (null==loadConfig
-                    || !(loadConfig instanceof BasePagingLoadConfig)) {
-                    final PagingLoadResult<BeanModel> plr =
-                       new BasePagingLoadResult<BeanModel>(null);
-                    callback.onSuccess(plr);
-                } else {
-                    final BasePagingLoadConfig config =
-                        (BasePagingLoadConfig) loadConfig;
-
-                    final int page =  config.getOffset()/ config.getLimit()+1;
-                    final SortOrder order =
-                        (config.getSortDir() == Style.SortDir.ASC)
-                            ? SortOrder.ASC
-                            : SortOrder.DESC;
-
-                    String name = getFilter();
-                    new GetChildrenPagedAction(
-                        null,
-                        name,
-                        page,
-                        config.getLimit(),
-                        config.getSortField(),
-                        order,
-                        _type) {
-
-                        /** {@inheritDoc} */
-                        @Override protected void execute(
-                                                         final Collection<ResourceSummary> children,
-                                                         final int totalCount) {
-                            final List<BeanModel> results =
-                                DataBinding.bindResourceSummary(children);
-
-                            final PagingLoadResult<BeanModel> plr =
-                                new BasePagingLoadResult<BeanModel>(
-                                        results, config.getOffset(), totalCount);
-                            callback.onSuccess(plr);
-                        }
-                        /** {@inheritDoc} */
-                        @Override protected void onFailure(final Throwable t) {
-                            callback.onFailure(t);
-                        }
-                    }.execute();
-                }
+            protected Object newLoadConfig() {
+                     BasePagingLoadConfig config = new BaseFilterPagingLoadConfig();
+                     return config;
             }
-
         };
-
-        final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);
         _detailsStore = new ListStore<BeanModel>(loader);
+
+        _grid = new Grid<BeanModel>(_detailsStore, cm);
+        setUpGrid();
         _pagerBar.bind(loader);
+
+        GridFilters filters = new GridFilters();
+        StringFilter nameFilter = new StringFilter("name");
+        filters.addFilter(nameFilter);
+        filters.setLocal(false);
+        _grid.addPlugin(filters);
+
+        add(_grid);
+
         loader.load(0, PAGING_ROW_COUNT);
-        final ColumnModel cm = _grid.getColumnModel();
-        _grid.reconfigure(_detailsStore, cm);
     }
 
 
@@ -260,40 +183,12 @@ public class SearchResourceTable
     }
 
 
-
     public ResourceSummary tableSelection() {
         if (_grid.getSelectionModel() == null) {
             return null;
         }
         final BeanModel selected = _grid.getSelectionModel().getSelectedItem();
         return (null==selected) ? null : selected.<ResourceSummary>getBean();
-    }
-
-    /**
-     * Return the filter string value, appended with % if necessary.
-     *
-     * @return The filter string.
-     */
-    public String getFilter() {
-        String value =  _filterString.getValue();
-        if (value == null) {
-            return "%";
-        }
-        if (value.endsWith("%")) {
-            return value;
-        }
-        return value+"%";
-    }
-
-    /**
-     * Listener for user search.
-     *
-     * @author Civic Computing Ltd.
-     */
-    private final class SearchListener implements Listener<ComponentEvent> {
-        public void handleEvent(final ComponentEvent be) {
-            _detailsStore.getLoader().load();
-        }
     }
 
 }

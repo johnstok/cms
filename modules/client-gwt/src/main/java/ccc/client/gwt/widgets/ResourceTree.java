@@ -31,12 +31,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Globals;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.remoting.GetChildrenPagedAction;
+import ccc.client.gwt.remoting.GetResourcesPagedAction;
 
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.BeanModel;
@@ -97,14 +98,15 @@ public class ResourceTree extends AbstractResourceTree {
                             page = Integer.decode(parent.getAbsolutePath());
                         }
 
-                        new GetChildrenPagedAction(
-                            parent,
-                            null,
-                            page,
-                            Globals.MAX_FETCH,
-                            "name",
-                            SortOrder.ASC,
-                            _type) {
+                        ResourceCriteria criteria = new ResourceCriteria();
+                        criteria.setParent(parent.getId());
+                        criteria.setSortField("name");
+                        criteria.setSortOrder(SortOrder.ASC);
+                        criteria.setType(_type);
+
+                        new GetResourcesPagedAction(criteria,
+                                                   page,
+                                                   Globals.MAX_FETCH) {
 
                             /** {@inheritDoc} */
                             @Override protected void onFailure(final Throwable t) {

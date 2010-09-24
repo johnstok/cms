@@ -34,8 +34,6 @@ import java.util.Map;
 import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Link;
-import ccc.api.types.ResourceType;
-import ccc.api.types.SortOrder;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
@@ -55,45 +53,26 @@ import com.google.gwt.json.client.JSONParser;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class GetChildrenPagedAction
-extends
-RemotingAction{
-
+public abstract class GetResourcesPagedAction extends RemotingAction {
 
     private final int _pageNo;
     private final int _pageSize;
-
     private final ResourceCriteria  _criteria;
-
 
     /**
      * Constructor.
      *
-     * @param parent The parent folder.
-     * @param name The name of the resource.
+     * @param criteria The criteria for the retrieve.
      * @param pageNo The page to display.
      * @param pageSize The number of results per page.
-     * @param sort The column to sort.
-     * @param order The sort order (ASC/DESC).
-     * @param type The resource type to fetch, null for all.
      */
-    public GetChildrenPagedAction(final ResourceSummary parent,
-                                  final String name,
+    public GetResourcesPagedAction(ResourceCriteria criteria,
                                   final int pageNo,
-                                  final int pageSize,
-                                  final String sort,
-                                  final SortOrder order,
-                                  final ResourceType type) {
+                                  final int pageSize) {
         super(UI_CONSTANTS.getChildrenPaged(), HttpMethod.POST);
-
-        _criteria = new ResourceCriteria();
-        _criteria.setParent((parent == null) ? null : parent.getId());
-        _criteria.setName(name);
+        _criteria = criteria;
         _pageNo = pageNo;
         _pageSize = pageSize;
-        _criteria.setSortField(sort);
-        _criteria.setSortOrder(order);
-        _criteria.setType(type);
     }
 
 
