@@ -93,7 +93,7 @@ public final class OpenCreatePageAction
             @Override protected void execute(
                                  final Collection<Template> templates) {
                 new CreatePagePresenter(
-                    new CreatePageDialog(templates),
+                    new CreatePageDialog(templates, _selectionModel.root()),
                     f);
             }
         }.execute();

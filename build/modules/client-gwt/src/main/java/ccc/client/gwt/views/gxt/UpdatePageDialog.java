@@ -85,7 +85,7 @@ public class UpdatePageDialog
         _modelData = rt().tableSelection();
         _paras = new HashSet<Paragraph>(page.getParagraphs());
         _template = template;
-        _panel = new EditPagePanel(_template.getDefinition());
+        _panel = new EditPagePanel(_template.getDefinition(), rt.root());
 
         setLayout(new FitLayout());
 

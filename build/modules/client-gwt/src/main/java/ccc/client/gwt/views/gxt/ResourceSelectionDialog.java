@@ -47,17 +47,16 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
  */
 public class ResourceSelectionDialog extends Window {
 
-    /** DIALOG_HEIGHT : int. */
     private static final int DIALOG_HEIGHT = 225;
-    /** DIALOG_WIDTH : int. */
     private static final int DIALOG_WIDTH = 400;
     private final ResourceTree _tree;
     private final Globals _globals = new GlobalsImpl();
 
+
     /**
      * Constructor.
      *
-     * @param targetRoot ResourceSummary root
+     * @param targetRoot The root resource containing resources.
      */
     public ResourceSelectionDialog(final ResourceSummary targetRoot) {
         setModal(true);

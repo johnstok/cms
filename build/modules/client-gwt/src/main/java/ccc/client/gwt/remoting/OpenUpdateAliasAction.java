@@ -52,7 +52,7 @@ public class OpenUpdateAliasAction
      * @param targetRoot The target root of the alias.
      */
     public OpenUpdateAliasAction(final ResourceSummary alias,
-                             final ResourceSummary targetRoot) {
+                                 final ResourceSummary targetRoot) {
         super(UI_CONSTANTS.updateAlias());
         _alias = alias;
         _targetRoot = targetRoot;

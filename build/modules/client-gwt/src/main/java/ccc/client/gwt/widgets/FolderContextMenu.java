@@ -41,8 +41,8 @@ import ccc.client.gwt.core.SingleSelectionModel;
  * @author Civic Computing Ltd.
  */
 public class FolderContextMenu
-extends
-AbstractContextMenu {
+    extends
+        AbstractContextMenu {
 
     /**
      * Constructor.

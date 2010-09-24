@@ -62,7 +62,6 @@ public class ResourceTree extends AbstractResourceTree {
 
         _root = root;
         _globals = globals;
-        load();
     }
 
     /** {@inheritDoc} */

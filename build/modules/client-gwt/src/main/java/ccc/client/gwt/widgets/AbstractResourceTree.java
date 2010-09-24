@@ -106,15 +106,6 @@ public abstract class AbstractResourceTree {
 
 
     /**
-     * Loads data using loader.
-     *
-     */
-    public void load() {
-        _loader.load(null);
-    }
-
-
-    /**
      * Add a listener for selection of resource in the tree.
      *
      * @param listener The listener to add.

@@ -82,11 +82,9 @@ public class CreateAliasDialog
 
         _aliasName.setFieldLabel(constants().name());
         _aliasName.setAllowBlank(false);
-        _aliasName.setId("AliasName");
         addField(_aliasName);
 
         _parentFolder.setFieldLabel(constants().folder());
-        _parentFolder.setId("parent-folder");
         _parentFolder.setValue("");
         _parentFolder.setEditable(false);
         _parentFolder.addListener(

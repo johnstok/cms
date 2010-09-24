@@ -28,7 +28,6 @@ package ccc.client.gwt.actions;
 
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
@@ -78,8 +77,7 @@ public final class OpenCreateAliasAction
     @Override
     protected String getPath() {
         return
-            Globals.API_URL
-            + _selectionModel.tableSelection().self().build(
+            _selectionModel.tableSelection().self().build(
                 InternalServices.ENCODER);
     }
 

@@ -115,6 +115,22 @@ public abstract class AbstractValidations {
 
 
     /**
+     * Validates that value is not empty.
+     *
+     * @param value The object to validate.
+     * @param label The label of the field to validate.
+     *
+     * @return The error message as a string or NULL if the value is valid.
+     */
+    public String notEmpty(final Object value, final String label) {
+        if(null == value) {
+            return label + " " + UI_CONSTANTS.cannotBeEmpty();
+        }
+        return null;
+    }
+
+
+    /**
      * Validates resource name. Fails if name contains spaces etc.
      *
      * @param value The value to test.

@@ -91,4 +91,12 @@ public interface SingleSelectionModel {
      */
     @Deprecated
     void create(Resource model);
+
+
+    /**
+     * Accessor for this table's root.
+     *
+     * @return The resource summary for the root.
+     */
+    public ResourceSummary root();
 }

@@ -95,7 +95,7 @@ public class CreatePageDialog
     private static final int NAME_COLUMN_WIDTH = 260;
 
     private final ContentPanel _firstWizardPage = new ContentPanel();
-    private EditPagePanel _secondWizardPage = new EditPagePanel(null);
+    private EditPagePanel _secondWizardPage;
     private final ContentPanel _thirdWizardPage = new ContentPanel();
 
     private final ListStore<BeanModel> _templatesStore =
@@ -115,6 +115,7 @@ public class CreatePageDialog
     private final Text _description = new Text("");
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
+    private final ResourceSummary _targetRoot;
 
 
     /**
@@ -124,10 +125,12 @@ public class CreatePageDialog
      *
      * @param list List of templates.
      */
-    public CreatePageDialog(final Collection<Template> list) {
-        super(I18n.UI_CONSTANTS.createPage(),
-              new GlobalsImpl());
+    public CreatePageDialog(final Collection<Template> list,
+                            final ResourceSummary targetRoot) {
+        super(I18n.UI_CONSTANTS.createPage(), new GlobalsImpl());
+        _targetRoot = targetRoot;
 
+        _secondWizardPage = new EditPagePanel(null, _targetRoot);
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         final ColumnConfig templateNameColumn = new ColumnConfig();
@@ -252,7 +255,8 @@ public class CreatePageDialog
 
     private void updateSecondPage(final Template t) {
         _template = t;
-        final EditPagePanel second = new EditPagePanel(t.getDefinition());
+        final EditPagePanel second =
+            new EditPagePanel(t.getDefinition(), _targetRoot);
         replaceCard(_secondWizardPage, second);
         _secondWizardPage = second;
         _description.setText(t.getDescription());

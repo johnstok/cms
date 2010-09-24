@@ -28,27 +28,20 @@ package ccc.client.gwt.views.gxt;
 
 
 import static ccc.client.core.InternalServices.*;
-
-import java.util.UUID;
-
 import ccc.api.core.Alias;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
-import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateAliasAction;
+import ccc.client.gwt.widgets.ResourceTriggerField;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.extjs.gxt.ui.client.widget.form.TriggerField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 /**
@@ -59,12 +52,9 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 public class UpdateAliasDialog extends AbstractEditDialog {
 
     private final TextField<String> _aliasName = new TextField<String>();
-    private final TriggerField<String> _targetName =
-        new TriggerField<String>();
-
+    private final ResourceTriggerField _targetName;
     private final ResourceSummary _alias;
-    private UUID _targetId;
-    private final ResourceSummary _targetRoot;
+
 
     /**
      * Constructor.
@@ -76,49 +66,25 @@ public class UpdateAliasDialog extends AbstractEditDialog {
     public UpdateAliasDialog(final ResourceSummary alias,
                              final String targetName,
                              final ResourceSummary targetRoot) {
-        super(I18n.UI_CONSTANTS.updateAlias(),
-              new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.updateAlias(), new GlobalsImpl());
 
+        _targetName = new ResourceTriggerField(targetRoot);
         _alias = alias;
-        _targetRoot = targetRoot;
         setLayout(new FitLayout());
 
         setPanelId("AliasPanel");
 
         _aliasName.setFieldLabel(constants().name());
-        _aliasName.setId("AliasName");
         _aliasName.setValue(_alias.getName().toString());
         _aliasName.setReadOnly(true);
         _aliasName.disable();
         addField(_aliasName);
 
         _targetName.setFieldLabel(constants().target());
-        _targetName.setValue("");
         _targetName.setValue(targetName);
-        _targetName.setId("target");
-        _targetName.setEditable(false);
-        _targetName.addListener(
-            Events.TriggerClick,
-            new Listener<ComponentEvent>(){
-                public void handleEvent(final ComponentEvent be1) {
-                    final ResourceSelectionDialog resourceSelect =
-                        new ResourceSelectionDialog(_targetRoot);
-                    resourceSelect.addListener(Events.Hide,
-                        new Listener<ComponentEvent>() {
-                        public void handleEvent(final ComponentEvent be2) {
-                            final ResourceSummary target =
-                                resourceSelect.selectedResource();
-                            if (target != null
-                             && target.getType() != ResourceType.RANGE_FOLDER) {
-                                _targetId = target.getId();
-                                _targetName.setValue(
-                                    target.getName().toString());
-                            }
-                        }});
-                    resourceSelect.show();
-                }});
         addField(_targetName);
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -146,20 +112,22 @@ public class UpdateAliasDialog extends AbstractEditDialog {
 
 
     private void createAlias() {
-        // Target has not been changed.
-        if (null == _targetId) {
-            hide();
-        } else {
-            final Alias a = new Alias(_targetId);
+        if (isChanged()) {
+            final Alias a = new Alias(_targetName.getTarget().getId());
             a.setId(_alias.getId());
             a.addLink(Resource.SELF, _alias.getLink(Resource.SELF));
 
             new UpdateAliasAction(a){
                 /** {@inheritDoc} */
-                @Override protected void onNoContent(final Response response) {
+                @Override protected void onOK(final Response response) {
                     hide();
                 }
             }.execute();
+        } else {
+            hide();
         }
     }
+
+
+    private boolean isChanged() { return null != _targetName.getTarget(); }
 }

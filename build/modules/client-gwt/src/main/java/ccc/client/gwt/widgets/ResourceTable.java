@@ -132,14 +132,9 @@ public class ResourceTable
     }
 
 
-    /**
-     * Accessor for this table's root.
-     *
-     * @return The resource summary for the root.
-     */
-    public ResourceSummary root() {
-        return _root;
-    }
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary root() { return _root; }
 
 
     /**

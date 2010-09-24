@@ -49,7 +49,7 @@ import com.extjs.gxt.ui.client.data.BeanModel;
  *
  * @author Civic Computing Ltd.
  */
-public class CCResourceField
+public class CCImageField
     extends
         PageElement<ImageTriggerField> {
 
@@ -63,7 +63,7 @@ public class CCResourceField
      * @param title  The field's title.
      * @param desc   The field's description.
      */
-    public CCResourceField(final String name,
+    public CCImageField(final String name,
                            final String title,
                            final String desc) {
         super(name);

@@ -64,7 +64,6 @@ public class FolderResourceTree extends AbstractResourceTree {
      */
     public FolderResourceTree(final Globals globals) {
         _globals = globals;
-        load();
     }
 
     /** {@inheritDoc} */

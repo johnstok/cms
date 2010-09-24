@@ -322,6 +322,9 @@ public class MainMenu
                     public void create(final Resource model) {
                         /* No-op */
                     }
+                    public ResourceSummary root() {
+                        return null;
+                    }
 
                 };
         return ssm;

@@ -72,6 +72,12 @@ public abstract class ResourceNameExistsAction
         execute(null!=r);
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onNoContent(final Response response) { execute(false); }
+
+
     /**
      * Handle a successful execution.
      *

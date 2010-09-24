@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.client.core.I18n;
@@ -65,16 +66,22 @@ public class EditPagePanel
     private TextField<String> _name = new TextField<String>();
     private final List<PageElement<? extends Component>> _pageElements =
         new ArrayList<PageElement<? extends Component>>();
+
     private final String _definition;
+    private final ResourceSummary _targetRoot;
 
 
     /**
      * Constructor.
      *
      * @param definition The definition for the page.
+     * @param targetRoot The root resource containing resources.
      */
-    public EditPagePanel(final String definition) {
+    public EditPagePanel(final String definition,
+                         final ResourceSummary targetRoot) {
         _definition = definition;
+        _targetRoot = targetRoot;
+
         setLayout(new FormLayout());
         setBorders(false);
         setBodyBorder(false);
@@ -218,7 +225,7 @@ public class EditPagePanel
             } else if ("list".equals(type)) {
                 pe = new CCListField(name, title, desc, options);
             } else if ("image".equals(type)) {
-                pe = new CCResourceField(name, title, desc);
+                pe = new CCImageField(name, title, desc);
             } else if ("number".equals(type)) {
                 pe = new CCNumberField(name, title, desc);
             }
