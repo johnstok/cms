@@ -141,6 +141,8 @@ public class ResourceTable
 
         _filters = new GridFilters();
         StringFilter nameFilter = new StringFilter("name");
+        nameFilter.getMenu().setAutoWidth(false);
+        nameFilter.getMenu().setWidth(190);
         _filters.addFilter(nameFilter);
         _filters.setLocal(false);
         _grid.addPlugin(_filters);

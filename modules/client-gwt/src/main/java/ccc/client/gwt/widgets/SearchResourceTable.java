@@ -114,6 +114,8 @@ public class SearchResourceTable
 
         GridFilters filters = new GridFilters();
         StringFilter nameFilter = new StringFilter("name");
+        nameFilter.getMenu().setAutoWidth(false);
+        nameFilter.getMenu().setWidth(190);
         filters.addFilter(nameFilter);
         filters.setLocal(false);
         _grid.addPlugin(filters);
