@@ -149,4 +149,14 @@ public class FoldersImpl
             throw convertException(cfe);
         }
     }
+
+
+    @Override
+    public Folder retrieve(final UUID folderId) {
+        try {
+            return _delegate.retrieve(folderId);
+        } catch (final RuntimeException cfe) {
+            throw convertException(cfe);
+        }
+    }
 }

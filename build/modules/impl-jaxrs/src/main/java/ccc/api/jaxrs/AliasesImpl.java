@@ -98,4 +98,14 @@ public class AliasesImpl
             throw convertException(cfe);
         }
     }
+
+
+    @Override
+    public Alias retrieve(final UUID aliasId) {
+        try {
+            return _delegate.retrieve(aliasId);
+        } catch (final RuntimeException cfe) {
+            throw convertException(cfe);
+        }
+    }
 }

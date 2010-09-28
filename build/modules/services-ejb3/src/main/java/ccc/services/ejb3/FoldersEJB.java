@@ -26,8 +26,12 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.*;
-import static javax.ejb.TransactionAttributeType.*;
+import static ccc.api.types.Permission.FOLDER_CREATE;
+import static ccc.api.types.Permission.FOLDER_READ;
+import static ccc.api.types.Permission.FOLDER_UPDATE;
+import static ccc.api.types.Permission.RESOURCE_READ;
+import static ccc.api.types.Permission.ROOT_CREATE;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -173,6 +177,15 @@ public class FoldersEJB
         return rootCollection;
     }
 
+    @Override
+    public Folder retrieve(final UUID folderId) {
+        checkPermission(RESOURCE_READ);
+        return
+        getRepoFactory()
+        .createResourceRepository()
+        .find(FolderEntity.class, folderId).forCurrentRevision();
+    }
+
     /* ====================================================================
      * UNSAFE METHODS.
      * ================================================================== */
@@ -204,5 +217,4 @@ public class FoldersEJB
             new PagedCollection<ResourceSummary>(
                 entities.size(), ResourceSummary.class, entities);
     }
-
 }

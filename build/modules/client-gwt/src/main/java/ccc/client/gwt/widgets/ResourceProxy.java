@@ -53,8 +53,8 @@ final class ResourceProxy extends RpcProxy<PagingLoadResult<BeanModel>> {
     /**
      * Constructor.
      *
-     * @param ResourceSummary The parent folder
-     * @param ResourceType The resource type
+     * @param folder The parent folder
+     * @param type The resource type
      */
     ResourceProxy(final ResourceSummary folder, final ResourceType type) {
         _folder = folder;
@@ -90,7 +90,7 @@ final class ResourceProxy extends RpcProxy<PagingLoadResult<BeanModel>> {
             if (config.getFilterConfigs() != null) {
             for (final FilterConfig cc : config.getFilterConfigs()) {
                 if (cc.getField().equals("name") && cc.getValue() != null) {
-                    name = (String)cc.getValue()+"%";
+                    name = (String) cc.getValue()+"%";
                 }
             }
             }
