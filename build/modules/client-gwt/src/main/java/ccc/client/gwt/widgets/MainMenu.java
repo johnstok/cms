@@ -45,7 +45,6 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.actions.OpenHelpAction;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.LockAction;
 import ccc.client.gwt.remoting.LogoutAction;
 import ccc.client.gwt.remoting.OpenUpdateMetadataAction;
@@ -79,7 +78,7 @@ public class MainMenu
 
     private static final String CONTENT = "content";
 
-    private final Globals _globals = new GlobalsImpl();
+    private final Globals _globals = InternalServices.GLOBALS;
     private final UIConstants _constants = I18n.UI_CONSTANTS;
     private final User _user;
 

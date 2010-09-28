@@ -32,7 +32,6 @@ import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
@@ -56,7 +55,7 @@ public final class LogoutAction
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final Void v) {
-        new GlobalsImpl().currentUser(null);
+        InternalServices.GLOBALS.currentUser(null);
         InternalServices.WINDOW.disableExitConfirmation();
         InternalServices.WINDOW.redirectTo(Globals.APP_URL);
     }

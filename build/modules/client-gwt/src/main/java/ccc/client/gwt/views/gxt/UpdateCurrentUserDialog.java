@@ -32,7 +32,6 @@ import ccc.api.core.User;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.remoting.UpdateCurrentUserAction;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -60,8 +59,8 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
      *
      */
     public UpdateCurrentUserDialog() {
-        super(I18n.UI_CONSTANTS.editUser(), new GlobalsImpl());
-        _user = new GlobalsImpl().currentUser();
+        super(I18n.UI_CONSTANTS.editUser(), InternalServices.GLOBALS);
+        _user = InternalServices.GLOBALS.currentUser();
 
         _username.setFieldLabel(constants().username());
         _username.setReadOnly(true);
@@ -148,7 +147,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
         new UpdateCurrentUserAction(user){
             /** {@inheritDoc} */
             @Override protected void onSuccess(final User newUser) {
-                new GlobalsImpl().currentUser(newUser);
+                InternalServices.GLOBALS.currentUser(newUser);
                 hide();
             }
 

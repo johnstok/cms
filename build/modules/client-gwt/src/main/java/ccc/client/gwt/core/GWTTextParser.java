@@ -40,7 +40,7 @@ import com.google.gwt.json.client.JSONParser;
  *
  * @author Civic Computing Ltd.
  */
-public class GWTTextParser
+class GWTTextParser
     implements
         TextParser {
 

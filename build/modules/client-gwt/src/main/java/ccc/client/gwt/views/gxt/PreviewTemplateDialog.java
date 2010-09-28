@@ -28,7 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.api.core.Template;
 import ccc.client.core.I18n;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;
 import ccc.client.gwt.widgets.CodeMirrorEditor.Type;
@@ -67,14 +67,14 @@ public class PreviewTemplateDialog
     public PreviewTemplateDialog(final Template template) {
 
         super(I18n.UI_CONSTANTS.template()+": "+template.getTitle(),
-            new GlobalsImpl());
+            InternalServices.GLOBALS);
         _template = template;
         setHeight(DEFAULT_HEIGHT);
-        TabPanel folder = new TabPanel();
+        final TabPanel folder = new TabPanel();
         folder.setWidth(DEFAULT_WIDTH);
         folder.setHeight(DEFAULT_HEIGHT);
 
-        TabItem definition = new TabItem(I18n.UI_CONSTANTS.definitionXML());
+        final TabItem definition = new TabItem(I18n.UI_CONSTANTS.definitionXML());
         definition.addStyleName("pad-text");
 
         _definitionEditor = new CodeMirrorEditor(
@@ -85,7 +85,7 @@ public class PreviewTemplateDialog
         definition.add(_definitionEditor);
         folder.add(definition);
 
-        TabItem body = new TabItem(I18n.UI_CONSTANTS.body());
+        final TabItem body = new TabItem(I18n.UI_CONSTANTS.body());
         body.addStyleName("pad-text");
 
         _bodyEditor = new CodeMirrorEditor(

@@ -41,7 +41,6 @@ import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UniqueUsernameAction;
 import ccc.client.gwt.widgets.GroupListField;
 import ccc.client.views.CreateUser;
@@ -80,7 +79,7 @@ public class CreateUserDialog
      */
     public CreateUserDialog(final Collection<Group> allGroups) {
         super(I18n.UI_CONSTANTS.createUser(),
-             new GlobalsImpl());
+            InternalServices.GLOBALS);
 
         setLabelWidth(LABEL_WIDTH); // Long labels, should fit to one line.
 

@@ -27,9 +27,7 @@
 package ccc.client.gwt.actions;
 
 import ccc.client.core.Action;
-import ccc.client.gwt.core.GlobalsImpl;
-
-import com.google.gwt.user.client.Window;
+import ccc.client.core.InternalServices;
 
 
 /**
@@ -43,10 +41,12 @@ public final class OpenHelpAction
 
     /** {@inheritDoc} */
     public void execute() {
-        Window.open(new GlobalsImpl().appURL()+"static/manual/CCC7_UserManual.htm",
-          "_blank",
-          "height=480,width=640,"
-          + "menubar=no,toolbar=no,location=no,"
-          + "resizable=yes,scrollbars=yes,status=no");
+        InternalServices.WINDOW.openUrl(
+            InternalServices.GLOBALS.appURL()
+                +"static/manual/CCC7_UserManual.htm",
+            "_blank",
+            "height=480,width=640,"
+                + "menubar=no,toolbar=no,location=no,"
+                + "resizable=yes,scrollbars=yes,status=no");
     }
 }

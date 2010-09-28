@@ -41,7 +41,6 @@ import ccc.client.core.Globals;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.views.gxt.LoginDialog;
 import ccc.client.remoting.ListActionsAction;
 import ccc.client.remoting.ListComments;
@@ -74,7 +73,7 @@ public class IsLoggedInAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return GlobalsImpl.getAPI().getLink(Security.CURRENT);
+        return InternalServices.API.getLink(Security.CURRENT);
     }
 
 
@@ -99,7 +98,7 @@ public class IsLoggedInAction
 
     private void loadServices() {
 
-        final API api = GlobalsImpl.getAPI();
+        final API api = InternalServices.API;
 
         final SimpleLatch l = new SimpleLatch(4) {
             /** {@inheritDoc} */
@@ -118,7 +117,7 @@ public class IsLoggedInAction
 
             @Override
             protected void execute(final PagedCollection<User> users) {
-                GlobalsImpl.users(users);
+                InternalServices.USERS = users;
                 l.countDown();
             }
         }.execute();
@@ -137,7 +136,7 @@ public class IsLoggedInAction
 
             @Override
             protected void execute(final PagedCollection<ActionSummary> actions) {
-                GlobalsImpl.actions(actions);
+                InternalServices.ACTIONS = actions;
                 l.countDown();
             }
         }.execute();
@@ -151,7 +150,7 @@ public class IsLoggedInAction
             /** {@inheritDoc} */
             @Override
             protected void execute(final PagedCollection<Comment> comments) {
-                GlobalsImpl.comments(comments);
+                InternalServices.COMMENTS = comments;
                 l.countDown();
             }
         }.execute();
@@ -167,7 +166,7 @@ public class IsLoggedInAction
             /** {@inheritDoc} */
             @Override
             protected void execute(final PagedCollection<Group> groups) {
-                GlobalsImpl.groups(groups);
+                InternalServices.GROUPS = groups;
                 l.countDown();
             }
         }.execute();

@@ -34,7 +34,6 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemoteException;
 import ccc.client.core.S11nHelper;
 import ccc.client.core.SessionTimeoutException;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.plugins.s11n.S11nException;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -74,7 +73,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
      */
     public UpdateFileDialog(final ResourceSummary file) {
         super(I18n.UI_CONSTANTS.updateFile(),
-              new GlobalsImpl());
+            InternalServices.GLOBALS);
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
         getPanel().setAction(Globals.API_URL + file.selfBinary());

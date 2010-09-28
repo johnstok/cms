@@ -38,7 +38,6 @@ import ccc.api.types.ResourceName;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.ResourceTable;
 import ccc.client.remoting.UpdateWorkingCopyAction;
@@ -79,7 +78,7 @@ public class UpdatePageDialog
                             final Template template,
                             final ResourceTable rt) {
         super(I18n.UI_CONSTANTS.updateContent(),
-              new GlobalsImpl());
+            InternalServices.GLOBALS);
         _rt = rt;
         _modelData = rt().tableSelection();
         _paras = new HashSet<Paragraph>(page.getParagraphs());

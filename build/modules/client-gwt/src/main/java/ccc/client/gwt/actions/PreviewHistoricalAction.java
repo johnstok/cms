@@ -30,12 +30,10 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Action;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.views.gxt.HistoryDialog;
 import ccc.client.remoting.GetAbsolutePathAction;
 import ccc.client.remoting.OpenTemplateRevisionAction;
-
-import com.google.gwt.user.client.Window;
 
 /**
  * Open a dialog to preview the selected resource.
@@ -73,12 +71,12 @@ public final class PreviewHistoricalAction
                 resource) {
                 @Override protected void execute(final String path) {
                     final String url =
-                        new GlobalsImpl().appURL()
+                        InternalServices.GLOBALS.appURL()
                         + "preview"
                         + path
                         + "?v="
                         + item.getIndex();
-                    Window.open(
+                    InternalServices.WINDOW.openUrl(
                         url,
                         "ccc_preview",
                         "menubar=no,"

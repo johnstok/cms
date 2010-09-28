@@ -46,7 +46,6 @@ import ccc.client.core.Action;
 import ccc.client.core.Globals;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.actions.PreviewAction;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.LockAction;
 import ccc.client.gwt.remoting.OpenEditTextFileAction;
 import ccc.client.gwt.remoting.OpenUpdateMetadataAction;
@@ -87,7 +86,7 @@ public class ResourceContextMenu
         AbstractContextMenu {
 
     private final ResourceTable _table;
-    private final Globals _globals = new GlobalsImpl();
+    private final Globals _globals = InternalServices.GLOBALS;
 
     // Actions
     private final Action _publishAction;

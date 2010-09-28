@@ -34,7 +34,7 @@ import ccc.api.core.User;
 import ccc.api.types.Permission;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.core.InternalServices;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -50,7 +50,7 @@ import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
  */
 public class ResourceNavigator extends ContentPanel {
 
-    private final Globals _globals = new GlobalsImpl();
+    private final Globals _globals = InternalServices.GLOBALS;
     private final LeftRightPane _view;
     private final Tree _usersTree;
     private final Tree _actionTree;

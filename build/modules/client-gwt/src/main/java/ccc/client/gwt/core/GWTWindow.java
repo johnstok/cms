@@ -27,6 +27,7 @@
 package ccc.client.gwt.core;
 
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.remoting.LogoutAction;
 
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -42,7 +43,7 @@ import com.google.gwt.user.client.Window.ClosingHandler;
  *
  * @author Civic Computing Ltd.
  */
-public class GWTWindow
+class GWTWindow
     implements
         ccc.client.core.Window {
 
@@ -73,7 +74,7 @@ public class GWTWindow
     /** {@inheritDoc} */
     @Override
     public void redirectTo(final String relativeURL) {
-        Window.Location.assign(new GlobalsImpl().hostURL()+relativeURL);
+        Window.Location.assign(InternalServices.GLOBALS.hostURL()+relativeURL);
     }
 
 
@@ -119,5 +120,14 @@ public class GWTWindow
         public void onWindowClosing(final ClosingEvent event) {
             event.setMessage(I18n.UI_CONSTANTS.exitWarning());
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void openUrl(final String url,
+                        final String windowName,
+                        final String params) {
+        Window.open(url, windowName, params);
     }
 }

@@ -37,7 +37,6 @@ import ccc.api.types.Paragraph;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.remoting.UpdatePageAction;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -72,7 +71,7 @@ public class PageCommentDialog extends AbstractEditDialog {
     public PageCommentDialog(final Set<Paragraph> paras,
                              final UpdatePageDialog updatePageDialog) {
         super(I18n.UI_CONSTANTS.pageEditComment(),
-              new GlobalsImpl());
+            InternalServices.GLOBALS);
         _paras = paras;
         _updatePageDialog = updatePageDialog;
         setModal(true);

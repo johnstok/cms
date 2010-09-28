@@ -34,7 +34,6 @@ import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.CreateActionPanel;
 import ccc.client.i18n.UIConstants;
 import ccc.client.views.CreateAction;
@@ -70,8 +69,7 @@ public class CreateActionDialog
      *
      */
     public CreateActionDialog() {
-        super(I18n.UI_CONSTANTS.createAction(),
-              new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.createAction(), InternalServices.GLOBALS);
 
 
         addCard(_createAction);

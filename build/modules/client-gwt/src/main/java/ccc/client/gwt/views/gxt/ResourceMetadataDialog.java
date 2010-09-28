@@ -38,7 +38,6 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.MetadataGrid;
 import ccc.client.remoting.UpdateMetadataAction;
 
@@ -78,7 +77,7 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
     public ResourceMetadataDialog(final ResourceSummary resource,
                           final Collection<Map.Entry<String, String>> data,
                           final SingleSelectionModel ssm) {
-        super(I18n.UI_CONSTANTS.metadata(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.metadata(), InternalServices.GLOBALS);
 
         _ssm = ssm;
         _resource = resource;

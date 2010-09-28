@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.VALIDATOR;
+import static ccc.client.core.InternalServices.*;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Globals;
@@ -34,7 +34,6 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.remoting.MoveResourceAction;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -75,7 +74,7 @@ public class MoveDialog extends AbstractEditDialog {
     public MoveDialog(final ResourceSummary item,
                       final SingleSelectionModel ssm,
                       final ResourceSummary root) {
-        super(I18n.UI_CONSTANTS.move(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.move(), InternalServices.GLOBALS);
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _ssm = ssm;
 
@@ -104,7 +103,7 @@ public class MoveDialog extends AbstractEditDialog {
                     folderSelect.addListener(Events.Hide,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent ce) {
-                            ResourceSummary _md = folderSelect.selectedResource();
+                            final ResourceSummary _md = folderSelect.selectedResource();
                             if (_md != null
                                && _md.getType() != ResourceType.RANGE_FOLDER) {
 

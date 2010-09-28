@@ -58,6 +58,7 @@ public class InternalServices {
     public static ExceptionHandler    EX_HANDLER;
     public static Window              WINDOW;
     public static DialogFactory       DIALOGS;
+    public static Globals             GLOBALS;
 
     public static API                              API;
     public static PagedCollection<ActionSummary>   ACTIONS;

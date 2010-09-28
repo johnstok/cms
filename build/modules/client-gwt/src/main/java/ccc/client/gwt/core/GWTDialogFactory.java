@@ -74,7 +74,7 @@ import ccc.client.views.RenameResource;
  *
  * @author Civic Computing Ltd.
  */
-public class GWTDialogFactory
+class GWTDialogFactory
     implements
         DialogFactory {
 

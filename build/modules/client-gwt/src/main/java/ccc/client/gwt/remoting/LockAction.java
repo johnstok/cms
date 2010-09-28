@@ -32,7 +32,6 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
@@ -72,7 +71,7 @@ public class LockAction
     protected void onSuccess(final Void v) {
         final ResourceSummary item = _selectionModel.tableSelection();
         item.setLockedBy(
-            new GlobalsImpl().currentUser().getUsername());
+            InternalServices.GLOBALS.currentUser().getUsername());
         _selectionModel.update(item);
     }
 

@@ -37,8 +37,8 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.remoting.GetUserAction;
 import ccc.client.remoting.UpdateResourceAclAction;
 
@@ -110,7 +110,7 @@ public class UpdateResourceAclDialog
                                    final ACL acl,
                                    final Collection<Group> allGroups) {
         super(I18n.UI_CONSTANTS.updateRoles(),
-              new GlobalsImpl());
+            InternalServices.GLOBALS);
         _resource = resource;
         _acl = acl;
         _allGroups = allGroups;

@@ -28,7 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.api.core.File;
 import ccc.client.core.I18n;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.widgets.ImageSelectionPanel;
 import ccc.client.gwt.widgets.ImageTriggerField;
 
@@ -56,7 +56,7 @@ public class ImageChooserDialog
      * @param image The trigger field for the image.
      */
     public ImageChooserDialog(final ImageTriggerField image) {
-        super(I18n.UI_CONSTANTS.selectImage(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.selectImage(), InternalServices.GLOBALS);
         _imagePanel.setImage(image);
         add(_imagePanel);
         addButton(getCancel());

@@ -89,4 +89,14 @@ public interface Window {
      * the app.
      */
     void disableExitConfirmation();
+
+
+    /**
+     * Open a browser window on a specified URL.
+     *
+     * @param url        The URL to display.
+     * @param windowName The name of the window to open.
+     * @param params     The window parameters.
+     */
+    void openUrl(String url, String windowName, String params);
 }

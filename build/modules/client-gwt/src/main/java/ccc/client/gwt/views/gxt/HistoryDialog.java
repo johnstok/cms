@@ -34,9 +34,9 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.HistoryToolBar;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
@@ -73,7 +73,7 @@ public class HistoryDialog
                          final ResourceType resourceType,
                          final SingleSelectionModel ssm) {
         super(I18n.UI_CONSTANTS.resourceHistory(),
-              new GlobalsImpl(),
+            InternalServices.GLOBALS,
               data,
               false);
 

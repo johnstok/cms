@@ -36,8 +36,8 @@ import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.remoting.GetAbsolutePathAction;
 import ccc.client.widgets.PageElement;
 
@@ -108,7 +108,7 @@ public class CCImageField
             s.addLink(
                 "absolute-path",
                 new Link(ccc.api.core.ResourceIdentifiers.Resource.PATH)
-                .build("id", id, new GWTTemplateEncoder()));
+                .build("id", id, InternalServices.ENCODER));
 
             new GetAbsolutePathAction(I18n.UI_CONSTANTS.selectImage(), s) {
                 @Override protected void execute(final String path) {

@@ -39,10 +39,9 @@ import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.ResourceTypeRendererFactory;
 import ccc.client.remoting.GetChildrenAction;
 import ccc.client.remoting.UpdateFolderAction;
@@ -106,7 +105,7 @@ AbstractEditDialog {
      */
     public EditFolderDialog(final SingleSelectionModel ssm,
                             final ResourceSummary folder) {
-        super(I18n.UI_CONSTANTS.edit(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.edit(), InternalServices.GLOBALS);
 
         _currentIndexPage = folder.getIndexPageId();
         _folder = folder;
@@ -188,7 +187,7 @@ AbstractEditDialog {
                 params.put("order", new String[] {SortOrder.ASC.name()});
                 params.put("page", new String[] {"1"});
                 params.put("count", new String[] {"1000"});
-                return selection.list().build(params, new GWTTemplateEncoder());
+                return selection.list().build(params, InternalServices.ENCODER);
             }
 
             /** {@inheritDoc} */

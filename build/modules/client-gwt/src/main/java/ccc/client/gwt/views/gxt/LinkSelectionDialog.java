@@ -31,7 +31,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.core.InternalServices;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -86,7 +86,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                                final String cccId,
                                final boolean openInNew) {
         super(I18n.UI_CONSTANTS.selectResource(),
-            new GlobalsImpl());
+            InternalServices.GLOBALS);
         _targetRoot = targetRoot;
         _elementid = elementid;
         if (cccId != null
@@ -221,8 +221,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                     _md = folderSelect.selectedResource();
                     if (_md != null
                        && _md.getType() != ResourceType.RANGE_FOLDER) {
-                        final String appContext =
-                            new GlobalsImpl()
+                        final String appContext = InternalServices.GLOBALS
                         .getSetting(API.APPLICATION_CONTEXT);
                         final String path =_md.getAbsolutePath();
                         _linkPath.setValue(appContext+path);

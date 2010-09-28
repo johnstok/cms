@@ -30,7 +30,7 @@ package ccc.client.gwt.widgets;
 import ccc.client.core.Action;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.core.InternalServices;
 import ccc.client.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.widget.menu.Menu;
@@ -46,7 +46,7 @@ public class AbstractContextMenu
     extends
         Menu {
 
-    private final Globals _globals = new GlobalsImpl();
+    private final Globals _globals = InternalServices.GLOBALS;
     private final UIConstants _constants = I18n.UI_CONSTANTS;
 
 

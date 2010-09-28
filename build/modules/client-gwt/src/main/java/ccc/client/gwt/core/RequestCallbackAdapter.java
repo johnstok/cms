@@ -14,7 +14,7 @@ import com.google.gwt.http.client.RequestCallback;
  *
  * @author Civic Computing Ltd.
  */
-public final class RequestCallbackAdapter
+final class RequestCallbackAdapter
     implements
         RequestCallback {
 
@@ -36,7 +36,7 @@ public final class RequestCallbackAdapter
 
     public void onResponseReceived(final Request request,
                                    final com.google.gwt.http.client.Response r) {
-        Response response =
+        final Response response =
             new Response(r.getText(), r.getStatusText(), r.getStatusCode());
 
         if (SessionTimeoutException.isTimedout(response.getText())) {

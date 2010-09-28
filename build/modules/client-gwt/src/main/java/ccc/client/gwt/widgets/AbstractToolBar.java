@@ -29,7 +29,7 @@ package ccc.client.gwt.widgets;
 
 import ccc.client.core.Action;
 import ccc.client.core.Globals;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.core.InternalServices;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -49,7 +49,7 @@ public class AbstractToolBar
     extends
         ToolBar {
 
-    private final Globals _globals = new GlobalsImpl();
+    private final Globals _globals = InternalServices.GLOBALS;
 
     /**
      * Adds a new {@link LabelToolItem}.

@@ -39,7 +39,6 @@ import ccc.api.core.User;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.GroupListField;
 import ccc.client.gwt.widgets.UserTable;
 import ccc.client.remoting.UpdateUserAction;
@@ -77,7 +76,7 @@ public class EditUserDialog extends AbstractEditDialog {
     public EditUserDialog(final User userDTO,
                           final UserTable userTable,
                           final Collection<Group> allGroups) {
-        super(I18n.UI_CONSTANTS.editUser(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.editUser(), InternalServices.GLOBALS);
 
         _userDTO   = userDTO;
         _userTable = userTable;

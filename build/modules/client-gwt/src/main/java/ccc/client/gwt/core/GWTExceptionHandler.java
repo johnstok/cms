@@ -28,6 +28,7 @@ package ccc.client.gwt.core;
 
 import ccc.client.core.ExceptionHandler;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemoteException;
 import ccc.client.core.SessionTimeoutException;
 import ccc.client.core.Window;
@@ -41,7 +42,7 @@ import com.google.gwt.core.client.GWT;
  *
  * @author Civic Computing Ltd.
  */
-public class GWTExceptionHandler
+class GWTExceptionHandler
     implements
         ExceptionHandler {
 
@@ -65,13 +66,13 @@ public class GWTExceptionHandler
         // FIXME Convert type comparison to multiple methods.
         if (e instanceof RemoteException) {
             final RemoteException re = (RemoteException) e;
-            new ErrorDialog(re, action, new GlobalsImpl()).show();
+            new ErrorDialog(re, action, InternalServices.GLOBALS).show();
         } else if (e instanceof SessionTimeoutException) {
             _window.alert(
                 I18n.UI_CONSTANTS.sessionTimeOutPleaseRestart());
         } else {
             GWT.log("An unexpected error occured.", e);
-            new ErrorDialog(e, action, new GlobalsImpl()).show();
+            new ErrorDialog(e, action, InternalServices.GLOBALS).show();
         }
     }
 }

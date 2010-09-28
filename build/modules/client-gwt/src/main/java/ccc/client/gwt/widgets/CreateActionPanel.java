@@ -34,7 +34,6 @@ import ccc.api.types.CommandType;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
@@ -65,7 +64,7 @@ public class CreateActionPanel
     extends
         LayoutContainer {
 
-    private final Globals _globals = new GlobalsImpl();
+    private final Globals _globals = InternalServices.GLOBALS;
     private final UIConstants _uiConstants = I18n.UI_CONSTANTS;
 
     private final DataList _list = new DataList();

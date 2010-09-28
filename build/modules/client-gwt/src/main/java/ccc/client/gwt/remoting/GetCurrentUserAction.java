@@ -30,7 +30,6 @@ import ccc.api.core.User;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
@@ -53,7 +52,7 @@ public class GetCurrentUserAction
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final User user) {
-        new GlobalsImpl().currentUser(user);
+        InternalServices.GLOBALS.currentUser(user);
         new DrawMainWindowAction(user).execute();
     }
 

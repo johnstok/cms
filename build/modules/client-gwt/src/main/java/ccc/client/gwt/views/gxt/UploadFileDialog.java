@@ -38,7 +38,6 @@ import ccc.client.core.S11nHelper;
 import ccc.client.core.SessionTimeoutException;
 import ccc.client.core.SingleSelectionModel;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.plugins.s11n.S11nException;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -83,7 +82,7 @@ public class UploadFileDialog extends AbstractEditDialog {
     public UploadFileDialog(final ResourceSummary parentFolder,
                             final SingleSelectionModel ssm) {
         super(I18n.UI_CONSTANTS.uploadFileTo()
-            +": "+parentFolder.getName(), new GlobalsImpl());
+            +": "+parentFolder.getName(), InternalServices.GLOBALS);
 
         _parent = parentFolder;
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
@@ -91,7 +90,7 @@ public class UploadFileDialog extends AbstractEditDialog {
         // Create a FormPanel and point it at a service.
         getPanel().setAction(
             Globals.API_URL
-            + GlobalsImpl.getAPI().getLink(File.LIST_BINARY));
+            + InternalServices.API.getLink(File.LIST_BINARY));
         getPanel().setEncoding(FormPanel.Encoding.MULTIPART);
         getPanel().setMethod(FormPanel.Method.POST);
 

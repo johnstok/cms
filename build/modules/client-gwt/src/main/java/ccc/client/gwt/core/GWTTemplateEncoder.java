@@ -35,7 +35,7 @@ import com.google.gwt.http.client.URL;
  *
  * @author Civic Computing Ltd.
  */
-public final class GWTTemplateEncoder implements Encoder {
+final class GWTTemplateEncoder implements Encoder {
 
     /** {@inheritDoc} */
     @Override public String encode(final String string) {

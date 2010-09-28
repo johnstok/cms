@@ -34,7 +34,6 @@ import ccc.api.core.User;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.MetadataGrid;
 import ccc.client.remoting.UpdateUserAction;
 
@@ -63,7 +62,7 @@ public class UserMetadataDialog extends AbstractEditDialog {
      * @param user The user.
      */
     public UserMetadataDialog(final User user) {
-        super(I18n.UI_CONSTANTS.metadata(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.metadata(), InternalServices.GLOBALS);
         setHeight(HEIGHT);
         _user = user;
 

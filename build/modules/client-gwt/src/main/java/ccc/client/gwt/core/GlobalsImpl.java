@@ -29,15 +29,9 @@ package ccc.client.gwt.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.core.API;
-import ccc.api.core.ActionSummary;
-import ccc.api.core.Comment;
-import ccc.api.core.Group;
-import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
-import ccc.client.core.InternalServices;
 import ccc.client.i18n.ActionNameConstants;
 import ccc.client.i18n.ActionStatusConstants;
 import ccc.client.i18n.CommandTypeConstants;
@@ -50,7 +44,7 @@ import com.google.gwt.core.client.GWT;
  *
  * @author Civic Computing Ltd.
  */
-public class GlobalsImpl
+class GlobalsImpl
     implements
         Globals {
 
@@ -133,70 +127,6 @@ public class GlobalsImpl
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public PagedCollection<User> users() { return InternalServices.USERS; }
-
-
-    /**
-     * Set the collection for managing users.
-     *
-     * @param users The user collection to access.
-     */
-    public static void users(final PagedCollection<User> users) {
-        InternalServices.USERS = users;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public PagedCollection<ActionSummary> actions() {
-        return InternalServices.ACTIONS;
-    }
-
-
-    /**
-     * Set the collection for managing actions.
-     *
-     * @param actions The action collection to access.
-     */
-    public static void actions(final PagedCollection<ActionSummary> actions) {
-        InternalServices.ACTIONS = actions;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public PagedCollection<Comment> comments() {
-        return InternalServices.COMMENTS;
-    }
-
-
-    /**
-     * Set the collection for managing comments.
-     *
-     * @param comments The comment collection to access.
-     */
-    public static void comments(final PagedCollection<Comment> comments) {
-        InternalServices.COMMENTS = comments;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public PagedCollection<Group> groups() { return InternalServices.GROUPS; }
-
-
-    /**
-     * Set the collection for managing groups.
-     *
-     * @param groups The group collection to access.
-     */
-    public static void groups(final PagedCollection<Group> groups) {
-        InternalServices.GROUPS = groups;
-    }
-
-
     /**
      * Mutator.
      *
@@ -214,25 +144,5 @@ public class GlobalsImpl
      */
     public static void setCommandConstants(final CommandTypeConstants create) {
         I18n.COMMAND_TYPES = create;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param api The remote API.
-     */
-    public static void setAPI(final API api) {
-        InternalServices.API = api;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return The remote API.
-     */
-    public static API getAPI() {
-        return InternalServices.API;
     }
 }

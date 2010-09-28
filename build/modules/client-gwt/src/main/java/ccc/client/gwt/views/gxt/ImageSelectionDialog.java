@@ -30,7 +30,7 @@ import ccc.api.core.API;
 import ccc.api.core.File;
 import ccc.api.types.Paragraph;
 import ccc.client.core.I18n;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.widgets.ImageSelectionPanel;
 
 import com.extjs.gxt.ui.client.data.BeanModel;
@@ -88,7 +88,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                                 final String title,
                                 final String cccId) {
         super(I18n.UI_CONSTANTS.selectImage(),
-              new GlobalsImpl());
+            InternalServices.GLOBALS);
         setLayout(new RowLayout());
         _elementid = elementid;
         if (cccId != null
@@ -111,7 +111,8 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                 if (md != null) {
                     final String path = md.<File>getBean().getPath();
                     final String appContext =
-                        new GlobalsImpl().getSetting(API.APPLICATION_CONTEXT);
+                        InternalServices.GLOBALS.getSetting(
+                            API.APPLICATION_CONTEXT);
                     _urlField.setValue(appContext + path);
                     _titleField.setValue(md.<File>getBean().getTitle());
                     _altField.setValue(md.<File>getBean().getTitle());

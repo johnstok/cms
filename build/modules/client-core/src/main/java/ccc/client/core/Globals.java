@@ -26,10 +26,6 @@
  */
 package ccc.client.core;
 
-import ccc.api.core.ActionSummary;
-import ccc.api.core.Comment;
-import ccc.api.core.Group;
-import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 
 
@@ -101,36 +97,4 @@ public interface Globals {
      *  doesn't exist.
      */
     String getSetting(String settingName);
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    PagedCollection<User> users();
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    PagedCollection<ActionSummary> actions();
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    PagedCollection<Comment> comments();
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    PagedCollection<Group> groups();
 }

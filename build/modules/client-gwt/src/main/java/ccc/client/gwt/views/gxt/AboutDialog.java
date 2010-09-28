@@ -29,7 +29,6 @@ package ccc.client.gwt.views.gxt;
 import ccc.api.core.API;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
@@ -51,8 +50,7 @@ public class AboutDialog extends AbstractBaseDialog {
      *
      */
     public AboutDialog() {
-        super(I18n.UI_CONSTANTS.about(),
-            new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.about(), InternalServices.GLOBALS);
 
         setWidth(ABOUT_WIDTH);
         setMinWidth(ABOUT_WIDTH);

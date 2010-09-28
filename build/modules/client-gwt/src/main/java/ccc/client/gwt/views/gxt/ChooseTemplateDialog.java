@@ -34,8 +34,8 @@ import ccc.api.types.ResourceName;
 import ccc.client.core.Editable;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.views.ChangeResourceTemplate;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
@@ -82,8 +82,7 @@ public class ChooseTemplateDialog
      * Constructor.
      */
     public ChooseTemplateDialog() {
-        super(I18n.UI_CONSTANTS.chooseTemplate(),
-              new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.chooseTemplate(), InternalServices.GLOBALS);
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
 
         _selectedTemplate.setFieldLabel(constants().defaultTemplate());

@@ -30,8 +30,8 @@ import static ccc.client.core.InternalServices.*;
 import ccc.client.core.Editable;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.views.CreateFolder;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -59,8 +59,7 @@ public class CreateFolderDialog
      * Constructor.
      */
     public CreateFolderDialog() {
-        super(I18n.UI_CONSTANTS.createFolder(),
-              new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.createFolder(), InternalServices.GLOBALS);
 
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
         setLayout(new FitLayout());

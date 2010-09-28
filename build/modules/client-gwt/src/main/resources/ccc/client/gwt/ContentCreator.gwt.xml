@@ -48,7 +48,7 @@
     -->
 
 	<!-- Specify the app entry point class. -->
-	<entry-point class="ccc.client.gwt.widgets.ContentCreator" />
+	<entry-point class="ccc.client.gwt.core.ContentCreator" />
 
 	<source path="actions" />
 	<source path="i18n" />

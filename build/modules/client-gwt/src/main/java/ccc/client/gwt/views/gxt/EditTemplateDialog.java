@@ -41,7 +41,6 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;
 import ccc.client.gwt.widgets.CodeMirrorEditor.Type;
@@ -106,7 +105,7 @@ public class EditTemplateDialog
     public EditTemplateDialog(final UUID parentFolderId,
                               final SingleSelectionModel ssm) {
         super(I18n.UI_CONSTANTS.editTemplate(),
-              new GlobalsImpl());
+            InternalServices.GLOBALS);
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
         _mode = DialogMode.CREATE;
@@ -139,8 +138,7 @@ public class EditTemplateDialog
     public EditTemplateDialog(final Template model,
                               final ResourceSummary proxy,
                               final SingleSelectionModel ssm) {
-        super(I18n.UI_CONSTANTS.editTemplate(),
-            new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.editTemplate(), InternalServices.GLOBALS);
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
         _mode = DialogMode.UPDATE;

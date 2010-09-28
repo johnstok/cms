@@ -39,7 +39,6 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.presenters.CreatePagePresenter;
 import ccc.client.views.CreatePage;
@@ -127,7 +126,7 @@ public class CreatePageDialog
      */
     public CreatePageDialog(final Collection<Template> list,
                             final ResourceSummary targetRoot) {
-        super(I18n.UI_CONSTANTS.createPage(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.createPage(), InternalServices.GLOBALS);
         _targetRoot = targetRoot;
 
         _secondWizardPage = new EditPagePanel(null, _targetRoot);

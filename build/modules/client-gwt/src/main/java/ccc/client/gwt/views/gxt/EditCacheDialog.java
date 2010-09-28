@@ -33,7 +33,6 @@ import ccc.api.types.Duration;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.remoting.UpdateCacheDurationAction;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -73,7 +72,7 @@ public class EditCacheDialog extends AbstractEditDialog {
     public EditCacheDialog(final ResourceSummary item,
                            final Duration ds) {
         super(I18n.UI_CONSTANTS.editCacheDuration(),
-              new GlobalsImpl());
+            InternalServices.GLOBALS);
         _item = item;
         setHeight(DIALOG_HEIGHT);
         setWidth(DIALOG_WIDTH);

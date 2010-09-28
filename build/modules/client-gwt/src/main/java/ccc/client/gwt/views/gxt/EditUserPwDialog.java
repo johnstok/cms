@@ -32,7 +32,6 @@ import ccc.api.core.User;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.remoting.UpdateUserPasswordAction;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -59,7 +58,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
      * @param userDTO The userDTO of the selected user.
      */
     public EditUserPwDialog(final User userDTO) {
-        super(I18n.UI_CONSTANTS.editUserPw(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.editUserPw(), InternalServices.GLOBALS);
 
         _userDTO = userDTO;
 

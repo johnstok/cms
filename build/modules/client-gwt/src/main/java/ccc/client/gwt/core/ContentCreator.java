@@ -24,7 +24,7 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.widgets;
+package ccc.client.gwt.core;
 
 
 import ccc.api.core.API;
@@ -33,13 +33,6 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
-import ccc.client.gwt.core.GWTDialogFactory;
-import ccc.client.gwt.core.GWTExceptionHandler;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GWTTextParser;
-import ccc.client.gwt.core.GWTWindow;
-import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.GwtRequestExecutor;
 import ccc.client.gwt.i18n.GWTActionNameConstants;
 import ccc.client.gwt.i18n.GWTActionStatusConstants;
 import ccc.client.gwt.i18n.GWTCommandTypeConstants;
@@ -93,6 +86,7 @@ public final class ContentCreator implements EntryPoint {
         GlobalsImpl.setCommandConstants(
             GWT.<CommandTypeConstants>create(GWTCommandTypeConstants.class));
 
+        InternalServices.GLOBALS     = _globals;
         InternalServices.VALIDATOR   = new Validations();
         InternalServices.EXECUTOR    = new GwtRequestExecutor();
         InternalServices.SERIALIZERS =
@@ -102,6 +96,7 @@ public final class ContentCreator implements EntryPoint {
         InternalServices.EX_HANDLER  =
             new GWTExceptionHandler(InternalServices.WINDOW);
         InternalServices.DIALOGS     = new GWTDialogFactory();
+
 
         if (paramExists("dec")) {
             InternalServices.WINDOW.enableExitConfirmation();

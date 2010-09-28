@@ -99,4 +99,11 @@ public class WindowStub
      * @return The most recent alert, as a string.
      */
     public String getLatestAlert() { return _alerts.get(_alerts.size()-1); }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void openUrl(final String url, final String windowName, final String params) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
 }

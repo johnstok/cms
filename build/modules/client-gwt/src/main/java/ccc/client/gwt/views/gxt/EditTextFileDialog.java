@@ -26,11 +26,11 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.VALIDATOR;
+import static ccc.client.core.InternalServices.*;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;
 import ccc.client.gwt.widgets.CodeMirrorEditor.Type;
@@ -76,7 +76,7 @@ public class EditTextFileDialog
      */
     public EditTextFileDialog() {
 
-        super(I18n.UI_CONSTANTS.edit(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.edit(), InternalServices.GLOBALS);
 
         setHeight(DIALOG_HEIGHT);
 

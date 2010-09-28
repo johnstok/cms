@@ -28,10 +28,8 @@ package ccc.client.gwt.actions;
 
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Action;
+import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.core.GlobalsImpl;
-
-import com.google.gwt.user.client.Window;
 
 /**
  * Open a dialog to preview the selected resource.
@@ -61,12 +59,12 @@ public final class PreviewAction
     public void execute() {
         final ResourceSummary item = _selectionModel.tableSelection();
         final String url =
-            new GlobalsImpl().appURL()
+            InternalServices.GLOBALS.appURL()
                 + "preview"
                 + item.getAbsolutePath()
                 + ((_useWorkingCopy) ? "?wc" : "");
 
-        Window.open(
+        InternalServices.WINDOW.openUrl(
             url,
             "ccc_preview",
             "menubar=no,"

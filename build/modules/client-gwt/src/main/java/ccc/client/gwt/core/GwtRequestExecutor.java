@@ -27,6 +27,7 @@
 package ccc.client.gwt.core;
 
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Request;
 import ccc.client.core.RequestExecutor;
 import ccc.client.core.ResponseHandler;
@@ -42,7 +43,7 @@ import com.google.gwt.http.client.RequestBuilder.Method;
  *
  * @author Civic Computing Ltd.
  */
-public class GwtRequestExecutor
+class GwtRequestExecutor
     implements
         RequestExecutor {
 
@@ -53,7 +54,8 @@ public class GwtRequestExecutor
 
         final ResponseHandler handler = request.getCallback();
 
-        final String url = new GlobalsImpl().appURL() + request.getPath();
+        final String url =
+            InternalServices.GLOBALS.appURL() + request.getPath();
         final RequestBuilder builder =
             new RequestBuilder(getMethod(request.getMethod()), url);
 
