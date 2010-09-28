@@ -36,7 +36,6 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.CreatePageDialog;
 import ccc.client.presenters.CreatePagePresenter;
 import ccc.client.remoting.GetTemplatesAction;
 
@@ -92,7 +91,8 @@ public final class OpenCreatePageAction
             @Override protected void execute(
                                  final Collection<Template> templates) {
                 new CreatePagePresenter(
-                    new CreatePageDialog(templates, _selectionModel.root()),
+                    InternalServices.DIALOGS.createPage(
+                        templates, _selectionModel.root()),
                     f);
             }
         }.execute();

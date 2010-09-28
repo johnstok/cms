@@ -29,10 +29,10 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Duration;
 import ccc.client.core.InternalServices;
+import ccc.client.core.LegacyView;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.EditCacheDialog;
 
 
 /**
@@ -61,8 +61,8 @@ public class OpenEditCacheAction
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final Duration duration) {
-        final EditCacheDialog dialog =
-            new EditCacheDialog(
+        final LegacyView dialog =
+            InternalServices.DIALOGS.editCaching(
                 _selectionModel.tableSelection(), duration);
         dialog.show();
     }

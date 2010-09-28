@@ -57,6 +57,7 @@ public class InternalServices {
     public static Encoder             ENCODER;
     public static ExceptionHandler    EX_HANDLER;
     public static Window              WINDOW;
+    public static DialogFactory       DIALOGS;
 
     public static API                              API;
     public static PagedCollection<ActionSummary>   ACTIONS;

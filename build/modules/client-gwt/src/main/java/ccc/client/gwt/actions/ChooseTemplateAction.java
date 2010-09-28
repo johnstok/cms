@@ -37,7 +37,6 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.ChooseTemplateDialog;
 import ccc.client.presenters.ChangeResourceTemplatePresenter;
 import ccc.client.remoting.GetTemplatesAction;
 
@@ -97,7 +96,7 @@ public final class ChooseTemplateAction
                 @Override protected void execute(
                                  final Collection<Template> templates) {
                     new ChangeResourceTemplatePresenter(
-                        new ChooseTemplateDialog(),
+                        InternalServices.DIALOGS.chooseTemplate(),
                         r,
                         templates);
                 }

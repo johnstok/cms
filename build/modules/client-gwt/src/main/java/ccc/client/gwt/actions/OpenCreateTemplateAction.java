@@ -30,7 +30,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.EditTemplateDialog;
 
 /**
  * Create a template.
@@ -59,7 +58,7 @@ public final class OpenCreateTemplateAction
         if (item == null) {
             InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
         } else {
-            new EditTemplateDialog(
+            InternalServices.DIALOGS.createTemplate(
                 item.getId(),
                 _selectionModel)
             .show();

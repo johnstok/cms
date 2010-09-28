@@ -28,8 +28,8 @@ package ccc.client.gwt.actions;
 
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Action;
+import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.EditFolderDialog;
 
 /**
  * Edit a folder.
@@ -55,9 +55,7 @@ public class OpenUpdateFolderAction
     public void execute() {
         final ResourceSummary selectedModel =
             _selectionModel.tableSelection();
-        new EditFolderDialog(
-            _selectionModel,
-            selectedModel)
-        .show();
+        InternalServices.DIALOGS.updateFolder(_selectionModel, selectedModel)
+            .show();
     }
 }

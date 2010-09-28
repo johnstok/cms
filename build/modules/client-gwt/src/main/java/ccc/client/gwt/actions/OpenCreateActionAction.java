@@ -30,7 +30,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.CreateActionDialog;
 import ccc.client.presenters.CreateActionPresenter;
 
 /**
@@ -60,7 +59,7 @@ public final class OpenCreateActionAction
             InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
         } else {
             new CreateActionPresenter(
-                new CreateActionDialog(),
+                InternalServices.DIALOGS.createAction(),
                 item.getId());
         }
     }

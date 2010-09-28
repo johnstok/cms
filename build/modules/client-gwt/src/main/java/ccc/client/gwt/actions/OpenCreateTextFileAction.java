@@ -33,7 +33,6 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.CreateTextFileDialog;
 import ccc.client.presenters.CreateTextFilePresenter;
 
 /**
@@ -85,7 +84,8 @@ public final class OpenCreateTextFileAction
     /** {@inheritDoc} */
     @Override
     public void onSuccess(final Folder f) {
-        new CreateTextFilePresenter(new CreateTextFileDialog(), f);
+        new CreateTextFilePresenter(
+            InternalServices.DIALOGS.creatTextFile(), f);
     }
 
 

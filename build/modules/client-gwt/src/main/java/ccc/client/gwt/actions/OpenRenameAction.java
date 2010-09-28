@@ -34,7 +34,6 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.RenameDialog;
 import ccc.client.presenters.RenameResourcePresenter;
 
 /**
@@ -88,7 +87,8 @@ public final class OpenRenameAction
     /** {@inheritDoc} */
     @Override
     public void onSuccess(final Resource r) {
-        new RenameResourcePresenter(new RenameDialog(), r);
+        new RenameResourcePresenter(
+            InternalServices.DIALOGS.renameResource(), r);
     }
 
 

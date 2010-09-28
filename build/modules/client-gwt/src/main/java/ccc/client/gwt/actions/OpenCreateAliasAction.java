@@ -33,7 +33,6 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.CreateAliasDialog;
 import ccc.client.presenters.CreateAliasPresenter;
 
 /**
@@ -85,7 +84,7 @@ public final class OpenCreateAliasAction
     /** {@inheritDoc} */
     @Override
     public void onSuccess(final Resource item) {
-        new CreateAliasPresenter(new CreateAliasDialog(), item);
+        new CreateAliasPresenter(InternalServices.DIALOGS.createAlias(), item);
     }
 
 

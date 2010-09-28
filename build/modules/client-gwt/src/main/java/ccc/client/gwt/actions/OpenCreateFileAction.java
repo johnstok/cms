@@ -30,7 +30,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.UploadFileDialog;
 
 /**
  * Create a file.
@@ -58,7 +57,7 @@ public final class OpenCreateFileAction
         if (parent == null) {
             InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
         } else {
-            new UploadFileDialog(parent, _selectionModel).show();
+            InternalServices.DIALOGS.uploadFile(parent, _selectionModel).show();
         }
     }
 }

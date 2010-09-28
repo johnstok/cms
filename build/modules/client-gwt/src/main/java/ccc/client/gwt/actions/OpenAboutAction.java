@@ -27,7 +27,7 @@
 package ccc.client.gwt.actions;
 
 import ccc.client.core.Action;
-import ccc.client.gwt.views.gxt.AboutDialog;
+import ccc.client.core.InternalServices;
 
 
 /**
@@ -40,5 +40,5 @@ public final class OpenAboutAction
         Action {
 
     /** {@inheritDoc} */
-    @Override public void execute() { new AboutDialog().show(); }
+    @Override public void execute() { InternalServices.DIALOGS.about().show(); }
 }

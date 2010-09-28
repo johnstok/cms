@@ -33,6 +33,7 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
+import ccc.client.gwt.core.GWTDialogFactory;
 import ccc.client.gwt.core.GWTExceptionHandler;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GWTTextParser;
@@ -100,6 +101,7 @@ public final class ContentCreator implements EntryPoint {
         InternalServices.WINDOW      = new GWTWindow();
         InternalServices.EX_HANDLER  =
             new GWTExceptionHandler(InternalServices.WINDOW);
+        InternalServices.DIALOGS     = new GWTDialogFactory();
 
         if (paramExists("dec")) {
             InternalServices.WINDOW.enableExitConfirmation();

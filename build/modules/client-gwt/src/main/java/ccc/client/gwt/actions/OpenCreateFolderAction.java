@@ -33,7 +33,6 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.CreateFolderDialog;
 import ccc.client.presenters.CreateFolderPresenter;
 
 /**
@@ -84,7 +83,8 @@ public final class OpenCreateFolderAction
     /** {@inheritDoc} */
     @Override
     public void onSuccess(final Resource item) {
-        new CreateFolderPresenter(new CreateFolderDialog(), item);
+        new CreateFolderPresenter(
+            InternalServices.DIALOGS.createFolder(), item);
     }
 
 

@@ -27,7 +27,7 @@
 package ccc.client.gwt.actions;
 
 import ccc.client.core.Action;
-import ccc.client.gwt.views.gxt.UpdateCurrentUserDialog;
+import ccc.client.core.InternalServices;
 
 
 /**
@@ -40,5 +40,7 @@ public final class OpenUpdateCurrentUserAction
         Action {
 
     /** {@inheritDoc} */
-    @Override public void execute() { new UpdateCurrentUserDialog().show(); }
+    @Override public void execute() {
+        InternalServices.DIALOGS.updateCurrentUser().show();
+    }
 }

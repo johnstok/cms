@@ -33,10 +33,10 @@ import ccc.client.core.DefaultCallback;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.HistoryDialog;
 import ccc.client.parsers.RevisionsParser;
 
 /**
@@ -75,7 +75,7 @@ public final class ViewHistoryAction
                     new DefaultCallback<PagedCollection<Revision>>(UI_CONSTANTS.viewHistory()) {
                         @Override
                         public void onSuccess(final PagedCollection<Revision> rsCollection) {
-                            new HistoryDialog(
+                            InternalServices.DIALOGS.viewHistory(
                                 rsCollection.getElements(),
                                 _selectionModel.tableSelection().getType(),
                                 _selectionModel)

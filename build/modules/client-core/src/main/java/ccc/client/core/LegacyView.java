@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,37 +21,22 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
-
-import ccc.api.core.Group;
-import ccc.api.core.PagedCollection;
-import ccc.api.types.SortOrder;
-import ccc.client.core.Action;
-import ccc.client.core.Globals;
-import ccc.client.core.InternalServices;
-import ccc.client.presenters.CreateUserPresenter;
-import ccc.client.remoting.ListGroups;
+package ccc.client.core;
 
 
 /**
- * Create an user.
+ * Legacy API for MVP views.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenCreateUserAction
-    implements
-        Action {
+public interface LegacyView {
 
-    /** {@inheritDoc} */
-    @Override public void execute() {
-        new ListGroups(1, Globals.MAX_FETCH, "name", SortOrder.ASC) {
-            @Override
-            protected void execute(final PagedCollection<Group> groups) {
-                new CreateUserPresenter(
-                    InternalServices.DIALOGS.createUser(groups.getElements()));
-            }}.execute();
-        }
+
+    /**
+     * Shows the view.
+     */
+    void show();
 }

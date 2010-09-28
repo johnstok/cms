@@ -29,6 +29,7 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
+import ccc.client.core.LegacyView;
 import ccc.client.i18n.ActionNameConstants;
 import ccc.client.i18n.UIConstants;
 import ccc.client.i18n.UIMessages;
@@ -47,7 +48,9 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
  */
 public abstract class AbstractBaseDialog
     extends
-        Window {
+        Window
+    implements
+        LegacyView {
 
     /** CONTEXT_MENU_WIDTH : int. */
     public static final int CONTEXT_MENU_WIDTH = 150;

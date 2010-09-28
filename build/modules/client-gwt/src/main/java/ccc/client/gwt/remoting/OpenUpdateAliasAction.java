@@ -30,7 +30,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.views.gxt.UpdateAliasDialog;
 
 
 
@@ -71,7 +70,7 @@ public class OpenUpdateAliasAction
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final String targetName) {
-        new UpdateAliasDialog(_alias, targetName, _targetRoot)
+        InternalServices.DIALOGS.updateAlias(_alias, targetName, _targetRoot)
         .show();
     }
 
