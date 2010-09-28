@@ -44,6 +44,7 @@ import ccc.api.types.SortOrder;
 public class ResourceCriteria implements Serializable {
 
     private UUID _parent = null;
+    private String _name = null;
     private String _tag = null;
     private Date _changedAfter = null;
     private Date _changedBefore = null;
@@ -298,5 +299,25 @@ public class ResourceCriteria implements Serializable {
      */
     public final void setMetadata(final Map<String, String> metadata) {
         _metaMatches = new HashMap<String, String>(metadata);
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the name.
+     */
+    public String getName() {
+        return _name;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param name The name to set.
+     */
+    public void setName(String name) {
+        _name = name;
     }
 }

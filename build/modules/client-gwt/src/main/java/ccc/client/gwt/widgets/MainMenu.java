@@ -46,7 +46,6 @@ import ccc.client.gwt.actions.OpenUpdateCurrentUserAction;
 import ccc.client.gwt.actions.OpenUpdateFolderAction;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.remoting.GetRootsAction;
 import ccc.client.gwt.remoting.ListGroups;
 import ccc.client.gwt.remoting.LockAction;
 import ccc.client.gwt.remoting.LogoutAction;
@@ -165,17 +164,16 @@ public class MainMenu
             new Listener<MenuEvent>() {
                 public void handleEvent(final MenuEvent be) {
                     rootMenu.removeAll();
-                    new GetRootsAction() {
-                        // TODO: Do we really have to go to the server for this?
-                        @Override protected void onSuccess(
-                              final PagedCollection<ResourceSummary> roots) {
-                            for (final ResourceSummary root : roots) {
-                                if (rootName.equals(root.getName().toString())) {
-                                    addRootMenuItems(root, rootMenu);
-                                }
-                            }
+
+                    ResourceSummary root = null;
+                    for (final ResourceSummary rr : InternalServices.ROOTS.getElements()) {
+                        if (rr.getName().toString().equals("content")) {
+                            root = rr;
                         }
-                    }.execute();
+                    }
+                    if (rootName.equals(root.getName())) {
+                        addRootMenuItems(root, rootMenu);
+                    }
                 }
             }
         );

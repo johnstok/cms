@@ -14,10 +14,9 @@
 
 package ccc.client.gwt.widgets;
 
-import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.I18n;
-import ccc.client.gwt.remoting.GetRootsAction;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.views.gxt.ImageSelectionDialog;
 import ccc.client.gwt.views.gxt.LinkSelectionDialog;
 import ccc.client.i18n.UIConstants;
@@ -70,6 +69,7 @@ import com.google.gwt.user.client.ui.Frame;
  */
 public class FCKEditor extends LayoutContainer {
 
+    private static final int HTML_HEIGHT            = 30;
     private final UIConstants         _uiConstants  = I18n.UI_CONSTANTS;
     private final Frame               _editorFrame  = new Frame();
     private final ToggleButton        _toggleButton = new ToggleButton();
@@ -115,7 +115,11 @@ public class FCKEditor extends LayoutContainer {
         _htmlArea.setBorders(true);
         _htmlArea.setHtml(_html);
         _htmlArea.setToolTip(_tooltip);
-        _htmlArea.setAutoHeight(true);
+        if (_html.isEmpty()) {
+            _htmlArea.setHeight(HTML_HEIGHT);
+        } else {
+            _htmlArea.setAutoHeight(true);
+        }
         add(_htmlArea);
 
         _toggleButton.setText(_uiConstants.edit());
@@ -223,25 +227,20 @@ public class FCKEditor extends LayoutContainer {
                                  final String innerText,
                                  final String cccId,
                                  final boolean openInNew) {
-        new GetRootsAction() { // TODO: UseGetResourceForPathAction instead.
-            @Override
-            protected void onSuccess(
-                                 final PagedCollection<ResourceSummary> roots) {
-                ResourceSummary rs = null;
-                for (final ResourceSummary rr : roots) {
-                    if (rr.getName().toString().equals("content")) {
-                        rs = rr;
-                    }
-                }
-                new LinkSelectionDialog(rs,
-                                        elementID,
-                                        url,
-                                        title,
-                                        innerText,
-                                        cccId,
-                                        openInNew).show();
+
+        ResourceSummary rs = null;
+        for (final ResourceSummary rr : InternalServices.ROOTS.getElements()) {
+            if (rr.getName().toString().equals("content")) {
+                rs = rr;
             }
-        }.execute();
+        }
+        new LinkSelectionDialog(rs,
+            elementID,
+            url,
+            title,
+            innerText,
+            cccId,
+            openInNew).show();
     }
 
 
@@ -307,6 +306,11 @@ public class FCKEditor extends LayoutContainer {
         _toggleButton.setText(_uiConstants.edit());
         _html = getHTML();
         _htmlArea.setHtml(_html);
+        if (_html.isEmpty()) {
+            _htmlArea.setHeight(HTML_HEIGHT);
+        } else {
+            _htmlArea.setAutoHeight(true);
+        }
         remove(_configBox);
         remove(_inputBox);
         remove(_editorFrame);

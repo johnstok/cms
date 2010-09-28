@@ -47,8 +47,8 @@ public class PageCriteria
     extends
         ResourceCriteria {
 
-    private Set<Paragraph> _paraMatches = new HashSet<Paragraph>();
-    private Map<String, Range<?>> _paraRanges = new HashMap<String, Range<?>>();
+    private final Set<Paragraph> _paraMatches = new HashSet<Paragraph>();
+    private final Map<String, Range<?>> _paraRanges = new HashMap<String, Range<?>>();
 
     private String _sortField;
     private SortOrder _sortOrder;
@@ -233,7 +233,6 @@ public class PageCriteria
         _paraRanges.clear();
         _paraRanges.putAll(paraRanges);
     }
-
 
     /**
      * Accessor.

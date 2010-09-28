@@ -27,7 +27,6 @@
 package ccc.client.gwt.widgets;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import ccc.api.core.ResourceSummary;
@@ -63,11 +62,11 @@ public class ResourceNavigator extends ContentPanel {
      * Constructor.
      *
      * @param view LeftRightPane of the surrounding view.
-     * @param roots Collection of the resource roots.
+     * @param root The resource root.
      * @param user UserSummary of the currently logged in user.
      */
     public ResourceNavigator(final LeftRightPane view,
-                      final Collection<ResourceSummary> roots,
+                      final ResourceSummary root,
                       final User user) {
         setId("resource-navigator");
 
@@ -77,27 +76,25 @@ public class ResourceNavigator extends ContentPanel {
         setBodyBorder(false);
         setHeading(I18n.UI_CONSTANTS.navigator());
 
-        for (final ResourceSummary root : roots) {
-            final EnhancedResourceTree enhancedResourceTree =
-                new EnhancedResourceTree(root, _view, _globals);
-            _rootTrees.add(enhancedResourceTree);
-            final ContentPanel contentPanel = new ContentPanel();
-            contentPanel.getHeader().setId(root.getName()+"-navigator");
-            contentPanel.setAnimCollapse(false);
-            contentPanel.setScrollMode(Scroll.AUTO);
-            contentPanel.setHeading(I18n.UI_CONSTANTS.content());
+        final EnhancedResourceTree enhancedResourceTree =
+            new EnhancedResourceTree(root, _view, _globals);
+        _rootTrees.add(enhancedResourceTree);
+        final ContentPanel contentPanel = new ContentPanel();
+        contentPanel.getHeader().setId(root.getName()+"-navigator");
+        contentPanel.setAnimCollapse(false);
+        contentPanel.setScrollMode(Scroll.AUTO);
+        contentPanel.setHeading(I18n.UI_CONSTANTS.content());
 
-            contentPanel.add(enhancedResourceTree.asComponent());
-            add(contentPanel);
-            contentPanel.addListener(
-                Events.Expand,
-                new Listener<ComponentEvent>(){
-                    public void handleEvent(final ComponentEvent bce) {
-                        enhancedResourceTree.showTable();
-                    }
+        contentPanel.add(enhancedResourceTree.asComponent());
+        add(contentPanel);
+        contentPanel.addListener(
+            Events.Expand,
+            new Listener<ComponentEvent>(){
+                public void handleEvent(final ComponentEvent bce) {
+                    enhancedResourceTree.showTable();
                 }
-            );
-        }
+            }
+        );
 
         _usersTree = new UserTree(_view);
         if (user.hasPermission(Permission.USER_READ)) {

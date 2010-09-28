@@ -70,9 +70,15 @@ public final class DrawMainWindowAction
         InternalServices.ROOTS = roots;
         final LeftRightPane contentPane = new LeftRightPane();
         contentPane.setRightHandPane(new ContentPanel());
+        ResourceSummary root = null;
+        for (final ResourceSummary rr : InternalServices.ROOTS.getElements()) {
+            if (rr.getName().toString().equals("content")) {
+                root = rr;
+            }
+        }
         contentPane.setLeftHandPane(
             new ResourceNavigator(contentPane,
-                roots.getElements(),
+                root,
                 _user));
 
         final Viewport vp =

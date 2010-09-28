@@ -39,7 +39,7 @@ import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
- * Action for retrieving the roots.
+ * Action for retrieving the root.
  *
  * @author Civic Computing Ltd.
  */
@@ -81,7 +81,7 @@ public abstract class GetRootsAction
     /**
      * Execute this action.
      *
-     * @param roots The root resources returned by the server.
+     * @param root The root resource returned by the server.
      */
     protected abstract void onSuccess(
                                   final PagedCollection<ResourceSummary> roots);

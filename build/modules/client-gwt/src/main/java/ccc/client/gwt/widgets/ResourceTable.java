@@ -27,7 +27,6 @@
 package ccc.client.gwt.widgets;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,24 +36,20 @@ import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
-import ccc.api.types.SortOrder;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.remoting.GetChildrenPagedAction;
 
-import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
+import com.extjs.gxt.ui.client.data.BaseFilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
-import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -63,12 +58,12 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.GridView;
 import com.extjs.gxt.ui.client.widget.grid.GridViewConfig;
+import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
+import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
-import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -86,10 +81,17 @@ public class ResourceTable
     private ListStore<BeanModel> _detailsStore =
         new ListStore<BeanModel>();
 
+    final PagingLoader<PagingLoadResult<BeanModel>> loader;
+
     private final ResourceSummary _root;
-    private final FolderResourceTree _tree;
+    private final ResourceTree _tree;
     private final Grid<BeanModel> _grid;
     private final PagingToolBar _pagerBar;
+    private final FolderToolBar toolBar;
+
+    private final GridFilters _filters;
+
+    private final ResourceProxy _proxy;
 
 
     /**
@@ -99,13 +101,12 @@ public class ResourceTable
      * @param tree FolderResourceTree
      */
     ResourceTable(final ResourceSummary root,
-        final FolderResourceTree tree) {
+        final ResourceTree tree) {
 
         InternalServices.REMOTING_BUS.registerHandler(this);
-
         _root = root;
         _tree = tree;
-        final ToolBar toolBar = new FolderToolBar(this);
+        toolBar = new FolderToolBar(this);
         setTopComponent(toolBar);
         setHeading(UI_CONSTANTS.resourceDetails());
         setLayout(new FitLayout());
@@ -116,8 +117,19 @@ public class ResourceTable
             new ContextActionGridPlugin(contextMenu);
         gp.setRenderer(new ResourceContextRenderer());
         configs.add(gp);
-
         createColumnConfigs(configs);
+
+        _proxy = new ResourceProxy(null, null);
+
+        loader = new BasePagingLoader<PagingLoadResult<BeanModel>>(_proxy) {
+            @Override
+            protected Object newLoadConfig() {
+                     final BasePagingLoadConfig config = new BaseFilterPagingLoadConfig();
+                     return config;
+            }
+        };
+        loader.setRemoteSort(true);
+        _detailsStore = new ListStore<BeanModel>(loader);
 
         final ColumnModel cm = new ColumnModel(configs);
         _grid = new Grid<BeanModel>(_detailsStore, cm);
@@ -125,16 +137,30 @@ public class ResourceTable
         _grid.setContextMenu(contextMenu);
         _grid.addPlugin(gp);
 
-        add(_grid);
-
         _pagerBar = new PagingToolBar(PAGING_ROW_COUNT);
         setBottomComponent(_pagerBar);
+        _pagerBar.bind(loader);
+
+        _filters = new GridFilters();
+        final StringFilter nameFilter = new StringFilter("name");
+        nameFilter.getMenu().setAutoWidth(false);
+        nameFilter.getMenu().setWidth(190);
+        _filters.addFilter(nameFilter);
+        _filters.setLocal(false);
+        _grid.addPlugin(_filters);
+
+        add(_grid);
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public ResourceSummary root() { return _root; }
+    /**
+     * Accessor for this table's root.
+     *
+     * @return The resource summary for the root.
+     */
+    public ResourceSummary root() {
+        return _root;
+    }
 
 
     /**
@@ -143,72 +169,31 @@ public class ResourceTable
      * @param folder The parent folder for the records to display in the table.
      */
     public void displayResourcesFor(final ResourceSummary folder) {
-
-        final RpcProxy<PagingLoadResult<BeanModel>> proxy =
-            new RpcProxy<PagingLoadResult<BeanModel>>() {
-
-            @Override
-            protected void load(final Object loadConfig,
-                                final AsyncCallback<PagingLoadResult
-                                <BeanModel>> callback) {
-                if (folder == null
-                    || folder.getType() == ResourceType.RANGE_FOLDER
-                    || null==loadConfig
-                    || !(loadConfig instanceof BasePagingLoadConfig)) {
-                    final PagingLoadResult<BeanModel> plr =
-                       new BasePagingLoadResult<BeanModel>(null);
-                    callback.onSuccess(plr);
-                } else {
-                    final BasePagingLoadConfig config =
-                        (BasePagingLoadConfig) loadConfig;
-
-                    final int page =  config.getOffset()/ config.getLimit()+1;
-                    final SortOrder order =
-                        (config.getSortDir() == Style.SortDir.ASC)
-                            ? SortOrder.ASC
-                            : SortOrder.DESC;
-
-                    new GetChildrenPagedAction(
-                        folder,
-                        page,
-                        config.getLimit(),
-                        config.getSortField(),
-                        order,
-                        null) {
-                        /** {@inheritDoc} */
-                        @Override protected void onFailure(final Throwable t) {
-                            callback.onFailure(t);
-                        }
-
-                        /** {@inheritDoc} */
-                        @Override protected void execute(
-                                 final Collection<ResourceSummary> children,
-                                 final long totalCount) {
-                            final List<BeanModel> results =
-                                DataBinding.bindResourceSummary(children);
-
-                            final PagingLoadResult<BeanModel> plr =
-                                new BasePagingLoadResult<BeanModel>(
-                            results, config.getOffset(), (int) totalCount);
-                            callback.onSuccess(plr);
-                        }
-                    }.execute();
-                }
-            }
-
-        };
-
-        final PagingLoader loader = new BasePagingLoader(proxy);
-        loader.setRemoteSort(true);
-        _detailsStore = new ListStore<BeanModel>(loader);
-        _pagerBar.bind(loader);
-        loader.load(0, PAGING_ROW_COUNT);
+        _proxy.setFolder(folder);
         final ColumnModel cm = _grid.getColumnModel();
+        _filters.clearFilters();
         _grid.reconfigure(_detailsStore, cm);
+        loader.load(0, PAGING_ROW_COUNT);
     }
 
 
-    private void createColumnConfigs(final List<ColumnConfig> configs) {
+    /**
+     * Reloads the detail store.
+     *
+     */
+    public void reload() {
+        if (_detailsStore.getLoader() != null) {
+            _detailsStore.getLoader().load();
+        }
+    }
+
+
+    /**
+     * Config method for the columns.
+     *
+     * @param configs list of configurations.
+     */
+    public void createColumnConfigs(final List<ColumnConfig> configs) {
 
         final GridCellRenderer<BeanModel> rsRenderer =
             ResourceTypeRendererFactory.rendererForResourceSummary();
@@ -326,7 +311,6 @@ public class ResourceTable
         _grid.setAutoExpandColumn(
             ResourceSummary.TITLE);
     }
-
 
 
     /** {@inheritDoc} */
@@ -480,7 +464,6 @@ public class ResourceTable
     }
 
 
-    /** {@inheritDoc} */
     @Override
     public void create(final Resource model) {
         create((ResourceSummary) model);

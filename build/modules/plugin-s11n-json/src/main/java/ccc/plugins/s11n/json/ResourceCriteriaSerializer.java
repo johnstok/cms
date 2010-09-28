@@ -76,6 +76,7 @@ class ResourceCriteriaSerializer
 
     static void readResourceCriteria(final Json json,
                                      final ResourceCriteria c) {
+        c.setName(json.getString("name"));
         c.setChangedAfter(json.getDate("changed-after"));
         c.setChangedBefore(json.getDate("changed-before"));
         c.setLocked(json.getBool(JsonKeys.LOCKED));
@@ -94,6 +95,7 @@ class ResourceCriteriaSerializer
 
     static void writeResourceCriteria(final Json json,
                                       final ResourceCriteria instance) {
+        json.set("name", instance.getName());
         json.set("changed-after", instance.getChangedAfter());
         json.set("changed-before", instance.getChangedBefore());
         json.set(JsonKeys.LOCKED, instance.getLocked());

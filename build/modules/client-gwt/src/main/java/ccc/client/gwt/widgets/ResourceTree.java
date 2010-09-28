@@ -28,14 +28,16 @@
 package ccc.client.gwt.widgets;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
+import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Globals;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.remoting.GetChildrenPagedAction;
+import ccc.client.gwt.remoting.GetResourcesPagedAction;
 
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.BeanModel;
@@ -49,19 +51,19 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class ResourceTree extends AbstractResourceTree {
 
-    private final Globals _globals;
     private final ResourceSummary _root;
+    private final ResourceType _type;
 
     /**
      * Constructor.
      *
      * @param root The root of the tree.
-     * @param globals IGlobals implementation.
+     * @param type The resource type to show.
      */
-    public ResourceTree(final ResourceSummary root, final Globals globals) {
-
+    public ResourceTree(final ResourceSummary root,
+                        final ResourceType type) {
+        _type = type;
         _root = root;
-        _globals = globals;
     }
 
     /** {@inheritDoc} */
@@ -73,47 +75,52 @@ public class ResourceTree extends AbstractResourceTree {
 
             @Override
             protected void load(
-                final Object loadConfig,
-                final AsyncCallback<List<BeanModel>> callback) {
+                                final Object loadConfig,
+                                final AsyncCallback<List<BeanModel>> callback) {
 
-                final ResourceSummary parent =
-                    (null==loadConfig || !(loadConfig instanceof BeanModel))
-                        ? _root
-                        : ((BeanModel) loadConfig).<ResourceSummary>getBean();
-
-                if (parent.getChildCount() > Globals.MAX_FETCH) {
-                    final List<ResourceSummary> children =
-                        createRangeFolders(parent.getChildCount(), parent);
+                if (null==loadConfig || !(loadConfig instanceof BeanModel)) {
                     callback.onSuccess(
-                        DataBinding.bindResourceSummary(children));
+                        DataBinding.bindResourceSummary(
+                            Collections.singletonList(_root)));
                 } else {
-                    int page = 1;
-                    if (parent.getType() == ResourceType.RANGE_FOLDER) {
-                        parent.setId(parent.getParent());
-                        page = Integer.decode(parent.getAbsolutePath());
+                    final ResourceSummary parent =
+                        ((BeanModel) loadConfig).<ResourceSummary>getBean();
+                    if (getChildCount(parent) > Globals.MAX_FETCH) {
+                        final List<ResourceSummary> children =
+                            createRangeFolders(getChildCount(parent), parent);
+                        callback.onSuccess(
+                            DataBinding.bindResourceSummary(children));
+                    } else {
+                        int page = 1;
+                        if (parent.getType() == ResourceType.RANGE_FOLDER) {
+                            parent.setId(parent.getParent());
+                            page = Integer.decode(parent.getAbsolutePath());
+                        }
+
+                        final ResourceCriteria criteria = new ResourceCriteria();
+                        criteria.setParent(parent.getId());
+                        criteria.setSortField("name");
+                        criteria.setSortOrder(SortOrder.ASC);
+                        criteria.setType(_type);
+
+                        new GetResourcesPagedAction(criteria,
+                                                   page,
+                                                   Globals.MAX_FETCH) {
+
+                            /** {@inheritDoc} */
+                            @Override protected void onFailure(final Throwable t) {
+                                callback.onFailure(t);
+                            }
+
+                            @Override
+                            protected void execute(final Collection<ResourceSummary> children,
+                                                   final long totalCount) {
+
+                                callback.onSuccess(
+                                    DataBinding.bindResourceSummary(children));
+                            }
+                        }.execute();
                     }
-
-                    new GetChildrenPagedAction(
-                        parent,
-                        page,
-                        Globals.MAX_FETCH,
-                        "name",
-                        SortOrder.ASC,
-                        null) {
-
-                        /** {@inheritDoc} */
-                        @Override protected void onFailure(final Throwable t) {
-                            callback.onFailure(t);
-                        }
-
-                        /** {@inheritDoc} */
-                        @Override protected void execute(
-                                     final Collection<ResourceSummary> children,
-                                     final long count) {
-                            callback.onSuccess(
-                                DataBinding.bindResourceSummary(children));
-                        }
-                    }.execute();
                 }
             }
         };
@@ -126,10 +133,15 @@ public class ResourceTree extends AbstractResourceTree {
         return new BaseTreeLoader<BeanModel>(createProxy()) {
             @Override
             public boolean hasChildren(final BeanModel parent) {
-                final int childCount =
-                    parent.<ResourceSummary>getBean().getChildCount();
-                return childCount > 0;
+                return getChildCount(parent.<ResourceSummary>getBean()) > 0;
             }
         };
+    }
+
+    private int getChildCount(final ResourceSummary parent) {
+        if (_type == ResourceType.FOLDER) {
+            return parent.getFolderCount();
+        }
+        return parent.getChildCount();
     }
 }

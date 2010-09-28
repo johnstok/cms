@@ -1590,4 +1590,19 @@ public interface UIConstants {
      * @return The constant, in the appropriate locale.
      */
     String cancelled();
+
+    /**
+     * "Tree.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String tree();
+
+    /**
+     * "Date cannot be in past.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String dateCannotBeInPast();
+
 }

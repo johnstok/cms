@@ -38,6 +38,7 @@ import ccc.api.core.Group;
 import ccc.api.core.Page;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.core.Template;
@@ -566,6 +567,18 @@ public class S11nHelper {
      */
     protected String writeGroup(final Group group) {
         return serializers().create(Group.class).write(group);
+    }
+
+
+    /**
+     * Write a resource criteria to a string.
+     *
+     * @param criteria The resource criteria to write.
+     *
+     * @return The string representation.
+     */
+    protected String writeResourceCriteria(final ResourceCriteria criteria) {
+        return serializers().create(ResourceCriteria.class).write(criteria);
     }
 
 

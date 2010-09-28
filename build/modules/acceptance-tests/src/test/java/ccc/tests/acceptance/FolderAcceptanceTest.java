@@ -222,8 +222,7 @@ public class FolderAcceptanceTest
 
         // ACT
         try {
-            final PagedCollection<ResourceSummary> list =
-                getCommands().list(folder.getId(),
+           getCommands().list(folder.getId(),
                     null,
                     null,
                     null,

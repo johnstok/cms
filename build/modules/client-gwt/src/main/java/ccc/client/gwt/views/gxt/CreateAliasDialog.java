@@ -27,8 +27,9 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.VALIDATOR;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceType;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
@@ -41,8 +42,6 @@ import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.event.WindowEvent;
-import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 
@@ -91,22 +90,31 @@ public class CreateAliasDialog
             Events.TriggerClick,
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be) {
-                    final FolderSelectionDialog folderSelect =
-                        new FolderSelectionDialog();
-                    folderSelect.addListener(Events.Hide,
-                        new Listener<WindowEvent>() {
-                        public void handleEvent(final WindowEvent be2) {
-                            final Button b = be2.getButtonClicked();
-                            if (null==b) { // 'X' button clicked.
-                                return;
-                            }
-                            _parent = folderSelect.selectedFolder();
-                            _parentFolder.setValue(
-                                (null==_parent)
-                                    ? null
-                                    : _parent.getName().toString());
-                        }});
-                    folderSelect.show();
+                    ResourceSummary root = null;
+                    for (final ResourceSummary rr : InternalServices.ROOTS.getElements()) {
+                        if (rr.getName().toString().equals("content")) {
+                            root = rr;
+                        }
+                    }
+
+                   final ResourceSelectionDialog folderSelect =
+                       new ResourceSelectionDialog(root,
+                           ResourceType.FOLDER);
+                   folderSelect.addListener(Events.Hide,
+                       new Listener<ComponentEvent>() {
+                       public void handleEvent(final ComponentEvent ce) {
+                           final ResourceSummary _md = folderSelect.selectedResource();
+                           if (_md != null
+                                   && _md.getType() != ResourceType.RANGE_FOLDER) {
+
+                               _parent = _md;
+                               _parentFolder.setValue(
+                                   (null==_parent)
+                                   ? null
+                                       : _parent.getName().toString());
+                           }
+                       }});
+                   folderSelect.show();
                 }});
         addField(_parentFolder);
     }

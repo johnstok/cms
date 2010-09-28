@@ -214,7 +214,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
 
         public void handleEvent(final ComponentEvent be) {
             final ResourceSelectionDialog folderSelect =
-                new ResourceSelectionDialog(_targetRoot);
+                new ResourceSelectionDialog(_targetRoot, null);
             folderSelect.addListener(Events.Hide,
                 new Listener<ComponentEvent>() {
                 public void handleEvent(final ComponentEvent ce) {

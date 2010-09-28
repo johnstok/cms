@@ -27,6 +27,7 @@
 package ccc.client.gwt.widgets;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceType;
 import ccc.client.core.Globals;
 
 import com.extjs.gxt.ui.client.data.BeanModel;
@@ -43,7 +44,7 @@ import com.extjs.gxt.ui.client.widget.menu.Menu;
  *
  * @author Civic Computing Ltd.
  */
-public class EnhancedResourceTree extends FolderResourceTree {
+public class EnhancedResourceTree extends ResourceTree {
 
     private final Menu _contextMenu;
     private final LeftRightPane _view;
@@ -61,7 +62,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
                          final LeftRightPane view,
                          final Globals globals) {
 
-        super(globals);
+        super(root, ResourceType.FOLDER);
 
         _rt = new ResourceTable(root, this);
         _view = view;

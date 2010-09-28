@@ -107,6 +107,7 @@ public abstract class AbstractAcceptanceTest
         api.addLink(API.ALIASES, "/secure/aliases");
         api.addLink(API.USERS, "/secure/users");
         api.addLink(API.PAGES, "/secure/pages");
+        api.addLink(API.FOLDERS, "/secure/folders");
         api.addLink(API.FILES, "/secure/files");
         api.addLink(API.FOLDERS, "/secure/folders");
         InternalServices.API = api;

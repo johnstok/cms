@@ -27,7 +27,8 @@
 
 package ccc.web;
 
-import static ccc.commons.Strings.*;
+import static ccc.commons.Strings.nvl;
+import static ccc.commons.Strings.removeTrailing;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -45,6 +46,7 @@ import org.apache.velocity.tools.generic.SortTool;
 
 import ccc.api.core.Failure;
 import ccc.api.core.MemoryServiceLocator;
+import ccc.api.core.ObjectFactory;
 import ccc.api.core.ServiceLocator;
 import ccc.api.core.User;
 import ccc.api.exceptions.CCException;
@@ -229,6 +231,7 @@ public class ContentServlet
         context.add("hostname",    Environment.getHostname());
         context.add("dateTool",    new DateTool()); // FIXME: Remove.
         context.add("sortTool",    new SortTool()); // FIXME: Remove.
+        context.add("apiTypes",    ObjectFactory.class);
 
         return context;
     }

@@ -48,12 +48,14 @@ public class FolderToolBar
 
     private final UIConstants _constants = I18n.UI_CONSTANTS;
 
+
     /**
      * Constructor.
      *
      * @param ssm The selection model to use.
      */
-    FolderToolBar(final SingleSelectionModel ssm) {
+    FolderToolBar(final ResourceTable ssm) {
+
         addSeparator(null);
         addButton(Permission.FILE_CREATE,
             "uploadFile",
