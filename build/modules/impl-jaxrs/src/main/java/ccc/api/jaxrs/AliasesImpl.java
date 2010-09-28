@@ -99,13 +99,4 @@ public class AliasesImpl
         }
     }
 
-
-    @Override
-    public Alias retrieve(final UUID aliasId) {
-        try {
-            return _delegate.retrieve(aliasId);
-        } catch (final RuntimeException cfe) {
-            throw convertException(cfe);
-        }
-    }
 }

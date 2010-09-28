@@ -260,21 +260,4 @@ public class FolderAcceptanceTest
 
     }
 
-    /**
-     * Test.
-     */
-    public void testRetrieve() {
-
-        // ARRANGE
-        final Folder f = tempFolder();
-
-        // ACT
-        final Folder fetched = getFolders().retrieve(f.getId());
-
-        // ASSERT
-        assertNotNull("Fetched folder should not be null", fetched);
-        assertEquals(f.getAbsolutePath(), fetched.getAbsolutePath());
-        assertEquals(f.getId(), fetched.getId());
-    }
-
 }

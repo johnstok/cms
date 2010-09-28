@@ -137,15 +137,4 @@ public interface Folders {
     // FIXME Post a 'folder' DTO.
     Folder createRoot(@PathParam("name") String name);
 
-
-    /**
-     * Retrieve the folder.
-     *
-     * @param folderId The folder id.
-     *
-     * @return The corresponding page.
-     */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
-    Folder retrieve(@PathParam("id") UUID folderId);
-
 }

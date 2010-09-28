@@ -75,9 +75,8 @@ public final class OpenCreateAliasAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            _selectionModel.tableSelection().self().build(
-                InternalServices.ENCODER);
+        return _selectionModel.tableSelection().delete().build(
+            InternalServices.ENCODER);
     }
 
 

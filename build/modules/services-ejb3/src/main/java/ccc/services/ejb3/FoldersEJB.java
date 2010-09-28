@@ -177,15 +177,6 @@ public class FoldersEJB
         return rootCollection;
     }
 
-    @Override
-    public Folder retrieve(final UUID folderId) {
-        checkPermission(RESOURCE_READ);
-        return
-        getRepoFactory()
-        .createResourceRepository()
-        .find(FolderEntity.class, folderId).forCurrentRevision();
-    }
-
     /* ====================================================================
      * UNSAFE METHODS.
      * ================================================================== */

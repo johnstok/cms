@@ -82,20 +82,4 @@ public class AliasAcceptanceTest
         assertEquals(targetName, folder.getName().toString());
     }
 
-    /**
-     * Test.
-     */
-    public void testRetrieve() {
-
-        // ARRANGE
-        final Alias a = tempAlias();
-
-        // ACT
-        final Alias fetched = getAliases().retrieve(a.getId());
-
-        // ASSERT
-        assertNotNull("Fetched alias should not be null", fetched);
-        assertEquals(a.getAbsolutePath(), fetched.getAbsolutePath());
-        assertEquals(a.getId(), fetched.getId());
-    }
 }

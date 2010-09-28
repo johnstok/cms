@@ -82,13 +82,4 @@ public interface Aliases {
     @PUT @Path(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
     Alias update(@PathParam("id") UUID aliasId, Alias delta);
 
-    /**
-     * Retrieve the alias.
-     *
-     * @param aliasId The alias id.
-     *
-     * @return The corresponding page.
-     */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
-    Alias retrieve(@PathParam("id") UUID aliasId);
 }
