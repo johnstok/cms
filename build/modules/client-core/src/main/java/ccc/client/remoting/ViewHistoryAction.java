@@ -24,7 +24,7 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.remoting;
 
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Revision;

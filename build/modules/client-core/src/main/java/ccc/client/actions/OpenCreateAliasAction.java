@@ -24,25 +24,25 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
+package ccc.client.actions;
 
-import ccc.api.core.Folder;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.presenters.CreateTextFilePresenter;
+import ccc.client.presenters.CreateAliasPresenter;
 
 /**
- * Create a text file.
+ * Create an alias.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenCreateTextFileAction
+public final class OpenCreateAliasAction
     extends
-        RemotingAction<Folder> {
+        RemotingAction<Resource> {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -50,10 +50,10 @@ public final class OpenCreateTextFileAction
     /**
      * Constructor.
      *
-     * @param selectionModel The selection model to use.
+     * @param selectionModel The selection model.
      */
-    public OpenCreateTextFileAction(final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.createTextFile());
+    public OpenCreateAliasAction(final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.createAlias());
         _selectionModel = selectionModel;
     }
 
@@ -61,10 +61,10 @@ public final class OpenCreateTextFileAction
     /** {@inheritDoc} */
     @Override
     protected boolean beforeExecute() {
-        final ResourceSummary item = _selectionModel.treeSelection();
+        final ResourceSummary item = _selectionModel.tableSelection();
 
         if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
+            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
             return false;
         }
 
@@ -75,23 +75,21 @@ public final class OpenCreateTextFileAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            _selectionModel.treeSelection().delete().build(
-                InternalServices.ENCODER);
+        return _selectionModel.tableSelection().delete().build(
+            InternalServices.ENCODER);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void onSuccess(final Folder f) {
-        new CreateTextFilePresenter(
-            InternalServices.DIALOGS.creatTextFile(), f);
+    public void onSuccess(final Resource item) {
+        new CreateAliasPresenter(InternalServices.DIALOGS.createAlias(), item);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Folder parse(final Response response) {
-        return readFolder(response);
+    protected Resource parse(final Response response) {
+        return readResource(response);
     }
 }

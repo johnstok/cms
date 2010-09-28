@@ -24,37 +24,39 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
+package ccc.client.actions;
 
-import ccc.api.core.Resource;
+import java.util.Collection;
+
+import ccc.api.core.Folder;
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.Globals;
+import ccc.api.core.Template;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.presenters.RenameResourcePresenter;
+import ccc.client.presenters.CreatePagePresenter;
+import ccc.client.remoting.GetTemplatesAction;
 
 /**
- * Rename a resource.
+ * Create a page.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenRenameAction
+public final class OpenCreatePageAction
     extends
-        RemotingAction<Resource> {
+        RemotingAction<Folder> {
 
     private final SingleSelectionModel _selectionModel;
-
 
     /**
      * Constructor.
      *
-     * @param selectionModel The selection model.
+     * @param selectionModel The selection model to use.
      */
-    public OpenRenameAction(final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.rename());
+    public OpenCreatePageAction(final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.createPage());
         _selectionModel = selectionModel;
     }
 
@@ -62,10 +64,10 @@ public final class OpenRenameAction
     /** {@inheritDoc} */
     @Override
     protected boolean beforeExecute() {
-        final ResourceSummary item = _selectionModel.tableSelection();
+        final ResourceSummary item = _selectionModel.treeSelection();
 
         if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
+            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
             return false;
         }
 
@@ -77,24 +79,29 @@ public final class OpenRenameAction
     @Override
     protected String getPath() {
         return
-            Globals.API_URL
-            + _selectionModel.tableSelection().self().build(
+            _selectionModel.treeSelection().delete().build(
                 InternalServices.ENCODER);
     }
 
 
-
     /** {@inheritDoc} */
     @Override
-    public void onSuccess(final Resource r) {
-        new RenameResourcePresenter(
-            InternalServices.DIALOGS.renameResource(), r);
+    public void onSuccess(final Folder f) {
+        new GetTemplatesAction(UI_CONSTANTS.createPage()){
+            @Override protected void execute(
+                                 final Collection<Template> templates) {
+                new CreatePagePresenter(
+                    InternalServices.DIALOGS.createPage(
+                        templates, _selectionModel.root()),
+                    f);
+            }
+        }.execute();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Resource parse(final Response response) {
-        return readResource(response);
+    protected Folder parse(final Response response) {
+        return readFolder(response);
     }
 }

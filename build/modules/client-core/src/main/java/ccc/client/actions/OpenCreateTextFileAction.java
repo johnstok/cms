@@ -24,38 +24,74 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
+package ccc.client.actions;
 
+import ccc.api.core.Folder;
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.Action;
+import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
+import ccc.client.presenters.CreateTextFilePresenter;
 
 /**
- * Edit a folder.
+ * Create a text file.
  *
  * @author Civic Computing Ltd.
  */
-public class OpenUpdateFolderAction
-    implements
-        Action {
+public final class OpenCreateTextFileAction
+    extends
+        RemotingAction<Folder> {
 
     private final SingleSelectionModel _selectionModel;
+
 
     /**
      * Constructor.
      *
-     * @param selectionModel The selectionModel for this action.
+     * @param selectionModel The selection model to use.
      */
-    public OpenUpdateFolderAction(final SingleSelectionModel selectionModel) {
+    public OpenCreateTextFileAction(final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.createTextFile());
         _selectionModel = selectionModel;
     }
 
+
     /** {@inheritDoc} */
-    public void execute() {
-        final ResourceSummary selectedModel =
-            _selectionModel.tableSelection();
-        InternalServices.DIALOGS.updateFolder(_selectionModel, selectedModel)
-            .show();
+    @Override
+    protected boolean beforeExecute() {
+        final ResourceSummary item = _selectionModel.treeSelection();
+
+        if (item == null) {
+            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return
+            _selectionModel.treeSelection().delete().build(
+                InternalServices.ENCODER);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onSuccess(final Folder f) {
+        new CreateTextFilePresenter(
+            InternalServices.DIALOGS.creatTextFile(), f);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Folder parse(final Response response) {
+        return readFolder(response);
     }
 }

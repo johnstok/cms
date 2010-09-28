@@ -24,44 +24,70 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
+package ccc.client.remoting;
 
+import java.util.Collection;
+
+import ccc.api.core.ACL;
+import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
 
 /**
- * Create a template.
+ * Action to launch the 'update resource acl' dialog.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenCreateTemplateAction
-    implements
-        Action {
+public final class OpenUpdateResourceAclAction
+    extends
+        RemotingAction<ACL> {
+
 
     private final SingleSelectionModel _selectionModel;
+    private Collection<Group> _groups;
+
 
     /**
      * Constructor.
      *
-     * @param selectionModel The selection model to use.
+     * @param ssm The selection model to use.
+     * @param groups All groups available on the server.
      */
-    public OpenCreateTemplateAction(
-          final SingleSelectionModel selectionModel) {
-        _selectionModel = selectionModel;
+    public OpenUpdateResourceAclAction(final SingleSelectionModel ssm,
+                                         final Collection<Group> groups) {
+        super(UI_CONSTANTS.updateRoles());
+        _selectionModel = ssm;
+        _groups = groups;
     }
 
+
     /** {@inheritDoc} */
-    public void execute() {
-        final ResourceSummary item = _selectionModel.treeSelection();
-        if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
-        } else {
-            InternalServices.DIALOGS.createTemplate(
-                item.getId(),
-                _selectionModel)
-            .show();
-        }
+    @Override
+    protected String getPath() {
+        final ResourceSummary delegate =
+            _selectionModel.tableSelection();
+        return delegate.acl().build(InternalServices.ENCODER);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onSuccess(final ACL acl) {
+        final ResourceSummary item = _selectionModel.tableSelection();
+        InternalServices.DIALOGS.updateAcl(
+            item,
+            acl,
+            _groups)
+        .show();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected ACL parse(final Response response) {
+        return readACL(response);
     }
 }

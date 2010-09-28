@@ -24,23 +24,38 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
+package ccc.client.actions;
 
+import ccc.api.core.ResourceSummary;
 import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
-
+import ccc.client.core.SingleSelectionModel;
 
 /**
- * Show current edit dialog for current user's details.
+ * Edit a folder.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenUpdateCurrentUserAction
+public class OpenUpdateFolderAction
     implements
         Action {
 
+    private final SingleSelectionModel _selectionModel;
+
+    /**
+     * Constructor.
+     *
+     * @param selectionModel The selectionModel for this action.
+     */
+    public OpenUpdateFolderAction(final SingleSelectionModel selectionModel) {
+        _selectionModel = selectionModel;
+    }
+
     /** {@inheritDoc} */
-    @Override public void execute() {
-        InternalServices.DIALOGS.updateCurrentUser().show();
+    public void execute() {
+        final ResourceSummary selectedModel =
+            _selectionModel.tableSelection();
+        InternalServices.DIALOGS.updateFolder(_selectionModel, selectedModel)
+            .show();
     }
 }

@@ -31,9 +31,9 @@ import ccc.api.core.Revision;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Action;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.remoting.OpenTemplateRevisionAction;
 import ccc.client.gwt.views.gxt.HistoryDialog;
 import ccc.client.remoting.GetAbsolutePathAction;
+import ccc.client.remoting.OpenTemplateRevisionAction;
 
 import com.google.gwt.user.client.Window;
 

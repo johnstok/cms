@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2010 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,64 +21,80 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see the subversion log.
+ * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.actions;
 
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.Template;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-
+import ccc.client.core.SingleSelectionModel;
+import ccc.client.presenters.RenameResourcePresenter;
 
 /**
- * Action to open specific revision of a template.
+ * Rename a resource.
  *
  * @author Civic Computing Ltd.
  */
-public class OpenTemplateRevisionAction
+public final class OpenRenameAction
     extends
-        RemotingAction<Template> {
+        RemotingAction<Resource> {
 
-    private final ResourceSummary _template;
-    private final long _index;
+    private final SingleSelectionModel _selectionModel;
 
 
     /**
      * Constructor.
      *
-     * @param template The template to update.
-     * @param index The index
+     * @param selectionModel The selection model.
      */
-    public OpenTemplateRevisionAction(final ResourceSummary template,
-                                      final long index) {
-        super(UI_CONSTANTS.editTemplate());
-        _template = template;
-        _index = index;
+    public OpenRenameAction(final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.rename());
+        _selectionModel = selectionModel;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected boolean beforeExecute() {
+        final ResourceSummary item = _selectionModel.tableSelection();
+
+        if (item == null) {
+            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
+            return false;
+        }
+
+        return true;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _template.templateRevision().build(
-            "revision", ""+_index, InternalServices.ENCODER);
+        return
+            Globals.API_URL
+            + _selectionModel.tableSelection().self().build(
+                InternalServices.ENCODER);
+    }
+
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onSuccess(final Resource r) {
+        new RenameResourcePresenter(
+            InternalServices.DIALOGS.renameResource(), r);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onSuccess(final Template delta) {
-        InternalServices.DIALOGS.previewTemplate(delta)
-        .show();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected Template parse(final Response response) {
-        return parseTemplate(response);
+    protected Resource parse(final Response response) {
+        return readResource(response);
     }
 }

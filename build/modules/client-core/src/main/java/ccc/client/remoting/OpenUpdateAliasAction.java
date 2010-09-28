@@ -21,73 +21,63 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.remoting;
 
-import java.util.Collection;
-
-import ccc.api.core.ACL;
-import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.core.SingleSelectionModel;
+
+
 
 /**
- * Action to launch the 'update resource acl' dialog.
+ * Determine the name of an Alias' target.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenUpdateResourceAclAction
+public class OpenUpdateAliasAction
     extends
-        RemotingAction<ACL> {
+        RemotingAction<String> {
 
-
-    private final SingleSelectionModel _selectionModel;
-    private Collection<Group> _groups;
+    private final ResourceSummary _alias;
+    private final ResourceSummary _targetRoot;
 
 
     /**
      * Constructor.
-     *
-     * @param ssm The selection model to use.
-     * @param groups All groups available on the server.
+     * @param alias The alias to update.
+     * @param targetRoot The target root of the alias.
      */
-    public OpenUpdateResourceAclAction(final SingleSelectionModel ssm,
-                                         final Collection<Group> groups) {
-        super(UI_CONSTANTS.updateRoles());
-        _selectionModel = ssm;
-        _groups = groups;
+    public OpenUpdateAliasAction(final ResourceSummary alias,
+                                 final ResourceSummary targetRoot) {
+        super(UI_CONSTANTS.updateAlias());
+        _alias = alias;
+        _targetRoot = targetRoot;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        final ResourceSummary delegate =
-            _selectionModel.tableSelection();
-        return delegate.acl().build(InternalServices.ENCODER);
+        final ResourceSummary delegate = _alias;
+        return delegate.targetName().build(InternalServices.ENCODER);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onSuccess(final ACL acl) {
-        final ResourceSummary item = _selectionModel.tableSelection();
-        InternalServices.DIALOGS.updateAcl(
-            item,
-            acl,
-            _groups)
+    protected void onSuccess(final String targetName) {
+        InternalServices.DIALOGS.updateAlias(_alias, targetName, _targetRoot)
         .show();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected ACL parse(final Response response) {
-        return readACL(response);
+    protected String parse(final Response response) {
+        return response.getText();
     }
 }

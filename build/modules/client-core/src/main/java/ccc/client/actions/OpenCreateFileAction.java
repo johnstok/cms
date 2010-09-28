@@ -24,7 +24,7 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
+package ccc.client.actions;
 
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Action;

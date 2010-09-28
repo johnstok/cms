@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,63 +21,64 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.remoting;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.core.Template;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 
 
-
 /**
- * Determine the name of an Alias' target.
+ * Action to open specific revision of a template.
  *
  * @author Civic Computing Ltd.
  */
-public class OpenUpdateAliasAction
+public class OpenTemplateRevisionAction
     extends
-        RemotingAction<String> {
+        RemotingAction<Template> {
 
-    private final ResourceSummary _alias;
-    private final ResourceSummary _targetRoot;
+    private final ResourceSummary _template;
+    private final long _index;
 
 
     /**
      * Constructor.
-     * @param alias The alias to update.
-     * @param targetRoot The target root of the alias.
+     *
+     * @param template The template to update.
+     * @param index The index
      */
-    public OpenUpdateAliasAction(final ResourceSummary alias,
-                                 final ResourceSummary targetRoot) {
-        super(UI_CONSTANTS.updateAlias());
-        _alias = alias;
-        _targetRoot = targetRoot;
+    public OpenTemplateRevisionAction(final ResourceSummary template,
+                                      final long index) {
+        super(UI_CONSTANTS.editTemplate());
+        _template = template;
+        _index = index;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        final ResourceSummary delegate = _alias;
-        return delegate.targetName().build(InternalServices.ENCODER);
+        return _template.templateRevision().build(
+            "revision", ""+_index, InternalServices.ENCODER);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onSuccess(final String targetName) {
-        InternalServices.DIALOGS.updateAlias(_alias, targetName, _targetRoot)
+    protected void onSuccess(final Template delta) {
+        InternalServices.DIALOGS.previewTemplate(delta)
         .show();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected String parse(final Response response) {
-        return response.getText();
+    protected Template parse(final Response response) {
+        return parseTemplate(response);
     }
 }

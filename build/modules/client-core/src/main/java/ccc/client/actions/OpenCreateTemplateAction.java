@@ -24,29 +24,21 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
+package ccc.client.actions;
 
-import java.util.Collection;
-
-import ccc.api.core.Folder;
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.Template;
-import ccc.client.core.I18n;
+import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.presenters.CreatePagePresenter;
-import ccc.client.remoting.GetTemplatesAction;
 
 /**
- * Create a page.
+ * Create a template.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenCreatePageAction
-    extends
-        RemotingAction<Folder> {
+public final class OpenCreateTemplateAction
+    implements
+        Action {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -55,53 +47,21 @@ public final class OpenCreatePageAction
      *
      * @param selectionModel The selection model to use.
      */
-    public OpenCreatePageAction(final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.createPage());
+    public OpenCreateTemplateAction(
+          final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 
-
     /** {@inheritDoc} */
-    @Override
-    protected boolean beforeExecute() {
+    public void execute() {
         final ResourceSummary item = _selectionModel.treeSelection();
-
         if (item == null) {
             InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
-            return false;
+        } else {
+            InternalServices.DIALOGS.createTemplate(
+                item.getId(),
+                _selectionModel)
+            .show();
         }
-
-        return true;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        return
-            _selectionModel.treeSelection().delete().build(
-                InternalServices.ENCODER);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onSuccess(final Folder f) {
-        new GetTemplatesAction(UI_CONSTANTS.createPage()){
-            @Override protected void execute(
-                                 final Collection<Template> templates) {
-                new CreatePagePresenter(
-                    InternalServices.DIALOGS.createPage(
-                        templates, _selectionModel.root()),
-                    f);
-            }
-        }.execute();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected Folder parse(final Response response) {
-        return readFolder(response);
     }
 }

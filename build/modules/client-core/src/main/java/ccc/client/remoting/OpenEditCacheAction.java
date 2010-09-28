@@ -21,76 +21,65 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
+package ccc.client.remoting;
 
-import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.I18n;
+import ccc.api.types.Duration;
 import ccc.client.core.InternalServices;
+import ccc.client.core.LegacyView;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.presenters.CreateFolderPresenter;
+
 
 /**
- * Create a folder.
+ * Edit resource's cache setting.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenCreateFolderAction
+public class OpenEditCacheAction
     extends
-        RemotingAction<Resource> {
+        RemotingAction<Duration> {
 
     private final SingleSelectionModel _selectionModel;
+
 
     /**
      * Constructor.
      *
-     * @param selectionModel The selection model to use.
+     * @param selectionModel The selection model.
      */
-    public OpenCreateFolderAction(final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.createFolder());
+    public OpenEditCacheAction(final SingleSelectionModel selectionModel) {
+        super(UI_CONSTANTS.editCacheDuration());
         _selectionModel = selectionModel;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected boolean beforeExecute() {
-        final ResourceSummary item = _selectionModel.treeSelection();
-
-        if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
-            return false;
-        }
-
-        return true;
+    protected void onSuccess(final Duration duration) {
+        final LegacyView dialog =
+            InternalServices.DIALOGS.editCaching(
+                _selectionModel.tableSelection(), duration);
+        dialog.show();
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            _selectionModel.treeSelection().delete().build(
-                InternalServices.ENCODER);
+        final ResourceSummary delegate =
+            _selectionModel.tableSelection();
+        return delegate.duration().build(InternalServices.ENCODER);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void onSuccess(final Resource item) {
-        new CreateFolderPresenter(
-            InternalServices.DIALOGS.createFolder(), item);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected Resource parse(final Response response) {
-        return readResource(response);
+    protected Duration parse(final Response response) {
+        return readDuration(response);
     }
 }

@@ -36,25 +36,21 @@ import ccc.api.core.User;
 import ccc.api.types.Permission;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
+import ccc.client.actions.ChooseTemplateAction;
+import ccc.client.actions.OpenCreateActionAction;
+import ccc.client.actions.OpenCreateAliasAction;
+import ccc.client.actions.OpenMoveAction;
+import ccc.client.actions.OpenRenameAction;
+import ccc.client.actions.OpenUpdateFolderAction;
 import ccc.client.core.Action;
 import ccc.client.core.Globals;
 import ccc.client.core.InternalServices;
-import ccc.client.gwt.actions.ChooseTemplateAction;
-import ccc.client.gwt.actions.OpenCreateActionAction;
-import ccc.client.gwt.actions.OpenCreateAliasAction;
-import ccc.client.gwt.actions.OpenMoveAction;
-import ccc.client.gwt.actions.OpenRenameAction;
-import ccc.client.gwt.actions.OpenUpdateFolderAction;
 import ccc.client.gwt.actions.PreviewAction;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.LockAction;
-import ccc.client.gwt.remoting.OpenEditCacheAction;
 import ccc.client.gwt.remoting.OpenEditTextFileAction;
-import ccc.client.gwt.remoting.OpenUpdateAliasAction;
 import ccc.client.gwt.remoting.OpenUpdateMetadataAction;
-import ccc.client.gwt.remoting.OpenUpdateResourceAclAction;
 import ccc.client.gwt.remoting.OpenUpdateTemplateAction;
-import ccc.client.gwt.remoting.ViewHistoryAction;
 import ccc.client.gwt.views.gxt.UpdateFileDialog;
 import ccc.client.gwt.views.gxt.UpdatePageDialog;
 import ccc.client.remoting.ApplyWorkingCopyAction;
@@ -63,11 +59,15 @@ import ccc.client.remoting.ComputeTemplateAction;
 import ccc.client.remoting.DeleteResourceAction;
 import ccc.client.remoting.IncludeInMainMenuAction;
 import ccc.client.remoting.ListGroups;
+import ccc.client.remoting.OpenEditCacheAction;
+import ccc.client.remoting.OpenUpdateAliasAction;
+import ccc.client.remoting.OpenUpdateResourceAclAction;
 import ccc.client.remoting.PageDeltaAction;
 import ccc.client.remoting.PublishAction;
 import ccc.client.remoting.RemoveFromMainMenuAction;
 import ccc.client.remoting.UnlockAction;
 import ccc.client.remoting.UnpublishAction;
+import ccc.client.remoting.ViewHistoryAction;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -117,7 +117,6 @@ public class ResourceContextMenu
      * Constructor.
      *
      * @param tbl The table this menu will work for.
-     * @param user The UserSummary of the currently logged in user.
      */
     ResourceContextMenu(final ResourceTable tbl) {
         _table = tbl;

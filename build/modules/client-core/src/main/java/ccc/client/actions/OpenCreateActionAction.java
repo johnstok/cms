@@ -21,65 +21,46 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.actions;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.types.Duration;
+import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
-import ccc.client.core.LegacyView;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-
+import ccc.client.presenters.CreateActionPresenter;
 
 /**
- * Edit resource's cache setting.
+ * Create an action.
  *
  * @author Civic Computing Ltd.
  */
-public class OpenEditCacheAction
-    extends
-        RemotingAction<Duration> {
+public final class OpenCreateActionAction
+    implements
+        Action {
 
-    private final SingleSelectionModel _selectionModel;
-
+    private SingleSelectionModel _ssm;
 
     /**
      * Constructor.
      *
-     * @param selectionModel The selection model.
+     * @param ssm The selection model.
      */
-    public OpenEditCacheAction(final SingleSelectionModel selectionModel) {
-        super(UI_CONSTANTS.editCacheDuration());
-        _selectionModel = selectionModel;
+    public OpenCreateActionAction(final SingleSelectionModel ssm) {
+        _ssm = ssm;
     }
 
-
     /** {@inheritDoc} */
-    @Override
-    protected void onSuccess(final Duration duration) {
-        final LegacyView dialog =
-            InternalServices.DIALOGS.editCaching(
-                _selectionModel.tableSelection(), duration);
-        dialog.show();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        final ResourceSummary delegate =
-            _selectionModel.tableSelection();
-        return delegate.duration().build(InternalServices.ENCODER);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected Duration parse(final Response response) {
-        return readDuration(response);
+    public void execute() {
+        final ResourceSummary item = _ssm.tableSelection();
+        if (item == null) {
+            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
+        } else {
+            new CreateActionPresenter(
+                InternalServices.DIALOGS.createAction(),
+                item.getId());
+        }
     }
 }

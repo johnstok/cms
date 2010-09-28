@@ -24,28 +24,23 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
-
-import java.util.Collection;
+package ccc.client.actions;
 
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.Template;
-import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.presenters.ChangeResourceTemplatePresenter;
-import ccc.client.remoting.GetTemplatesAction;
+import ccc.client.presenters.CreateFolderPresenter;
 
 /**
- * Chooses template for the resource.
+ * Create a folder.
  *
  * @author Civic Computing Ltd.
  */
-public final class ChooseTemplateAction
+public final class OpenCreateFolderAction
     extends
         RemotingAction<Resource> {
 
@@ -54,11 +49,10 @@ public final class ChooseTemplateAction
     /**
      * Constructor.
      *
-     * @param selectionModel The selection model.
+     * @param selectionModel The selection model to use.
      */
-    public ChooseTemplateAction(
-          final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.chooseTemplate());
+    public OpenCreateFolderAction(final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.createFolder());
         _selectionModel = selectionModel;
     }
 
@@ -66,10 +60,10 @@ public final class ChooseTemplateAction
     /** {@inheritDoc} */
     @Override
     protected boolean beforeExecute() {
-        final ResourceSummary item = _selectionModel.tableSelection();
+        final ResourceSummary item = _selectionModel.treeSelection();
 
         if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
+            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
             return false;
         }
 
@@ -81,31 +75,16 @@ public final class ChooseTemplateAction
     @Override
     protected String getPath() {
         return
-            _selectionModel.tableSelection().delete().build(
+            _selectionModel.treeSelection().delete().build(
                 InternalServices.ENCODER);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void onSuccess(final Resource r) {
-        if (ResourceType.PAGE==r.getType()
-            || ResourceType.FOLDER==r.getType()
-            || ResourceType.SEARCH==r.getType()) {
-            new GetTemplatesAction(UI_CONSTANTS.chooseTemplate()){
-                @Override protected void execute(
-                                 final Collection<Template> templates) {
-                    new ChangeResourceTemplatePresenter(
-                        InternalServices.DIALOGS.chooseTemplate(),
-                        r,
-                        templates);
-                }
-            }.execute();
-        } else {
-            InternalServices.WINDOW.alert(
-                UI_CONSTANTS.templateCannotBeChosen());
-
-        }
+    public void onSuccess(final Resource item) {
+        new CreateFolderPresenter(
+            InternalServices.DIALOGS.createFolder(), item);
     }
 
 

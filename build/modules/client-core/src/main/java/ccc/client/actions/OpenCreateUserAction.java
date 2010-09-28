@@ -24,43 +24,34 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
+package ccc.client.actions;
 
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Group;
+import ccc.api.core.PagedCollection;
+import ccc.api.types.SortOrder;
 import ccc.client.core.Action;
+import ccc.client.core.Globals;
 import ccc.client.core.InternalServices;
-import ccc.client.core.SingleSelectionModel;
-import ccc.client.presenters.CreateActionPresenter;
+import ccc.client.presenters.CreateUserPresenter;
+import ccc.client.remoting.ListGroups;
+
 
 /**
- * Create an action.
+ * Create an user.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenCreateActionAction
+public final class OpenCreateUserAction
     implements
         Action {
 
-    private SingleSelectionModel _ssm;
-
-    /**
-     * Constructor.
-     *
-     * @param ssm The selection model.
-     */
-    public OpenCreateActionAction(final SingleSelectionModel ssm) {
-        _ssm = ssm;
-    }
-
     /** {@inheritDoc} */
-    public void execute() {
-        final ResourceSummary item = _ssm.tableSelection();
-        if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
-        } else {
-            new CreateActionPresenter(
-                InternalServices.DIALOGS.createAction(),
-                item.getId());
+    @Override public void execute() {
+        new ListGroups(1, Globals.MAX_FETCH, "name", SortOrder.ASC) {
+            @Override
+            protected void execute(final PagedCollection<Group> groups) {
+                new CreateUserPresenter(
+                    InternalServices.DIALOGS.createUser(groups.getElements()));
+            }}.execute();
         }
-    }
 }

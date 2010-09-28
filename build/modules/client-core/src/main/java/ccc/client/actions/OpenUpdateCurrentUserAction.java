@@ -24,34 +24,23 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
+package ccc.client.actions;
 
-import ccc.api.core.Group;
-import ccc.api.core.PagedCollection;
-import ccc.api.types.SortOrder;
 import ccc.client.core.Action;
-import ccc.client.core.Globals;
 import ccc.client.core.InternalServices;
-import ccc.client.presenters.CreateUserPresenter;
-import ccc.client.remoting.ListGroups;
 
 
 /**
- * Create an user.
+ * Show current edit dialog for current user's details.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenCreateUserAction
+public final class OpenUpdateCurrentUserAction
     implements
         Action {
 
     /** {@inheritDoc} */
     @Override public void execute() {
-        new ListGroups(1, Globals.MAX_FETCH, "name", SortOrder.ASC) {
-            @Override
-            protected void execute(final PagedCollection<Group> groups) {
-                new CreateUserPresenter(
-                    InternalServices.DIALOGS.createUser(groups.getElements()));
-            }}.execute();
-        }
+        InternalServices.DIALOGS.updateCurrentUser().show();
+    }
 }

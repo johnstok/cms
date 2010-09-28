@@ -24,36 +24,41 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
+package ccc.client.actions;
+
+import java.util.Collection;
 
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
+import ccc.api.core.Template;
+import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.presenters.CreateAliasPresenter;
+import ccc.client.presenters.ChangeResourceTemplatePresenter;
+import ccc.client.remoting.GetTemplatesAction;
 
 /**
- * Create an alias.
+ * Chooses template for the resource.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenCreateAliasAction
+public final class ChooseTemplateAction
     extends
         RemotingAction<Resource> {
 
     private final SingleSelectionModel _selectionModel;
-
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model.
      */
-    public OpenCreateAliasAction(final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.createAlias());
+    public ChooseTemplateAction(
+          final SingleSelectionModel selectionModel) {
+        super(I18n.UI_CONSTANTS.chooseTemplate());
         _selectionModel = selectionModel;
     }
 
@@ -75,15 +80,32 @@ public final class OpenCreateAliasAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _selectionModel.tableSelection().delete().build(
-            InternalServices.ENCODER);
+        return
+            _selectionModel.tableSelection().delete().build(
+                InternalServices.ENCODER);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void onSuccess(final Resource item) {
-        new CreateAliasPresenter(InternalServices.DIALOGS.createAlias(), item);
+    public void onSuccess(final Resource r) {
+        if (ResourceType.PAGE==r.getType()
+            || ResourceType.FOLDER==r.getType()
+            || ResourceType.SEARCH==r.getType()) {
+            new GetTemplatesAction(UI_CONSTANTS.chooseTemplate()){
+                @Override protected void execute(
+                                 final Collection<Template> templates) {
+                    new ChangeResourceTemplatePresenter(
+                        InternalServices.DIALOGS.chooseTemplate(),
+                        r,
+                        templates);
+                }
+            }.execute();
+        } else {
+            InternalServices.WINDOW.alert(
+                UI_CONSTANTS.templateCannotBeChosen());
+
+        }
     }
 
 
