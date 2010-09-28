@@ -37,10 +37,10 @@ import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.client.core.InternalServices;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.core.SingleSelectionModel;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BaseFilterPagingLoadConfig;

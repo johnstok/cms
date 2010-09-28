@@ -26,6 +26,7 @@
  */
 package ccc.client.remoting;
 
+import ccc.api.core.API;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
@@ -38,7 +39,7 @@ import ccc.client.core.Response;
  */
 public class GetServicesAction
     extends
-        RemotingAction {
+        RemotingAction<API> {
 
     /**
      * Constructor.
@@ -47,15 +48,24 @@ public class GetServicesAction
         super(USER_ACTIONS.internalAction());
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
         return "";
     }
 
+
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        InternalServices.API = readAPI(response);
+    protected void onSuccess(final API api) {
+        InternalServices.API = api;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected API parse(final Response response) {
+        return readAPI(response);
     }
 }

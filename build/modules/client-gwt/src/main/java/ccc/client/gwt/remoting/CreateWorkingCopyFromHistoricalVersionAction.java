@@ -29,9 +29,8 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.Resource;
 import ccc.api.types.Link;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
-import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.views.gxt.HistoryDialog;
 
 
@@ -42,7 +41,7 @@ import ccc.client.gwt.views.gxt.HistoryDialog;
  */
 public class CreateWorkingCopyFromHistoricalVersionAction
     extends
-        RemotingAction {
+        RemotingAction<Void> {
 
     private final HistoryDialog _dialog;
 
@@ -63,7 +62,7 @@ public class CreateWorkingCopyFromHistoricalVersionAction
     @Override
     protected String getPath() {
         final Link link = _dialog.getResource().revisions();
-        return link.build(new GWTTemplateEncoder());
+        return link.build(InternalServices.ENCODER);
     }
 
 
@@ -80,7 +79,7 @@ public class CreateWorkingCopyFromHistoricalVersionAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onNoContent(final Response response) {
+    protected void onSuccess(final Void v) {
         _dialog.workingCopyCreated();
         _dialog.hide();
     }

@@ -31,8 +31,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.EditTextFileDialog;
 import ccc.client.gwt.widgets.ResourceTable;
 import ccc.client.presenters.EditTextFilePresenter;
@@ -44,11 +43,12 @@ import ccc.client.presenters.EditTextFilePresenter;
  * @author Civic Computing Ltd.
  */
 public final class OpenEditTextFileAction
-extends
-    RemotingAction {
+    extends
+        RemotingAction<File> {
 
 
     private final SingleSelectionModel _selectionModel;
+
 
     /**
      * Constructor.
@@ -65,14 +65,13 @@ extends
     @Override
     protected String getPath() {
         final ResourceSummary item = _selectionModel.tableSelection();
-        return item.self().build(new GWTTemplateEncoder());
+        return item.self().build(InternalServices.ENCODER);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final File dto = readFile(response);
+    protected void onSuccess(final File dto) {
         if (dto.getContent() != null) {
             new EditTextFilePresenter(
                 new EditTextFileDialog(),
@@ -81,5 +80,12 @@ extends
             InternalServices.WINDOW.alert(
                 UI_CONSTANTS.noEditorForResource());
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected File parse(final Response response) {
+        return readFile(response);
     }
 }

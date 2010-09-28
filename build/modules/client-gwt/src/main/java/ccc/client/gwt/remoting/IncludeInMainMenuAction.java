@@ -28,10 +28,10 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.core.SingleSelectionModel;
 
 
 /**
@@ -41,7 +41,7 @@ import ccc.client.gwt.core.SingleSelectionModel;
  */
 public class IncludeInMainMenuAction
     extends
-        RemotingAction {
+        RemotingAction<Void> {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -63,15 +63,20 @@ public class IncludeInMainMenuAction
     protected String getPath() {
         final ResourceSummary delegate =
             _selectionModel.tableSelection();
-        return delegate.includeMM().build(new GWTTemplateEncoder());
+        return delegate.includeMM().build(InternalServices.ENCODER);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onNoContent(final Response response) {
+    protected void onSuccess(final Void v) {
         final ResourceSummary item = _selectionModel.tableSelection();
         item.setIncludeInMainMenu(true);
         _selectionModel.update(item);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void parse(final Response response) { return null; }
 }

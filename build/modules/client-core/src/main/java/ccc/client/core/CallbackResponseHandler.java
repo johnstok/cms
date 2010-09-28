@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,60 +21,59 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.core;
 
-import java.util.UUID;
-
-import ccc.api.core.ResourceSummary;
-import ccc.client.core.HttpMethod;
-import ccc.client.core.InternalServices;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Response;
-
+import ccc.api.types.DBC;
 
 /**
- * TODO: Add a description for this type.
+ * Response handler that maps to the simpler {@link Callback} interface.
  *
  * @author Civic Computing Ltd.
+ *
+ * @param <T> The type of the response from the server.
  */
-public class MoveResourceAction
+public final class CallbackResponseHandler<T>
     extends
-        RemotingAction<Void> {
+        ResponseHandlerAdapter {
 
-    private final ResourceSummary _resource;
-    private final UUID _parent;
+    private final Callback<T> _callback;
+    private final Parser<T>   _parser;
 
 
     /**
      * Constructor.
      *
-     * @param newParent The new parent folder the resource.
-     * @param resource The resource to move.
+     * @param name     The name of the action.
+     * @param callback The callback to invoke.
+     * @param parser   The response parser.
      */
-    public MoveResourceAction(final ResourceSummary resource,
-                              final UUID newParent) {
-        super(UI_CONSTANTS.move(), HttpMethod.POST);
-        _resource = resource;
-        _parent = newParent;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override protected String getPath() {
-        return _resource.move().build(InternalServices.ENCODER);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override protected String getBody() {
-        return _parent.toString();
+    public CallbackResponseHandler(final String name,
+                                   final Callback<T> callback,
+                                   final Parser<T> parser) {
+        super(name);
+        _callback = DBC.require().notNull(callback);
+        _parser   = DBC.require().notNull(parser);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Void parse(final Response response) { return null; }
+    public void onNoContent(final Response response) {
+        _callback.onSuccess(null);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void onOK(final Response response) {
+        _callback.onSuccess(_parser.parse(response));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void onFailed(final Throwable throwable) {
+        _callback.onFailure(throwable);
+    }
 }

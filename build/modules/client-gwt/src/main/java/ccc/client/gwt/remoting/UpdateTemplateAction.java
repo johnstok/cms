@@ -28,8 +28,9 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Template;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
-import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.core.Response;
 
 
 /**
@@ -39,7 +40,7 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
  */
 public class UpdateTemplateAction
     extends
-        RemotingAction {
+        RemotingAction<Template> {
 
     private final Template _details;
 
@@ -58,7 +59,7 @@ public class UpdateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _details.self().build(new GWTTemplateEncoder());
+        return _details.self().build(InternalServices.ENCODER);
     }
 
 
@@ -66,5 +67,12 @@ public class UpdateTemplateAction
     @Override
     protected String getBody() {
         return writeTemplate(_details);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Template parse(final Response response) {
+        return readTemplate(response);
     }
 }

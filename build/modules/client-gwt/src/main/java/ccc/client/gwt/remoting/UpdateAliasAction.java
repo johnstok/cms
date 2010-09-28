@@ -28,8 +28,9 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Alias;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
-import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.core.Response;
 
 
 
@@ -40,7 +41,7 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
  */
 public class UpdateAliasAction
     extends
-        RemotingAction {
+        RemotingAction<Alias> {
 
     private final Alias _details;
 
@@ -59,7 +60,7 @@ public class UpdateAliasAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _details.self().build(new GWTTemplateEncoder());
+        return _details.self().build(InternalServices.ENCODER);
     }
 
 
@@ -67,5 +68,12 @@ public class UpdateAliasAction
     @Override
     protected String getBody() {
         return writeAlias(_details);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Alias parse(final Response response) {
+        return null;
     }
 }

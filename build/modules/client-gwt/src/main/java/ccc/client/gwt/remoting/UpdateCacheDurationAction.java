@@ -28,8 +28,9 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
-import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.core.Response;
 
 
 /**
@@ -39,7 +40,7 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
  */
 public abstract class UpdateCacheDurationAction
     extends
-        RemotingAction {
+        RemotingAction<Void> {
 
     private final Resource _resource;
 
@@ -57,7 +58,7 @@ public abstract class UpdateCacheDurationAction
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return _resource.duration().build(new GWTTemplateEncoder());
+        return _resource.duration().build(InternalServices.ENCODER);
     }
 
 
@@ -66,4 +67,9 @@ public abstract class UpdateCacheDurationAction
     protected String getBody() {
         return writeResource(_resource);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void parse(final Response response) { return null; }
 }

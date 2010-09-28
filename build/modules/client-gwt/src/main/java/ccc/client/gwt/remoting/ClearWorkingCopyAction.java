@@ -35,9 +35,8 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.events.Event;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.SingleSelectionModel;
 
 /**
  * Publish a resource.
@@ -46,7 +45,7 @@ import ccc.client.gwt.core.SingleSelectionModel;
  */
 public class ClearWorkingCopyAction
     extends
-        RemotingAction {
+        RemotingAction<Void> {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -73,7 +72,7 @@ public class ClearWorkingCopyAction
         return new Request(
             HttpMethod.DELETE,
             Globals.API_URL
-                + rs.wc().build(new GWTTemplateEncoder()),
+                + rs.wc().build(InternalServices.ENCODER),
             "",
             new WCClearedCallback(
                 I18n.UI_CONSTANTS.deleteWorkingCopy(), rs));

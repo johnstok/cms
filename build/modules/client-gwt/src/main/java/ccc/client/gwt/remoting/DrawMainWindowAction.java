@@ -44,7 +44,7 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- * TODO: Add a description for this type.
+ * Draws the GXT client's main window.
  *
  * @author Civic Computing Ltd.
  */

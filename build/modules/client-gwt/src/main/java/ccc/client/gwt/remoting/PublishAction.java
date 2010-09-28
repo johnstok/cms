@@ -26,14 +26,14 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.api.types.CommandType;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.events.Event;
-import ccc.client.gwt.core.SingleSelectionModel;
 
 /**
  * Publish a resource.
@@ -42,7 +42,7 @@ import ccc.client.gwt.core.SingleSelectionModel;
  */
 public class PublishAction
     extends
-        RemotingAction {
+        RemotingAction<Resource> {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -71,10 +71,16 @@ public class PublishAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final ResourceSummary rs = readResourceSummary(response);
+    protected void onSuccess(final Resource rs) {
         InternalServices.REMOTING_BUS.fireEvent(
             new Event<CommandType>(CommandType.RESOURCE_PUBLISH)
                 .addProperty("resource", rs));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Resource parse(final Response response) {
+        return readResource(response);
     }
 }

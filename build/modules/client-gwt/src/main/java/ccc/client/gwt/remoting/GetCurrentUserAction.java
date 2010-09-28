@@ -27,18 +27,20 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.User;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
- * TODO: Add a description for this type.
+ * Retrieve details of the currently logged in user.
  *
  * @author Civic Computing Ltd.
  */
 public class GetCurrentUserAction
-    extends RemotingAction {
+    extends
+        RemotingAction<User> {
 
     /**
      * Constructor.
@@ -50,8 +52,7 @@ public class GetCurrentUserAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final User user = readUser(response);
+    protected void onSuccess(final User user) {
         new GlobalsImpl().currentUser(user);
         new DrawMainWindowAction(user).execute();
     }
@@ -60,6 +61,13 @@ public class GetCurrentUserAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return new GlobalsImpl().users().getLink("me");
+        return InternalServices.USERS.getLink("me");
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected User parse(final Response response) {
+        return readUser(response);
     }
 }

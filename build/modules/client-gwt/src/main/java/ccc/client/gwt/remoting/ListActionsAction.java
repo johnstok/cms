@@ -36,12 +36,11 @@ import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
@@ -51,7 +50,7 @@ import ccc.client.gwt.core.GlobalsImpl;
  */
 public abstract class ListActionsAction
     extends
-        RemotingAction {
+        RemotingAction<PagedCollection<ActionSummary>> {
 
     private final int           _page;
     private final int           _count;
@@ -96,8 +95,8 @@ public abstract class ListActionsAction
 
         final String path =
             Globals.API_URL
-            + new Link(new GlobalsImpl().actions().getLink("list"))
-                .build(params, new GWTTemplateEncoder());
+            + new Link(InternalServices.ACTIONS.getLink("list"))
+                .build(params, InternalServices.ENCODER);
         return path;
     }
 

@@ -27,10 +27,10 @@
 package ccc.client.gwt.widgets;
 
 
+import ccc.api.core.API;
 import ccc.client.core.CoreEvents;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Response;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
 import ccc.client.gwt.core.GWTExceptionHandler;
@@ -137,8 +137,8 @@ public final class ContentCreator implements EntryPoint {
         new GetServicesAction() {
             /** {@inheritDoc} */
             @Override
-            protected void onOK(final Response response) {
-                super.onOK(response);
+            protected void onSuccess(final API api) {
+                super.onSuccess(api);
                 _globals.setSettings(InternalServices.API.getProps());
                 new IsLoggedInAction().execute();
             }}.execute();

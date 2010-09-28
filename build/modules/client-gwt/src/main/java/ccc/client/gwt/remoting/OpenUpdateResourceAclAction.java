@@ -31,10 +31,10 @@ import java.util.Collection;
 import ccc.api.core.ACL;
 import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.UpdateResourceAclDialog;
 
 /**
@@ -44,11 +44,12 @@ import ccc.client.gwt.views.gxt.UpdateResourceAclDialog;
  */
 public final class OpenUpdateResourceAclAction
     extends
-        RemotingAction {
+        RemotingAction<ACL> {
 
 
     private final SingleSelectionModel _selectionModel;
     private Collection<Group> _groups;
+
 
     /**
      * Constructor.
@@ -63,25 +64,31 @@ public final class OpenUpdateResourceAclAction
         _groups = groups;
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
         final ResourceSummary delegate =
             _selectionModel.tableSelection();
-        return delegate.acl().build(new GWTTemplateEncoder());
+        return delegate.acl().build(InternalServices.ENCODER);
     }
+
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-
-        final ACL acl = readACL(response);
-
+    protected void onSuccess(final ACL acl) {
         final ResourceSummary item = _selectionModel.tableSelection();
         new UpdateResourceAclDialog(
             item,
             acl,
             _groups)
         .show();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected ACL parse(final Response response) {
+        return readACL(response);
     }
 }

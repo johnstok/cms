@@ -43,7 +43,7 @@ import com.google.gwt.json.client.JSONParser;
  */
 public abstract class TemplateNameExistsAction
     extends
-        RemotingAction {
+        RemotingAction<Boolean> {
 
     private final String _name;
 
@@ -67,10 +67,15 @@ public abstract class TemplateNameExistsAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final boolean nameExists =
-            JSONParser.parse(response.getText()).isBoolean().booleanValue();
+    protected void onSuccess(final Boolean nameExists) {
         execute(nameExists);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Boolean parse(final Response response) {
+        return JSONParser.parse(response.getText()).isBoolean().booleanValue();
     }
 
     /**

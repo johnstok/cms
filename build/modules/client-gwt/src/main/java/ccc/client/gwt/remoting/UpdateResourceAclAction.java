@@ -29,8 +29,9 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.ACL;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
-import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.core.Response;
 
 
 /**
@@ -40,7 +41,7 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
  */
 public class UpdateResourceAclAction
     extends
-        RemotingAction {
+        RemotingAction<Void> {
 
     private final ResourceSummary _resource;
     private final ACL _acl;
@@ -63,7 +64,7 @@ public class UpdateResourceAclAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _resource.acl().build(new GWTTemplateEncoder());
+        return _resource.acl().build(InternalServices.ENCODER);
     }
 
 
@@ -72,4 +73,9 @@ public class UpdateResourceAclAction
     protected String getBody() {
         return writeACL(_acl);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void parse(final Response response) { return null; }
 }

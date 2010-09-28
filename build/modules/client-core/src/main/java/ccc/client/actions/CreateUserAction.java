@@ -42,7 +42,7 @@ import ccc.client.events.Event;
  */
 public class CreateUserAction
     extends
-        RemotingAction {
+        RemotingAction<User> {
 
     private final User _userDelta;
 
@@ -72,11 +72,18 @@ public class CreateUserAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
+    protected void onSuccess(final User user) {
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.USER_CREATE);
-        event.addProperty("user", readUser(response));
+        event.addProperty("user", user);
 
         fireEvent(event);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected User parse(final Response response) {
+        return readUser(response);
     }
 }

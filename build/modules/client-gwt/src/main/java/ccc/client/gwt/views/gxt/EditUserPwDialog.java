@@ -31,7 +31,6 @@ import static ccc.client.core.InternalServices.*;
 import ccc.api.core.User;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateUserPasswordAction;
@@ -118,7 +117,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
             User.PASSWORD, _userDTO.uriPassword());
 
         new UpdateUserPasswordAction(update) {
-            @Override protected void onNoContent(final Response r) {
+            @Override protected void onSuccess(final Void v) {
                 hide();
             }
         }.execute();

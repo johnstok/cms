@@ -48,13 +48,13 @@ import com.google.gwt.user.client.Timer;
 
 
 /**
- * TODO: Add a description for this type.
+ * Determine whether a user is logged in.
  *
  * @author Civic Computing Ltd.
  */
 public class IsLoggedInAction
     extends
-        RemotingAction {
+        RemotingAction<Boolean> {
 
     private static final int KEEP_ALIVE = 600000;
 
@@ -76,13 +76,20 @@ public class IsLoggedInAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        if (readBoolean(response).booleanValue()) {
+    protected void onSuccess(final Boolean loggedIn) {
+        if (loggedIn.booleanValue()) {
             InternalServices.WINDOW.enableExitConfirmation();
             loadServices();
         } else {
             new LoginDialog().show();
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Boolean parse(final Response response) {
+        return readBoolean(response);
     }
 
 
@@ -166,7 +173,7 @@ public class IsLoggedInAction
             public void run() {
                 new GetCurrentUserAction() {
                     @Override
-                    protected void onOK(final Response response) {
+                    protected void onSuccess(final User user) {
                         //NO-OP
                     };
                 }.execute();

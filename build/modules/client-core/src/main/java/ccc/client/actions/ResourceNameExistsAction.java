@@ -40,10 +40,11 @@ import ccc.client.core.Response;
  */
 public abstract class ResourceNameExistsAction
     extends
-        RemotingAction {
+        RemotingAction<ResourceSummary> {
 
     private ResourceSummary _folder;
     private ResourceName _resourceName;
+
 
     /**
      * Constructor.
@@ -57,6 +58,7 @@ public abstract class ResourceNameExistsAction
         _resourceName = resourceName;
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
@@ -65,17 +67,19 @@ public abstract class ResourceNameExistsAction
 
     }
 
+
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final ResourceSummary r = readResourceSummary(response);
+    protected void onSuccess(final ResourceSummary r) {
         execute(null!=r);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onNoContent(final Response response) { execute(false); }
+    protected ResourceSummary parse(final Response response) {
+        return readResourceSummary(response);
+    }
 
 
     /**

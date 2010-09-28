@@ -39,6 +39,7 @@ public class ResponseHandlerAdapter
     implements
         ResponseHandler {
 
+    @Deprecated // TODO: Remove this field.
     private final String  _name;
 
 

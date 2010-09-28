@@ -31,11 +31,11 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.types.Link;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.gwt.core.GWTTemplateEncoder;
 
 
 /**
@@ -45,7 +45,7 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
  */
 public abstract class PageDeltaAction
     extends
-        RemotingAction {
+        RemotingAction<Page> {
 
     private final ResourceSummary _resource;
     private final String _name;
@@ -71,7 +71,7 @@ public abstract class PageDeltaAction
         return
             Globals.API_URL
             + new Link(_resource.getLink(Page.WORKING_COPY))
-              .build(new GWTTemplateEncoder());
+              .build(InternalServices.ENCODER);
     }
 
 

@@ -31,11 +31,11 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
@@ -45,23 +45,25 @@ import ccc.client.gwt.core.GlobalsImpl;
  */
 public abstract class GetRootsAction
     extends
-        RemotingAction {
+        RemotingAction<PagedCollection<ResourceSummary>> {
 
 
+    /**
+     * Constructor.
+     */
     public GetRootsAction() { super(USER_ACTIONS.internalAction()); }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Globals.API_URL+GlobalsImpl.getAPI().getLink(Folder.ROOTS);
+        return Globals.API_URL+InternalServices.API.getLink(Folder.ROOTS);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected Request getRequest() {
-
         return
             new Request(
                 HttpMethod.GET,
@@ -83,6 +85,7 @@ public abstract class GetRootsAction
      *
      * @param root The root resource returned by the server.
      */
+    @Override
     protected abstract void onSuccess(
                                   final PagedCollection<ResourceSummary> roots);
 }

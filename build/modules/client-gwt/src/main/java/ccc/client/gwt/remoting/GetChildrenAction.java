@@ -28,6 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.Collection;
 
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
@@ -40,7 +41,7 @@ import ccc.client.core.Response;
  */
 public abstract class GetChildrenAction
     extends
-        RemotingAction {
+        RemotingAction<PagedCollection<ResourceSummary>> {
 
 
     /**
@@ -55,8 +56,15 @@ public abstract class GetChildrenAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        execute(parseResourceSummaries(response).getElements());
+    protected void onSuccess(final PagedCollection<ResourceSummary> rs) {
+        execute(rs.getElements());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected PagedCollection<ResourceSummary> parse(final Response response) {
+        return parseResourceSummaries(response);
     }
 
 

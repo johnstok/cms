@@ -30,16 +30,16 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import ccc.api.core.PagedCollection;
 import ccc.api.core.Template;
 import ccc.api.types.Link;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
@@ -49,7 +49,7 @@ import ccc.client.gwt.core.GlobalsImpl;
  */
 public abstract class GetTemplatesAction
     extends
-        RemotingAction {
+        RemotingAction<PagedCollection<Template>> {
 
     private final String _name;
 
@@ -75,8 +75,8 @@ public abstract class GetTemplatesAction
             new Request(
                 HttpMethod.GET,
                 Globals.API_URL
-                    + new Link(GlobalsImpl.getAPI().templates())
-                    .build(params, new GWTTemplateEncoder()),
+                    + new Link(InternalServices.API.templates())
+                    .build(params, InternalServices.ENCODER),
                 "",
                 new ResponseHandlerAdapter(_name) {
 

@@ -36,7 +36,7 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.ChooseTemplateDialog;
 import ccc.client.presenters.ChangeResourceTemplatePresenter;
@@ -48,7 +48,7 @@ import ccc.client.presenters.ChangeResourceTemplatePresenter;
  */
 public final class ChooseTemplateAction
     extends
-        RemotingAction {
+        RemotingAction<Resource> {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -89,9 +89,7 @@ public final class ChooseTemplateAction
 
     /** {@inheritDoc} */
     @Override
-    public void onOK(final Response response) {
-        final Resource r = readResource(response);
-
+    public void onSuccess(final Resource r) {
         if (ResourceType.PAGE==r.getType()
             || ResourceType.FOLDER==r.getType()
             || ResourceType.SEARCH==r.getType()) {
@@ -109,5 +107,12 @@ public final class ChooseTemplateAction
                 UI_CONSTANTS.templateCannotBeChosen());
 
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Resource parse(final Response response) {
+        return readResource(response);
     }
 }

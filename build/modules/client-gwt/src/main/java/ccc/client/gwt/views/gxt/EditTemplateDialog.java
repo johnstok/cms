@@ -39,10 +39,9 @@ import ccc.api.types.ResourceName;
 import ccc.client.core.DialogMode;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Response;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.CreateTemplateAction;
 import ccc.client.gwt.remoting.UpdateTemplateAction;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
@@ -316,7 +315,7 @@ public class EditTemplateDialog
 
                 new UpdateTemplateAction(delta) {
                     /** {@inheritDoc} */
-                    @Override protected void onOK(final Response response) {
+                    @Override protected void onSuccess(final Template t) {
                         _ssm.update(_proxy);
                         hide();
                     }

@@ -42,7 +42,7 @@ import ccc.client.events.Event;
  */
 public final class CreateTextFileAction
     extends
-        RemotingAction {
+        RemotingAction<File> {
 
     private File _dto;
 
@@ -72,11 +72,17 @@ public final class CreateTextFileAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final File rs = readFile(response);
+    protected void onSuccess(final File rs) {
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.FILE_CREATE);
         event.addProperty("resource", rs);
         InternalServices.REMOTING_BUS.fireEvent(event);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected File parse(final Response response) {
+        return readFile(response);
     }
 }

@@ -43,7 +43,7 @@ import ccc.client.events.Event;
  */
 public class CreateGroupAction
     extends
-        RemotingAction {
+        RemotingAction<Group> {
 
     private final Group _group;
 
@@ -75,11 +75,18 @@ public class CreateGroupAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
+    protected void onSuccess(final Group group) {
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.GROUP_CREATE);
-        event.addProperty("group", readGroup(response));
+        event.addProperty("group", group);
 
         fireEvent(event);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Group parse(final Response response) {
+        return readGroup(response);
     }
 }

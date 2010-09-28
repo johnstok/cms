@@ -30,10 +30,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.ResourceMetadataDialog;
 
 import com.google.gwt.json.client.JSONObject;
@@ -46,9 +46,10 @@ import com.google.gwt.json.client.JSONParser;
  */
 public final class OpenUpdateMetadataAction
     extends
-        RemotingAction {
+        RemotingAction<Map<String, String>> {
 
     private final SingleSelectionModel _selectionModel;
+
 
     /**
      * Constructor.
@@ -60,28 +61,36 @@ public final class OpenUpdateMetadataAction
         _selectionModel = selectionModel;
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
         final ResourceSummary delegate =
             _selectionModel.tableSelection();
-        return delegate.uriMetadata().build(new GWTTemplateEncoder());
+        return delegate.uriMetadata().build(InternalServices.ENCODER);
     }
+
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
+    protected void onSuccess(final Map<String, String> metadata) {
+        new ResourceMetadataDialog(
+            _selectionModel.tableSelection(),
+            metadata.entrySet(),
+            _selectionModel)
+        .show();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Map<String, String> parse(final Response response) {
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
         final Map<String, String> metadata = new HashMap<String, String>();
         for (final String key : result.keySet()) {
             metadata.put(key, result.get(key).isString().stringValue());
         }
-
-        new ResourceMetadataDialog(
-            _selectionModel.tableSelection(),
-            metadata.entrySet(),
-            _selectionModel)
-        .show();
+        return metadata;
     }
 }

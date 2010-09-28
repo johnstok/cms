@@ -35,9 +35,8 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.events.Event;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.SingleSelectionModel;
 
 
 /**
@@ -47,7 +46,7 @@ import ccc.client.gwt.core.SingleSelectionModel;
  */
 public class ApplyWorkingCopyAction
     extends
-        RemotingAction {
+        RemotingAction<Void> {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -72,7 +71,7 @@ public class ApplyWorkingCopyAction
         return new Request(
             HttpMethod.POST,
             Globals.API_URL
-                + rs.wc().build(new GWTTemplateEncoder()),
+                + rs.wc().build(InternalServices.ENCODER),
             "",
             new WCAppliedCallback(getActionName(), rs));
     }

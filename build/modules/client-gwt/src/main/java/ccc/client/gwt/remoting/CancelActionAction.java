@@ -49,7 +49,7 @@ import com.extjs.gxt.ui.client.data.BeanModel;
  */
 public class CancelActionAction
     extends
-        RemotingAction {
+        RemotingAction<Void> {
 
     private final ActionTable _table;
 

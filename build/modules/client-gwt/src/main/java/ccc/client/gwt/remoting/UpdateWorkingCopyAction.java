@@ -28,8 +28,9 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Page;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
-import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.core.Response;
 
 
 /**
@@ -39,7 +40,7 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
  */
 public class UpdateWorkingCopyAction
     extends
-        RemotingAction {
+        RemotingAction<Page> {
 
     private final Page _workingCopy;
 
@@ -58,8 +59,7 @@ public class UpdateWorkingCopyAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            _workingCopy.workingCopy().build(new GWTTemplateEncoder());
+        return _workingCopy.workingCopy().build(InternalServices.ENCODER);
     }
 
 
@@ -67,5 +67,12 @@ public class UpdateWorkingCopyAction
     @Override
     protected String getBody() {
         return writePage(_workingCopy);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Page parse(final Response response) {
+        return readPage(response);
     }
 }

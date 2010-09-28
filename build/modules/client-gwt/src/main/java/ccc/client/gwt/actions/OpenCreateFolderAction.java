@@ -32,7 +32,7 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.CreateFolderDialog;
 import ccc.client.presenters.CreateFolderPresenter;
 
@@ -43,7 +43,7 @@ import ccc.client.presenters.CreateFolderPresenter;
  */
 public final class OpenCreateFolderAction
     extends
-        RemotingAction {
+        RemotingAction<Resource> {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -83,8 +83,14 @@ public final class OpenCreateFolderAction
 
     /** {@inheritDoc} */
     @Override
-    public void onOK(final Response response) {
-        final Resource item = readResource(response);
+    public void onSuccess(final Resource item) {
         new CreateFolderPresenter(new CreateFolderDialog(), item);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Resource parse(final Response response) {
+        return readResource(response);
     }
 }

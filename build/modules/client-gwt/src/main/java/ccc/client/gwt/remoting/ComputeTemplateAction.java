@@ -38,13 +38,13 @@ import ccc.client.core.ResponseHandlerAdapter;
 
 
 /**
- * TODO: Add a description for this type.
+ * Determine the template for a resource.
  *
  * @author Civic Computing Ltd.
  */
 public abstract class ComputeTemplateAction
     extends
-        RemotingAction {
+        RemotingAction<Template> {
 
     private final Link _resourceLink;
     private final String _name;

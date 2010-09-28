@@ -28,14 +28,16 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Revision;
+import ccc.client.core.CallbackResponseHandler;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
-import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.HistoryDialog;
+import ccc.client.parsers.RevisionsParser;
 
 /**
  * View resource's history.
@@ -44,7 +46,7 @@ import ccc.client.gwt.views.gxt.HistoryDialog;
  */
 public final class ViewHistoryAction
     extends
-        RemotingAction {
+        RemotingAction<PagedCollection<Revision>> {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -68,19 +70,17 @@ public final class ViewHistoryAction
                 Globals.API_URL
                     + _selectionModel.tableSelection().revisionsPath(),
                 "",
-                new ResponseHandlerAdapter(UI_CONSTANTS.viewHistory()) {
-                    /** {@inheritDoc} */
-                    @Override public void onOK(
-                               final ccc.client.core.Response response) {
-                        final PagedCollection<Revision> rsCollection =
-                            readRevisionCollection(response);
-
-                        new HistoryDialog(
-                            rsCollection.getElements(),
-                            _selectionModel.tableSelection().getType(),
-                            _selectionModel)
-                        .show();
-                    }
-                });
+                new CallbackResponseHandler<PagedCollection<Revision>>(
+                    UI_CONSTANTS.viewHistory(),
+                    new DefaultCallback<PagedCollection<Revision>>(UI_CONSTANTS.viewHistory()) {
+                        @Override
+                        public void onSuccess(final PagedCollection<Revision> rsCollection) {
+                            new HistoryDialog(
+                                rsCollection.getElements(),
+                                _selectionModel.tableSelection().getType(),
+                                _selectionModel)
+                            .show();
+                        }},
+                    new RevisionsParser()));
     }
 }

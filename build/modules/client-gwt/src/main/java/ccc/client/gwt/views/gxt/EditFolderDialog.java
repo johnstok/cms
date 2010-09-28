@@ -39,11 +39,10 @@ import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
-import ccc.client.core.Response;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.GetChildrenAction;
 import ccc.client.gwt.remoting.UpdateFolderAction;
 import ccc.client.gwt.widgets.ResourceTypeRendererFactory;
@@ -279,7 +278,7 @@ AbstractEditDialog {
 
                 new UpdateFolderAction(f) {
                     /** {@inheritDoc} */
-                    @Override protected void onNoContent(final Response r) {
+                    @Override protected void onSuccess(final Folder f) {
                         md.setIndexPageId(indexPageId);
                         hide();
                     }

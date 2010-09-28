@@ -28,8 +28,8 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Page;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
-import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
@@ -58,7 +58,7 @@ public class ValidateFieldAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return GlobalsImpl.getAPI().getLink(Page.VALIDATOR);
+        return InternalServices.API.getLink(Page.VALIDATOR);
     }
 
 

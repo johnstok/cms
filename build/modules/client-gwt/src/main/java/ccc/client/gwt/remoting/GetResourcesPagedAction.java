@@ -35,9 +35,9 @@ import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Link;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
 
 
 /**
@@ -45,7 +45,9 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class GetResourcesPagedAction extends RemotingAction {
+public abstract class GetResourcesPagedAction
+    extends
+        RemotingAction<PagedCollection<ResourceSummary>> {
 
     private final int _pageNo;
     private final int _pageSize;
@@ -78,7 +80,7 @@ public abstract class GetResourcesPagedAction extends RemotingAction {
         return
         new Link(ccc.api.core.ResourceIdentifiers.Resource.SEARCH2
             + "?{-join|&|count,page,sort,order}")
-        .build(params, new GWTTemplateEncoder());
+        .build(params, InternalServices.ENCODER);
     }
 
     /** {@inheritDoc} */
@@ -90,12 +92,18 @@ public abstract class GetResourcesPagedAction extends RemotingAction {
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final PagedCollection<ResourceSummary> rsCollection =
-            parseResourceSummaries(response);
-        execute(rsCollection.getElements(), rsCollection.getTotalCount());
+    protected void onSuccess(final PagedCollection<ResourceSummary> resources) {
+        execute(resources.getElements(), resources.getTotalCount());
 
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected PagedCollection<ResourceSummary> parse(final Response response) {
+        return parseResourceSummaries(response);
+    }
+
 
     /**
      * Handle the result of a successful call.

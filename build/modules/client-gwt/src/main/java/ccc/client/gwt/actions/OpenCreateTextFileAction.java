@@ -32,7 +32,7 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.CreateTextFileDialog;
 import ccc.client.presenters.CreateTextFilePresenter;
 
@@ -43,9 +43,10 @@ import ccc.client.presenters.CreateTextFilePresenter;
  */
 public final class OpenCreateTextFileAction
     extends
-        RemotingAction {
+        RemotingAction<Folder> {
 
     private final SingleSelectionModel _selectionModel;
+
 
     /**
      * Constructor.
@@ -83,8 +84,14 @@ public final class OpenCreateTextFileAction
 
     /** {@inheritDoc} */
     @Override
-    public void onOK(final Response response) {
-        final Folder f = readFolder(response);
+    public void onSuccess(final Folder f) {
         new CreateTextFilePresenter(new CreateTextFileDialog(), f);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Folder parse(final Response response) {
+        return readFolder(response);
     }
 }

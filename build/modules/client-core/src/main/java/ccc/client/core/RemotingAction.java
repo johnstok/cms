@@ -37,9 +37,11 @@ import ccc.client.events.Event;
 /**
  * An action that makes a server-side call.
  *
+ * @param <T> The type of the return value.
+ *
  * @author Civic Computing Ltd.
  */
-public abstract class RemotingAction
+public abstract class RemotingAction<T>
     extends
         S11nHelper
     implements
@@ -51,12 +53,7 @@ public abstract class RemotingAction
     private RequestExecutor   _executor    = InternalServices.EXECUTOR;
     private Encoder           _encoder     = InternalServices.ENCODER;
     private Bus<CommandType>  _bus         = InternalServices.REMOTING_BUS;
-
-
-//    /**
-//     * Constructor.
-//     */
-//    public RemotingAction() { super(); }
+    private Callback<T>       _callback;
 
 
     /**
@@ -85,6 +82,20 @@ public abstract class RemotingAction
     /** {@inheritDoc} */
     @Override
     public void execute() {
+        execute(new Callback<T>() {
+            @Override public void onSuccess(final T result) {
+                RemotingAction.this.onSuccess(result);
+            }
+
+            @Override
+            public void onFailure(final Throwable caught) {
+                RemotingAction.this.onFailure(caught);
+            }});
+    }
+
+
+    public void execute(final Callback<T> callback) {
+        _callback = callback;
         if (!beforeExecute()) { return; }
         _executor.invokeRequest(getRequest());
     }
@@ -114,22 +125,18 @@ public abstract class RemotingAction
                 _method,
                 Globals.API_URL + getPath(),
                 getBody(),
-                new ResponseHandlerAdapter(_actionName) {
+                new CallbackResponseHandler<T>(_actionName,
+                                               _callback,
+                                               new Parser<T>() {
+                    @Override public T parse(final Response response) {
+                        return RemotingAction.this.parse(response);
+                    }}));
+    }
 
 
-                    /** {@inheritDoc} */
-                    @Override
-                    public void onNoContent(final Response response) {
-                        RemotingAction.this.onNoContent(response);
-                    }
-
-
-                    /** {@inheritDoc} */
-                    @Override
-                    public void onOK(final Response response) {
-                        RemotingAction.this.onOK(response);
-                    }
-                });
+    @Deprecated
+    protected T parse(final Response response) {
+        throw new UnsupportedOperationException("You must override parse()");
     }
 
 
@@ -150,17 +157,9 @@ public abstract class RemotingAction
      *
      * @param throwable The throwable.
      */
+    @Deprecated
     protected void onFailure(final Throwable throwable) {
         InternalServices.EX_HANDLER.unexpectedError(throwable, getActionName());
-    }
-
-
-    private void onUnsupported(final Response response) {
-        onFailure(
-            new RuntimeException(// TODO Add UnsupportedResponseException
-                "Unsupported response: "
-                + response.getStatusCode() + " "
-                + response.getStatusText()));
     }
 
 
@@ -170,6 +169,7 @@ public abstract class RemotingAction
      *
      * @return The request body, as a string.
      */
+    @Deprecated
     protected String getBody() { return ""; }
 
 
@@ -178,6 +178,7 @@ public abstract class RemotingAction
      *
      * @return Returns the actionName.
      */
+    @Deprecated
     public final String getActionName() { return _actionName; }
 
 
@@ -186,28 +187,22 @@ public abstract class RemotingAction
      *
      * @return The server path for the resource.
      */
+    @Deprecated
     protected String getPath() {
-        throw new UnsupportedOperationException("You must override getPath().");
+        throw new UnsupportedOperationException(
+            "You must override getPath().");
     }
 
 
     /**
-     * Handle a '204 NO CONTENT' response from the remote server.
+     * Handle the response from a successful invocation.
      *
      * @param response The server response.
      */
-    protected void onNoContent(final Response response) {
-        onUnsupported(response);
-    }
-
-
-    /**
-     * Handle a '200 OK' response from the remote server.
-     *
-     * @param response The server response.
-     */
-    protected void onOK(final Response response) {
-        onUnsupported(response);
+    @Deprecated
+    protected void onSuccess(final T response) {
+        throw new UnsupportedOperationException(
+            "You must override onSuccess().");
     }
 
 

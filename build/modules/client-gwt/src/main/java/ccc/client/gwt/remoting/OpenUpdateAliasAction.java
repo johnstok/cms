@@ -27,24 +27,25 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.views.gxt.UpdateAliasDialog;
 
 
 
 /**
- * TODO: Add a description for this type.
+ * Determine the name of an Alias' target.
  *
  * @author Civic Computing Ltd.
  */
 public class OpenUpdateAliasAction
     extends
-        RemotingAction {
+        RemotingAction<String> {
 
     private final ResourceSummary _alias;
     private final ResourceSummary _targetRoot;
+
 
     /**
      * Constructor.
@@ -58,19 +59,26 @@ public class OpenUpdateAliasAction
         _targetRoot = targetRoot;
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
         final ResourceSummary delegate = _alias;
-        return delegate.targetName().build(new GWTTemplateEncoder());
+        return delegate.targetName().build(InternalServices.ENCODER);
     }
+
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final String targetName = response.getText();
+    protected void onSuccess(final String targetName) {
         new UpdateAliasDialog(_alias, targetName, _targetRoot)
         .show();
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    protected String parse(final Response response) {
+        return response.getText();
+    }
 }

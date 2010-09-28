@@ -35,10 +35,9 @@ import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
@@ -48,7 +47,7 @@ import ccc.client.gwt.core.GlobalsImpl;
  */
 public abstract class ListComments
     extends
-        RemotingAction {
+        RemotingAction<PagedCollection<Comment>> {
 
     private CommentStatus _status;
     private int           _page;
@@ -96,15 +95,22 @@ public abstract class ListComments
         params.put("order", new String[] {_order.name()});
 
         return
-            new Link(new GlobalsImpl().comments().getLink("self"))
-            .build(params, new GWTTemplateEncoder());
+            new Link(InternalServices.COMMENTS.getLink("self"))
+            .build(params, InternalServices.ENCODER);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        execute(readComments(response));
+    protected void onSuccess(final PagedCollection<Comment> comments) {
+        execute(comments);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected PagedCollection<Comment> parse(final Response response) {
+        return readComments(response);
     }
 
 

@@ -28,6 +28,7 @@ package ccc.client.actions;
 
 import java.util.UUID;
 
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Link;
 import ccc.client.core.InternalServices;
@@ -42,9 +43,10 @@ import ccc.client.core.Response;
  */
 public abstract class FindResourceAction
     extends
-        RemotingAction {
+        RemotingAction<Resource> {
 
     private UUID _resourceId;
+
 
     /**
      * Constructor.
@@ -56,6 +58,7 @@ public abstract class FindResourceAction
         _resourceId = resourceId;
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
@@ -65,17 +68,17 @@ public abstract class FindResourceAction
 
     }
 
+
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final ResourceSummary r = readResourceSummary(response);
-        execute(r);
+    protected void onSuccess(final Resource r) { execute(r); }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Resource parse(final Response response) {
+        return readResource(response);
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onNoContent(final Response response) { execute(null); }
 
 
     /**

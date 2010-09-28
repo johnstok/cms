@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,53 +21,32 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
-
-import ccc.api.core.User;
-import ccc.client.core.HttpMethod;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Response;
+package ccc.client.core;
 
 
 /**
- * Updates a user's password..
+ * A callback for an asynchronous method.
+ *
+ * @param <T> The type of the return value.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class UpdateUserPasswordAction
-    extends
-        RemotingAction<Void> {
-
-    private final User _user;
-
+public interface Callback<T> {
 
     /**
-     * Constructor.
+     * Handle a failure invoking the method.
      *
-     * @param user The user with an updated password.
+     * @param caught The exception thrown.
      */
-    public UpdateUserPasswordAction(final User user) {
-        super(UI_CONSTANTS.editUserPw(), HttpMethod.PUT);
-        _user = user;
-    }
+    void onFailure(java.lang.Throwable caught);
 
-
-    /** {@inheritDoc} */
-    @Override protected String getPath() {
-        return _user.uriPassword();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override protected String getBody() {
-        return writeUser(_user);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected Void parse(final Response response) { return null; }
+    /**
+     * Handle the return value from a successful invocation.
+     *
+     * @param result The return value.
+     */
+    void onSuccess(T result);
 }

@@ -35,8 +35,6 @@ import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.views.gxt.LoginDialog;
 
 
@@ -47,7 +45,7 @@ import ccc.client.gwt.views.gxt.LoginDialog;
  */
 public class LoginAction
     extends
-        RemotingAction {
+        RemotingAction<Boolean> {
 
     private final LoginDialog _dialog;
 
@@ -70,17 +68,24 @@ public class LoginAction
         params.put("u", new String[] {_dialog.getUsername()});
         params.put("p", new String[] {_dialog.getPassword()});
         return
-            new Link(GlobalsImpl.getAPI().getLink(Security.COLLECTION))
-            .build(params, new GWTTemplateEncoder());
+            new Link(InternalServices.API.getLink(Security.COLLECTION))
+            .build(params, InternalServices.ENCODER);
     }
 
+
     /** {@inheritDoc} */
-    @Override protected void onOK(final Response response) {
-        final boolean success = readBoolean(response).booleanValue();
-        if (success) {
+    @Override protected void onSuccess(final Boolean success) {
+        if (success.booleanValue()) {
             InternalServices.WINDOW.refresh();
         } else {
             _dialog.loginFailed();
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Boolean parse(final Response response) {
+        return readBoolean(response);
     }
 }

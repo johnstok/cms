@@ -34,9 +34,9 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.widgets.HistoryToolBar;
 
 import com.extjs.gxt.ui.client.Style.SortDir;

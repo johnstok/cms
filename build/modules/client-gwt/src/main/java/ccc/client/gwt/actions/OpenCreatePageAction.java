@@ -35,7 +35,7 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.CreatePageDialog;
 import ccc.client.presenters.CreatePagePresenter;
@@ -47,7 +47,7 @@ import ccc.client.presenters.CreatePagePresenter;
  */
 public final class OpenCreatePageAction
     extends
-        RemotingAction {
+        RemotingAction<Folder> {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -87,8 +87,7 @@ public final class OpenCreatePageAction
 
     /** {@inheritDoc} */
     @Override
-    public void onOK(final Response response) {
-        final Folder f = readFolder(response);
+    public void onSuccess(final Folder f) {
         new GetTemplatesAction(UI_CONSTANTS.createPage()){
             @Override protected void execute(
                                  final Collection<Template> templates) {
@@ -97,5 +96,12 @@ public final class OpenCreatePageAction
                     f);
             }
         }.execute();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Folder parse(final Response response) {
+        return readFolder(response);
     }
 }

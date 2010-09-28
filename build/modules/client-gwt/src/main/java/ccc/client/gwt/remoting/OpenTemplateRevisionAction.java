@@ -28,9 +28,9 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.views.gxt.PreviewTemplateDialog;
 
 
@@ -41,10 +41,11 @@ import ccc.client.gwt.views.gxt.PreviewTemplateDialog;
  */
 public class OpenTemplateRevisionAction
     extends
-        RemotingAction {
+        RemotingAction<Template> {
 
     private final ResourceSummary _template;
     private final long _index;
+
 
     /**
      * Constructor.
@@ -59,18 +60,26 @@ public class OpenTemplateRevisionAction
         _index = index;
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
         return _template.templateRevision().build(
-            "revision", ""+_index, new GWTTemplateEncoder());
+            "revision", ""+_index, InternalServices.ENCODER);
     }
+
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final Template delta = parseTemplate(response);
+    protected void onSuccess(final Template delta) {
         new PreviewTemplateDialog(delta)
         .show();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Template parse(final Response response) {
+        return parseTemplate(response);
     }
 }

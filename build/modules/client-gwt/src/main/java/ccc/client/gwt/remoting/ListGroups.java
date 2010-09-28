@@ -35,11 +35,10 @@ import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
@@ -49,7 +48,7 @@ import ccc.client.gwt.core.GlobalsImpl;
  */
 public abstract class ListGroups
     extends
-        RemotingAction {
+        RemotingAction<PagedCollection<Group>> {
 
     private int _pageNo;
     private int _pageSize;
@@ -87,8 +86,8 @@ public abstract class ListGroups
         params.put("order", new String[] {_order.name()});
         return
             Globals.API_URL
-            + new Link(new GlobalsImpl().groups().getLink("self"))
-                .build(params, new GWTTemplateEncoder());
+            + new Link(InternalServices.GROUPS.getLink("self"))
+                .build(params, InternalServices.ENCODER);
     }
 
 

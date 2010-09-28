@@ -31,7 +31,6 @@ import static ccc.client.core.InternalServices.*;
 import ccc.api.core.User;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateCurrentUserAction;
@@ -148,10 +147,8 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
 
         new UpdateCurrentUserAction(user){
             /** {@inheritDoc} */
-            @Override protected void onNoContent(
-                                             final Response response) {
-                // TODO Update current user should return a UserDto.
-                new GlobalsImpl().currentUser(user);
+            @Override protected void onSuccess(final User newUser) {
+                new GlobalsImpl().currentUser(newUser);
                 hide();
             }
 

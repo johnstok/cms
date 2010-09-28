@@ -28,6 +28,7 @@ package ccc.client.core;
 
 import ccc.api.core.ACL;
 import ccc.api.core.API;
+import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Alias;
 import ccc.api.core.Comment;
@@ -224,7 +225,7 @@ public class S11nHelper {
      *
      * @return The corresponding collection.
      */
-    protected PagedCollection<Revision> readRevisionCollection(
+    public PagedCollection<Revision> readRevisionCollection(
                                                       final Response response) {
         return
             serializers()
@@ -583,4 +584,16 @@ public class S11nHelper {
 
 
     private Serializers serializers() { return _serializers; }
+
+
+    /**
+     * Read an action from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding action.
+     */
+    public Action readAction(final Response response) {
+        return serializers().create(Action.class).read(response.getText());
+    }
 }

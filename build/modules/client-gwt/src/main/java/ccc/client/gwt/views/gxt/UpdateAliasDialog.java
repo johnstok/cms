@@ -33,7 +33,6 @@ import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateAliasAction;
@@ -121,7 +120,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
 
             new UpdateAliasAction(a){
                 /** {@inheritDoc} */
-                @Override protected void onOK(final Response response) {
+                @Override protected void onSuccess(final Alias alias) {
                     hide();
                 }
             }.execute();

@@ -42,7 +42,7 @@ import ccc.client.gwt.core.GlobalsImpl;
  */
 public final class LogoutAction
     extends
-        RemotingAction {
+        RemotingAction<Void> {
 
 
     /**
@@ -55,7 +55,7 @@ public final class LogoutAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onNoContent(final Response response) {
+    protected void onSuccess(final Void v) {
         new GlobalsImpl().currentUser(null);
         InternalServices.WINDOW.disableExitConfirmation();
         InternalServices.WINDOW.redirectTo(Globals.APP_URL);
@@ -65,6 +65,11 @@ public final class LogoutAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return GlobalsImpl.getAPI().getLink(Security.CURRENT);
+        return InternalServices.API.getLink(Security.CURRENT);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void parse(final Response response) { return null; }
 }

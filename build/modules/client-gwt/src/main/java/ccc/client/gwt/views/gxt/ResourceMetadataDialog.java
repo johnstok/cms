@@ -36,10 +36,9 @@ import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Response;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.UpdateMetadataAction;
 import ccc.client.gwt.widgets.MetadataGrid;
 
@@ -168,8 +167,7 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
 
         new UpdateMetadataAction(r) {
                 /** {@inheritDoc} */
-                @Override protected void onNoContent(
-                                             final Response response) {
+                @Override protected void onSuccess(final Void v) {
                     _resource.setTags(tags);
                     _resource.setTitle(title);
                     _resource.setDescription(description);

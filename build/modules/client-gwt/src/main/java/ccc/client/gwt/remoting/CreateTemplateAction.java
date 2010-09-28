@@ -33,10 +33,9 @@ import ccc.api.core.Template;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
@@ -46,9 +45,10 @@ import ccc.client.gwt.core.GlobalsImpl;
  */
 public abstract class CreateTemplateAction
     extends
-        RemotingAction {
+        RemotingAction<Template> {
 
     private final Template _delta;
+
 
     /**
      * Constructor.
@@ -60,6 +60,7 @@ public abstract class CreateTemplateAction
         _delta = DBC.require().notNull(delta);
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
@@ -67,15 +68,22 @@ public abstract class CreateTemplateAction
         params.put("count", new String[] {"999"});
         params.put("page", new String[] {"1"});
         return
-            new Link(GlobalsImpl.getAPI().templates())
-            .build(params, new GWTTemplateEncoder());
+            new Link(InternalServices.API.templates())
+            .build(params, InternalServices.ENCODER);
     }
+
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final Template t = readTemplate(response);
+    protected void onSuccess(final Template t) {
         execute(t);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Template parse(final Response response) {
+        return readTemplate(response);
     }
 
 
@@ -84,6 +92,7 @@ public abstract class CreateTemplateAction
     protected String getBody() {
         return writeTemplate(_delta);
     }
+
 
     /**
      * Handle the result of a successful call.

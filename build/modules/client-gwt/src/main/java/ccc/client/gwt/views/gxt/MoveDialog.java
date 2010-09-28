@@ -32,10 +32,9 @@ import ccc.api.types.ResourceType;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Response;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.MoveResourceAction;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -148,8 +147,7 @@ public class MoveDialog extends AbstractEditDialog {
     private void move() {
         new MoveResourceAction(_target, _parent.getId()){
             /** {@inheritDoc} */
-            @Override protected void onNoContent(
-                                             final Response response) {
+            @Override protected void onSuccess(final Void v) {
                 _ssm.move(_target, _parent, _ssm.treeSelection());
                 hide();
             }

@@ -35,11 +35,11 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.gwt.core.GWTTemplateEncoder;
 
 
 /**
@@ -49,7 +49,7 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
  */
 public abstract class GetImagesPagedAction
     extends
-        RemotingAction {
+        RemotingAction<PagedCollection<File>> {
 
     private final ResourceSummary _parent;
     private int _pageNo;
@@ -85,7 +85,7 @@ public abstract class GetImagesPagedAction
         params.put("page", new String[] {""+_pageNo});
         final String path =
             Globals.API_URL
-            + _parent.images().build(params, new GWTTemplateEncoder());
+            + _parent.images().build(params, InternalServices.ENCODER);
         return path;
     }
 

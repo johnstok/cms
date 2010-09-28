@@ -32,7 +32,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.types.Duration;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateCacheDurationAction;
@@ -194,7 +193,7 @@ public class EditCacheDialog extends AbstractEditDialog {
                   _item.duration().toString());
 
         new UpdateCacheDurationAction(r){
-            @Override protected void onNoContent(final Response resp) {
+            @Override protected void onSuccess(final Void v) {
                 hide();
             }
         }.execute();

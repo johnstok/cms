@@ -42,7 +42,7 @@ import ccc.client.events.Event;
  */
 public class UpdateResourceTemplateAction
     extends
-        RemotingAction {
+        RemotingAction<Resource> {
 
     private final Resource _resource;
 
@@ -72,11 +72,18 @@ public class UpdateResourceTemplateAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
+    protected void onSuccess(final Resource r) {
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.RESOURCE_CHANGE_TEMPLATE);
         event.addProperty("resource", _resource.getId());
         event.addProperty("template", _resource.getTemplate());
         InternalServices.REMOTING_BUS.fireEvent(event);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Resource parse(final Response response) {
+        return readResource(response);
     }
 }

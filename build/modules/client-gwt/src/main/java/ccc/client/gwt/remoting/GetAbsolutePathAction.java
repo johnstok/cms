@@ -30,11 +30,11 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.gwt.core.GWTTemplateEncoder;
 
 
 /**
@@ -44,7 +44,7 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
  */
 public abstract class GetAbsolutePathAction
     extends
-        RemotingAction {
+        RemotingAction<String> {
 
     private final ResourceSummary _resource;
     private final String _name;
@@ -70,7 +70,8 @@ public abstract class GetAbsolutePathAction
         return
             new Request(
                 HttpMethod.GET,
-                Globals.API_URL + _resource.uriAbsPath().build(new GWTTemplateEncoder()),
+                Globals.API_URL
+                    + _resource.uriAbsPath().build(InternalServices.ENCODER),
                 "",
                 new ResponseHandlerAdapter(_name) {
 

@@ -33,13 +33,17 @@ import java.util.UUID;
 import ccc.api.core.Action;
 import ccc.api.types.CommandType;
 import ccc.api.types.Link;
+import ccc.client.core.CallbackResponseHandler;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
-import ccc.client.core.ResponseHandlerAdapter;
+import ccc.client.core.Response;
+import ccc.client.core.S11nHelper;
 import ccc.client.events.Event;
 
 
@@ -50,7 +54,7 @@ import ccc.client.events.Event;
  */
 public final class CreateActionAction
     extends
-        RemotingAction {
+        RemotingAction<Action> {
 
     private UUID _resourceId;
     private CommandType _command;
@@ -105,30 +109,19 @@ public final class CreateActionAction
                 HttpMethod.POST,
                 path,
                 writeAction(action),
-                new ActionCreatedCallback());
-    }
+                new CallbackResponseHandler<Action>(
+                    I18n.UI_CONSTANTS.createAction(),
+                    new DefaultCallback<Action>(I18n.UI_CONSTANTS.createAction()) {
+                        @Override public void onSuccess(final Action result) {
+                            final Event<CommandType> event =
+                                new Event<CommandType>(CommandType.ACTION_CREATE);
+                            InternalServices.REMOTING_BUS.fireEvent(event);
+                        }},
+                    new Parser<Action>() {
 
-
-    /**
-     * Callback handler for applying a working copy.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public class ActionCreatedCallback extends ResponseHandlerAdapter {
-
-        /**
-         * Constructor.
-         */
-        public ActionCreatedCallback() {
-            super(I18n.UI_CONSTANTS.createAction());
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onOK(final ccc.client.core.Response response) {
-            final Event<CommandType> event =
-                new Event<CommandType>(CommandType.ACTION_CREATE);
-            InternalServices.REMOTING_BUS.fireEvent(event);
-        }
+                        @Override
+                        public Action parse(final Response response) {
+                            return new S11nHelper().readAction(response);
+                        }}));
     }
 }

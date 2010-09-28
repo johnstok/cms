@@ -41,7 +41,8 @@ import ccc.client.core.ResponseHandlerAdapter;
  * @author Civic Computing Ltd.
  */
 public abstract class GetUserAction
-    extends RemotingAction {
+    extends
+        RemotingAction<User> {
 
     private final String _userPath;
 

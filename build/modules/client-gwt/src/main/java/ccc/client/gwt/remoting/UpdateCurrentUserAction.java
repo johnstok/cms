@@ -28,8 +28,9 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.User;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.core.Response;
 
 
 /**
@@ -39,7 +40,7 @@ import ccc.client.gwt.core.GlobalsImpl;
  */
 public abstract class UpdateCurrentUserAction
     extends
-        RemotingAction {
+        RemotingAction<User> {
 
     private final User _userDetails;
 
@@ -56,12 +57,19 @@ public abstract class UpdateCurrentUserAction
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return new GlobalsImpl().users().getLink("me");
+        return InternalServices.USERS.getLink("me");
     }
 
 
     /** {@inheritDoc} */
     @Override protected String getBody() {
         return writeUser(_userDetails);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected User parse(final Response response) {
+        return readUser(response);
     }
 }

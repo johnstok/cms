@@ -28,10 +28,10 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.core.SingleSelectionModel;
 
 
 /**
@@ -41,7 +41,7 @@ import ccc.client.gwt.core.SingleSelectionModel;
  */
 public class UnlockAction
     extends
-        RemotingAction {
+        RemotingAction<Void> {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -56,18 +56,28 @@ public class UnlockAction
         _selectionModel = selectionModel;
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _selectionModel.tableSelection().lock().build(new GWTTemplateEncoder());
+        return
+            _selectionModel
+                .tableSelection()
+                .lock()
+                .build(InternalServices.ENCODER);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onNoContent(final Response response) {
+    protected void onSuccess(final Void response) {
         final ResourceSummary item = _selectionModel.tableSelection();
         item.setLockedBy(null);
         _selectionModel.update(item);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void parse(final Response response) { return null; }
 }

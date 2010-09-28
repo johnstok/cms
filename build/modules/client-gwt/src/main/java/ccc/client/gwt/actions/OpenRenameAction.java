@@ -33,7 +33,7 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.RenameDialog;
 import ccc.client.presenters.RenameResourcePresenter;
 
@@ -44,9 +44,10 @@ import ccc.client.presenters.RenameResourcePresenter;
  */
 public final class OpenRenameAction
     extends
-        RemotingAction {
+        RemotingAction<Resource> {
 
     private final SingleSelectionModel _selectionModel;
+
 
     /**
      * Constructor.
@@ -73,7 +74,6 @@ public final class OpenRenameAction
     }
 
 
-
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
@@ -87,8 +87,14 @@ public final class OpenRenameAction
 
     /** {@inheritDoc} */
     @Override
-    public void onOK(final Response response) {
-        final Resource r = readResource(response);
+    public void onSuccess(final Resource r) {
         new RenameResourcePresenter(new RenameDialog(), r);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Resource parse(final Response response) {
+        return readResource(response);
     }
 }

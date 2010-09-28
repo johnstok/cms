@@ -28,8 +28,9 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
-import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.core.Response;
 
 
 
@@ -40,7 +41,7 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
  */
 public class UpdateMetadataAction
     extends
-        RemotingAction {
+        RemotingAction<Void> {
 
     private final Resource _resource;
 
@@ -59,7 +60,7 @@ public class UpdateMetadataAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _resource.uriMetadata().build(new GWTTemplateEncoder());
+        return _resource.uriMetadata().build(InternalServices.ENCODER);
     }
 
 
@@ -68,4 +69,9 @@ public class UpdateMetadataAction
     protected String getBody() {
         return writeResource(_resource);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void parse(final Response response) { return null; }
 }

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,53 +21,29 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.parsers;
 
-import ccc.api.core.User;
-import ccc.client.core.HttpMethod;
-import ccc.client.core.RemotingAction;
+import ccc.api.core.PagedCollection;
+import ccc.api.core.Revision;
+import ccc.client.core.Parser;
 import ccc.client.core.Response;
-
+import ccc.client.core.S11nHelper;
 
 /**
- * Updates a user's password..
+ * Parser for a collection of revisions.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class UpdateUserPasswordAction
-    extends
-        RemotingAction<Void> {
-
-    private final User _user;
-
-
-    /**
-     * Constructor.
-     *
-     * @param user The user with an updated password.
-     */
-    public UpdateUserPasswordAction(final User user) {
-        super(UI_CONSTANTS.editUserPw(), HttpMethod.PUT);
-        _user = user;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override protected String getPath() {
-        return _user.uriPassword();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override protected String getBody() {
-        return writeUser(_user);
-    }
-
+public final class RevisionsParser
+    implements
+        Parser<PagedCollection<Revision>> {
 
     /** {@inheritDoc} */
     @Override
-    protected Void parse(final Response response) { return null; }
+    public PagedCollection<Revision> parse(final Response response) {
+        return new S11nHelper().readRevisionCollection(response);
+    }
 }

@@ -28,8 +28,9 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Folder;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
-import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.core.Response;
 
 
 /**
@@ -39,7 +40,7 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
  */
 public class UpdateFolderAction
     extends
-        RemotingAction {
+        RemotingAction<Folder> {
 
     private final Folder _folder;
 
@@ -58,7 +59,7 @@ public class UpdateFolderAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _folder.self().build(new GWTTemplateEncoder());
+        return _folder.self().build(InternalServices.ENCODER);
     }
 
 
@@ -66,5 +67,12 @@ public class UpdateFolderAction
     @Override
     protected String getBody() {
         return writeFolder(_folder);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Folder parse(final Response response) {
+        return readFolder(response);
     }
 }

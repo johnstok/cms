@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,53 +21,45 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.core;
 
-import ccc.api.core.User;
-import ccc.client.core.HttpMethod;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Response;
+import ccc.api.types.DBC;
+import ccc.client.events.Event;
 
 
 /**
- * Updates a user's password..
+ * Callback that sends exceptions as events on the core bus.
+ *
+ * @param <T> The type of the return value.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class UpdateUserPasswordAction
-    extends
-        RemotingAction<Void> {
+public abstract class DefaultCallback<T>
+    implements
+        Callback<T> {
 
-    private final User _user;
+    private String            _actionName;
 
 
     /**
      * Constructor.
      *
-     * @param user The user with an updated password.
+     * @param actionName The name of this action.
      */
-    public UpdateUserPasswordAction(final User user) {
-        super(UI_CONSTANTS.editUserPw(), HttpMethod.PUT);
-        _user = user;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override protected String getPath() {
-        return _user.uriPassword();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override protected String getBody() {
-        return writeUser(_user);
+    public DefaultCallback(final String actionName) {
+        _actionName = DBC.require().notEmpty(actionName);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Void parse(final Response response) { return null; }
+    public void onFailure(final Throwable throwable) {
+        InternalServices.CORE_BUS.fireEvent(
+            new Event<CoreEvents>(CoreEvents.ERROR)
+                .addProperty("exception", throwable)
+                .addProperty("name",      _actionName));
+    }
 }

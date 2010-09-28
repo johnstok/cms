@@ -36,12 +36,11 @@ import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GlobalsImpl;
 
 
 /**
@@ -51,7 +50,7 @@ import ccc.client.gwt.core.GlobalsImpl;
  */
 public abstract class ListUsersAction
     extends
-        RemotingAction {
+        RemotingAction<PagedCollection<User>> {
 
     private UserCriteria _uc;
     private int _pageNo;
@@ -103,8 +102,8 @@ public abstract class ListUsersAction
 
         return
             Globals.API_URL
-            + new Link(new GlobalsImpl().users().getLink("self"))
-                .build(params, new GWTTemplateEncoder());
+            + new Link(InternalServices.USERS.getLink("self"))
+                .build(params, InternalServices.ENCODER);
     }
 
 

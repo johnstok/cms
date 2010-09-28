@@ -42,7 +42,7 @@ import ccc.client.events.Event;
  */
 public class EditTextFileAction
     extends
-        RemotingAction {
+        RemotingAction<File> {
 
     private final File _dto;
 
@@ -72,11 +72,17 @@ public class EditTextFileAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final File f = readFile(response);
+    protected void onSuccess(final File f) {
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.FILE_UPDATE);
         event.addProperty("file", f);
         InternalServices.REMOTING_BUS.fireEvent(event);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected File parse(final Response response) {
+        return readFile(response);
     }
 }

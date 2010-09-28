@@ -36,7 +36,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdatePageAction;
@@ -130,7 +129,7 @@ public class PageCommentDialog extends AbstractEditDialog {
 
         new UpdatePageAction(update) {
                 /** {@inheritDoc} */
-                @Override protected void onOK(final Response response) {
+                @Override protected void onSuccess(final Page page) {
                     md.setHasWorkingCopy(false);
                     _updatePageDialog.rt().update(md);
                     hide();

@@ -28,24 +28,25 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.views.gxt.EditTemplateDialog;
 import ccc.client.gwt.widgets.ResourceTable;
 
 
 /**
- * TODO: Add a description for this type.
+ * Retrieves details of a resource from the server.
  *
  * @author Civic Computing Ltd.
  */
 public class OpenUpdateTemplateAction
     extends
-        RemotingAction {
+        RemotingAction<Template> {
 
     private final ResourceSummary _template;
     private final ResourceTable _table;
+
 
     /**
      * Constructor.
@@ -59,20 +60,28 @@ public class OpenUpdateTemplateAction
         _template = template;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        return _template.self().build(new GWTTemplateEncoder());
-    }
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final Template delta = parseTemplate(response);
+    protected String getPath() {
+        return _template.self().build(InternalServices.ENCODER);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onSuccess(final Template delta) {
         new EditTemplateDialog(
             delta,
             _template,
             _table)
         .show();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Template parse(final Response response) {
+        return parseTemplate(response);
     }
 }

@@ -43,11 +43,12 @@ import ccc.client.gwt.widgets.UserTable;
  */
 public class OpenEditUserDialogAction
     extends
-        RemotingAction {
+        RemotingAction<User> {
 
     private final User _user;
     private final UserTable _userTable;
     private Collection<Group> _groups;
+
 
     /**
      * Constructor.
@@ -65,16 +66,24 @@ public class OpenEditUserDialogAction
         _groups = groups;
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
         return _user.self();
     }
 
+
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final User delta = readUser(response);
+    protected void onSuccess(final User delta) {
         new EditUserDialog(delta, _userTable, _groups).show();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected User parse(final Response response) {
+        return readUser(response);
     }
 }
