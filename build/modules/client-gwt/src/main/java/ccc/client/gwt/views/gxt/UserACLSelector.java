@@ -33,8 +33,8 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.remoting.ListUsersAction;
 import ccc.client.i18n.UIConstants;
+import ccc.client.remoting.ListUsersAction;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.Scroll;

@@ -38,7 +38,7 @@ import ccc.api.types.ResourceName;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.remoting.GetAbsolutePathAction;
+import ccc.client.remoting.GetAbsolutePathAction;
 import ccc.client.widgets.PageElement;
 
 import com.extjs.gxt.ui.client.data.BeanModel;

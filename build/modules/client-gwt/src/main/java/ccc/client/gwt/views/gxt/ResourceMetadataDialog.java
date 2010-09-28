@@ -39,8 +39,8 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.remoting.UpdateMetadataAction;
 import ccc.client.gwt.widgets.MetadataGrid;
+import ccc.client.remoting.UpdateMetadataAction;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

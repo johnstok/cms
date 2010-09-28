@@ -43,9 +43,9 @@ import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.remoting.GetChildrenAction;
-import ccc.client.gwt.remoting.UpdateFolderAction;
 import ccc.client.gwt.widgets.ResourceTypeRendererFactory;
+import ccc.client.remoting.GetChildrenAction;
+import ccc.client.remoting.UpdateFolderAction;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.BeanModel;

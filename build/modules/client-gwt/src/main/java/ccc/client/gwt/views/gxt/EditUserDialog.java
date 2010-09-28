@@ -40,9 +40,9 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.remoting.UpdateUserAction;
 import ccc.client.gwt.widgets.GroupListField;
 import ccc.client.gwt.widgets.UserTable;
+import ccc.client.remoting.UpdateUserAction;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

@@ -34,7 +34,7 @@ import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.remoting.GetImagesPagedAction;
+import ccc.client.remoting.GetImagesPagedAction;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;

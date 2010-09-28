@@ -37,9 +37,9 @@ import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.remoting.ListGroups;
 import ccc.client.gwt.views.gxt.GroupViewImpl;
 import ccc.client.presenters.UpdateGroupPresenter;
+import ccc.client.remoting.ListGroups;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;

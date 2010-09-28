@@ -37,12 +37,12 @@ import ccc.api.types.Permission;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Globals;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.remoting.GetUserAction;
-import ccc.client.gwt.remoting.ListGroups;
-import ccc.client.gwt.remoting.ListUsersAction;
 import ccc.client.gwt.remoting.OpenEditUserDialogAction;
 import ccc.client.gwt.views.gxt.EditUserPwDialog;
 import ccc.client.gwt.views.gxt.UserMetadataDialog;
+import ccc.client.remoting.GetUserAction;
+import ccc.client.remoting.ListGroups;
+import ccc.client.remoting.ListUsersAction;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;

@@ -33,6 +33,7 @@ import ccc.client.core.InternalServices;
 import ccc.client.gwt.widgets.LeftRightPane;
 import ccc.client.gwt.widgets.MainMenu;
 import ccc.client.gwt.widgets.ResourceNavigator;
+import ccc.client.remoting.GetRootsAction;
 
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;

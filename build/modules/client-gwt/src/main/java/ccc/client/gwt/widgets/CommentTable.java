@@ -39,9 +39,9 @@ import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.remoting.ListComments;
 import ccc.client.gwt.views.gxt.CommentView;
 import ccc.client.presenters.UpdateCommentPresenter;
+import ccc.client.remoting.ListComments;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;

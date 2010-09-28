@@ -34,7 +34,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.remoting.GetResourcesPagedAction;
+import ccc.client.remoting.GetResourcesPagedAction;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BaseFilterPagingLoadConfig;

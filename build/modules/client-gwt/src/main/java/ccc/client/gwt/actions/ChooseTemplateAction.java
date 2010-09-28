@@ -37,9 +37,9 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.ChooseTemplateDialog;
 import ccc.client.presenters.ChangeResourceTemplatePresenter;
+import ccc.client.remoting.GetTemplatesAction;
 
 /**
  * Chooses template for the resource.

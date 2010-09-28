@@ -36,9 +36,9 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.CreatePageDialog;
 import ccc.client.presenters.CreatePagePresenter;
+import ccc.client.remoting.GetTemplatesAction;
 
 /**
  * Create a page.

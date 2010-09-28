@@ -39,8 +39,8 @@ import ccc.api.core.ACL.Entry;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.remoting.GetUserAction;
-import ccc.client.gwt.remoting.UpdateResourceAclAction;
+import ccc.client.remoting.GetUserAction;
+import ccc.client.remoting.UpdateResourceAclAction;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;
