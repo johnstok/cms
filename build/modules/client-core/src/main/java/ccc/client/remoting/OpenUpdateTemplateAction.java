@@ -21,66 +21,66 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.remoting;
 
-import ccc.api.core.Resource;
-import ccc.api.types.Link;
-import ccc.client.core.HttpMethod;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.Template;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
-import ccc.client.gwt.views.gxt.HistoryDialog;
+import ccc.client.core.Response;
+import ccc.client.core.SingleSelectionModel;
 
 
 /**
- * Publish a resource.
+ * Retrieves details of a resource from the server.
  *
  * @author Civic Computing Ltd.
  */
-public class CreateWorkingCopyFromHistoricalVersionAction
+public class OpenUpdateTemplateAction
     extends
-        RemotingAction<Void> {
+        RemotingAction<Template> {
 
-    private final HistoryDialog _dialog;
+    private final ResourceSummary _template;
+    private final SingleSelectionModel _table;
 
 
     /**
      * Constructor.
-     *
-     * @param dialog The selection model for this action.
+     * @param resourceTable The table displaying the template.
+     * @param template The template to update.
      */
-    public CreateWorkingCopyFromHistoricalVersionAction(
-                                                  final HistoryDialog dialog) {
-        super(UI_CONSTANTS.revert(), HttpMethod.POST);
-        _dialog = dialog;
+    public OpenUpdateTemplateAction(final ResourceSummary template,
+                                    final SingleSelectionModel resourceTable) {
+        super(UI_CONSTANTS.editTemplate());
+        _table = resourceTable;
+        _template = template;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        final Link link = _dialog.getResource().revisions();
-        return link.build(InternalServices.ENCODER);
-    }
-
-
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getBody() {
-        final Resource r = new Resource();
-        r.setRevision((int) _dialog.selectedItem().getIndex()); // FIXME
-        return writeResource(r);
+        return _template.self().build(InternalServices.ENCODER);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onSuccess(final Void v) {
-        _dialog.workingCopyCreated();
-        _dialog.hide();
+    protected void onSuccess(final Template delta) {
+        InternalServices.DIALOGS.editTemplate(
+            delta,
+            _template,
+            _table)
+        .show();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Template parse(final Response response) {
+        return parseTemplate(response);
     }
 }

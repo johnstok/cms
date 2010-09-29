@@ -24,16 +24,16 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
+package ccc.client.actions;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
-import ccc.client.gwt.views.gxt.HistoryDialog;
 import ccc.client.remoting.GetAbsolutePathAction;
 import ccc.client.remoting.OpenTemplateRevisionAction;
+import ccc.client.views.HistoryView;
 
 /**
  * Open a dialog to preview the selected resource.
@@ -44,14 +44,14 @@ public final class PreviewHistoricalAction
     implements
         Action {
 
-    private final HistoryDialog _historyDialog;
+    private final HistoryView _historyDialog;
 
     /**
      * Constructor.
      *
      * @param dialog The history dialog.
      */
-    public PreviewHistoricalAction(final HistoryDialog dialog) {
+    public PreviewHistoricalAction(final HistoryView dialog) {
         _historyDialog = dialog;
     }
 

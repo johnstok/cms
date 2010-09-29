@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,32 +21,24 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
-
-import ccc.client.core.Action;
-import ccc.client.core.InternalServices;
+package ccc.client.core;
 
 
 /**
- * Display help window.
+ * Timer API.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenHelpAction
-    implements
-        Action {
+public interface Timers {
 
-    /** {@inheritDoc} */
-    public void execute() {
-        InternalServices.WINDOW.openUrl(
-            InternalServices.GLOBALS.appURL()
-                +"static/manual/CCC7_UserManual.htm",
-            "_blank",
-            "height=480,width=640,"
-                + "menubar=no,toolbar=no,location=no,"
-                + "resizable=yes,scrollbars=yes,status=no");
-    }
+    /**
+     * Schedule a runnable behaviour to be repeated.
+     *
+     * @param r            The behaviour to perform.
+     * @param periodMillis The delay period between each invocation.
+     */
+    void scheduleRepeating(Runnable r, int periodMillis);
 }

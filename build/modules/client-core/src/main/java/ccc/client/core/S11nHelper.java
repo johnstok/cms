@@ -87,7 +87,7 @@ public class S11nHelper {
      *
      * @return The resource summary.
      */
-    protected ResourceSummary parseResourceSummary(final Response response) {
+    public ResourceSummary parseResourceSummary(final Response response) {
         return
             serializers()
                 .create(ResourceSummary.class)
@@ -102,7 +102,7 @@ public class S11nHelper {
      *
      * @return The corresponding template.
      */
-    protected Template parseTemplate(final Response response) {
+    public Template parseTemplate(final Response response) {
         return
             serializers()
                 .create(Template.class)
@@ -117,7 +117,7 @@ public class S11nHelper {
      *
      * @return The corresponding collection.
      */
-    protected PagedCollection<ResourceSummary> parseResourceSummaries(
+    public PagedCollection<ResourceSummary> parseResourceSummaries(
                                                       final Response response) {
         return
             serializers()
@@ -133,7 +133,7 @@ public class S11nHelper {
      *
      * @return The corresponding collection.
      */
-    protected PagedCollection<ActionSummary> readActionSummaryCollection(
+    public PagedCollection<ActionSummary> readActionSummaryCollection(
                                                       final Response response) {
         return
             serializers()
@@ -149,7 +149,7 @@ public class S11nHelper {
      *
      * @return The corresponding collection.
      */
-    protected PagedCollection<File> readFileSummaries(final Response response) {
+    public PagedCollection<File> readFileSummaries(final Response response) {
         return
             serializers()
                 .create(PagedCollection.class)
@@ -164,7 +164,7 @@ public class S11nHelper {
      *
      * @return The corresponding collection.
      */
-    protected PagedCollection<Template> readTemplates(final Response response) {
+    public PagedCollection<Template> readTemplates(final Response response) {
         return
             serializers()
                 .create(PagedCollection.class)
@@ -179,7 +179,7 @@ public class S11nHelper {
      *
      * @return The corresponding collection.
      */
-    protected PagedCollection<Comment> readComments(final Response response) {
+    public PagedCollection<Comment> readComments(final Response response) {
         return
             serializers()
                 .create(PagedCollection.class)
@@ -194,7 +194,7 @@ public class S11nHelper {
      *
      * @return The corresponding collection.
      */
-    protected PagedCollection<User> readUserCollection(
+    public PagedCollection<User> readUserCollection(
                                                       final Response response) {
         return
             serializers()
@@ -210,7 +210,7 @@ public class S11nHelper {
      *
      * @return The corresponding collection.
      */
-    protected PagedCollection<Group> readGroups(final Response response) {
+    public PagedCollection<Group> readGroups(final Response response) {
         return
             serializers()
                 .create(PagedCollection.class)
@@ -241,7 +241,7 @@ public class S11nHelper {
      *
      * @return The corresponding API.
      */
-    protected API readAPI(final Response response) {
+    public API readAPI(final Response response) {
         return serializers().create(API.class).read(response.getText());
     }
 
@@ -253,7 +253,7 @@ public class S11nHelper {
      *
      * @return The corresponding resource.
      */
-    protected Resource readResource(final Response response) {
+    public Resource readResource(final Response response) {
         return serializers().create(Resource.class).read(response.getText());
     }
 
@@ -265,7 +265,7 @@ public class S11nHelper {
      *
      * @return The corresponding folder.
      */
-    protected Folder readFolder(final Response response) {
+    public Folder readFolder(final Response response) {
         return serializers().create(Folder.class).read(response.getText());
     }
 
@@ -277,7 +277,7 @@ public class S11nHelper {
      *
      * @return The corresponding resource summary.
      */
-    protected ResourceSummary readResourceSummary(final Response response) {
+    public ResourceSummary readResourceSummary(final Response response) {
         return serializers()
                 .create(ResourceSummary.class)
                 .read(response.getText());
@@ -291,7 +291,7 @@ public class S11nHelper {
      *
      * @return The corresponding duration.
      */
-    protected Duration readDuration(final Response response) {
+    public Duration readDuration(final Response response) {
         return serializers().create(Duration.class).read(response.getText());
     }
 
@@ -303,7 +303,7 @@ public class S11nHelper {
      *
      * @return The corresponding page.
      */
-    protected Page readPage(final Response response) {
+    public Page readPage(final Response response) {
         return serializers().create(Page.class).read(response.getText());
     }
 
@@ -315,7 +315,7 @@ public class S11nHelper {
      *
      * @return The corresponding ACL.
      */
-    protected ACL readACL(final Response response) {
+    public ACL readACL(final Response response) {
         return serializers().create(ACL.class).read(response.getText());
     }
 
@@ -327,7 +327,7 @@ public class S11nHelper {
      *
      * @return The corresponding boolean.
      */
-    protected Boolean readBoolean(final Response response) {
+    public Boolean readBoolean(final Response response) {
         return serializers().create(Boolean.class).read(response.getText());
     }
 
@@ -339,7 +339,7 @@ public class S11nHelper {
      *
      * @return The corresponding user.
      */
-    protected User readUser(final Response response) {
+    public User readUser(final Response response) {
         return serializers().create(User.class).read(response.getText());
     }
 
@@ -351,7 +351,7 @@ public class S11nHelper {
      *
      * @return The corresponding group.
      */
-    protected Group readGroup(final Response response) {
+    public Group readGroup(final Response response) {
         return serializers().create(Group.class).read(response.getText());
     }
 
@@ -363,7 +363,7 @@ public class S11nHelper {
      *
      * @return The corresponding file.
      */
-    protected File readFile(final Response response) {
+    public File readFile(final Response response) {
         return serializers().create(File.class).read(response.getText());
     }
 
@@ -387,7 +387,7 @@ public class S11nHelper {
      *
      * @return The corresponding template.
      */
-    protected Template readTemplate(final Response response) {
+    public Template readTemplate(final Response response) {
         return serializers().create(Template.class).read(response.getText());
     }
 
@@ -447,7 +447,7 @@ public class S11nHelper {
      *
      * @return The string representation.
      */
-    protected String writeTemplate(final Template t) {
+    public String writeTemplate(final Template t) {
         return serializers().create(Template.class).write(t);
     }
 
@@ -459,7 +459,7 @@ public class S11nHelper {
      *
      * @return The string representation.
      */
-    protected String writeAlias(final Alias alias) {
+    public String writeAlias(final Alias alias) {
         return serializers().create(Alias.class).write(alias);
     }
 
@@ -471,7 +471,7 @@ public class S11nHelper {
      *
      * @return The string representation.
      */
-    protected String writePage(final Page page) {
+    public String writePage(final Page page) {
         return serializers().create(Page.class).write(page);
     }
 
@@ -483,7 +483,7 @@ public class S11nHelper {
      *
      * @return The string representation.
      */
-    protected String writeUser(final User user) {
+    public String writeUser(final User user) {
         return serializers().create(User.class).write(user);
     }
 
@@ -495,7 +495,7 @@ public class S11nHelper {
      *
      * @return The string representation.
      */
-    protected String writeACL(final ACL acl) {
+    public String writeACL(final ACL acl) {
         return serializers().create(ACL.class).write(acl);
     }
 
@@ -507,7 +507,7 @@ public class S11nHelper {
      *
      * @return The string representation.
      */
-    protected String writeResource(final Resource resource) {
+    public String writeResource(final Resource resource) {
         return serializers().create(Resource.class).write(resource);
     }
 
@@ -519,7 +519,7 @@ public class S11nHelper {
      *
      * @return The string representation.
      */
-    protected String writeFolder(final Folder folder) {
+    public String writeFolder(final Folder folder) {
         return serializers().create(Folder.class).write(folder);
     }
 
@@ -531,7 +531,7 @@ public class S11nHelper {
      *
      * @return The string representation.
      */
-    protected String writeComment(final Comment comment) {
+    public String writeComment(final Comment comment) {
         return serializers().create(Comment.class).write(comment);
     }
 
@@ -542,7 +542,7 @@ public class S11nHelper {
      *
      * @return The string representation.
      */
-    protected String writeFile(final File file) {
+    public String writeFile(final File file) {
         return serializers().create(File.class).write(file);
     }
 
@@ -554,7 +554,7 @@ public class S11nHelper {
      *
      * @return The string representation.
      */
-    protected String writeAction(final ccc.api.core.Action action) {
+    public String writeAction(final ccc.api.core.Action action) {
         return serializers().create(ccc.api.core.Action.class).write(action);
     }
 
@@ -566,7 +566,7 @@ public class S11nHelper {
      *
      * @return The string representation.
      */
-    protected String writeGroup(final Group group) {
+    public String writeGroup(final Group group) {
         return serializers().create(Group.class).write(group);
     }
 
@@ -578,12 +578,9 @@ public class S11nHelper {
      *
      * @return The string representation.
      */
-    protected String writeResourceCriteria(final ResourceCriteria criteria) {
+    public String writeResourceCriteria(final ResourceCriteria criteria) {
         return serializers().create(ResourceCriteria.class).write(criteria);
     }
-
-
-    private Serializers serializers() { return _serializers; }
 
 
     /**
@@ -596,4 +593,7 @@ public class S11nHelper {
     public Action readAction(final Response response) {
         return serializers().create(Action.class).read(response.getText());
     }
+
+
+    private Serializers serializers() { return _serializers; }
 }

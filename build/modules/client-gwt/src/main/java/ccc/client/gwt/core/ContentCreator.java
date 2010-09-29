@@ -41,7 +41,6 @@ import ccc.client.gwt.i18n.GWTErrorResolutions;
 import ccc.client.gwt.i18n.GWTUIConstants;
 import ccc.client.gwt.i18n.GWTUIMessages;
 import ccc.client.gwt.remoting.IsLoggedInAction;
-import ccc.client.gwt.validation.Validations;
 import ccc.client.i18n.ActionNameConstants;
 import ccc.client.i18n.ActionStatusConstants;
 import ccc.client.i18n.CommandTypeConstants;
@@ -62,7 +61,7 @@ import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
  */
 public final class ContentCreator implements EntryPoint {
 
-    private GlobalsImpl _globals = new GlobalsImpl();
+    private GWTGlobals _globals = new GWTGlobals();
 
 
     /**
@@ -79,16 +78,17 @@ public final class ContentCreator implements EntryPoint {
         I18n.ERROR_RESOLUTIONS =
             GWT.<ErrorResolutions>create(GWTErrorResolutions.class);
 
-        GlobalsImpl.setUserActions(
+        GWTGlobals.setUserActions(
             GWT.<ActionNameConstants>create(GWTActionNameConstants.class));
-        GlobalsImpl.setActionConstants(
+        GWTGlobals.setActionConstants(
             GWT.<ActionStatusConstants>create(GWTActionStatusConstants.class));
-        GlobalsImpl.setCommandConstants(
+        GWTGlobals.setCommandConstants(
             GWT.<CommandTypeConstants>create(GWTCommandTypeConstants.class));
 
         InternalServices.GLOBALS     = _globals;
+        InternalServices.TIMERS      = new GWTTimers();
         InternalServices.VALIDATOR   = new Validations();
-        InternalServices.EXECUTOR    = new GwtRequestExecutor();
+        InternalServices.EXECUTOR    = new GWTRequestExecutor();
         InternalServices.SERIALIZERS =
             new SerializerFactory(new GWTTextParser());
         InternalServices.ENCODER     = new GWTTemplateEncoder();

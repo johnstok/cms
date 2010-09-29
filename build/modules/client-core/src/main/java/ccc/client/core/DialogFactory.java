@@ -44,6 +44,7 @@ import ccc.client.views.CreateFolder;
 import ccc.client.views.CreatePage;
 import ccc.client.views.CreateTextFile;
 import ccc.client.views.CreateUser;
+import ccc.client.views.EditTextFile;
 import ccc.client.views.RenameResource;
 
 
@@ -249,4 +250,34 @@ public interface DialogFactory {
      * @return The required dialog.
      */
     LegacyView editCaching(ResourceSummary item, Duration ds);
+
+
+    /**
+     * Create a dialog.
+     *
+     * @return The required dialog.
+     */
+    LegacyView login();
+
+
+    /**
+     * Create a dialog.
+     *
+     * @param model The template to update.
+     * @param proxy The resource model.
+     * @param ssm The selection model.
+     *
+     * @return The required dialog.
+     */
+    LegacyView editTemplate(Template model,
+                            ResourceSummary proxy,
+                            SingleSelectionModel ssm);
+
+
+    /**
+     * Create a dialog.
+     *
+     * @return The required dialog.
+     */
+    EditTextFile editTextFile();
 }

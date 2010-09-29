@@ -39,4 +39,10 @@ public interface LegacyView {
      * Shows the view.
      */
     void show();
+
+
+    /**
+     * Hides the view.
+     */
+    void hide();
 }

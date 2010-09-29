@@ -14,7 +14,7 @@ import com.google.gwt.http.client.RequestCallback;
  *
  * @author Civic Computing Ltd.
  */
-final class RequestCallbackAdapter
+final class GWTRequestCallback
     implements
         RequestCallback {
 
@@ -25,7 +25,7 @@ final class RequestCallbackAdapter
      *
      * @param handler The response handler for this callback.
      */
-    public RequestCallbackAdapter(final ResponseHandler handler) {
+    public GWTRequestCallback(final ResponseHandler handler) {
         _handler = DBC.require().notNull(handler);
     }
 

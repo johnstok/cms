@@ -43,7 +43,7 @@ import com.google.gwt.http.client.RequestBuilder.Method;
  *
  * @author Civic Computing Ltd.
  */
-class GwtRequestExecutor
+class GWTRequestExecutor
     implements
         RequestExecutor {
 
@@ -69,7 +69,7 @@ class GwtRequestExecutor
             builder.setRequestData(request.getBody());
         }
 
-        builder.setCallback(new RequestCallbackAdapter(handler));
+        builder.setCallback(new GWTRequestCallback(handler));
 
         try {
             builder.send();

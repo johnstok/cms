@@ -38,6 +38,7 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.widgets.HistoryToolBar;
+import ccc.client.views.HistoryView;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.BeanModel;
@@ -57,7 +58,9 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  */
 public class HistoryDialog
     extends
-        AbstractTableDialog<Revision, BeanModel> {
+        AbstractTableDialog<Revision, BeanModel>
+    implements
+        HistoryView {
 
     private final ToolBar _toolBar;
     private final SingleSelectionModel _ssm;
@@ -145,11 +148,8 @@ public class HistoryDialog
     }
 
 
-    /**
-     * Returns selected {@link LogEntrySummaryModelData}.
-     *
-     * @return The selected item.
-     */
+    /** {@inheritDoc} */
+    @Override
     public Revision selectedItem() {
         final Revision selected =
             getGrid().getSelectionModel().getSelectedItem().getBean();
@@ -157,10 +157,8 @@ public class HistoryDialog
     }
 
 
-    /**
-     * Updates selection model for a working copy.
-     *
-     */
+    /** {@inheritDoc} */
+    @Override
     public void workingCopyCreated() {
         final ResourceSummary selectedInMainWindow =
             _ssm.tableSelection();
@@ -169,21 +167,15 @@ public class HistoryDialog
     }
 
 
-    /**
-     * Return boolean value of the selected resource's lock status.
-     *
-     * @return True is selection is locked.
-     */
+    /** {@inheritDoc} */
+    @Override
     public boolean hasLock() {
         return null!=_ssm.tableSelection().getLockedBy();
     }
 
 
-    /**
-     * Accessor.
-     *
-     * @return The id for the resource.
-     */
+    /** {@inheritDoc} */
+    @Override
     public ResourceSummary getResource() {
         return _ssm.tableSelection();
     }

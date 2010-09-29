@@ -21,62 +21,59 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.actions;
 
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.HttpMethod;
+import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
 
-
 /**
- * Lock a resource.
+ * Open a dialog to preview the selected resource.
  *
  * @author Civic Computing Ltd.
  */
-public class LockAction
-    extends
-        RemotingAction<Void> {
+public final class PreviewAction
+    implements
+        Action {
 
     private final SingleSelectionModel _selectionModel;
-
+    private final boolean _useWorkingCopy;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model.
+     * @param useWorkingCopy Boolean for working copy preview.
      */
-    public LockAction(final SingleSelectionModel selectionModel) {
-        super(UI_CONSTANTS.lock(), HttpMethod.POST);
+    public PreviewAction(final SingleSelectionModel selectionModel,
+                         final boolean useWorkingCopy) {
         _selectionModel = selectionModel;
+        _useWorkingCopy = useWorkingCopy;
     }
 
-
     /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        final ResourceSummary delegate =
-            _selectionModel.tableSelection();
-        return delegate.lock().build(InternalServices.ENCODER);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onSuccess(final Void v) {
+    public void execute() {
         final ResourceSummary item = _selectionModel.tableSelection();
-        item.setLockedBy(
-            InternalServices.GLOBALS.currentUser().getUsername());
-        _selectionModel.update(item);
+        final String url =
+            InternalServices.GLOBALS.appURL()
+                + "preview"
+                + item.getAbsolutePath()
+                + ((_useWorkingCopy) ? "?wc" : "");
+
+        InternalServices.WINDOW.openUrl(
+            url,
+            "ccc_preview",
+            "menubar=no,"
+            + "width=640,"
+            + "height=480,"
+            + "location=yes,"
+            + "toolbar=no,"
+            + "resizable=yes,"
+            + "scrollbars=yes,"
+            + "status=no");
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected Void parse(final Response response) { return null; }
 }

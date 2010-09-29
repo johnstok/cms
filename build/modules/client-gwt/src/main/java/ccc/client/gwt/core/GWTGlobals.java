@@ -44,7 +44,7 @@ import com.google.gwt.core.client.GWT;
  *
  * @author Civic Computing Ltd.
  */
-class GlobalsImpl
+class GWTGlobals
     implements
         Globals {
 
@@ -89,7 +89,7 @@ class GlobalsImpl
 
 
     /**
-     * User Summary shared by all instances of {@link GlobalsImpl}.
+     * User Summary shared by all instances of {@link GWTGlobals}.
      *
      * @author Civic Computing Ltd.
      */

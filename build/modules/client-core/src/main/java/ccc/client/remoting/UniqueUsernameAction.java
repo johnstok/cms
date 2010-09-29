@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.remoting;
 
 import ccc.api.types.Link;
 import ccc.api.types.Username;
@@ -35,12 +35,11 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandlerAdapter;
-
-import com.google.gwt.json.client.JSONParser;
+import ccc.client.core.S11nHelper;
 
 
 /**
- * TODO: Add a description for this type.
+ * Determine whether a specified username exists.
  *
  * @author Civic Computing Ltd.
  */
@@ -86,10 +85,8 @@ public abstract class UniqueUsernameAction
                     /** {@inheritDoc} */
                     @Override public void onOK(final Response response) {
                         final boolean exists =
-                            JSONParser
-                                .parse(response.getText())
-                                .isBoolean()
-                                .booleanValue();
+                            new S11nHelper().readBoolean(response)
+                            .booleanValue();
                         execute(exists);
                     }
                 });

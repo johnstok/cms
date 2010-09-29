@@ -41,13 +41,10 @@ import ccc.client.core.Globals;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.views.gxt.LoginDialog;
 import ccc.client.remoting.ListActionsAction;
 import ccc.client.remoting.ListComments;
 import ccc.client.remoting.ListGroups;
 import ccc.client.remoting.ListUsersAction;
-
-import com.google.gwt.user.client.Timer;
 
 
 /**
@@ -84,7 +81,7 @@ public class IsLoggedInAction
             InternalServices.WINDOW.enableExitConfirmation();
             loadServices();
         } else {
-            new LoginDialog().show();
+            InternalServices.DIALOGS.login().show();
         }
     }
 
@@ -171,7 +168,7 @@ public class IsLoggedInAction
             }
         }.execute();
 
-        final Timer timer = new Timer() {
+        final Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 new GetCurrentUserAction() {
@@ -182,6 +179,7 @@ public class IsLoggedInAction
                 }.execute();
             }
         };
-        timer.scheduleRepeating(KEEP_ALIVE);
+
+        InternalServices.TIMERS.scheduleRepeating(runnable, KEEP_ALIVE);
     }
 }

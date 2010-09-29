@@ -24,56 +24,29 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
+package ccc.client.actions;
 
-import ccc.api.core.ResourceSummary;
 import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
-import ccc.client.core.SingleSelectionModel;
+
 
 /**
- * Open a dialog to preview the selected resource.
+ * Display help window.
  *
  * @author Civic Computing Ltd.
  */
-public final class PreviewAction
+public final class OpenHelpAction
     implements
         Action {
 
-    private final SingleSelectionModel _selectionModel;
-    private final boolean _useWorkingCopy;
-
-    /**
-     * Constructor.
-     *
-     * @param selectionModel The selection model.
-     * @param useWorkingCopy Boolean for working copy preview.
-     */
-    public PreviewAction(final SingleSelectionModel selectionModel,
-                         final boolean useWorkingCopy) {
-        _selectionModel = selectionModel;
-        _useWorkingCopy = useWorkingCopy;
-    }
-
     /** {@inheritDoc} */
     public void execute() {
-        final ResourceSummary item = _selectionModel.tableSelection();
-        final String url =
-            InternalServices.GLOBALS.appURL()
-                + "preview"
-                + item.getAbsolutePath()
-                + ((_useWorkingCopy) ? "?wc" : "");
-
         InternalServices.WINDOW.openUrl(
-            url,
-            "ccc_preview",
-            "menubar=no,"
-            + "width=640,"
-            + "height=480,"
-            + "location=yes,"
-            + "toolbar=no,"
-            + "resizable=yes,"
-            + "scrollbars=yes,"
-            + "status=no");
+            InternalServices.GLOBALS.appURL()
+                +"static/manual/CCC7_UserManual.htm",
+            "_blank",
+            "height=480,width=640,"
+                + "menubar=no,toolbar=no,location=no,"
+                + "resizable=yes,scrollbars=yes,status=no");
     }
 }

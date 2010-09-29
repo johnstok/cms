@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,54 +21,54 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
 
-import ccc.api.core.Security;
-import ccc.client.core.Globals;
-import ccc.client.core.HttpMethod;
-import ccc.client.core.InternalServices;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Response;
+package ccc.client.views;
+
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.Revision;
+import ccc.client.core.LegacyView;
 
 
 /**
- * Log current user out.
+ * MVP view to display a list of revisions.
  *
  * @author Civic Computing Ltd.
  */
-public final class LogoutAction
+public interface HistoryView
     extends
-        RemotingAction<Void> {
-
+        LegacyView {
 
     /**
-     * Constructor.
+     * Returns selected {@link LogEntrySummaryModelData}.
+     *
+     * @return The selected item.
      */
-    public LogoutAction() {
-        super(UI_CONSTANTS.logout(), HttpMethod.POST);
-    }
+    Revision selectedItem();
 
+    /**
+     * Updates selection model for a working copy.
+     *
+     */
+    @Deprecated // TODO Move to presenter.
+    void workingCopyCreated();
 
-    /** {@inheritDoc} */
-    @Override
-    protected void onSuccess(final Void v) {
-        InternalServices.GLOBALS.currentUser(null);
-        InternalServices.WINDOW.disableExitConfirmation();
-        InternalServices.WINDOW.redirectTo(Globals.APP_URL);
-    }
+    /**
+     * Return boolean value of the selected resource's lock status.
+     *
+     * @return True is selection is locked.
+     */
+    @Deprecated // TODO Move to presenter.
+    boolean hasLock();
 
+    /**
+     * Accessor.
+     *
+     * @return The id for the resource.
+     */
+    @Deprecated // TODO Move to presenter.
+    ResourceSummary getResource();
 
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        return InternalServices.API.getLink(Security.CURRENT);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected Void parse(final Response response) { return null; }
 }

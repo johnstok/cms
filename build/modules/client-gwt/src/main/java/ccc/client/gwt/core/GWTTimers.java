@@ -26,40 +26,26 @@
  */
 package ccc.client.gwt.core;
 
-import ccc.plugins.s11n.S11nException;
-import ccc.plugins.s11n.json.Json;
-import ccc.plugins.s11n.json.TextParser;
+import ccc.client.core.Timers;
 
-import com.google.gwt.json.client.JSONException;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.Timer;
 
 
 /**
- * Implementation of the {@link TextParser} API using the GWT library.
+ * GWT implementation of the {@link Timers} API.
  *
  * @author Civic Computing Ltd.
  */
-class GWTTextParser
+class GWTTimers
     implements
-        TextParser {
-
+        Timers {
 
     /** {@inheritDoc} */
     @Override
-    public Json parseJson(final String text) {
-        try {
-            final JSONObject result =
-                JSONParser.parse(text).isObject();
-            final Json json = new GWTJson(result);
-            return json;
-        } catch (final JSONException e) {
-            throw new S11nException(e);
-        }
+    public void scheduleRepeating(final Runnable r, final int periodMillis) {
+        new Timer() {
+            /** {@inheritDoc} */
+            @Override public void run() { r.run(); }
+        }.scheduleRepeating(periodMillis);
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Json newJson() { return new GWTJson(); }
 }

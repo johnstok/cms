@@ -59,6 +59,7 @@ public class InternalServices {
     public static Window              WINDOW;
     public static DialogFactory       DIALOGS;
     public static Globals             GLOBALS;
+    public static Timers              TIMERS;
 
     public static API                              API;
     public static PagedCollection<ActionSummary>   ACTIONS;

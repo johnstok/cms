@@ -24,19 +24,18 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.remoting;
 
 import ccc.api.core.Template;
 import ccc.api.types.Link;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-
-import com.google.gwt.json.client.JSONParser;
+import ccc.client.core.S11nHelper;
 
 
 /**
- * TODO: Add a description for this type.
+ * Determine whether a template with the specified name exists.
  *
  * @author Civic Computing Ltd.
  */
@@ -45,6 +44,7 @@ public abstract class TemplateNameExistsAction
         RemotingAction<Boolean> {
 
     private final String _name;
+
 
     /**
      * Constructor.
@@ -56,6 +56,7 @@ public abstract class TemplateNameExistsAction
         _name = name;
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
@@ -64,18 +65,20 @@ public abstract class TemplateNameExistsAction
             .build("name", _name, InternalServices.ENCODER);
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final Boolean nameExists) {
-        execute(nameExists);
+        execute(nameExists.booleanValue());
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected Boolean parse(final Response response) {
-        return JSONParser.parse(response.getText()).isBoolean().booleanValue();
+        return new S11nHelper().readBoolean(response);
     }
+
 
     /**
      * Handle a successful execution.

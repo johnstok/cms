@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.validation;
+package ccc.client.gwt.core;
 
 
 import ccc.client.validation.AbstractValidations;
@@ -42,7 +42,7 @@ import com.google.gwt.xml.client.impl.DOMParseException;
  *
  * @author Civic Computing Ltd.
  */
-public final class Validations
+final class Validations
     extends
         AbstractValidations {
 

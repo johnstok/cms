@@ -86,7 +86,7 @@ public class S11nHelperTest
 
 
     /**
-     * Factory for {@link BadSerializer}..
+     * Factory for {@link BadSerializer}.
      *
      * @author Civic Computing Ltd.
      */

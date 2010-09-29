@@ -51,7 +51,7 @@ import com.google.gwt.json.client.JSONValue;
  *
  * @author Civic Computing Ltd.
  */
-class GwtJson
+class GWTJson
     implements
         Json {
 
@@ -63,7 +63,7 @@ class GwtJson
      *
      * @param delegate The GWT class will delegate to.
      */
-    public GwtJson(final JSONObject delegate) {
+    public GWTJson(final JSONObject delegate) {
         _delegate = delegate;
     }
 
@@ -71,7 +71,7 @@ class GwtJson
      * Constructor.
      *
      */
-    public GwtJson() {
+    public GWTJson() {
         _delegate = new JSONObject();
     }
 
@@ -80,7 +80,7 @@ class GwtJson
      *
      * @param properties A map of properties for this JSON object.
      */
-    public GwtJson(final Map<String, String> properties) {
+    public GWTJson(final Map<String, String> properties) {
         this();
         for (final Map.Entry<String, String> prop : properties.entrySet()) {
             _delegate.put(prop.getKey(), new JSONString(prop.getValue()));
@@ -114,7 +114,7 @@ class GwtJson
         final Collection<Json> value = new ArrayList<Json>();
         final JSONArray a = _delegate.get(key).isArray();
         for (int i=0; i<a.size(); i++) {
-            value.add(new GwtJson(a.get(i).isObject()));
+            value.add(new GWTJson(a.get(i).isObject()));
         }
         return value;
     }
@@ -178,7 +178,7 @@ class GwtJson
         } else if (null!=value.isNull()) {
             return null;
         }
-        return new GwtJson(value.isObject());
+        return new GWTJson(value.isObject());
     }
 
     /** {@inheritDoc} */
@@ -349,7 +349,7 @@ class GwtJson
 
     /** {@inheritDoc} */
     @Override
-    public Json create() { return new GwtJson(); }
+    public Json create() { return new GWTJson(); }
 
     /** {@inheritDoc} */
     @Override
@@ -357,7 +357,7 @@ class GwtJson
         if (null==value) {
             _delegate.put(key, JSONNull.getInstance());
         } else {
-            final GwtJson o = (GwtJson) value;
+            final GWTJson o = (GWTJson) value;
             _delegate.put(key, o.getDelegate());
         }
     }
@@ -369,7 +369,7 @@ class GwtJson
         final JSONArray value = new JSONArray();
         int i=0;
         for (final Json j : values) {
-            final GwtJson o = (GwtJson) j;
+            final GWTJson o = (GWTJson) j;
             value.set(i, o.getDelegate());
             i++;
         }

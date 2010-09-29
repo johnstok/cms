@@ -24,68 +24,51 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.remoting;
 
-import ccc.api.core.File;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Security;
+import ccc.client.core.Globals;
+import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.EditTextFileDialog;
-import ccc.client.gwt.widgets.ResourceTable;
-import ccc.client.presenters.EditTextFilePresenter;
 
 
 /**
- * Action for text file edit dialog opening.
+ * Log current user out.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenEditTextFileAction
+public final class LogoutAction
     extends
-        RemotingAction<File> {
-
-
-    private final SingleSelectionModel _selectionModel;
+        RemotingAction<Void> {
 
 
     /**
      * Constructor.
-     *
-     * @param selectionModel The selection model.
      */
-    public OpenEditTextFileAction(final ResourceTable selectionModel) {
-        super(UI_CONSTANTS.updateTextFile());
-        _selectionModel = selectionModel;
+    public LogoutAction() {
+        super(UI_CONSTANTS.logout(), HttpMethod.POST);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onSuccess(final Void v) {
+        InternalServices.GLOBALS.currentUser(null);
+        InternalServices.WINDOW.disableExitConfirmation();
+        InternalServices.WINDOW.redirectTo(Globals.APP_URL);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        final ResourceSummary item = _selectionModel.tableSelection();
-        return item.self().build(InternalServices.ENCODER);
+        return InternalServices.API.getLink(Security.CURRENT);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onSuccess(final File dto) {
-        if (dto.getContent() != null) {
-            new EditTextFilePresenter(
-                new EditTextFileDialog(),
-                dto);
-        } else {
-            InternalServices.WINDOW.alert(
-                UI_CONSTANTS.noEditorForResource());
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected File parse(final Response response) {
-        return readFile(response);
-    }
+    protected Void parse(final Response response) { return null; }
 }

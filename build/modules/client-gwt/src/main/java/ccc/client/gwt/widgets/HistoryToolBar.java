@@ -29,11 +29,11 @@ package ccc.client.gwt.widgets;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Permission;
 import ccc.api.types.ResourceType;
+import ccc.client.actions.PreviewHistoricalAction;
 import ccc.client.core.I18n;
-import ccc.client.gwt.actions.PreviewHistoricalAction;
-import ccc.client.gwt.remoting.CreateWorkingCopyFromHistoricalVersionAction;
 import ccc.client.gwt.views.gxt.HistoryDialog;
 import ccc.client.i18n.UIConstants;
+import ccc.client.remoting.CreateWorkingCopyFromHistoricalVersionAction;
 
 
 /**

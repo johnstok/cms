@@ -51,7 +51,9 @@ import ccc.client.gwt.views.gxt.CreateUserDialog;
 import ccc.client.gwt.views.gxt.EditCacheDialog;
 import ccc.client.gwt.views.gxt.EditFolderDialog;
 import ccc.client.gwt.views.gxt.EditTemplateDialog;
+import ccc.client.gwt.views.gxt.EditTextFileDialog;
 import ccc.client.gwt.views.gxt.HistoryDialog;
+import ccc.client.gwt.views.gxt.LoginDialog;
 import ccc.client.gwt.views.gxt.MoveDialog;
 import ccc.client.gwt.views.gxt.PreviewTemplateDialog;
 import ccc.client.gwt.views.gxt.RenameDialog;
@@ -66,6 +68,7 @@ import ccc.client.views.CreateFolder;
 import ccc.client.views.CreatePage;
 import ccc.client.views.CreateTextFile;
 import ccc.client.views.CreateUser;
+import ccc.client.views.EditTextFile;
 import ccc.client.views.RenameResource;
 
 
@@ -223,5 +226,28 @@ class GWTDialogFactory
     public LegacyView editCaching(final ResourceSummary tableSelection,
                                   final Duration duration) {
         return new EditCacheDialog(tableSelection, duration);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public LegacyView login() {
+        return new LoginDialog();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public LegacyView editTemplate(final Template delta,
+                                   final ResourceSummary template,
+                                   final SingleSelectionModel table) {
+        return new EditTemplateDialog(delta, template, table);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public EditTextFile editTextFile() {
+        return new EditTextFileDialog();
     }
 }
