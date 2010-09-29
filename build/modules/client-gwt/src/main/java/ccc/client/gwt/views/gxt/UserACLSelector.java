@@ -32,6 +32,8 @@ import java.util.List;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.types.SortOrder;
+import ccc.client.core.DefaultCallback;
+import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.i18n.UIConstants;
 import ccc.client.remoting.ListUsersAction;
@@ -172,23 +174,23 @@ public class UserACLSelector extends Window {
                         page,
                         config.getLimit(),
                         config.getSortField(),
-                        order) {
+                        order).execute(
+                            new DefaultCallback<PagedCollection<User>>(
+                                              I18n.UI_CONSTANTS.updateRoles()) {
 
-                        @Override
-                        protected void execute(
-                                           final PagedCollection<User> users) {
-                            final List<BeanModel> results =
-                                DataBinding.bindUserSummary(
-                                    users.getElements());
+                            @Override
+                            public void onSuccess(
+                                            final PagedCollection<User> users) {
+                                final List<BeanModel> results =
+                                    DataBinding.bindUserSummary(
+                                        users.getElements());
 
-                            final PagingLoadResult<BeanModel> plr =
-                                new BasePagingLoadResult<BeanModel>(
-                                    results, config.getOffset(),
-                                    (int) users.getTotalCount());
-                            callback.onSuccess(plr);
-                        }
-
-                    }.execute();
+                                final PagingLoadResult<BeanModel> plr =
+                                    new BasePagingLoadResult<BeanModel>(
+                                        results, config.getOffset(),
+                                        (int) users.getTotalCount());
+                                callback.onSuccess(plr);
+                            }});
                 }
             }
 

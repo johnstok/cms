@@ -36,6 +36,7 @@ import java.util.UUID;
 
 import ccc.api.core.Group;
 import ccc.api.types.Username;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.Editable;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
@@ -225,15 +226,16 @@ public class CreateUserDialog
 
     private void uniqueUsername(final Username username,
                                 final ValidationResult result) {
-        new UniqueUsernameAction(username){
+        new UniqueUsernameAction(username).execute(
+            new DefaultCallback<Boolean>(
+                                      I18n.USER_ACTIONS.checkUniqueUsername()) {
             @Override
-            protected void execute(final boolean usernameExists) {
-                if (usernameExists) {
+            public void onSuccess(final Boolean usernameExists) {
+                if (usernameExists.booleanValue()) {
                     result.addError(
                         getMessages().userWithUsernameAlreadyExists(username));
                 }
-            }
-        }.execute();
+            }});
     }
 
 

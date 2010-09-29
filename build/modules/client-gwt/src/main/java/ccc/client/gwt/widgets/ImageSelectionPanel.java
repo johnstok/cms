@@ -31,7 +31,9 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.api.core.File;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.remoting.GetImagesPagedAction;
@@ -214,14 +216,18 @@ public class ImageSelectionPanel extends ContentPanel {
         }
 
         @Override
-        protected void execute(final Collection<File> images,
-                               final long totalCount) {
-            final List<BeanModel> results =
-                loadModel(_image, images);
-            final PagingLoadResult<BeanModel> plr =
-                new BasePagingLoadResult<BeanModel>(
-                    results, _config.getOffset(), (int) totalCount);
-            _callback.onSuccess(plr);
+        public void execute() {
+            execute(new DefaultCallback<PagedCollection<File>>(I18n.USER_ACTIONS.internalAction()) {
+
+                @Override
+                public void onSuccess(final PagedCollection<File> images) {
+                    final List<BeanModel> results =
+                        loadModel(_image, images.getElements());
+                    final PagingLoadResult<BeanModel> plr =
+                        new BasePagingLoadResult<BeanModel>(
+                            results, _config.getOffset(), (int) images.getTotalCount());
+                    _callback.onSuccess(plr);
+                }});
         }
     }
 

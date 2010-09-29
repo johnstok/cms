@@ -29,16 +29,17 @@ package ccc.client.actions;
 import java.util.UUID;
 
 import ccc.api.core.Folder;
-import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
-import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.events.Event;
+import ccc.client.core.Response;
 
 
 /**
@@ -48,7 +49,7 @@ import ccc.client.events.Event;
  */
 public final class CreateFolderAction
     extends
-        RemotingAction {
+        RemotingAction<Folder> {
 
     private final String _name;
     private final UUID _parentFolder;
@@ -68,62 +69,24 @@ public final class CreateFolderAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
-        return createFolder(_name, _parentFolder);
-    }
-
-
-    /**
-     * Create a new folder.
-     *
-     * @param name The new folder's name.
-     * @param parentFolder The parent folder.
-     *
-     * @return The HTTP request to create a folder.
-     */
-    // FIXME: Should pass a folder here.
-    public Request createFolder(final String name,
-                                final UUID parentFolder) {
+    protected Request getRequest(final Callback<Folder> callback) {
         final String path = Globals.API_URL+InternalServices.API.folders();
 
         final Folder f = new Folder();
-        f.setParent(parentFolder);
-        f.setName(new ResourceName(name));
+        f.setParent(_parentFolder);
+        f.setName(new ResourceName(_name));
 
         return
             new Request(
                 HttpMethod.POST,
                 path,
                 writeFolder(f),
-                new FolderCreatedCallback(
-                    I18n.UI_CONSTANTS.createFolder()));
-    }
-
-
-    /**
-     * Callback handler for creating a folder.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public class FolderCreatedCallback extends ResponseHandlerAdapter {
-
-        /**
-         * Constructor.
-         *
-         * @param name The action name.
-         */
-        public FolderCreatedCallback(final String name) {
-            super(name);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onOK(final ccc.client.core.Response response) {
-            final Folder rs = readFolder(response);
-            final Event<CommandType> event =
-                new Event<CommandType>(CommandType.FOLDER_CREATE);
-            event.addProperty("resource", rs);
-            InternalServices.REMOTING_BUS.fireEvent(event);
-        }
+                new CallbackResponseHandler<Folder>(
+                    I18n.UI_CONSTANTS.createFolder(),
+                    callback,
+                    new Parser<Folder>() {
+                        @Override public Folder parse(final Response response) {
+                            return readFolder(response);
+                        }}));
     }
 }

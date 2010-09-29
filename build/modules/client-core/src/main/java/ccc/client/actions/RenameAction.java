@@ -26,20 +26,20 @@
  */
 package ccc.client.actions;
 
-import java.util.UUID;
 
 import ccc.api.core.Resource;
-import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourcePath;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
-import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.events.Event;
+import ccc.client.core.Response;
 
 
 /**
@@ -47,9 +47,9 @@ import ccc.client.events.Event;
  *
  * @author Civic Computing Ltd.
  */
-public class RenameAction
+public final class RenameAction
     extends
-        RemotingAction {
+        RemotingAction<Void> {
 
     private final String _name;
     private final Resource _resource;
@@ -75,63 +75,19 @@ public class RenameAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
-        return rename();
-    }
-
-
-    /**
-     * Rename a resource.
-     *
-     * @return The HTTP request to rename a resource.
-     */
-    public Request rename() {
+    protected Request getRequest(final Callback<Void> callback) {
         return
             new Request(
                 HttpMethod.POST,
                 Globals.API_URL
                     + _resource.rename().build(InternalServices.ENCODER),
                     _name,
-                new ResourceRenamedCallback(
+                new CallbackResponseHandler<Void>(
                     I18n.UI_CONSTANTS.rename(),
-                    _name,
-                    _resource.getId(),
-                    _newPath));
-    }
-
-
-    /**
-     * Callback handler for renaming a resource.
-     *
-     * @author Civic Computing Ltd.
-     */
-    private class ResourceRenamedCallback extends ResponseHandlerAdapter {
-
-        private final Event<CommandType> _event;
-
-        /**
-         * Constructor.
-         *
-         * @param name The action name.
-         * @param newPath The resource's new path.
-         * @param id The resource's ID.
-         * @param rName The resource's new name.
-         */
-        public ResourceRenamedCallback(final String name,
-                                       final String rName,
-                                       final UUID id,
-                                       final ResourcePath newPath) {
-            super(name);
-            _event = new Event<CommandType>(CommandType.RESOURCE_RENAME);
-            _event.addProperty("name", rName);
-            _event.addProperty("path", newPath);
-            _event.addProperty("id", id);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onNoContent(final ccc.client.core.Response response) {
-            InternalServices.REMOTING_BUS.fireEvent(_event);
-        }
+                    callback,
+                    new Parser<Void>() {
+                        @Override public Void parse(final Response response) {
+                            return null;
+                        }}));
     }
 }

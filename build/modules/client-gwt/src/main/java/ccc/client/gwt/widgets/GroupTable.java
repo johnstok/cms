@@ -33,6 +33,7 @@ import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.CommandType;
 import ccc.api.types.SortOrder;
+import ccc.client.core.Callback;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
@@ -179,30 +180,29 @@ public class GroupTable
 
                         new ListGroups(page, config.getLimit(),
                             config.getSortField(),
-                            order) {
+                            order)
+                        .execute(
+                            new Callback<PagedCollection<Group>>() {
 
-                            /** {@inheritDoc} */
-                            @Override
-                            protected void onFailure(final Throwable t) {
-                                callback.onFailure(t);
-                            }
+                                @Override
+                                public void onSuccess(final PagedCollection<Group> groups) {
+                                    final List<BeanModel> results =
+                                        DataBinding.bindGroupSummary(
+                                            groups.getElements());
 
-                            @Override
-                            protected void execute(
-                                       final PagedCollection<Group> groups) {
+                                    final PagingLoadResult<BeanModel> plr =
+                                        new BasePagingLoadResult<BeanModel>(
+                                           results,
+                                           config.getOffset(),
+                                           (int) groups.getTotalCount());
+                                    callback.onSuccess(plr);
+                                }
 
-                                final List<BeanModel> results =
-                                    DataBinding.bindGroupSummary(
-                                        groups.getElements());
-
-                                final PagingLoadResult<BeanModel> plr =
-                                    new BasePagingLoadResult<BeanModel>(
-                                       results,
-                                       config.getOffset(),
-                                       (int) groups.getTotalCount());
-                                callback.onSuccess(plr);
-                            }
-                        }.execute();
+                                @Override
+                                public void onFailure(final Throwable caught) {
+                                    callback.onFailure(caught);
+                                }
+                            });
                     }
                 }
             };

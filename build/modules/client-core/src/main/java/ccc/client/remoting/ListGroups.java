@@ -33,12 +33,15 @@ import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
-import ccc.client.core.ResponseHandlerAdapter;
+import ccc.client.core.Response;
 
 
 /**
@@ -46,7 +49,7 @@ import ccc.client.core.ResponseHandlerAdapter;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class ListGroups
+public class ListGroups
     extends
         RemotingAction<PagedCollection<Group>> {
 
@@ -93,25 +96,20 @@ public abstract class ListGroups
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
+    protected Request getRequest(
+                              final Callback<PagedCollection<Group>> callback) {
         return new Request(
             HttpMethod.GET,
             getPath(),
             "",
-            new ResponseHandlerAdapter(USER_ACTIONS.unknownAction()){
-                /** {@inheritDoc} */
-                @Override
-                public void onOK(final ccc.client.core.Response response) {
-                    execute(readGroups(response));
-                }
-            });
+            new CallbackResponseHandler<PagedCollection<Group>>(
+                USER_ACTIONS.unknownAction(),
+                callback,
+                new Parser<PagedCollection<Group>>() {
+
+                    @Override
+                    public PagedCollection<Group> parse(final Response response) {
+                        return readGroups(response);
+                    }}));
     }
-
-
-    /**
-     * Handle the result of a successful call.
-     *
-     * @param groups The groups returned.
-     */
-    protected abstract void execute(PagedCollection<Group> groups);
 }

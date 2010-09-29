@@ -34,13 +34,15 @@ import ccc.api.core.PagedCollection;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
-import ccc.client.core.ResponseHandlerAdapter;
 
 
 /**
@@ -48,7 +50,7 @@ import ccc.client.core.ResponseHandlerAdapter;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class ListActionsAction
+public class ListActionsAction
     extends
         RemotingAction<PagedCollection<ActionSummary>> {
 
@@ -103,28 +105,20 @@ public abstract class ListActionsAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
+    protected Request getRequest(final Callback<PagedCollection<ActionSummary>> callback) {
         return
             new Request(
                 HttpMethod.GET,
                 getPath(),
                 "",
-                new ResponseHandlerAdapter(USER_ACTIONS.viewActions()) {
-                    /** {@inheritDoc} */
-                    @Override
-                    public void onOK(final Response response) {
-                        final PagedCollection<ActionSummary> actions =
-                            readActionSummaryCollection(response);
-
-                        execute(actions);
-                    }
-                });
+                new CallbackResponseHandler<PagedCollection<ActionSummary>>(
+                    USER_ACTIONS.viewActions(),
+                    callback,
+                    new Parser<PagedCollection<ActionSummary>>() {
+                        @Override
+                        public PagedCollection<ActionSummary> parse(final Response response) {
+                            return readActionSummaryCollection(response);
+                        }}));
     }
 
-    /**
-     * Handle the result of a successful call.
-     *
-     * @param actions The page of actions returned.
-     */
-    protected abstract void execute(PagedCollection<ActionSummary> actions);
 }

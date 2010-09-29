@@ -41,6 +41,7 @@ import ccc.client.actions.OpenHelpAction;
 import ccc.client.actions.OpenUpdateCurrentUserAction;
 import ccc.client.actions.OpenUpdateFolderAction;
 import ccc.client.core.Action;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
@@ -225,7 +226,7 @@ public class MainMenu
                             new UnpublishAction(ssm)));
                     }
                 }
-                if (CONTENT.equals(root.getName())
+                if (CONTENT.equals(root.getName().toString())
                      && _user.hasPermission(Permission.RESOURCE_UPDATE)) {
                     rootMenu.add(createMenuItem(
                         "chooseTemplate-root-"+name,
@@ -245,10 +246,15 @@ public class MainMenu
                         SortOrder.ASC) {
 
                         @Override
-                        protected void execute(final PagedCollection<Group> groups) {
-                            new OpenUpdateResourceAclAction(
-                                ssm, groups.getElements())
-                            .execute();
+                        public void execute() {
+                            execute(new DefaultCallback<PagedCollection<Group>>(_constants.updateRoles()) {
+
+                                @Override
+                                public void onSuccess(final PagedCollection<Group> groups) {
+                                    new OpenUpdateResourceAclAction(
+                                        ssm, groups.getElements())
+                                    .execute();
+                                }});
                         }}));
                 if (_user.hasPermission(Permission.RESOURCE_UPDATE))  {
                     rootMenu.add(createMenuItem(

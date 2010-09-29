@@ -33,8 +33,8 @@ import java.util.UUID;
 import ccc.api.core.Action;
 import ccc.api.types.CommandType;
 import ccc.api.types.Link;
+import ccc.client.core.Callback;
 import ccc.client.core.CallbackResponseHandler;
-import ccc.client.core.DefaultCallback;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
@@ -44,7 +44,6 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.core.S11nHelper;
-import ccc.client.events.Event;
 
 
 /**
@@ -83,10 +82,11 @@ public final class CreateActionAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
+    protected Request getRequest(final Callback<Action> callback) {
         return createAction(
             new Action(
-                _resourceId, _command, _executeAfter, _actionParameters));
+                _resourceId, _command, _executeAfter, _actionParameters),
+            callback);
     }
 
 
@@ -94,10 +94,12 @@ public final class CreateActionAction
      * Create a new action.
      *
      * @param action The action to create.
+     * @param callback
      *
      * @return The HTTP request to create the action.
      */
-    public Request createAction(final Action action) {
+    public Request createAction(final Action action,
+                                final Callback<Action> callback) {
 
         final String path =
             Globals.API_URL
@@ -111,16 +113,9 @@ public final class CreateActionAction
                 writeAction(action),
                 new CallbackResponseHandler<Action>(
                     I18n.UI_CONSTANTS.createAction(),
-                    new DefaultCallback<Action>(I18n.UI_CONSTANTS.createAction()) {
-                        @Override public void onSuccess(final Action result) {
-                            final Event<CommandType> event =
-                                new Event<CommandType>(CommandType.ACTION_CREATE);
-                            InternalServices.REMOTING_BUS.fireEvent(event);
-                        }},
+                    callback,
                     new Parser<Action>() {
-
-                        @Override
-                        public Action parse(final Response response) {
+                        @Override public Action parse(final Response response) {
                             return new S11nHelper().readAction(response);
                         }}));
     }

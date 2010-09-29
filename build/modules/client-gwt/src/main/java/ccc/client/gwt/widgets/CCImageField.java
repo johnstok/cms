@@ -35,6 +35,7 @@ import ccc.api.types.Link;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.DataBinding;
@@ -110,20 +111,21 @@ public class CCImageField
                 new Link(ccc.api.core.ResourceIdentifiers.Resource.PATH)
                 .build("id", id, InternalServices.ENCODER));
 
-            new GetAbsolutePathAction(I18n.UI_CONSTANTS.selectImage(), s) {
-                @Override protected void execute(final String path) {
-                    final File fs = new File(
-                        new MimeType("image", "*"),
-                        path,
-                        UUID.fromString(id),
-                        new ResourceName("img"),
-                        "",
-                        new HashMap<String, String>());
-                    final BeanModel model = DataBinding.bindFileSummary(fs);
-                    image.setValue(path);
-                    image.setFSModel(model);
-                }
-            }.execute();
+            new GetAbsolutePathAction(I18n.UI_CONSTANTS.selectImage(), s)
+            .execute(
+                new DefaultCallback<String>(I18n.UI_CONSTANTS.selectImage()) {
+                    @Override public void onSuccess(final String path) {
+                        final File fs = new File(
+                            new MimeType("image", "*"),
+                            path,
+                            UUID.fromString(id),
+                            new ResourceName("img"),
+                            "",
+                            new HashMap<String, String>());
+                        final BeanModel model = DataBinding.bindFileSummary(fs);
+                        image.setValue(path);
+                        image.setFSModel(model);
+                    }});
         }
     }
 }

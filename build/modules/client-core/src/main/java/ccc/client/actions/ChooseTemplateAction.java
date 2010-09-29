@@ -26,12 +26,12 @@
  */
 package ccc.client.actions;
 
-import java.util.Collection;
-
+import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.ResourceType;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
@@ -92,15 +92,15 @@ public final class ChooseTemplateAction
         if (ResourceType.PAGE==r.getType()
             || ResourceType.FOLDER==r.getType()
             || ResourceType.SEARCH==r.getType()) {
-            new GetTemplatesAction(UI_CONSTANTS.chooseTemplate()){
-                @Override protected void execute(
-                                 final Collection<Template> templates) {
-                    new ChangeResourceTemplatePresenter(
-                        InternalServices.DIALOGS.chooseTemplate(),
-                        r,
-                        templates);
-                }
-            }.execute();
+            new GetTemplatesAction(UI_CONSTANTS.chooseTemplate()).execute(
+                new DefaultCallback<PagedCollection<Template>>(UI_CONSTANTS.chooseTemplate()) {
+                    @Override
+                    public void onSuccess(final PagedCollection<Template> templates) {
+                        new ChangeResourceTemplatePresenter(
+                            InternalServices.DIALOGS.chooseTemplate(),
+                            r,
+                            templates.getElements());
+                    }});
         } else {
             InternalServices.WINDOW.alert(
                 UI_CONSTANTS.templateCannotBeChosen());

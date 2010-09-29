@@ -37,6 +37,7 @@ import java.util.UUID;
 import ccc.api.core.Group;
 import ccc.api.core.User;
 import ccc.api.types.CommandType;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
@@ -145,14 +146,13 @@ public class EditUserDialog
         }
         _userDTO.setGroups(validGroups);
 
-        new UpdateUserAction(_userDTO){
-            /** {@inheritDoc} */
-            @Override protected void done() {
+        new UpdateUserAction(_userDTO).execute(
+            new DefaultCallback<User>(I18n.UI_CONSTANTS.editUser()) {
+            @Override public void onSuccess(final User result) {
                 InternalServices.REMOTING_BUS.fireEvent(
                     new Event<CommandType>(CommandType.USER_UPDATE));
                 hide();
             }
-
-        }.execute();
+        });
     }
 }

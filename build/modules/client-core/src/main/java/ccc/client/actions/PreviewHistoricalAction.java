@@ -30,6 +30,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Action;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.InternalServices;
 import ccc.client.remoting.GetAbsolutePathAction;
 import ccc.client.remoting.OpenTemplateRevisionAction;
@@ -67,28 +68,30 @@ public final class PreviewHistoricalAction
         if (resource != null && resource.getType() == ResourceType.TEMPLATE) {
             new OpenTemplateRevisionAction(resource, item.getIndex()).execute();
         } else {
-            new GetAbsolutePathAction(UI_CONSTANTS.preview(),
-                resource) {
-                @Override protected void execute(final String path) {
-                    final String url =
-                        InternalServices.GLOBALS.appURL()
-                        + "preview"
-                        + path
-                        + "?v="
-                        + item.getIndex();
-                    InternalServices.WINDOW.openUrl(
-                        url,
-                        "ccc_preview",
-                        "menubar=no,"
-                        + "width=640,"
-                        + "height=480,"
-                        + "location=yes,"
-                        + "toolbar=no,"
-                        + "resizable=yes,"
-                        + "scrollbars=yes,"
-                        + "status=no");
-                }
-            }.execute();
+            new GetAbsolutePathAction(
+                UI_CONSTANTS.preview(),
+                resource)
+            .execute(
+                new DefaultCallback<String>(UI_CONSTANTS.preview()) {
+                    @Override public void onSuccess(final String path) {
+                        final String url =
+                            InternalServices.GLOBALS.appURL()
+                            + "preview"
+                            + path
+                            + "?v="
+                            + item.getIndex();
+                        InternalServices.WINDOW.openUrl(
+                            url,
+                            "ccc_preview",
+                            "menubar=no,"
+                            + "width=640,"
+                            + "height=480,"
+                            + "location=yes,"
+                            + "toolbar=no,"
+                            + "resizable=yes,"
+                            + "scrollbars=yes,"
+                            + "status=no");
+                    }});
         }
     }
 }

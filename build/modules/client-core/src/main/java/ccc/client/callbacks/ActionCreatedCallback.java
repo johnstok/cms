@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,29 +21,40 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.actions;
+package ccc.client.callbacks;
 
-import ccc.api.types.SortOrder;
-import ccc.client.core.Action;
-import ccc.client.core.Globals;
-import ccc.client.remoting.ListGroups;
+import ccc.api.core.Action;
+import ccc.api.types.CommandType;
+import ccc.client.core.DefaultCallback;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
+import ccc.client.events.Event;
 
 
 /**
- * Create an user.
+ * Callback to handle successful creation of an action.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenCreateUserAction
-    implements
-        Action {
+public class ActionCreatedCallback
+    extends
+        DefaultCallback<Action> {
+
+    /**
+     * Constructor.
+     */
+    public ActionCreatedCallback() {
+        super(I18n.UI_CONSTANTS.createAction());
+    }
 
     /** {@inheritDoc} */
-    @Override public void execute() {
-        new ListGroups(1, Globals.MAX_FETCH, "name", SortOrder.ASC).execute(
-            new OpenCreateUserDialog());
-        }
+    @Override
+    public void onSuccess(final Action result) {
+        final Event<CommandType> event =
+            new Event<CommandType>(CommandType.ACTION_CREATE);
+        InternalServices.REMOTING_BUS.fireEvent(event);
+    }
 }

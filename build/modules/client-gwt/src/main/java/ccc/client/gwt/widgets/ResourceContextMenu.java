@@ -44,6 +44,7 @@ import ccc.client.actions.OpenRenameAction;
 import ccc.client.actions.OpenUpdateFolderAction;
 import ccc.client.actions.PreviewAction;
 import ccc.client.core.Action;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.Globals;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.views.gxt.UpdateFileDialog;
@@ -142,9 +143,13 @@ public class ResourceContextMenu
             "name",
             SortOrder.ASC) {
             @Override
-            protected void execute(final PagedCollection<Group> groups) {
-                new OpenUpdateResourceAclAction(_table, groups.getElements())
-                    .execute();
+            public void execute() {
+                execute(new DefaultCallback<PagedCollection<Group>>(UI_CONSTANTS.updateRoles()) {
+                    @Override
+                    public void onSuccess(final PagedCollection<Group> groups) {
+                        new OpenUpdateResourceAclAction(_table, groups.getElements())
+                        .execute();
+                    }});
             }};
         _applyWorkingCopyAction = new ApplyWorkingCopyAction(_table);
         _editCacheAction = new OpenEditCacheAction(_table);
@@ -455,32 +460,30 @@ public class ResourceContextMenu
     private void updatePage(final ResourceSummary item) {
         // Get the template for the page.
         new ComputeTemplateAction(
-            getConstants().updateContent(), item.uriTemplate()) {
+            getConstants().updateContent(), item.uriTemplate())
+        .execute(
+            new DefaultCallback<Template>("") {
 
-            /** {@inheritDoc} */
-            @Override
-            protected void noTemplate() {
-                InternalServices.WINDOW.alert(getConstants().noTemplateFound());
-            }
-
-            /** {@inheritDoc} */
-            // Get a delta to edit.
-            @Override protected void template(final Template ts) {
-                new PageDeltaAction(
-                    getConstants().updateContent(), item){
-                    @Override
-                    protected void execute(final Page delta) {
-                        new UpdatePageDialog(
-                            delta,
-                            ts,
-                            _table)
-                        .show(); // Ok, pop the dialog.
+                @Override
+                public void onSuccess(final Template template) {
+                    if (null==template) {
+                        InternalServices.WINDOW.alert(getConstants().noTemplateFound());
+                    } else {
+                        new PageDeltaAction(getConstants().updateContent(), item)
+                        .execute(new DefaultCallback<Page>(
+                                                       getConstants().updateContent()) {
+                            @Override
+                            public void onSuccess(final Page delta) {
+                                new UpdatePageDialog(
+                                    delta,
+                                    template,
+                                    _table)
+                                .show(); // Ok, pop the dialog.
+                            }});
                     }
-
-                }.execute();
+                }
             }
-
-        }.execute();
+        );
     }
 
     private void updateTemplate(final ResourceSummary item) {

@@ -26,20 +26,21 @@
  */
 package ccc.client.remoting;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.core.File;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
-import ccc.client.core.ResponseHandlerAdapter;
 
 
 /**
@@ -92,32 +93,19 @@ public abstract class GetImagesPagedAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
+    protected Request getRequest(final Callback<PagedCollection<File>> callback) {
         return
             new Request(
                 HttpMethod.GET,
                 getPath(),
                 "",
-                new ResponseHandlerAdapter(_name) {
-                    /** {@inheritDoc} */
-                    @Override
-                    public void onOK(final Response response) {
-                        final PagedCollection<File> rsCollection =
-                            readFileSummaries(response);
-                        execute(
-                            rsCollection.getElements(),
-                            rsCollection.getTotalCount());
-                    }
-                });
+                new CallbackResponseHandler<PagedCollection<File>>(
+                    _name,
+                    callback,
+                    new Parser<PagedCollection<File>>() {
+                        @Override
+                        public PagedCollection<File> parse(final Response response) {
+                            return readFileSummaries(response);
+                        }}));
     }
-
-
-    /**
-     * Handle the data returned from the server.
-     *
-     * @param images The available images.
-     * @param totalCount The total comments available on the server.
-     */
-    protected abstract void execute(Collection<File> images,
-                                    long totalCount);
 }

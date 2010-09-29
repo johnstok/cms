@@ -27,15 +27,16 @@
 package ccc.client.actions;
 
 import ccc.api.core.Page;
-import ccc.api.types.CommandType;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
-import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.events.Event;
+import ccc.client.core.Response;
 
 
 /**
@@ -45,7 +46,7 @@ import ccc.client.events.Event;
  */
 public final class CreatePageAction
     extends
-        RemotingAction {
+        RemotingAction<Page> {
 
     private final Page _page;
 
@@ -63,54 +64,20 @@ public final class CreatePageAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
-        return createPage(_page);
-    }
-
-
-    /**
-     * Create a new page.
-     *
-     * @param page The page to create.
-     *
-     * @return The HTTP request to create a folder.
-     */
-    public Request createPage(final Page page) {
+    protected Request getRequest(final Callback<Page> callback) {
         final String path =  Globals.API_URL+InternalServices.API.pages();
 
         return
             new Request(
                 HttpMethod.POST,
                 path,
-                writePage(page),
-                new PageCreatedCallback(I18n.UI_CONSTANTS.createPage()));
-    }
-
-
-    /**
-     * Callback handler for creating a page.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public class PageCreatedCallback extends ResponseHandlerAdapter {
-
-        /**
-         * Constructor.
-         *
-         * @param name The action name.
-         */
-        public PageCreatedCallback(final String name) {
-            super(name);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onOK(final ccc.client.core.Response response) {
-            final Page rs = readPage(response);
-            final Event<CommandType> event =
-                new Event<CommandType>(CommandType.PAGE_CREATE);
-            event.addProperty("resource", rs);
-            InternalServices.REMOTING_BUS.fireEvent(event);
-        }
+                writePage(_page),
+                new CallbackResponseHandler<Page>(
+                    I18n.UI_CONSTANTS.createPage(),
+                    callback,
+                    new Parser<Page>() {
+                        @Override public Page parse(final Response response) {
+                            return readPage(response);
+                        }}));
     }
 }

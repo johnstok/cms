@@ -28,16 +28,16 @@ package ccc.client.actions;
 
 import ccc.api.core.Alias;
 import ccc.api.core.ResourceSummary;
-import ccc.api.types.CommandType;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
-import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.events.Event;
 
 
 /**
@@ -47,7 +47,7 @@ import ccc.client.events.Event;
  */
 public final class CreateAliasAction
     extends
-        RemotingAction {
+        RemotingAction<ResourceSummary> {
 
     private final Alias _alias;
 
@@ -65,56 +65,22 @@ public final class CreateAliasAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
-        return createAlias(_alias);
-    }
-
-
-    /**
-     * Create a new alias.
-     *
-     * @param alias The alias to create.
-     *
-     * @return The HTTP request to create an alias.
-     */
-    private Request createAlias(final Alias alias) {
+    protected Request getRequest(final Callback<ResourceSummary> callback) {
         final String path = Globals.API_URL+InternalServices.API.aliases();
 
         return
             new Request(
                 HttpMethod.POST,
                 path,
-                writeAlias(alias),
-                new AliasCreatedCallback(
-                    I18n.UI_CONSTANTS.createAlias()));
-    }
+                writeAlias(_alias),
+                new CallbackResponseHandler<ResourceSummary>(
+                    I18n.UI_CONSTANTS.createAlias(),
+                    callback,
+                    new Parser<ResourceSummary>() {
 
-
-
-    /**
-     * Callback handler for creating an alias.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public class AliasCreatedCallback extends ResponseHandlerAdapter {
-
-        /**
-         * Constructor.
-         *
-         * @param name The action name.
-         */
-        public AliasCreatedCallback(final String name) {
-            super(name);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onOK(final Response response) {
-            final ResourceSummary newAlias = parseResourceSummary(response);
-            final Event<CommandType> event =
-                new Event<CommandType>(CommandType.ALIAS_CREATE);
-            event.addProperty("resource", newAlias);
-            InternalServices.REMOTING_BUS.fireEvent(event);
-        }
+                        @Override
+                        public ResourceSummary parse(final Response response) {
+                            return parseResourceSummary(response);
+                        }}));
     }
 }

@@ -26,11 +26,11 @@
  */
 package ccc.client.actions;
 
-import java.util.Collection;
-
 import ccc.api.core.Folder;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
@@ -87,15 +87,17 @@ public final class OpenCreatePageAction
     /** {@inheritDoc} */
     @Override
     public void onSuccess(final Folder f) {
-        new GetTemplatesAction(UI_CONSTANTS.createPage()){
-            @Override protected void execute(
-                                 final Collection<Template> templates) {
-                new CreatePagePresenter(
-                    InternalServices.DIALOGS.createPage(
-                        templates, _selectionModel.root()),
-                    f);
-            }
-        }.execute();
+        new GetTemplatesAction(UI_CONSTANTS.createPage()).execute(
+            new DefaultCallback<PagedCollection<Template>>(UI_CONSTANTS.createPage()) {
+
+                @Override
+                public void onSuccess(final PagedCollection<Template> templates) {
+                    new CreatePagePresenter(
+                        InternalServices.DIALOGS.createPage(
+                            templates.getElements(), _selectionModel.root()),
+                        f);
+                }}
+        );
     }
 
 

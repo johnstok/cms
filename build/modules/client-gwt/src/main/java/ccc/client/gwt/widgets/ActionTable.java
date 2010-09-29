@@ -35,6 +35,7 @@ import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.Permission;
 import ccc.api.types.SortOrder;
+import ccc.client.core.Callback;
 import ccc.client.core.HasSelection;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
@@ -212,7 +213,24 @@ public class ActionTable
                                 id,
                                 page,
                                 order)
-                                .execute();
+                                .execute(new Callback<PagedCollection<ActionSummary>>() {
+
+                                    @Override
+                                    public void onSuccess(final PagedCollection<ActionSummary> actions) {
+                                        final List<BeanModel> results =
+                                            DataBinding.bindActionSummary(actions.getElements());
+
+                                        final PagingLoadResult<BeanModel> plr =
+                                            new BasePagingLoadResult<BeanModel>(
+                                                    results, config.getOffset(), (int) actions.getTotalCount());
+                                        callback.onSuccess(plr);
+                                    }
+
+                                    @Override
+                                    public void onFailure(final Throwable caught) {
+                                        callback.onFailure(caught);
+                                    }
+                                });
                         }
                     }
                 }
@@ -233,25 +251,7 @@ public class ActionTable
             page,
             config.getLimit(),
             config.getSortField(),
-            order) {
-
-            /** {@inheritDoc} */
-            @Override
-            protected void onFailure(final Throwable t) {
-                callback.onFailure(t);
-            }
-
-            @Override
-            protected void execute(final PagedCollection<ActionSummary> actions) {
-                final List<BeanModel> results =
-                    DataBinding.bindActionSummary(actions.getElements());
-
-                final PagingLoadResult<BeanModel> plr =
-                    new BasePagingLoadResult<BeanModel>(
-                            results, config.getOffset(), (int) actions.getTotalCount());
-                callback.onSuccess(plr);
-            }
-        };
+            order);
     }
 
 

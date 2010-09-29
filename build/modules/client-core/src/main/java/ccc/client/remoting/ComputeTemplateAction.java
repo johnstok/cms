@@ -28,13 +28,15 @@ package ccc.client.remoting;
 
 import ccc.api.core.Template;
 import ccc.api.types.Link;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
-import ccc.client.core.ResponseHandlerAdapter;
 
 
 /**
@@ -42,7 +44,7 @@ import ccc.client.core.ResponseHandlerAdapter;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class ComputeTemplateAction
+public final class ComputeTemplateAction
     extends
         RemotingAction<Template> {
 
@@ -66,31 +68,18 @@ public abstract class ComputeTemplateAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
+    protected Request getRequest(final Callback<Template> callback) {
         return new Request(
             HttpMethod.GET,
             Globals.API_URL
                 + _resourceLink.build(InternalServices.ENCODER),
             "",
-            new ResponseHandlerAdapter(_name) {
-
-                /** {@inheritDoc} */
-                @Override
-                public void onNoContent(final Response response) {
-                    noTemplate();
-                }
-
-                /** {@inheritDoc} */
-                @Override
-                public void onOK(final Response response) {
-                    template(parseTemplate(response));
-                }
-            });
+            new CallbackResponseHandler<Template>(
+                _name,
+                callback,
+                new Parser<Template>() {
+                    @Override public Template parse(final Response response) {
+                        return parseTemplate(response);
+                    }}));
     }
-
-
-    protected abstract void noTemplate();
-
-
-    protected abstract void template(Template t);
 }

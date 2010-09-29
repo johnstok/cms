@@ -28,16 +28,17 @@ package ccc.client.remoting;
 
 import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
-import ccc.api.types.CommandType;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HasSelection;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
-import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.events.Event;
+import ccc.client.core.Response;
 
 
 /**
@@ -82,51 +83,21 @@ public class CancelActionAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
-        return cancel(_table.getSelectedItem());
-    }
+    protected Request getRequest(final Callback<Void> callback) {
+        final ActionSummary action = _table.getSelectedItem();
 
-
-    /**
-     * Cancel an action.
-     *
-     * @return The HTTP request to cancel this action.
-     */
-    public Request cancel(final ActionSummary action) {
         final String path = Globals.API_URL + action.self();
         return
             new Request(
                 HttpMethod.DELETE,
                 path,
                 "",
-                new ActionCancelledCallback(action));
-    }
-
-
-    /**
-     * Callback handler for applying a working copy.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public static class ActionCancelledCallback extends ResponseHandlerAdapter {
-
-        private final Event<CommandType> _event;
-
-        /**
-         * Constructor.
-         *
-         * @param action The resource whose WC has been applied.
-         */
-        public ActionCancelledCallback(final ActionSummary action) {
-            super(I18n.UI_CONSTANTS.cancel());
-            _event = new Event<CommandType>(CommandType.ACTION_CANCEL);
-            _event.addProperty("action", action);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onNoContent(final ccc.client.core.Response response) {
-            InternalServices.REMOTING_BUS.fireEvent(_event);
-        }
+                new CallbackResponseHandler<Void>(
+                    I18n.UI_CONSTANTS.cancel(),
+                    callback,
+                    new Parser<Void>() {
+                        @Override public Void parse(final Response response) {
+                            return null;
+                        }}));
     }
 }

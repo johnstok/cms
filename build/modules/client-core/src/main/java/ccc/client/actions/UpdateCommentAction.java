@@ -27,16 +27,16 @@
 package ccc.client.actions;
 
 import ccc.api.core.Comment;
-import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
-import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
-import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.events.Event;
+import ccc.client.core.Response;
 
 
 /**
@@ -44,9 +44,9 @@ import ccc.client.events.Event;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateCommentAction
+public final class UpdateCommentAction
     extends
-        RemotingAction {
+        RemotingAction<Comment> {
 
     private final Comment _comment;
 
@@ -64,59 +64,20 @@ public class UpdateCommentAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
-        return update(_comment);
-    }
-
-
-    /**
-     * Update this comment.
-     *
-     * @param comment The new comment data.
-     *
-     * @return The HTTP request to perform the update.
-     */
-    public Request update(final Comment comment) {
-        final String path = Globals.API_URL + comment.self();
+    protected Request getRequest(final Callback<Comment> callback) {
+        final String path = Globals.API_URL + _comment.self();
 
         return new Request(
             HttpMethod.PUT,
             path,
-            writeComment(comment),
-            new CommentUpdatedCallback(
+            writeComment(_comment),
+            new CallbackResponseHandler<Comment>(
                 I18n.UI_CONSTANTS.updateComment(),
-                comment));
-    }
+                callback,
+                new Parser<Comment>() {
 
-
-    /**
-     * Callback handler for updating a comment.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public class CommentUpdatedCallback extends ResponseHandlerAdapter {
-
-        private final Comment _comment;
-
-        /**
-         * Constructor.
-         *
-         * @param name The action name.
-         * @param comment The updated comment.
-         */
-        public CommentUpdatedCallback(final String name,
-                                      final Comment comment) {
-            super(name);
-            _comment = DBC.require().notNull(comment);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onOK(final ccc.client.core.Response response) {
-            final Event<CommandType> event =
-                new Event<CommandType>(CommandType.COMMENT_UPDATE);
-            event.addProperty("comment", _comment);
-            InternalServices.REMOTING_BUS.fireEvent(event);
-        }
+                    @Override public Comment parse(final Response response) {
+                        return readComment(response);
+                    }}));
     }
 }

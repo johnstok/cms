@@ -53,7 +53,6 @@ public abstract class RemotingAction<T>
     private RequestExecutor   _executor    = InternalServices.EXECUTOR;
     private Encoder           _encoder     = InternalServices.ENCODER;
     private Bus<CommandType>  _bus         = InternalServices.REMOTING_BUS;
-    private Callback<T>       _callback;
 
 
     /**
@@ -95,9 +94,8 @@ public abstract class RemotingAction<T>
 
 
     public void execute(final Callback<T> callback) {
-        _callback = callback;
         if (!beforeExecute()) { return; }
-        _executor.invokeRequest(getRequest());
+        _executor.invokeRequest(getRequest(callback));
     }
 
 
@@ -119,14 +117,14 @@ public abstract class RemotingAction<T>
      *
      * @return The request for this remote action.
      */
-    protected Request getRequest() {
+    protected Request getRequest(final Callback<T> callback) {
         return
             new Request(
                 _method,
                 Globals.API_URL + getPath(),
                 getBody(),
                 new CallbackResponseHandler<T>(_actionName,
-                                               _callback,
+                                               callback,
                                                new Parser<T>() {
                     @Override public T parse(final Response response) {
                         return RemotingAction.this.parse(response);

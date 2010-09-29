@@ -27,13 +27,15 @@
 package ccc.client.remoting;
 
 import ccc.api.core.User;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
-import ccc.client.core.ResponseHandlerAdapter;
 
 
 /**
@@ -41,9 +43,9 @@ import ccc.client.core.ResponseHandlerAdapter;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class UpdateUserAction
+public class UpdateUserAction
     extends
-        RemotingAction {
+        RemotingAction<User> {
 
     private final User _userDetails;
 
@@ -74,20 +76,18 @@ public abstract class UpdateUserAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
-
+    protected Request getRequest(final Callback<User> callback) {
         return
             new Request(
                 HttpMethod.PUT,
                 getPath(),
                 getBody(),
-                new ResponseHandlerAdapter(UI_CONSTANTS.editUser()) {
-                    /** {@inheritDoc} */
-                    @Override public void onNoContent(final Response response) {
-                        done();
-                    }
-                });
+                new CallbackResponseHandler<User>(
+                    I18n.UI_CONSTANTS.editUser(),
+                    callback,
+                    new Parser<User>() {
+                        @Override public User parse(final Response response) {
+                            return readUser(response);
+                        }}));
     }
-
-    protected abstract void done();
 }

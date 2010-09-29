@@ -34,13 +34,15 @@ import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
 import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
-import ccc.client.core.ResponseHandlerAdapter;
 
 
 /**
@@ -48,7 +50,7 @@ import ccc.client.core.ResponseHandlerAdapter;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class ListUsersAction
+public class ListUsersAction
     extends
         RemotingAction<PagedCollection<User>> {
 
@@ -109,24 +111,21 @@ public abstract class ListUsersAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
+    protected Request getRequest(
+                             final Callback<PagedCollection<User>> callback) {
         return
             new Request(
                 HttpMethod.GET,
                 getPath(),
                 "",
-                new ResponseHandlerAdapter(USER_ACTIONS.viewUsers()) {
-                    /** {@inheritDoc} */
-                    @Override public void onOK(final Response response) {
-                        execute(readUserCollection(response));
-                    }
-                });
+                new CallbackResponseHandler<PagedCollection<User>>(
+                    USER_ACTIONS.viewUsers(),
+                    callback,
+                    new Parser<PagedCollection<User>>() {
+                        @Override
+                        public PagedCollection<User> parse(
+                                                      final Response response) {
+                            return readUserCollection(response);
+                        }}));
     }
-
-    /**
-     * Handle the result of a successful call.
-     *
-     * @param users The collection of users returned.
-     */
-    protected abstract void execute(PagedCollection<User> users);
 }

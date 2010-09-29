@@ -27,12 +27,14 @@
 package ccc.client.remoting;
 
 import ccc.api.core.User;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
-import ccc.client.core.ResponseHandlerAdapter;
 
 
 /**
@@ -40,7 +42,7 @@ import ccc.client.core.ResponseHandlerAdapter;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class GetUserAction
+public class GetUserAction
     extends
         RemotingAction<User> {
 
@@ -59,29 +61,18 @@ public abstract class GetUserAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
+    protected Request getRequest(final Callback<User> callback) {
         return
             new Request(
                 HttpMethod.GET,
                 Globals.API_URL + _userPath,
                 "",
-                new ResponseHandlerAdapter(
-                    USER_ACTIONS.internalAction()) {
-
-                    /** {@inheritDoc} */
-                    @Override
-                    public void onOK(final Response response) {
-                        final User user = readUser(response);
-                        execute(user);
-                    }
-                });
+                new CallbackResponseHandler<User>(
+                    USER_ACTIONS.internalAction(),
+                    callback,
+                    new Parser<User>() {
+                        @Override public User parse(final Response response) {
+                            return readUser(response);
+                        }}));
     }
-
-
-    /**
-     * Handle the result of a successful call.
-     *
-     * @param user The user returned.
-     */
-    protected abstract void execute(User user);
 }

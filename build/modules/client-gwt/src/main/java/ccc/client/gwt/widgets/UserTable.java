@@ -36,6 +36,7 @@ import ccc.api.core.UserCriteria;
 import ccc.api.types.CommandType;
 import ccc.api.types.Permission;
 import ccc.api.types.SortOrder;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.Globals;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
@@ -169,15 +170,15 @@ public class UserTable
                     new ListGroups(1,
                                    Globals.MAX_FETCH,
                                    "name",
-                                   SortOrder.ASC) {
-                        @Override
-                        protected void execute(
-                                       final PagedCollection<Group> groups) {
-                            new OpenEditUserDialogAction(
-                                userDTO.<User>getBean(),
-                                groups.getElements())
-                            .execute();
-                        }}.execute();
+                                   SortOrder.ASC).execute(
+                        new DefaultCallback<PagedCollection<Group>>(UI_CONSTANTS.editUser()) {
+                            @Override
+                            public void onSuccess(final PagedCollection<Group> groups) {
+                                new OpenEditUserDialogAction(
+                                    userDTO.<User>getBean(),
+                                    groups.getElements())
+                                .execute();
+                            }});
 
                 }
             }
@@ -207,12 +208,11 @@ public class UserTable
             @Override public void componentSelected(final MenuEvent ce) {
                 final BeanModel modeldata =
                     grid.getSelectionModel().getSelectedItem();
-                new GetUserAction(modeldata.<User>getBean().self()) {
-                    @Override
-                    protected void execute(final User user) {
-                        new UserMetadataDialog(user).show();
-                    }
-                }.execute();
+                new GetUserAction(modeldata.<User>getBean().self()).execute(
+                    new DefaultCallback<User>(UI_CONSTANTS.editUserMetadata()) {
+                        @Override public void onSuccess(final User user) {
+                            new UserMetadataDialog(user).show();
+                        }});
             }
         });
         return editUserMeta;
@@ -344,11 +344,14 @@ public class UserTable
                         page,
                         config.getLimit(),
                         config.getSortField(),
-                        order) {
+                        order).execute(
+                            new DefaultCallback<PagedCollection<User>>(
+                                                     USER_ACTIONS.viewUsers()) {
 
                             @Override
-                            protected void execute(
-                                           final PagedCollection<User> users) {
+                            public void onSuccess(
+                                            final PagedCollection<User> users) {
+
                                 final List<BeanModel> results =
                                     DataBinding
                                         .bindUserSummary(users.getElements());
@@ -358,8 +361,7 @@ public class UserTable
                                     results, config.getOffset(),
                                     (int) users.getTotalCount());
                                 callback.onSuccess(plr);
-                            }
-                    }.execute();
+                            }});
                 }
             }
         };

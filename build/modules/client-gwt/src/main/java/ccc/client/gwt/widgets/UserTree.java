@@ -30,6 +30,7 @@ package ccc.client.gwt.widgets;
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.SortOrder;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.ImagePaths;
@@ -113,29 +114,28 @@ public class UserTree extends Tree {
      */
     @Override
     public void showTable() {
-        new ListGroups(1, Globals.MAX_FETCH, "name", SortOrder.ASC) {
-            @Override
-            protected void execute(final PagedCollection<Group> groups) {
-                _store.removeAll(_users);
-                for (Group group : groups.getElements()) {
-                    ModelData userModel = null;
-                    if ("ADMINISTRATOR".equals(group.getName())) {
-                        userModel = getNewItem(
-                            group.getName(),
-                            group.getName(),
-                            ImagePaths.ADMINISTRATOR);
-                    } else {
-                        userModel = getNewItem(
-                            group.getName(),
-                            group.getName(),
-                            ImagePaths.USER);
+        new ListGroups(1, Globals.MAX_FETCH, "name", SortOrder.ASC).execute(
+            new DefaultCallback<PagedCollection<Group>>(I18n.USER_ACTIONS.internalAction()) {
+                @Override public void onSuccess(final PagedCollection<Group> groups) {
+                    _store.removeAll(_users);
+                    for (final Group group : groups.getElements()) {
+                        ModelData userModel = null;
+                        if ("ADMINISTRATOR".equals(group.getName())) {
+                            userModel = getNewItem(
+                                group.getName(),
+                                group.getName(),
+                                ImagePaths.ADMINISTRATOR);
+                        } else {
+                            userModel = getNewItem(
+                                group.getName(),
+                                group.getName(),
+                                ImagePaths.USER);
+                        }
+
+                        _store.add(_users, userModel, DONT_ADD_CHILDREN);
+                        _tree.setLeaf(userModel, IS_LEAF);
                     }
-
-                    _store.add(_users, userModel, DONT_ADD_CHILDREN);
-                    _tree.setLeaf(userModel, IS_LEAF);
-                }
-
-            }}.execute();
+                }});
         _view.setRightHandPane(_userTable);
     }
 }

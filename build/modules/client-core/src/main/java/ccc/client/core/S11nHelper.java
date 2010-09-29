@@ -247,6 +247,18 @@ public class S11nHelper {
 
 
     /**
+     * Read a comment from a response.
+     *
+     * @param response The response to read.
+     *
+     * @return The corresponding comment.
+     */
+    public Comment readComment(final Response response) {
+        return serializers().create(Comment.class).read(response.getText());
+    }
+
+
+    /**
      * Read a resource from a response.
      *
      * @param response The response to read.

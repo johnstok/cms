@@ -28,13 +28,15 @@ package ccc.client.remoting;
 
 
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
-import ccc.client.core.ResponseHandlerAdapter;
 
 
 /**
@@ -42,7 +44,7 @@ import ccc.client.core.ResponseHandlerAdapter;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class GetAbsolutePathAction
+public class GetAbsolutePathAction
     extends
         RemotingAction<String> {
 
@@ -66,30 +68,19 @@ public abstract class GetAbsolutePathAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
+    protected Request getRequest(final Callback<String> callback) {
         return
             new Request(
                 HttpMethod.GET,
                 Globals.API_URL
                     + _resource.uriAbsPath().build(InternalServices.ENCODER),
                 "",
-                new ResponseHandlerAdapter(_name) {
-
-                    /** {@inheritDoc} */
-                    @Override
-                    public void onOK(final Response response) {
-                        final String path = response.getText();
-                        execute(path);
-                    }
-                });
+                new CallbackResponseHandler<String>(
+                    _name,
+                    callback,
+                    new Parser<String>() {
+                        @Override public String parse(final Response response) {
+                            return response.getText();
+                        }}));
     }
-
-
-    /**
-     * Handle the result of a successful call.
-     *
-     * @param path The path returned.
-     */
-    @Deprecated
-    protected abstract void execute(String path);
 }

@@ -28,13 +28,15 @@ package ccc.client.remoting;
 
 import ccc.api.types.Link;
 import ccc.api.types.Username;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
-import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.core.S11nHelper;
 
 
@@ -43,7 +45,7 @@ import ccc.client.core.S11nHelper;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class UniqueUsernameAction
+public class UniqueUsernameAction
     extends
         RemotingAction<Boolean> {
 
@@ -73,30 +75,19 @@ public abstract class UniqueUsernameAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
+    protected Request getRequest(final Callback<Boolean> callback) {
         return
             new Request(
                 HttpMethod.GET,
                 getPath(),
                 "",
-                new ResponseHandlerAdapter(
-                    USER_ACTIONS.checkUniqueUsername()) {
-
-                    /** {@inheritDoc} */
-                    @Override public void onOK(final Response response) {
-                        final boolean exists =
-                            new S11nHelper().readBoolean(response)
-                            .booleanValue();
-                        execute(exists);
-                    }
-                });
+                new CallbackResponseHandler<Boolean>(
+                    USER_ACTIONS.checkUniqueUsername(),
+                    callback,
+                    new Parser<Boolean>() {
+                    @Override public Boolean parse(final Response response) {
+                        return new S11nHelper().readBoolean(response);
+                    }}));
 
     }
-
-    /**
-     * Handle a successful execution.
-     *
-     * @param usernameExists True if the username exists, false otherwise.
-     */
-    protected abstract void execute(boolean usernameExists);
 }

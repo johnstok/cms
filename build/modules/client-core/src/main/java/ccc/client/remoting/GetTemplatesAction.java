@@ -26,20 +26,21 @@
  */
 package ccc.client.remoting;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Template;
 import ccc.api.types.Link;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
-import ccc.client.core.ResponseHandlerAdapter;
 
 
 /**
@@ -47,7 +48,7 @@ import ccc.client.core.ResponseHandlerAdapter;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class GetTemplatesAction
+public class GetTemplatesAction
     extends
         RemotingAction<PagedCollection<Template>> {
 
@@ -66,7 +67,7 @@ public abstract class GetTemplatesAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
+    protected Request getRequest(final Callback<PagedCollection<Template>> callback) {
         final Map<String, String[]> params = new HashMap<String, String[]>();
         params.put("count", new String[] {"999"});
         params.put("page", new String[] {"1"});
@@ -78,21 +79,13 @@ public abstract class GetTemplatesAction
                     + new Link(InternalServices.API.templates())
                     .build(params, InternalServices.ENCODER),
                 "",
-                new ResponseHandlerAdapter(_name) {
-
-                    /** {@inheritDoc} */
-                    @Override public void onOK(final Response response) {
-                        execute(readTemplates(response).getElements());
-                    }
-                });
+                new CallbackResponseHandler<PagedCollection<Template>>(
+                    _name,
+                    callback,
+                    new Parser<PagedCollection<Template>>() {
+                        @Override
+                        public PagedCollection<Template> parse(final Response response) {
+                            return readTemplates(response);
+                        }}));
     }
-
-
-    /**
-     * Handle the data returned from the server.
-     *
-     * @param templates The available templates.
-     */
-    @Deprecated
-    protected abstract void execute(Collection<Template> templates);
 }

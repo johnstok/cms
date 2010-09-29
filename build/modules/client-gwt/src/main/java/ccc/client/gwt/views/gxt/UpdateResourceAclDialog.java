@@ -36,6 +36,7 @@ import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.DataBinding;
@@ -129,15 +130,17 @@ public class UpdateResourceAclDialog
         final List<BeanModel> uData =
             new ArrayList<BeanModel>();
         for (final Entry e : _acl.getUsers()) {
-            new GetUserAction(e.user()) { // FIXME: remove these calls.
-                @Override
-                protected void execute(final User user) {
-                    final BeanModel d =
-                        DataBinding.bindUserSummary(user);
-                    uData.add(d);
-                    _userStore.add(d);
-                }
-            }.execute();
+            // FIXME: remove these calls.
+            new GetUserAction(e.user())
+            .execute(
+                new DefaultCallback<User>(I18n.UI_CONSTANTS.updateRoles()) {
+                    @Override public void onSuccess(final User user) {
+                        final BeanModel d =
+                            DataBinding.bindUserSummary(user);
+                        uData.add(d);
+                        _userStore.add(d);
+                    }}
+            );
 
         }
         _userGridPanel.setBodyBorder(false);

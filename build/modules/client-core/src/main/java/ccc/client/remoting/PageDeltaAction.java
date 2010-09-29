@@ -29,13 +29,15 @@ package ccc.client.remoting;
 import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Link;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
-import ccc.client.core.ResponseHandlerAdapter;
 
 
 /**
@@ -43,7 +45,7 @@ import ccc.client.core.ResponseHandlerAdapter;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class PageDeltaAction
+public class PageDeltaAction
     extends
         RemotingAction<Page> {
 
@@ -77,27 +79,18 @@ public abstract class PageDeltaAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
+    protected Request getRequest(final Callback<Page> callback) {
         return
             new Request(
                 HttpMethod.GET,
                 getPath(),
                 "",
-                new ResponseHandlerAdapter(_name) {
-                    /** {@inheritDoc} */
-                    @Override
-                    public void onOK(final Response response) {
-                        final Page delta = readPage(response);
-                        execute(delta);
-                    }
-                });
+                new CallbackResponseHandler<Page>(
+                    _name,
+                    callback,
+                    new Parser<Page>() {
+                        @Override public Page parse(final Response response) {
+                            return readPage(response);
+                        }}));
     }
-
-
-    /**
-     * Handle a successful execution.
-     *
-     * @param delta The delta returned by the server.
-     */
-    protected abstract void execute(Page delta);
 }

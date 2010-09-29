@@ -27,16 +27,17 @@
 package ccc.client.remoting;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.types.CommandType;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
-import ccc.client.core.ResponseHandlerAdapter;
+import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
-import ccc.client.events.Event;
 
 /**
  * Publish a resource.
@@ -63,48 +64,20 @@ public class ClearWorkingCopyAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
-        return clearWorkingCopy(_selectionModel.tableSelection());
-    }
+    protected Request getRequest(final Callback<Void> callback) {
+        final ResourceSummary rs = _selectionModel.tableSelection();
 
-
-    private Request clearWorkingCopy(final ResourceSummary rs) {
         return new Request(
             HttpMethod.DELETE,
             Globals.API_URL
                 + rs.wc().build(InternalServices.ENCODER),
             "",
-            new WCClearedCallback(
-                I18n.UI_CONSTANTS.deleteWorkingCopy(), rs));
-    }
-
-
-    /**
-     * Callback handler for clearing a working copy.
-     *
-     * @author Civic Computing Ltd.
-     */
-    private static class WCClearedCallback extends ResponseHandlerAdapter {
-
-        private final Event<CommandType> _event;
-
-        /**
-         * Constructor.
-         *
-         * @param name The action name.
-         * @param resource The resource whose WC has been applied.
-         */
-        WCClearedCallback(final String name,
-                          final ResourceSummary resource) {
-            super(name);
-            _event = new Event<CommandType>(CommandType.RESOURCE_CLEAR_WC);
-            _event.addProperty("resource", resource);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onNoContent(final ccc.client.core.Response response) {
-            InternalServices.REMOTING_BUS.fireEvent(_event);
-        }
+            new CallbackResponseHandler<Void>(
+                I18n.UI_CONSTANTS.deleteWorkingCopy(),
+                callback,
+                new Parser<Void>() {
+                    @Override public Void parse(final Response response) {
+                        return null;
+                    }}));
     }
 }

@@ -29,13 +29,15 @@ package ccc.client.remoting;
 import ccc.api.core.Folder;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
-import ccc.client.core.ResponseHandlerAdapter;
 
 
 /**
@@ -63,29 +65,19 @@ public abstract class GetRootsAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
+    protected Request getRequest(final Callback<PagedCollection<ResourceSummary>> callback) {
         return
             new Request(
                 HttpMethod.GET,
                 getPath(),
                 "",
-                new ResponseHandlerAdapter(USER_ACTIONS.internalAction()) {
-
-                    /** {@inheritDoc} */
-                    @Override
-                    public void onOK(final Response response) {
-                        onSuccess(parseResourceSummaries(response));
-                    }
-                });
+                new CallbackResponseHandler<PagedCollection<ResourceSummary>>(
+                    USER_ACTIONS.internalAction(),
+                    callback,
+                    new Parser<PagedCollection<ResourceSummary>>() {
+                        @Override
+                        public PagedCollection<ResourceSummary> parse(final Response response) {
+                            return parseResourceSummaries(response);
+                        }}));
     }
-
-
-    /**
-     * Execute this action.
-     *
-     * @param root The root resource returned by the server.
-     */
-    @Override
-    protected abstract void onSuccess(
-                                  final PagedCollection<ResourceSummary> roots);
 }

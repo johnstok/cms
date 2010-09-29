@@ -37,6 +37,7 @@ import ccc.api.core.UserCriteria;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.SortOrder;
 import ccc.client.concurrent.SimpleLatch;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.Globals;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
@@ -107,13 +108,14 @@ public class IsLoggedInAction
             protected String getPath() {
                 return Globals.API_URL + api.users();
             }
-
-            @Override
-            protected void execute(final PagedCollection<User> users) {
-                InternalServices.USERS = users;
-                l.countDown();
-            }
-        }.execute();
+        }.execute(
+            new DefaultCallback<PagedCollection<User>>(
+                                                USER_ACTIONS.internalAction()) {
+                @Override
+                public void onSuccess(final PagedCollection<User> users) {
+                    InternalServices.USERS = users;
+                    l.countDown();
+                }});
 
 
         new ListActionsAction(ActionStatus.SCHEDULED.name(),
@@ -126,13 +128,15 @@ public class IsLoggedInAction
             protected String getPath() {
                 return Globals.API_URL + api.actions();
             }
-
-            @Override
-            protected void execute(final PagedCollection<ActionSummary> actions) {
-                InternalServices.ACTIONS = actions;
-                l.countDown();
-            }
-        }.execute();
+        }.execute(
+            new DefaultCallback<PagedCollection<ActionSummary>>(
+                                                USER_ACTIONS.internalAction()) {
+                @Override
+                public void onSuccess(
+                              final PagedCollection<ActionSummary> actions) {
+                    InternalServices.ACTIONS = actions;
+                    l.countDown();
+                }});
 
 
         new ListComments(null, 1, 1, "", SortOrder.ASC) {
@@ -155,14 +159,14 @@ public class IsLoggedInAction
             protected String getPath() {
                 return Globals.API_URL + api.groups();
             }
-
-            /** {@inheritDoc} */
-            @Override
-            protected void execute(final PagedCollection<Group> groups) {
-                InternalServices.GROUPS = groups;
-                l.countDown();
-            }
-        }.execute();
+        }.execute(
+            new DefaultCallback<PagedCollection<Group>>(
+                                                USER_ACTIONS.internalAction()) {
+                @Override
+                public void onSuccess(final PagedCollection<Group> groups) {
+                    InternalServices.GROUPS = groups;
+                    l.countDown();
+                }});
 
         final Runnable runnable = new Runnable() {
             @Override
