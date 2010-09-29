@@ -43,6 +43,7 @@ import ccc.client.views.CreatePage;
 public class CreatePageFake implements CreatePage {
 
     private final String _comment;
+    private final String _resourceTitle;
     private final boolean _majorEdit;
     private final String _name;
     private final Set<Paragraph> _paragraphs;
@@ -56,12 +57,14 @@ public class CreatePageFake implements CreatePage {
      * Constructor.
      *
      * @param name The name
+     * @param resourceTitle The resourceTitle
      * @param majorEdit Major edit.
      * @param comment Comment.
      * @param paragraphs Paragraph of the page.
      * @param template Template.
      */
     public CreatePageFake(final String name,
+                          final String resourceTitle,
                           final boolean majorEdit,
                           final String comment,
                           final Set<Paragraph> paragraphs,
@@ -71,6 +74,7 @@ public class CreatePageFake implements CreatePage {
         _majorEdit = majorEdit;
         _paragraphs = paragraphs;
         _template = template;
+        _resourceTitle = resourceTitle;
     }
 
 
@@ -135,5 +139,11 @@ public class CreatePageFake implements CreatePage {
     @Override
     public ValidationResult getValidationResult() {
         return _validationResult;
+    }
+
+
+    @Override
+    public String getResourceTitle() {
+        return _resourceTitle;
     }
 }

@@ -41,6 +41,9 @@ import ccc.client.widgets.Option;
 import ccc.client.widgets.PageElement;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -63,7 +66,30 @@ public class EditPagePanel
     implements
         Validatable {
 
+    private final class TitleFieldListener implements Listener<FieldEvent> {
+
+        @Override
+        public void handleEvent(final FieldEvent be) {
+            if (_title.getValue() != null
+                    && !_nameModified
+                    && !_name.isReadOnly()) {
+                _name.setValue(
+                    _title.getValue().replaceAll("[^\\.\\-\\w]", "_"));
+            }
+        }
+    }
+    private final class NameFieldListener implements Listener<FieldEvent> {
+
+        @Override
+        public void handleEvent(final FieldEvent be) {
+            _nameModified = true;
+        }
+    }
+
+
+    private boolean _nameModified = false;
     private TextField<String> _name = new TextField<String>();
+    private TextField<String> _title = new TextField<String>();
     private final List<PageElement<? extends Component>> _pageElements =
         new ArrayList<PageElement<? extends Component>>();
 
@@ -102,6 +128,17 @@ public class EditPagePanel
         _name.disable();
     }
 
+    /**
+     * Mutator.
+     *
+     * @param title The title of the page.
+     */
+    public void setResourceTitle(final String title) {
+        _title.setReadOnly(true);
+        _title.setValue(title);
+        _title.disable();
+    }
+
 
     /**
      * Populates fields for editing.
@@ -133,6 +170,15 @@ public class EditPagePanel
      */
     public TextField<String> getName() {
         return _name;
+    }
+
+    /**
+     * Accessor of the title field.
+     *
+     * @return TextField for name.
+     */
+    public TextField<String> getResourceTitle() {
+        return _title;
     }
 
 
@@ -241,10 +287,20 @@ public class EditPagePanel
 
 
     private void addStaticFields() {
+        _title = new TextField<String>();
+        _title.setFieldLabel(I18n.UI_CONSTANTS.title());
+        _title.setAllowBlank(false);
+        add(_title, new FormData("95%"));
+
         _name = new TextField<String>();
         _name.setFieldLabel(I18n.UI_CONSTANTS.name());
         _name.setAllowBlank(false);
         add(_name, new FormData("95%"));
+
+        _title.addListener(Events.KeyUp, new TitleFieldListener());
+        _title.addListener(Events.Change, new TitleFieldListener());
+        _name.addListener(Events.KeyUp, new NameFieldListener());
+        _name.addListener(Events.Change, new NameFieldListener());
     }
 
 

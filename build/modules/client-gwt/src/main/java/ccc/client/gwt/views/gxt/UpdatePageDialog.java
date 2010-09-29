@@ -34,7 +34,6 @@ import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
-import ccc.api.types.ResourceName;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
@@ -87,12 +86,13 @@ public class UpdatePageDialog
 
         setLayout(new FitLayout());
 
-        drawGUI(_modelData.getName());
+        drawGUI();
     }
 
 
-    private void drawGUI(final ResourceName pageName) {
-        _panel.setName(pageName);
+    private void drawGUI() {
+        _panel.setName(_modelData.getName());
+        _panel.setResourceTitle(_modelData.getTitle());
         _panel.setValues(_paras);
         _panel.layout();
 

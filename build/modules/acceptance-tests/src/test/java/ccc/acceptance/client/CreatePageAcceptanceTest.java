@@ -64,6 +64,7 @@ public class CreatePageAcceptanceTest extends AbstractAcceptanceTest {
 
         final CreatePage view = new CreatePageFake(
             "testname"+UUID.randomUUID().toString(),
+            "a title",
             true,
             "testComment",
             paragraphs,
@@ -81,6 +82,7 @@ public class CreatePageAcceptanceTest extends AbstractAcceptanceTest {
         final Page page = getPages().retrieve(pr.getId());
 
         assertEquals(view.getName(), pr.getName().toString());
+        assertEquals(view.getResourceTitle(), pr.getTitle());
         assertEquals("sample text", page.getParagraph("content").getText());
 
     }

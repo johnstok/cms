@@ -105,10 +105,10 @@ public class CreatePageDialog
         new ContentPanel(new RowLayout());
     private final ContentPanel _templatePanel =
         new ContentPanel(new RowLayout());
-    private CheckBox _useDefaultTemplate;
+    private final CheckBox _useDefaultTemplate;
 
     private Template _template = null;
-    private Template _t2 = null;
+    private final Template _t2 = null;
 
 
     private final Text _description = new Text("");
@@ -130,6 +130,7 @@ public class CreatePageDialog
         _targetRoot = targetRoot;
 
         _secondWizardPage = new EditPagePanel(null, _targetRoot);
+
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         final ColumnConfig templateNameColumn = new ColumnConfig();
@@ -340,6 +341,11 @@ public class CreatePageDialog
     @Override
     public Set<Paragraph> getParagraphs() {
         return _secondWizardPage.getValues();
+    }
+
+    @Override
+    public String getResourceTitle() {
+        return _secondWizardPage.getResourceTitle().getValue();
     }
 
 }

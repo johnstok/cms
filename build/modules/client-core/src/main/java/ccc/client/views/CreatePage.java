@@ -84,4 +84,11 @@ public interface CreatePage extends View<CreatePagePresenter>, Validatable {
      */
     Set<Paragraph> getParagraphs();
 
+    /**
+     * Accessor.
+     *
+     * @return The title.
+     */
+    String getResourceTitle();
+
 }
