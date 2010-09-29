@@ -33,16 +33,20 @@ import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
+import ccc.api.types.CommandType;
 import ccc.api.types.Permission;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Globals;
+import ccc.client.core.InternalServices;
+import ccc.client.events.Event;
+import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.remoting.OpenEditUserDialogAction;
 import ccc.client.gwt.views.gxt.EditUserPwDialog;
 import ccc.client.gwt.views.gxt.UserMetadataDialog;
 import ccc.client.remoting.GetUserAction;
 import ccc.client.remoting.ListGroups;
 import ccc.client.remoting.ListUsersAction;
+import ccc.client.remoting.OpenEditUserDialogAction;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
@@ -80,7 +84,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Civic Computing Ltd.
  */
-public class UserTable extends TablePanel {
+public class UserTable
+    extends
+        TablePanel
+    implements
+        EventHandler<CommandType> {
 
     private ListStore<BeanModel> _detailsStore =
         new ListStore<BeanModel>();
@@ -105,6 +113,8 @@ public class UserTable extends TablePanel {
      * Constructor.
      */
     UserTable() {
+
+        InternalServices.REMOTING_BUS.registerHandler(this);
 
         setId("UserDetails");
         setHeading(UI_CONSTANTS.userDetails());
@@ -165,7 +175,6 @@ public class UserTable extends TablePanel {
                                        final PagedCollection<Group> groups) {
                             new OpenEditUserDialogAction(
                                 userDTO.<User>getBean(),
-                                UserTable.this,
                                 groups.getElements())
                             .execute();
                         }}.execute();
@@ -363,5 +372,19 @@ public class UserTable extends TablePanel {
         loader.load(0, PAGING_ROW_COUNT);
         final ColumnModel cm = _grid.getColumnModel();
         _grid.reconfigure(_detailsStore, cm);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case USER_UPDATE:
+                // TODO: Just update the edited row model data.
+                refreshUsers();
+                break;
+
+            default:
+                break;
+        }
     }
 }

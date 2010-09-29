@@ -35,6 +35,7 @@ import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.Permission;
 import ccc.api.types.SortOrder;
+import ccc.client.core.HasSelection;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
@@ -70,7 +71,8 @@ public class ActionTable
     extends
         TablePanel
     implements
-        EventHandler<CommandType> {
+        EventHandler<CommandType>,
+        HasSelection<ActionSummary> {
 
     private static final int MEDIUM_COLUMN = 200;
     private static final int TYPE_COLUMN = 150;
@@ -268,8 +270,9 @@ public class ActionTable
      *
      * @return The selected row, or NULL if no row is selected.
      */
-    public BeanModel getSelectedItem() {
-        return _grid.getSelectionModel().getSelectedItem();
+    public ActionSummary getSelectedItem() {
+        final BeanModel selected = _grid.getSelectionModel().getSelectedItem();
+        return (null==selected) ? null : selected.<ActionSummary>getBean();
     }
 
     /**

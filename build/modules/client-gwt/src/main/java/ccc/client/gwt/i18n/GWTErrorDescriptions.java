@@ -40,5 +40,5 @@ public interface GWTErrorDescriptions
     extends
         ErrorDescriptions,
         Messages {
-
+    /* No further methods. */
 }

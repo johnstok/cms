@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,52 +21,38 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
 
-import ccc.api.core.User;
-import ccc.client.core.InternalServices;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Response;
-
+package ccc.client.views;
 
 /**
- * Retrieve details of the currently logged in user.
+ * MVP view for the login dialog.
  *
  * @author Civic Computing Ltd.
  */
-public class GetCurrentUserAction
-    extends
-        RemotingAction<User> {
+public interface LoginView {
+
 
     /**
-     * Constructor.
+     * Accessor.
+     *
+     * @return The password as a string.
      */
-    public GetCurrentUserAction() {
-        super(USER_ACTIONS.internalAction());
-    }
+    String getPassword();
 
 
-    /** {@inheritDoc} */
-    @Override
-    protected void onSuccess(final User user) {
-        InternalServices.GLOBALS.currentUser(user);
-        new DrawMainWindowAction(user).execute();
-    }
+    /**
+     * Accessor.
+     *
+     * @return The username as a string.
+     */
+    String getUsername();
 
 
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        return InternalServices.USERS.getLink("me");
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected User parse(final Response response) {
-        return readUser(response);
-    }
+    /**
+     * Indicate to the user that the login failed.
+     */
+    void loginFailed();
 }

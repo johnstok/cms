@@ -40,5 +40,5 @@ public interface GWTActionNameConstants
     extends
         ActionNameConstants,
         ConstantsWithLookup {
-
+    /* No further methods. */
 }

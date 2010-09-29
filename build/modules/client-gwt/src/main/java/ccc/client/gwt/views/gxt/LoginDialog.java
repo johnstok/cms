@@ -29,8 +29,9 @@ package ccc.client.gwt.views.gxt;
 import ccc.api.core.API;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.gwt.remoting.LoginAction;
 import ccc.client.gwt.widgets.ButtonSelectionListenerAction;
+import ccc.client.remoting.LoginAction;
+import ccc.client.views.LoginView;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -45,7 +46,12 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
  *
  * @author Civic Computing Ltd.
  */
-public class LoginDialog extends AbstractEditDialog {
+public class LoginDialog
+    extends
+        AbstractEditDialog
+    implements
+        LoginView {
+
     /** ENTER_KEY : int. */
     private static final int ENTER_KEY = 13;
     private static final int DIALOG_WIDTH = 375;
@@ -54,6 +60,7 @@ public class LoginDialog extends AbstractEditDialog {
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _password = new TextField<String>();
     private final Text _message = new Text();
+
 
     /**
      * Constructor.
@@ -93,12 +100,14 @@ public class LoginDialog extends AbstractEditDialog {
         _username.focus();
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected SelectionListener<ButtonEvent> saveAction() {
         return new ButtonSelectionListenerAction(
             new LoginAction(LoginDialog.this));
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -109,27 +118,23 @@ public class LoginDialog extends AbstractEditDialog {
         }
     }
 
-    /**
-     * Indicate to the user that the login failed.
-     */
+
+    /** {@inheritDoc} */
+    @Override
     public void loginFailed() {
         _message.setText(getUiConstants().loginFailed());
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The username as a string.
-     */
+
+    /** {@inheritDoc} */
+    @Override
     public String getUsername() {
         return (null==_username.getValue()) ? "" : _username.getValue().trim();
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The password as a string.
-     */
+
+    /** {@inheritDoc} */
+    @Override
     public String getPassword() {
         return (null==_password.getValue()) ? "" : _password.getValue().trim();
     }

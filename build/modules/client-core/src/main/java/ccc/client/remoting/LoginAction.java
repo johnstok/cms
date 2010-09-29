@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.remoting;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.views.gxt.LoginDialog;
+import ccc.client.views.LoginView;
 
 
 /**
@@ -47,7 +47,7 @@ public class LoginAction
     extends
         RemotingAction<Boolean> {
 
-    private final LoginDialog _dialog;
+    private final LoginView _dialog;
 
 
     /**
@@ -55,7 +55,7 @@ public class LoginAction
      *
      * @param dialog The login dialog to act on.
      */
-    public LoginAction(final LoginDialog dialog) {
+    public LoginAction(final LoginView dialog) {
         super(UI_CONSTANTS.login(), HttpMethod.POST);
         _dialog = dialog;
     }

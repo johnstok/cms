@@ -24,38 +24,49 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.widgets;
+package ccc.client.remoting;
 
-import ccc.api.types.Permission;
-import ccc.client.core.I18n;
-import ccc.client.i18n.UIConstants;
-import ccc.client.remoting.CancelActionAction;
+import ccc.api.core.User;
+import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 
 
 /**
- * A toolbar for manipulating scheduled actions.
+ * Retrieve details of the currently logged in user.
  *
  * @author Civic Computing Ltd.
  */
-public class ActionToolBar
+public class GetCurrentUserAction
     extends
-        AbstractToolBar {
-
-    private final UIConstants _constants = I18n.UI_CONSTANTS;
+        RemotingAction<User> {
 
     /**
      * Constructor.
-     *
-     * @param actionTable The table to operate on.
      */
-    public ActionToolBar(final ActionTable actionTable) {
-
-        addSeparator(null);
-        addButton(Permission.ACTION_CANCEL,
-            "cancel-action",
-            _constants.cancel(),
-            new CancelActionAction(actionTable));
-        addSeparator(Permission.ACTION_CANCEL);
+    public GetCurrentUserAction() {
+        super(USER_ACTIONS.internalAction());
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onSuccess(final User user) {
+        InternalServices.GLOBALS.currentUser(user);
+        new DrawMainWindowAction(user).execute();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return InternalServices.USERS.getLink("me");
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected User parse(final Response response) {
+        return readUser(response);
+    }
 }

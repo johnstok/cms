@@ -40,7 +40,6 @@ import ccc.client.gwt.i18n.GWTErrorDescriptions;
 import ccc.client.gwt.i18n.GWTErrorResolutions;
 import ccc.client.gwt.i18n.GWTUIConstants;
 import ccc.client.gwt.i18n.GWTUIMessages;
-import ccc.client.gwt.remoting.IsLoggedInAction;
 import ccc.client.i18n.ActionNameConstants;
 import ccc.client.i18n.ActionStatusConstants;
 import ccc.client.i18n.CommandTypeConstants;
@@ -49,6 +48,7 @@ import ccc.client.i18n.ErrorResolutions;
 import ccc.client.i18n.UIConstants;
 import ccc.client.i18n.UIMessages;
 import ccc.client.remoting.GetServicesAction;
+import ccc.client.remoting.IsLoggedInAction;
 import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -85,12 +85,13 @@ public final class ContentCreator implements EntryPoint {
         GWTGlobals.setCommandConstants(
             GWT.<CommandTypeConstants>create(GWTCommandTypeConstants.class));
 
+        InternalServices.PARSER      = new GWTTextParser();
         InternalServices.GLOBALS     = _globals;
         InternalServices.TIMERS      = new GWTTimers();
-        InternalServices.VALIDATOR   = new Validations();
+        InternalServices.VALIDATOR   = new GWTValidations();
         InternalServices.EXECUTOR    = new GWTRequestExecutor();
         InternalServices.SERIALIZERS =
-            new SerializerFactory(new GWTTextParser());
+            new SerializerFactory(InternalServices.PARSER);
         InternalServices.ENCODER     = new GWTTemplateEncoder();
         InternalServices.WINDOW      = new GWTWindow();
         InternalServices.EX_HANDLER  =

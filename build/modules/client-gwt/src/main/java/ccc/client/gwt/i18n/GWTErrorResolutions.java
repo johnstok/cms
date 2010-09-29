@@ -40,5 +40,5 @@ public interface GWTErrorResolutions
     extends
         ErrorResolutions,
         Messages {
-
+    /* No further methods. */
 }

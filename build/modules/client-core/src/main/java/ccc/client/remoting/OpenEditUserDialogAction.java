@@ -24,16 +24,15 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.remoting;
 
 import java.util.Collection;
 
 import ccc.api.core.Group;
 import ccc.api.core.User;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.views.gxt.EditUserDialog;
-import ccc.client.gwt.widgets.UserTable;
 
 
 /**
@@ -46,7 +45,6 @@ public class OpenEditUserDialogAction
         RemotingAction<User> {
 
     private final User _user;
-    private final UserTable _userTable;
     private Collection<Group> _groups;
 
 
@@ -54,15 +52,12 @@ public class OpenEditUserDialogAction
      * Constructor.
      *
      * @param user The selected user.
-     * @param userTable he table displaying the users.
      * @param groups Collection of groups.
      */
     public OpenEditUserDialogAction(final User user,
-                                    final UserTable userTable,
                                     final Collection<Group> groups) {
         super(UI_CONSTANTS.editUser());
         _user = user;
-        _userTable = userTable;
         _groups = groups;
     }
 
@@ -77,7 +72,7 @@ public class OpenEditUserDialogAction
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final User delta) {
-        new EditUserDialog(delta, _userTable, _groups).show();
+        InternalServices.DIALOGS.editUser(delta, _groups).show();
     }
 
 

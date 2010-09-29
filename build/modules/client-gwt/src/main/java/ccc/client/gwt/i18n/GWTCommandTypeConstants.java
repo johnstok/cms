@@ -40,5 +40,5 @@ public interface GWTCommandTypeConstants
     extends
         CommandTypeConstants,
         ConstantsWithLookup {
-
+    /* No further methods. */
 }

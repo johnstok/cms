@@ -36,11 +36,12 @@ import java.util.UUID;
 
 import ccc.api.core.Group;
 import ccc.api.core.User;
+import ccc.api.types.CommandType;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
+import ccc.client.events.Event;
 import ccc.client.gwt.widgets.GroupListField;
-import ccc.client.gwt.widgets.UserTable;
 import ccc.client.remoting.UpdateUserAction;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -55,31 +56,28 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
  *
  * @author Civic Computing Ltd
  */
-public class EditUserDialog extends AbstractEditDialog {
+public class EditUserDialog
+    extends
+        AbstractEditDialog {
 
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _name = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
+
     private final ListField<BaseModelData> _groups;
-
-
     private final User _userDTO;
-    private final UserTable _userTable;
 
     /**
      * Constructor.
      *
      * @param userDTO The userDTO of the selected user.
-     * @param userTable The user table.
      * @param allGroups The list of all groups.
      */
     public EditUserDialog(final User userDTO,
-                          final UserTable userTable,
                           final Collection<Group> allGroups) {
         super(I18n.UI_CONSTANTS.editUser(), InternalServices.GLOBALS);
 
         _userDTO   = userDTO;
-        _userTable = userTable;
 
         _username.setFieldLabel(constants().username());
         _username.setReadOnly(true);
@@ -150,8 +148,8 @@ public class EditUserDialog extends AbstractEditDialog {
         new UpdateUserAction(_userDTO){
             /** {@inheritDoc} */
             @Override protected void done() {
-                // TODO: Just update the edited row model data.
-                _userTable.refreshUsers();
+                InternalServices.REMOTING_BUS.fireEvent(
+                    new Event<CommandType>(CommandType.USER_UPDATE));
                 hide();
             }
 

@@ -28,13 +28,16 @@ package ccc.client.core;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import ccc.api.core.ACL;
 import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.core.Template;
+import ccc.api.core.User;
 import ccc.api.types.Duration;
 import ccc.api.types.ResourceType;
 import ccc.client.views.ChangeResourceTemplate;
@@ -280,4 +283,37 @@ public interface DialogFactory {
      * @return The required dialog.
      */
     EditTextFile editTextFile();
+
+
+    /**
+     * Create a the main window.
+     *
+     * @param user The currently logged in user.
+     */
+    void mainWindow(User user);
+
+
+    /**
+     * Create a dialog.
+     *
+     * @param delta The user to edit.
+     * @param groups The list of all groups.
+     *
+     * @return The required dialog.
+     */
+    LegacyView editUser(User delta, Collection<Group> groups);
+
+
+    /**
+     * Create a dialog.
+     *
+     * @param resource The model data of the resource.
+     * @param data The metadata.
+     * @param ssm The selection model.
+     *
+     * @return The required dialog.
+     */
+    LegacyView updateMetadata(ResourceSummary resource,
+                              Set<Entry<String, String>> data,
+                              SingleSelectionModel ssm);
 }

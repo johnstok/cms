@@ -39,6 +39,7 @@ import ccc.client.events.Bus;
 import ccc.client.events.SimpleBus;
 import ccc.client.validation.AbstractValidations;
 import ccc.plugins.s11n.Serializers;
+import ccc.plugins.s11n.json.TextParser;
 
 
 /**
@@ -60,6 +61,7 @@ public class InternalServices {
     public static DialogFactory       DIALOGS;
     public static Globals             GLOBALS;
     public static Timers              TIMERS;
+    public static TextParser          PARSER;
 
     public static API                              API;
     public static PagedCollection<ActionSummary>   ACTIONS;

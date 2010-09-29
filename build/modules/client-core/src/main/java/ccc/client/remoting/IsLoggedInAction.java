@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.remoting;
 
 import ccc.api.core.API;
 import ccc.api.core.ActionSummary;
@@ -41,10 +41,6 @@ import ccc.client.core.Globals;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.remoting.ListActionsAction;
-import ccc.client.remoting.ListComments;
-import ccc.client.remoting.ListGroups;
-import ccc.client.remoting.ListUsersAction;
 
 
 /**

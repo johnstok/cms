@@ -24,12 +24,13 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.remoting;
 
 import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.client.core.Globals;
+import ccc.client.core.HasSelection;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
@@ -37,9 +38,6 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
-import ccc.client.gwt.widgets.ActionTable;
-
-import com.extjs.gxt.ui.client.data.BeanModel;
 
 
 /**
@@ -51,7 +49,7 @@ public class CancelActionAction
     extends
         RemotingAction<Void> {
 
-    private final ActionTable _table;
+    private final HasSelection<ActionSummary> _table;
 
 
     /**
@@ -59,7 +57,7 @@ public class CancelActionAction
      *
      * @param table The action table to work with.
      */
-    public CancelActionAction(final ActionTable table) {
+    public CancelActionAction(final HasSelection<ActionSummary> table) {
         super(I18n.UI_CONSTANTS.cancel());
         _table = table;
     }
@@ -67,14 +65,13 @@ public class CancelActionAction
 
     /** {@inheritDoc} */
     @Override protected boolean beforeExecute() {
-        final BeanModel action = _table.getSelectedItem();
+        final ActionSummary action = _table.getSelectedItem();
         if (null==action) {
             InternalServices.WINDOW.alert(
                 UI_CONSTANTS.pleaseChooseAnAction());
             return false;
         } else if (
-            ActionStatus.SCHEDULED!=
-                action.<ActionSummary>getBean().getStatus()) {
+            ActionStatus.SCHEDULED != action.getStatus()) {
             InternalServices.WINDOW.alert(
                 UI_CONSTANTS.thisActionHasAlreadyCompleted());
             return false;
@@ -86,7 +83,7 @@ public class CancelActionAction
     /** {@inheritDoc} */
     @Override
     protected Request getRequest() {
-        return cancel(_table.getSelectedItem().<ActionSummary>getBean());
+        return cancel(_table.getSelectedItem());
     }
 
 

@@ -26,6 +26,9 @@
  */
 package ccc.client.gwt.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ccc.plugins.s11n.S11nException;
 import ccc.plugins.s11n.json.Json;
 import ccc.plugins.s11n.json.TextParser;
@@ -62,4 +65,16 @@ class GWTTextParser
     /** {@inheritDoc} */
     @Override
     public Json newJson() { return new GWTJson(); }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<String, String> parseStringMap(final String text) {
+        final JSONObject result = JSONParser.parse(text).isObject();
+        final Map<String, String> map = new HashMap<String, String>();
+        for (final String key : result.keySet()) {
+            map.put(key, result.get(key).isString().stringValue());
+        }
+        return map;
+    }
 }

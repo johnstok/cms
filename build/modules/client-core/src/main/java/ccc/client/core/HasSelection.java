@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,41 +21,26 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.widgets;
 
-import ccc.api.types.Permission;
-import ccc.client.core.I18n;
-import ccc.client.i18n.UIConstants;
-import ccc.client.remoting.CancelActionAction;
+package ccc.client.core;
 
 
 /**
- * A toolbar for manipulating scheduled actions.
+ * API for selecting an item from a list.
+ *
+ * @param <T> The type of the selected item.
  *
  * @author Civic Computing Ltd.
  */
-public class ActionToolBar
-    extends
-        AbstractToolBar {
-
-    private final UIConstants _constants = I18n.UI_CONSTANTS;
+public interface HasSelection<T> {
 
     /**
-     * Constructor.
+     * Query the currently selected item.
      *
-     * @param actionTable The table to operate on.
+     * @return The selected item, or NULL if no item is selected.
      */
-    public ActionToolBar(final ActionTable actionTable) {
-
-        addSeparator(null);
-        addButton(Permission.ACTION_CANCEL,
-            "cancel-action",
-            _constants.cancel(),
-            new CancelActionAction(actionTable));
-        addSeparator(Permission.ACTION_CANCEL);
-    }
-
+    T getSelectedItem();
 }

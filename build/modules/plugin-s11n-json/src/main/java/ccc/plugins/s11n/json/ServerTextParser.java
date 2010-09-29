@@ -1,6 +1,11 @@
 package ccc.plugins.s11n.json;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -34,5 +39,24 @@ public class ServerTextParser
      */
     public Json parseJson(final Map<String, String> map) {
         return new JsonImpl(map);
+    }
+
+
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
+    @Override
+    public Map<String, String> parseStringMap(final String text) {
+        try {
+            final JSONObject o = new JSONObject(text);
+            final Map<String, String> stringMap = new HashMap<String, String>();
+            for (final Iterator<String> i = o.keys(); i.hasNext();) {
+                final String mapKey = i.next();
+                final String mapValue = (String) o.get(mapKey);
+                stringMap.put(mapKey, mapValue);
+            }
+            return stringMap;
+        } catch (final JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

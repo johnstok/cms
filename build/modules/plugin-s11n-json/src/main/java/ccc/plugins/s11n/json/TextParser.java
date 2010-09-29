@@ -27,6 +27,7 @@
 
 package ccc.plugins.s11n.json;
 
+import java.util.Map;
 
 
 /**
@@ -53,4 +54,14 @@ public interface TextParser {
      * @return The new object.
      */
     Json newJson();
+
+
+    /**
+     * Parse text into a string map.
+     *
+     * @param text The text to parse.
+     *
+     * @return The corresponding string map.
+     */
+    Map<String, String> parseStringMap(String text);
 }

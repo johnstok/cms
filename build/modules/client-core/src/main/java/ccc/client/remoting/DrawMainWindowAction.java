@@ -21,41 +21,42 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.widgets;
+package ccc.client.remoting;
 
-import ccc.api.types.Permission;
-import ccc.client.core.I18n;
-import ccc.client.i18n.UIConstants;
-import ccc.client.remoting.CancelActionAction;
-
+import ccc.api.core.PagedCollection;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.User;
+import ccc.client.core.InternalServices;
 
 /**
- * A toolbar for manipulating scheduled actions.
+ * Draws the GXT client's main window.
  *
  * @author Civic Computing Ltd.
  */
-public class ActionToolBar
+public final class DrawMainWindowAction
     extends
-        AbstractToolBar {
+        GetRootsAction {
 
-    private final UIConstants _constants = I18n.UI_CONSTANTS;
+    /** _user : UserSummary. */
+    private final User _user;
 
     /**
      * Constructor.
      *
-     * @param actionTable The table to operate on.
+     * @param user The currently logged in user.
      */
-    public ActionToolBar(final ActionTable actionTable) {
-
-        addSeparator(null);
-        addButton(Permission.ACTION_CANCEL,
-            "cancel-action",
-            _constants.cancel(),
-            new CancelActionAction(actionTable));
-        addSeparator(Permission.ACTION_CANCEL);
+    public DrawMainWindowAction(final User user) {
+        _user = user;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    protected void onSuccess(final PagedCollection<ResourceSummary> roots) {
+        InternalServices.ROOTS = roots;
+        InternalServices.DIALOGS.mainWindow(_user);
+
+    }
 }

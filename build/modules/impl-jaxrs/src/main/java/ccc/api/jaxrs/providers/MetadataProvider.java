@@ -32,20 +32,14 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import ccc.plugins.s11n.json.ServerTextParser;
 
@@ -112,7 +106,6 @@ public class MetadataProvider
     }
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
     @Override
     public Map<String, String> readFrom(
                                     final Class<Map<String, String>> arg0,
@@ -121,17 +114,6 @@ public class MetadataProvider
                                     final MediaType arg3,
                                     final MultivaluedMap<String, String> arg4,
                                     final InputStream arg5) throws IOException {
-        try {
-            final JSONObject o = new JSONObject(readString(arg3, arg5));
-            final Map<String, String> stringMap = new HashMap<String, String>();
-            for (final Iterator<String> i = o.keys(); i.hasNext();) {
-                final String mapKey = i.next();
-                final String mapValue = (String) o.get(mapKey);
-                stringMap.put(mapKey, mapValue);
-            }
-            return stringMap;
-        } catch (final JSONException e) {
-            throw new WebApplicationException(e);
-        }
+        return new ServerTextParser().parseStringMap(readString(arg3, arg5));
     }
 }

@@ -42,7 +42,7 @@ import com.google.gwt.xml.client.impl.DOMParseException;
  *
  * @author Civic Computing Ltd.
  */
-final class Validations
+final class GWTValidations
     extends
         AbstractValidations {
 
