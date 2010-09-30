@@ -36,6 +36,8 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
+import ccc.client.actions.CreateTemplateAction;
+import ccc.client.actions.UpdateTemplateAction;
 import ccc.client.core.DialogMode;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
@@ -44,8 +46,6 @@ import ccc.client.core.ValidationResult;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;
 import ccc.client.gwt.widgets.CodeMirrorEditor.Type;
-import ccc.client.remoting.CreateTemplateAction;
-import ccc.client.remoting.UpdateTemplateAction;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

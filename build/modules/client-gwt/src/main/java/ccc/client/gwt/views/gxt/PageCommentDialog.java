@@ -34,10 +34,10 @@ import ccc.api.core.Page;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
+import ccc.client.actions.UpdatePageAction;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.remoting.UpdatePageAction;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

@@ -30,12 +30,12 @@ package ccc.client.gwt.widgets;
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.SortOrder;
+import ccc.client.actions.ListGroups;
 import ccc.client.core.DefaultCallback;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.ImagePaths;
 import ccc.client.i18n.UIConstants;
-import ccc.client.remoting.ListGroups;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.ModelData;

@@ -33,10 +33,10 @@ import java.util.List;
 import ccc.api.core.File;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
+import ccc.client.actions.GetImagesPagedAction;
 import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.remoting.GetImagesPagedAction;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;

@@ -27,9 +27,9 @@
 package ccc.client.gwt.widgets;
 
 import ccc.api.types.Permission;
+import ccc.client.actions.CancelActionAction;
 import ccc.client.core.I18n;
 import ccc.client.i18n.UIConstants;
-import ccc.client.remoting.CancelActionAction;
 
 
 /**

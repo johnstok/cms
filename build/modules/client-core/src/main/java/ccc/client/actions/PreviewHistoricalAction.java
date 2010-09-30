@@ -32,8 +32,6 @@ import ccc.api.types.ResourceType;
 import ccc.client.core.Action;
 import ccc.client.core.DefaultCallback;
 import ccc.client.core.InternalServices;
-import ccc.client.remoting.GetAbsolutePathAction;
-import ccc.client.remoting.OpenTemplateRevisionAction;
 import ccc.client.views.HistoryView;
 
 /**

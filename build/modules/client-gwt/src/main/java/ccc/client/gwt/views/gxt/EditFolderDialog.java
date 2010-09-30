@@ -37,14 +37,14 @@ import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
+import ccc.client.actions.GetChildrenAction;
+import ccc.client.actions.UpdateFolderAction;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.widgets.ResourceTypeRendererFactory;
-import ccc.client.remoting.GetChildrenAction;
-import ccc.client.remoting.UpdateFolderAction;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.BeanModel;

@@ -29,10 +29,10 @@ package ccc.client.gwt.views.gxt;
 
 import static ccc.client.core.InternalServices.*;
 import ccc.api.core.User;
+import ccc.client.actions.UpdateCurrentUserAction;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.remoting.UpdateCurrentUserAction;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

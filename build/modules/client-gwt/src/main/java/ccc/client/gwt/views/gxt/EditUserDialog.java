@@ -37,13 +37,13 @@ import java.util.UUID;
 import ccc.api.core.Group;
 import ccc.api.core.User;
 import ccc.api.types.CommandType;
+import ccc.client.actions.UpdateUserAction;
 import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.events.Event;
 import ccc.client.gwt.widgets.GroupListField;
-import ccc.client.remoting.UpdateUserAction;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

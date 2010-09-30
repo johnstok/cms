@@ -34,12 +34,12 @@ import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
+import ccc.client.actions.UpdateWorkingCopyAction;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.ResourceTable;
-import ccc.client.remoting.UpdateWorkingCopyAction;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

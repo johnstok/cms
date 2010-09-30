@@ -27,10 +27,10 @@
 package ccc.client.gwt.views.gxt;
 
 import ccc.api.core.API;
+import ccc.client.actions.LoginAction;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.widgets.ButtonSelectionListenerAction;
-import ccc.client.remoting.LoginAction;
 import ccc.client.views.LoginView;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;

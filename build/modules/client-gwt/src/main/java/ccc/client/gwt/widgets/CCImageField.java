@@ -35,11 +35,11 @@ import ccc.api.types.Link;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
+import ccc.client.actions.GetAbsolutePathAction;
 import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.remoting.GetAbsolutePathAction;
 import ccc.client.widgets.PageElement;
 
 import com.extjs.gxt.ui.client.data.BeanModel;

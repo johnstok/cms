@@ -36,12 +36,12 @@ import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
+import ccc.client.actions.GetUserAction;
+import ccc.client.actions.UpdateResourceAclAction;
 import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.remoting.GetUserAction;
-import ccc.client.remoting.UpdateResourceAclAction;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;

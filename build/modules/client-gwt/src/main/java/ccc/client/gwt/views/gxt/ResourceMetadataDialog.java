@@ -34,12 +34,12 @@ import java.util.Set;
 
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
+import ccc.client.actions.UpdateMetadataAction;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.widgets.MetadataGrid;
-import ccc.client.remoting.UpdateMetadataAction;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

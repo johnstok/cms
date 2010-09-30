@@ -36,6 +36,7 @@ import java.util.UUID;
 
 import ccc.api.core.Group;
 import ccc.api.types.Username;
+import ccc.client.actions.UniqueUsernameAction;
 import ccc.client.core.DefaultCallback;
 import ccc.client.core.Editable;
 import ccc.client.core.Globals;
@@ -43,7 +44,6 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.widgets.GroupListField;
-import ccc.client.remoting.UniqueUsernameAction;
 import ccc.client.views.CreateUser;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;

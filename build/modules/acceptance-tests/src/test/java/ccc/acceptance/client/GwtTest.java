@@ -27,8 +27,8 @@
 package ccc.acceptance.client;
 
 import ccc.api.core.ResourceIdentifiers.Alias;
+import ccc.client.actions.GetServicesAction;
 import ccc.client.core.InternalServices;
-import ccc.client.remoting.GetServicesAction;
 import ccc.tests.acceptance.AbstractAcceptanceTest;
 
 

@@ -28,6 +28,8 @@ package ccc.client.gwt.core;
 
 
 import ccc.api.core.API;
+import ccc.client.actions.GetServicesAction;
+import ccc.client.actions.IsLoggedInAction;
 import ccc.client.core.CoreEvents;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
@@ -47,8 +49,6 @@ import ccc.client.i18n.ErrorDescriptions;
 import ccc.client.i18n.ErrorResolutions;
 import ccc.client.i18n.UIConstants;
 import ccc.client.i18n.UIMessages;
-import ccc.client.remoting.GetServicesAction;
-import ccc.client.remoting.IsLoggedInAction;
 import ccc.plugins.s11n.json.SerializerFactory;
 
 import com.google.gwt.core.client.EntryPoint;

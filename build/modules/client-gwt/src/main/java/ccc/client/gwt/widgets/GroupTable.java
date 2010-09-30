@@ -33,6 +33,7 @@ import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.CommandType;
 import ccc.api.types.SortOrder;
+import ccc.client.actions.ListGroups;
 import ccc.client.core.Callback;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
@@ -40,7 +41,6 @@ import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.views.gxt.GroupViewImpl;
 import ccc.client.presenters.UpdateGroupPresenter;
-import ccc.client.remoting.ListGroups;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;

@@ -26,9 +26,9 @@
  */
 package ccc.client.gwt.core;
 
+import ccc.client.actions.LogoutAction;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.remoting.LogoutAction;
 
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;

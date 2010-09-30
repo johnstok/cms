@@ -32,11 +32,11 @@ import java.util.List;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.types.SortOrder;
+import ccc.client.actions.ListUsersAction;
 import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.i18n.UIConstants;
-import ccc.client.remoting.ListUsersAction;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.Scroll;

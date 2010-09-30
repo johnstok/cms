@@ -29,7 +29,6 @@ package ccc.client.actions;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Action;
 import ccc.client.core.Globals;
-import ccc.client.remoting.ListGroups;
 
 
 /**
