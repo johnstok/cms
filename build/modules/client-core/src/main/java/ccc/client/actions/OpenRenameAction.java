@@ -28,7 +28,6 @@ package ccc.client.actions;
 
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
@@ -76,9 +75,7 @@ public final class OpenRenameAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            Globals.API_URL
-            + _selectionModel.tableSelection().self().build(
+        return _selectionModel.tableSelection().delete().build(
                 InternalServices.ENCODER);
     }
 
