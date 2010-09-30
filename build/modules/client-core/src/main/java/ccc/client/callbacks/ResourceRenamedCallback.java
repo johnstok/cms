@@ -1,11 +1,37 @@
+/*-----------------------------------------------------------------------------
+ * Copyright © 2010 Civic Computing Ltd.
+ * All rights reserved.
+ *
+ * This file is part of Content Control.
+ *
+ * Content Control is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Content Control is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Content Control.  If not, see http://www.gnu.org/licenses/.
+ *
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
+ *
+ * Changes: see the subversion log.
+ *-----------------------------------------------------------------------------
+ */
 package ccc.client.callbacks;
 
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourcePath;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.InternalServices;
-import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
 
 /**
@@ -13,9 +39,10 @@ import ccc.client.events.Event;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceRenamedCallback extends ResponseHandlerAdapter {
+public class ResourceRenamedCallback extends DefaultCallback<Void> {
 
     private final Event<CommandType> _event;
+
 
     /**
      * Constructor.
@@ -36,9 +63,10 @@ public class ResourceRenamedCallback extends ResponseHandlerAdapter {
         _event.addProperty("id", id);
     }
 
+
     /** {@inheritDoc} */
     @Override
-    public void onNoContent(final ccc.client.core.Response response) {
+    public void onSuccess(final Void result) {
         InternalServices.REMOTING_BUS.fireEvent(_event);
     }
 }

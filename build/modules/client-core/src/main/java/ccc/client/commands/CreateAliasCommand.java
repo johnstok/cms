@@ -24,40 +24,60 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.callbacks;
+package ccc.client.commands;
 
-import ccc.api.core.ActionSummary;
-import ccc.api.types.CommandType;
-import ccc.client.core.DefaultCallback;
+import ccc.api.core.API;
+import ccc.api.core.Alias;
+import ccc.api.core.ResourceSummary;
+import ccc.api.types.DBC;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
+import ccc.client.core.Command;
+import ccc.client.core.Globals;
+import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.events.Event;
+import ccc.client.core.Request;
+
 
 /**
- * Callback handler for applying a working copy.
+ * Create a new alias.
  *
  * @author Civic Computing Ltd.
  */
-public class ActionCancelledCallback extends DefaultCallback<Void> {
+public class CreateAliasCommand
+    extends
+        Command<API, ResourceSummary> {
 
-    private final Event<CommandType> _event;
+    private Alias _alias;
 
 
     /**
      * Constructor.
      *
-     * @param action The resource whose WC has been applied.
+     * @param alias The alias to create.
      */
-    public ActionCancelledCallback(final ActionSummary action) {
-        super(I18n.UI_CONSTANTS.cancel());
-        _event = new Event<CommandType>(CommandType.ACTION_CANCEL);
-        _event.addProperty("action", action);
+    public CreateAliasCommand(final Alias alias) {
+        _alias = DBC.require().notNull(alias);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void onSuccess(final Void result) {
-        InternalServices.REMOTING_BUS.fireEvent(_event);
+    public void invoke(final API subject,
+                       final Callback<ResourceSummary> callback) {
+        final String path = Globals.API_URL+InternalServices.API.aliases();
+
+        final Request r =
+            new Request(
+                HttpMethod.POST,
+                path,
+                writeAlias(_alias),
+                new CallbackResponseHandler<ResourceSummary>(
+                    I18n.UI_CONSTANTS.createAlias(),
+                    callback,
+                    resourceSummaryParser()));
+
+        getExecutor().invokeRequest(r);
     }
 }

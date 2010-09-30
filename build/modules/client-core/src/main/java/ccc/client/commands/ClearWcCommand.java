@@ -24,40 +24,47 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.callbacks;
+package ccc.client.commands;
 
-import ccc.api.core.ActionSummary;
-import ccc.api.types.CommandType;
-import ccc.client.core.DefaultCallback;
+import ccc.api.core.ResourceSummary;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
+import ccc.client.core.Command;
+import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.events.Event;
+import ccc.client.core.Parser;
+import ccc.client.core.Request;
+import ccc.client.core.Response;
+
 
 /**
- * Callback handler for applying a working copy.
+ * Clear a resource's working copy.
  *
  * @author Civic Computing Ltd.
  */
-public class ActionCancelledCallback extends DefaultCallback<Void> {
-
-    private final Event<CommandType> _event;
-
-
-    /**
-     * Constructor.
-     *
-     * @param action The resource whose WC has been applied.
-     */
-    public ActionCancelledCallback(final ActionSummary action) {
-        super(I18n.UI_CONSTANTS.cancel());
-        _event = new Event<CommandType>(CommandType.ACTION_CANCEL);
-        _event.addProperty("action", action);
-    }
-
+public class ClearWcCommand
+    extends
+        Command<ResourceSummary, Void> {
 
     /** {@inheritDoc} */
     @Override
-    public void onSuccess(final Void result) {
-        InternalServices.REMOTING_BUS.fireEvent(_event);
+    public void invoke(final ResourceSummary subject,
+                       final Callback<Void> callback) {
+        final Request r =
+            new Request(
+                HttpMethod.DELETE,
+                getBaseUrl() + subject.wc().build(InternalServices.ENCODER),
+                "",
+                new CallbackResponseHandler<Void>(
+                    I18n.UI_CONSTANTS.deleteWorkingCopy(),
+                    callback,
+                    new Parser<Void>() {
+                        @Override public Void parse(final Response response) {
+                            return null;
+                        }}));
+
+        getExecutor().invokeRequest(r);
     }
+
 }

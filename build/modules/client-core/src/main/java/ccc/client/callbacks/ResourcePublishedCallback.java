@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,66 +21,44 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.remoting;
+package ccc.client.callbacks;
 
 import ccc.api.core.Resource;
 import ccc.api.types.CommandType;
-import ccc.client.core.HttpMethod;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.InternalServices;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Response;
-import ccc.client.core.SingleSelectionModel;
 import ccc.client.events.Event;
 
+
 /**
- * Publish a resource.
+ * Handles successful publishing of a resource, publishes to the event bus.
  *
  * @author Civic Computing Ltd.
  */
-public class PublishAction
+public class ResourcePublishedCallback
     extends
-        RemotingAction<Resource> {
-
-    private final SingleSelectionModel _selectionModel;
+        DefaultCallback<Resource> {
 
 
     /**
      * Constructor.
      *
-     * @param selectionModel The selection model to use.
+     * @param actionName The action that was performed.
      */
-    public PublishAction(final SingleSelectionModel selectionModel) {
-        super(UI_CONSTANTS.publish(), HttpMethod.POST);
-        _selectionModel = selectionModel;
+    public ResourcePublishedCallback(final String actionName) {
+        super(actionName);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() {
-        return
-            _selectionModel
-                .tableSelection()
-                .uriPublish()
-                .build(InternalServices.ENCODER);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onSuccess(final Resource rs) {
+    public void onSuccess(final Resource resource) {
         InternalServices.REMOTING_BUS.fireEvent(
             new Event<CommandType>(CommandType.RESOURCE_PUBLISH)
-                .addProperty("resource", rs));
+                .addProperty("resource", resource));
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    protected Resource parse(final Response response) {
-        return readResource(response);
-    }
 }

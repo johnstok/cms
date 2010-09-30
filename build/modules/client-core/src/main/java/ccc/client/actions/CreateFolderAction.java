@@ -30,16 +30,11 @@ import java.util.UUID;
 
 import ccc.api.core.Folder;
 import ccc.api.types.ResourceName;
-import ccc.client.core.Callback;
-import ccc.client.core.CallbackResponseHandler;
-import ccc.client.core.Globals;
-import ccc.client.core.HttpMethod;
+import ccc.client.callbacks.FolderCreatedCallback;
+import ccc.client.commands.CreateFolderCommand;
+import ccc.client.core.Action;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Parser;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Request;
-import ccc.client.core.Response;
 
 
 /**
@@ -48,11 +43,12 @@ import ccc.client.core.Response;
  * @author Civic Computing Ltd.
  */
 public final class CreateFolderAction
-    extends
-        RemotingAction<Folder> {
+    implements
+        Action {
 
     private final String _name;
     private final UUID _parentFolder;
+
 
     /**
      * Constructor.
@@ -61,7 +57,6 @@ public final class CreateFolderAction
      * @param parentFolder The folder's parent folder.
      */
     public CreateFolderAction(final UUID parentFolder, final String name) {
-        super(I18n.UI_CONSTANTS.createFolder());
         _parentFolder = parentFolder;
         _name = name;
     }
@@ -69,24 +64,14 @@ public final class CreateFolderAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest(final Callback<Folder> callback) {
-        final String path = Globals.API_URL+InternalServices.API.folders();
+    public void execute() {
 
         final Folder f = new Folder();
         f.setParent(_parentFolder);
         f.setName(new ResourceName(_name));
 
-        return
-            new Request(
-                HttpMethod.POST,
-                path,
-                writeFolder(f),
-                new CallbackResponseHandler<Folder>(
-                    I18n.UI_CONSTANTS.createFolder(),
-                    callback,
-                    new Parser<Folder>() {
-                        @Override public Folder parse(final Response response) {
-                            return readFolder(response);
-                        }}));
+        new CreateFolderCommand(f).invoke(
+            InternalServices.API,
+            new FolderCreatedCallback(I18n.UI_CONSTANTS.createFolder()));
     }
 }

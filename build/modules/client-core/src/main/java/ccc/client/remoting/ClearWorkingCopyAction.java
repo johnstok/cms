@@ -27,16 +27,10 @@
 package ccc.client.remoting;
 
 import ccc.api.core.ResourceSummary;
-import ccc.client.core.Callback;
-import ccc.client.core.CallbackResponseHandler;
-import ccc.client.core.Globals;
-import ccc.client.core.HttpMethod;
+import ccc.client.callbacks.WCClearedCallback;
+import ccc.client.commands.ClearWcCommand;
+import ccc.client.core.Action;
 import ccc.client.core.I18n;
-import ccc.client.core.InternalServices;
-import ccc.client.core.Parser;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Request;
-import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
 
 /**
@@ -45,8 +39,8 @@ import ccc.client.core.SingleSelectionModel;
  * @author Civic Computing Ltd.
  */
 public class ClearWorkingCopyAction
-    extends
-        RemotingAction<Void> {
+    implements
+        Action {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -57,27 +51,18 @@ public class ClearWorkingCopyAction
      * @param selectionModel The selection model for this action.
      */
     public ClearWorkingCopyAction(final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.deleteWorkingCopy());
         _selectionModel = selectionModel;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest(final Callback<Void> callback) {
+    public void execute() {
         final ResourceSummary rs = _selectionModel.tableSelection();
-
-        return new Request(
-            HttpMethod.DELETE,
-            Globals.API_URL
-                + rs.wc().build(InternalServices.ENCODER),
-            "",
-            new CallbackResponseHandler<Void>(
+        new ClearWcCommand().invoke(
+            rs,
+            new WCClearedCallback(
                 I18n.UI_CONSTANTS.deleteWorkingCopy(),
-                callback,
-                new Parser<Void>() {
-                    @Override public Void parse(final Response response) {
-                        return null;
-                    }}));
+                rs));
     }
 }

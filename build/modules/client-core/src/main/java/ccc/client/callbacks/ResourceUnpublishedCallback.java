@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,27 +21,24 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.remoting;
+package ccc.client.callbacks;
 
 import ccc.api.core.ResourceSummary;
-import ccc.client.callbacks.WCAppliedCallback;
-import ccc.client.commands.ApplyWorkingCopyCommand;
-import ccc.client.core.Action;
-import ccc.client.core.I18n;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.SingleSelectionModel;
 
 
 /**
- * Applies working copy.
+ * Handles the un-publishing of a resource.
  *
  * @author Civic Computing Ltd.
  */
-public class ApplyWorkingCopyAction
-    implements
-        Action {
+public class ResourceUnpublishedCallback
+    extends
+        DefaultCallback<Void> {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -49,20 +46,22 @@ public class ApplyWorkingCopyAction
     /**
      * Constructor.
      *
-     * @param selectionModel The selection model.
+     * @param actionName The name of the action performed.
+     * @param ssm        The selection model containing the selected item.
      */
-    public ApplyWorkingCopyAction(final SingleSelectionModel selectionModel) {
-        _selectionModel = selectionModel;
+    public ResourceUnpublishedCallback(final String actionName,
+                                       final SingleSelectionModel ssm) {
+        super(actionName);
+        _selectionModel = ssm;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void execute() {
-        final ResourceSummary rs = _selectionModel.tableSelection();
-
-        new ApplyWorkingCopyCommand().invoke(
-            rs,
-            new WCAppliedCallback(I18n.UI_CONSTANTS.applyWorkingCopy(), rs));
+    public void onSuccess(final Void result) {
+        final ResourceSummary item = _selectionModel.tableSelection();
+        item.setPublishedBy(null);
+        item.setVisible(false);
+        _selectionModel.update(item);
     }
 }

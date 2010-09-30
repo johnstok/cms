@@ -63,7 +63,6 @@ import ccc.client.remoting.OpenUpdateMetadataAction;
 import ccc.client.remoting.OpenUpdateResourceAclAction;
 import ccc.client.remoting.OpenUpdateTemplateAction;
 import ccc.client.remoting.PageDeltaAction;
-import ccc.client.remoting.PublishAction;
 import ccc.client.remoting.RemoveFromMainMenuAction;
 import ccc.client.remoting.UnlockAction;
 import ccc.client.remoting.UnpublishAction;
@@ -121,7 +120,7 @@ public class ResourceContextMenu
     ResourceContextMenu(final ResourceTable tbl) {
         _table = tbl;
 
-        _publishAction = new PublishAction(_table);
+        _publishAction = new PublishAction2(_table);
         _includeMainMenu = new IncludeInMainMenuAction(_table);
         _removeMainMenu = new RemoveFromMainMenuAction(_table);
         _unpublishAction = new UnpublishAction(_table);

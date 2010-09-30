@@ -30,7 +30,6 @@ import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.client.actions.CreateActionAction;
-import ccc.client.callbacks.ActionCreatedCallback;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
 import ccc.client.core.ValidationResult;
@@ -80,7 +79,7 @@ public class CreateActionPresenter
                 getView().getCommandType(),
                 getView().getDate(),
                 getView().getActionParameters())
-            .execute(new ActionCreatedCallback());
+            .execute();
         } else {
             getView().alert(vr.getErrorText());
         }

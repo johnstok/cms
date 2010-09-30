@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright (c) 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,48 +21,40 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.remoting;
+package ccc.client.gwt.widgets;
 
-import ccc.api.core.ResourceSummary;
-import ccc.client.callbacks.WCAppliedCallback;
-import ccc.client.commands.ApplyWorkingCopyCommand;
+import ccc.client.callbacks.ResourcePublishedCallback;
+import ccc.client.commands.PublishAction;
 import ccc.client.core.Action;
-import ccc.client.core.I18n;
 import ccc.client.core.SingleSelectionModel;
 
-
 /**
- * Applies working copy.
+ * Binds a command to a UI event.
  *
  * @author Civic Computing Ltd.
  */
-public class ApplyWorkingCopyAction
+public final class PublishAction2
     implements
         Action {
 
-    private final SingleSelectionModel _selectionModel;
-
+    private final SingleSelectionModel _ssm;
 
     /**
      * Constructor.
      *
-     * @param selectionModel The selection model.
+     * @param ssm The selection model with selecting a resource.
      */
-    public ApplyWorkingCopyAction(final SingleSelectionModel selectionModel) {
-        _selectionModel = selectionModel;
+    public PublishAction2(final SingleSelectionModel ssm) {
+        _ssm = ssm;
     }
 
-
     /** {@inheritDoc} */
-    @Override
-    public void execute() {
-        final ResourceSummary rs = _selectionModel.tableSelection();
-
-        new ApplyWorkingCopyCommand().invoke(
-            rs,
-            new WCAppliedCallback(I18n.UI_CONSTANTS.applyWorkingCopy(), rs));
+    @Override public void execute() {
+        new PublishAction().invoke(
+            _ssm.tableSelection(),
+            new ResourcePublishedCallback(UI_CONSTANTS.publish()));
     }
 }

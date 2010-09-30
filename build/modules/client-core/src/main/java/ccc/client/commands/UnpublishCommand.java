@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,48 +21,43 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.remoting;
+package ccc.client.commands;
 
 import ccc.api.core.ResourceSummary;
-import ccc.client.callbacks.WCAppliedCallback;
-import ccc.client.commands.ApplyWorkingCopyCommand;
-import ccc.client.core.Action;
-import ccc.client.core.I18n;
-import ccc.client.core.SingleSelectionModel;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
+import ccc.client.core.Command;
+import ccc.client.core.HttpMethod;
+import ccc.client.core.Request;
 
 
 /**
- * Applies working copy.
+ * Unpublish a resource.
  *
  * @author Civic Computing Ltd.
  */
-public class ApplyWorkingCopyAction
-    implements
-        Action {
-
-    private final SingleSelectionModel _selectionModel;
-
-
-    /**
-     * Constructor.
-     *
-     * @param selectionModel The selection model.
-     */
-    public ApplyWorkingCopyAction(final SingleSelectionModel selectionModel) {
-        _selectionModel = selectionModel;
-    }
-
+public class UnpublishCommand
+    extends
+        Command<ResourceSummary, Void> {
 
     /** {@inheritDoc} */
     @Override
-    public void execute() {
-        final ResourceSummary rs = _selectionModel.tableSelection();
+    public void invoke(final ResourceSummary subject,
+                       final Callback<Void> callback) {
 
-        new ApplyWorkingCopyCommand().invoke(
-            rs,
-            new WCAppliedCallback(I18n.UI_CONSTANTS.applyWorkingCopy(), rs));
+        final Request r =
+            new Request(
+                HttpMethod.DELETE,
+                subject.uriPublish().build(getEncoder()),
+                "",
+                new CallbackResponseHandler<Void>(
+                    "",
+                    callback,
+                    voidParser()));
+
+        getExecutor().invokeRequest(r);
     }
 }

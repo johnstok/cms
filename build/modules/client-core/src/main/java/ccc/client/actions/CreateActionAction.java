@@ -32,18 +32,9 @@ import java.util.UUID;
 
 import ccc.api.core.Action;
 import ccc.api.types.CommandType;
-import ccc.api.types.Link;
-import ccc.client.core.Callback;
-import ccc.client.core.CallbackResponseHandler;
-import ccc.client.core.Globals;
-import ccc.client.core.HttpMethod;
-import ccc.client.core.I18n;
+import ccc.client.callbacks.ActionCreatedCallback;
+import ccc.client.commands.CreateActionCommand;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Parser;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Request;
-import ccc.client.core.Response;
-import ccc.client.core.S11nHelper;
 
 
 /**
@@ -52,8 +43,8 @@ import ccc.client.core.S11nHelper;
  * @author Civic Computing Ltd.
  */
 public final class CreateActionAction
-    extends
-        RemotingAction<Action> {
+    implements
+        ccc.client.core.Action {
 
     private UUID _resourceId;
     private CommandType _command;
@@ -72,7 +63,6 @@ public final class CreateActionAction
                               final CommandType command,
                               final Date executeAfter,
                               final Map<String, String> actionParameters) {
-        super(I18n.UI_CONSTANTS.createAction());
         _resourceId = resourceId;
         _command = command;
         _executeAfter = executeAfter;
@@ -82,41 +72,12 @@ public final class CreateActionAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest(final Callback<Action> callback) {
-        return createAction(
+    public void execute() {
+        new CreateActionCommand(
             new Action(
-                _resourceId, _command, _executeAfter, _actionParameters),
-            callback);
-    }
-
-
-    /**
-     * Create a new action.
-     *
-     * @param action The action to create.
-     * @param callback
-     *
-     * @return The HTTP request to create the action.
-     */
-    public Request createAction(final Action action,
-                                final Callback<Action> callback) {
-
-        final String path =
-            Globals.API_URL
-            + new Link(InternalServices.ACTIONS.getLink("self"))
-                .build(InternalServices.ENCODER);
-
-        return
-            new Request(
-                HttpMethod.POST,
-                path,
-                writeAction(action),
-                new CallbackResponseHandler<Action>(
-                    I18n.UI_CONSTANTS.createAction(),
-                    callback,
-                    new Parser<Action>() {
-                        @Override public Action parse(final Response response) {
-                            return new S11nHelper().readAction(response);
-                        }}));
+                _resourceId, _command, _executeAfter, _actionParameters))
+        .invoke(
+            InternalServices.ACTIONS,
+            new ActionCreatedCallback());
     }
 }

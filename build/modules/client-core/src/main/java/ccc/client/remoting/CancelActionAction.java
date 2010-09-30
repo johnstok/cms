@@ -28,17 +28,11 @@ package ccc.client.remoting;
 
 import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
-import ccc.client.core.Callback;
-import ccc.client.core.CallbackResponseHandler;
-import ccc.client.core.Globals;
+import ccc.client.callbacks.ActionCancelledCallback;
+import ccc.client.commands.CancelActionCommand;
+import ccc.client.core.Action;
 import ccc.client.core.HasSelection;
-import ccc.client.core.HttpMethod;
-import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Parser;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Request;
-import ccc.client.core.Response;
 
 
 /**
@@ -47,8 +41,8 @@ import ccc.client.core.Response;
  * @author Civic Computing Ltd.
  */
 public class CancelActionAction
-    extends
-        RemotingAction<Void> {
+    implements
+        Action {
 
     private final HasSelection<ActionSummary> _table;
 
@@ -59,45 +53,28 @@ public class CancelActionAction
      * @param table The action table to work with.
      */
     public CancelActionAction(final HasSelection<ActionSummary> table) {
-        super(I18n.UI_CONSTANTS.cancel());
         _table = table;
     }
 
 
     /** {@inheritDoc} */
-    @Override protected boolean beforeExecute() {
+    @Override
+    public void execute() {
         final ActionSummary action = _table.getSelectedItem();
+
         if (null==action) {
             InternalServices.WINDOW.alert(
                 UI_CONSTANTS.pleaseChooseAnAction());
-            return false;
+
         } else if (
             ActionStatus.SCHEDULED != action.getStatus()) {
             InternalServices.WINDOW.alert(
                 UI_CONSTANTS.thisActionHasAlreadyCompleted());
-            return false;
+
+        } else {
+            new CancelActionCommand().invoke(
+                action,
+                new ActionCancelledCallback(action));
         }
-        return true;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected Request getRequest(final Callback<Void> callback) {
-        final ActionSummary action = _table.getSelectedItem();
-
-        final String path = Globals.API_URL + action.self();
-        return
-            new Request(
-                HttpMethod.DELETE,
-                path,
-                "",
-                new CallbackResponseHandler<Void>(
-                    I18n.UI_CONSTANTS.cancel(),
-                    callback,
-                    new Parser<Void>() {
-                        @Override public Void parse(final Response response) {
-                            return null;
-                        }}));
     }
 }

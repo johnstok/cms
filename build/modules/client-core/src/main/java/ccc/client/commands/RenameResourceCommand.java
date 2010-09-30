@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,60 +21,61 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.actions;
-
+package ccc.client.commands;
 
 import ccc.api.core.Resource;
-import ccc.api.types.DBC;
-import ccc.api.types.ResourcePath;
-import ccc.client.callbacks.ResourceRenamedCallback;
-import ccc.client.commands.RenameResourceCommand;
-import ccc.client.core.Action;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
+import ccc.client.core.Command;
+import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
+import ccc.client.core.Parser;
+import ccc.client.core.Request;
+import ccc.client.core.Response;
 
 
 /**
- * Remote action for renaming.
+ * Rename a resource.
  *
  * @author Civic Computing Ltd.
  */
-public final class RenameAction
-    implements
-        Action {
+public class RenameResourceCommand
+    extends
+        Command<Resource, Void> {
 
     private final String _name;
-    private final Resource _resource;
-    private final ResourcePath _newPath;
 
 
     /**
      * Constructor.
      *
-     * @param resource The resource to update.
-     * @param name The new name for this resource.
-     * @param newPath The updated absolute path to the resource.
+     * @param name The resource's new name.
      */
-    public RenameAction(final Resource resource,
-                        final String name,
-                        final ResourcePath newPath) {
-        _resource = DBC.require().notNull(resource);
-        _name     = DBC.require().notEmpty(name);
-        _newPath  = DBC.require().notNull(newPath);
+    public RenameResourceCommand(final String name) {
+        _name = name;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void execute() {
-        new RenameResourceCommand(_name).invoke(
-            _resource,
-            new ResourceRenamedCallback(
-                I18n.UI_CONSTANTS.rename(),
+    public void invoke(final Resource resource, final Callback<Void> callback) {
+        final Request r =
+            new Request(
+                HttpMethod.POST,
+                getBaseUrl() + resource.rename().build(getEncoder()),
                 _name,
-                _resource.getId(),
-                _newPath));
+                new CallbackResponseHandler<Void>(
+                    I18n.UI_CONSTANTS.rename(),
+                    callback,
+                    new Parser<Void>() {
+                        @Override public Void parse(final Response response) {
+                            return null;
+                        }}));
+
+        getExecutor().invokeRequest(r);
     }
+
 }

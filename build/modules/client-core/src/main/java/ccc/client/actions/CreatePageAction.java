@@ -27,16 +27,11 @@
 package ccc.client.actions;
 
 import ccc.api.core.Page;
-import ccc.client.core.Callback;
-import ccc.client.core.CallbackResponseHandler;
-import ccc.client.core.Globals;
-import ccc.client.core.HttpMethod;
+import ccc.client.callbacks.PageCreatedCallback;
+import ccc.client.commands.CreatePageCommand;
+import ccc.client.core.Action;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Parser;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Request;
-import ccc.client.core.Response;
 
 
 /**
@@ -45,8 +40,8 @@ import ccc.client.core.Response;
  * @author Civic Computing Ltd.
  */
 public final class CreatePageAction
-    extends
-        RemotingAction<Page> {
+    implements
+        Action {
 
     private final Page _page;
 
@@ -57,27 +52,17 @@ public final class CreatePageAction
      * @param page The page's content.
      */
     public CreatePageAction(final Page page) {
-        super(I18n.UI_CONSTANTS.createPage());
+        super();
         _page = page;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest(final Callback<Page> callback) {
-        final String path =  Globals.API_URL+InternalServices.API.pages();
-
-        return
-            new Request(
-                HttpMethod.POST,
-                path,
-                writePage(_page),
-                new CallbackResponseHandler<Page>(
-                    I18n.UI_CONSTANTS.createPage(),
-                    callback,
-                    new Parser<Page>() {
-                        @Override public Page parse(final Response response) {
-                            return readPage(response);
-                        }}));
+    public void execute() {
+        new CreatePageCommand(_page)
+            .invoke(
+                InternalServices.API,
+                new PageCreatedCallback(I18n.UI_CONSTANTS.createPage()));
     }
 }

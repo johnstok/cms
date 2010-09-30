@@ -26,11 +26,9 @@
  */
 package ccc.client.remoting;
 
-import ccc.api.core.ResourceSummary;
-import ccc.client.core.HttpMethod;
-import ccc.client.core.InternalServices;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Response;
+import ccc.client.callbacks.ResourceUnpublishedCallback;
+import ccc.client.commands.UnpublishCommand;
+import ccc.client.core.Action;
 import ccc.client.core.SingleSelectionModel;
 
 
@@ -40,8 +38,8 @@ import ccc.client.core.SingleSelectionModel;
  * @author Civic Computing Ltd.
  */
 public class UnpublishAction
-    extends
-        RemotingAction<Void> {
+    implements
+        Action {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -52,33 +50,17 @@ public class UnpublishAction
      * @param selectionModel The selection model.
      */
     public UnpublishAction(final SingleSelectionModel selectionModel) {
-        super(UI_CONSTANTS.unpublish(), HttpMethod.DELETE);
         _selectionModel = selectionModel;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() {
-        return
-            _selectionModel
-                .tableSelection()
-                .uriPublish()
-                .build(InternalServices.ENCODER);
+    public void execute() {
+        new UnpublishCommand().invoke(
+            _selectionModel.tableSelection(),
+            new ResourceUnpublishedCallback(
+                UI_CONSTANTS.unpublish(),
+                _selectionModel));
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onSuccess(final Void response) {
-        final ResourceSummary item = _selectionModel.tableSelection();
-        item.setPublishedBy(null);
-        item.setVisible(false);
-        _selectionModel.update(item);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected Void parse(final Response response) { return null; }
 }

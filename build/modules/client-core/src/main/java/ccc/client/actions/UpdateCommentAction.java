@@ -28,15 +28,10 @@ package ccc.client.actions;
 
 import ccc.api.core.Comment;
 import ccc.api.types.DBC;
-import ccc.client.core.Callback;
-import ccc.client.core.CallbackResponseHandler;
-import ccc.client.core.Globals;
-import ccc.client.core.HttpMethod;
+import ccc.client.callbacks.CommentUpdatedCallback;
+import ccc.client.commands.UpdateCommentCommand;
+import ccc.client.core.Action;
 import ccc.client.core.I18n;
-import ccc.client.core.Parser;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Request;
-import ccc.client.core.Response;
 
 
 /**
@@ -45,8 +40,8 @@ import ccc.client.core.Response;
  * @author Civic Computing Ltd.
  */
 public final class UpdateCommentAction
-    extends
-        RemotingAction<Comment> {
+    implements
+        Action {
 
     private final Comment _comment;
 
@@ -57,27 +52,16 @@ public final class UpdateCommentAction
      * @param comment The updated comment.
      */
     public UpdateCommentAction(final Comment comment) {
-        super(I18n.UI_CONSTANTS.updateComment());
         _comment = DBC.require().notNull(comment);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest(final Callback<Comment> callback) {
-        final String path = Globals.API_URL + _comment.self();
-
-        return new Request(
-            HttpMethod.PUT,
-            path,
-            writeComment(_comment),
-            new CallbackResponseHandler<Comment>(
-                I18n.UI_CONSTANTS.updateComment(),
-                callback,
-                new Parser<Comment>() {
-
-                    @Override public Comment parse(final Response response) {
-                        return readComment(response);
-                    }}));
+    public void execute() {
+        new UpdateCommentCommand().invoke(
+            _comment,
+            new CommentUpdatedCallback(
+                I18n.UI_CONSTANTS.updateComment(), _comment));
     }
 }

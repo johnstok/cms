@@ -27,17 +27,11 @@
 package ccc.client.actions;
 
 import ccc.api.core.Alias;
-import ccc.api.core.ResourceSummary;
-import ccc.client.core.Callback;
-import ccc.client.core.CallbackResponseHandler;
-import ccc.client.core.Globals;
-import ccc.client.core.HttpMethod;
+import ccc.client.callbacks.AliasCreatedCallback;
+import ccc.client.commands.CreateAliasCommand;
+import ccc.client.core.Action;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.Parser;
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Request;
-import ccc.client.core.Response;
 
 
 /**
@@ -46,8 +40,8 @@ import ccc.client.core.Response;
  * @author Civic Computing Ltd.
  */
 public final class CreateAliasAction
-    extends
-        RemotingAction<ResourceSummary> {
+    implements
+        Action {
 
     private final Alias _alias;
 
@@ -58,29 +52,15 @@ public final class CreateAliasAction
      * @param alias The new alias to create.
      */
     public CreateAliasAction(final Alias alias) {
-        super(I18n.UI_CONSTANTS.createAlias());
         _alias = alias;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest(final Callback<ResourceSummary> callback) {
-        final String path = Globals.API_URL+InternalServices.API.aliases();
-
-        return
-            new Request(
-                HttpMethod.POST,
-                path,
-                writeAlias(_alias),
-                new CallbackResponseHandler<ResourceSummary>(
-                    I18n.UI_CONSTANTS.createAlias(),
-                    callback,
-                    new Parser<ResourceSummary>() {
-
-                        @Override
-                        public ResourceSummary parse(final Response response) {
-                            return parseResourceSummary(response);
-                        }}));
+    public void execute() {
+        new CreateAliasCommand(_alias).invoke(
+            InternalServices.API,
+            new AliasCreatedCallback(I18n.UI_CONSTANTS.createAlias()));
     }
 }
