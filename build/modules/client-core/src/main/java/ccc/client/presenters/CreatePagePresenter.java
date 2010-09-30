@@ -85,6 +85,9 @@ public class CreatePagePresenter
             VALIDATOR.notEmpty(
                 getView().getName(), I18n.UI_CONSTANTS.name()));
         vr.addError(
+            VALIDATOR.notEmpty(
+                getView().getResourceTitle(), I18n.UI_CONSTANTS.title()));
+        vr.addError(
             VALIDATOR.notValidResourceName(
                 getView().getName(), I18n.UI_CONSTANTS.name()));
 
