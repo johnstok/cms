@@ -317,7 +317,7 @@ public abstract class AbstractResourceTree {
         for (int i = 0; i < count; i=i+Globals.MAX_FETCH) {
             final ResourceSummary rs = new ResourceSummary();
             rs.setName(new ResourceName(
-                ""+(i+1)+" ... "+((i+Globals.MAX_FETCH) > count
+                ""+(i+1)+"..."+((i+Globals.MAX_FETCH) > count
                     ? count
                     : i+Globals.MAX_FETCH)));
             rs.setParent(parent.getId());
