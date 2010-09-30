@@ -57,7 +57,7 @@ import ccc.client.actions.OpenUpdateResourceAclAction;
 import ccc.client.actions.OpenUpdateTemplateAction;
 import ccc.client.actions.PageDeltaAction;
 import ccc.client.actions.PreviewAction;
-import ccc.client.actions.PublishAction2;
+import ccc.client.actions.PublishAction;
 import ccc.client.actions.RemoveFromMainMenuAction;
 import ccc.client.actions.UnlockAction;
 import ccc.client.actions.UnpublishAction;
@@ -121,7 +121,7 @@ public class ResourceContextMenu
     ResourceContextMenu(final ResourceTable tbl) {
         _table = tbl;
 
-        _publishAction = new PublishAction2(_table);
+        _publishAction = new PublishAction(_table);
         _includeMainMenu = new IncludeInMainMenuAction(_table);
         _removeMainMenu = new RemoveFromMainMenuAction(_table);
         _unpublishAction = new UnpublishAction(_table);

@@ -36,7 +36,7 @@ import ccc.client.core.SingleSelectionModel;
  *
  * @author Civic Computing Ltd.
  */
-public final class PublishAction2
+public final class PublishAction
     implements
         Action {
 
@@ -47,7 +47,7 @@ public final class PublishAction2
      *
      * @param ssm The selection model with selecting a resource.
      */
-    public PublishAction2(final SingleSelectionModel ssm) {
+    public PublishAction(final SingleSelectionModel ssm) {
         _ssm = ssm;
     }
 

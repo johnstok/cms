@@ -46,7 +46,7 @@ import ccc.client.actions.OpenUpdateCurrentUserAction;
 import ccc.client.actions.OpenUpdateFolderAction;
 import ccc.client.actions.OpenUpdateMetadataAction;
 import ccc.client.actions.OpenUpdateResourceAclAction;
-import ccc.client.actions.PublishAction2;
+import ccc.client.actions.PublishAction;
 import ccc.client.actions.UnlockAction;
 import ccc.client.actions.UnpublishAction;
 import ccc.client.actions.ViewHistoryAction;
@@ -216,7 +216,7 @@ public class MainMenu
                         rootMenu.add(createMenuItem(
                             "publish-root-"+name,
                             _constants.publish(),
-                            new PublishAction2(ssm)));
+                            new PublishAction(ssm)));
                     }
                 } else {
                     if (_user.hasPermission(Permission.RESOURCE_UNPUBLISH)) {
