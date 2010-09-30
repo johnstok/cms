@@ -63,6 +63,6 @@ public class PublishResourceCommand
 
 
     private String getPath(final ResourceSummary resource) {
-        return resource.uriPublish().build(getEncoder());
+        return getBaseUrl()+resource.uriPublish().build(getEncoder());
     }
 }

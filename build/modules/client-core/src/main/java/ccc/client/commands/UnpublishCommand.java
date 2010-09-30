@@ -51,7 +51,7 @@ public class UnpublishCommand
         final Request r =
             new Request(
                 HttpMethod.DELETE,
-                subject.uriPublish().build(getEncoder()),
+                getBaseUrl()+subject.uriPublish().build(getEncoder()),
                 "",
                 new CallbackResponseHandler<Void>(
                     "",
