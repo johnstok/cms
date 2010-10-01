@@ -110,6 +110,17 @@ public interface Resources {
 
 
     /**
+     * Does a resource with the specified ID exist.
+     *
+     * @param resourceId The id of the resource.
+     *
+     * @return True if it exists, false otherwise
+     */
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.EXISTS)
+    boolean exists(@PathParam("id") UUID resourceId);
+
+
+    /**
      * Get the resource located at the specified path.
      *
      * @param resourceId The id of the existing resource.

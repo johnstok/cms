@@ -26,23 +26,8 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.ACTION_EXECUTE;
-import static ccc.api.types.Permission.LOG_ENTRY_CREATE;
-import static ccc.api.types.Permission.RESOURCE_ACL_UPDATE;
-import static ccc.api.types.Permission.RESOURCE_CACHE_UPDATE;
-import static ccc.api.types.Permission.RESOURCE_DELETE;
-import static ccc.api.types.Permission.RESOURCE_LOCK;
-import static ccc.api.types.Permission.RESOURCE_MM;
-import static ccc.api.types.Permission.RESOURCE_MOVE;
-import static ccc.api.types.Permission.RESOURCE_PUBLISH;
-import static ccc.api.types.Permission.RESOURCE_READ;
-import static ccc.api.types.Permission.RESOURCE_RENAME;
-import static ccc.api.types.Permission.RESOURCE_UNLOCK;
-import static ccc.api.types.Permission.RESOURCE_UNPUBLISH;
-import static ccc.api.types.Permission.RESOURCE_UPDATE;
-import static ccc.api.types.Permission.SEARCH_CREATE;
-import static javax.ejb.TransactionAttributeType.REQUIRED;
-import static javax.ejb.TransactionAttributeType.REQUIRES_NEW;
+import static ccc.api.types.Permission.*;
+import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
 import java.util.List;
@@ -653,6 +638,22 @@ public class ResourcesEJB
         checkRead(r);
 
         return r.mapResource();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public boolean exists(final UUID resourceId) {
+        checkPermission(RESOURCE_READ);
+
+        try {
+            retrieve(resourceId);
+            return true;
+
+        } catch (final RuntimeException e) {
+            return false;
+        }
     }
 
     /** {@inheritDoc} */

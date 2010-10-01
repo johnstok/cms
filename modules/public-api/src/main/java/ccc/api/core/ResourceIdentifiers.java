@@ -276,6 +276,8 @@ public interface ResourceIdentifiers {
 
         /** ELEMENT : String. */
         String ELEMENT            = COLLECTION + "/{id}";
+        /** ELEMENT : String. */
+        String EXISTS             = COLLECTION + "/{id}/exists";
 
         /** PATH : String. */
         String PATH               = ELEMENT + "/path";

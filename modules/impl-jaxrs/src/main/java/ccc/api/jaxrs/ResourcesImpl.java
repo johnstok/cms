@@ -495,4 +495,15 @@ public class ResourcesImpl
         }
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean exists(final UUID resourceId) {
+        try {
+            return _delegate.exists(resourceId);
+        } catch (final RuntimeException cfe) {
+            throw convertException(cfe);
+        }
+    }
+
 }
