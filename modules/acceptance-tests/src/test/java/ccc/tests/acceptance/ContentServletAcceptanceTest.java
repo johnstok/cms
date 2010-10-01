@@ -36,6 +36,7 @@ import ccc.api.core.File;
 import ccc.api.core.Page;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
+import ccc.api.core.Template;
 import ccc.api.core.User;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
@@ -423,6 +424,53 @@ public class ContentServletAcceptanceTest
         }
     }
 
+    /**
+     * Test.
+     */
+    public void testDeletedResourceRetrive() {
+
+        // ARRANGE
+        final ResourceSummary templateFolder =
+            getCommands().resourceForPath("/assets/templates");
+        String name = UUID.randomUUID().toString();
+
+        final Template t = new Template();
+        t.setName(new ResourceName(name));
+        t.setParent(templateFolder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setDefinition("<fields/>");
+        t.setBody("#set($resources = $services.getResources()) "
+            +"#set($id = $uuid.fromString(\"1fe95530-3e2c-41a8-a572-3fadbf8aa076\")) "
+            +"ok $resources.exists($id) $resources.exists($resource.getId())"
+            + "#if($resources.exists($id))"
+            + "$resources.retrieve($id) $resources.retrieve($id)"
+            + "#end");
+        t.setMimeType(MimeType.HTML);
+        final ResourceSummary ts = getTemplates().create(t);
+
+        final ResourceSummary f = tempFolder();
+        name = UUID.randomUUID().toString();
+        final Page page = new Page(f.getId(),
+            name,
+            ts.getId(),
+            "title",
+            "",
+            true);
+        final ResourceSummary ps = getPages().create(page);
+
+        // ACT
+        getCommands().lock(ps.getId());
+        getCommands().lock(f.getId());
+        getCommands().publish(ps.getId());
+        getCommands().publish(f.getId());
+
+        // ASSERT
+        final String content =
+            getBrowser().get(ps.getAbsolutePath());
+        assertTrue(content.contains("ok false true"));
+
+    }
 
     private boolean is500(final RuntimeException e) {
         return e.getMessage().startsWith("500: <!-- An error occurred: ");
