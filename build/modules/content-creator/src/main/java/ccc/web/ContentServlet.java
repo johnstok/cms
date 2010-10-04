@@ -41,8 +41,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.apache.velocity.tools.generic.DateTool;
-import org.apache.velocity.tools.generic.SortTool;
 
 import ccc.api.core.Failure;
 import ccc.api.core.MemoryServiceLocator;
@@ -229,8 +227,6 @@ public class ContentServlet
         context.add("uuid",        UUID.class);
         context.add("enums",       new EnumTools());
         context.add("hostname",    Environment.getHostname());
-        context.add("dateTool",    new DateTool()); // FIXME: Remove.
-        context.add("sortTool",    new SortTool()); // FIXME: Remove.
         context.add("apiTypes",    ObjectFactory.class);
 
         return context;
