@@ -206,30 +206,6 @@ public class ResourceCommandsTest
 
     /**
      * Test.
-     * TODO: Broken.
-     */
-    public void testPublishWithUser() {
-//
-//        // ARRANGE
-//        _r.lock(_regularUser);
-//
-//        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-//        expect(_users.loggedInUser()).andReturn(_regularUser);
-//        expect(_users.find(_regularUser.id())).andReturn(_regularUser);
-//        _al.recordPublish(eq(_r), eq(_regularUser), isA(Date.class));
-//        replayAll();
-//
-//        // ACT
-//        _rdao.publish(_r.id(), _regularUser.id(), new Date());
-//
-//        // ASSERT
-//        verifyAll();
-//        assertEquals(_regularUser, _r.publishedBy());
-    }
-
-
-    /**
-     * Test.
      */
     public void testUpdateCache() {
 

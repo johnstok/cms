@@ -46,9 +46,7 @@ public class ShellToolsAcceptanceTest
         AbstractAcceptanceTest {
 
     /*
-     * Missing tests:
-     *
-     * Missing local path for bulk file upload.
+     * FIXME: Add missing test: Missing local path for bulk file upload.
      */
 
 

@@ -240,28 +240,6 @@ public class UserTest
 
     /**
      * Test.
-     * TODO: Disabled for now, to allow migration of old data.
-     */
-    public void testRejectsInvalidEmail() {
-//
-//        // ARRANGE
-//        final User u = new User(new Username("dummy"));
-//
-//        // ACT
-//        try {
-//            u.email(new EmailAddress("blaablaa"));
-//            fail("Invalid email should be rejected.");
-//
-//        // ASSERT
-//        } catch (final IllegalArgumentException e) {
-//            assertEquals(
-//                "Specified expression must be true.", e.getMessage());
-//        }
-    }
-
-
-    /**
-     * Test.
      */
     public void testUsernameMutatorRejectsNullUsername() {
 

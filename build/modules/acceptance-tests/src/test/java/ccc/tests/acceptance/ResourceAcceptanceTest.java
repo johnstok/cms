@@ -525,32 +525,19 @@ public class ResourceAcceptanceTest
     }
 
 
-//    /**
-//     * Test.
-//     */
-//    public void testComputeTemplate() {
-//
-//        // ARRANGE
-//        final ResourceSummary f = tempFolder();
-//        final ResourceSummary ts = dummyTemplate(f);
-//        final TemplateSummary original = _templates.templateDelta(ts.getId());
-//
-//        _commands.lock(f.getId());
-//        _commands.updateResourceTemplate(
-//            f.getId(), new ResourceDto(ts.getId()));
-//
-//        final String fName = UUID.randomUUID().toString();
-//        final ResourceSummary cf =
-//            _folders.createFolder(new FolderDto(f.getId(), fName));
-//
-//        // ACT
-//        final TemplateSummary computed =
-//            _commands.computeTemplate(cf.getId());
-//
-//        // ASSERT
-//        assertEquals(original.getDefinition(), computed.getDefinition());
-//        assertEquals(original.getBody(), computed.getBody());
-//    }
+    /**
+     * Test.
+     */
+    public void testComputeTemplate() {
+
+        // ARRANGE
+
+
+        // ACT
+        fail();
+
+        // ASSERT
+    }
 
     // clearWorkingCopy, applyWorkingCopy, history and createWorkingCopy tested
     // in FileUploadAcceptanceTest

@@ -53,39 +53,6 @@ public class MimeTypeTest
         assertFalse(html.hashCode()==MimeType.BINARY_DATA.hashCode());
     }
 
-//    /**
-//     * Test.
-//     */
-//    public void testDeserializeFromJson() {
-//
-//        // ARRANGE
-//        final JsonImpl json = new JsonImpl();
-//        json.set(JsonKeys.PRIMARY_TYPE, "text");
-//        json.set(JsonKeys.SUB_TYPE, "html");
-//
-//        // ACT
-//        final MimeType mt = new MimeType(json);
-//
-//        // ASSERT
-//        assertEquals("text", mt.getPrimaryType());
-//        assertEquals("html", mt.getSubType());
-//    }
-//
-//    /**
-//     * Test.
-//     */
-//    public void testSerializeToJson() {
-//
-//        // ARRANGE
-//        final JsonImpl json = new JsonImpl();
-//
-//        // ACT
-//        MimeType.HTML.toJson(json);
-//
-//        // ASSERT
-//        assertEquals("text", json.getString(JsonKeys.PRIMARY_TYPE));
-//        assertEquals("html", json.getString(JsonKeys.SUB_TYPE));
-//    }
 
     /**
      * Test.

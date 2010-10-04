@@ -120,26 +120,6 @@ public class ResourceDaoImplTest
         assertEquals(1, page.currentRevision().getParagraphs().size());
     }
 
-//
-//    /**
-//     * Test.
-//     */
-//    public void testQueryAllLockedResources() {
-//
-//        // ARRANGE
-//        expect(_repository.list(
-//            QueryNames.LOCKED_RESOURCES, ResourceEntity.class))
-//            .andReturn(Collections.singletonList(_r));
-//        replayAll();
-//
-//        // ACT
-//        final List<ResourceEntity> locked = _rdao.listlocked();
-//
-//        // ASSERT
-//        assertNotNull("Shouldn't be null.", locked);
-//        verifyAll();
-//    }
-
 
     /**
      * Test.

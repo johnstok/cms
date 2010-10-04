@@ -123,42 +123,4 @@ public class UsernameTest
                 e.getMessage());
         }
     }
-
-
-//    /**
-//     * Test.
-//     */
-//    public void testUsernamesAreLongerThanThreeChars() {
-//
-//        // ACT
-//        try {
-//            new Username("aaa");
-//            fail("Short usernames should be rejected.");
-//
-//            // ASSERT
-//        } catch (final IllegalArgumentException e) {
-//            assertEquals(
-//                "Specified string must have a min length of 4.",
-//                e.getMessage());
-//        }
-//    }
-//
-//
-//    /**
-//     * Test.
-//     */
-//    public void testConstructorRejectsInvalidUsername() {
-//
-//        // ACT
-//        try {
-//            new Username("Empty name");
-//            fail("Spaces should be rejected.");
-//
-//        // ASSERT
-//        } catch (final IllegalArgumentException e) {
-//            assertEquals(
-//                "Specified string (Empty name) does not match [\\w]*",
-//                e.getMessage());
-//        }
-//    }
 }

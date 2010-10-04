@@ -72,55 +72,6 @@ public class FolderDaoImplTest
         verifyAll();
     }
 
-//    /**
-//     * Test.
-//     */
-//    public void testReorder() {
-//
-//        // ARRANGE
-//        _f.lock(_user);
-//        final PageEntity foo =
-//            new PageEntity(new ResourceName("foo"), "foo", null, _rm);
-//        final PageEntity bar =
-//            new PageEntity(new ResourceName("bar"), "bar", null, _rm);
-//        final PageEntity baz =
-//            new PageEntity(new ResourceName("baz"), "baz", null, _rm);
-//        _f.add(foo);
-//        _f.add(bar);
-//        _f.add(baz);
-//
-//        expect(_repository.find(FolderEntity.class, _f.getId()))
-//            .andReturn(_f);
-//        expect(_repository.find(FolderEntity.class, _f.getId()))
-//            .andReturn(_f);
-//        _audit.record(isA(LogEntry.class));
-//        replayAll();
-//
-//        final List<UUID> order = new ArrayList<UUID>();
-//        order.add(baz.getId());
-//        order.add(foo.getId());
-//        order.add(bar.getId());
-//
-//        // ACT
-//        final UpdateFolderCommand uf =
-//            new UpdateFolderCommand(
-//                _repoFactory,
-//                _f.getId(),
-//                null,
-//                order);
-//
-//        uf.execute(_user, new Date());
-//
-//        // ASSERT
-//        verifyAll();
-//        final List<ResourceEntity> entries = _f.getEntries();
-//        assertEquals(3, entries.size());
-//        assertEquals(baz, entries.get(0));
-//        assertEquals(foo, entries.get(1));
-//        assertEquals(bar, entries.get(2));
-//
-//    }
-
 
     /** {@inheritDoc} */
     @Override protected void setUp() {

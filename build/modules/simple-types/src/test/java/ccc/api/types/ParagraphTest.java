@@ -139,26 +139,27 @@ public final class ParagraphTest extends TestCase {
     }
 
 
-//    /**
-//     * Test.
-//     */
-//    public void testMaxTextLengthIs2147483647() {
-//
-//        // ARRANGE
-//
-//        // ACT
-//        try {
-//            Paragraph.fromText(
-//                "foo", dummyString('a', Paragraph.MAX_TEXT_LENGTH+1));
-//            fail();
-//
-//            // ASSERT
-//        } catch (final IllegalArgumentException e) {
-//            assertEquals(
-//                "Specified string exceeds max length of 2147483647.",
-//                e.getMessage());
-//        }
-//    }
+    /**
+     * Test.
+     */
+    public void testMaxTextLengthIs2147483647() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            Paragraph.fromText(
+                "foo", dummyString('a', Paragraph.MAX_TEXT_LENGTH+1));
+            fail();
+
+            // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string exceeds max length of "
+            		+ Paragraph.MAX_TEXT_LENGTH + ".",
+                e.getMessage());
+        }
+    }
 
     /**
      * Test.

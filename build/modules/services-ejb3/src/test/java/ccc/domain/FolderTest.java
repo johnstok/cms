@@ -36,6 +36,7 @@ import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
+import ccc.api.types.ResourceOrder;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.commons.Exceptions;
@@ -186,22 +187,6 @@ public final class FolderTest extends TestCase {
         }
     }
 
-//    /**
-//     * Test.
-//     */
-//    public void testChangeSortOrder() {
-//
-//        // ARRANGE
-//        final FolderEntity f = new FolderEntity();
-//        assertEquals(ResourceOrder.MANUAL, f.getSortOrder());
-//
-//        // ACT
-//        f.setSortOrder(ResourceOrder.NAME_ALPHANUM_ASC);
-//
-//        // ASSERT
-//        assertEquals(ResourceOrder.NAME_ALPHANUM_ASC, f.getSortOrder());
-//
-//    }
 
     /**
      * Test.
@@ -276,37 +261,6 @@ public final class FolderTest extends TestCase {
             assertSame(q, actual.get(1));
     }
 
-//    /**
-//     * Test.
-//     */
-//    public void testPagesRespectSortOrder() {
-//
-//            // ARRANGE
-//            final FolderEntity f = new FolderEntity("f");
-//            final PageEntity x = new PageEntity("x", _rm);
-//            final PageEntity a = new PageEntity("a", _rm);
-//            final TemplateEntity r =
-//                new TemplateEntity(
-//                    "r",
-//                    "desc",
-//                    "body",
-//                    "<fields/>",
-//                    MimeType.HTML,
-//                    _rm);
-//            f.add(x);
-//            f.add(a);
-//            f.add(r);
-//
-//            f.setSortOrder(ResourceOrder.NAME_ALPHANUM_ASC);
-//
-//            // ACT
-//            final List<PageEntity> actual = f.getPages();
-//
-//            // ASSERT
-//            assertEquals(2, actual.size());
-//            assertSame(a, actual.get(0));
-//            assertSame(x, actual.get(1));
-//    }
 
     /**
      * Test.
