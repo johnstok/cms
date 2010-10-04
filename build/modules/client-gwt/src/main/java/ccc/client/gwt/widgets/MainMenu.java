@@ -171,7 +171,7 @@ public class MainMenu
                             root = rr;
                         }
                     }
-                    if (rootName.equals(root.getName())) {
+                    if (rootName.equals(root.getName().toString())) {
                         addRootMenuItems(root, rootMenu);
                     }
                 }
