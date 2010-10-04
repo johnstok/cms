@@ -269,7 +269,7 @@ AbstractEditDialog {
 
                 final Folder f = new Folder();
                 f.setId(md.getId());
-                f.setIndexPage(indexPageId);
+                f.setIndex(indexPageId);
                 f.setSortList(orderList);
                 f.addLink(
                     Resource.SELF,

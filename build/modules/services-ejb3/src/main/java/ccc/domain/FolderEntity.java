@@ -54,7 +54,7 @@ public final class FolderEntity
         ResourceEntity {
 
     private final Set<ResourceEntity> _entries = new HashSet<ResourceEntity>();
-    private PageEntity _indexPage = null;
+    private ResourceEntity _indexPage = null;
 
 
     /** Constructor: for persistence only. */
@@ -415,22 +415,28 @@ public final class FolderEntity
 
 
     /**
-     * Accessor for the index page.
+     * Accessor for the index resource.
      *
-     * @return The index page of this folder.
+     * @return The index resource of this folder.
      */
-    public PageEntity getIndexPage() {
+    public ResourceEntity getIndexResource() {
         return _indexPage;
     }
 
 
     /**
-     * Mutator for the index page.
+     * Mutator for the index resource.
      *
-     * @param indexPage The index page to set.
+     * @param resource The index resource to set.
      */
-    public void setIndexPage(final PageEntity indexPage) {
-        _indexPage = indexPage;
+    public void setIndexResource(final ResourceEntity resource) {
+    	if (null==resource) { _indexPage=null; return; }
+    	final ResourceType t = resource.getType();
+		if (ResourceType.PAGE==t||ResourceType.ALIAS==t) {
+    		_indexPage = resource;
+    	} else {
+    		throw new RuntimeException("Invalid type for index: "+t);
+    	}
     }
 
 
@@ -501,7 +507,7 @@ public final class FolderEntity
             (null==getParent()) ? null : getParent().getId(),
                 getName());
         super.setDtoProps(dto);
-        dto.setIndexPage((null==_indexPage) ? null : _indexPage.getId());
+        dto.setIndex((null==_indexPage) ? null : _indexPage.getId());
         dto.setDefaultPage(getDefaultPage());
         return dto;
     }

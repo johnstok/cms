@@ -842,8 +842,8 @@ public abstract class ResourceEntity
         if (getType() == ResourceType.FOLDER) {
             childCount = as(FolderEntity.class).getEntries().size();
             folderCount = as(FolderEntity.class).getFolders().size();
-            indexPage = (null==as(FolderEntity.class).getIndexPage())
-            ? null : as(FolderEntity.class).getIndexPage().getId();
+            indexPage = (null==as(FolderEntity.class).getIndexResource())
+            ? null : as(FolderEntity.class).getIndexResource().getId();
         } else if (getType() == ResourceType.PAGE) {
             hasWorkingCopy = (as(PageEntity.class).hasWorkingCopy());
         } else if (getType() == ResourceType.FILE) {

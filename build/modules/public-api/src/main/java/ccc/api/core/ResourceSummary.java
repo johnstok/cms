@@ -393,6 +393,7 @@ public class ResourceSummary extends Res {
      *
      * @return Returns the indexPageId.
      */
+    @Deprecated // Use the property on the Folder class instead.
     public UUID getIndexPageId() {
         return _indexPageId;
     }
@@ -403,6 +404,7 @@ public class ResourceSummary extends Res {
      *
      * @param indexPageId The indexPageId to set.
      */
+    @Deprecated // Use the property on the Folder class instead.
     public void setIndexPageId(final UUID indexPageId) {
         _indexPageId = indexPageId;
     }

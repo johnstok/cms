@@ -191,14 +191,14 @@ public class FolderAcceptanceTest
 
         final Folder fd = new Folder();
         fd.setSortList(sortList);
-        fd.setIndexPage(page.getId());
+        fd.setIndex(page.getId());
 
         final Folder updated = getFolders().update(folder.getId(), fd);
 
         // ASSERT
         assertNull(folder.getLockedById());
         assertNotNull(updated.getLockedById());
-        assertEquals(page.getId(), updated.getIndexPage());
+        assertEquals(page.getId(), updated.getIndex());
     }
 
 

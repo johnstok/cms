@@ -657,10 +657,10 @@ public final class FolderTest extends TestCase {
         f.add(foo);
 
         // ACT
-        f.setIndexPage(foo);
+        f.setIndexResource(foo);
 
         // ASSERT
-        assertEquals(foo, f.getIndexPage());
+        assertEquals(foo, f.getIndexResource());
     }
 
     private final RevisionMetadata _rm =

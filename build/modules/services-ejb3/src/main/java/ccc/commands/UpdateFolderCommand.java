@@ -88,7 +88,7 @@ public class UpdateFolderCommand
         if (_indexPageId != null) {
             p = getRepository().find(PageEntity.class, _indexPageId);
         }
-        f.setIndexPage(p);
+        f.setIndexResource(p);
 
         if (_orderList != null && !_orderList.isEmpty()) {
 

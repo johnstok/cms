@@ -133,7 +133,7 @@ public class FoldersEJB
                 new UpdateFolderCommand(
                     getRepoFactory(),
                     folderId,
-                    delta.getIndexPage(),
+                    delta.getIndex(),
                     list));
     }
 

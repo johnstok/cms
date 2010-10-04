@@ -190,9 +190,9 @@ public class TmpRenderer {
 
     private Response render(final Folder s) {
         try {
-            if (null!= s.getIndexPage()) {
+            if (null!= s.getIndex()) {
                 throw new RedirectRequiredException(
-                    _resources.getAbsolutePath(s.getIndexPage()));
+                    _resources.getAbsolutePath(s.getIndex()));
             } else if (null != s.getDefaultPage()) {
                 throw new RedirectRequiredException(
                     _resources.getAbsolutePath(s.getDefaultPage()));

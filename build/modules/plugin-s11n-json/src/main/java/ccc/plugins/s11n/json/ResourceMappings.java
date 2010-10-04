@@ -132,12 +132,12 @@ public class ResourceMappings {
     }
 
     public static void writeFolder(final Json json, final Folder instance) {
-        json.set(JsonKeys.INDEX_PAGE_ID, instance.getIndexPage());
+        json.set(JsonKeys.INDEX_PAGE_ID, instance.getIndex());
         json.setStrings(JsonKeys.SORT_LIST, instance.getSortList());
     }
 
     public static void readFolder(final Json json, final Folder f) {
-        f.setIndexPage(json.getId(JsonKeys.INDEX_PAGE_ID));
+        f.setIndex(json.getId(JsonKeys.INDEX_PAGE_ID));
         f.setSortList(json.getStrings(JsonKeys.SORT_LIST));
     }
 

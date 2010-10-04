@@ -41,7 +41,7 @@ public class Folder
     extends
         Resource {
 
-    private UUID _indexPage;
+    private UUID _index;
     private UUID _defaultPage;
     private Collection<String> _sortList;
 
@@ -67,20 +67,20 @@ public class Folder
     /**
      * Accessor.
      *
-     * @return Returns the indexPage.
+     * @return Returns the index resource.
      */
-    public UUID getIndexPage() {
-        return _indexPage;
+    public UUID getIndex() {
+        return _index;
     }
 
 
     /**
      * Mutator.
      *
-     * @param indexPage The indexPage to set.
+     * @param index The index resource to set.
      */
-    public void setIndexPage(final UUID indexPage) {
-        _indexPage = indexPage;
+    public void setIndex(final UUID index) {
+        _index = index;
     }
 
 
