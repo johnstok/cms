@@ -64,7 +64,8 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
     private static final int DETAILS_HEIGHT = 90;
 
     private final String _elementid;
-    private ImageSelectionPanel _imagePanel = new ImageSelectionPanel();
+    private final ImageSelectionPanel _imagePanel =
+        new ImageSelectionPanel(InternalServices.ROOTS.getElements());
 
     private String _uuid = null;
 

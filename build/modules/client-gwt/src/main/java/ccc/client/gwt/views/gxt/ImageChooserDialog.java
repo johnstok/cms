@@ -47,7 +47,8 @@ public class ImageChooserDialog
     extends
         AbstractBaseDialog {
 
-    private ImageSelectionPanel _imagePanel = new ImageSelectionPanel();
+    private final ImageSelectionPanel _imagePanel =
+        new ImageSelectionPanel(InternalServices.ROOTS.getElements());
 
 
     /**

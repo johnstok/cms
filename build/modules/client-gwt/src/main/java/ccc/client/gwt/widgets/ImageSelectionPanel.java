@@ -33,10 +33,12 @@ import java.util.List;
 import ccc.api.core.File;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceType;
 import ccc.client.actions.GetImagesPagedAction;
 import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
+import ccc.client.gwt.views.gxt.ResourceSelectionDialog;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
@@ -45,6 +47,9 @@ import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.ListView;
@@ -72,7 +77,7 @@ public class ImageSelectionPanel extends ContentPanel {
     private static final int PANEL_HEIGHT = 478;
     private static final int IMAGES_PER_PAGE = 20;
 
-    private final ResourceSummary _folder = null;
+    private ResourceSummary _folder = null;
     private  final ListView<BeanModel> _view = new ListView<BeanModel>();
 
     private ImageTriggerField _image;
@@ -80,9 +85,10 @@ public class ImageSelectionPanel extends ContentPanel {
 
     /**
      * Constructor.
+     * @param roots
      *
      */
-    public ImageSelectionPanel() {
+    public ImageSelectionPanel(final List<ResourceSummary> roots) {
 
         final RpcProxy<PagingLoadResult<BeanModel>> proxy =
             createProxy();
@@ -96,37 +102,41 @@ public class ImageSelectionPanel extends ContentPanel {
         _folderField.setId("image-folder");
         _folderField.setValue("");
         _folderField.setEditable(false);
-//        _folderField.addListener(
-//            Events.TriggerClick,
-//            new Listener<ComponentEvent>(){
-//                public void handleEvent(final ComponentEvent be) {
-//                    new GetRootsAction() {
-//                        @Override
-//                        protected void onSuccess(final ResourceSummary root) {
-//
-//                            final ResourceSelectionDialog folderSelect =
-//                                new ResourceSelectionDialog(root,
-//                                    ResourceType.FOLDER);
-//                            folderSelect.addListener(
-//                                Events.Hide,
-//                                new Listener<ComponentEvent>() {
-//                                    public void handleEvent(final ComponentEvent ce) {
-//                                        ResourceSummary _md = folderSelect.selectedResource();
-//                                        if (_md != null
-//                                           && _md.getType() != ResourceType.RANGE_FOLDER) {
-//
-//                                        _folder = _md;
-//                                        _folderField.setValue(
-//                                            (null==_folder)
-//                                            ? null
-//                                                : _folder.getName());
-//                                        _pagerBar.refresh();
-//                                        }
-//                                    }});
-//                            folderSelect.show();
-//                        }
-//                    }.execute();
-//                }});
+        _folderField.addListener(
+            Events.TriggerClick,
+            new Listener<ComponentEvent>(){
+                public void handleEvent(final ComponentEvent be) {
+                    ResourceSummary root = null;
+
+                    for (final ResourceSummary item : roots) {
+                        if (item.getName().toString().equals("content")) {
+                            root = item;
+                        }
+                    }
+
+                    final ResourceSelectionDialog folderSelect =
+                        new ResourceSelectionDialog(root,
+                            ResourceType.FOLDER);
+                    folderSelect.addListener(
+                        Events.Hide,
+                        new Listener<ComponentEvent>() {
+                            public void handleEvent(final ComponentEvent ce) {
+                                final ResourceSummary _md = folderSelect.selectedResource();
+                                if (_md != null
+                                        && _md.getType() != ResourceType.RANGE_FOLDER) {
+
+                                    _folder = _md;
+                                    _folderField.setValue(
+                                        (null==_folder)
+                                        ? null
+                                            : _folder.getName().toString());
+                                    _pagerBar.refresh();
+                                }
+                            }});
+                    folderSelect.show();
+
+
+                }});
         toolBar.add(new Text(I18n.UI_CONSTANTS.folder()));
         toolBar.add(_folderField);
         toolBar.add(new SeparatorToolItem());
