@@ -28,6 +28,7 @@ package ccc.client.actions;
 
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Revision;
+import ccc.client.callbacks.ViewHistoryCallback;
 import ccc.client.core.Callback;
 import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
@@ -74,5 +75,12 @@ public final class ViewHistoryAction
                     UI_CONSTANTS.viewHistory(),
                     callback,
                     new RevisionsParser()));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void execute() {
+        execute(new ViewHistoryCallback(I18n.UI_CONSTANTS.viewHistory(),
+            _selectionModel));
     }
 }

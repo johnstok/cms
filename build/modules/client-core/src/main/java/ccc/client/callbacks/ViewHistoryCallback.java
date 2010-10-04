@@ -7,11 +7,11 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
 
 /**
- * TODO: Add a description for this type.
+ * Callback handler for resource history dialog opening.
  *
  * @author Civic Computing Ltd.
  */
-final class ViewHistoryCallback
+public class ViewHistoryCallback
     extends
         DefaultCallback<PagedCollection<Revision>> {
 
@@ -20,10 +20,11 @@ final class ViewHistoryCallback
     /**
      * Constructor.
      *
-     * @param actionName
+     * @param actionName The name of the action.
+     * @param selectionModel The selection model.
      */
-    private ViewHistoryCallback(final String actionName,
-                                final SingleSelectionModel selectionModel) {
+    public ViewHistoryCallback(final String actionName,
+                               final SingleSelectionModel selectionModel) {
         super(actionName);
         _selectionModel = selectionModel;
     }
