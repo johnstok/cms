@@ -160,7 +160,7 @@ public interface ResourceIdentifiers {
         /** COLLECTION : String. */
         String COLLECTION        = "/secure/files";
         /** IMAGES : String. */
-        String IMAGES            = COLLECTION + "/images/{id}";
+        String IMAGES            = COLLECTION + "/images/";
         /** ELEMENT : String. */
         String ELEMENT           = COLLECTION + "/{id}";
         /** BINARY_COLLECTION : String. */

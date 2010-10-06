@@ -57,15 +57,15 @@ public interface Files {
     /**
      * List all images of the given folder id.
      *
-     * @param folderId The id of the folder.
+     * @param criteria The criteria of the search.
      * @param pageNo The page to display.
      * @param pageSize The number of results per page.
      *
      * @return The list of images.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.File.IMAGES)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.File.IMAGES)
     PagedCollection<File> getPagedImages(
-        @PathParam("id") UUID folderId,
+        ResourceCriteria criteria,
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize);
 

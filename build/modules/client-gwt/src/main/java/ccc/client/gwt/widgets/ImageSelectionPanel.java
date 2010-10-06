@@ -32,8 +32,10 @@ import java.util.List;
 
 import ccc.api.core.File;
 import ccc.api.core.PagedCollection;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
+import ccc.api.types.SortOrder;
 import ccc.client.actions.GetImagesPagedAction;
 import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
@@ -54,7 +56,10 @@ import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.ListView;
 import com.extjs.gxt.ui.client.widget.Text;
+import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
+import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
+import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
@@ -71,6 +76,8 @@ public class ImageSelectionPanel extends ContentPanel {
 
     private final TriggerField<String> _folderField =
         new TriggerField<String>();
+    private final SimpleComboBox<String> _sort = new SimpleComboBox<String>();
+    private final TextField<String> _filter = new TextField<String>();
 
     private final PagingToolBar _pagerBar;
 
@@ -85,7 +92,7 @@ public class ImageSelectionPanel extends ContentPanel {
 
     /**
      * Constructor.
-     * @param roots
+     * @param roots Resource roots.
      *
      */
     public ImageSelectionPanel(final List<ResourceSummary> roots) {
@@ -102,43 +109,27 @@ public class ImageSelectionPanel extends ContentPanel {
         _folderField.setId("image-folder");
         _folderField.setValue("");
         _folderField.setEditable(false);
-        _folderField.addListener(
-            Events.TriggerClick,
-            new Listener<ComponentEvent>(){
-                public void handleEvent(final ComponentEvent be) {
-                    ResourceSummary root = null;
-
-                    for (final ResourceSummary item : roots) {
-                        if (item.getName().toString().equals("content")) {
-                            root = item;
-                        }
-                    }
-
-                    final ResourceSelectionDialog folderSelect =
-                        new ResourceSelectionDialog(root,
-                            ResourceType.FOLDER);
-                    folderSelect.addListener(
-                        Events.Hide,
-                        new Listener<ComponentEvent>() {
-                            public void handleEvent(final ComponentEvent ce) {
-                                final ResourceSummary _md = folderSelect.selectedResource();
-                                if (_md != null
-                                        && _md.getType() != ResourceType.RANGE_FOLDER) {
-
-                                    _folder = _md;
-                                    _folderField.setValue(
-                                        (null==_folder)
-                                        ? null
-                                            : _folder.getName().toString());
-                                    _pagerBar.refresh();
-                                }
-                            }});
-                    folderSelect.show();
-
-
-                }});
+        _folderField.addListener(Events.TriggerClick,
+                                 new FolderListener(roots));
         toolBar.add(new Text(I18n.UI_CONSTANTS.folder()));
         toolBar.add(_folderField);
+        toolBar.add(new SeparatorToolItem());
+
+        toolBar.add(new Text(I18n.UI_CONSTANTS.nameFilter()));
+
+        toolBar.add(_filter);
+        toolBar.add(new SeparatorToolItem());
+
+        _sort.setTriggerAction(TriggerAction.ALL);
+        _sort.setEditable(false);
+        _sort.setForceSelection(true);
+        _sort.add("Name");
+        _sort.add("File Size");
+        _sort.add("date_created");
+        _sort.setSimpleValue("Name");
+
+        toolBar.add(new Text(I18n.UI_CONSTANTS.sortBy()));
+        toolBar.add(_sort);
         toolBar.add(new SeparatorToolItem());
 
         final ListStore<BeanModel> listStore = new ListStore<BeanModel>(loader);
@@ -188,9 +179,15 @@ public class ImageSelectionPanel extends ContentPanel {
                     final BasePagingLoadConfig config =
                         (BasePagingLoadConfig) loadConfig;
 
+                    final ResourceCriteria criteria = new ResourceCriteria();
+                    if (_filter.getValue() != null) {
+                        criteria.setName(_filter.getValue()+"%");
+                    }
+                    criteria.setSortOrder(SortOrder.ASC);
+                    criteria.setSortField(_sort.getValue().getValue());
+                    criteria.setParent(_folder.getId());
                     new GetImagesPaged(
-                        I18n.UI_CONSTANTS.selectImage(),
-                        _folder,
+                        criteria,
                         config,
                         callback).execute();
                 }
@@ -198,6 +195,51 @@ public class ImageSelectionPanel extends ContentPanel {
         };
     }
 
+
+    /**
+     * Listener for the image folder selector.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private final class FolderListener implements Listener<ComponentEvent> {
+
+        private final List<ResourceSummary> _roots;
+
+        private FolderListener(final List<ResourceSummary> roots) {
+            _roots = roots;
+        }
+
+        public void handleEvent(final ComponentEvent be) {
+            ResourceSummary root = null;
+
+            for (final ResourceSummary item : _roots) {
+                if (item.getName().toString().equals("content")) {
+                    root = item;
+                }
+            }
+
+            final ResourceSelectionDialog folderSelect =
+                new ResourceSelectionDialog(root,
+                    ResourceType.FOLDER);
+            folderSelect.addListener(
+                Events.Hide,
+                new Listener<ComponentEvent>() {
+                    public void handleEvent(final ComponentEvent ce) {
+                        final ResourceSummary _md = folderSelect.selectedResource();
+                        if (_md != null
+                                && _md.getType() != ResourceType.RANGE_FOLDER) {
+
+                            _folder = _md;
+                            _folderField.setValue(
+                                (null==_folder)
+                                ? null
+                                    : _folder.getName().toString());
+                            _pagerBar.refresh();
+                        }
+                    }});
+            folderSelect.show();
+        }
+    }
 
     /**
      * Loads up images in the pager.
@@ -212,13 +254,12 @@ public class ImageSelectionPanel extends ContentPanel {
         private final AsyncCallback<PagingLoadResult<BeanModel>> _callback;
 
 
-        private GetImagesPaged(final String actionName,
-                               final ResourceSummary parent,
+        private GetImagesPaged(final ResourceCriteria criteria,
                                final BasePagingLoadConfig config,
                                final AsyncCallback<PagingLoadResult
                                    <BeanModel>> callback) {
 
-            super(actionName, parent,
+            super(criteria,
                 config.getOffset()/config.getLimit()+1,
                 config.getLimit());
             _config = config;

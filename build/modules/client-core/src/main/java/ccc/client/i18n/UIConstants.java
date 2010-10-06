@@ -1605,4 +1605,18 @@ public interface UIConstants {
      */
     String dateCannotBeInPast();
 
+    /**
+     * "Name filter".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String nameFilter();
+
+    /**
+     * "Sort by".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String sortBy();
+
 }

@@ -118,13 +118,16 @@ public interface ResourceRepository {
     /**
      * List all image files.
      *
-     * @param folderId The id of the folder whose images we will look up.
+     * @param criteria The criteria for images we will look up.
+     * @param f Filter resources by parent. NULL will return all.
      * @param pageNo The page of results to return.
      * @param pageSize The number of results in a page.
      *
      * @return A list of files.
      */
-    List<FileEntity> images(UUID folderId, final int pageNo,
+    List<FileEntity> images(ResourceCriteria criteria,
+        FolderEntity f,
+        final int pageNo,
         final int pageSize);
 
     /**
@@ -201,10 +204,12 @@ public interface ResourceRepository {
     /**
      * Return count of images in the folder.
      *
-     * @param folderId The id of the folder whose images we will look up.
+     * @param criteria The search criteria.
+     * @param f Filter resources by parent. NULL will return all.
      * @return The count.
      */
-    long imagesCount(UUID folderId);
+    long imagesCount(ResourceCriteria criteria,
+                     FolderEntity f);
 
     /**
      * Return count of resources with given criteria.

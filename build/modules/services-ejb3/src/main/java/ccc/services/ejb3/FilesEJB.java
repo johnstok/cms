@@ -26,8 +26,10 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.*;
-import static javax.ejb.TransactionAttributeType.*;
+import static ccc.api.types.Permission.FILE_CREATE;
+import static ccc.api.types.Permission.FILE_READ;
+import static ccc.api.types.Permission.FILE_UPDATE;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
@@ -43,10 +45,12 @@ import javax.ejb.TransactionAttribute;
 import ccc.api.core.File;
 import ccc.api.core.Files;
 import ccc.api.core.PagedCollection;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.StreamAction;
 import ccc.commands.UpdateFileCommand;
 import ccc.domain.FileEntity;
+import ccc.domain.FolderEntity;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UserEntity;
 
@@ -69,17 +73,31 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     public PagedCollection<File> getPagedImages(
-            final UUID folderId, final int pageNo, final int pageSize) {
+            final ResourceCriteria criteria,
+            final int pageNo,
+            final int pageSize) {
         checkPermission(FILE_READ);
+
+        final UUID parent = criteria.getParent();
+        FolderEntity f = null;
+        if (parent != null) {
+            f =
+                getRepoFactory()
+                .createResourceRepository()
+                .find(FolderEntity.class, parent);
+            checkRead(f);
+            criteria.setParent(parent);
+        }
+
 
         final List<FileEntity> list =
             getRepoFactory()
                 .createResourceRepository()
-                .images(folderId, pageNo, pageSize);
+                .images(criteria, f, pageNo, pageSize);
         final long c =
             getRepoFactory()
                 .createResourceRepository()
-                .imagesCount(folderId);
+                .imagesCount(criteria, f);
         return
             new PagedCollection<File>(c, File.class, FileEntity.mapFiles(list));
     }

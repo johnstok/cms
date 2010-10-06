@@ -162,19 +162,21 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public List<FileEntity> images(final UUID folderId,
+    public List<FileEntity> images(final ResourceCriteria criteria,
+                                   final FolderEntity f,
                                    final int pageNo,
                                    final int pageSize) {
-        final ResourceEntity r = find(ResourceEntity.class, folderId);
 
         final StringBuffer query = new StringBuffer();
-        query.append("FROM ccc.domain.FileEntity f "
-            + " WHERE f._publishedBy is not null "
-            + " AND f._history[f._currentRev]._mimeType._primaryType = 'image' "
-            + " AND f._parent = :parent "
-            + " ORDER BY upper(f._name) ASC");
+        query.append("SELECT r FROM ccc.domain.FileEntity r "
+            + " LEFT JOIN r._lockedBy"
+            + " LEFT JOIN r._publishedBy"
+            + " WHERE r._history[r._currentRev]._mimeType._primaryType = :type ");
         final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("parent", r);
+        params.put("type", "image");
+        appendMetaConditions(criteria.getMetadata(), query, params);
+        appendCriteria(criteria, f, query, params);
+        appendSorting(criteria.getSortField(), criteria.getSortOrder(), query);
 
         return
         _repository.listDyn(
@@ -720,15 +722,20 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public long imagesCount(final UUID folderId) {
-        final ResourceEntity r = find(ResourceEntity.class, folderId);
+    public long imagesCount(final ResourceCriteria criteria,
+                            final FolderEntity f) {
         final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("parent", r);
-        return _repository.scalarLong("SELECT COUNT(f) "
-        + "FROM ccc.domain.FileEntity f "
-        + " WHERE f._publishedBy is not null"
-        + " AND f._history[f._currentRev]._mimeType._primaryType = 'image' "
-        + " AND f._parent = :parent", params);
+        final StringBuffer query = new StringBuffer();
+        query.append("SELECT COUNT(r) FROM ccc.domain.FileEntity r "
+            + " LEFT JOIN r._lockedBy"
+            + " LEFT JOIN r._publishedBy"
+            + " WHERE r._history[r._currentRev]._mimeType._primaryType = :type ");
+
+        params.put("type", "image");
+        appendMetaConditions(criteria.getMetadata(), query, params);
+        appendCriteria(criteria, f, query, params);
+
+        return _repository.scalarLong(query.toString(), params);
     }
 
 

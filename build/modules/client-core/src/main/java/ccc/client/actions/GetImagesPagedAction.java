@@ -31,11 +31,13 @@ import java.util.Map;
 
 import ccc.api.core.File;
 import ccc.api.core.PagedCollection;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.ResourceCriteria;
+import ccc.api.types.Link;
 import ccc.client.core.Callback;
 import ccc.client.core.CallbackResponseHandler;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.Parser;
 import ccc.client.core.RemotingAction;
@@ -52,26 +54,22 @@ public abstract class GetImagesPagedAction
     extends
         RemotingAction<PagedCollection<File>> {
 
-    private final ResourceSummary _parent;
-    private int _pageNo;
-    private int _pageSize;
-    private final String _name;
+    private final int _pageNo;
+    private final int _pageSize;
+    private final ResourceCriteria _criteria;
 
     /**
      * Constructor.
      *
-     * @param parent The folder containing the images.
-     * @param actionName Local-specific name for the action.
+     * @param criteria The criteria the search.
      * @param pageNo The page to display.
      * @param pageSize The number of results per page.
      */
-    public GetImagesPagedAction(final String actionName,
-                                final ResourceSummary parent,
+    public GetImagesPagedAction(final ResourceCriteria criteria,
                                 final int pageNo,
                                 final int pageSize) {
-        super(actionName);
-        _name = actionName;
-        _parent = parent;
+        super(I18n.UI_CONSTANTS.selectImage(), HttpMethod.POST);
+        _criteria = criteria;
         _pageNo = pageNo;
         _pageSize = pageSize;
 
@@ -84,23 +82,34 @@ public abstract class GetImagesPagedAction
         final Map<String, String[]> params = new HashMap<String, String[]>();
         params.put("count", new String[] {""+_pageSize});
         params.put("page", new String[] {""+_pageNo});
-        final String path =
-            Globals.API_URL
-            + _parent.images().build(params, InternalServices.ENCODER);
-        return path;
+
+//        final String path =
+//            Globals.API_URL
+//            + _parent.images().build(params, InternalServices.ENCODER);
+//        return path;
+
+        return
+        Globals.API_URL + new Link(ccc.api.core.ResourceIdentifiers.File.IMAGES
+            + "?{-join|&|count,page,sort,order}")
+        .build(params, InternalServices.ENCODER);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    protected String getBody() {
+        return writeResourceCriteria(_criteria);
+    }
 
     /** {@inheritDoc} */
     @Override
     protected Request getRequest(final Callback<PagedCollection<File>> callback) {
         return
             new Request(
-                HttpMethod.GET,
+                HttpMethod.POST,
                 getPath(),
-                "",
+                getBody(),
                 new CallbackResponseHandler<PagedCollection<File>>(
-                    _name,
+                    I18n.UI_CONSTANTS.selectImage(),
                     callback,
                     new Parser<PagedCollection<File>>() {
                         @Override

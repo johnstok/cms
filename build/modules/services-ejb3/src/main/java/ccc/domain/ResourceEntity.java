@@ -999,11 +999,11 @@ public abstract class ResourceEntity
                     Resource.SELF,
                     new Link(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
-                rs.addLink(
-                    Folder.IMAGES,
-                    new Link(ccc.api.core.ResourceIdentifiers.File.IMAGES)
-                    .build("id", getId().toString(), new NormalisingEncoder())
-                    + "?{-join|&|count,page}");
+//                rs.addLink(
+//                    Folder.IMAGES,
+//                    new Link(ccc.api.core.ResourceIdentifiers.File.IMAGES)
+//                    .build("id", getId().toString(), new NormalisingEncoder())
+//                    + "?{-join|&|count,page}");
                 rs.addLink(
                     Folder.EXISTS,
                     new Link(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)

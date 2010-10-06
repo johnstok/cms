@@ -317,7 +317,7 @@ public class ResourceCriteria implements Serializable {
      *
      * @param name The name to set.
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         _name = name;
     }
 }

@@ -37,6 +37,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import ccc.api.core.File;
 import ccc.api.core.Files;
 import ccc.api.core.PagedCollection;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.types.DBC;
 import ccc.api.types.StreamAction;
 
@@ -101,11 +102,11 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<File> getPagedImages(final UUID folderId,
+    public PagedCollection<File> getPagedImages(final ResourceCriteria criteria,
                                                  final int pageNo,
                                                  final int pageSize) {
         try {
-            return _files.getPagedImages(folderId, pageNo, pageSize);
+            return _files.getPagedImages(criteria, pageNo, pageSize);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
