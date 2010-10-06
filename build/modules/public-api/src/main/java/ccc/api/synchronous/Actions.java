@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.core;
+package ccc.api.synchronous;
 
 import java.util.Date;
 import java.util.UUID;
@@ -39,6 +39,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import ccc.api.core.Action;
+import ccc.api.core.ActionSummary;
+import ccc.api.core.PagedCollection;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.FailureCode;
@@ -65,7 +68,7 @@ public interface Actions
      *
      * @param actionId The id of the action to cancel.
      */
-    @DELETE @Path(ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
+    @DELETE @Path(ccc.api.synchronous.ResourceIdentifiers.Action.ELEMENT)
     void cancel(@PathParam("id") UUID actionId);
 
     /**
@@ -112,7 +115,7 @@ public interface Actions
     /**
      * Executes all available actions whose 'execute after' date is in the past.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Action.EXECUTE)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Action.EXECUTE)
     void executeAll();
 
 
@@ -123,7 +126,7 @@ public interface Actions
      *
      * @return The action.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Action.ELEMENT)
     Action retrieve(@PathParam("id") UUID actionId);
 
 

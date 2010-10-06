@@ -35,8 +35,8 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.api.core.Group;
-import ccc.api.core.Groups;
 import ccc.api.core.PagedCollection;
+import ccc.api.synchronous.Groups;
 import ccc.api.types.DBC;
 
 

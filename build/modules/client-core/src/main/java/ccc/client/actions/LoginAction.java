@@ -29,7 +29,7 @@ package ccc.client.actions;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.core.Security;
+import ccc.api.synchronous.Security;
 import ccc.api.types.Link;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;

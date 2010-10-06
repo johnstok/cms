@@ -43,9 +43,9 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.File;
-import ccc.api.core.Files;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceCriteria;
+import ccc.api.synchronous.Files;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.StreamAction;
 import ccc.commands.UpdateFileCommand;

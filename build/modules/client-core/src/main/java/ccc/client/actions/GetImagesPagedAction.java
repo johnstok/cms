@@ -89,7 +89,7 @@ public abstract class GetImagesPagedAction
 //        return path;
 
         return
-        Globals.API_URL + new Link(ccc.api.core.ResourceIdentifiers.File.IMAGES
+        Globals.API_URL + new Link(ccc.api.synchronous.ResourceIdentifiers.File.IMAGES
             + "?{-join|&|count,page,sort,order}")
         .build(params, InternalServices.ENCODER);
     }

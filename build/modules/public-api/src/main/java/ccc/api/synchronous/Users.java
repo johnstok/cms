@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.core;
+package ccc.api.synchronous;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -39,6 +39,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import ccc.api.core.PagedCollection;
+import ccc.api.core.User;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 
@@ -63,7 +65,7 @@ public interface Users {
      *
      * @return The corresponding delta.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.User.ELEMENT)
     User retrieve(@PathParam("id") UUID userId);
 
     /**
@@ -71,7 +73,7 @@ public interface Users {
      *
      * @return UserDTO
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.User.ME)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.User.ME)
     User retrieveCurrent();
 
     /**
@@ -89,7 +91,7 @@ public interface Users {
      *
      * @return Returns list of users.
      */
-   @GET @Path(ccc.api.core.ResourceIdentifiers.User.COLLECTION)
+   @GET @Path(ccc.api.synchronous.ResourceIdentifiers.User.COLLECTION)
    PagedCollection<User> query(
         @QueryParam("username") String username,
         @QueryParam("email") String email,
@@ -108,7 +110,7 @@ public interface Users {
      * @param username The username to check
      * @return True if the username is in use, false otherwise.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.User.EXISTS)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.User.EXISTS)
     Boolean usernameExists(@PathParam("uname") Username username);
 
 
@@ -119,7 +121,7 @@ public interface Users {
      *
      * @return A user summary describing the new user.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.User.COLLECTION)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.User.COLLECTION)
     User create(User delta);
 
 
@@ -129,7 +131,7 @@ public interface Users {
      * @param userId The id of the user to update.
      * @param delta The changes to apply.
      */
-    @PUT @Path(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
+    @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.User.ELEMENT)
     User update(@PathParam("id") UUID userId, User delta);
 
 
@@ -139,7 +141,7 @@ public interface Users {
      * @param userId The user's id.
      * @param user New details for the user.
      */
-    @PUT @Path(ccc.api.core.ResourceIdentifiers.User.PASSWORD)
+    @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.User.PASSWORD)
     @Deprecated // Just use update()
     void updateUserPassword(@PathParam("id") UUID userId, User user);
 
@@ -148,7 +150,7 @@ public interface Users {
      *
      * @param user New details for the user.
      */
-    @PUT @Path(ccc.api.core.ResourceIdentifiers.User.ME)
+    @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.User.ME)
     User updateCurrent(User user);
 
 
@@ -159,7 +161,7 @@ public interface Users {
      *
      * @return A summary of the corresponding user.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.User.LEGACY)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.User.LEGACY)
     User userByLegacyId(@PathParam("id") String legacyId);
 
     /**
@@ -168,7 +170,7 @@ public interface Users {
      * @param key The key as a string.
      * @return Returns list of users.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.User.METADATA)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.User.METADATA)
     Collection<String> listUserMetadataValuesWithKey(
         @PathParam("key") String key);
 

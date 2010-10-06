@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.core;
+package ccc.api.synchronous;
 
 import java.util.UUID;
 
@@ -37,6 +37,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import ccc.api.core.File;
+import ccc.api.core.PagedCollection;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.types.StreamAction;
 
 
@@ -63,7 +66,7 @@ public interface Files {
      *
      * @return The list of images.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.File.IMAGES)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.File.IMAGES)
     PagedCollection<File> getPagedImages(
         ResourceCriteria criteria,
         @QueryParam("page") @DefaultValue("1") int pageNo,
@@ -76,7 +79,7 @@ public interface Files {
      * @param id The ID of the file to update.
      * @param file The new file representation.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.File.ELEMENT)
     File update(@PathParam("id") UUID id, File file);
 
 
@@ -87,7 +90,7 @@ public interface Files {
      *
      * @return The file for the specified ID.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.File.ELEMENT)
     File retrieve(@PathParam("id") UUID fileId);
 
 
@@ -98,7 +101,7 @@ public interface Files {
      *
      * @return A resource summary describing the new text file.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.File.COLLECTION)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.File.COLLECTION)
     @Deprecated
     File createTextFile(File textFile);
 
@@ -110,7 +113,7 @@ public interface Files {
      *
      * @return A summary of the newly created file.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_COLLECTION)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.File.BINARY_COLLECTION)
     @Consumes("multipart/form-data")
     @Produces({"text/html", "application/json"})
     File create(File file);
@@ -124,7 +127,7 @@ public interface Files {
      *
      * @return A summary of the updated file.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_ELEMENT)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.File.BINARY_ELEMENT)
     @Consumes("multipart/form-data")
     @Produces({"text/html", "application/json"})
     File updateFile(@PathParam("id") UUID fileId, File file);
@@ -136,7 +139,7 @@ public interface Files {
      * @param file The file's ID.
      * @param action The action to perform.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_ELEMENT)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.File.BINARY_ELEMENT)
     void retrieve(@PathParam("id") UUID file,
                   StreamAction action);
 
@@ -147,7 +150,7 @@ public interface Files {
      * @param file The file's ID.
      * @param action The action to perform.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_WC)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.File.BINARY_WC)
     void retrieveWorkingCopy(@PathParam("id") UUID file,
                              StreamAction action);
 
@@ -159,7 +162,7 @@ public interface Files {
      * @param revision The file revision to retrieve.
      * @param action The action to perform.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_REVISION)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.File.BINARY_REVISION)
     void retrieveRevision(@PathParam("id") UUID file,
                           @PathParam("rev") int revision,
                           StreamAction action);

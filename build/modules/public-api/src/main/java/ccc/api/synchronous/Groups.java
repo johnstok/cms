@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.core;
+package ccc.api.synchronous;
 
 import java.util.UUID;
 
@@ -37,6 +37,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+
+import ccc.api.core.Group;
+import ccc.api.core.PagedCollection;
 
 
 
@@ -63,7 +66,7 @@ public interface Groups {
      *
      * @return Returns paged list of groups.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Group.COLLECTION)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Group.COLLECTION)
     PagedCollection<Group> query(
         @QueryParam("name") String name,
         @QueryParam("page") @DefaultValue("1") int pageNo,
@@ -77,7 +80,7 @@ public interface Groups {
      *
      * @return Returns the corresponding group.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Group.ELEMENT)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Group.ELEMENT)
     Group retrieve(@PathParam("id") UUID id);
 
 
@@ -88,7 +91,7 @@ public interface Groups {
      *
      * @return A DTO describing the new group.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Group.COLLECTION)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Group.COLLECTION)
     Group create(Group group);
 
 
@@ -100,6 +103,6 @@ public interface Groups {
      *
      * @return A DTO describing the updated group.
      */
-    @PUT @Path(ccc.api.core.ResourceIdentifiers.Group.ELEMENT)
+    @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Group.ELEMENT)
     Group update(@PathParam("id") UUID id, Group group);
 }

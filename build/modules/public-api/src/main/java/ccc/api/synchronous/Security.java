@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,65 +21,61 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see the subversion log.
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.core;
-
-import java.util.UUID;
+package ccc.api.synchronous;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-
+import javax.ws.rs.QueryParam;
 
 
 /**
- * API for manipulating Aliases.
+ * Security API for CCC.
  *
  * @author Civic Computing Ltd.
  */
 @Consumes("application/json")
 @Produces("application/json")
-public interface Aliases {
+public interface Security {
 
-    /** NAME : String. */
-    String NAME = "Aliases";
+    /**
+     * Log in to CCC.
+     *
+     * @param username The user's username.
+     * @param password The user's password.
+     *
+     * @return True if the login fails, false otherwise.
+     */
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Security.COLLECTION)
+    Boolean login(
+          @QueryParam("u") final String username,
+          @QueryParam("p") final String password);
 
 
     /**
-     * Retrieve the target name for a alias.
+     * Determine if a user is associated with the current session.
      *
-     * @param aliasId The alias' id.
-     *
-     * @return The corresponding target name.
+     * @return True if a user is associated, false otherwise.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Alias.TARGET_NAME)
-    String aliasTargetName(@PathParam("id") UUID aliasId);
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Security.CURRENT)
+    Boolean isLoggedIn();
 
 
     /**
-     * Create a new alias in CCC.
+     * Log out from the current session.
      *
-     * @param alias The alias to create.
-     *
-     * @return A resource summary describing the new alias.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Alias.COLLECTION)
-    Alias create(Alias alias);
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Security.CURRENT)
+    void logout();
 
 
-    /**
-     * Update an alias.
-     *
-     * @param aliasId The id of the alias to update.
-     * @param delta The changes to apply.
-     */
-    @PUT @Path(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
-    Alias update(@PathParam("id") UUID aliasId, Alias delta);
-
+    /** CURRENT : String. */
+    String CURRENT = "current";
+    /** COLLECTION : String. */
+    String COLLECTION = "collection";
 }

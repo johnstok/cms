@@ -43,9 +43,9 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.Folder;
-import ccc.api.core.Folders;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
+import ccc.api.synchronous.Folders;
 import ccc.api.types.ResourceName;
 import ccc.commands.UpdateFolderCommand;
 import ccc.domain.FolderEntity;
@@ -172,7 +172,7 @@ public class FoldersEJB
                 roots.size(), ResourceSummary.class, roots);
         rootCollection.addLink(
             "element",
-            ccc.api.core.ResourceIdentifiers.Resource.ELEMENT);
+            ccc.api.synchronous.ResourceIdentifiers.Resource.ELEMENT);
 
         return rootCollection;
     }

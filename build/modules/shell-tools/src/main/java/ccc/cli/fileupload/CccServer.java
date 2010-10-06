@@ -36,12 +36,12 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.Files;
 import ccc.api.core.Folder;
-import ccc.api.core.Folders;
 import ccc.api.core.Resource;
-import ccc.api.core.Resources;
 import ccc.api.exceptions.ResourceExistsException;
+import ccc.api.synchronous.Files;
+import ccc.api.synchronous.Folders;
+import ccc.api.synchronous.Resources;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;

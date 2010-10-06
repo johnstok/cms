@@ -26,7 +26,7 @@
  */
 package ccc.api.jaxrs;
 
-import ccc.api.core.Security;
+import ccc.api.synchronous.Security;
 import ccc.api.types.DBC;
 
 

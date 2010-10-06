@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.core;
+package ccc.api.synchronous;
 
 import java.util.UUID;
 
@@ -39,6 +39,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import ccc.api.core.Comment;
+import ccc.api.core.PagedCollection;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.SortOrder;
 
@@ -63,7 +65,7 @@ public interface Comments {
      *
      * @return Return the newly created comment.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Comment.COLLECTION)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Comment.COLLECTION)
     Comment create(Comment comment);
 
 
@@ -74,7 +76,7 @@ public interface Comments {
      *
      * @return Return the corresponding comment.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Comment.ELEMENT)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Comment.ELEMENT)
     Comment retrieve(@PathParam("id") UUID commentId);
 
 
@@ -86,7 +88,7 @@ public interface Comments {
      *
      * @return The updated comment.
      */
-    @PUT @Path(ccc.api.core.ResourceIdentifiers.Comment.ELEMENT)
+    @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Comment.ELEMENT)
     Comment update(@PathParam("id") UUID commentId, Comment comment);
 
 
@@ -95,7 +97,7 @@ public interface Comments {
      *
      * @param commentId The comment's ID.
      */
-    @DELETE  @Path(ccc.api.core.ResourceIdentifiers.Comment.ELEMENT)
+    @DELETE  @Path(ccc.api.synchronous.ResourceIdentifiers.Comment.ELEMENT)
     void delete(@PathParam("id") UUID commentId);
 
 
@@ -111,7 +113,7 @@ public interface Comments {
      *
      * @return A list of comments.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Comment.COLLECTION)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Comment.COLLECTION)
     PagedCollection<Comment> query(
         @QueryParam("resource") UUID resourceId,
         @QueryParam("status") CommentStatus status,

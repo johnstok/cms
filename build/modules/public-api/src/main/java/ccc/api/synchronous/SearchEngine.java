@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.core;
+package ccc.api.synchronous;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -57,7 +57,7 @@ public interface SearchEngine extends Scheduler {
      * @param page The page of results to return (first page has index of 1).
      * @return The SearchResult object with set entities and total count.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.SearchEngine.FIND)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.SearchEngine.FIND)
     SearchResult find(
               @QueryParam("terms") String searchTerms,
               @QueryParam("count") @DefaultValue("20") int noOfResultsPerPage,
@@ -74,7 +74,7 @@ public interface SearchEngine extends Scheduler {
      *
      * @return The SearchResult object with set entities and total count.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.SearchEngine.FIND_SORT)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.SearchEngine.FIND_SORT)
     SearchResult find(
               @QueryParam("terms") String searchTerms,
               @QueryParam("sort") String sort,
@@ -90,7 +90,7 @@ public interface SearchEngine extends Scheduler {
      * @param page The page of results to return (first page has index of 1).
      * @return The SearchResult object with set entities and total count.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.SearchEngine.SIMILAR)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.SearchEngine.SIMILAR)
     SearchResult similar(
               @QueryParam("uuid") final String uuid,
               @QueryParam("count") @DefaultValue("20")int noOfResultsPerPage,
@@ -99,7 +99,7 @@ public interface SearchEngine extends Scheduler {
     /**
      * Rebuild the search index.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.SearchEngine.INDEX)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.SearchEngine.INDEX)
     void index();
 
 }

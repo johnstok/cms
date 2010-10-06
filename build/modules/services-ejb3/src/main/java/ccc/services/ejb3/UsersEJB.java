@@ -42,7 +42,7 @@ import javax.ejb.TransactionAttribute;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
-import ccc.api.core.Users;
+import ccc.api.synchronous.Users;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 import ccc.commands.CreateUserCommand;
@@ -156,14 +156,14 @@ public class UsersEJB
                     userrepo.listUsers(uc, sort, order, pageNo, pageSize)));
         users.addLink(
             "me",
-            ccc.api.core.ResourceIdentifiers.User.ME);
+            ccc.api.synchronous.ResourceIdentifiers.User.ME);
         users.addLink(
             "self",
-            ccc.api.core.ResourceIdentifiers.User.COLLECTION
+            ccc.api.synchronous.ResourceIdentifiers.User.COLLECTION
             + "?{-join|&|count,page,sort,order,email,username,groups}");
         users.addLink(
             "exists",
-            ccc.api.core.ResourceIdentifiers.User.EXISTS);
+            ccc.api.synchronous.ResourceIdentifiers.User.EXISTS);
         return users;
     }
 

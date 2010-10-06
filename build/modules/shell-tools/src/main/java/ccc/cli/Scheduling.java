@@ -30,9 +30,9 @@ package ccc.cli;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.core.Actions;
-import ccc.api.core.ServiceLocator;
 import ccc.api.http.ProxyServiceLocator;
+import ccc.api.synchronous.Actions;
+import ccc.api.synchronous.ServiceLocator;
 
 /**
  * Command line management of Action executor.

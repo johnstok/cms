@@ -32,19 +32,6 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
-import ccc.api.core.Actions;
-import ccc.api.core.Aliases;
-import ccc.api.core.Comments;
-import ccc.api.core.Files;
-import ccc.api.core.Folders;
-import ccc.api.core.Groups;
-import ccc.api.core.Pages;
-import ccc.api.core.Resources;
-import ccc.api.core.SearchEngine;
-import ccc.api.core.Security;
-import ccc.api.core.ServiceLocator;
-import ccc.api.core.Templates;
-import ccc.api.core.Users;
 import ccc.api.jaxrs.ActionsImpl;
 import ccc.api.jaxrs.AliasesImpl;
 import ccc.api.jaxrs.CommentsImpl;
@@ -62,6 +49,19 @@ import ccc.api.jaxrs.providers.S11nProvider;
 import ccc.api.jaxrs.providers.StringCollectionProvider;
 import ccc.api.jaxrs.providers.UUIDProvider;
 import ccc.api.jaxrs.providers.UuidCollectionProvider;
+import ccc.api.synchronous.Actions;
+import ccc.api.synchronous.Aliases;
+import ccc.api.synchronous.Comments;
+import ccc.api.synchronous.Files;
+import ccc.api.synchronous.Folders;
+import ccc.api.synchronous.Groups;
+import ccc.api.synchronous.Pages;
+import ccc.api.synchronous.Resources;
+import ccc.api.synchronous.SearchEngine;
+import ccc.api.synchronous.Security;
+import ccc.api.synchronous.ServiceLocator;
+import ccc.api.synchronous.Templates;
+import ccc.api.synchronous.Users;
 
 
 /**
@@ -144,7 +144,7 @@ public class ProxyServiceLocator implements ServiceLocator {
             new ActionsImpl(
                 ProxyFactory.create(
                     Actions.class,
-                    _api+ccc.api.core.ResourceIdentifiers.Action.COLLECTION, _httpClient));
+                    _api+ccc.api.synchronous.ResourceIdentifiers.Action.COLLECTION, _httpClient));
         _folders =
             new FoldersImpl(
                 ProxyFactory.create(
@@ -189,7 +189,7 @@ public class ProxyServiceLocator implements ServiceLocator {
             new SearchImpl(
                 ProxyFactory.create(
                     SearchEngine.class,
-                    _api+ccc.api.core.ResourceIdentifiers.SearchEngine.COLLECTION, _httpClient));
+                    _api+ccc.api.synchronous.ResourceIdentifiers.SearchEngine.COLLECTION, _httpClient));
     }
 
 

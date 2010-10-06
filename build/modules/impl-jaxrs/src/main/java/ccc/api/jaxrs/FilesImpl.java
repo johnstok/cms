@@ -35,9 +35,9 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.api.core.File;
-import ccc.api.core.Files;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceCriteria;
+import ccc.api.synchronous.Files;
 import ccc.api.types.DBC;
 import ccc.api.types.StreamAction;
 

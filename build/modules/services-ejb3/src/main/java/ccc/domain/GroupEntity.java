@@ -113,7 +113,7 @@ public class GroupEntity
         dto.setPermissions(getPermissions());
         dto.addLink(
             "self",
-            new Link(ccc.api.core.ResourceIdentifiers.Group.ELEMENT)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Group.ELEMENT)
             .build("id", getId().toString(), new NormalisingEncoder()));
         return dto;
     }

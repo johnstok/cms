@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.core;
+package ccc.api.synchronous;
 
 import java.util.UUID;
 
@@ -37,6 +37,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+
+import ccc.api.core.PagedCollection;
+import ccc.api.core.Template;
 
 
 
@@ -62,7 +65,7 @@ public interface Templates {
      *
      * @return A list of templates.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Template.COLLECTION)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Template.COLLECTION)
     PagedCollection<Template> query(
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize);
@@ -75,7 +78,7 @@ public interface Templates {
      *
      * @return True if name exists.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Template.EXISTS)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Template.EXISTS)
     Boolean templateNameExists(@PathParam("name") final String templateName);
 
 
@@ -86,7 +89,7 @@ public interface Templates {
      *
      * @return The corresponding delta.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Template.ELEMENT)
     Template retrieve(@PathParam("id") UUID templateId);
 
     /**
@@ -95,7 +98,7 @@ public interface Templates {
      * @param templateId The id of the template to update.
      * @param delta The changes to apply.
      */
-    @PUT @Path(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
+    @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Template.ELEMENT)
     Template update(
         @PathParam("id") UUID templateId, Template delta);
 
@@ -106,7 +109,7 @@ public interface Templates {
      *
      * @return A resource summary describing the new template.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Template.COLLECTION)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Template.COLLECTION)
     Template create(Template template);
 
     /**
@@ -116,7 +119,7 @@ public interface Templates {
      * @param revision The revision to fetch.
      * @return The corresponding delta.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Template.REVISION)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Template.REVISION)
     Template retrieveRevision(@PathParam("id") UUID templateId,
                               @PathParam("revision") int revision);
 }

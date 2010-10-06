@@ -37,7 +37,7 @@ import javax.servlet.FilterChain;
 
 import junit.framework.TestCase;
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.Resources;
+import ccc.api.synchronous.Resources;
 import ccc.commons.Testing;
 import ccc.web.rendering.RedirectRequiredException;
 

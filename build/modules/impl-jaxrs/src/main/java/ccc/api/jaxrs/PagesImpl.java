@@ -37,8 +37,8 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import ccc.api.core.Page;
 import ccc.api.core.PageCriteria;
 import ccc.api.core.PagedCollection;
-import ccc.api.core.Pages;
 import ccc.api.core.ResourceSummary;
+import ccc.api.synchronous.Pages;
 import ccc.api.types.DBC;
 
 

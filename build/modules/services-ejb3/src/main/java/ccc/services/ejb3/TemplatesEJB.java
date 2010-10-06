@@ -39,7 +39,7 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Template;
-import ccc.api.core.Templates;
+import ccc.api.synchronous.Templates;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.TemplateEntity;
 import ccc.persistence.ResourceRepository;

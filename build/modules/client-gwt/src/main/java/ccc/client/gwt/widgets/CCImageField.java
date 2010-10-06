@@ -108,7 +108,7 @@ public class CCImageField
             final ResourceSummary s = new ResourceSummary();
             s.addLink(
                 "absolute-path",
-                new Link(ccc.api.core.ResourceIdentifiers.Resource.PATH)
+                new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.PATH)
                 .build("id", id, InternalServices.ENCODER));
 
             new GetAbsolutePathAction(I18n.UI_CONSTANTS.selectImage(), s)

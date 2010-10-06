@@ -38,7 +38,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.Alias;
-import ccc.api.core.Aliases;
+import ccc.api.synchronous.Aliases;
 import ccc.commands.UpdateAliasCommand;
 import ccc.domain.AliasEntity;
 

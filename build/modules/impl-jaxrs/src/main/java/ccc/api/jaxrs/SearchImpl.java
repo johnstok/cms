@@ -31,7 +31,7 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.api.core.SearchEngine;
+import ccc.api.synchronous.SearchEngine;
 import ccc.api.types.DBC;
 import ccc.api.types.SearchResult;
 import ccc.api.types.SortOrder;
@@ -42,7 +42,7 @@ import ccc.api.types.SortOrder;
  *
  * @author Civic Computing Ltd.
  */
-@Path(ccc.api.core.ResourceIdentifiers.SearchEngine.COLLECTION)
+@Path(ccc.api.synchronous.ResourceIdentifiers.SearchEngine.COLLECTION)
 @Produces({"text/html", "application/json"})
 @NoCache
 public class SearchImpl

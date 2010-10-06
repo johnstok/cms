@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 
-import ccc.api.core.Resources;
+import ccc.api.synchronous.Resources;
 
 
 /**

@@ -211,7 +211,7 @@ public class TemplateEntity
 
         dto.addLink(
             Template.SELF,
-            new Link(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Template.ELEMENT)
             .build("id", getId().toString(), new NormalisingEncoder()));
 
         return dto;

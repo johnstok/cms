@@ -37,8 +37,8 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
-import ccc.api.core.Actions;
 import ccc.api.core.PagedCollection;
+import ccc.api.synchronous.Actions;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
@@ -51,7 +51,7 @@ import ccc.api.types.SortOrder;
  *
  * @author Civic Computing Ltd.
  */
-@Path(ccc.api.core.ResourceIdentifiers.Action.COLLECTION)
+@Path(ccc.api.synchronous.ResourceIdentifiers.Action.COLLECTION)
 @Consumes("application/json")
 @Produces("application/json")
 @NoCache

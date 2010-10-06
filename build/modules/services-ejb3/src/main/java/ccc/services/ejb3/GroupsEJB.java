@@ -38,8 +38,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.Group;
-import ccc.api.core.Groups;
 import ccc.api.core.PagedCollection;
+import ccc.api.synchronous.Groups;
 import ccc.domain.GroupEntity;
 import ccc.domain.LogEntry;
 import ccc.persistence.GroupRepository;
@@ -116,7 +116,7 @@ public class GroupsEJB
                 totalCount, Group.class, GroupEntity.map(groups));
         pGroups.addLink(
             "self",
-            ccc.api.core.ResourceIdentifiers.Group.COLLECTION
+            ccc.api.synchronous.ResourceIdentifiers.Group.COLLECTION
             + "?{-join|&|count,page,sort,order}");
 
         return pGroups;

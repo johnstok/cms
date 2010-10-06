@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.core;
+package ccc.api.synchronous;
 
 import java.util.Map;
 import java.util.UUID;
@@ -40,6 +40,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import ccc.api.core.ACL;
+import ccc.api.core.PagedCollection;
+import ccc.api.core.Resource;
+import ccc.api.core.ResourceCriteria;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.Revision;
+import ccc.api.core.Template;
 import ccc.api.types.Duration;
 import ccc.api.types.SortOrder;
 
@@ -76,7 +83,7 @@ public interface Resources {
      * @return A list of resources.
      */
     @GET
-    @Path(ccc.api.core.ResourceIdentifiers.Resource.COLLECTION)
+    @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.COLLECTION)
     PagedCollection<ResourceSummary> list(
         @QueryParam("parent") UUID parent,
         @QueryParam("tag") String tag,
@@ -102,7 +109,7 @@ public interface Resources {
      * @return A list of resources.
      */
     @POST
-    @Path(ccc.api.core.ResourceIdentifiers.Resource.SEARCH2)
+    @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.SEARCH2)
     PagedCollection<ResourceSummary> list(
         ResourceCriteria criteria,
         @QueryParam("page") @DefaultValue("1") int pageNo,
@@ -116,7 +123,7 @@ public interface Resources {
      *
      * @return A summary of the resource or null if not found.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.ELEMENT)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.ELEMENT)
     Resource retrieve(@PathParam("id") UUID resourceId);
 
 
@@ -125,7 +132,7 @@ public interface Resources {
      *
      * @param resourceId The id of the existing resource.
      */
-    @DELETE @Path(ccc.api.core.ResourceIdentifiers.Resource.ELEMENT)
+    @DELETE @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.ELEMENT)
     void delete(@PathParam("id") UUID resourceId);
 
 
@@ -136,7 +143,7 @@ public interface Resources {
      *
      * @return The absolute path as a string.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.PATH)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.PATH)
     String getAbsolutePath(@PathParam("id") UUID resourceId);
 
 
@@ -147,7 +154,7 @@ public interface Resources {
      *
      * @return The list of resources.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.REVISIONS)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.REVISIONS)
     PagedCollection<Revision> history(@PathParam("id") UUID resourceId);
 
 
@@ -158,7 +165,7 @@ public interface Resources {
      *
      * @return The metadata in a hashmap.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.METADATA)
     Map<String, String> metadata(@PathParam("id") UUID resourceId);
 
 
@@ -169,7 +176,7 @@ public interface Resources {
      *
      * @return The access control list for the specified resource.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.ACL)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.ACL)
     ACL acl(@PathParam("id") UUID resourceId);
 
 
@@ -180,7 +187,7 @@ public interface Resources {
      *
      * @return Duration.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.DURATION)
     Duration cacheDuration(@PathParam("id") UUID resourceId);
 
 
@@ -192,7 +199,7 @@ public interface Resources {
      * @return TemplateSummary.
      */
     // TODO: Can't we get a resource's template from the resource object?
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.TEMPLATE)
     Template computeTemplate(@PathParam("id") UUID resourceId);
 
 
@@ -203,7 +210,7 @@ public interface Resources {
      *
      * @return A summary of the corresponding resource or null if not found.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.SEARCH_PATH)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.SEARCH_PATH)
     Resource resourceForPath(@PathParam("path") String path);
 
 
@@ -214,7 +221,7 @@ public interface Resources {
      *
      * @return A summary of the corresponding resource or null if not found.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.SEARCH_LEGACY)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.SEARCH_LEGACY)
     @Deprecated // Use the list method instead.
     ResourceSummary resourceForLegacyId(@PathParam("id") String legacyId);
 
@@ -225,7 +232,7 @@ public interface Resources {
      *
      * @return A summary of the corresponding resource.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.SEARCH_METADATA)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.SEARCH_METADATA)
     @Deprecated // Use the list method instead.
     PagedCollection<ResourceSummary> resourceForMetadataKey(
         @PathParam("id") String key);
@@ -237,7 +244,7 @@ public interface Resources {
      * @param resourceId The resource to update.
      * @param duration DTO specifying the cache duration.
      */
-    @PUT @Path(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
+    @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.DURATION)
     void updateCacheDuration(
         @PathParam("id") UUID resourceId,
         Resource duration);
@@ -250,7 +257,7 @@ public interface Resources {
      *
      * @param resourceId The uuid of the resource to lock.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.LOCK)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.LOCK)
     void lock(@PathParam("id") UUID resourceId);
 
 
@@ -259,7 +266,7 @@ public interface Resources {
      *
      * @param resourceId The id of the resource.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.WC)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.WC)
     Resource applyWorkingCopy(@PathParam("id") UUID resourceId);
 
 
@@ -269,7 +276,7 @@ public interface Resources {
      * @param resourceId The id of the resource to update.
      * @param template DTO specifying the new template to set for the resource.
      */
-    @PUT @Path(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
+    @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.TEMPLATE)
     Resource updateResourceTemplate(
         @PathParam("id") UUID resourceId,
         Resource template);
@@ -281,7 +288,7 @@ public interface Resources {
      *
      * @param resourceId The resource to unlock.
      */
-    @DELETE @Path(ccc.api.core.ResourceIdentifiers.Resource.LOCK)
+    @DELETE @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.LOCK)
     void unlock(@PathParam("id") UUID resourceId);
 
 
@@ -290,7 +297,7 @@ public interface Resources {
      *
      * @param resourceId The id of the resource to update.
      */
-    @DELETE @Path(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH)
+    @DELETE @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.PUBLISH)
     void unpublish(@PathParam("id") UUID resourceId);
 
 
@@ -299,7 +306,7 @@ public interface Resources {
      *
      * @param resourceId The id of the resource to update.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.PUBLISH)
     Resource publish(@PathParam("id") UUID resourceId);
 
 
@@ -310,7 +317,7 @@ public interface Resources {
      * @param newParentId The id of the folder to which the resource should be
      *  moved.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.PARENT)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.PARENT)
     void move(@PathParam("id") UUID resourceId, UUID newParentId);
 
 
@@ -320,7 +327,7 @@ public interface Resources {
      * @param resourceId The id of the resource to rename.
      * @param name The new name.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.NAME)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.NAME)
     void rename(@PathParam("id") final UUID resourceId, final String name);
 
 
@@ -330,7 +337,7 @@ public interface Resources {
      * @param resourceId The resource to update.
      * @param acl The access control list for the specified resource.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.ACL)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.ACL)
     void changeAcl(@PathParam("id") UUID resourceId, ACL acl);
 
 
@@ -339,7 +346,7 @@ public interface Resources {
      *
      * @param resourceId The id of the resource to update.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.EXCLUDE_MM)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.EXCLUDE_MM)
     void excludeFromMainMenu(@PathParam("id") UUID resourceId);
 
 
@@ -348,7 +355,7 @@ public interface Resources {
      *
      * @param resourceId The id of the resource to update.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.INCLUDE_MM)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.INCLUDE_MM)
     void includeInMainMenu(@PathParam("id") UUID resourceId);
 
 
@@ -358,7 +365,7 @@ public interface Resources {
      * @param resourceId The id of the resource to update.
      * @param resource The resource containing new metadata.
      */
-    @PUT @Path(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
+    @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.METADATA)
     void updateMetadata(@PathParam("id") UUID resourceId,
                         Resource resource);
 
@@ -368,7 +375,7 @@ public interface Resources {
      *
      * @param pageId The id of the page with a working copy.
      */
-    @DELETE @Path(ccc.api.core.ResourceIdentifiers.Resource.WC)
+    @DELETE @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.WC)
     void clearWorkingCopy(@PathParam("id") UUID pageId);
 
 
@@ -379,7 +386,7 @@ public interface Resources {
      * @param resourceId The id of the resource.
      * @param dto The DTO specifying the number of the revision to use.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.REVISIONS)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.REVISIONS)
     void createWorkingCopy(@PathParam("id") UUID resourceId,
                            Resource dto);
 
@@ -389,7 +396,7 @@ public interface Resources {
      *
      * @param id The id of the resource to update.
      */
-    @DELETE @Path(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
+    @DELETE @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.DURATION)
     void deleteCacheDuration(@PathParam("id") UUID id);
 
 
@@ -400,7 +407,7 @@ public interface Resources {
      * @param action The action for the log entry.
      * @param detail The details for the log entry.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.LOG_ENTRY)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.LOG_ENTRY)
     void createLogEntry(
         @PathParam("id") UUID resourceId, String action, String detail);
 
@@ -414,7 +421,7 @@ public interface Resources {
      *
      * @return The contents as a string or null if not found.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.TEXT)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.TEXT)
     String fileContentsFromPath(@PathParam("path") String absolutePath,
                                 @QueryParam("charset") @DefaultValue("UTF-8") String charset);
 
@@ -426,7 +433,7 @@ public interface Resources {
      *
      * @return A summary of the corresponding resource or null if not found.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.PATH_SECURE)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.PATH_SECURE)
     @Deprecated
     /* FIXME Use resourceForPath() or lookup by ID.
      * used in ContentServlet.getSnapshot()
@@ -442,7 +449,7 @@ public interface Resources {
      *
      * @return A summary of the corresponding resource or null if not found.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.PATH_SECURE)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.PATH_SECURE)
     @Deprecated
     /*
      * FIXME: Lookup by ID. - used in ContentServlet.getSnapshot()
@@ -460,7 +467,7 @@ public interface Resources {
      *
      * @return A summary of the corresponding resource.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.PATH_WC)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.PATH_WC)
     @Deprecated // FIXME: Lookup by ID. - used in ContentServlet.getSnapshot
     Resource workingCopyForPath(@PathParam("path") final String path);
 
@@ -473,7 +480,7 @@ public interface Resources {
      *
      * @return A summary of the newly created search.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.SEARCH)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.SEARCH)
     // FIXME Should post a 'search' object.
     // FIXME Should be part of the 'search' API.
     ResourceSummary createSearch(@PathParam("id")    UUID parentId,

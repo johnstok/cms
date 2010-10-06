@@ -36,7 +36,7 @@ import javax.ws.rs.core.Context;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.api.core.Security;
+import ccc.api.synchronous.Security;
 import ccc.api.types.Permission;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.security.Sessions;

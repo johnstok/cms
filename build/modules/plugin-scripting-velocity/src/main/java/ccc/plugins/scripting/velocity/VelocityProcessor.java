@@ -39,7 +39,7 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 
-import ccc.api.core.ServiceLocator;
+import ccc.api.synchronous.ServiceLocator;
 import ccc.api.types.DBC;
 import ccc.plugins.scripting.AbstractTextProcessor;
 import ccc.plugins.scripting.Context;

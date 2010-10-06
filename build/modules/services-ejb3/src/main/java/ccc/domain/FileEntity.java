@@ -353,7 +353,7 @@ public class FileEntity
         fs.setContent((!isText()) ? null : read(dataRepo, this));
         fs.addLink(
             Resource.SELF,
-            new Link(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.File.ELEMENT)
                 .build("id", getId().toString(), new NormalisingEncoder()));
         return fs;
     }

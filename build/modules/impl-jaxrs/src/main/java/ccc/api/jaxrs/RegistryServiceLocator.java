@@ -26,19 +26,19 @@
  */
 package ccc.api.jaxrs;
 
-import ccc.api.core.Actions;
-import ccc.api.core.Aliases;
-import ccc.api.core.Comments;
-import ccc.api.core.Files;
-import ccc.api.core.Folders;
-import ccc.api.core.Groups;
-import ccc.api.core.Pages;
-import ccc.api.core.Resources;
-import ccc.api.core.SearchEngine;
-import ccc.api.core.Security;
-import ccc.api.core.ServiceLocator;
-import ccc.api.core.Templates;
-import ccc.api.core.Users;
+import ccc.api.synchronous.Actions;
+import ccc.api.synchronous.Aliases;
+import ccc.api.synchronous.Comments;
+import ccc.api.synchronous.Files;
+import ccc.api.synchronous.Folders;
+import ccc.api.synchronous.Groups;
+import ccc.api.synchronous.Pages;
+import ccc.api.synchronous.Resources;
+import ccc.api.synchronous.SearchEngine;
+import ccc.api.synchronous.Security;
+import ccc.api.synchronous.ServiceLocator;
+import ccc.api.synchronous.Templates;
+import ccc.api.synchronous.Users;
 import ccc.api.types.DBC;
 import ccc.commons.Registry;
 

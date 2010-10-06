@@ -26,7 +26,7 @@
  */
 package ccc.client.actions;
 
-import ccc.api.core.Security;
+import ccc.api.synchronous.Security;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;

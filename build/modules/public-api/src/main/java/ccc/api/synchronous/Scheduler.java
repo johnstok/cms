@@ -24,58 +24,40 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.core;
+package ccc.api.synchronous;
 
-import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+
+
 
 
 /**
- * Security API for CCC.
+ * API for a scheduler.
  *
  * @author Civic Computing Ltd.
  */
-@Consumes("application/json")
-@Produces("application/json")
-public interface Security {
+public interface Scheduler {
 
     /**
-     * Log in to CCC.
-     *
-     * @param username The user's username.
-     * @param password The user's password.
-     *
-     * @return True if the login fails, false otherwise.
+     * Start the scheduler running.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Security.COLLECTION)
-    Boolean login(
-          @QueryParam("u") final String username,
-          @QueryParam("p") final String password);
-
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Scheduler.SCHEDULER)
+    void start();
 
     /**
-     * Determine if a user is associated with the current session.
-     *
-     * @return True if a user is associated, false otherwise.
+     * Stop the scheduler running.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Security.CURRENT)
-    Boolean isLoggedIn();
-
+    @DELETE @Path(ccc.api.synchronous.ResourceIdentifiers.Scheduler.SCHEDULER)
+    void stop();
 
     /**
-     * Log out from the current session.
+     * Query whether the scheduler is running.
      *
+     * @return True if the scheduler is running; false otherwise.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Security.CURRENT)
-    void logout();
-
-
-    /** CURRENT : String. */
-    String CURRENT = "current";
-    /** COLLECTION : String. */
-    String COLLECTION = "collection";
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Scheduler.SCHEDULER)
+    boolean isRunning();
 }

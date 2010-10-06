@@ -34,8 +34,8 @@ import org.apache.log4j.Logger;
 
 import ccc.api.core.Resource;
 import ccc.api.core.Template;
-import ccc.api.core.Templates;
 import ccc.api.exceptions.CCException;
+import ccc.api.synchronous.Templates;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 

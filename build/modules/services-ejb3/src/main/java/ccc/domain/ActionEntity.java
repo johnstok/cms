@@ -280,8 +280,8 @@ public class ActionEntity extends Entity {
         summary.addLink(
             "self",
             new Link(
-                    ccc.api.core.ResourceIdentifiers.Action.COLLECTION
-                    + ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
+                    ccc.api.synchronous.ResourceIdentifiers.Action.COLLECTION
+                    + ccc.api.synchronous.ResourceIdentifiers.Action.ELEMENT)
                 .build("id", getId().toString(), new NormalisingEncoder()));
         return summary;
     }

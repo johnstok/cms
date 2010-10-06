@@ -78,7 +78,7 @@ public abstract class GetResourcesPagedAction
         params.put("page", new String[] {""+_pageNo});
 
         return
-        new Link(ccc.api.core.ResourceIdentifiers.Resource.SEARCH2
+        new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.SEARCH2
             + "?{-join|&|count,page,sort,order}")
         .build(params, InternalServices.ENCODER);
     }

@@ -25,7 +25,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.api.core;
+package ccc.api.synchronous;
 
 import java.util.UUID;
 
@@ -38,6 +38,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+
+import ccc.api.core.Page;
+import ccc.api.core.PageCriteria;
+import ccc.api.core.PagedCollection;
+import ccc.api.core.ResourceSummary;
 
 
 
@@ -60,7 +65,7 @@ public interface Pages {
      *
      * @return A list of errors, as strings.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Page.VALIDATOR)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Page.VALIDATOR)
     String validate(Page page);
 
 
@@ -71,7 +76,7 @@ public interface Pages {
      *
      * @return The corresponding page.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Page.ELEMENT)
     Page retrieve(@PathParam("id") UUID pageId);
 
 
@@ -82,7 +87,7 @@ public interface Pages {
      *
      * @return The corresponding working copy.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Page.WC)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Page.WC)
     Page retrieveWorkingCopy(@PathParam("id") UUID pageId);
 
 
@@ -92,7 +97,7 @@ public interface Pages {
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
      */
-    @PUT @Path(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
+    @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Page.ELEMENT)
     Page update(@PathParam("id") UUID pageId, Page delta);
 
 
@@ -102,7 +107,7 @@ public interface Pages {
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
      */
-    @PUT @Path(ccc.api.core.ResourceIdentifiers.Page.WC)
+    @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Page.WC)
     Page updateWorkingCopy(@PathParam("id") UUID pageId, Page delta);
 
 
@@ -113,7 +118,7 @@ public interface Pages {
      *
      * @return A resource summary describing the new page.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Page.COLLECTION)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Page.COLLECTION)
     Page create(Page page);
 
 
@@ -127,7 +132,7 @@ public interface Pages {
      * @return A list of pages.
      */
     @POST
-    @Path(ccc.api.core.ResourceIdentifiers.Page.SEARCH)
+    @Path(ccc.api.synchronous.ResourceIdentifiers.Page.SEARCH)
     PagedCollection<ResourceSummary> list(
         PageCriteria criteria,
         @QueryParam("page") @DefaultValue("1") int pageNo,

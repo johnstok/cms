@@ -210,7 +210,7 @@ public class CommentEntity
         dto.setEmail(getEmail().getText());
         dto.addLink(
             "self",
-            new Link(ccc.api.core.ResourceIdentifiers.Comment.ELEMENT)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Comment.ELEMENT)
                 .build("id", getId().toString(), new NormalisingEncoder()));
 
         return dto;

@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import ccc.api.core.ServiceLocator;
 import ccc.api.jaxrs.ActionsImpl;
 import ccc.api.jaxrs.AliasesImpl;
 import ccc.api.jaxrs.CommentsImpl;
@@ -50,6 +49,7 @@ import ccc.api.jaxrs.providers.S11nProvider;
 import ccc.api.jaxrs.providers.StringCollectionProvider;
 import ccc.api.jaxrs.providers.UUIDProvider;
 import ccc.api.jaxrs.providers.UuidCollectionProvider;
+import ccc.api.synchronous.ServiceLocator;
 import ccc.commons.JNDI;
 
 

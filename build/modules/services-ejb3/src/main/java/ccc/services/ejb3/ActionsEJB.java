@@ -49,10 +49,10 @@ import org.apache.log4j.Logger;
 import ccc.api.core.Action;
 import ccc.api.core.ActionCriteria;
 import ccc.api.core.ActionSummary;
-import ccc.api.core.Actions;
 import ccc.api.core.PagedCollection;
-import ccc.api.core.Resources;
 import ccc.api.exceptions.CCException;
+import ccc.api.synchronous.Actions;
+import ccc.api.synchronous.Resources;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.FailureCode;
@@ -289,19 +289,19 @@ public class ActionsEJB
     private void addLinks(final PagedCollection<ActionSummary> actions) {
         actions.addLink(
             "self",
-            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
+            ccc.api.synchronous.ResourceIdentifiers.Action.COLLECTION
             + "?{-join|&|count,page,sort,order}");
         actions.addLink(
             "list",
-            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
+            ccc.api.synchronous.ResourceIdentifiers.Action.COLLECTION
             + "?{-join|&|status,count,page,sort,order}");
         actions.addLink(
             "execute_all",
-            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
-            + ccc.api.core.ResourceIdentifiers.Action.EXECUTE);
+            ccc.api.synchronous.ResourceIdentifiers.Action.COLLECTION
+            + ccc.api.synchronous.ResourceIdentifiers.Action.EXECUTE);
         actions.addLink(
             "scheduler",
-            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
-            + ccc.api.core.ResourceIdentifiers.Scheduler.SCHEDULER);
+            ccc.api.synchronous.ResourceIdentifiers.Action.COLLECTION
+            + ccc.api.synchronous.ResourceIdentifiers.Scheduler.SCHEDULER);
     }
 }

@@ -38,18 +38,18 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.api.core.API;
-import ccc.api.core.ResourceIdentifiers.Action;
-import ccc.api.core.ResourceIdentifiers.Alias;
-import ccc.api.core.ResourceIdentifiers.Comment;
-import ccc.api.core.ResourceIdentifiers.File;
-import ccc.api.core.ResourceIdentifiers.Folder;
-import ccc.api.core.ResourceIdentifiers.Group;
-import ccc.api.core.ResourceIdentifiers.Page;
-import ccc.api.core.ResourceIdentifiers.Resource;
-import ccc.api.core.ResourceIdentifiers.SearchEngine;
-import ccc.api.core.ResourceIdentifiers.Security;
-import ccc.api.core.ResourceIdentifiers.Template;
-import ccc.api.core.ResourceIdentifiers.User;
+import ccc.api.synchronous.ResourceIdentifiers.Action;
+import ccc.api.synchronous.ResourceIdentifiers.Alias;
+import ccc.api.synchronous.ResourceIdentifiers.Comment;
+import ccc.api.synchronous.ResourceIdentifiers.File;
+import ccc.api.synchronous.ResourceIdentifiers.Folder;
+import ccc.api.synchronous.ResourceIdentifiers.Group;
+import ccc.api.synchronous.ResourceIdentifiers.Page;
+import ccc.api.synchronous.ResourceIdentifiers.Resource;
+import ccc.api.synchronous.ResourceIdentifiers.SearchEngine;
+import ccc.api.synchronous.ResourceIdentifiers.Security;
+import ccc.api.synchronous.ResourceIdentifiers.Template;
+import ccc.api.synchronous.ResourceIdentifiers.User;
 
 
 /**
@@ -83,14 +83,14 @@ public class ServicesImpl {
 
         api.addLink(
             ccc.api.core.Template.EXISTS,
-            ccc.api.core.ResourceIdentifiers.Template.EXISTS);
+            ccc.api.synchronous.ResourceIdentifiers.Template.EXISTS);
 
         api.addLink(
             ccc.api.core.Page.VALIDATOR,
-            ccc.api.core.ResourceIdentifiers.Page.VALIDATOR);
+            ccc.api.synchronous.ResourceIdentifiers.Page.VALIDATOR);
 
-        api.addLink(ccc.api.core.Security.CURRENT,    Security.CURRENT);
-        api.addLink(ccc.api.core.Security.COLLECTION, Security.COLLECTION+"?{-join|&|u,p}");
+        api.addLink(ccc.api.synchronous.Security.CURRENT,    Security.CURRENT);
+        api.addLink(ccc.api.synchronous.Security.COLLECTION, Security.COLLECTION+"?{-join|&|u,p}");
 
         api.addLink(ccc.api.core.File.LIST_BINARY, File.BINARY_COLLECTION);
 

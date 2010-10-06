@@ -25,7 +25,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.api.core;
+package ccc.api.synchronous;
 
 import java.util.UUID;
 
@@ -37,6 +37,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+
+import ccc.api.core.Folder;
+import ccc.api.core.PagedCollection;
+import ccc.api.core.ResourceSummary;
 
 
 
@@ -62,7 +66,7 @@ public interface Folders {
      *
      * @return The folder's of children.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Folder.ACCESSIBLE_CHILDREN)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Folder.ACCESSIBLE_CHILDREN)
     PagedCollection<ResourceSummary> getAccessibleChildren(
         @PathParam("id") UUID folderId);
 
@@ -75,7 +79,7 @@ public interface Folders {
      * @return Returns true in case folder has a resource with given name,
      *  false otherwise.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Folder.EXISTS)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Folder.EXISTS)
     @Deprecated // Search with the absolute path instead.
     ResourceSummary nameExistsInFolder(@PathParam("id") final UUID folderId,
                                @PathParam("name") final String name);
@@ -85,7 +89,7 @@ public interface Folders {
      *
      * @return A collection of resource summaries - one for each root folder.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Folder.ROOTS)
+    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Folder.ROOTS)
     PagedCollection<ResourceSummary> roots();
 
     /**
@@ -95,7 +99,7 @@ public interface Folders {
      *
      * @return A resource summary describing the new folder.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Folder.COLLECTION)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Folder.COLLECTION)
     Folder create(Folder folder);
 
     /**
@@ -104,7 +108,7 @@ public interface Folders {
      * @param folderId The id of the folder to update.
      * @param delta The updated details of the folder.
      */
-    @PUT @Path(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
+    @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Folder.ELEMENT)
     Folder update(@PathParam("id") UUID folderId, Folder delta);
 
 
@@ -118,7 +122,7 @@ public interface Folders {
      *
      * @return A resource summary describing the new folder.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Folder.DEPRECATED)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Folder.DEPRECATED)
     @Deprecated
     Folder createFolder(@QueryParam("id") UUID parentId,
                         @QueryParam("name") String name,
@@ -133,7 +137,7 @@ public interface Folders {
      *
      * @return A resource summary describing the new root.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Folder.ROOT_NAME)
+    @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Folder.ROOT_NAME)
     // FIXME Post a 'folder' DTO.
     Folder createRoot(@PathParam("name") String name);
 

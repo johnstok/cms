@@ -36,7 +36,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Template;
-import ccc.api.core.Templates;
+import ccc.api.synchronous.Templates;
 import ccc.api.types.DBC;
 
 

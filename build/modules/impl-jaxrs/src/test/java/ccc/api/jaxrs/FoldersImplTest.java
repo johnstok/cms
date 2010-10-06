@@ -31,9 +31,9 @@ import static org.easymock.EasyMock.*;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
-import ccc.api.core.Folders;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
+import ccc.api.synchronous.Folders;
 
 
 /**

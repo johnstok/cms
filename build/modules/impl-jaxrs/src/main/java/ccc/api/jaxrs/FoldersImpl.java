@@ -35,9 +35,9 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.api.core.Folder;
-import ccc.api.core.Folders;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
+import ccc.api.synchronous.Folders;
 import ccc.api.types.DBC;
 
 

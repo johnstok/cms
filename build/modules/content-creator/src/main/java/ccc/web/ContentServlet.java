@@ -43,12 +43,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.Failure;
-import ccc.api.core.MemoryServiceLocator;
 import ccc.api.core.ObjectFactory;
-import ccc.api.core.ServiceLocator;
 import ccc.api.core.User;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
+import ccc.api.synchronous.MemoryServiceLocator;
+import ccc.api.synchronous.ServiceLocator;
 import ccc.api.types.ResourcePath;
 import ccc.commons.EnumTools;
 import ccc.commons.Environment;

@@ -911,93 +911,93 @@ public abstract class ResourceEntity
     private void addLinks(final ResourceSummary rs) {
         rs.addLink(
             Resource.NAME,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.NAME)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.NAME)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.REVISIONS,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.REVISIONS)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.REVISIONS)
                 .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.ABSOLUTE_PATH,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.PATH)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.PATH)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.TEMPLATE,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.TEMPLATE)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.METADATA,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.METADATA)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.EXCLUDE_MM,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.EXCLUDE_MM)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.EXCLUDE_MM)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.PUBLISH,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.PUBLISH)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.ACL,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.ACL)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.ACL)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.DURATION,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.DURATION)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.PARENT,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.PARENT)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.PARENT)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.LOCK,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.LOCK)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.LOCK)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.INCLUDE_MM,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.INCLUDE_MM)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.INCLUDE_MM)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.LIST,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.COLLECTION)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.COLLECTION)
             .build("id", getId().toString(), new NormalisingEncoder())
             +"?{-join|&|parent,name,sort,order,page,count,type}");
         rs.addLink(
             Resource.WC,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.WC)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.WC)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.DELETE,
-            new Link(ccc.api.core.ResourceIdentifiers.Resource.ELEMENT)
+            new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.ELEMENT)
             .build("id", getId().toString(), new NormalisingEncoder()));
 
         switch (getType()) {
             case ALIAS:
                 rs.addLink(
                     Resource.SELF,
-                    new Link(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
+                    new Link(ccc.api.synchronous.ResourceIdentifiers.Alias.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 rs.addLink(
                     Alias.TARGET_NAME,
-                    new Link(ccc.api.core.ResourceIdentifiers.Alias.TARGET_NAME)
+                    new Link(ccc.api.synchronous.ResourceIdentifiers.Alias.TARGET_NAME)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 break;
 
             case PAGE:
                 rs.addLink(
                     Resource.SELF,
-                    new Link(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
+                    new Link(ccc.api.synchronous.ResourceIdentifiers.Page.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 rs.addLink(
                     Page.WORKING_COPY,
-                    new Link(ccc.api.core.ResourceIdentifiers.Page.WC)
+                    new Link(ccc.api.synchronous.ResourceIdentifiers.Page.WC)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 break;
 
             case FOLDER:
                 rs.addLink(
                     Resource.SELF,
-                    new Link(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
+                    new Link(ccc.api.synchronous.ResourceIdentifiers.Folder.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
 //                rs.addLink(
 //                    Folder.IMAGES,
@@ -1006,7 +1006,7 @@ public abstract class ResourceEntity
 //                    + "?{-join|&|count,page}");
                 rs.addLink(
                     Folder.EXISTS,
-                    new Link(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
+                    new Link(ccc.api.synchronous.ResourceIdentifiers.Folder.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder())
                     + "/{name}/exists"); // FIXME: How to only replace one param
                 break;
@@ -1014,23 +1014,23 @@ public abstract class ResourceEntity
             case FILE:
                 rs.addLink(
                     Resource.SELF,
-                    new Link(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
+                    new Link(ccc.api.synchronous.ResourceIdentifiers.File.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 rs.addLink(
                     File.SELF_BINARY,
                     new Link(
-                        ccc.api.core.ResourceIdentifiers.File.BINARY_ELEMENT)
+                        ccc.api.synchronous.ResourceIdentifiers.File.BINARY_ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 break;
 
             case TEMPLATE:
                 rs.addLink(
                     Resource.SELF,
-                    new Link(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
+                    new Link(ccc.api.synchronous.ResourceIdentifiers.Template.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 rs.addLink(
                     Template.REVISION,
-                    new Link(ccc.api.core.ResourceIdentifiers.Template.REVISION)
+                    new Link(ccc.api.synchronous.ResourceIdentifiers.Template.REVISION)
                     .build("id", getId().toString(), new NormalisingEncoder())
                     + "{revision}");
                 break;

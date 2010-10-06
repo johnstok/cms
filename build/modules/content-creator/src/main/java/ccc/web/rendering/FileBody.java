@@ -34,10 +34,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.File;
-import ccc.api.core.Files;
-import ccc.api.core.ServiceLocator;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
+import ccc.api.synchronous.Files;
+import ccc.api.synchronous.ServiceLocator;
 import ccc.api.types.DBC;
 import ccc.commons.streams.CopyAction;
 import ccc.commons.streams.ThumbAction;

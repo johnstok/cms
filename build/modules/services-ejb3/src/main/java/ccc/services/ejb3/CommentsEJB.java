@@ -39,8 +39,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.Comment;
-import ccc.api.core.Comments;
 import ccc.api.core.PagedCollection;
+import ccc.api.synchronous.Comments;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.SortOrder;
 import ccc.commands.CreateCommentCommand;
@@ -139,7 +139,7 @@ public class CommentsEJB
                             r, status, sort, sortOrder, pageNo, pageSize)));
         comments.addLink(
             "self",
-            ccc.api.core.ResourceIdentifiers.Comment.COLLECTION
+            ccc.api.synchronous.ResourceIdentifiers.Comment.COLLECTION
             + "?{-join|&|count,page,sort,order,status}");
 
         return comments;

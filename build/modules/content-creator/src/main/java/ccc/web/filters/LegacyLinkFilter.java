@@ -44,8 +44,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.Resources;
 import ccc.api.jaxrs.ResourcesImpl;
+import ccc.api.synchronous.Resources;
 import ccc.api.types.ResourcePath;
 import ccc.web.rendering.NotFoundException;
 import ccc.web.rendering.RedirectRequiredException;

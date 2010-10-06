@@ -26,8 +26,8 @@
  */
 package ccc.migration;
 
-import ccc.api.core.Resources;
 import ccc.api.jaxrs.RegistryServiceLocator;
+import ccc.api.synchronous.Resources;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.rest.extensions.ResourcesExt;

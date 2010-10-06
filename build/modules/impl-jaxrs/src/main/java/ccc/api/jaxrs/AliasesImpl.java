@@ -35,7 +35,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.api.core.Alias;
-import ccc.api.core.Aliases;
+import ccc.api.synchronous.Aliases;
 import ccc.api.types.DBC;
 
 
