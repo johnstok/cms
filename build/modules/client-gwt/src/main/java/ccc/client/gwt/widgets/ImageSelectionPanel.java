@@ -42,6 +42,7 @@ import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.views.gxt.ResourceSelectionDialog;
 
+import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
@@ -56,7 +57,7 @@ import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.ListView;
 import com.extjs.gxt.ui.client.widget.Text;
-import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
+import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
@@ -76,7 +77,8 @@ public class ImageSelectionPanel extends ContentPanel {
 
     private final TriggerField<String> _folderField =
         new TriggerField<String>();
-    private final SimpleComboBox<String> _sort = new SimpleComboBox<String>();
+    private final ComboBox<BaseModelData> _sort =
+        new ComboBox<BaseModelData>();
     private final TextField<String> _filter = new TextField<String>();
 
     private final PagingToolBar _pagerBar;
@@ -120,13 +122,7 @@ public class ImageSelectionPanel extends ContentPanel {
         toolBar.add(_filter);
         toolBar.add(new SeparatorToolItem());
 
-        _sort.setTriggerAction(TriggerAction.ALL);
-        _sort.setEditable(false);
-        _sort.setForceSelection(true);
-        _sort.add("Name");
-        _sort.add("File Size");
-        _sort.add("date_created");
-        _sort.setSimpleValue("Name");
+        configSortField();
 
         toolBar.add(new Text(I18n.UI_CONSTANTS.sortBy()));
         toolBar.add(_sort);
@@ -161,6 +157,35 @@ public class ImageSelectionPanel extends ContentPanel {
     }
 
 
+    private void configSortField() {
+
+        _sort.setTriggerAction(TriggerAction.ALL);
+        _sort.setEditable(false);
+        _sort.setDisplayField("text");
+        _sort.setForceSelection(true);
+        final ListStore<BaseModelData> sorts = new ListStore<BaseModelData>();
+
+        final BaseModelData name = new BaseModelData();
+        name.set("text", I18n.UI_CONSTANTS.name());
+        name.set("id", "name");
+        sorts.add(name);
+
+        final BaseModelData size = new BaseModelData();
+        size.set("text", I18n.UI_CONSTANTS.fileSize());
+        size.set("id", "size");
+        sorts.add(size);
+
+        final BaseModelData date = new BaseModelData();
+        date.set("text", I18n.UI_CONSTANTS.dateCreated());
+        date.set("id", "date_created");
+        sorts.add(date);
+        _sort.setStore(sorts);
+        final List<BaseModelData> selection = new ArrayList<BaseModelData>();
+        selection.add(name);
+        _sort.setSelection(selection);
+    }
+
+
     private RpcProxy<PagingLoadResult<BeanModel>> createProxy() {
 
         return new RpcProxy<PagingLoadResult<BeanModel>>() {
@@ -184,7 +209,7 @@ public class ImageSelectionPanel extends ContentPanel {
                         criteria.setName(_filter.getValue()+"%");
                     }
                     criteria.setSortOrder(SortOrder.ASC);
-                    criteria.setSortField(_sort.getValue().getValue());
+                    criteria.setSortField((String) _sort.getValue().get("id"));
                     criteria.setParent(_folder.getId());
                     new GetImagesPaged(
                         criteria,
@@ -333,7 +358,6 @@ public class ImageSelectionPanel extends ContentPanel {
             + "</tpl>"
             + "<div class=\"x-clear\"></div>";
      }
-
 
 
     /**

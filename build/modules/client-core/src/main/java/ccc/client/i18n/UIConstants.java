@@ -1619,4 +1619,11 @@ public interface UIConstants {
      */
     String sortBy();
 
+    /**
+     * "File size".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String fileSize();
+
 }
