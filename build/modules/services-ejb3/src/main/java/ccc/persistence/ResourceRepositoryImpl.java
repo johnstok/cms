@@ -176,10 +176,14 @@ class ResourceRepositoryImpl implements ResourceRepository {
         params.put("type", "image");
         appendMetaConditions(criteria.getMetadata(), query, params);
         appendCriteria(criteria, f, query, params);
-        final boolean sorted =
-            appendSorting(criteria.getSortField(), criteria.getSortOrder(), query);
+        final boolean sorted = appendSorting(
+            criteria.getSortField(),
+            criteria.getSortOrder(),
+            query);
 
-        if (!sorted && criteria.getSortField().equalsIgnoreCase("size")) {
+        if (!sorted
+                && criteria.getSortField() != null
+                && criteria.getSortField().equalsIgnoreCase("size")) {
             query.append(" ORDER BY r._history[r._currentRev]._size) ");
             query.append(criteria.getSortOrder().name());
         }

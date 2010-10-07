@@ -35,7 +35,9 @@ import java.util.UUID;
 
 import ccc.api.core.File;
 import ccc.api.core.Folder;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.core.Revision;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.exceptions.UnlockedException;
@@ -436,4 +438,41 @@ public class FileUploadAcceptanceTest
         }
         assertEquals("Hello!", getBrowser().previewContent(rs, false));
     }
+
+
+    /**
+     * Test.
+     */
+    public void testGetImageFiles() {
+
+        // ARRANGE
+        final String fName = UUID.randomUUID().toString();
+        final Resource filesFolder =
+            getCommands().resourceForPath("/files");
+
+        final File f = new File(
+            MimeType.JPEG,
+            null,
+            null,
+            new ResourceName(fName),
+            fName,
+            new HashMap<String, String>());
+
+        f.setDescription(fName);
+        f.setParent(filesFolder.getId());
+        f.setInputStream(new ByteArrayInputStream(new byte[] {0, 1, 2, 3, 4}));
+        f.setSize(5);
+        final File rs = getFiles().create(f);
+
+        final ResourceCriteria criteria = new ResourceCriteria();
+        criteria.setParent(filesFolder.getId());
+        // ACT
+        final PagedCollection<File> files =
+            getFiles().getPagedImages(criteria , 1, 20);
+
+        // ASSERT
+        assertNotNull("image list should not be null", files);
+        assertEquals(f.getName(), files.getElements().get(0).getName());
+    }
+
 }
