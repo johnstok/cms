@@ -257,13 +257,14 @@ public class EditTemplateDialog
                 final ValidationResult vr = new ValidationResult();
                 vr.addError(
                     VALIDATOR.notEmpty(
-                        _definition.getEditorCode(), "Definition")); // FIXME: I18n.
+                        _definition.getEditorCode(),
+                        getUiConstants().definitionXML()));
                 vr.addError(
                     VALIDATOR.notEmpty(
                         _name.getValue(), _name.getFieldLabel()));
                 vr.addError(
                     VALIDATOR.notEmpty(
-                        _body.getEditorCode(), "body")); // FIXME: I18n.
+                        _body.getEditorCode(), getUiConstants().body()));
                 vr.addError(
                     VALIDATOR.notEmpty(
                         _mimePrimary.getValue(), _mimePrimary.getFieldLabel()));
