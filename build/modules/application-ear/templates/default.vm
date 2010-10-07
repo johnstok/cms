@@ -17,9 +17,9 @@
 ## Displays paragraph if it is set in the page.
 #macro( optional $name $startText $endText)
   #foreach( $para in $resource.getParagraphs() )
-    #if ($para.name() == $name && $para.text())
+    #if ($para.getName() == $name && $para.getText())
       $startText
-      $para.text()
+      $para.getText()
       $endText
     #end
   #end
