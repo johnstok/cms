@@ -181,13 +181,13 @@ AbstractEditDialog {
             protected String getPath() {
                 final HashMap<String, String[]> params =
                     new HashMap<String, String[]>();
-                params.put("parent",
-                    new String[] {selection.getId().toString()});
-                params.put("sort", new String[] {"manual"});
-                params.put("order", new String[] {SortOrder.ASC.name()});
-                params.put("page", new String[] {"1"});
-                params.put("count", new String[] {"1000"});
-                return selection.list().build(params, InternalServices.ENCODER);
+                    params.put("parent",
+                        new String[] {selection.getId().toString()});
+                    params.put("sort", new String[] {"manual"});
+                    params.put("order", new String[] {SortOrder.ASC.name()});
+                    params.put("page", new String[] {"1"});
+                    params.put("count", new String[] {"1000"});
+                    return selection.list().build(params, InternalServices.ENCODER);
             }
 
             /** {@inheritDoc} */
@@ -241,7 +241,7 @@ AbstractEditDialog {
             + ResourceSummary.NAME
             +"}\">{"
             + ResourceSummary.NAME
-    		+ "}</div></tpl>");
+            + "}</div></tpl>");
         cb.setEditable(false);
         cb.setStore(store);
         cb.setTriggerAction(TriggerAction.ALL);
@@ -260,12 +260,12 @@ AbstractEditDialog {
                     _indexPage.getValue().<UUID>get("value");
 
                 final List<String> orderList = new ArrayList<String>();
-                    final List<BeanModel> models =
-                        _grid.getStore().getModels();
-                    for(final BeanModel m : models) {
-                        orderList.add(
-                            m.<ResourceSummary>getBean().getId().toString());
-                    }
+                final List<BeanModel> models =
+                    _grid.getStore().getModels();
+                for(final BeanModel m : models) {
+                    orderList.add(
+                        m.<ResourceSummary>getBean().getId().toString());
+                }
 
                 final Folder f = new Folder();
                 f.setId(md.getId());

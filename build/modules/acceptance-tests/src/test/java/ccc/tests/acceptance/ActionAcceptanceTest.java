@@ -46,8 +46,8 @@ import ccc.api.types.SortOrder;
  * @author Civic Computing Ltd.
  */
 public class ActionAcceptanceTest
-    extends
-        AbstractAcceptanceTest {
+extends
+AbstractAcceptanceTest {
 
     private static final int ONE_DAY = 24*60*60*1000;
     private static final int ONE_SECOND = 1000;
@@ -288,13 +288,13 @@ public class ActionAcceptanceTest
 
         // ASSERT
         assertEquals("Should return 0 with same exceute after date",
-        		0, actionSame.getTotalCount());
+            0, actionSame.getTotalCount());
 
         assertEquals("Should return 0 with later exceute after date",
-                     0, actionBefore.getTotalCount());
+            0, actionBefore.getTotalCount());
 
         assertEquals("Should return 1 with earlier exceute after date",
-                     1, actionAfter.getTotalCount());
+            1, actionAfter.getTotalCount());
         final ActionSummary actual =
             actionAfter.getElements().iterator().next();
         assertEquals(rs.getAbsolutePath(), actual.getSubjectPath());

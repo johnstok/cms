@@ -54,7 +54,7 @@ public final class ParagraphTest extends TestCase {
             Paragraph.fromText(
                 "foo", dummyString('a', Paragraph.MAX_TEXT_LENGTH+1));
 
-        // ASSERT
+            // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals(
                 "Specified string exceeds max length of 524288.",
@@ -130,7 +130,7 @@ public final class ParagraphTest extends TestCase {
                 dummyString('a', Paragraph.MAX_NAME_LENGTH+1), "foo");
             fail();
 
-        // ASSERT
+            // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals(
                 "Specified string exceeds max length of 256.",
@@ -156,7 +156,7 @@ public final class ParagraphTest extends TestCase {
         } catch (final IllegalArgumentException e) {
             assertEquals(
                 "Specified string exceeds max length of "
-            		+ Paragraph.MAX_TEXT_LENGTH + ".",
+                + Paragraph.MAX_TEXT_LENGTH + ".",
                 e.getMessage());
         }
     }
@@ -173,7 +173,7 @@ public final class ParagraphTest extends TestCase {
             Paragraph.fromText(" ", "foo");
             fail();
 
-        // ASSERT
+            // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals(
                 "Specified string must have length > 0.", e.getMessage());
@@ -293,7 +293,7 @@ public final class ParagraphTest extends TestCase {
             Paragraph.fromDate("foo", null);
             fail("NULL should be rejected.");
 
-        // ASSERT
+            // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
@@ -309,7 +309,7 @@ public final class ParagraphTest extends TestCase {
             Paragraph.fromBoolean("foo", null);
             fail("NULL should be rejected.");
 
-        // ASSERT
+            // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }

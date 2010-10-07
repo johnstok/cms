@@ -49,8 +49,8 @@ import ccc.api.types.SortOrder;
  * @author Civic Computing Ltd.
  */
 public class SearchEngineAcceptanceTest
-    extends
-        AbstractAcceptanceTest {
+extends
+AbstractAcceptanceTest {
 
 
     /**
@@ -252,8 +252,8 @@ public class SearchEngineAcceptanceTest
      * @throws Exception If the test fails.
      */
     public void testTagSearch() throws Exception {
-        
-    	//  FIXME: Cannot be run more than once
+
+        //  FIXME: Cannot be run more than once
 
         // ARRANGE
         final int tenSecs = 10000;
@@ -267,7 +267,7 @@ public class SearchEngineAcceptanceTest
         metadata.setTitle(page.getTitle());
         metadata.setDescription("");
 
-        HashSet<String> tags = new HashSet<String>();
+        final HashSet<String> tags = new HashSet<String>();
         tags.add("not important");
         tags.add(term);
         tags.add("test");
@@ -310,7 +310,7 @@ public class SearchEngineAcceptanceTest
         getPages().update(page.getId(), page);
 
         final String searchTerm = "testDate:["+(testDate.getTime()-1000)
-                                  +" TO "+(testDate.getTime()+1000)+"]";
+        +" TO "+(testDate.getTime()+1000)+"]";
         getSearch().index();
 
         // ACT

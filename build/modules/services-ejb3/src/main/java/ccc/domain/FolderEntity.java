@@ -50,8 +50,8 @@ import ccc.domain.sorting.Sorter;
  * @author Civic Computing Ltd
  */
 public final class FolderEntity
-    extends
-        ResourceEntity {
+extends
+ResourceEntity {
 
     private final Set<ResourceEntity> _entries = new HashSet<ResourceEntity>();
     private ResourceEntity _indexPage = null;
@@ -178,8 +178,8 @@ public final class FolderEntity
      * @return A list of all the resources in this folder.
      */
     public List<ResourceEntity> getEntries(final int count,
-                                  final int page,
-                                  final String sortOrder) {
+        final int page,
+        final String sortOrder) {
         DBC.require().greaterThan(0, count);
         DBC.require().greaterThan(0, page);
 
@@ -211,8 +211,8 @@ public final class FolderEntity
             if (ResourceType.FOLDER != currentPosition.getType()) {
                 throw new RuntimeException(
                     currentPosition.getName()
-                        +" in path "+path
-                        +" is not a folder.");
+                    +" in path "+path
+                    +" is not a folder.");
             }
 
             currentPosition =
@@ -301,7 +301,7 @@ public final class FolderEntity
      * @return The entries in this folder as a type-safe list.
      */
     public <T extends ResourceEntity> List<T> getEntries(
-                                                final Class<T> resourceType) {
+        final Class<T> resourceType) {
         final List<T> entries = new ArrayList<T>();
         for (final ResourceEntity entry : getEntries()) {
             entries.add(entry.as(resourceType));
@@ -430,20 +430,20 @@ public final class FolderEntity
      * @param resource The index resource to set.
      */
     public void setIndexResource(final ResourceEntity resource) {
-    	if (null==resource) { _indexPage=null; return; }
-    	final ResourceType t = resource.getType();
-		if (ResourceType.PAGE==t||ResourceType.ALIAS==t) {
-    		_indexPage = resource;
-    	} else {
-    		throw new RuntimeException("Invalid type for index: "+t);
-    	}
+        if (null==resource) { _indexPage=null; return; }
+        final ResourceType t = resource.getType();
+        if (ResourceType.PAGE==t||ResourceType.ALIAS==t) {
+            _indexPage = resource;
+        } else {
+            throw new RuntimeException("Invalid type for index: "+t);
+        }
     }
 
 
     private UUID getDefaultPage() {
         for (final ResourceEntity r : getEntries()) {
             if (ResourceType.PAGE.equals(r.getType())
-                && r.isPublished()) {
+                    && r.isPublished()) {
                 return r.getId();
             }
         }
