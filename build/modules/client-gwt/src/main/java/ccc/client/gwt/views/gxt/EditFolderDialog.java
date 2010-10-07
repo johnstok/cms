@@ -87,11 +87,11 @@ AbstractEditDialog {
     private final ColumnModel _cm;
     private ListStore<BeanModel> _detailsStore =
         new ListStore<BeanModel>();
-    private ListStore<BaseModelData> _indexPageStore =
+    private final ListStore<BaseModelData> _indexPageStore =
         new ListStore<BaseModelData>();
 
     private GridDropTarget _target;
-    private BaseModelData _none = new BaseModelData();
+    private final BaseModelData _none = new BaseModelData();
 
     private final UUID _currentIndexPage;
     private final ResourceSummary _folder;
@@ -153,21 +153,23 @@ AbstractEditDialog {
 
     private void populateIndexOptions(final Collection<ResourceSummary> arg0) {
         _indexPageStore.removeAll();
-        final List<BaseModelData> pagesOnly = new ArrayList<BaseModelData>();
+        final List<BaseModelData> pagesAndAliases =
+            new ArrayList<BaseModelData>();
 
         _none.set("name", getUiConstants().none());
         _none.set("value", null);
         _indexPageStore.add(_none);
 
         for (final ResourceSummary item : arg0) {
-            if (item.getType() == ResourceType.PAGE) {
+            if (item.getType() == ResourceType.PAGE
+                || item.getType() == ResourceType.ALIAS) {
                 final BaseModelData pageModel = new BaseModelData();
                 pageModel.set("name", item.getName());
                 pageModel.set("value", item.getId());
-                pagesOnly.add(pageModel);
+                pagesAndAliases.add(pageModel);
             }
         }
-        _indexPageStore.add(pagesOnly);
+        _indexPageStore.add(pagesAndAliases);
     }
 
     private void loadDetailStore(final UUID currentIndexPage) {
@@ -187,7 +189,8 @@ AbstractEditDialog {
                     params.put("order", new String[] {SortOrder.ASC.name()});
                     params.put("page", new String[] {"1"});
                     params.put("count", new String[] {"1000"});
-                    return selection.list().build(params, InternalServices.ENCODER);
+                    return selection.list().build(
+                        params, InternalServices.ENCODER);
             }
 
             /** {@inheritDoc} */
