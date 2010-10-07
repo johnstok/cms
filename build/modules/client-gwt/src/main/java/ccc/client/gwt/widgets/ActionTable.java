@@ -255,8 +255,10 @@ public class ActionTable
     }
 
 
-    private void updatePager(final DataProxy proxy){
-        final PagingLoader loader = new BasePagingLoader(proxy);
+    private void updatePager(
+                            final DataProxy<PagingLoadResult<BeanModel>> proxy){
+        final PagingLoader<PagingLoadResult<BeanModel>> loader =
+            new BasePagingLoader<PagingLoadResult<BeanModel>>(proxy);
         loader.setRemoteSort(true);
         _actionStore = new ListStore<BeanModel>(loader);
         _pagerBar.bind(loader);

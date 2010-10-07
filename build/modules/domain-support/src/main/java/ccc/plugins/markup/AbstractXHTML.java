@@ -108,7 +108,7 @@ public abstract class AbstractXHTML
          * @author Civic Computing Ltd
          */
         protected static class XhtmlErrorHandler implements ErrorHandler {
-            private Collection<String> _errors = new ArrayList<String>();
+            private final Collection<String> _errors = new ArrayList<String>();
 
             /** {@inheritDoc} */
             public void warning(final SAXParseException e) {

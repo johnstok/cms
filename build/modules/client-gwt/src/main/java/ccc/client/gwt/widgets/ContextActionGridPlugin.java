@@ -86,7 +86,7 @@ public class ContextActionGridPlugin
      *
      * @param e GridEvent
      */
-    protected void onMouseDown(final GridEvent e) {
+    protected void onMouseDown(final GridEvent<ModelData> e) {
         if (e.getTarget().getClassName().equals("action")) {
             e.stopEvent();
             final El row = e.getTarget(".x-grid3-row", 15);

@@ -367,7 +367,8 @@ public class UserTable
         };
 
 
-        final PagingLoader loader = new BasePagingLoader(proxy);
+        final PagingLoader<PagingLoadResult<BeanModel>> loader =
+            new BasePagingLoader<PagingLoadResult<BeanModel>>(proxy);
         loader.setRemoteSort(true);
         _detailsStore = new ListStore<BeanModel>(loader);
         _pagerBar.bind(loader);

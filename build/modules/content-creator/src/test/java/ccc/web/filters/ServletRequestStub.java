@@ -316,7 +316,8 @@ public final class ServletRequestStub
     }
 
     @Override
-    public void setCharacterEncoding(final String env) throws UnsupportedEncodingException {
+    public void setCharacterEncoding(final String env)
+        throws UnsupportedEncodingException {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 }
