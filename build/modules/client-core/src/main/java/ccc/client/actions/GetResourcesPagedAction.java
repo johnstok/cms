@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.core.PagedCollection;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Link;
@@ -78,8 +79,7 @@ public abstract class GetResourcesPagedAction
         params.put("page", new String[] {""+_pageNo});
 
         return
-        new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.SEARCH2
-            + "?{-join|&|count,page,sort,order}")
+        new Link(InternalServices.API.getLink(Resource.SEARCH))
         .build(params, InternalServices.ENCODER);
     }
 

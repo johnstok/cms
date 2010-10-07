@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import ccc.api.core.File;
+import ccc.api.core.ResourceSummary;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.widgets.ImageSelectionPanel;
@@ -75,11 +75,11 @@ public class ImageChooserDialog
                     _imagePanel.getView().getSelectionModel().getSelectedItem();
 
                 if (md != null) {
-                    _imagePanel.getImage().setValue(
-                        md.<File>getBean().getPath());
+                    final ResourceSummary rs = md.<ResourceSummary>getBean();
+                    _imagePanel.getImage().setValue(rs.getAbsolutePath());
+                    _imagePanel.getImage().setFSModel(rs);
                 }
 
-                _imagePanel.getImage().setFSModel(md);
                 hide();
             }
         };

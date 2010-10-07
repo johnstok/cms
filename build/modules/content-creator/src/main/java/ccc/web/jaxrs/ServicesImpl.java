@@ -65,7 +65,9 @@ public class ServicesImpl {
 
     @GET
     public API isLoggedIn() {
+
         final API api = new API();
+
         api.addLink(API.ACTIONS,   Action.COLLECTION);
         api.addLink(API.ALIASES,   Alias.COLLECTION);
         api.addLink(API.COMMENTS,  Comment.COLLECTION);
@@ -76,10 +78,19 @@ public class ServicesImpl {
         api.addLink(API.RESOURCES, Resource.COLLECTION);
         api.addLink(API.SEARCH,    SearchEngine.COLLECTION);
         api.addLink(API.SECURITY,  Security.COLLECTION);
-        api.addLink(API.TEMPLATES, Template.COLLECTION+"?{-join|&|count,page}");
         api.addLink(API.USERS,     User.COLLECTION);
+        api.addLink(API.TEMPLATES, Template.COLLECTION
+                                   + "?{-join|&|count,page}");
+        api.addLink(API.IMAGES,    File.IMAGES
+                                   + "?{-join|&|count,page,sort,order}");
 
-        api.addLink(ccc.api.core.Folder.ROOTS, Folder.ROOTS);
+        api.addLink(
+            ccc.api.core.Folder.ROOTS,
+            Folder.ROOTS);
+
+        api.addLink(
+            ccc.api.core.Resource.SEARCH,
+            Resource.SEARCH2 + "?{-join|&|count,page,sort,order}");
 
         api.addLink(
             ccc.api.core.Template.EXISTS,
@@ -89,10 +100,16 @@ public class ServicesImpl {
             ccc.api.core.Page.VALIDATOR,
             ccc.api.synchronous.ResourceIdentifiers.Page.VALIDATOR);
 
-        api.addLink(ccc.api.synchronous.Security.CURRENT,    Security.CURRENT);
-        api.addLink(ccc.api.synchronous.Security.COLLECTION, Security.COLLECTION+"?{-join|&|u,p}");
+        api.addLink(
+            ccc.api.core.User.CURRENT,
+            Security.CURRENT);
+        api.addLink(
+            ccc.api.core.User.COLLECTION,
+            Security.COLLECTION+"?{-join|&|u,p}");
 
-        api.addLink(ccc.api.core.File.LIST_BINARY, File.BINARY_COLLECTION);
+        api.addLink(
+            ccc.api.core.File.LIST_BINARY,
+            File.BINARY_COLLECTION);
 
         final Map<String, String> props = new HashMap<String, String>();
         props.put(API.BUILD_NUMBER, CCCProperties.buildNumber());

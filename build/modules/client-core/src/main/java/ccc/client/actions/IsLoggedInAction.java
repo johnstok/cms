@@ -33,7 +33,6 @@ import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
-import ccc.api.synchronous.Security;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.SortOrder;
 import ccc.client.concurrent.SimpleLatch;
@@ -67,7 +66,7 @@ public class IsLoggedInAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return InternalServices.API.getLink(Security.CURRENT);
+        return InternalServices.API.getLink(User.CURRENT);
     }
 
 

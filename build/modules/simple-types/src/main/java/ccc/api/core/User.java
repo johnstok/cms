@@ -279,6 +279,12 @@ public class User
     /** SELF : String. */
     public static final String SELF = "self";
 
+    // Security related link names - move elsewhere. Session object?
+    /** CURRENT : String. */
+    public static final String CURRENT = "current";
+    /** COLLECTION : String. */
+    public static final String COLLECTION = "collection";
+
 
     /*
      * Property names.

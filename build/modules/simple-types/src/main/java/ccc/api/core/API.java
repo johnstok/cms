@@ -82,6 +82,8 @@ public class API
     public static final String ALIASES = "aliases";
     /** ACTIONS : String. */
     public static final String ACTIONS = "actions";
+    /** ACTIONS : String. */
+    public static final String IMAGES = "images";
 
     private Map<String, String> _props = new HashMap<String, String>();
 
@@ -93,12 +95,14 @@ public class API
      */
     public String actions() { return getLink(ACTIONS); }
 
+
     /**
      * Link.
      *
      * @return A link to the aliases collection.
      */
     public String aliases() { return getLink(ALIASES); }
+
 
     /**
      * Link.
@@ -107,12 +111,14 @@ public class API
      */
     public String comments() { return getLink(COMMENTS); }
 
+
     /**
      * Link.
      *
      * @return A link to the files collection.
      */
     public String files() { return getLink(FILES); }
+
 
     /**
      * Link.
@@ -121,12 +127,14 @@ public class API
      */
     public String folders() { return getLink(FOLDERS); }
 
+
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
      * @return A link to the groups collection.
      */
     public String groups() { return getLink(GROUPS); }
+
 
     /**
      * Link.
@@ -135,12 +143,14 @@ public class API
      */
     public String pages() { return getLink(PAGES); }
 
+
     /**
      * Link.
      *
      * @return A link to the resources collection.
      */
     public String resources() { return getLink(RESOURCES); }
+
 
     /**
      * Link.
@@ -149,12 +159,14 @@ public class API
      */
     public String search() { return getLink(SEARCH); }
 
+
     /**
      * Link.
      *
      * @return A link to the security collection.
      */
     public String security() { return getLink(SECURITY); }
+
 
     /**
      * Link.
@@ -163,12 +175,21 @@ public class API
      */
     public String templates() { return getLink(TEMPLATES); }
 
+
     /**
      * Link.
      *
      * @return A link to the users collection.
      */
     public String users() { return getLink(USERS); }
+
+
+    /**
+     * Link.
+     *
+     * @return A link to the images collection.
+     */
+    public String images() { return getLink(IMAGES); }
 
 
     /**

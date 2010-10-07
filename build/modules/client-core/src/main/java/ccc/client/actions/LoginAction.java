@@ -29,7 +29,7 @@ package ccc.client.actions;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.synchronous.Security;
+import ccc.api.core.User;
 import ccc.api.types.Link;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
@@ -68,7 +68,7 @@ public class LoginAction
         params.put("u", new String[] {_dialog.getUsername()});
         params.put("p", new String[] {_dialog.getPassword()});
         return
-            new Link(InternalServices.API.getLink(Security.COLLECTION))
+            new Link(InternalServices.API.getLink(User.COLLECTION))
             .build(params, InternalServices.ENCODER);
     }
 

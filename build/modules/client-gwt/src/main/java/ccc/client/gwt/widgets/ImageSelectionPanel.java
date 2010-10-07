@@ -250,7 +250,8 @@ public class ImageSelectionPanel extends ContentPanel {
                 Events.Hide,
                 new Listener<ComponentEvent>() {
                     public void handleEvent(final ComponentEvent ce) {
-                        final ResourceSummary _md = folderSelect.selectedResource();
+                        final ResourceSummary _md =
+                            folderSelect.selectedResource();
                         if (_md != null
                                 && _md.getType() != ResourceType.RANGE_FOLDER) {
 
@@ -293,17 +294,20 @@ public class ImageSelectionPanel extends ContentPanel {
 
         @Override
         public void execute() {
-            execute(new DefaultCallback<PagedCollection<File>>(I18n.USER_ACTIONS.internalAction()) {
-
-                @Override
-                public void onSuccess(final PagedCollection<File> images) {
-                    final List<BeanModel> results =
-                        loadModel(_image, images.getElements());
-                    final PagingLoadResult<BeanModel> plr =
-                        new BasePagingLoadResult<BeanModel>(
-                            results, _config.getOffset(), (int) images.getTotalCount());
-                    _callback.onSuccess(plr);
-                }});
+            execute(
+                new DefaultCallback<PagedCollection<File>>(
+                                           I18n.USER_ACTIONS.internalAction()) {
+                    @Override
+                    public void onSuccess(final PagedCollection<File> images) {
+                        final List<BeanModel> results =
+                            loadModel(_image, images.getElements());
+                        final PagingLoadResult<BeanModel> plr =
+                            new BasePagingLoadResult<BeanModel>(
+                                results,
+                                _config.getOffset(),
+                                (int) images.getTotalCount());
+                        _callback.onSuccess(plr);
+                    }});
         }
     }
 
@@ -313,14 +317,13 @@ public class ImageSelectionPanel extends ContentPanel {
             DataBinding.bindFileSummary(files);
         if (image != null && models != null && models.size() > 0) {
 
-            final BeanModel fs = image.getFSModel();
+            final ResourceSummary fs = image.getFSModel();
 
             if (fs != null) {
                 final List<BeanModel> selection =
                     new ArrayList<BeanModel>();
                 for (final BeanModel item : models) {
-                    if (item.<File>getBean().getId().equals(
-                            fs.<File>getBean().getId())) {
+                    if (item.<File>getBean().getId().equals(fs.getId())) {
                         selection.add(item);
                     }
                 }

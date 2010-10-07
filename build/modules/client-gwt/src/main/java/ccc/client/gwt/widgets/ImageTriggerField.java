@@ -26,9 +26,9 @@
  */
 package ccc.client.gwt.widgets;
 
+import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.views.gxt.ImageChooserDialog;
 
-import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -43,14 +43,14 @@ import com.extjs.gxt.ui.client.widget.form.TriggerField;
  */
 public class ImageTriggerField extends TriggerField<String> {
 
-    private BeanModel _md;
+    private ResourceSummary _md;
 
     /**
      * Mutator.
      *
      * @param md FileSummaryModelData to set.
      */
-    public void setFSModel(final BeanModel md) {
+    public void setFSModel(final ResourceSummary md) {
         _md = md;
     }
 
@@ -59,7 +59,7 @@ public class ImageTriggerField extends TriggerField<String> {
      *
      * @return FileSummaryModelData of the field.
      */
-    public BeanModel getFSModel() {
+    public ResourceSummary getFSModel() {
         return _md;
     }
 

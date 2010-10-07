@@ -26,23 +26,12 @@
  */
 package ccc.client.gwt.widgets;
 
-import java.util.HashMap;
 import java.util.UUID;
 
-import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
-import ccc.api.types.Link;
-import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
-import ccc.api.types.ResourceName;
-import ccc.client.actions.GetAbsolutePathAction;
-import ccc.client.core.DefaultCallback;
-import ccc.client.core.I18n;
-import ccc.client.core.InternalServices;
-import ccc.client.gwt.binding.DataBinding;
+import ccc.client.actions.FindResourceAction;
 import ccc.client.widgets.PageElement;
-
-import com.extjs.gxt.ui.client.data.BeanModel;
 
 
 /**
@@ -82,9 +71,9 @@ public class CCImageField
     public Paragraph getValue() {
         final ImageTriggerField image = _image;
         String id = "";
-        final BeanModel model = image.getFSModel();
+        final ResourceSummary model = image.getFSModel();
         if (model != null) {
-            id = model.<File>getBean().getId().toString();
+            id = model.getId().toString();
         }
 
         final Paragraph p =
@@ -105,27 +94,13 @@ public class CCImageField
         final ImageTriggerField image = _image;
         final String id = para.getText();
         if (id != null && !id.trim().equals("")) {
-            final ResourceSummary s = new ResourceSummary();
-            s.addLink(
-                "absolute-path",
-                new Link(ccc.api.synchronous.ResourceIdentifiers.Resource.PATH)
-                .build("id", id, InternalServices.ENCODER));
-
-            new GetAbsolutePathAction(I18n.UI_CONSTANTS.selectImage(), s)
-            .execute(
-                new DefaultCallback<String>(I18n.UI_CONSTANTS.selectImage()) {
-                    @Override public void onSuccess(final String path) {
-                        final File fs = new File(
-                            new MimeType("image", "*"),
-                            path,
-                            UUID.fromString(id),
-                            new ResourceName("img"),
-                            "",
-                            new HashMap<String, String>());
-                        final BeanModel model = DataBinding.bindFileSummary(fs);
-                        image.setValue(path);
-                        image.setFSModel(model);
-                    }});
+            new FindResourceAction(UUID.fromString(id)) {
+                @Override
+                protected void execute(final ResourceSummary resource) {
+                    image.setValue(resource.getAbsolutePath());
+                    image.setFSModel(resource);
+                }
+            }.execute();
         }
     }
 }

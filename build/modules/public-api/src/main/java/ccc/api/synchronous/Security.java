@@ -72,10 +72,4 @@ public interface Security {
      */
     @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Security.CURRENT)
     void logout();
-
-
-    /** CURRENT : String. */
-    String CURRENT = "current";
-    /** COLLECTION : String. */
-    String COLLECTION = "collection";
 }

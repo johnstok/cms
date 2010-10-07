@@ -462,7 +462,7 @@ public class ResourceContextMenu
         new ComputeTemplateAction(
             getConstants().updateContent(), item.uriTemplate())
         .execute(
-            new DefaultCallback<Template>("") {
+            new DefaultCallback<Template>(getConstants().updateContent()) {
 
                 @Override
                 public void onSuccess(final Template template) {

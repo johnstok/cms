@@ -26,7 +26,7 @@
  */
 package ccc.client.actions;
 
-import ccc.api.synchronous.Security;
+import ccc.api.core.User;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
@@ -64,7 +64,7 @@ public final class LogoutAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return InternalServices.API.getLink(Security.CURRENT);
+        return InternalServices.API.getLink(User.CURRENT);
     }
 
 

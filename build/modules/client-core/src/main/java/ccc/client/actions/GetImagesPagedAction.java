@@ -83,14 +83,8 @@ public abstract class GetImagesPagedAction
         params.put("count", new String[] {""+_pageSize});
         params.put("page", new String[] {""+_pageNo});
 
-//        final String path =
-//            Globals.API_URL
-//            + _parent.images().build(params, InternalServices.ENCODER);
-//        return path;
-
         return
-        Globals.API_URL + new Link(ccc.api.synchronous.ResourceIdentifiers.File.IMAGES
-            + "?{-join|&|count,page,sort,order}")
+        Globals.API_URL + new Link(InternalServices.API.images())
         .build(params, InternalServices.ENCODER);
     }
 

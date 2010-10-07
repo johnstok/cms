@@ -428,4 +428,6 @@ public class Resource
     public static final String SELF = "self";
     /** DELETE : String. */
     public static final String DELETE = "delete";
+    /** SEARCH : String. */
+    public static final String SEARCH = "search";
 }
