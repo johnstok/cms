@@ -33,18 +33,18 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.core.Folder;
-import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.actions.GetChildrenAction;
-import ccc.client.actions.UpdateFolderAction;
+import ccc.client.core.Editable;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.SingleSelectionModel;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.widgets.ResourceTypeRendererFactory;
+import ccc.client.views.UpdateFolder;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.BeanModel;
@@ -71,17 +71,17 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  *
  * @author Civic Computing Ltd.
  */
-public class EditFolderDialog
+public class UpdateFolderDialog
 extends
-AbstractEditDialog {
+AbstractEditDialog
+implements UpdateFolder {
 
     private static final int GRID_WIDTH = 610;
     private static final int GRID_HEIGHT = 320;
+    private Editable _presenter;
 
     private final ComboBox<BaseModelData> _indexPage =
         new ComboBox<BaseModelData>();
-
-    private final SingleSelectionModel _selectionModel;
 
     private final Grid<BeanModel> _grid;
     private final ColumnModel _cm;
@@ -90,28 +90,18 @@ AbstractEditDialog {
     private final ListStore<BaseModelData> _indexPageStore =
         new ListStore<BaseModelData>();
 
-    private GridDropTarget _target;
     private final BaseModelData _none = new BaseModelData();
-
-    private final UUID _currentIndexPage;
-    private final ResourceSummary _folder;
+    private Folder _folder = null;
 
 
     /**
      * Constructor.
      *
-     * @param ssm The selection model.
-     * @param folder The current folder.
      */
-    public EditFolderDialog(final SingleSelectionModel ssm,
-                            final Folder folder) {
+    public UpdateFolderDialog() {
         super(I18n.UI_CONSTANTS.edit(), InternalServices.GLOBALS);
 
-        _currentIndexPage = folder.getIndex();
-        _folder = folder;
-
         setHeight(Globals.DEFAULT_HEIGHT);
-        _selectionModel = ssm;
 
         configureComboBox(
             _indexPage,
@@ -133,8 +123,6 @@ AbstractEditDialog {
         addField(_grid);
 
         new GridDragSource(_grid);
-
-        loadDetailStore(_currentIndexPage);
 
         configureDropTarget();
 
@@ -174,8 +162,6 @@ AbstractEditDialog {
 
     private void loadDetailStore(final UUID currentIndexPage) {
         _detailsStore =  new ListStore<BeanModel>();
-        final ResourceSummary selection =
-            _selectionModel.tableSelection();
 
         new GetChildrenAction(getUiConstants().edit()) {
 
@@ -184,12 +170,12 @@ AbstractEditDialog {
                 final HashMap<String, String[]> params =
                     new HashMap<String, String[]>();
                     params.put("parent",
-                        new String[] {selection.getId().toString()});
+                        new String[] {_folder.getId().toString()});
                     params.put("sort", new String[] {"manual"});
                     params.put("order", new String[] {SortOrder.ASC.name()});
                     params.put("page", new String[] {"1"});
                     params.put("count", new String[] {"1000"});
-                    return selection.list().build(
+                    return _folder.list().build(
                         params, InternalServices.ENCODER);
             }
 
@@ -203,7 +189,7 @@ AbstractEditDialog {
             protected void execute(final Collection<ResourceSummary> children) {
                 _detailsStore.removeAll();
                 populateIndexOptions(children);
-                setCurrentIndexPage(currentIndexPage);
+                setIndexPage(currentIndexPage);
                 _detailsStore.add(DataBinding.bindResourceSummary(children));
                 _grid.reconfigure(_detailsStore, _cm);
             }
@@ -212,22 +198,10 @@ AbstractEditDialog {
 
     private void configureDropTarget() {
 
-        _target = new GridDropTarget(_grid);
-        _target.setFeedback(Feedback.INSERT);
-        _target.setAllowSelfAsSource(true);
+        final GridDropTarget target = new GridDropTarget(_grid);
+        target.setFeedback(Feedback.INSERT);
+        target.setAllowSelfAsSource(true);
     }
-
-
-    private void setCurrentIndexPage(final UUID currentValue) {
-        for (final BaseModelData md : _indexPageStore.getModels()) {
-            if(currentValue != null && currentValue.equals(md.get("value"))) {
-                _indexPage.setValue(md);
-                return;
-            }
-        }
-        _indexPage.setValue(_none);
-    }
-
 
 
     private void configureComboBox(final ComboBox<BaseModelData> cb,
@@ -250,45 +224,6 @@ AbstractEditDialog {
         cb.setTriggerAction(TriggerAction.ALL);
         addField(cb);
     }
-
-    /** {@inheritDoc} */
-    @Override
-    protected SelectionListener<ButtonEvent> saveAction() {
-        return new SelectionListener<ButtonEvent>() {
-            @Override public void componentSelected(final ButtonEvent ce) {
-                final ResourceSummary md =
-                    _selectionModel.tableSelection();
-
-                final UUID indexPageId =
-                    _indexPage.getValue().<UUID>get("value");
-
-                final List<String> orderList = new ArrayList<String>();
-                final List<BeanModel> models =
-                    _grid.getStore().getModels();
-                for(final BeanModel m : models) {
-                    orderList.add(
-                        m.<ResourceSummary>getBean().getId().toString());
-                }
-
-                final Folder f = new Folder();
-                f.setId(md.getId());
-                f.setIndex(indexPageId);
-                f.setSortList(orderList);
-                f.addLink(
-                    Resource.SELF,
-                    _folder.getLink(Resource.SELF));
-
-                new UpdateFolderAction(f) {
-                    /** {@inheritDoc} */
-                    @Override protected void onSuccess(final Folder f) {
-                        md.setIndexPageId(indexPageId);
-                        hide();
-                    }
-                }.execute();
-            }
-        };
-    }
-
 
     private void createColumnConfigs(final List<ColumnConfig> configs) {
         final DateTimeFormat dateTimeFormat =
@@ -339,4 +274,74 @@ AbstractEditDialog {
         configs.add(changedColumn);
     }
 
+    @Override
+    public UUID getIndexPage() {
+        return _indexPage.getValue().<UUID>get("value");
+    }
+
+    @Override
+    public void setIndexPage(final UUID id) {
+        for (final BaseModelData md : _indexPageStore.getModels()) {
+            if(id != null && id.equals(md.get("value"))) {
+                _indexPage.setValue(md);
+                return;
+            }
+        }
+        _indexPage.setValue(_none);
+    }
+
+    @Override
+    public void show(final Editable presenter) {
+        _presenter = presenter;
+        loadDetailStore(getFolder().getIndex());
+        super.show();
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the presenter.
+     */
+    Editable getPresenter() {
+        return _presenter;
+    }
+
+
+    @Override
+    public ValidationResult getValidationResult() {
+        final ValidationResult result = new ValidationResult();
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected SelectionListener<ButtonEvent> saveAction() {
+        return new SelectionListener<ButtonEvent>() {
+            @Override public void componentSelected(final ButtonEvent ce) {
+                getPresenter().save();
+            }
+        };
+    }
+
+    @Override
+    public List<String> getOrderList() {
+        final ArrayList<String> orderList = new ArrayList<String>();
+        final List<BeanModel> models =
+            _grid.getStore().getModels();
+        for(final BeanModel m : models) {
+            orderList.add(
+                m.<ResourceSummary>getBean().getId().toString());
+        }
+        return orderList;
+    }
+
+    @Override
+    public Folder getFolder() {
+        return _folder;
+    }
+
+    @Override
+    public void setFolder(final Folder folder) {
+        _folder = folder;
+    }
 }

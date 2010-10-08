@@ -1,5 +1,6 @@
+
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -17,50 +18,44 @@
  * You should have received a copy of the GNU General Public License
  * along with Content Control.  If not, see http://www.gnu.org/licenses/.
  *
- * Revision      $Rev$
- * Modified by   $Author$
- * Modified on   $Date$
+ * Revision      $Rev: 3166 $
+ * Modified by   $Author: keith $
+ * Modified on   $Date: 2010-09-30 14:35:02 +0100 (Thu, 30 Sep 2010) $
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.actions;
+package ccc.client.callbacks;
 
 import ccc.api.core.Folder;
-import ccc.client.callbacks.FolderUpdatedCallback;
-import ccc.client.commands.UpdateFolderCommand;
-import ccc.client.core.Action;
-import ccc.client.core.I18n;
+import ccc.api.types.CommandType;
+import ccc.client.core.DefaultCallback;
 import ccc.client.core.InternalServices;
-
+import ccc.client.events.Event;
 
 /**
- * Remote action for folder updating.
+ * Callback handler for updating a folder.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateFolderAction
-    implements
-        Action {
-
-    private final Folder _folder;
-
+public class FolderUpdatedCallback extends DefaultCallback<Folder> {
 
     /**
      * Constructor.
      *
-     * @param folder The folder to update.
+     * @param name The action name.
      */
-    public UpdateFolderAction(final Folder folder) {
-        _folder = folder;
+    public FolderUpdatedCallback(final String name) {
+        super(name);
     }
+
 
     /** {@inheritDoc} */
     @Override
-    public void execute() {
-        new UpdateFolderCommand(_folder).invoke(
-            InternalServices.API,
-            new FolderUpdatedCallback(I18n.UI_CONSTANTS.updateFolder()));
+    public void onSuccess(final Folder rs) {
+        final Event<CommandType> event =
+            new Event<CommandType>(CommandType.FOLDER_UPDATE);
+        event.addProperty("resource", rs);
+        InternalServices.REMOTING_BUS.fireEvent(event);
     }
-
 }

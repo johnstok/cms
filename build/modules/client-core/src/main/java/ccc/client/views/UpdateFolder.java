@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,46 +21,60 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.actions;
+package ccc.client.views;
+
+import java.util.List;
+import java.util.UUID;
 
 import ccc.api.core.Folder;
-import ccc.client.callbacks.FolderUpdatedCallback;
-import ccc.client.commands.UpdateFolderCommand;
-import ccc.client.core.Action;
-import ccc.client.core.I18n;
-import ccc.client.core.InternalServices;
+import ccc.client.core.Editable;
+import ccc.client.core.Validatable;
+import ccc.client.core.View;
 
 
 /**
- * Remote action for folder updating.
+ * MVP View for updating a folder.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateFolderAction
-    implements
-        Action {
-
-    private final Folder _folder;
-
+public interface UpdateFolder  extends View<Editable>, Validatable {
 
     /**
-     * Constructor.
+     * Mutator.
      *
-     * @param folder The folder to update.
+     * @param id The folder index page id.
      */
-    public UpdateFolderAction(final Folder folder) {
-        _folder = folder;
-    }
+    void setIndexPage(UUID id);
 
-    /** {@inheritDoc} */
-    @Override
-    public void execute() {
-        new UpdateFolderCommand(_folder).invoke(
-            InternalServices.API,
-            new FolderUpdatedCallback(I18n.UI_CONSTANTS.updateFolder()));
-    }
+    /**
+     * Accessor.
+     *
+     * @return The folder index page id.
+     */
+    UUID getIndexPage();
+
+    /**
+     * Accessor.
+     *
+     * @return The folder.
+     */
+    Folder getFolder();
+
+    /**
+     * Mutator.
+     *
+     * @param folder The folder.
+     */
+    void setFolder(Folder folder);
+
+    /**
+     * Accessor.
+     *
+     * @return The orderlist.
+     */
+    List<String> getOrderList();
 
 }

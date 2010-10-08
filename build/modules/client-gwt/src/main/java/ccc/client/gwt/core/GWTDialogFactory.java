@@ -33,7 +33,6 @@ import java.util.UUID;
 import java.util.Map.Entry;
 
 import ccc.api.core.ACL;
-import ccc.api.core.Folder;
 import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
@@ -54,7 +53,7 @@ import ccc.client.gwt.views.gxt.CreatePageDialog;
 import ccc.client.gwt.views.gxt.CreateTextFileDialog;
 import ccc.client.gwt.views.gxt.CreateUserDialog;
 import ccc.client.gwt.views.gxt.EditCacheDialog;
-import ccc.client.gwt.views.gxt.EditFolderDialog;
+import ccc.client.gwt.views.gxt.UpdateFolderDialog;
 import ccc.client.gwt.views.gxt.EditTemplateDialog;
 import ccc.client.gwt.views.gxt.EditTextFileDialog;
 import ccc.client.gwt.views.gxt.EditUserDialog;
@@ -78,6 +77,7 @@ import ccc.client.views.CreateFolder;
 import ccc.client.views.CreatePage;
 import ccc.client.views.CreateTextFile;
 import ccc.client.views.CreateUser;
+import ccc.client.views.UpdateFolder;
 import ccc.client.views.EditTextFile;
 import ccc.client.views.RenameResource;
 
@@ -103,9 +103,8 @@ class GWTDialogFactory
 
     /** {@inheritDoc} */
     @Override
-    public LegacyView updateFolder(final SingleSelectionModel selectionModel,
-                                   final Folder selectedModel) {
-        return new EditFolderDialog(selectionModel, selectedModel);
+    public UpdateFolder updateFolder() {
+        return new UpdateFolderDialog();
     }
 
 

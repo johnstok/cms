@@ -31,9 +31,10 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
+import ccc.client.presenters.UpdateFolderPresenter;
 
 /**
- * Edit a folder.
+ * Update a folder.
  *
  * @author Civic Computing Ltd.
  */
@@ -58,8 +59,8 @@ public class OpenUpdateFolderAction
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final Folder folder) {
-        InternalServices.DIALOGS.updateFolder(_selectionModel, folder)
-        .show();
+        new UpdateFolderPresenter(
+            InternalServices.DIALOGS.updateFolder(), folder);
     }
 
 
