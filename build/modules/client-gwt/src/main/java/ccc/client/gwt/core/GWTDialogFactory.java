@@ -33,6 +33,7 @@ import java.util.UUID;
 import java.util.Map.Entry;
 
 import ccc.api.core.ACL;
+import ccc.api.core.Folder;
 import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
@@ -103,7 +104,7 @@ class GWTDialogFactory
     /** {@inheritDoc} */
     @Override
     public LegacyView updateFolder(final SingleSelectionModel selectionModel,
-                                   final ResourceSummary selectedModel) {
+                                   final Folder selectedModel) {
         return new EditFolderDialog(selectionModel, selectedModel);
     }
 

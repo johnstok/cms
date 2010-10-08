@@ -34,7 +34,6 @@ import ccc.api.core.Folder;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.FolderEntity;
-import ccc.domain.PageEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
@@ -84,9 +83,9 @@ public class UpdateFolderCommand
             getRepository().find(FolderEntity.class, _folderId);
         f.confirmLock(actor);
 
-        PageEntity p = null;
+        ResourceEntity p = null;
         if (_indexPageId != null) {
-            p = getRepository().find(PageEntity.class, _indexPageId);
+            p = getRepository().find(ResourceEntity.class, _indexPageId);
         }
         f.setIndexResource(p);
 

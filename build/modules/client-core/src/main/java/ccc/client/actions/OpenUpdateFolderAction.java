@@ -26,9 +26,10 @@
  */
 package ccc.client.actions;
 
-import ccc.api.core.ResourceSummary;
-import ccc.client.core.Action;
+import ccc.api.core.Folder;
 import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
 
 /**
@@ -37,10 +38,11 @@ import ccc.client.core.SingleSelectionModel;
  * @author Civic Computing Ltd.
  */
 public class OpenUpdateFolderAction
-    implements
-        Action {
+    extends
+        RemotingAction<Folder> {
 
     private final SingleSelectionModel _selectionModel;
+
 
     /**
      * Constructor.
@@ -48,14 +50,30 @@ public class OpenUpdateFolderAction
      * @param selectionModel The selectionModel for this action.
      */
     public OpenUpdateFolderAction(final SingleSelectionModel selectionModel) {
+        super(UI_CONSTANTS.updateFolder());
         _selectionModel = selectionModel;
     }
 
+
     /** {@inheritDoc} */
-    public void execute() {
-        final ResourceSummary selectedModel =
-            _selectionModel.tableSelection();
-        InternalServices.DIALOGS.updateFolder(_selectionModel, selectedModel)
-            .show();
+    @Override
+    protected void onSuccess(final Folder folder) {
+        InternalServices.DIALOGS.updateFolder(_selectionModel, folder)
+        .show();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return _selectionModel.tableSelection().delete().build(
+            InternalServices.ENCODER);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Folder parse(final Response response) {
+        return readFolder(response);
     }
 }

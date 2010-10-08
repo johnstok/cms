@@ -1626,4 +1626,11 @@ public interface UIConstants {
      */
     String fileSize();
 
+    /**
+     * "Update folder".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String updateFolder();
+
 }

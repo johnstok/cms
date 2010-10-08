@@ -33,6 +33,7 @@ import java.util.UUID;
 import java.util.Map.Entry;
 
 import ccc.api.core.ACL;
+import ccc.api.core.Folder;
 import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
@@ -59,15 +60,15 @@ import ccc.client.views.RenameResource;
 public interface DialogFactory {
 
     /**
-     * Create a dialog.
+     * Update a dialog.
      *
      * @param selectionModel The selection model.
-     * @param selectedModel The current folder.
+     * @param folder The current folder.
      *
      * @return The required dialog.
      */
     LegacyView updateFolder(SingleSelectionModel selectionModel,
-                            ResourceSummary selectedModel);
+                            Folder folder);
 
 
     /**

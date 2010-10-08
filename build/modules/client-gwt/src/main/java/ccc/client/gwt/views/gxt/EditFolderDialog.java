@@ -104,10 +104,10 @@ AbstractEditDialog {
      * @param folder The current folder.
      */
     public EditFolderDialog(final SingleSelectionModel ssm,
-                            final ResourceSummary folder) {
+                            final Folder folder) {
         super(I18n.UI_CONSTANTS.edit(), InternalServices.GLOBALS);
 
-        _currentIndexPage = folder.getIndexPageId();
+        _currentIndexPage = folder.getIndex();
         _folder = folder;
 
         setHeight(Globals.DEFAULT_HEIGHT);
