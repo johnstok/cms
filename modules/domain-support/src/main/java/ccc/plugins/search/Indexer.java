@@ -27,9 +27,11 @@
 
 package ccc.plugins.search;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.core.ACL;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
@@ -79,6 +81,28 @@ public interface Indexer {
                         final Set<String> tags,
                         final String content,
                         final Set<Paragraph> paragraphs);
+
+
+    /**
+     * Add a document to the search index.
+     *
+     * @param id         The resource's ID.
+     * @param path       The resource's absolute path.
+     * @param name       The resource's name.
+     * @param title      The resource's title.
+     * @param tags       The resource's tags.
+     * @param content    The document's content.
+     * @param paragraphs The paragraphs of the document.
+     * @param acl        The ACL for the document.
+     */
+    void createDocument(UUID id,
+                        ResourcePath path,
+                        ResourceName name,
+                        String title,
+                        Set<String> tags,
+                        String content,
+                        Set<Paragraph> paragraphs,
+                        Collection<ACL> acl);
 
 
     /**
