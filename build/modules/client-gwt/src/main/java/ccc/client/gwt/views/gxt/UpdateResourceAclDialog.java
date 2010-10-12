@@ -44,25 +44,26 @@ import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.DataBinding;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
-import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.BeanModel;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
+import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
+import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
-import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 
@@ -79,23 +80,23 @@ public class UpdateResourceAclDialog
     private CheckBoxSelectionModel<BaseModelData> _groupSM;
     private final ListStore<BaseModelData> _groupStore =
         new ListStore<BaseModelData>();
-    private Grid<BaseModelData> _groupGrid;
+    private EditorGrid<BaseModelData> _groupGrid;
     private final ContentPanel _groupGridPanel = new ContentPanel();
 
     private CheckBoxSelectionModel<BeanModel> _userSM;
-    private ListStore<BeanModel> _userStore =
+    private final ListStore<BeanModel> _userStore =
         new ListStore<BeanModel>();
-    private Grid<BeanModel> _userGrid;
+    private EditorGrid<BeanModel> _userGrid;
     private final ContentPanel _userGridPanel = new ContentPanel();
 
     private final ResourceSummary _resource;
 
     private final ACL _acl;
-    private Collection<Group> _allGroups;
+    private final Collection<Group> _allGroups;
 
     private static final int DIALOG_WIDTH = 440;
-    private static final int GRID_WIDTH = 200;
-    private static final int GRIDPANEL_WIDTH = 210;
+    private static final int GRID_WIDTH = 260;
+    private static final int GRIDPANEL_WIDTH = 270;
     private static final int DIALOG_HEIGHT = 400;
     private static final int GROUPS_HEIGHT = 300;
     private static final int DEFAULT_MARGIN = 5;
@@ -115,7 +116,6 @@ public class UpdateResourceAclDialog
         _resource = resource;
         _acl = acl;
         _allGroups = allGroups;
-        setLayout(new RowLayout(Orientation.HORIZONTAL));
         setLayout(new BorderLayout());
 
         setWidth(DIALOG_WIDTH);
@@ -138,6 +138,8 @@ public class UpdateResourceAclDialog
                         final BeanModel d =
                             DataBinding.bindUserSummary(user);
                         uData.add(d);
+                        final String rw = createRW(e);
+                        d.set("rwid", rw);
                         _userStore.add(d);
                     }}
             );
@@ -153,7 +155,7 @@ public class UpdateResourceAclDialog
         final ColumnModel ucm = defineUserColumnModel();
 
         _userStore.add(uData);
-        _userGrid = new Grid<BeanModel>(_userStore, ucm);
+        _userGrid = new EditorGrid<BeanModel>(_userStore, ucm);
         _userGrid.setAutoExpandColumn(User.USERNAME);
         _userGrid.setSelectionModel(_userSM);
         _userGrid.addPlugin(_userSM);
@@ -181,6 +183,8 @@ public class UpdateResourceAclDialog
                 if (e.getPrincipal().equals(g.getId())) {
                     d.set(Group.NAME, g.getName());
                     d.set(Group.ID, g.getId());
+                    final String rw = createRW(e);
+                    d.set("rwid", rw);
                     gData.add(d);
                 }
             }
@@ -196,7 +200,7 @@ public class UpdateResourceAclDialog
         final ColumnModel cm = defineGroupColumnModel();
 
         _groupStore.add(gData);
-        _groupGrid = new Grid<BaseModelData>(_groupStore, cm);
+        _groupGrid = new EditorGrid<BaseModelData>(_groupStore, cm);
         _groupGrid.setAutoExpandColumn(Group.NAME);
         _groupGrid.setSelectionModel(_groupSM);
         _groupGrid.addPlugin(_groupSM);
@@ -214,6 +218,20 @@ public class UpdateResourceAclDialog
         add(_groupGridPanel, westData);
     }
 
+    private String createRW(final Entry e) {
+        final StringBuilder sb = new StringBuilder();
+        if (e.isReadable()) {
+            sb.append("r");
+        }
+        if (e.isWriteable()) {
+            if (sb.length()>0) {
+                sb.append("+");
+            }
+            sb.append("w");
+        }
+        return sb.toString();
+    }
+
 
     private ColumnModel defineGroupColumnModel() {
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
@@ -221,16 +239,55 @@ public class UpdateResourceAclDialog
         _groupSM = new CheckBoxSelectionModel<BaseModelData>();
         configs.add(_groupSM.getColumn());
 
+        final ColumnConfig rwColumn = createRWcombo();
+        configs.add(rwColumn);
+
         final ColumnConfig keyColumn =
             new ColumnConfig(
                 Group.NAME,
                 constants().name(),
                 100);
-        final TextField<String> keyField = new TextField<String>();
-        keyField.setReadOnly(true);
         configs.add(keyColumn);
 
+
         return new ColumnModel(configs);
+    }
+
+    private ColumnConfig createRWcombo() {
+
+        final SimpleComboBox<String> combo = new SimpleComboBox<String>();
+        combo.setForceSelection(true);
+        combo.setTriggerAction(TriggerAction.ALL);
+        combo.add("-");
+        combo.add("r");
+        combo.add("w");
+        combo.add("r+w");
+
+        final CellEditor editor = new CellEditor(combo) {
+            @Override
+            public Object preProcessValue(final Object value) {
+              if (value == null) {
+                return value;
+              }
+              return combo.findModel(value.toString());
+            }
+
+            @Override
+            public Object postProcessValue(final Object value) {
+              if (value == null) {
+                return value;
+              }
+              return ((ModelData) value).get("value");
+            }
+          };
+
+        final ColumnConfig rwColumn =
+            new ColumnConfig(
+                "rwid",
+                I18n.UI_CONSTANTS.mode(),
+                50);
+        rwColumn.setEditor(editor);
+        return rwColumn;
     }
 
     private ColumnModel defineUserColumnModel() {
@@ -239,13 +296,14 @@ public class UpdateResourceAclDialog
         _userSM = new CheckBoxSelectionModel<BeanModel>();
         configs.add(_userSM.getColumn());
 
+        final ColumnConfig rwColumn = createRWcombo();
+        configs.add(rwColumn);
+
         final ColumnConfig keyColumn =
             new ColumnConfig(
                 User.USERNAME,
                 constants().name(),
                 100);
-        final TextField<String> keyField = new TextField<String>();
-        keyField.setReadOnly(true);
         configs.add(keyColumn);
 
         return new ColumnModel(configs);
@@ -262,16 +320,14 @@ public class UpdateResourceAclDialog
                 final List<Entry> newGroups = new ArrayList<Entry>();
                 for (final BaseModelData selected : _groupStore.getModels()) {
                     final Entry e = new Entry();
-                    e.setReadable(true);
-                    e.setWriteable(true);
+                    assignRW(e, selected);
                     e.setPrincipal(selected.<UUID>get("id"));
                     newGroups.add(e);
                 }
                 final List<Entry> newUsers = new ArrayList<Entry>();
                 for (final BeanModel um : _userStore.getModels()) {
                     final Entry e = new Entry();
-                    e.setReadable(true);
-                    e.setWriteable(true);
+                    assignRW(e, um);
                     e.setPrincipal(um.<User>getBean().getId());
                     newUsers.add(e);
                 }
@@ -288,6 +344,16 @@ public class UpdateResourceAclDialog
                         hide();
                     }
                 }.execute();
+            }
+
+            private void assignRW(final Entry e, final BaseModelData selected) {
+                final String rw = selected.get("rwid");
+                if (rw.indexOf('r')> -1) {
+                    e.setReadable(true);
+                }
+                if (rw.indexOf('w')> -1) {
+                    e.setWriteable(true);
+                }
             }
         };
     }

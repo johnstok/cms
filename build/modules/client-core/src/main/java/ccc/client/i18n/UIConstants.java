@@ -1633,4 +1633,11 @@ public interface UIConstants {
      */
     String updateFolder();
 
+    /**
+     * "Mode".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String mode();
+
 }

@@ -78,7 +78,7 @@ public class UserACLSelector extends Window {
     private final PagingToolBar _pagerBar;
     private final UIConstants _constants;
 
-    private Grid<BeanModel> _addUserGrid;
+    private final Grid<BeanModel> _addUserGrid;
     private CheckBoxSelectionModel<BeanModel> _addUserSM;
 
 
@@ -138,6 +138,7 @@ public class UserACLSelector extends Window {
                 final List<BeanModel> items =
                     _addUserGrid.getSelectionModel().getSelectedItems();
                 for (final BeanModel m : items) {
+                    m.set("rwid", "r");
                     _store.add(m);
                 }
                 hide();
