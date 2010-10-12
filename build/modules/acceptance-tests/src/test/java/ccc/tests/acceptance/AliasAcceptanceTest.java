@@ -26,10 +26,16 @@
  */
 package ccc.tests.acceptance;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import ccc.api.core.ACL;
 import ccc.api.core.Alias;
 import ccc.api.core.Folder;
+import ccc.api.core.User;
+import ccc.api.core.ACL.Entry;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.ResourceName;
 
 
@@ -80,6 +86,41 @@ public class AliasAcceptanceTest
         assertEquals(name, rs.getName().toString());
         assertEquals(folder.getId(), rs.getParent());
         assertEquals(targetName, folder.getName().toString());
+    }
+
+    /**
+     * Test.
+     */
+    public void testUpdateAliasFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        final Alias rs = tempAlias();
+
+        getCommands().lock(rs.getId());
+
+        final ACL acl = new ACL();
+        final List<Entry> users = new ArrayList<Entry>();
+        final Entry e = new Entry();
+        final User u = getUsers().retrieveCurrent();
+        e.setName(u.getName());
+        e.setPrincipal(u.getId());
+        e.setReadable(true);
+        e.setWriteable(false);
+        users.add(e);
+        acl.setUsers(users);
+        getCommands().changeAcl(rs.getId(), acl);
+
+        // ACT
+        try {
+            getAliases().update(rs.getId(), new Alias(folder.getId()));
+            // ASSERT
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(rs.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+
     }
 
 }

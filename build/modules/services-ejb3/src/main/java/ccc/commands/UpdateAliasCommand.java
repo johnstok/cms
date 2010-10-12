@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.core.Alias;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.AliasEntity;
 import ccc.domain.ResourceEntity;
@@ -48,6 +49,7 @@ public class UpdateAliasCommand
 
     private final UUID _targetId;
     private final UUID _aliasId;
+    private final AliasEntity _alias;
 
     /**
      * Constructor.
@@ -62,6 +64,7 @@ public class UpdateAliasCommand
         super(repoFactory);
         _targetId = targetId;
         _aliasId = aliasId;
+        _alias = getRepository().find(AliasEntity.class, _aliasId);
     }
 
 
@@ -69,18 +72,22 @@ public class UpdateAliasCommand
     @Override
     public Alias doExecute(final UserEntity actor,
                           final Date happenedOn) {
-
-        final AliasEntity alias =
-            getRepository().find(AliasEntity.class, _aliasId);
-        alias.confirmLock(actor);
+        _alias.confirmLock(actor);
 
         final ResourceEntity target =
             getRepository().find(ResourceEntity.class, _targetId);
-        alias.target(target);
+        _alias.target(target);
 
-        update(alias, actor, happenedOn);
+        update(_alias, actor, happenedOn);
 
-        return alias.forCurrentRevision();
+        return _alias.forCurrentRevision();
+    }
+
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_alias.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_aliasId, actor.getId());
+        }
     }
 
 
