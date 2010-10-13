@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.core.Resource;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.CommandType;
 import ccc.domain.RevisionMetadata;
@@ -50,7 +51,7 @@ public class ApplyWorkingCopyCommand
     private final UUID _id;
     private final String _comment;
     private final boolean _isMajorEdit;
-
+    private final WorkingCopySupport<?, ?, ?> _r;
 
     /**
      * Constructor.
@@ -68,6 +69,7 @@ public class ApplyWorkingCopyCommand
         _id = id;
         _comment = comment;
         _isMajorEdit = isMajorEdit;
+        _r = getRepository().findWcAware(_id);
     }
 
 
@@ -76,21 +78,27 @@ public class ApplyWorkingCopyCommand
     public Resource doExecute(final UserEntity actor,
                               final Date happenedOn) {
 
-        final WorkingCopySupport<?, ?, ?> r = getRepository().findWcAware(_id);
 
-        if (null==r) { throw new WorkingCopyNotSupportedException(_id); }
+        if (null==_r) { throw new WorkingCopyNotSupportedException(_id); }
 
-        r.confirmLock(actor);
+        _r.confirmLock(actor);
 
         final RevisionMetadata rm =
             new RevisionMetadata(happenedOn, actor, _isMajorEdit, _comment);
-        r.applyWorkingCopy(rm);
+        _r.applyWorkingCopy(rm);
 
-        update(r, actor, happenedOn);
+        update(_r, actor, happenedOn);
 
-        return r.forCurrentRevision();
+        return _r.forCurrentRevision();
     }
 
+
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_r.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_id, actor.getId());
+        }
+    }
 
     /** {@inheritDoc} */
     @Override

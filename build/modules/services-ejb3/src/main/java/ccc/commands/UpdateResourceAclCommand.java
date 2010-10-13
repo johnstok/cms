@@ -31,6 +31,7 @@ import java.util.UUID;
 
 import ccc.api.core.ACL;
 import ccc.api.core.ACL.Entry;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.AccessPermission;
 import ccc.domain.ResourceEntity;
@@ -49,7 +50,7 @@ public class UpdateResourceAclCommand
 
     private final UUID _id;
     private final ACL _acl;
-
+    private final ResourceEntity _r;
 
     /**
      * Constructor.
@@ -64,6 +65,7 @@ public class UpdateResourceAclCommand
         super(repoFactory);
         _id = id;
         _acl = acl;
+        _r = getRepository().find(ResourceEntity.class, _id);
     }
 
     /** {@inheritDoc} */
@@ -71,23 +73,21 @@ public class UpdateResourceAclCommand
     public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final ResourceEntity r =
-            getRepository().find(ResourceEntity.class, _id);
-        r.confirmLock(actor);
+        _r.confirmLock(actor);
 
-        lookupGroups(r);
-        lookupUsers(r);
+        lookupGroups();
+        lookupUsers();
 
-        auditResourceCommand(actor, happenedOn, r);
+        auditResourceCommand(actor, happenedOn, _r);
 
         return null;
     }
 
 
-    private void lookupGroups(final ResourceEntity r) {
-        r.clearGroupAcl();
+    private void lookupGroups() {
+        _r.clearGroupAcl();
         for (final Entry e : _acl.getGroups()) {
-            r.addGroupPermission(
+            _r.addGroupPermission(
                 new AccessPermission(
                     e.isReadable(),
                     e.isWriteable(),
@@ -96,14 +96,22 @@ public class UpdateResourceAclCommand
     }
 
 
-    private void lookupUsers(final ResourceEntity r) {
-        r.clearUserAcl();
+    private void lookupUsers() {
+        _r.clearUserAcl();
         for (final Entry e : _acl.getUsers()) {
-            r.addUserPermission(
+            _r.addUserPermission(
                 new AccessPermission(
                     e.isReadable(),
                     e.isWriteable(),
                     getUsers().find(e.getPrincipal())));
+        }
+    }
+
+
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_r.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_id, actor.getId());
         }
     }
 

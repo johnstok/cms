@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.exceptions.ResourceExistsException;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.domain.ResourceEntity;
@@ -49,6 +50,7 @@ public class RenameResourceCommand
 
     private final UUID   _resourceId;
     private final String _name;
+    private final ResourceEntity _resource;
 
     /**
      * Constructor.
@@ -65,6 +67,7 @@ public class RenameResourceCommand
         super(repository, audit, null, null);
         _resourceId = resourceId;
         _name = name;
+        _resource = getRepository().find(ResourceEntity.class, _resourceId);
     }
 
 
@@ -73,25 +76,29 @@ public class RenameResourceCommand
     public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final ResourceEntity resource =
-            getRepository().find(ResourceEntity.class, _resourceId);
-        resource.confirmLock(actor);
+        _resource.confirmLock(actor);
 
         final ResourceName newName = new ResourceName(_name);
         final ResourceEntity existingResource =
-            resource.getParent().getEntryWithName(newName);
+            _resource.getParent().getEntryWithName(newName);
         if (null!=existingResource) {
             throw new ResourceExistsException(
                 existingResource.getId(), existingResource.getName());
         }
 
-        resource.setName(new ResourceName(_name));
+        _resource.setName(new ResourceName(_name));
 
-        auditResourceCommand(actor, happenedOn, resource);
+        auditResourceCommand(actor, happenedOn, _resource);
 
         return null;
     }
 
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_resource.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_resourceId, actor.getId());
+        }
+    }
 
     /** {@inheritDoc} */
     @Override

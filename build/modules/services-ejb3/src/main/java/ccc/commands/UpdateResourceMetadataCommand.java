@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
@@ -51,7 +52,7 @@ public class UpdateResourceMetadataCommand
     private final String              _description;
     private final Set<String>         _tags;
     private final Map<String, String> _metadata;
-
+    private final ResourceEntity _r;
 
     /**
      * Constructor.
@@ -75,28 +76,35 @@ public class UpdateResourceMetadataCommand
         _description = description;
         _tags = tags;
         _metadata = metadata;
+        _r = getRepository().find(ResourceEntity.class, _id);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected Void doExecute(final UserEntity actor, final Date happenedOn) {
-        final ResourceEntity r =
-            getRepository().find(ResourceEntity.class, _id);
-        r.confirmLock(actor);
+        _r.confirmLock(actor);
 
-        r.setTitle(_title);
-        r.setDescription(_description);
-        r.setTags(_tags);
+        _r.setTitle(_title);
+        _r.setDescription(_description);
+        _r.setTags(_tags);
 
-        r.clearMetadata();
+        _r.clearMetadata();
         for (final Map.Entry<String, String> metadatum: _metadata.entrySet()) {
-            r.addMetadatum(metadatum.getKey(), metadatum.getValue());
+            _r.addMetadatum(metadatum.getKey(), metadatum.getValue());
         }
 
-        auditResourceCommand(actor, happenedOn, r);
+        auditResourceCommand(actor, happenedOn, _r);
 
         return null;
+    }
+
+
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_r.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_id, actor.getId());
+        }
     }
 
 

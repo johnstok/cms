@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.core.Page;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.PageEntity;
 import ccc.domain.RevisionMetadata;
@@ -48,6 +49,7 @@ public class UpdatePageCommand
 
     private final UUID      _id;
     private final Page _delta;
+    private final PageEntity _page;
 
     /**
      * Constructor.
@@ -62,6 +64,7 @@ public class UpdatePageCommand
         super(repoFactory);
         _id = id;
         _delta = delta;
+        _page = getRepository().find(PageEntity.class, _id);
     }
 
 
@@ -69,8 +72,7 @@ public class UpdatePageCommand
     @Override
     public Page doExecute(final UserEntity actor, final Date happenedOn) {
 
-        final PageEntity page = getRepository().find(PageEntity.class, _id);
-        page.confirmLock(actor);
+        _page.confirmLock(actor);
 
         final RevisionMetadata rm =
             new RevisionMetadata(
@@ -79,12 +81,20 @@ public class UpdatePageCommand
                 _delta.isMajorChange(),
                 _delta.getComment());
 
-        page.setOrUpdateWorkingCopy(_delta);
-        page.applyWorkingCopy(rm);
+        _page.setOrUpdateWorkingCopy(_delta);
+        _page.applyWorkingCopy(rm);
 
-        update(page, actor, happenedOn);
+        update(_page, actor, happenedOn);
 
-        return page.forCurrentRevision();
+        return _page.forCurrentRevision();
+    }
+
+
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_page.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_id, actor.getId());
+        }
     }
 
 

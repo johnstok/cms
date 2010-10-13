@@ -29,6 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.domain.ResourceEntity;
@@ -45,7 +46,7 @@ import ccc.persistence.ResourceRepository;
 class UnpublishResourceCommand extends Command<Void> {
 
     private final UUID _resourceId;
-
+    private final ResourceEntity _r;
 
     /**
      * Constructor.
@@ -60,21 +61,28 @@ class UnpublishResourceCommand extends Command<Void> {
            super(repository, audit, null, null);
            DBC.require().notNull(resourceId);
            _resourceId = resourceId;
+           _r = getRepository().find(ResourceEntity.class, _resourceId);
        }
 
     /** {@inheritDoc} */
     @Override
     protected Void doExecute(final UserEntity actor,
                              final Date happenedOn) {
-        final ResourceEntity r =
-            getRepository().find(ResourceEntity.class, _resourceId);
-        r.confirmLock(actor);
+        _r.confirmLock(actor);
 
-        r.unpublish();
+        _r.unpublish();
 
-        auditResourceCommand(actor, happenedOn, r);
+        auditResourceCommand(actor, happenedOn, _r);
 
         return null;
+    }
+
+
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_r.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_resourceId, actor.getId());
+        }
     }
 
 

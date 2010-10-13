@@ -29,6 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
@@ -48,7 +49,7 @@ public class IncludeInMainMenuCommand
 
     private final UUID    _id;
     private final boolean _include;
-
+    private final ResourceEntity _r;
 
     /**
      * Constructor.
@@ -63,6 +64,7 @@ public class IncludeInMainMenuCommand
         super(repoFactory);
         _id = id;
         _include = b;
+        _r = getRepository().find(ResourceEntity.class, _id);
     }
 
 
@@ -81,21 +83,28 @@ public class IncludeInMainMenuCommand
         super(repository, audit, null, null);
         _id = id;
         _include = b;
+        _r = getRepository().find(ResourceEntity.class, _id);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected Void doExecute(final UserEntity actor, final Date happenedOn) {
-        final ResourceEntity r =
-            getRepository().find(ResourceEntity.class, _id);
-        r.confirmLock(actor);
+        _r.confirmLock(actor);
 
-        r.setIncludedInMainMenu(_include);
+        _r.setIncludedInMainMenu(_include);
 
-        auditResourceCommand(actor, happenedOn, r);
+        auditResourceCommand(actor, happenedOn, _r);
 
         return null;
+    }
+
+
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_r.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_id, actor.getId());
+        }
     }
 
 

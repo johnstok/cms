@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.core.Page;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.PageEntity;
 import ccc.domain.UserEntity;
@@ -47,6 +48,7 @@ public class UpdateWCCommand2
 
     private final UUID _resourceId;
     private final Page _delta;
+    private final PageEntity _r;
 
 
     /**
@@ -62,22 +64,30 @@ public class UpdateWCCommand2
         super(repoFactory);
         _resourceId = resourceId;
         _delta = delta;
+        _r = getRepository().find(PageEntity.class, _resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected Page doExecute(final UserEntity actor, final Date happenedOn) {
-        final PageEntity r =
-            getRepository().find(PageEntity.class, _resourceId);
-        r.confirmLock(actor);
+        _r.confirmLock(actor);
 
-        r.setOrUpdateWorkingCopy(_delta);
+        _r.setOrUpdateWorkingCopy(_delta);
 
-        auditResourceCommand(actor, happenedOn, r);
+        auditResourceCommand(actor, happenedOn, _r);
 
-        return r.forCurrentRevision();
+        return _r.forCurrentRevision();
     }
+
+
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_r.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_resourceId, actor.getId());
+        }
+    }
+
 
     /** {@inheritDoc} */
     @Override

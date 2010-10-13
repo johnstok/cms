@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.core.Resource;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.ResourceEntity;
 import ccc.domain.TemplateEntity;
@@ -48,7 +49,7 @@ public class ChangeTemplateForResourceCommand
 
     private final UUID _resourceId;
     private final UUID _templateId;
-
+    private final ResourceEntity _r;
 
     /**
      * Constructor.
@@ -64,26 +65,34 @@ public class ChangeTemplateForResourceCommand
         super(repoFactory);
         _resourceId = resourceId;
         _templateId = templateId;
+        _r = getRepository().find(ResourceEntity.class, _resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Resource doExecute(final UserEntity actor, final Date happenedOn) {
-        final ResourceEntity r =
-            getRepository().find(ResourceEntity.class, _resourceId);
-        r.confirmLock(actor);
+    protected Resource doExecute(final UserEntity actor,
+                                 final Date happenedOn) {
+        _r.confirmLock(actor);
 
         final TemplateEntity t =
             (null==_templateId)
                 ? null
                 : getRepository().find(TemplateEntity.class, _templateId);
 
-        r.setTemplate(t);
+        _r.setTemplate(t);
 
-        auditResourceCommand(actor, happenedOn, r);
+        auditResourceCommand(actor, happenedOn, _r);
 
-        return r.forCurrentRevision();
+        return _r.forCurrentRevision();
+    }
+
+
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_r.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_resourceId, actor.getId());
+        }
     }
 
 

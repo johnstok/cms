@@ -26,11 +26,17 @@
  */
 package ccc.tests.acceptance;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import ccc.api.core.ACL;
 import ccc.api.core.Folder;
 import ccc.api.core.Resource;
 import ccc.api.core.Template;
+import ccc.api.core.User;
+import ccc.api.core.ACL.Entry;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 
@@ -183,4 +189,38 @@ public class TemplateAcceptanceTest extends
 
     }
 
+
+    /**
+     * Test.
+     */
+    public void testUpdateTemplateFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        final Template rs = dummyTemplate(folder);
+
+        getCommands().lock(rs.getId());
+
+        final ACL acl = new ACL();
+        final List<Entry> users = new ArrayList<Entry>();
+        final Entry e = new Entry();
+        final User u = getUsers().retrieveCurrent();
+        e.setName(u.getName());
+        e.setPrincipal(u.getId());
+        e.setReadable(true);
+        e.setWriteable(false);
+        users.add(e);
+        acl.setUsers(users);
+        getCommands().changeAcl(rs.getId(), acl);
+
+        // ACT
+        try {
+            getTemplates().update(rs.getId(), rs);
+            // ASSERT
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(rs.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+    }
 }

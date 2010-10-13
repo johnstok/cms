@@ -27,6 +27,7 @@
 
 package ccc.tests.acceptance;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +39,7 @@ import org.apache.log4j.Logger;
 import ccc.acceptance.client.BundleWrapper;
 import ccc.acceptance.client.HttpClientRequestExecutor;
 import ccc.acceptance.client.WindowStub;
+import ccc.api.core.ACL;
 import ccc.api.core.API;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Alias;
@@ -48,6 +50,7 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
 import ccc.api.core.Template;
 import ccc.api.core.User;
+import ccc.api.core.ACL.Entry;
 import ccc.api.http.ProxyServiceLocator;
 import ccc.api.http.SiteBrowser;
 import ccc.api.synchronous.Actions;
@@ -491,5 +494,17 @@ public abstract class AbstractAcceptanceTest
         }
         _sl = null;
         InternalServices.EXECUTOR = null;
+    }
+
+    protected void setNoWriteACL(final Resource r, final User u) {
+        final ACL acl = new ACL();
+        final List<Entry> users = new ArrayList<Entry>();
+        final Entry e = new Entry();
+        e.setPrincipal(u.getId());
+        e.setReadable(true);
+        e.setWriteable(false);
+        users.add(e);
+        acl.setUsers(users);
+        getCommands().changeAcl(r.getId(), acl);
     }
 }

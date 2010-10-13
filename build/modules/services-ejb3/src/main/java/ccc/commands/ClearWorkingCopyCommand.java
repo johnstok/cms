@@ -29,6 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.CommandType;
 import ccc.domain.ResourceEntity;
@@ -47,6 +48,7 @@ public class ClearWorkingCopyCommand
         Command<Void> {
 
     private final UUID _resourceId;
+    private final ResourceEntity _r;
 
 
     /**
@@ -59,28 +61,34 @@ public class ClearWorkingCopyCommand
                                    final UUID resourceId) {
         super(repoFactory);
         _resourceId = resourceId;
+        _r = getRepository().find(ResourceEntity.class, _resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected Void doExecute(final UserEntity actor, final Date happenedOn) {
-        final ResourceEntity r =
-            getRepository().find(ResourceEntity.class, _resourceId);
-        r.confirmLock(actor);
+        _r.confirmLock(actor);
 
-        if (r instanceof WCAware<?>) {
-            final WCAware<?> wcAware = (WCAware<?>) r;
+        if (_r instanceof WCAware<?>) {
+            final WCAware<?> wcAware = (WCAware<?>) _r;
             wcAware.clearWorkingCopy();
         } else {
-            throw new WorkingCopyNotSupportedException(r.getId());
+            throw new WorkingCopyNotSupportedException(_r.getId());
         }
 
-        auditResourceCommand(actor, happenedOn, r);
+        auditResourceCommand(actor, happenedOn, _r);
 
         return null;
     }
 
+
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_r.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_resourceId, actor.getId());
+        }
+    }
 
     /** {@inheritDoc} */
     @Override

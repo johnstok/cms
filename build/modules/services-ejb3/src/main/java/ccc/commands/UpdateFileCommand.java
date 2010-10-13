@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.core.File;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.Data;
 import ccc.domain.FileEntity;
@@ -54,6 +55,7 @@ public class UpdateFileCommand
     private final String      _comment;
     private final boolean     _isMajorEdit;
     private final InputStream _dataStream;
+    private final FileEntity _f;
 
     /**
      * Constructor.
@@ -78,6 +80,7 @@ public class UpdateFileCommand
         _comment = comment;
         _isMajorEdit = isMajorEdit;
         _dataStream = dataStream;
+        _f = getRepository().find(FileEntity.class, _fileId);
     }
 
 
@@ -86,8 +89,7 @@ public class UpdateFileCommand
     public FileEntity doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final FileEntity f = getRepository().find(FileEntity.class, _fileId);
-        f.confirmLock(actor);
+        _f.confirmLock(actor);
 
         final Data d = getData().create(_dataStream, _fileDelta.getSize());
         _fileDelta.setData(d.getId());
@@ -103,14 +105,20 @@ public class UpdateFileCommand
             _isMajorEdit,
             _comment == null || _comment.isEmpty() ? "Updated." : _comment);
 
-        f.setOrUpdateWorkingCopy(_fileDelta);
-        f.applyWorkingCopy(rm);
+        _f.setOrUpdateWorkingCopy(_fileDelta);
+        _f.applyWorkingCopy(rm);
 
-        update(f, actor, happenedOn);
+        update(_f, actor, happenedOn);
 
-        return f;
+        return _f;
     }
 
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_f.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_fileId, actor.getId());
+        }
+    }
 
     /** {@inheritDoc} */
     @Override

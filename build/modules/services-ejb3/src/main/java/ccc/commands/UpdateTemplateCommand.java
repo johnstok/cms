@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.core.Template;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.TemplateEntity;
@@ -48,7 +49,7 @@ public class UpdateTemplateCommand
 
     private final UUID _templateId;
     private final Template _delta;
-
+    private final TemplateEntity _template;
 
     /**
      * Constructor.
@@ -63,6 +64,7 @@ public class UpdateTemplateCommand
         super(repoFactory);
         _templateId = templateId;
         _delta = delta;
+        _template = getRepository().find(TemplateEntity.class, _templateId);
     }
 
 
@@ -71,22 +73,29 @@ public class UpdateTemplateCommand
     public Template doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final TemplateEntity template =
-            getRepository().find(TemplateEntity.class, _templateId);
-        template.confirmLock(actor);
+        _template.confirmLock(actor);
 
         final RevisionMetadata rm =
             new RevisionMetadata(happenedOn, actor, true, "Updated.");
 
-        template.update(_delta, rm);
+        _template.update(_delta, rm);
 
-        update(template, actor, happenedOn);
+        update(_template, actor, happenedOn);
 
-        return template.forCurrentRevision();
+        return _template.forCurrentRevision();
+    }
+
+
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_template.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_templateId, actor.getId());
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected CommandType getType() { return CommandType.TEMPLATE_UPDATE; }
+
 }

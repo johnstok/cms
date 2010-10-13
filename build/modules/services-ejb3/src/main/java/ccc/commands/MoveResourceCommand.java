@@ -29,6 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.FolderEntity;
 import ccc.domain.ResourceEntity;
@@ -47,7 +48,7 @@ public class MoveResourceCommand
 
     private final UUID _resourceId;
     private final UUID _newParentId;
-
+    private final ResourceEntity _resource;
 
     /**
      * Constructor.
@@ -62,24 +63,31 @@ public class MoveResourceCommand
         super(repoFactory);
         _resourceId = resourceId;
         _newParentId = newParentId;
+        _resource = getRepository().find(ResourceEntity.class, _resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected Void doExecute(final UserEntity actor, final Date happenedOn) {
-        final ResourceEntity resource =
-            getRepository().find(ResourceEntity.class, _resourceId);
-        resource.confirmLock(actor);
+        _resource.confirmLock(actor);
 
         final FolderEntity newParent =
             getRepository().find(FolderEntity.class, _newParentId);
-        resource.getParent().remove(resource);
-        newParent.add(resource);
+        _resource.getParent().remove(_resource);
+        newParent.add(_resource);
 
-        auditResourceCommand(actor, happenedOn, resource);
+        auditResourceCommand(actor, happenedOn, _resource);
 
         return null;
+    }
+
+
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_resource.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_resourceId, actor.getId());
+        }
     }
 
 

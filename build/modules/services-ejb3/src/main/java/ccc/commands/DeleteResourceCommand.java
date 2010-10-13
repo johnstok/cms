@@ -29,6 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceName;
@@ -47,7 +48,7 @@ import ccc.persistence.ResourceRepository;
 public class DeleteResourceCommand extends Command<Void> {
 
     private final UUID _resourceId;
-
+    private final ResourceEntity _resource;
 
     /**
      * Constructor.
@@ -61,6 +62,7 @@ public class DeleteResourceCommand extends Command<Void> {
                                  final UUID resourceId) {
         super(repository, audit, null, null);
         _resourceId = resourceId;
+        _resource =  getRepository().find(ResourceEntity.class, _resourceId);
     }
 
 
@@ -68,26 +70,32 @@ public class DeleteResourceCommand extends Command<Void> {
     @Override
     protected Void doExecute(final UserEntity actor,
                              final Date happenedOn) {
-        final ResourceEntity resource =
-            getRepository().find(ResourceEntity.class, _resourceId);
-        resource.confirmLock(actor);
+        _resource.confirmLock(actor);
 
-        if (resource.isDeleted()) {
+        if (_resource.isDeleted()) {
             throw new RuntimeException("Can't delete a deleted resource.");
         }
 
         final FolderEntity trash =
             getRepository().root(PredefinedResourceNames.TRASH);
 
-        resource.delete();
-        resource.setName(new ResourceName(resource.getId().toString()));
-        resource.getParent().remove(resource);
-        trash.add(resource);
-        resource.unlock(actor);
+        _resource.delete();
+        _resource.setName(new ResourceName(_resource.getId().toString()));
+        _resource.getParent().remove(_resource);
+        trash.add(_resource);
+        _resource.unlock(actor);
 
-        auditResourceCommand(actor, happenedOn, resource);
+        auditResourceCommand(actor, happenedOn, _resource);
 
         return null;
+    }
+
+
+    @Override
+    protected void authorize(final UserEntity actor) {
+        if (!_resource.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_resourceId, actor.getId());
+        }
     }
 
 

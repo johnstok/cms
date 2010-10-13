@@ -40,6 +40,8 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
+import ccc.api.core.User;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
@@ -295,5 +297,56 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         // ASSERT
         final Page testPage = getPages().retrieve(page.getId());
         assertEquals("original", testPage.getParagraph("foo").getText());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUpdatePageFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+
+        final Page page = tempPage(folder.getId(),
+                                   dummyTemplate(folder).getId());
+        getCommands().lock(page.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(page, u);
+
+        // ACT
+        try {
+            getPages().update(page.getId(), page);
+            // ASSERT
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(page.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testUpdateWCPageFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+
+        final Page page = tempPage(folder.getId(),
+            dummyTemplate(folder).getId());
+        getCommands().lock(page.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(page, u);
+
+        // ACT
+        try {
+            getPages().updateWorkingCopy(page.getId(), page);
+            // ASSERT
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(page.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
     }
 }

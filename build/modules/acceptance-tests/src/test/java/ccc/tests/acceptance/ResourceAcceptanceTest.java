@@ -45,6 +45,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.Duration;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -568,6 +569,284 @@ public class ResourceAcceptanceTest
         final String content = getBrowser().get(ps.getAbsolutePath());
         assertEquals("ok $resources.retrieve($id) "+ps.getName(), content);
 
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testLockResourceFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(folder, u);
+
+        // ACT
+        try {
+            getCommands().lock(folder.getId());
+            // ASSERT
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(folder.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUnlockResourceFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(folder, u);
+
+        // ACT
+        try {
+            getCommands().unlock(folder.getId());
+            // ASSERT
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(folder.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testPublishResourceFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(folder, u);
+
+        // ACT
+        try {
+            getCommands().publish(folder.getId());
+            // ASSERT
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(folder.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUnpublishResourceFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        getCommands().publish(folder.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(folder, u);
+
+        // ACT
+        try {
+            // ASSERT
+            getCommands().unpublish(folder.getId());
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(folder.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testRenameResourceFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(folder, u);
+
+        // ACT
+        try {
+            // ASSERT
+            getCommands().rename(folder.getId(), "newname");
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(folder.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testMoveResourceFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(folder, u);
+
+        // ACT
+        try {
+            // ASSERT
+            getCommands().move(folder.getId(), folder.getId());
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(folder.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testChangeResourceTemplateFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(folder, u);
+
+        // ACT
+        try {
+            // ASSERT
+            getCommands().updateResourceTemplate(folder.getId(),
+                dummyTemplate(folder));
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(folder.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testDeleteResourceFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(folder, u);
+
+        // ACT
+        try {
+            // ASSERT
+            getCommands().delete(folder.getId());
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(folder.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUpdateCachingFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(folder, u);
+
+        // ACT
+        try {
+            // ASSERT
+            getCommands().updateCacheDuration(folder.getId(), folder);
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(folder.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testIncludeInMenuFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(folder, u);
+
+        // ACT
+        try {
+            // ASSERT
+            getCommands().includeInMainMenu(folder.getId());
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(folder.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUpdateMetadataFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(folder, u);
+
+        // ACT
+        try {
+            // ASSERT
+            getCommands().updateMetadata(folder.getId(), folder);
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(folder.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUpdateACLFailPermission() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        final User u = getUsers().retrieveCurrent();
+        setNoWriteACL(folder, u);
+
+        // ACT
+        try {
+            // ASSERT
+            setNoWriteACL(folder, u);
+            fail();
+        } catch (final UnauthorizedException ex) {
+            assertEquals(folder.getId(), ex.getTarget());
+            assertEquals(u.getId(), ex.getUser());
+        }
     }
 
 }
