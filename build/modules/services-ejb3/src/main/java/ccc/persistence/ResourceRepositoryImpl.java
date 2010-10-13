@@ -33,8 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.persistence.EntityManager;
-
 import ccc.api.core.PageCriteria;
 import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
@@ -78,16 +76,6 @@ class ResourceRepositoryImpl implements ResourceRepository {
     public ResourceRepositoryImpl(final Repository repository) {
         DBC.require().notNull(repository);
         _repository = repository;
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param em The JPA entity manager for this repository.
-     */
-    public ResourceRepositoryImpl(final EntityManager em) {
-        this(new JpaRepository(em));
     }
 
 

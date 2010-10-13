@@ -31,12 +31,8 @@ import static ccc.persistence.QueryNames.*;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 import ccc.api.core.UserCriteria;
 import ccc.api.types.SortOrder;
@@ -51,7 +47,6 @@ import ccc.domain.UserEntity;
 class UserRepositoryImpl implements UserRepository {
 
     private Repository _repository;
-    private EntityManager _emm;
 
 
     /**
@@ -61,17 +56,6 @@ class UserRepositoryImpl implements UserRepository {
      */
     public UserRepositoryImpl(final Repository repository) {
         _repository = repository;
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param em The JPA entity manager for this repository.
-     */
-    public UserRepositoryImpl(final EntityManager em) {
-        this(new JpaRepository(em));
-        _emm = em;
     }
 
 
@@ -204,15 +188,16 @@ class UserRepositoryImpl implements UserRepository {
     }
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
-    public List<String> listMetadataValuesWithKey(final String key) {
-        // TODO move to JpaRepository?
+    @Override
+    public Collection<String> listMetadataValuesWithKey(final String key) {
         // http://stackoverflow.com/questions/1572980/
         // how-to-query-distinct-values-from-map-with-given-key-in-hibernate
-        final Query q = _emm.createNativeQuery(
-          "select distinct datum_value from user_metadata where datum_key = ?");
-        q.setParameter(1, key);
-        return q.getResultList();
+        return
+            _repository.nativeQuery(
+              "select distinct datum_value "
+                + "from user_metadata "
+                + "where datum_key = ?",
+                String.class,
+              key);
     }
-
 }

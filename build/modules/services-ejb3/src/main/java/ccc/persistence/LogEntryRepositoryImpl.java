@@ -26,8 +26,6 @@
  */
 package ccc.persistence;
 
-import javax.persistence.EntityManager;
-
 import org.apache.log4j.Logger;
 
 import ccc.api.types.DBC;
@@ -55,16 +53,6 @@ class LogEntryRepositoryImpl
     public LogEntryRepositoryImpl(final Repository em) {
         DBC.require().notNull(em);
         _em = em;
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param em The JPA entity manager for this repository.
-     */
-    public LogEntryRepositoryImpl(final EntityManager em) {
-        this(new JpaRepository(em));
     }
 
 

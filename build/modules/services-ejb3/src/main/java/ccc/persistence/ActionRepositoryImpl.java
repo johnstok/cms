@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.persistence.EntityManager;
-
 import ccc.api.core.ActionCriteria;
 import ccc.api.core.ActionSummary;
 import ccc.api.types.DBC;
@@ -61,16 +59,6 @@ class ActionRepositoryImpl
     public ActionRepositoryImpl(final Repository repo) {
         DBC.require().notNull(repo);
         _repo = repo;
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param em The JPA entity manager for this repository.
-     */
-    public ActionRepositoryImpl(final EntityManager em) {
-        this(new JpaRepository(em));
     }
 
 

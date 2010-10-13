@@ -29,8 +29,6 @@ package ccc.persistence;
 
 import java.io.InputStream;
 
-import javax.persistence.EntityManager;
-
 import ccc.api.types.DBC;
 import ccc.api.types.StreamAction;
 import ccc.domain.Data;
@@ -61,14 +59,13 @@ class DataRepositoryImpl implements DataRepository {
     /**
      * Create a file repository that reads / writes to the file system.
      *
-     * @param em The entity manager to use.
+     * @param sRepo The settings repo to use.
      *
      * @return The file repository.
      */
-    public static DataRepository onFileSystem(final EntityManager em) {
-        final SettingsRepository settings = new SettingsRepository(em);
+    public static DataRepository onFileSystem(final SettingsRepository sRepo) {
         final Setting filestorePath =
-            settings.find(Setting.Name.FILE_STORE_PATH);
+            sRepo.find(Setting.Name.FILE_STORE_PATH);
         if (filestorePath == null) {
             throw new RuntimeException(
                 "Setting missing: "+Setting.Name.FILE_STORE_PATH);

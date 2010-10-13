@@ -31,8 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.persistence.EntityManager;
-
 import ccc.api.types.DBC;
 import ccc.domain.GroupEntity;
 
@@ -57,16 +55,6 @@ public class GroupRepositoryImpl
     public GroupRepositoryImpl(final Repository repo) {
         DBC.require().notNull(repo);
         _repo = repo;
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param em The JPA entity manager for this repository.
-     */
-    public GroupRepositoryImpl(final EntityManager em) {
-        this(new JpaRepository(em));
     }
 
 

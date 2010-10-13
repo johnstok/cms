@@ -48,19 +48,21 @@ import ccc.domain.Entity;
  *
  * @author Civic Computing Ltd.
  */
-class JpaRepository implements Repository {
+public class JpaRepository
+    implements
+        Repository {
 
-    private static final Logger LOG =
-        Logger.getLogger(JpaRepository.class);
+    private static final Logger LOG = Logger.getLogger(JpaRepository.class);
 
     private final EntityManager _em;
+
 
     /**
      * Constructor.
      *
      * @param em The JPA entity manager for this DAO.
      */
-    JpaRepository(final EntityManager em) {
+    public JpaRepository(final EntityManager em) {
         DBC.require().notNull(em);
         _em = em;
     }
@@ -74,19 +76,18 @@ class JpaRepository implements Repository {
         return entity;
     }
 
+
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked") // JPA query API isn't type safe.
     @Override
     public <T> List<T> list(final String queryName,
                             final Class<T> resultType,
                             final Object... params) {
-
         final Query q = _em.createNamedQuery(queryName);
-        for (int i=0; i<params.length; i++) {
-            q.setParameter((i+1), params[i]);
-        }
+        bindParams(q, params);
         return q.getResultList();
     }
+
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked") // JPA query API isn't type safe.
@@ -111,6 +112,19 @@ class JpaRepository implements Repository {
         return q.getResultList();
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked") // JPA query API isn't type safe.
+    public <T> Collection<T> nativeQuery(final String queryString,
+                                         final Class<T> resultType,
+                                         final Object... params) {
+        final Query q = _em.createNativeQuery(queryString);
+        bindParams(q, params);
+        return q.getResultList();
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public <T> Collection<T> uniquify(final String queryName,
@@ -118,6 +132,7 @@ class JpaRepository implements Repository {
                                       final Object... params) {
         return new HashSet<T>(list(queryName, resultType, params));
     }
+
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked") // JPA query API isn't type safe.
@@ -127,15 +142,14 @@ class JpaRepository implements Repository {
                       final Object... params) {
 
         final Query q = _em.createNamedQuery(queryName);
-        for (int i=0; i<params.length; i++) {
-            q.setParameter((i+1), params[i]);
-        }
+        bindParams(q, params);
         try {
             return (T) q.getSingleResult();
         } catch (final NoResultException e) {
             return null;
         }
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -145,6 +159,7 @@ class JpaRepository implements Repository {
         final T entity = find(queryName, resultType, params);
         return entity != null;
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -176,4 +191,10 @@ class JpaRepository implements Repository {
         return result.longValue();
     }
 
+
+    private void bindParams(final Query q, final Object... params) {
+        for (int i=0; i<params.length; i++) {
+            q.setParameter(i+1, params[i]);
+        }
+    }
 }

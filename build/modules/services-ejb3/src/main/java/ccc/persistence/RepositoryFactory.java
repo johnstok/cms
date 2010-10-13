@@ -26,8 +26,6 @@
  */
 package ccc.persistence;
 
-import javax.persistence.EntityManager;
-
 import ccc.api.types.DBC;
 
 
@@ -36,69 +34,68 @@ import ccc.api.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
-class RepositoryFactory
+public class RepositoryFactory
     implements
         IRepositoryFactory {
 
-    private final EntityManager _em;
+    private final Repository _repo;
 
 
     /**
      * Constructor.
      *
-     * @param em The entity manager for this factory.
+     * @param repo The base persistence repository to use.
      */
-    public RepositoryFactory(final EntityManager em) {
-        DBC.require().notNull(em);
-        _em = em;
+    public RepositoryFactory(final Repository repo) {
+        _repo = DBC.require().notNull(repo);
     }
 
 
     /** {@inheritDoc} */
     @Override public LogEntryRepository createLogEntryRepo() {
-        return new LogEntryRepositoryImpl(_em);
+        return new LogEntryRepositoryImpl(_repo);
     }
 
 
     /** {@inheritDoc} */
     @Override public UserRepository createUserRepo() {
-        return new UserRepositoryImpl(_em);
+        return new UserRepositoryImpl(_repo);
     }
 
 
     /** {@inheritDoc} */
     @Override public ResourceRepository createResourceRepository() {
-        return new ResourceRepositoryImpl(_em);
+        return new ResourceRepositoryImpl(_repo);
     }
 
 
     /** {@inheritDoc} */
     @Override public DataRepository createDataRepository() {
-        return DataRepositoryImpl.onFileSystem(_em);
+        return DataRepositoryImpl.onFileSystem(createSettingsRepository());
     }
 
 
     /** {@inheritDoc} */
     @Override public ActionRepository createActionRepository() {
-        return new ActionRepositoryImpl(_em);
+        return new ActionRepositoryImpl(_repo);
     }
 
 
     /** {@inheritDoc} */
     @Override public CommentRepository createCommentRepo() {
-        return new CommentRepositoryImpl(_em);
+        return new CommentRepositoryImpl(_repo);
     }
 
 
     /** {@inheritDoc} */
     @Override public GroupRepository createGroupRepo() {
-        return new GroupRepositoryImpl(_em);
+        return new GroupRepositoryImpl(_repo);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public SettingsRepository createSettingsRepository() {
-        return new SettingsRepository(_em);
+        return new SettingsRepository(_repo);
     }
 }

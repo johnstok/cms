@@ -28,7 +28,6 @@ package ccc.persistence;
 
 import java.security.Principal;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 import ccc.api.core.UserCriteria;
@@ -118,5 +117,5 @@ public interface UserRepository {
      * @param key The key for the metadata values.
      * @return The list of values.
      */
-    List<String> listMetadataValuesWithKey(final String key);
+    Collection<String> listMetadataValuesWithKey(final String key);
 }

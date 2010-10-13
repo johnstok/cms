@@ -31,8 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.persistence.EntityManager;
-
 import ccc.api.core.Comment;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
@@ -61,16 +59,6 @@ public class CommentRepositoryImpl
     public CommentRepositoryImpl(final Repository repo) {
         DBC.require().notNull(repo);
         _repo = repo;
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param em The JPA entity manager for this repository.
-     */
-    public CommentRepositoryImpl(final EntityManager em) {
-        this(new JpaRepository(em));
     }
 
 

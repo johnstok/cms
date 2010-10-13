@@ -27,7 +27,6 @@
 
 package ccc.persistence;
 
-import javax.persistence.EntityManager;
 
 /**
  * API for creating repositories.
@@ -98,26 +97,4 @@ public interface IRepositoryFactory {
      * @return A repository instance.
      */
     SettingsRepository createSettingsRepository();
-
-
-    /**
-     * Factory for {@link RepositoryFactory} objects.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public static final class DEFAULT {
-
-        private DEFAULT() { super(); }
-
-        /**
-         * Create a repository factory.
-         *
-         * @param em The entity manager to use.
-         *
-         * @return A new repository factory.
-         */
-        public static IRepositoryFactory create(final EntityManager em) {
-            return new RepositoryFactory(em);
-        }
-    }
 }

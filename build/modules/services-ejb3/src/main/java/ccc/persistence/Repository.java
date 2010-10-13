@@ -150,4 +150,19 @@ interface Repository {
      */
     void delete(Entity entity);
 
+
+    /**
+     * List zero or more matches for a query - duplicates may be possible.
+     *
+     * @param <T> The type of the resource to be searched for.
+     * @param queryString The query used to perform the search.
+     * @param resultType The class representing the type of the resource.
+     * @param params The query parameters.
+     *
+     * @return A collection of objects of type T.
+     */
+    <T> Collection<T>  nativeQuery(String queryString,
+                                   Class<T> resultType,
+                                   Object... params);
+
 }

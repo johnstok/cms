@@ -26,8 +26,6 @@
  */
 package ccc.persistence;
 
-import javax.persistence.EntityManager;
-
 import ccc.domain.Setting;
 
 
@@ -47,16 +45,6 @@ public class SettingsRepository {
      */
     public SettingsRepository(final Repository repo) {
         _repo = repo;
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param em The JPA entity manager for this repository.
-     */
-    public SettingsRepository(final EntityManager em) {
-        this(new JpaRepository(em));
     }
 
 

@@ -50,7 +50,9 @@ import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
+import ccc.persistence.JpaRepository;
 import ccc.persistence.LogEntryRepository;
+import ccc.persistence.RepositoryFactory;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
 
@@ -78,7 +80,7 @@ abstract class AbstractEJB {
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        _rf = IRepositoryFactory.DEFAULT.create(_em);
+        _rf = new RepositoryFactory(new JpaRepository(_em));
         _audit = _rf.createLogEntryRepo();
         _users = _rf.createUserRepo();
         _resources = _rf.createResourceRepository();
