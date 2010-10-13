@@ -493,7 +493,6 @@ public class ResourceAcceptanceTest
     }
 
 
-
     /**
      * Test.
      */
@@ -522,21 +521,6 @@ public class ResourceAcceptanceTest
         // ASSERT
         assertEquals(1100, list.getTotalCount());
         assertEquals(1100, list.getElements().size());
-    }
-
-
-    /**
-     * Test.
-     */
-    public void testComputeTemplate() {
-
-        // ARRANGE
-
-
-        // ACT
-        fail();
-
-        // ASSERT
     }
 
     // clearWorkingCopy, applyWorkingCopy, history and createWorkingCopy tested
