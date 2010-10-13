@@ -28,4 +28,29 @@
 
 <jboss>
     <unauthenticated-principal>anonymous</unauthenticated-principal>
+    
+    <enterprise-beans>
+        <message-driven>
+            <ejb-name>BroadcastHandlerEJB</ejb-name>
+            <destination-jndi-name>topic/broadcast_${application.prefix}</destination-jndi-name>
+        </message-driven>
+        <session>
+            <ejb-name>Search</ejb-name>
+            <resource-env-ref>
+                <resource-env-ref-name>topic_conn_factory</resource-env-ref-name>
+                <jndi-name>java:/JmsXA</jndi-name>
+            </resource-env-ref>
+            <message-destination-ref>
+                <message-destination-ref-name>topic_broadcast</message-destination-ref-name>
+                <message-destination-usage>Produces</message-destination-usage>
+                <message-destination-link>topic_broadcast_${application.prefix}</message-destination-link>
+            </message-destination-ref>
+        </session>  
+    </enterprise-beans>
+    <assembly-descriptor>
+        <message-destination>
+            <message-destination-name>topic_broadcast_${application.prefix}</message-destination-name>
+            <jndi-name>topic/broadcast_${application.prefix}</jndi-name>
+        </message-destination>
+    </assembly-descriptor>
 </jboss>

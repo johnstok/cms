@@ -352,7 +352,7 @@ public class SimpleLuceneFS
         try {
             _writer = createWriter();
             clearIndex();
-            LOG.info("Staring index update.");
+            LOG.info("Starting index update.");
         } catch (final IOException e) {
             throw new CCException("Failed to start index update.", e);
         } catch (final ParseException e) {
@@ -397,17 +397,17 @@ public class SimpleLuceneFS
                 new Field(
                     "path",
                     path.toString().toLowerCase(_locale),
-                    Field.Store.YES,
+                    Field.Store.NO,
                     Field.Index.NOT_ANALYZED));
             d.add(
                 new Field(
                     "name",
                     name.toString().toLowerCase(_locale),
-                    Field.Store.YES,
+                    Field.Store.NO,
                     Field.Index.NOT_ANALYZED));
 
             addStringField(d, "title", title);
-            addStringsField(d, "tags", tags);
+            addTagsField(d, "tags", tags);
 
             _writer.addDocument(d);
             LOG.debug("Added document.");
@@ -451,18 +451,16 @@ public class SimpleLuceneFS
     }
 
 
-    private void addStringsField(final Document d,
-                                 final String fieldName,
-                                 final Collection<String> fieldValue) {
-        final StringBuilder tagBuilder = new StringBuilder();
+    private void addTagsField(final Document d,
+                              final String fieldName,
+                              final Collection<String> fieldValue) {
         for (final String tag : fieldValue) {
-            if (tagBuilder.length() > 0) {
-                tagBuilder.append(",");
-            }
-            tagBuilder.append(tag);
-        }
-        if (tagBuilder.length()>0) {
-            addStringField(d, fieldName, tagBuilder.toString());
+            d.add(
+                new Field(
+                    fieldName,
+                    tag,
+                    Field.Store.NO,
+                    Field.Index.NOT_ANALYZED));
         }
     }
 
@@ -563,6 +561,7 @@ public class SimpleLuceneFS
             new PerFieldAnalyzerWrapper(new StandardAnalyzer(LUCENE_VERSION));
 
         wrapper.addAnalyzer("id", new KeywordAnalyzer());
+        wrapper.addAnalyzer("tag", new KeywordAnalyzer());
         wrapper.addAnalyzer("path", new KeywordAnalyzer());
         wrapper.addAnalyzer("name", new KeywordAnalyzer());
 

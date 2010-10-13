@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+r * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -26,43 +26,29 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.SEARCH_REINDEX;
-import static ccc.api.types.Permission.SEARCH_SCHEDULE;
-import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static ccc.api.types.Permission.*;
+import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
-import java.util.List;
 
-import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.annotation.Resource.AuthenticationType;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.jms.Topic;
+import javax.jms.TopicConnectionFactory;
 
 import org.apache.log4j.Logger;
 
 import ccc.api.synchronous.SearchEngine;
-import ccc.api.types.Paragraph;
-import ccc.api.types.ParagraphType;
-import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.SearchResult;
 import ccc.api.types.SortOrder;
-import ccc.domain.FileEntity;
-import ccc.domain.PageEntity;
-import ccc.domain.ResourceEntity;
-import ccc.domain.Setting;
-import ccc.persistence.DataRepository;
-import ccc.persistence.IRepositoryFactory;
-import ccc.persistence.ResourceRepository;
-import ccc.persistence.SettingsRepository;
-import ccc.plugins.PluginFactory;
-import ccc.plugins.search.Index;
-import ccc.plugins.search.Indexer;
-import ccc.plugins.search.TextExtractor;
+import ccc.commands.SearchReindexCommand;
+import ccc.search.SearchHelper;
 
 
 /**
@@ -86,22 +72,18 @@ public class SearchEngineEJB
         Logger.getLogger(SearchEngineEJB.class.getName());
 
     @javax.annotation.Resource private EJBContext _context;
-    @PersistenceContext private EntityManager _em;
 
-    private ResourceRepository _resources;
+    @Resource(
+        name="topic_conn_factory",
+        authenticationType=AuthenticationType.CONTAINER,
+        type=TopicConnectionFactory.class)
+    private TopicConnectionFactory _connectionFactory;
+
+    @Resource(name="topic_broadcast")
+    private Topic _broadcast;
 
     /** Constructor. */
     public SearchEngineEJB() { super(); }
-
-
-    /**
-     * Constructor.
-     *
-     * @param rdao The ResourceDao.
-     */
-    public SearchEngineEJB(final ResourceRepository rdao) {
-        _resources = rdao;
-    }
 
 
     /** {@inheritDoc} */
@@ -109,7 +91,12 @@ public class SearchEngineEJB
     public SearchResult find(final String searchTerms,
                              final int resultCount,
                              final int page) {
-        return createIndex().find(searchTerms, resultCount, page);
+        return
+            new SearchHelper(
+                getRepoFactory().createResourceRepository(),
+                getRepoFactory().createDataRepository(),
+                getRepoFactory().createSettingsRepository())
+            .find(searchTerms, resultCount, page);
     }
 
 
@@ -120,38 +107,43 @@ public class SearchEngineEJB
                              final SortOrder order,
                              final int resultCount,
                              final int page) {
-        return createIndex().find(searchTerms, sort, order, resultCount, page);
+        return
+            new SearchHelper(
+                getRepoFactory().createResourceRepository(),
+                getRepoFactory().createDataRepository(),
+                getRepoFactory().createSettingsRepository())
+            .find(searchTerms, sort, order, resultCount, page);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public SearchResult similar(final String uuid,
+                                final int noOfResultsPerPage,
+                                final int page) {
+        return
+            new SearchHelper(
+                getRepoFactory().createResourceRepository(),
+                getRepoFactory().createDataRepository(),
+                getRepoFactory().createSettingsRepository())
+            .similar(uuid, noOfResultsPerPage, page);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void index() {
-        checkPermission(SEARCH_REINDEX);
-
-        final Indexer lucene = createIndexer();
-        try {
-            lucene.startUpdate();
-            indexPages(lucene);
-            indexFiles(lucene);
-            lucene.commitUpdate();
-        } catch (final RuntimeException e) {
-            LOG.error("Error indexing resources.", e);
-            lucene.rollbackUpdate();
-        }
+        execute(
+            new SearchReindexCommand(
+                getRepoFactory(),
+                new JmsProducer(_connectionFactory, _broadcast)));
     }
 
 
-    /**
-     * Run the scheduled action.
-     *
-     * @param timer The timer that called this method.
-     */
-    @Timeout
-    public void run(@SuppressWarnings("unused") final Timer timer) {
-        index();
-    }
 
+    /* ====================================================================
+     * Scheduler implementation.
+     * ================================================================== */
 
     /** {@inheritDoc} */
     @Override
@@ -172,7 +164,7 @@ public class SearchEngineEJB
 
     /** {@inheritDoc} */
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // JEE API.
     public void stop() {
         checkPermission(SEARCH_SCHEDULE);
 
@@ -189,7 +181,7 @@ public class SearchEngineEJB
 
     /** {@inheritDoc} */
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // JEE API.
     public boolean isRunning() {
         checkPermission(SEARCH_SCHEDULE);
 
@@ -203,117 +195,13 @@ public class SearchEngineEJB
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public SearchResult similar(final String uuid,
-                                final int noOfResultsPerPage,
-                                final int page) {
-        return createIndex().similar(uuid, noOfResultsPerPage, page);
-    }
-
-
-    private void indexFiles(final Indexer lucene) {
-        final List<FileEntity> files = _resources.files();
-        for (final FileEntity f : files) {
-            if (canIndex(f)) {
-                if (!PredefinedResourceNames.CONTENT.equals(
-                    f.getRoot().getName().toString())) {
-                    LOG.debug(
-                        "Skipped indexing for non content file : "
-                        +f.getTitle());
-                    continue;
-                }
-
-                final TextExtractor extractor =
-                    lucene.createExtractor(f.getMimeType());
-                if (null==extractor) {
-                    LOG.debug("No extractor for mime-type: "+f.getMimeType());
-                    continue;
-                }
-
-                // Work around JBAS-6615
-                final DataRepository dr =
-                    IRepositoryFactory.DEFAULT.create(_em)
-                    .createDataRepository();
-                dr.retrieve(f.getData(), extractor);
-                final String content =
-                    new PluginFactory().html()
-                        .cleanUpContent(f.getTitle()+" "+extractor.getText());
-                lucene.createDocument(
-                    f.getId(),
-                    f.getAbsolutePath(),
-                    f.getName(),
-                    f.getTitle(),
-                    f.getTags(),
-                    content,
-                    null);
-                LOG.debug("Indexed file: "+f.getTitle());
-            }
-        }
-    }
-
-
-    private void indexPages(final Indexer lucene) {
-        final List<PageEntity> pages = _resources.pages();
-        for (final PageEntity p : pages) {
-            if (canIndex(p)) {
-                lucene.createDocument(
-                    p.getId(),
-                    p.getAbsolutePath(),
-                    p.getName(),
-                    p.getTitle(),
-                    p.getTags(),
-                    extractContent(p),
-                    p.currentRevision().getParagraphs());
-                LOG.debug("Indexed page: "+p.getTitle());
-            }
-        }
-    }
-
-
-    private String extractContent(final PageEntity page) {
-        final StringBuilder sb = new StringBuilder(page.getTitle());
-        for (final Paragraph p : page.currentRevision().getParagraphs()) {
-            if (ParagraphType.TEXT == p.getType() && p.getText() != null) {
-                sb.append(" ");
-                sb.append(
-                    new PluginFactory().html().cleanUpContent(p.getText()));
-            }
-        }
-        return sb.toString();
-    }
-
-
-    private boolean canIndex(final ResourceEntity r) {
-        return r.isVisible() && !r.isSecure() && r.isIndexable();
-    }
-
-
-    @PostConstruct @SuppressWarnings("unused")
-    private void configureCoreData() {
-        _resources =
-            IRepositoryFactory.DEFAULT.create(_em).createResourceRepository();
-    }
-
-
-    private Indexer createIndexer() {
-        return new PluginFactory().createIndexer(getIndexPath());
-    }
-
-
-    private Index createIndex() {
-        return new PluginFactory().createIndex(getIndexPath());
-    }
-
-
-    private String getIndexPath() {
-        final SettingsRepository settings = new SettingsRepository(_em);
-        final Setting indexPath  = settings.find(Setting.Name.LUCENE_INDEX_PATH);
-        if (indexPath == null) {
-            throw new RuntimeException(
-                "No setting for "+Setting.Name.LUCENE_INDEX_PATH);
-        }
-        final String indexPathValue = indexPath.getValue();
-        return indexPathValue;
+    /**
+     * Run the scheduled action.
+     *
+     * @param timer The timer that called this method.
+     */
+    @Timeout
+    public void run(@SuppressWarnings("unused") final Timer timer) {
+        index();
     }
 }

@@ -99,6 +99,8 @@ public enum CommandType {
     // Search
     /** SEARCH_CREATE : CommandType. */
     SEARCH_CREATE,
+    /** SEARCH_INDEX_ALL : CommandType. */
+    SEARCH_INDEX_ALL,
 
     // Alias
     /** ALIAS_CREATE : CommandType. */

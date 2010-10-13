@@ -94,4 +94,11 @@ class RepositoryFactory
     @Override public GroupRepository createGroupRepo() {
         return new GroupRepositoryImpl(_em);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public SettingsRepository createSettingsRepository() {
+        return new SettingsRepository(_em);
+    }
 }

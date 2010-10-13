@@ -35,6 +35,7 @@ import ccc.api.core.Comment;
 import ccc.api.core.Resource;
 import ccc.api.core.User;
 import ccc.api.types.CommandType;
+import ccc.api.types.DBC;
 import ccc.commons.Resources;
 import ccc.domain.ActionEntity;
 import ccc.domain.CommentEntity;
@@ -402,6 +403,22 @@ public abstract class Command<T> {
                 happenedOn,
                 comment.getId(),
                 serializeComment(comment)));
+    }
+
+
+    /**
+     * Check that the current user has ONE OF the specified permissions.
+     *
+     * @param permissions The permissions to check.
+     * @param u           The user to be authorised.
+     */
+    protected void checkPermission(final UserEntity u,
+                                   final String... permissions) {
+        DBC.require().notNull(u);
+        for (final String permission : permissions) {
+            if (u.hasPermission(permission)) { return; }
+        }
+        throw new RuntimeException("Caller unauthorized.");
     }
 
 

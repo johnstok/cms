@@ -55,10 +55,8 @@ AbstractAcceptanceTest {
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testStartStopSearchScheduler() throws Exception {
+    public void testStartStopSearchScheduler() {
 
         // ARRANGE
 
@@ -77,17 +75,14 @@ AbstractAcceptanceTest {
         assertFalse(startedAfterStop);
 
         // FINALLY
-        final int tenSecs = 10000;
-        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
+        delay(); // Allow indexing to complete.
     }
 
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testStartSchedulerIsIdempotent() throws Exception {
+    public void testStartSchedulerIsIdempotent() {
 
         // ARRANGE
 
@@ -103,8 +98,7 @@ AbstractAcceptanceTest {
         // ASSERT
 
         // FINALLY
-        final int tenSecs = 10000;
-        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
+        delay(); // Allow indexing to complete.
     }
 
 
@@ -128,6 +122,7 @@ AbstractAcceptanceTest {
         getCommands().publish(page.getId());
 
         getSearch().index();
+        delay(); // Allow indexing to complete.
 
         // ACT
         final SearchResult result =
@@ -152,6 +147,7 @@ AbstractAcceptanceTest {
         updateMetadata(page);
 
         getSearch().index();
+        delay(); // Allow indexing to complete.
 
         // ACT
         final SearchResult result =
@@ -189,6 +185,7 @@ AbstractAcceptanceTest {
         getCommands().publish(page.getId());
 
         getSearch().index();
+        delay(); // Allow indexing to complete.
 
         // ACT
         final SearchResult result =
@@ -213,6 +210,7 @@ AbstractAcceptanceTest {
         updateMetadata(page);
 
         getSearch().index();
+        delay(); // Allow indexing to complete.
 
         // ACT
         final SearchResult result =
@@ -237,6 +235,7 @@ AbstractAcceptanceTest {
         final String searchTerm = "title:"+page.getTitle();
 
         getSearch().index();
+        delay(); // Allow indexing to complete.
 
         // ACT
         final SearchResult result =
@@ -249,19 +248,14 @@ AbstractAcceptanceTest {
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testTagSearch() throws Exception {
-
-        //  FIXME: Cannot be run more than once
+    public void testTagSearch() {
 
         // ARRANGE
-        final int tenSecs = 10000;
-        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
         final ResourceSummary parent = getCommands().resourceForPath("");
         final ResourceSummary page   = tempPage(parent.getId(), null);
 
-        final String term = "sampleword";
+        final String term = "sampleword"+uid();
 
         final Resource metadata = new Resource();
         metadata.setTitle(page.getTitle());
@@ -279,10 +273,11 @@ AbstractAcceptanceTest {
         getCommands().publish(page.getId());
 
         getSearch().index();
+        delay(); // Allow indexing to complete.
 
         // ACT
         final SearchResult result =
-            getSearch().find("tags:"+term, "title", SortOrder.ASC, 10, 0);
+            getSearch().find("tags:"+term, "title", SortOrder.ASC, 10, 1);
 
         // ASSERT
         assertEquals(1, result.totalResults());
@@ -311,7 +306,9 @@ AbstractAcceptanceTest {
 
         final String searchTerm = "testDate:["+(testDate.getTime()-1000)
         +" TO "+(testDate.getTime()+1000)+"]";
+
         getSearch().index();
+        delay(); // Allow indexing to complete.
 
         // ACT
         final SearchResult result =
@@ -344,7 +341,9 @@ AbstractAcceptanceTest {
         getPages().update(page.getId(), page);
 
         final String searchTerm = "testNumber:["+testInt+".0 TO "+testInt+".0]";
+
         getSearch().index();
+        delay(); // Allow indexing to complete.
 
         // ACT
         final SearchResult result =
@@ -375,7 +374,9 @@ AbstractAcceptanceTest {
         getPages().update(page.getId(), page);
 
         final String searchTerm = "testBoolean"+testInt+":false";
+
         getSearch().index();
+        delay(); // Allow indexing to complete.
 
         // ACT
         final SearchResult result =
@@ -396,5 +397,15 @@ AbstractAcceptanceTest {
         getCommands().lock(page.getId());
         getCommands().updateMetadata(page.getId(), metadata);
         getCommands().publish(page.getId());
+    }
+
+
+    private void delay() {
+        try {
+            final int tenSecs = 10000;
+            Thread.sleep(tenSecs);
+        } catch (final InterruptedException e) {
+            throw new RuntimeException("Delay failed.", e);
+        }
     }
 }

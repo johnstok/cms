@@ -33,6 +33,7 @@ import ccc.persistence.GroupRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.persistence.SettingsRepository;
 import ccc.persistence.UserRepository;
 
 
@@ -45,13 +46,15 @@ public class SimpleRepositoryFactory
     implements
         IRepositoryFactory {
 
-    private ActionRepository _actionRepo;
-    private CommentRepository _commentRepo;
-    private DataRepository _dataRepo;
-    private GroupRepository _groupRepo;
+    private ActionRepository   _actionRepo;
+    private CommentRepository  _commentRepo;
+    private DataRepository     _dataRepo;
+    private GroupRepository    _groupRepo;
     private LogEntryRepository _logEntryRepo;
     private ResourceRepository _resourceRepo;
-    private UserRepository _userRepo;
+    private UserRepository     _userRepo;
+    private SettingsRepository _settingsRepo;
+
 
     /** {@inheritDoc} */
     @Override
@@ -59,11 +62,13 @@ public class SimpleRepositoryFactory
         return _actionRepo;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public CommentRepository createCommentRepo() {
         return _commentRepo;
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -71,11 +76,13 @@ public class SimpleRepositoryFactory
         return _dataRepo;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public GroupRepository createGroupRepo() {
         return _groupRepo;
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -83,16 +90,25 @@ public class SimpleRepositoryFactory
         return _logEntryRepo;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public ResourceRepository createResourceRepository() {
         return _resourceRepo;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public UserRepository createUserRepo() {
         return _userRepo;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public SettingsRepository createSettingsRepository() {
+        return _settingsRepo;
     }
 
 
@@ -163,5 +179,15 @@ public class SimpleRepositoryFactory
      */
     public void setUserRepo(final UserRepository userRepo) {
         _userRepo = userRepo;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param settingsRepo The settingsRepo to set.
+     */
+    public void setSettingsRepo(final SettingsRepository settingsRepo) {
+        _settingsRepo = settingsRepo;
     }
 }

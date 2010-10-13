@@ -93,6 +93,14 @@ public interface IRepositoryFactory {
 
 
     /**
+     * Create an instance of the {@link SettingsRepository} interface.
+     *
+     * @return A repository instance.
+     */
+    SettingsRepository createSettingsRepository();
+
+
+    /**
      * Factory for {@link RepositoryFactory} objects.
      *
      * @author Civic Computing Ltd.
