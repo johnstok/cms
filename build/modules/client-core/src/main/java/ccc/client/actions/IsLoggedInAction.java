@@ -66,7 +66,7 @@ public class IsLoggedInAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return InternalServices.API.getLink(User.Links.CURRENT);
+        return InternalServices.api.getLink(User.Links.CURRENT);
     }
 
 
@@ -74,10 +74,10 @@ public class IsLoggedInAction
     @Override
     protected void onSuccess(final Boolean loggedIn) {
         if (loggedIn.booleanValue()) {
-            InternalServices.WINDOW.enableExitConfirmation();
+            InternalServices.window.enableExitConfirmation();
             loadServices();
         } else {
-            InternalServices.DIALOGS.login().show();
+            InternalServices.dialogs.login().show();
         }
     }
 
@@ -91,7 +91,7 @@ public class IsLoggedInAction
 
     private void loadServices() {
 
-        final API api = InternalServices.API;
+        final API api = InternalServices.api;
 
         final SimpleLatch l = new SimpleLatch(4) {
             /** {@inheritDoc} */
@@ -112,7 +112,7 @@ public class IsLoggedInAction
                                                 USER_ACTIONS.internalAction()) {
                 @Override
                 public void onSuccess(final PagedCollection<User> users) {
-                    InternalServices.USERS = users;
+                    InternalServices.users = users;
                     l.countDown();
                 }});
 
@@ -133,7 +133,7 @@ public class IsLoggedInAction
                 @Override
                 public void onSuccess(
                               final PagedCollection<ActionSummary> actions) {
-                    InternalServices.ACTIONS = actions;
+                    InternalServices.actions = actions;
                     l.countDown();
                 }});
 
@@ -146,7 +146,7 @@ public class IsLoggedInAction
             /** {@inheritDoc} */
             @Override
             protected void execute(final PagedCollection<Comment> comments) {
-                InternalServices.COMMENTS = comments;
+                InternalServices.comments = comments;
                 l.countDown();
             }
         }.execute();
@@ -163,7 +163,7 @@ public class IsLoggedInAction
                                                 USER_ACTIONS.internalAction()) {
                 @Override
                 public void onSuccess(final PagedCollection<Group> groups) {
-                    InternalServices.GROUPS = groups;
+                    InternalServices.groups = groups;
                     l.countDown();
                 }});
 
@@ -174,11 +174,11 @@ public class IsLoggedInAction
                     @Override
                     protected void onSuccess(final User user) {
                         //NO-OP
-                    };
+                    }
                 }.execute();
             }
         };
 
-        InternalServices.TIMERS.scheduleRepeating(runnable, KEEP_ALIVE);
+        InternalServices.timers.scheduleRepeating(runnable, KEEP_ALIVE);
     }
 }

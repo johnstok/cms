@@ -2,6 +2,7 @@ package ccc.client.actions;
 
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
+import ccc.client.core.Action;
 import ccc.client.core.DefaultCallback;
 import ccc.client.core.InternalServices;
 import ccc.client.presenters.CreateUserPresenter;
@@ -19,13 +20,14 @@ final class OpenCreateUserDialog
      * Constructor.
      */
     public OpenCreateUserDialog() {
-        super(OpenCreateUserAction.UI_CONSTANTS.createUser());
+        super(Action.UI_CONSTANTS.createUser());
     }
 
+    /** {@inheritDoc} */
     @Override
     public void onSuccess(final PagedCollection<Group> groups) {
         new CreateUserPresenter(
-            InternalServices.DIALOGS.createUser(
+            InternalServices.dialogs.createUser(
                 groups.getElements()));
     }
 }

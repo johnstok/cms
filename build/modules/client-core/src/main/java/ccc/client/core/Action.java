@@ -38,10 +38,10 @@ import ccc.client.i18n.UIConstants;
 public interface Action {
 
     /** USER_ACTIONS : ActionNameConstants. */
-    ActionNameConstants USER_ACTIONS = I18n.USER_ACTIONS;
+    ActionNameConstants USER_ACTIONS = I18n.userActions;
 
     /** UI_CONSTANTS : UIConstants. */
-    UIConstants UI_CONSTANTS = I18n.UI_CONSTANTS;
+    UIConstants UI_CONSTANTS = I18n.uiConstants;
 
     /**
      * Perform the action.

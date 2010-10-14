@@ -91,7 +91,7 @@ public class CommentTable
      */
     CommentTable() {
 
-        InternalServices.REMOTING_BUS.registerHandler(this);
+        InternalServices.remotingBus.registerHandler(this);
 
         setHeading(UI_CONSTANTS.commentDetails());
         setLayout(new FitLayout());

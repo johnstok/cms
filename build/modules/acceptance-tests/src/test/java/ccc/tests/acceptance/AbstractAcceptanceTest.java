@@ -113,28 +113,28 @@ public abstract class AbstractAcceptanceTest
         api.addLink(API.Links.FOLDERS, "/secure/folders");
         api.addLink(API.Links.FILES, "/secure/files");
         api.addLink(API.Links.FOLDERS, "/secure/folders");
-        InternalServices.API = api;
+        InternalServices.api = api;
 
-        I18n.USER_ACTIONS =
+        I18n.userActions =
             BundleWrapper.wrap(
                 ActionNameConstants.class,
                 "ccc.client.gwt.i18n.GWTActionNameConstants");
         Testing.stub(ActionNameConstants.class);
-        I18n.UI_CONSTANTS =
+        I18n.uiConstants =
             BundleWrapper.wrap(
                 UIConstants.class,
                 "ccc.client.gwt.i18n.GWTUIConstants");
-        I18n.UI_MESSAGES =
+        I18n.uiMessages =
             BundleWrapper.wrap(
                 UIMessages.class,
                 "ccc.client.gwt.i18n.GWTUIMessages");
         WINDOW = new WindowStub();
-        InternalServices.WINDOW = WINDOW;
-        InternalServices.ENCODER = new NormalisingEncoder();
-        InternalServices.SERIALIZERS =
+        InternalServices.window = WINDOW;
+        InternalServices.encoder = new NormalisingEncoder();
+        InternalServices.serializers =
             new SerializerFactory(new ServerTextParser());
 
-        InternalServices.CORE_BUS.registerHandler(
+        InternalServices.coreBus.registerHandler(
             new EventHandler<CoreEvents>() {
                 @Override
                 public void handle(final Event<CoreEvents> event) {
@@ -149,7 +149,7 @@ public abstract class AbstractAcceptanceTest
                 }
             });
 
-        InternalServices.VALIDATOR = new AbstractValidations() {
+        InternalServices.validator = new AbstractValidations() {
             @Override
             public String notValidXML(final String definition) {
                 throw new UnsupportedOperationException("Method not implemented.");
@@ -448,10 +448,10 @@ public abstract class AbstractAcceptanceTest
     @Override
     protected void setUp() {
         _sl   = new ProxyServiceLocator(_hostUrl);
-        InternalServices.EXECUTOR = createExecutor();
+        InternalServices.executor = createExecutor();
         getSecurity().login("migration", "migration");
-        InternalServices.ACTIONS = createActions();
-        InternalServices.GROUPS = createGroups();
+        InternalServices.actions = createActions();
+        InternalServices.groups = createGroups();
     }
 
 
@@ -493,7 +493,7 @@ public abstract class AbstractAcceptanceTest
             LOG.warn("Logout failed.", e);
         }
         _sl = null;
-        InternalServices.EXECUTOR = null;
+        InternalServices.executor = null;
     }
 
     protected void setNoWriteACL(final Resource r, final User u) {

@@ -64,7 +64,7 @@ public class UnlockAction
             _selectionModel
                 .tableSelection()
                 .lock()
-                .build(InternalServices.ENCODER);
+                .build(InternalServices.encoder);
     }
 
 

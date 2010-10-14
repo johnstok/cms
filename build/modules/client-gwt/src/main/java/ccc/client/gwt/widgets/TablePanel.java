@@ -43,13 +43,13 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 public abstract class TablePanel extends ContentPanel {
 
     /** GLOBALS : IGlobals. */
-    protected static final Globals GLOBALS = InternalServices.GLOBALS;
+    protected static final Globals GLOBALS = InternalServices.globals;
 
     /** USER_ACTIONS : ActionNameConstants. */
-    protected static final ActionNameConstants USER_ACTIONS = I18n.USER_ACTIONS;
+    protected static final ActionNameConstants USER_ACTIONS = I18n.userActions;
 
     /** UI_CONSTANTS : UIConstants. */
-    protected static final UIConstants UI_CONSTANTS = I18n.UI_CONSTANTS;
+    protected static final UIConstants UI_CONSTANTS = I18n.uiConstants;
 
     /** PAGING_ROW_COUNT : int. */
     protected static final int PAGING_ROW_COUNT = 20;

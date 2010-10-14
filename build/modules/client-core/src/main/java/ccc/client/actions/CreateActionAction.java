@@ -77,7 +77,7 @@ public final class CreateActionAction
             new Action(
                 _resourceId, _command, _executeAfter, _actionParameters))
         .invoke(
-            InternalServices.ACTIONS,
+            InternalServices.actions,
             new ActionCreatedCallback());
     }
 }

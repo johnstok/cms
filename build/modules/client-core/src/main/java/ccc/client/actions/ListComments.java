@@ -95,8 +95,8 @@ public abstract class ListComments
         params.put("order", new String[] {_order.name()});
 
         return
-            new Link(InternalServices.COMMENTS.getLink("self"))
-            .build(params, InternalServices.ENCODER);
+            new Link(InternalServices.comments.getLink("self"))
+            .build(params, InternalServices.encoder);
     }
 
 

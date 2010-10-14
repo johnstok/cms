@@ -76,7 +76,7 @@ public class EditTextFileDialog
      */
     public EditTextFileDialog() {
 
-        super(I18n.UI_CONSTANTS.edit(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.edit(), InternalServices.globals);
 
         setHeight(DIALOG_HEIGHT);
 
@@ -164,13 +164,13 @@ public class EditTextFileDialog
         final ValidationResult result = new ValidationResult();
 
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _mimePrimaryType.getValue(), _mimePrimaryType.getFieldLabel()));
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _mimeSubType.getValue(), _mimeSubType.getFieldLabel()));
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _cme.getEditorCode(), getUiConstants().content()));
 
         return result;

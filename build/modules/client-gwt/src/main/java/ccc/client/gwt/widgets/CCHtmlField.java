@@ -103,7 +103,7 @@ public class CCHtmlField
         final String fieldText = _editor.getHTML();
         if (null!= fieldText
             && fieldText.length() > Paragraph.MAX_TEXT_LENGTH) {
-            vResult.addError(I18n.UI_MESSAGES.paragraphTooLarge(fieldName));
+            vResult.addError(I18n.uiMessages.paragraphTooLarge(fieldName));
         }
     }
 }

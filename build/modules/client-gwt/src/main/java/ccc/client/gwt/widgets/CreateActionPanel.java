@@ -64,8 +64,8 @@ public class CreateActionPanel
     extends
         LayoutContainer {
 
-    private final Globals _globals = InternalServices.GLOBALS;
-    private final UIConstants _uiConstants = I18n.UI_CONSTANTS;
+    private final Globals _globals = InternalServices.globals;
+    private final UIConstants _uiConstants = I18n.uiConstants;
 
     private final DataList _list = new DataList();
     private final LayoutContainer _parameters = new LayoutContainer();
@@ -116,7 +116,7 @@ public class CreateActionPanel
                             break;
 
                         default:
-                            InternalServices.WINDOW.alert("Unsupported action!");
+                            InternalServices.window.alert("Unsupported action!");
                             return;
                     }
 
@@ -243,7 +243,7 @@ public class CreateActionPanel
 
         /** {@inheritDoc} */
         public void populateForm(final LayoutContainer form) {
-            final UIConstants uiConstants = I18n.UI_CONSTANTS;
+            final UIConstants uiConstants = I18n.uiConstants;
 
             _title.setHtml("<b>"+uiConstants.update()+"</b><br><br><i>"
                 +uiConstants.appliesTheSelectedResourcesWorkingCopy()

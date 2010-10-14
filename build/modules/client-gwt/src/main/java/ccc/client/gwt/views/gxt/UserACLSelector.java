@@ -177,7 +177,7 @@ public class UserACLSelector extends Window {
                         config.getSortField(),
                         order).execute(
                             new DefaultCallback<PagedCollection<User>>(
-                                              I18n.UI_CONSTANTS.updateRoles()) {
+                                              I18n.uiConstants.updateRoles()) {
 
                             @Override
                             public void onSuccess(

@@ -62,7 +62,7 @@ public final class CreatePageAction
     public void execute() {
         new CreatePageCommand(_page)
             .invoke(
-                InternalServices.API,
-                new PageCreatedCallback(I18n.UI_CONSTANTS.createPage()));
+                InternalServices.api,
+                new PageCreatedCallback(I18n.uiConstants.createPage()));
     }
 }

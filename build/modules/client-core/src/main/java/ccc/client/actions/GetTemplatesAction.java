@@ -67,7 +67,8 @@ public class GetTemplatesAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest(final Callback<PagedCollection<Template>> callback) {
+    protected Request getRequest(
+                         final Callback<PagedCollection<Template>> callback) {
         final Map<String, String[]> params = new HashMap<String, String[]>();
         params.put("count", new String[] {"999"});
         params.put("page", new String[] {"1"});
@@ -76,15 +77,16 @@ public class GetTemplatesAction
             new Request(
                 HttpMethod.GET,
                 Globals.API_URL
-                    + new Link(InternalServices.API.templates())
-                    .build(params, InternalServices.ENCODER),
+                    + new Link(InternalServices.api.templates())
+                    .build(params, InternalServices.encoder),
                 "",
                 new CallbackResponseHandler<PagedCollection<Template>>(
                     _name,
                     callback,
                     new Parser<PagedCollection<Template>>() {
                         @Override
-                        public PagedCollection<Template> parse(final Response response) {
+                        public PagedCollection<Template> parse(
+                                                    final Response response) {
                             return readTemplates(response);
                         }}));
     }

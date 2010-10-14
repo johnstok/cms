@@ -46,6 +46,6 @@ public class GwtTest
      */
     public void testGetServices() {
         new GetServicesAction().execute();
-        assertEquals(Alias.COLLECTION, InternalServices.API.aliases());
+        assertEquals(Alias.COLLECTION, InternalServices.api.aliases());
     }
 }

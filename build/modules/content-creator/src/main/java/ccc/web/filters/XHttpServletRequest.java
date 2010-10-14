@@ -90,6 +90,7 @@ class XHttpServletRequest
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked") // Existing API.
     public Enumeration getAttributeNames() {
         return _delegate.getAttributeNames();
     }
@@ -153,6 +154,7 @@ class XHttpServletRequest
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked") // Existing API.
     public Enumeration getHeaderNames() {
         return _delegate.getHeaderNames();
     }
@@ -160,6 +162,7 @@ class XHttpServletRequest
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked") // Existing API.
     public Enumeration getHeaders(final String name) {
         return _delegate.getHeaders(name);
     }
@@ -195,6 +198,7 @@ class XHttpServletRequest
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked") // Existing API.
     public Enumeration getLocales() {
         return _delegate.getLocales();
     }
@@ -223,6 +227,7 @@ class XHttpServletRequest
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked") // Existing API.
     public Map getParameterMap() {
         return _delegate.getParameterMap();
     }
@@ -230,6 +235,7 @@ class XHttpServletRequest
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked") // Existing API.
     public Enumeration getParameterNames() {
         return _delegate.getParameterNames();
     }

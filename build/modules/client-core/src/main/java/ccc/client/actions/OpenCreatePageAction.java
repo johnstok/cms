@@ -55,7 +55,7 @@ public final class OpenCreatePageAction
      * @param selectionModel The selection model to use.
      */
     public OpenCreatePageAction(final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.createPage());
+        super(I18n.uiConstants.createPage());
         _selectionModel = selectionModel;
     }
 
@@ -66,7 +66,7 @@ public final class OpenCreatePageAction
         final ResourceSummary item = _selectionModel.treeSelection();
 
         if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
+            InternalServices.window.alert(UI_CONSTANTS.noFolderSelected());
             return false;
         }
 
@@ -79,7 +79,7 @@ public final class OpenCreatePageAction
     protected String getPath() {
         return
             _selectionModel.treeSelection().delete().build(
-                InternalServices.ENCODER);
+                InternalServices.encoder);
     }
 
 
@@ -87,12 +87,14 @@ public final class OpenCreatePageAction
     @Override
     public void onSuccess(final Folder f) {
         new GetTemplatesAction(UI_CONSTANTS.createPage()).execute(
-            new DefaultCallback<PagedCollection<Template>>(UI_CONSTANTS.createPage()) {
+            new DefaultCallback<PagedCollection<Template>>(
+                                                    UI_CONSTANTS.createPage()) {
 
                 @Override
-                public void onSuccess(final PagedCollection<Template> templates) {
+                public void onSuccess(
+                                  final PagedCollection<Template> templates) {
                     new CreatePagePresenter(
-                        InternalServices.DIALOGS.createPage(
+                        InternalServices.dialogs.createPage(
                             templates.getElements(), _selectionModel.root()),
                         f);
                 }}

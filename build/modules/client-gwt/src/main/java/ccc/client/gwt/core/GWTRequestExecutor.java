@@ -55,7 +55,7 @@ class GWTRequestExecutor
         final ResponseHandler handler = request.getCallback();
 
         final String url =
-            InternalServices.GLOBALS.appURL() + request.getPath();
+            InternalServices.globals.appURL() + request.getPath();
         final RequestBuilder builder =
             new RequestBuilder(getMethod(request.getMethod()), url);
 

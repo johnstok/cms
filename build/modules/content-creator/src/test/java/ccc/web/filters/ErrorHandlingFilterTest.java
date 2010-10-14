@@ -289,7 +289,7 @@ public class ErrorHandlingFilterTest
     }
 
 
-    HttpServletResponse _response;
+    private HttpServletResponse _response;
 
 
     /**
@@ -303,14 +303,20 @@ public class ErrorHandlingFilterTest
 
         private final StringBuilder _sb = new StringBuilder();
 
+        /** {@inheritDoc} */
         @Override
-        public void write(final int b) { _sb.append((char)b); }
+        public void write(final int b) { _sb.append((char) b); }
 
         /** {@inheritDoc} */
         @Override
         public String toString() { return _sb.toString(); }
     }
 
+    /**
+     * Exception indicating the client ended the HTTP connection.
+     *
+     * @author Civic Computing Ltd.
+     */
     private static final class ClientAbortException extends Exception {
         /* No methods. */
     }

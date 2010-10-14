@@ -53,7 +53,7 @@ public final class OpenCreateTextFileAction
      * @param selectionModel The selection model to use.
      */
     public OpenCreateTextFileAction(final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.createTextFile());
+        super(I18n.uiConstants.createTextFile());
         _selectionModel = selectionModel;
     }
 
@@ -64,7 +64,7 @@ public final class OpenCreateTextFileAction
         final ResourceSummary item = _selectionModel.treeSelection();
 
         if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
+            InternalServices.window.alert(UI_CONSTANTS.noFolderSelected());
             return false;
         }
 
@@ -77,7 +77,7 @@ public final class OpenCreateTextFileAction
     protected String getPath() {
         return
             _selectionModel.treeSelection().delete().build(
-                InternalServices.ENCODER);
+                InternalServices.encoder);
     }
 
 
@@ -85,7 +85,7 @@ public final class OpenCreateTextFileAction
     @Override
     public void onSuccess(final Folder f) {
         new CreateTextFilePresenter(
-            InternalServices.DIALOGS.creatTextFile(), f);
+            InternalServices.dialogs.creatTextFile(), f);
     }
 
 

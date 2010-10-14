@@ -50,18 +50,18 @@ public class AboutDialog extends AbstractBaseDialog {
      *
      */
     public AboutDialog() {
-        super(I18n.UI_CONSTANTS.about(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.about(), InternalServices.globals);
 
         setWidth(ABOUT_WIDTH);
         setMinWidth(ABOUT_WIDTH);
         setHeight(ABOUT_HEIGHT);
 
         _version =
-            InternalServices.API.getProps().get(API.CCC_VERSION);
+            InternalServices.api.getProps().get(API.CCC_VERSION);
         _build =
-            InternalServices.API.getProps().get(API.BUILD_NUMBER);
+            InternalServices.api.getProps().get(API.BUILD_NUMBER);
         _application =
-            InternalServices.API.getProps().get(API.APPLICATION_NAME);
+            InternalServices.api.getProps().get(API.APPLICATION_NAME);
 
         writeAboutText();
     }

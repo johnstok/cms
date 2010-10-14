@@ -52,7 +52,7 @@ public final class OpenCreateFolderAction
      * @param selectionModel The selection model to use.
      */
     public OpenCreateFolderAction(final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.createFolder());
+        super(I18n.uiConstants.createFolder());
         _selectionModel = selectionModel;
     }
 
@@ -63,7 +63,7 @@ public final class OpenCreateFolderAction
         final ResourceSummary item = _selectionModel.treeSelection();
 
         if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
+            InternalServices.window.alert(UI_CONSTANTS.noFolderSelected());
             return false;
         }
 
@@ -76,7 +76,7 @@ public final class OpenCreateFolderAction
     protected String getPath() {
         return
             _selectionModel.treeSelection().delete().build(
-                InternalServices.ENCODER);
+                InternalServices.encoder);
     }
 
 
@@ -84,7 +84,7 @@ public final class OpenCreateFolderAction
     @Override
     public void onSuccess(final Resource item) {
         new CreateFolderPresenter(
-            InternalServices.DIALOGS.createFolder(), item);
+            InternalServices.dialogs.createFolder(), item);
     }
 
 

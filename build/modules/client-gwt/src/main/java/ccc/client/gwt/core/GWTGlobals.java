@@ -84,7 +84,7 @@ class GWTGlobals
      * @param userActions The action names to set.
      */
     public static void setUserActions(final ActionNameConstants userActions) {
-        I18n.USER_ACTIONS = userActions;
+        I18n.userActions = userActions;
     }
 
 
@@ -133,7 +133,7 @@ class GWTGlobals
      * @param create The action statuses.
      */
     public static void setActionConstants(final ActionStatusConstants create) {
-        I18n.ACTION_STATUSES = create;
+        I18n.actionStatuses = create;
     }
 
 
@@ -143,6 +143,6 @@ class GWTGlobals
      * @param create The command types.
      */
     public static void setCommandConstants(final CommandTypeConstants create) {
-        I18n.COMMAND_TYPES = create;
+        I18n.commandTypes = create;
     }
 }

@@ -68,7 +68,7 @@ public abstract class GetImagesPagedAction
     public GetImagesPagedAction(final ResourceCriteria criteria,
                                 final int pageNo,
                                 final int pageSize) {
-        super(I18n.UI_CONSTANTS.selectImage(), HttpMethod.POST);
+        super(I18n.uiConstants.selectImage(), HttpMethod.POST);
         _criteria = criteria;
         _pageNo = pageNo;
         _pageSize = pageSize;
@@ -84,8 +84,8 @@ public abstract class GetImagesPagedAction
         params.put("page", new String[] {""+_pageNo});
 
         return
-        Globals.API_URL + new Link(InternalServices.API.images())
-        .build(params, InternalServices.ENCODER);
+        Globals.API_URL + new Link(InternalServices.api.images())
+        .build(params, InternalServices.encoder);
     }
 
     /** {@inheritDoc} */
@@ -96,18 +96,20 @@ public abstract class GetImagesPagedAction
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest(final Callback<PagedCollection<File>> callback) {
+    protected Request getRequest(
+                             final Callback<PagedCollection<File>> callback) {
         return
             new Request(
                 HttpMethod.POST,
                 getPath(),
                 getBody(),
                 new CallbackResponseHandler<PagedCollection<File>>(
-                    I18n.UI_CONSTANTS.selectImage(),
+                    I18n.uiConstants.selectImage(),
                     callback,
                     new Parser<PagedCollection<File>>() {
                         @Override
-                        public PagedCollection<File> parse(final Response response) {
+                        public PagedCollection<File> parse(
+                                                    final Response response) {
                             return readFileSummaries(response);
                         }}));
     }

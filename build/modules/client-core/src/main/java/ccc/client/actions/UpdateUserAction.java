@@ -55,7 +55,7 @@ public class UpdateUserAction
      * @param userDetails The updated user details.
      */
     public UpdateUserAction(final User userDetails) {
-        super(I18n.UI_CONSTANTS.editUser());
+        super(I18n.uiConstants.editUser());
         _userDetails = userDetails;
     }
 
@@ -83,7 +83,7 @@ public class UpdateUserAction
                 getPath(),
                 getBody(),
                 new CallbackResponseHandler<User>(
-                    I18n.UI_CONSTANTS.editUser(),
+                    I18n.uiConstants.editUser(),
                     callback,
                     new Parser<User>() {
                         @Override public User parse(final Response response) {

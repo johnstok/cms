@@ -62,14 +62,14 @@ public final class OpenUpdateMetadataAction
     protected String getPath() {
         final ResourceSummary delegate =
             _selectionModel.tableSelection();
-        return delegate.uriMetadata().build(InternalServices.ENCODER);
+        return delegate.uriMetadata().build(InternalServices.encoder);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final Map<String, String> metadata) {
-        InternalServices.DIALOGS.updateMetadata(
+        InternalServices.dialogs.updateMetadata(
             _selectionModel.tableSelection(),
             metadata.entrySet(),
             _selectionModel)
@@ -80,6 +80,6 @@ public final class OpenUpdateMetadataAction
     /** {@inheritDoc} */
     @Override
     protected Map<String, String> parse(final Response response) {
-        return InternalServices.PARSER.parseStringMap(response.getText());
+        return InternalServices.parser.parseStringMap(response.getText());
     }
 }

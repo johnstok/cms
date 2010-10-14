@@ -66,13 +66,13 @@ class GWTExceptionHandler
         // FIXME Convert type comparison to multiple methods.
         if (e instanceof RemoteException) {
             final RemoteException re = (RemoteException) e;
-            new ErrorDialog(re, action, InternalServices.GLOBALS).show();
+            new ErrorDialog(re, action, InternalServices.globals).show();
         } else if (e instanceof SessionTimeoutException) {
             _window.alert(
-                I18n.UI_CONSTANTS.sessionTimeOutPleaseRestart());
+                I18n.uiConstants.sessionTimeOutPleaseRestart());
         } else {
             GWT.log("An unexpected error occured.", e);
-            new ErrorDialog(e, action, InternalServices.GLOBALS).show();
+            new ErrorDialog(e, action, InternalServices.globals).show();
         }
     }
 }

@@ -58,7 +58,7 @@ public abstract class UpdateCacheDurationAction
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return _resource.duration().build(InternalServices.ENCODER);
+        return _resource.duration().build(InternalServices.encoder);
     }
 
 

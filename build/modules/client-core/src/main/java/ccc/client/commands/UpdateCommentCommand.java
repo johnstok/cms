@@ -56,7 +56,7 @@ public class UpdateCommentCommand
                 path,
                 writeComment(comment),
                 new CallbackResponseHandler<Void>(
-                    I18n.UI_CONSTANTS.updateComment(),
+                    I18n.uiConstants.updateComment(),
                     callback,
                     voidParser()));
 

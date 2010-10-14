@@ -64,7 +64,7 @@ public class UpdateResourceAclAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _resource.acl().build(InternalServices.ENCODER);
+        return _resource.acl().build(InternalServices.encoder);
     }
 
 

@@ -59,7 +59,7 @@ public class GetServicesAction
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final API api) {
-        InternalServices.API = api;
+        InternalServices.api = api;
     }
 
 

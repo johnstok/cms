@@ -59,8 +59,8 @@ public class UpdateFolderAction
     @Override
     public void execute() {
         new UpdateFolderCommand(_folder).invoke(
-            InternalServices.API,
-            new FolderUpdatedCallback(I18n.UI_CONSTANTS.updateFolder()));
+            InternalServices.api,
+            new FolderUpdatedCallback(I18n.uiConstants.updateFolder()));
     }
 
 }

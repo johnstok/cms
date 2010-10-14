@@ -48,7 +48,7 @@ public class ImageChooserDialog
         AbstractBaseDialog {
 
     private final ImageSelectionPanel _imagePanel =
-        new ImageSelectionPanel(InternalServices.ROOTS.getElements());
+        new ImageSelectionPanel(InternalServices.roots.getElements());
 
 
     /**
@@ -57,7 +57,7 @@ public class ImageChooserDialog
      * @param image The trigger field for the image.
      */
     public ImageChooserDialog(final ImageTriggerField image) {
-        super(I18n.UI_CONSTANTS.selectImage(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.selectImage(), InternalServices.globals);
         _imagePanel.setImage(image);
         add(_imagePanel);
         addButton(getCancel());

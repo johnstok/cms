@@ -59,13 +59,14 @@ public abstract class GetRootsAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Globals.API_URL+InternalServices.API.getLink(Folder.Links.ROOTS);
+        return Globals.API_URL+InternalServices.api.getLink(Folder.Links.ROOTS);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest(final Callback<PagedCollection<ResourceSummary>> callback) {
+    protected Request getRequest(
+                 final Callback<PagedCollection<ResourceSummary>> callback) {
         return
             new Request(
                 HttpMethod.GET,
@@ -76,7 +77,8 @@ public abstract class GetRootsAction
                     callback,
                     new Parser<PagedCollection<ResourceSummary>>() {
                         @Override
-                        public PagedCollection<ResourceSummary> parse(final Response response) {
+                        public PagedCollection<ResourceSummary> parse(
+                                                    final Response response) {
                             return parseResourceSummaries(response);
                         }}));
     }

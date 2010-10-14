@@ -41,6 +41,6 @@ public final class OpenUpdateCurrentUserAction
 
     /** {@inheritDoc} */
     @Override public void execute() {
-        InternalServices.DIALOGS.updateCurrentUser().show();
+        InternalServices.dialogs.updateCurrentUser().show();
     }
 }

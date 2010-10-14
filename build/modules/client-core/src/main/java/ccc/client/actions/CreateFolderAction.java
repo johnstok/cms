@@ -71,7 +71,7 @@ public final class CreateFolderAction
         f.setName(new ResourceName(_name));
 
         new CreateFolderCommand(f).invoke(
-            InternalServices.API,
-            new FolderCreatedCallback(I18n.UI_CONSTANTS.createFolder()));
+            InternalServices.api,
+            new FolderCreatedCallback(I18n.uiConstants.createFolder()));
     }
 }

@@ -50,7 +50,7 @@ import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
  */
 public class ResourceNavigator extends ContentPanel {
 
-    private final Globals _globals = InternalServices.GLOBALS;
+    private final Globals _globals = InternalServices.globals;
     private final LeftRightPane _view;
     private final Tree _usersTree;
     private final Tree _actionTree;
@@ -74,7 +74,7 @@ public class ResourceNavigator extends ContentPanel {
 
         setLayout(new AccordionLayout());
         setBodyBorder(false);
-        setHeading(I18n.UI_CONSTANTS.navigator());
+        setHeading(I18n.uiConstants.navigator());
 
         final EnhancedResourceTree enhancedResourceTree =
             new EnhancedResourceTree(root, _view, _globals);
@@ -83,7 +83,7 @@ public class ResourceNavigator extends ContentPanel {
         contentPanel.getHeader().setId(root.getName()+"-navigator");
         contentPanel.setAnimCollapse(false);
         contentPanel.setScrollMode(Scroll.AUTO);
-        contentPanel.setHeading(I18n.UI_CONSTANTS.content());
+        contentPanel.setHeading(I18n.uiConstants.content());
 
         contentPanel.add(enhancedResourceTree.asComponent());
         add(contentPanel);
@@ -100,18 +100,18 @@ public class ResourceNavigator extends ContentPanel {
         if (user.hasPermission(Permission.USER_READ)) {
             final ContentPanel usersPanel = new ContentPanel();
             setPanel(usersPanel, "user-navigator",
-                I18n.UI_CONSTANTS.users(), _usersTree);
+                I18n.uiConstants.users(), _usersTree);
         }
 
         _actionTree = new ActionTree(_view);
         final ContentPanel actionPanel = new ContentPanel();
         setPanel(actionPanel, "action-navigator",
-            I18n.UI_CONSTANTS.actions(), _actionTree);
+            I18n.uiConstants.actions(), _actionTree);
 
         _commentTree = new CommentTree(_view);
         final ContentPanel commentsPanel = new ContentPanel();
         setPanel(commentsPanel, "comment-navigator",
-            I18n.UI_CONSTANTS.comments(), _commentTree);
+            I18n.uiConstants.comments(), _commentTree);
 
         if (_rootTrees.size()>0) { _rootTrees.get(0).showTable(); }
     }

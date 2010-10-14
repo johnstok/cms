@@ -97,15 +97,16 @@ public class ListActionsAction
 
         final String path =
             Globals.API_URL
-            + new Link(InternalServices.ACTIONS.getLink("list"))
-                .build(params, InternalServices.ENCODER);
+            + new Link(InternalServices.actions.getLink("list"))
+                .build(params, InternalServices.encoder);
         return path;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest(final Callback<PagedCollection<ActionSummary>> callback) {
+    protected Request getRequest(
+                     final Callback<PagedCollection<ActionSummary>> callback) {
         return
             new Request(
                 HttpMethod.GET,
@@ -116,7 +117,8 @@ public class ListActionsAction
                     callback,
                     new Parser<PagedCollection<ActionSummary>>() {
                         @Override
-                        public PagedCollection<ActionSummary> parse(final Response response) {
+                        public PagedCollection<ActionSummary> parse(
+                                                    final Response response) {
                             return readActionSummaryCollection(response);
                         }}));
     }

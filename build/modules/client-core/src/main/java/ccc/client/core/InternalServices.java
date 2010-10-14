@@ -47,26 +47,46 @@ import ccc.plugins.s11n.json.TextParser;
  *
  * @author Civic Computing Ltd.
  */
-public class InternalServices {
+public final class InternalServices {
 
-    public static Bus<CoreEvents>  CORE_BUS     = new SimpleBus<CoreEvents>();
-    public static Bus<CommandType> REMOTING_BUS = new SimpleBus<CommandType>();
+    private InternalServices() { super(); }
 
-    public static AbstractValidations VALIDATOR;
-    public static RequestExecutor     EXECUTOR;
-    public static Serializers         SERIALIZERS;
-    public static Encoder             ENCODER;
-    public static ExceptionHandler    EX_HANDLER;
-    public static Window              WINDOW;
-    public static DialogFactory       DIALOGS;
-    public static Globals             GLOBALS;
-    public static Timers              TIMERS;
-    public static TextParser          PARSER;
+    /** coreBus : Bus. */
+    public static Bus<CoreEvents>  coreBus     = new SimpleBus<CoreEvents>();
+    /** remotingBus : Bus. */
+    public static Bus<CommandType> remotingBus = new SimpleBus<CommandType>();
 
-    public static API                              API;
-    public static PagedCollection<ActionSummary>   ACTIONS;
-    public static PagedCollection<Group>           GROUPS;
-    public static PagedCollection<User>            USERS;
-    public static PagedCollection<Comment>         COMMENTS;
-    public static PagedCollection<ResourceSummary> ROOTS;
+    /** validator : AbstractValidations. */
+    public static AbstractValidations validator;
+    /** executor : RequestExecutor. */
+    public static RequestExecutor     executor;
+    /** serializers : Serializers. */
+    public static Serializers         serializers;
+    /** encoder : Encoder. */
+    public static Encoder             encoder;
+    /** exHandler : ExceptionHandler. */
+    public static ExceptionHandler    exHandler;
+    /** window : Window. */
+    public static Window              window;
+    /** dialogs : DialogFactory. */
+    public static DialogFactory       dialogs;
+    /** globals : Globals. */
+    public static Globals             globals;
+    /** timers : Timers. */
+    public static Timers              timers;
+    /** parser : TextParser. */
+    public static TextParser          parser;
+
+    /** api : API. */
+    public static API                              api;
+    /** actions : PagedCollection. */
+    public static PagedCollection<ActionSummary>   actions;
+    /** groups : PagedCollection. */
+    public static PagedCollection<Group>           groups;
+    /** users : PagedCollection. */
+    public static PagedCollection<User>            users;
+    /** comments : PagedCollection. */
+    public static PagedCollection<Comment>         comments;
+    /** roots : PagedCollection. */
+    public static PagedCollection<ResourceSummary> roots;
 }

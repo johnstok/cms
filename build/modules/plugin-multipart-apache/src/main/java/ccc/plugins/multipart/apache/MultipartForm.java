@@ -38,7 +38,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
+import org.apache.commons.fileupload.FileUploadBase
+       .FileSizeLimitExceededException;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 
@@ -234,6 +235,12 @@ public class MultipartForm implements MultipartFormData {
         return _formItems.get(key);
     }
 
+
+    /**
+     * Determine the max size of a file stored in memory.
+     *
+     * @return The max number of bytes, as an int.
+     */
     static int maxInMemorySize() {
         final int defaultValue = 500*1024; // 500kb
         final String propValue = PROPS.getProperty("max-in-memory");
@@ -245,6 +252,12 @@ public class MultipartForm implements MultipartFormData {
         }
     }
 
+
+    /**
+     * Determine the max size of a file that can be handled.
+     *
+     * @return The max number of bytes, as an int.
+     */
     static int maxFileSize() {
         final int defaultValue = 32*1024*1024; //  32mb
         final String propValue = PROPS.getProperty("maxFileSize");

@@ -113,18 +113,18 @@ public class ImageSelectionPanel extends ContentPanel {
         _folderField.setEditable(false);
         _folderField.addListener(Events.TriggerClick,
                                  new FolderListener(roots));
-        toolBar.add(new Text(I18n.UI_CONSTANTS.folder()));
+        toolBar.add(new Text(I18n.uiConstants.folder()));
         toolBar.add(_folderField);
         toolBar.add(new SeparatorToolItem());
 
-        toolBar.add(new Text(I18n.UI_CONSTANTS.nameFilter()));
+        toolBar.add(new Text(I18n.uiConstants.nameFilter()));
 
         toolBar.add(_filter);
         toolBar.add(new SeparatorToolItem());
 
         configSortField();
 
-        toolBar.add(new Text(I18n.UI_CONSTANTS.sortBy()));
+        toolBar.add(new Text(I18n.uiConstants.sortBy()));
         toolBar.add(_sort);
         toolBar.add(new SeparatorToolItem());
 
@@ -166,17 +166,17 @@ public class ImageSelectionPanel extends ContentPanel {
         final ListStore<BaseModelData> sorts = new ListStore<BaseModelData>();
 
         final BaseModelData name = new BaseModelData();
-        name.set("text", I18n.UI_CONSTANTS.name());
+        name.set("text", I18n.uiConstants.name());
         name.set("id", "name");
         sorts.add(name);
 
         final BaseModelData size = new BaseModelData();
-        size.set("text", I18n.UI_CONSTANTS.fileSize());
+        size.set("text", I18n.uiConstants.fileSize());
         size.set("id", "size");
         sorts.add(size);
 
         final BaseModelData date = new BaseModelData();
-        date.set("text", I18n.UI_CONSTANTS.dateCreated());
+        date.set("text", I18n.uiConstants.dateCreated());
         date.set("id", "date_created");
         sorts.add(date);
         _sort.setStore(sorts);
@@ -296,7 +296,7 @@ public class ImageSelectionPanel extends ContentPanel {
         public void execute() {
             execute(
                 new DefaultCallback<PagedCollection<File>>(
-                                           I18n.USER_ACTIONS.internalAction()) {
+                                           I18n.userActions.internalAction()) {
                     @Override
                     public void onSuccess(final PagedCollection<File> images) {
                         final List<BeanModel> results =

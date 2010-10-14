@@ -72,7 +72,7 @@ public final class RenameAction
         new RenameResourceCommand(_name).invoke(
             _resource,
             new ResourceRenamedCallback(
-                I18n.UI_CONSTANTS.rename(),
+                I18n.uiConstants.rename(),
                 _name,
                 _resource.getId(),
                 _newPath));

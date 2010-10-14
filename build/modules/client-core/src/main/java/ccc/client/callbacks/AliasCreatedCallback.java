@@ -55,6 +55,6 @@ public class AliasCreatedCallback extends DefaultCallback<ResourceSummary> {
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.ALIAS_CREATE);
         event.addProperty("resource", newAlias);
-        InternalServices.REMOTING_BUS.fireEvent(event);
+        InternalServices.remotingBus.fireEvent(event);
     }
 }

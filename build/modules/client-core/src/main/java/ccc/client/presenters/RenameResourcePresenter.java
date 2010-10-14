@@ -89,8 +89,8 @@ public class RenameResourcePresenter
             .execute();
 
         } else {
-            InternalServices.WINDOW.alert(
-                I18n.UI_CONSTANTS.resourceNameIsInvalid());
+            InternalServices.window.alert(
+                I18n.uiConstants.resourceNameIsInvalid());
         }
     }
 

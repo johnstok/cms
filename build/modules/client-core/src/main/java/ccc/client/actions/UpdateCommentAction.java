@@ -62,6 +62,6 @@ public final class UpdateCommentAction
         new UpdateCommentCommand().invoke(
             _comment,
             new CommentUpdatedCallback(
-                I18n.UI_CONSTANTS.updateComment(), _comment));
+                I18n.uiConstants.updateComment(), _comment));
     }
 }

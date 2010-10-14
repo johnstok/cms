@@ -129,7 +129,7 @@ public class Response {
         /* Pragma needs to be set to NULL because tomcat is adding
          * "pragma:no-cache" otherwise. See
          * https://issues.apache.org/bugzilla/show_bug.cgi?id=27122 and
-         * http://www.mail-archive.com/tomcat-user@jakarta.apache.org/msg151294.html
+         * http://mail-archive.com/tomcat-user@jakarta.apache.org/msg151294.html
          */
         _headers.put("Pragma", new StringHeader("Pragma", null));
 

@@ -41,8 +41,8 @@ public final class OpenHelpAction
 
     /** {@inheritDoc} */
     public void execute() {
-        InternalServices.WINDOW.openUrl(
-            InternalServices.GLOBALS.appURL()
+        InternalServices.window.openUrl(
+            InternalServices.globals.appURL()
                 +"static/manual/CCC7_UserManual.htm",
             "_blank",
             "height=480,width=640,"

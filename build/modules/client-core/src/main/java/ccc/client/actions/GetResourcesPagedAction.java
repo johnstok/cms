@@ -79,8 +79,8 @@ public abstract class GetResourcesPagedAction
         params.put("page", new String[] {""+_pageNo});
 
         return
-        new Link(InternalServices.API.getLink(Resource.Links.SEARCH))
-        .build(params, InternalServices.ENCODER);
+        new Link(InternalServices.api.getLink(Resource.Links.SEARCH))
+        .build(params, InternalServices.encoder);
     }
 
     /** {@inheritDoc} */

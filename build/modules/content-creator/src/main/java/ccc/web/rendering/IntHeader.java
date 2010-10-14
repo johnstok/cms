@@ -64,9 +64,10 @@ public class IntHeader
     @Override
     public int hashCode() {
         final int prime = 31;
+        final int shift = 32;
         int result = 1;
         result = prime * result + ((_name == null) ? 0 : _name.hashCode());
-        result = prime * result + (int) (_value ^ (_value >>> 32));
+        result = prime * result + (int) (_value ^ (_value >>> shift));
         return result;
     }
 

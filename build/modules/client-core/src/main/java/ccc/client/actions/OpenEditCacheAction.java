@@ -62,7 +62,7 @@ public class OpenEditCacheAction
     @Override
     protected void onSuccess(final Duration duration) {
         final LegacyView dialog =
-            InternalServices.DIALOGS.editCaching(
+            InternalServices.dialogs.editCaching(
                 _selectionModel.tableSelection(), duration);
         dialog.show();
     }
@@ -73,7 +73,7 @@ public class OpenEditCacheAction
     protected String getPath() {
         final ResourceSummary delegate =
             _selectionModel.tableSelection();
-        return delegate.duration().build(InternalServices.ENCODER);
+        return delegate.duration().build(InternalServices.encoder);
     }
 
 

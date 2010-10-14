@@ -38,6 +38,9 @@ import org.hibernate.dialect.SQLServerDialect;
  */
 public class UnicodeSQLServerDialect extends SQLServerDialect{
 
+    /**
+     * Constructor.
+     */
     public UnicodeSQLServerDialect() {
       super();
       registerColumnType(Types.CHAR, "nchar(1)");

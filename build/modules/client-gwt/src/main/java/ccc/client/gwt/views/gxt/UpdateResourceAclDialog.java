@@ -111,8 +111,8 @@ public class UpdateResourceAclDialog
     public UpdateResourceAclDialog(final ResourceSummary resource,
                                    final ACL acl,
                                    final Collection<Group> allGroups) {
-        super(I18n.UI_CONSTANTS.updateRoles(),
-            InternalServices.GLOBALS);
+        super(I18n.uiConstants.updateRoles(),
+            InternalServices.globals);
         _resource = resource;
         _acl = acl;
         _allGroups = allGroups;
@@ -133,7 +133,7 @@ public class UpdateResourceAclDialog
             // FIXME: remove these calls.
             new GetUserAction(e.user())
             .execute(
-                new DefaultCallback<User>(I18n.UI_CONSTANTS.updateRoles()) {
+                new DefaultCallback<User>(I18n.uiConstants.updateRoles()) {
                     @Override public void onSuccess(final User user) {
                         final BeanModel d =
                             DataBinding.bindUserSummary(user);
@@ -284,7 +284,7 @@ public class UpdateResourceAclDialog
         final ColumnConfig rwColumn =
             new ColumnConfig(
                 "rwid",
-                I18n.UI_CONSTANTS.mode(),
+                I18n.uiConstants.mode(),
                 50);
         rwColumn.setEditor(editor);
         return rwColumn;

@@ -126,7 +126,7 @@ public class CreatePageDialog
      */
     public CreatePageDialog(final Collection<Template> list,
                             final ResourceSummary targetRoot) {
-        super(I18n.UI_CONSTANTS.createPage(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.createPage(), InternalServices.globals);
         _targetRoot = targetRoot;
 
         _secondWizardPage = new EditPagePanel(null, _targetRoot);
@@ -266,7 +266,7 @@ public class CreatePageDialog
     /** {@inheritDoc} */
     @Override
     public void alert(final String message) {
-        InternalServices.WINDOW.alert(message);
+        InternalServices.window.alert(message);
     }
 
     /** {@inheritDoc} */

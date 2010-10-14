@@ -57,7 +57,7 @@ public abstract class DefaultCallback<T>
     /** {@inheritDoc} */
     @Override
     public void onFailure(final Throwable throwable) {
-        InternalServices.CORE_BUS.fireEvent(
+        InternalServices.coreBus.fireEvent(
             new Event<CoreEvents>(CoreEvents.ERROR)
                 .addProperty("exception", throwable)
                 .addProperty("name",      _actionName));

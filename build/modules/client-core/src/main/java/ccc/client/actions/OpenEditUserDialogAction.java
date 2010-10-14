@@ -72,7 +72,7 @@ public class OpenEditUserDialogAction
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final User delta) {
-        InternalServices.DIALOGS.editUser(delta, _groups).show();
+        InternalServices.dialogs.editUser(delta, _groups).show();
     }
 
 

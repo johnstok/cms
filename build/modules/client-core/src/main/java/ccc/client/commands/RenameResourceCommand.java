@@ -68,7 +68,7 @@ public class RenameResourceCommand
                 getBaseUrl() + resource.rename().build(getEncoder()),
                 _name,
                 new CallbackResponseHandler<Void>(
-                    I18n.UI_CONSTANTS.rename(),
+                    I18n.uiConstants.rename(),
                     callback,
                     new Parser<Void>() {
                         @Override public Void parse(final Response response) {

@@ -62,7 +62,7 @@ public class ClearWorkingCopyAction
         new ClearWcCommand().invoke(
             rs,
             new WCClearedCallback(
-                I18n.UI_CONSTANTS.deleteWorkingCopy(),
+                I18n.uiConstants.deleteWorkingCopy(),
                 rs));
     }
 }

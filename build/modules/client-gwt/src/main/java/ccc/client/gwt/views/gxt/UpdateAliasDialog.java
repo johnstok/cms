@@ -64,7 +64,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
     public UpdateAliasDialog(final ResourceSummary alias,
                              final String targetName,
                              final ResourceSummary targetRoot) {
-        super(I18n.UI_CONSTANTS.updateAlias(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.updateAlias(), InternalServices.globals);
 
         _targetName = new ResourceTriggerField(targetRoot);
         _alias = alias;
@@ -94,14 +94,14 @@ public class UpdateAliasDialog extends AbstractEditDialog {
 
                 final ValidationResult vr = new ValidationResult();
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _aliasName.getValue(), _aliasName.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _targetName.getValue(), _targetName.getFieldLabel()));
 
                 if (!vr.isValid()) {
-                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    InternalServices.window.alert(vr.getErrorText());
                     return;
                 }
 

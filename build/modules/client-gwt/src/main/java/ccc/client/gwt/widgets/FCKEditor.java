@@ -70,7 +70,7 @@ import com.google.gwt.user.client.ui.Frame;
 public class FCKEditor extends LayoutContainer {
 
     private static final int HTML_HEIGHT            = 30;
-    private final UIConstants         _uiConstants  = I18n.UI_CONSTANTS;
+    private final UIConstants         _uiConstants  = I18n.uiConstants;
     private final Frame               _editorFrame  = new Frame();
     private final ToggleButton        _toggleButton = new ToggleButton();
     private final HiddenField<String> _inputBox     = new HiddenField<String>();
@@ -229,7 +229,7 @@ public class FCKEditor extends LayoutContainer {
                                  final boolean openInNew) {
 
         ResourceSummary rs = null;
-        for (final ResourceSummary rr : InternalServices.ROOTS.getElements()) {
+        for (final ResourceSummary rr : InternalServices.roots.getElements()) {
             if (rr.getName().toString().equals("content")) {
                 rs = rr;
             }

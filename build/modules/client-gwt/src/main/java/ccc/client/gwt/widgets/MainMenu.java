@@ -79,8 +79,8 @@ public class MainMenu
 
     private static final String CONTENT = "content";
 
-    private final Globals _globals = InternalServices.GLOBALS;
-    private final UIConstants _constants = I18n.UI_CONSTANTS;
+    private final Globals _globals = InternalServices.globals;
+    private final UIConstants _constants = I18n.uiConstants;
     private final User _user;
 
     /**
@@ -166,7 +166,7 @@ public class MainMenu
                     rootMenu.removeAll();
 
                     ResourceSummary root = null;
-                    for (final ResourceSummary rr : InternalServices.ROOTS.getElements()) {
+                    for (final ResourceSummary rr : InternalServices.roots.getElements()) {
                         if (rr.getName().toString().equals("content")) {
                             root = rr;
                         }
@@ -290,7 +290,7 @@ public class MainMenu
                         sb.append(_constants.publishedBy()
                             +" "+root.getPublishedBy()+"\n");
                     }
-                    InternalServices.WINDOW.alert(sb.toString());
+                    InternalServices.window.alert(sb.toString());
                 }
 
             });

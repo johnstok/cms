@@ -40,5 +40,5 @@ public final class OpenAboutAction
         Action {
 
     /** {@inheritDoc} */
-    @Override public void execute() { InternalServices.DIALOGS.about().show(); }
+    @Override public void execute() { InternalServices.dialogs.about().show(); }
 }

@@ -56,9 +56,9 @@ public final class OpenCreateTemplateAction
     public void execute() {
         final ResourceSummary item = _selectionModel.treeSelection();
         if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
+            InternalServices.window.alert(UI_CONSTANTS.noFolderSelected());
         } else {
-            InternalServices.DIALOGS.createTemplate(
+            InternalServices.dialogs.createTemplate(
                 item.getId(),
                 _selectionModel)
             .show();

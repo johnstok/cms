@@ -102,7 +102,7 @@ public class FileUpload extends CccApp {
     /**
      * Upload a file.
      *
-     * @throws IOException
+     * @throws IOException If the upload fails.
      */
     public void run() throws IOException {
 
@@ -148,7 +148,8 @@ public class FileUpload extends CccApp {
                     try {
                         final UUID childFolder = server.createFolder(
                             parentId, child.getName(), publish);
-                        recurse(server, childFolder, child, includeHidden, publish);
+                        recurse(
+                            server, childFolder, child, includeHidden, publish);
                     } catch (final CCException e) {
                         LOG.warn(
                             "Failed to create folder '"

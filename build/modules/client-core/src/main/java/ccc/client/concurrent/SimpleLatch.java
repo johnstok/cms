@@ -49,6 +49,9 @@ public abstract class SimpleLatch {
         _count = count;
     }
 
+    /**
+     * Count down towards completion of the latch.
+     */
     public synchronized void countDown() {
         _count--;
         if (0==_count) {
@@ -56,5 +59,8 @@ public abstract class SimpleLatch {
         }
     }
 
+    /**
+     * Perform the laych's completion behaviour.
+     */
     protected abstract void complete();
 }

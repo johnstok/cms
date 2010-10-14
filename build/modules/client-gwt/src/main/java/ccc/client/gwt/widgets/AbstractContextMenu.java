@@ -46,8 +46,8 @@ public class AbstractContextMenu
     extends
         Menu {
 
-    private final Globals _globals = InternalServices.GLOBALS;
-    private final UIConstants _constants = I18n.UI_CONSTANTS;
+    private final Globals _globals = InternalServices.globals;
+    private final UIConstants _constants = I18n.uiConstants;
 
 
     /**

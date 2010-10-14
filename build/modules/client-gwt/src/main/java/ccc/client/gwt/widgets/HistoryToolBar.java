@@ -45,7 +45,7 @@ public class HistoryToolBar
     extends
         AbstractToolBar {
 
-    private final UIConstants _constants = I18n.UI_CONSTANTS;
+    private final UIConstants _constants = I18n.uiConstants;
     private final HistoryDialog _historyDialog;
 
     /**

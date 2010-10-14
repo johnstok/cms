@@ -55,8 +55,8 @@ public class ResourceSelectionDialog extends Window {
     private final ResourceTree _tree;
 
     private final TabPanel tabPanel = new TabPanel();
-    private final TabItem treeTab = new TabItem(I18n.UI_CONSTANTS.tree());
-    private final TabItem searchTab = new TabItem(I18n.UI_CONSTANTS.search());
+    private final TabItem treeTab = new TabItem(I18n.uiConstants.tree());
+    private final TabItem searchTab = new TabItem(I18n.uiConstants.search());
     private final SearchResourceTable tt;
 
 
@@ -69,7 +69,7 @@ public class ResourceSelectionDialog extends Window {
                                    final ResourceType type) {
         setModal(true);
         setBodyStyle("backgroundColor: white;");
-        setHeading(I18n.UI_CONSTANTS.selectResource());
+        setHeading(I18n.uiConstants.selectResource());
         setWidth(DIALOG_WIDTH);
         setMinWidth(Globals.MIN_WIDTH);
         setHeight(DIALOG_HEIGHT);
@@ -89,7 +89,7 @@ public class ResourceSelectionDialog extends Window {
         treeTab.add(_tree.asComponent());
 
         final Button save = new Button(
-            I18n.UI_CONSTANTS.save(),
+            I18n.uiConstants.save(),
             new SelectionListener<ButtonEvent>() {
                 @Override public void componentSelected(final ButtonEvent ce) {
                     hide();

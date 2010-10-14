@@ -50,9 +50,9 @@ public abstract class RemotingAction<T>
     private String            _actionName;
     private HttpMethod        _method;
 
-    private RequestExecutor   _executor    = InternalServices.EXECUTOR;
-    private Encoder           _encoder     = InternalServices.ENCODER;
-    private Bus<CommandType>  _bus         = InternalServices.REMOTING_BUS;
+    private RequestExecutor   _executor    = InternalServices.executor;
+    private Encoder           _encoder     = InternalServices.encoder;
+    private Bus<CommandType>  _bus         = InternalServices.remotingBus;
 
 
     /**
@@ -93,6 +93,11 @@ public abstract class RemotingAction<T>
     }
 
 
+    /**
+     * Execute this action handling the response with the specified callback.
+     *
+     * @param callback The callback to handle the response.
+     */
     public void execute(final Callback<T> callback) {
         if (!beforeExecute()) { return; }
         _executor.invokeRequest(getRequest(callback));
@@ -106,7 +111,7 @@ public abstract class RemotingAction<T>
      *
      * @return A reference to 'this'.
      */
-    public RemotingAction setExecutor(final RequestExecutor executor) {
+    public RemotingAction<T> setExecutor(final RequestExecutor executor) {
         _executor = DBC.require().notNull(executor);
         return this;
     }
@@ -114,6 +119,8 @@ public abstract class RemotingAction<T>
 
     /**
      * Get the HTTP request for this action.
+     *
+     * @param callback the callback the request will notify.
      *
      * @return The request for this remote action.
      */
@@ -132,6 +139,13 @@ public abstract class RemotingAction<T>
     }
 
 
+    /**
+     * Parse a response.
+     *
+     * @param response The response to parse.
+     *
+     * @return The parsed result.
+     */
     @Deprecated
     protected T parse(final Response response) {
         throw new UnsupportedOperationException("You must override parse()");
@@ -157,7 +171,7 @@ public abstract class RemotingAction<T>
      */
     @Deprecated
     protected void onFailure(final Throwable throwable) {
-        InternalServices.EX_HANDLER.unexpectedError(throwable, getActionName());
+        InternalServices.exHandler.unexpectedError(throwable, getActionName());
     }
 
 

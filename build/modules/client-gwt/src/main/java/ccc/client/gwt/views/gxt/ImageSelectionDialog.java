@@ -65,7 +65,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
 
     private final String _elementid;
     private final ImageSelectionPanel _imagePanel =
-        new ImageSelectionPanel(InternalServices.ROOTS.getElements());
+        new ImageSelectionPanel(InternalServices.roots.getElements());
 
     private String _uuid = null;
 
@@ -88,8 +88,8 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                                 final String alt,
                                 final String title,
                                 final String cccId) {
-        super(I18n.UI_CONSTANTS.selectImage(),
-            InternalServices.GLOBALS);
+        super(I18n.uiConstants.selectImage(),
+            InternalServices.globals);
         setLayout(new RowLayout());
         _elementid = elementid;
         if (cccId != null
@@ -112,7 +112,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                 if (md != null) {
                     final String path = md.<File>getBean().getPath();
                     final String appContext =
-                        InternalServices.GLOBALS.getSetting(
+                        InternalServices.globals.getSetting(
                             API.APPLICATION_CONTEXT);
                     _urlField.setValue(appContext + path);
                     _titleField.setValue(md.<File>getBean().getTitle());

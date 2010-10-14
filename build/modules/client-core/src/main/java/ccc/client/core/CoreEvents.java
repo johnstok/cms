@@ -28,10 +28,11 @@ package ccc.client.core;
 
 
 /**
- * TODO: Add a description for this type.
+ * Event types allowed on the UI core bus.
  *
  * @author Civic Computing Ltd.
  */
 public enum CoreEvents {
+    /** ERROR : CoreEvents. */
     ERROR;
 }

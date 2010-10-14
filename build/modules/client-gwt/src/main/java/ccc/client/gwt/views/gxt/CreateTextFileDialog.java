@@ -78,8 +78,8 @@ public class CreateTextFileDialog
      */
     public CreateTextFileDialog() {
 
-        super(I18n.UI_CONSTANTS.createTextFile(),
-            InternalServices.GLOBALS);
+        super(I18n.uiConstants.createTextFile(),
+            InternalServices.globals);
 
         setHeight(DIALOG_HEIGHT);
 
@@ -168,19 +168,19 @@ public class CreateTextFileDialog
         final ValidationResult result = new ValidationResult();
 
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _fileName.getValue(), _fileName.getFieldLabel()));
         result.addError(
-            VALIDATOR.notValidResourceName(
+            validator.notValidResourceName(
                 _fileName.getValue(), _fileName.getFieldLabel()));
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _mimePrimaryType.getValue(), _mimePrimaryType.getFieldLabel()));
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _mimeSubType.getValue(), _mimeSubType.getFieldLabel()));
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _cme.getEditorCode(), getUiConstants().content()));
 
         return result;

@@ -54,7 +54,7 @@ public class UserTree extends Tree {
 
     private final UserTable _userTable = new UserTable();
     private final GroupTable _groupTable = new GroupTable();
-    private final UIConstants _constants = I18n.UI_CONSTANTS;
+    private final UIConstants _constants = I18n.uiConstants;
     private final LeftRightPane _view;
     private final ModelData _users = getNewItem(_constants.users(), USERS);
 
@@ -115,7 +115,7 @@ public class UserTree extends Tree {
     @Override
     public void showTable() {
         new ListGroups(1, Globals.MAX_FETCH, "name", SortOrder.ASC).execute(
-            new DefaultCallback<PagedCollection<Group>>(I18n.USER_ACTIONS.internalAction()) {
+            new DefaultCallback<PagedCollection<Group>>(I18n.userActions.internalAction()) {
                 @Override public void onSuccess(final PagedCollection<Group> groups) {
                     _store.removeAll(_users);
                     for (final Group group : groups.getElements()) {

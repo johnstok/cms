@@ -62,7 +62,7 @@ public class UserMetadataDialog extends AbstractEditDialog {
      * @param user The user.
      */
     public UserMetadataDialog(final User user) {
-        super(I18n.UI_CONSTANTS.metadata(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.metadata(), InternalServices.globals);
         setHeight(HEIGHT);
         _user = user;
 
@@ -91,11 +91,11 @@ public class UserMetadataDialog extends AbstractEditDialog {
 
                 final ValidationResult vr = new ValidationResult();
                 vr.addError(
-                    VALIDATOR.validateMetadataValues(
+                    validator.validateMetadataValues(
                         _metadataPanel.currentMetadata()));
 
                 if (!vr.isValid()) {
-                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    InternalServices.window.alert(vr.getErrorText());
                     return;
                 }
 
@@ -110,6 +110,6 @@ public class UserMetadataDialog extends AbstractEditDialog {
         _user.setMetadata(metadata);
         new UpdateUserAction(_user).execute(
             new HideDialogCallback<User>(
-                I18n.UI_CONSTANTS.editUser(), UserMetadataDialog.this));
+                I18n.uiConstants.editUser(), UserMetadataDialog.this));
     }
 }

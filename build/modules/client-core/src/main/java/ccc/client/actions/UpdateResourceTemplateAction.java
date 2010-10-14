@@ -61,7 +61,7 @@ public class UpdateResourceTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _resource.uriTemplate().build(InternalServices.ENCODER);
+        return _resource.uriTemplate().build(InternalServices.encoder);
     }
 
 
@@ -77,7 +77,7 @@ public class UpdateResourceTemplateAction
             new Event<CommandType>(CommandType.RESOURCE_CHANGE_TEMPLATE);
         event.addProperty("resource", _resource.getId());
         event.addProperty("template", _resource.getTemplate());
-        InternalServices.REMOTING_BUS.fireEvent(event);
+        InternalServices.remotingBus.fireEvent(event);
     }
 
 

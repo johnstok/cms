@@ -74,9 +74,9 @@ public class GroupViewImpl
      * @param globals The globals implementation.
      */
     public GroupViewImpl(final Globals globals) {
-        super(I18n.UI_CONSTANTS.createGroup(), globals);
+        super(I18n.uiConstants.createGroup(), globals);
 
-        _name.setFieldLabel(I18n.UI_CONSTANTS.name());
+        _name.setFieldLabel(I18n.uiConstants.name());
         _name.setAllowBlank(false);
         addField(_name);
 
@@ -87,7 +87,7 @@ public class GroupViewImpl
             _permGroup.add(cb);
         }
         _permGroup.setOrientation(Orientation.VERTICAL);
-        _permGroup.setFieldLabel(I18n.UI_CONSTANTS.permissions());
+        _permGroup.setFieldLabel(I18n.uiConstants.permissions());
 
         addField(_permGroup);
     }
@@ -163,7 +163,7 @@ public class GroupViewImpl
         final ValidationResult result = new ValidationResult();
 
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _name.getValue(), _name.getFieldLabel()));
 
         return result;
@@ -173,6 +173,6 @@ public class GroupViewImpl
     /** {@inheritDoc} */
     @Override
     public void alert(final String message) {
-        InternalServices.WINDOW.alert(message);
+        InternalServices.window.alert(message);
     }
 }

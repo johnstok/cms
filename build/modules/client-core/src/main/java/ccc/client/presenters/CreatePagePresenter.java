@@ -26,7 +26,7 @@
  */
 package ccc.client.presenters;
 
-import static ccc.client.core.InternalServices.VALIDATOR;
+import static ccc.client.core.InternalServices.validator;
 
 import java.util.Set;
 import java.util.UUID;
@@ -82,14 +82,14 @@ public class CreatePagePresenter
     public void save() {
         final ValidationResult vr = getView().getValidationResult();
         vr.addError(
-            VALIDATOR.notEmpty(
-                getView().getName(), I18n.UI_CONSTANTS.name()));
+            validator.notEmpty(
+                getView().getName(), I18n.uiConstants.name()));
         vr.addError(
-            VALIDATOR.notEmpty(
-                getView().getResourceTitle(), I18n.UI_CONSTANTS.title()));
+            validator.notEmpty(
+                getView().getResourceTitle(), I18n.uiConstants.title()));
         vr.addError(
-            VALIDATOR.notValidResourceName(
-                getView().getName(), I18n.UI_CONSTANTS.name()));
+            validator.notValidResourceName(
+                getView().getName(), I18n.uiConstants.name()));
 
 
         if (vr.isValid()) {
@@ -99,7 +99,7 @@ public class CreatePagePresenter
             final Template tData = getView().getSelectedTemplate();
 
             if (tData == null) {
-                getView().alert(I18n.UI_CONSTANTS.noTemplateChosen());
+                getView().alert(I18n.uiConstants.noTemplateChosen());
                 return;
             }
             p.setTemplate(tData.getId());

@@ -59,7 +59,7 @@ public class UpdateWorkingCopyAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _workingCopy.workingCopy().build(InternalServices.ENCODER);
+        return _workingCopy.workingCopy().build(InternalServices.encoder);
     }
 
 

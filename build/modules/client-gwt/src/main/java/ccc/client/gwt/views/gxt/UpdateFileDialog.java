@@ -72,8 +72,8 @@ public class UpdateFileDialog extends AbstractEditDialog {
      * @param file The file to update.
      */
     public UpdateFileDialog(final ResourceSummary file) {
-        super(I18n.UI_CONSTANTS.updateFile(),
-            InternalServices.GLOBALS);
+        super(I18n.uiConstants.updateFile(),
+            InternalServices.globals);
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
         getPanel().setAction(Globals.API_URL + file.selfBinary());
@@ -112,7 +112,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
 
                     if (
                         SessionTimeoutException.isTimedout(response)) {
-                        InternalServices.EX_HANDLER.unexpectedError(
+                        InternalServices.exHandler.unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             getUiConstants().updateFile());
 
@@ -122,7 +122,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
 
                         // Error.
                         try {
-                            InternalServices.EX_HANDLER.unexpectedError(
+                            InternalServices.exHandler.unexpectedError(
                                 new RemoteException(
                                     _s11n.readFailure(response)),
                                 getUiConstants().uploadFile());

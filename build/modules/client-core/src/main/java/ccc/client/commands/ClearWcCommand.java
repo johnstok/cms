@@ -54,10 +54,10 @@ public class ClearWcCommand
         final Request r =
             new Request(
                 HttpMethod.DELETE,
-                getBaseUrl() + subject.wc().build(InternalServices.ENCODER),
+                getBaseUrl() + subject.wc().build(InternalServices.encoder),
                 "",
                 new CallbackResponseHandler<Void>(
-                    I18n.UI_CONSTANTS.deleteWorkingCopy(),
+                    I18n.uiConstants.deleteWorkingCopy(),
                     callback,
                     new Parser<Void>() {
                         @Override public Void parse(final Response response) {

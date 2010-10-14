@@ -74,7 +74,7 @@ class GWTWindow
     /** {@inheritDoc} */
     @Override
     public void redirectTo(final String relativeURL) {
-        Window.Location.assign(InternalServices.GLOBALS.hostURL()+relativeURL);
+        Window.Location.assign(InternalServices.globals.hostURL()+relativeURL);
     }
 
 
@@ -118,7 +118,7 @@ class GWTWindow
         /** {@inheritDoc} */
         @Override
         public void onWindowClosing(final ClosingEvent event) {
-            event.setMessage(I18n.UI_CONSTANTS.exitWarning());
+            event.setMessage(I18n.uiConstants.exitWarning());
         }
     }
 

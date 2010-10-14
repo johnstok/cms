@@ -85,11 +85,16 @@ public class CreateAliasPresenter
                 new ResourceName(getView().getAliasName())) {
                 @Override protected void execute(final boolean nameExists) {
                     if (nameExists) {
-                        InternalServices.WINDOW.alert(
-                            I18n.UI_MESSAGES.
+                        InternalServices.window.alert(
+                            I18n.uiMessages.
                             nameExistsInFolder(getView().getAliasName()));
                     } else {
-                        createAlias().run();
+                        final Alias a = new Alias();
+                        a.setParent(getView().getParent2().getId());
+                        a.setName(new ResourceName(getView().getAliasName()));
+                        a.setTargetId(getModel().getId());
+
+                        new CreateAliasAction(a).execute();
                     }
 
                 }
@@ -97,19 +102,6 @@ public class CreateAliasPresenter
         } else {
             getView().alert(vr.getErrorText());
         }
-    }
-
-    private Runnable createAlias() {
-        return new Runnable() {
-            public void run() {
-                final Alias a = new Alias();
-                a.setParent(getView().getParent2().getId());
-                a.setName(new ResourceName(getView().getAliasName()));
-                a.setTargetId(getModel().getId());
-
-                new CreateAliasAction(a).execute();
-            }
-        };
     }
 
 

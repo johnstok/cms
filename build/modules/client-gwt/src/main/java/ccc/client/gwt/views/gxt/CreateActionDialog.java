@@ -69,7 +69,7 @@ public class CreateActionDialog
      *
      */
     public CreateActionDialog() {
-        super(I18n.UI_CONSTANTS.createAction(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.createAction(), InternalServices.globals);
 
 
         addCard(_createAction);
@@ -97,7 +97,7 @@ public class CreateActionDialog
     private static class DateTimePicker extends LayoutContainer {
         private final DateField _date = new DateField();
         private final TimeField _time = new TimeField();
-        private static final UIConstants UICONSTANTS = I18n.UI_CONSTANTS;
+        private static final UIConstants UICONSTANTS = I18n.uiConstants;
 
         DateTimePicker() {
             setLayout(new FormLayout());
@@ -143,7 +143,7 @@ public class CreateActionDialog
     /** {@inheritDoc} */
     @Override
     public void alert(final String message) {
-        InternalServices.WINDOW.alert(message);
+        InternalServices.window.alert(message);
     }
 
     /** {@inheritDoc} */

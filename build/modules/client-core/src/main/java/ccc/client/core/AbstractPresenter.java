@@ -57,7 +57,7 @@ public abstract class AbstractPresenter<T extends View<? extends Editable>, U>
                              final U model) {
         _view = view;
         _model = model;
-        InternalServices.REMOTING_BUS.registerHandler(this);
+        InternalServices.remotingBus.registerHandler(this);
     }
 
 
@@ -65,7 +65,7 @@ public abstract class AbstractPresenter<T extends View<? extends Editable>, U>
      * Clear all handlers for this presenter.
      */
     protected void clearHandlers() {
-        InternalServices.REMOTING_BUS.unregisterHandler(this);
+        InternalServices.remotingBus.unregisterHandler(this);
     }
 
 

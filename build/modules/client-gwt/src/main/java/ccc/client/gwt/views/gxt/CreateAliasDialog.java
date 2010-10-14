@@ -69,7 +69,7 @@ public class CreateAliasDialog
      */
     public CreateAliasDialog() {
 
-        super(I18n.UI_CONSTANTS.createAlias(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.createAlias(), InternalServices.globals);
         setHeight(DIALOG_HEIGHT);
 
         _targetName.setFieldLabel(constants().target());
@@ -89,7 +89,7 @@ public class CreateAliasDialog
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be) {
                     ResourceSummary root = null;
-                    for (final ResourceSummary rr : InternalServices.ROOTS.getElements()) {
+                    for (final ResourceSummary rr : InternalServices.roots.getElements()) {
                         if (rr.getName().toString().equals("content")) {
                             root = rr;
                         }
@@ -151,13 +151,13 @@ public class CreateAliasDialog
         final ValidationResult result = new ValidationResult();
 
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _parentFolder.getValue(), _parentFolder.getFieldLabel()));
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _aliasName.getValue(), _aliasName.getFieldLabel()));
         result.addError(
-            VALIDATOR.notValidResourceName(
+            validator.notValidResourceName(
                 _aliasName.getValue(), _aliasName.getFieldLabel()));
 
         return result;
@@ -191,6 +191,6 @@ public class CreateAliasDialog
     /** {@inheritDoc} */
     @Override
     public void alert(final String message) {
-        InternalServices.WINDOW.alert(message);
+        InternalServices.window.alert(message);
     }
 }

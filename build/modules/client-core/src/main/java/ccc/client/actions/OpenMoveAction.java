@@ -58,7 +58,7 @@ public final class OpenMoveAction
     /** {@inheritDoc} */
     public void execute() {
         final ResourceSummary item = _selectionModel.tableSelection();
-        InternalServices.DIALOGS.moveResource(item, _selectionModel, _root)
+        InternalServices.dialogs.moveResource(item, _selectionModel, _root)
         .show();
     }
 }

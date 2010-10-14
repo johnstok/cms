@@ -61,7 +61,7 @@ public class CreateUserAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return InternalServices.API.users();
+        return InternalServices.api.users();
     }
 
 

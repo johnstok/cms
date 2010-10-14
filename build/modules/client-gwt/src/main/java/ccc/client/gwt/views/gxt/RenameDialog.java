@@ -60,7 +60,7 @@ public class RenameDialog
      * Constructor.
      */
     public RenameDialog() {
-        super(I18n.UI_CONSTANTS.rename(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.rename(), InternalServices.globals);
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
 
         setPanelId("RenamePanel");
@@ -121,10 +121,10 @@ public class RenameDialog
         final ValidationResult result = new ValidationResult();
 
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _newName.getValue(), _newName.getFieldLabel()));
         result.addError(
-            VALIDATOR.notValidResourceName(
+            validator.notValidResourceName(
                 _newName.getValue(), _newName.getFieldLabel()));
 
         return result;

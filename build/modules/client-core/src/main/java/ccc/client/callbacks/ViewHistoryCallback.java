@@ -29,9 +29,10 @@ public class ViewHistoryCallback
         _selectionModel = selectionModel;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void onSuccess(final PagedCollection<Revision> rsCollection) {
-        InternalServices.DIALOGS.viewHistory(
+        InternalServices.dialogs.viewHistory(
             rsCollection.getElements(),
             _selectionModel.tableSelection().getType(),
             _selectionModel)

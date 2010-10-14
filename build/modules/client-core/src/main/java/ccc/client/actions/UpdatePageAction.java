@@ -59,7 +59,7 @@ public class UpdatePageAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _details.self().build(InternalServices.ENCODER);
+        return _details.self().build(InternalServices.encoder);
     }
 
 

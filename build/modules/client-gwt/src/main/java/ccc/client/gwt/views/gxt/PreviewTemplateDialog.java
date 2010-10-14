@@ -66,15 +66,15 @@ public class PreviewTemplateDialog
      */
     public PreviewTemplateDialog(final Template template) {
 
-        super(I18n.UI_CONSTANTS.template()+": "+template.getTitle(),
-            InternalServices.GLOBALS);
+        super(I18n.uiConstants.template()+": "+template.getTitle(),
+            InternalServices.globals);
         _template = template;
         setHeight(DEFAULT_HEIGHT);
         final TabPanel folder = new TabPanel();
         folder.setWidth(DEFAULT_WIDTH);
         folder.setHeight(DEFAULT_HEIGHT);
 
-        final TabItem definition = new TabItem(I18n.UI_CONSTANTS.definitionXML());
+        final TabItem definition = new TabItem(I18n.uiConstants.definitionXML());
         definition.addStyleName("pad-text");
 
         _definitionEditor = new CodeMirrorEditor(
@@ -85,7 +85,7 @@ public class PreviewTemplateDialog
         definition.add(_definitionEditor);
         folder.add(definition);
 
-        final TabItem body = new TabItem(I18n.UI_CONSTANTS.body());
+        final TabItem body = new TabItem(I18n.uiConstants.body());
         body.addStyleName("pad-text");
 
         _bodyEditor = new CodeMirrorEditor(

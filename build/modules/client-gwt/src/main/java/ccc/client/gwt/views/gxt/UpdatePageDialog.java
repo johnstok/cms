@@ -76,8 +76,8 @@ public class UpdatePageDialog
     public UpdatePageDialog(final Page page,
                             final Template template,
                             final ResourceTable rt) {
-        super(I18n.UI_CONSTANTS.updateContent(),
-            InternalServices.GLOBALS);
+        super(I18n.uiConstants.updateContent(),
+            InternalServices.globals);
         _rt = rt;
         _modelData = rt().tableSelection();
         _paras = new HashSet<Paragraph>(page.getParagraphs());
@@ -130,7 +130,7 @@ public class UpdatePageDialog
                 if (vr.isValid()) {
                     updatePage();
                 } else {
-                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    InternalServices.window.alert(vr.getErrorText());
                 }
             }
         };
@@ -145,7 +145,7 @@ public class UpdatePageDialog
                 if (vr.isValid()) {
                     saveDraft();
                 } else {
-                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    InternalServices.window.alert(vr.getErrorText());
                 }
             }
         };

@@ -56,7 +56,7 @@ public class ResourcePublishedCallback
     /** {@inheritDoc} */
     @Override
     public void onSuccess(final Resource resource) {
-        InternalServices.REMOTING_BUS.fireEvent(
+        InternalServices.remotingBus.fireEvent(
             new Event<CommandType>(CommandType.RESOURCE_PUBLISH)
                 .addProperty("resource", resource));
     }

@@ -57,7 +57,7 @@ public final class ChooseTemplateAction
      */
     public ChooseTemplateAction(
           final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.chooseTemplate());
+        super(I18n.uiConstants.chooseTemplate());
         _selectionModel = selectionModel;
     }
 
@@ -68,7 +68,7 @@ public final class ChooseTemplateAction
         final ResourceSummary item = _selectionModel.tableSelection();
 
         if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
+            InternalServices.window.alert(UI_CONSTANTS.noResourceSelected());
             return false;
         }
 
@@ -81,7 +81,7 @@ public final class ChooseTemplateAction
     protected String getPath() {
         return
             _selectionModel.tableSelection().delete().build(
-                InternalServices.ENCODER);
+                InternalServices.encoder);
     }
 
 
@@ -92,16 +92,18 @@ public final class ChooseTemplateAction
             || ResourceType.FOLDER==r.getType()
             || ResourceType.SEARCH==r.getType()) {
             new GetTemplatesAction(UI_CONSTANTS.chooseTemplate()).execute(
-                new DefaultCallback<PagedCollection<Template>>(UI_CONSTANTS.chooseTemplate()) {
+                new DefaultCallback<PagedCollection<Template>>(
+                                                UI_CONSTANTS.chooseTemplate()) {
                     @Override
-                    public void onSuccess(final PagedCollection<Template> templates) {
+                    public void onSuccess(
+                                  final PagedCollection<Template> templates) {
                         new ChangeResourceTemplatePresenter(
-                            InternalServices.DIALOGS.chooseTemplate(),
+                            InternalServices.dialogs.chooseTemplate(),
                             r,
                             templates.getElements());
                     }});
         } else {
-            InternalServices.WINDOW.alert(
+            InternalServices.window.alert(
                 UI_CONSTANTS.templateCannotBeChosen());
 
         }

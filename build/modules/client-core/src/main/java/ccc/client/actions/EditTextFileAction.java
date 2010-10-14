@@ -61,7 +61,7 @@ public class EditTextFileAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _dto.self().build(InternalServices.ENCODER);
+        return _dto.self().build(InternalServices.encoder);
     }
 
 
@@ -76,7 +76,7 @@ public class EditTextFileAction
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.FILE_UPDATE);
         event.addProperty("file", f);
-        InternalServices.REMOTING_BUS.fireEvent(event);
+        InternalServices.remotingBus.fireEvent(event);
     }
 
 

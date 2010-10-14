@@ -63,6 +63,11 @@ import ccc.api.synchronous.ResourceIdentifiers.User;
 @NoCache
 public class ServicesImpl {
 
+    /**
+     * Get the API definition for CC.
+     *
+     * @return An API definition.
+     */
     @GET
     public API isLoggedIn() {
 

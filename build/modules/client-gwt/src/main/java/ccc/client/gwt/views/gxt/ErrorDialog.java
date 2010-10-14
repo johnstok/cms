@@ -61,11 +61,11 @@ public class ErrorDialog extends AbstractEditDialog {
                         final String error,
                         final String resolution,
                         final Globals globals) {
-        super(I18n.UI_CONSTANTS.error(), globals);
+        super(I18n.uiConstants.error(), globals);
 
         getPanel().add(_message);
         _message.setHTML(
-            I18n.ERROR_DESCRIPTIONS
+            I18n.errorDescriptions
                 .couldNotComplete("<b>", "</b><br><br>"));
 
         _action.setFieldLabel(constants().action());
@@ -113,7 +113,7 @@ public class ErrorDialog extends AbstractEditDialog {
         this(
             action,
             e.getMessage(),
-            I18n.ERROR_RESOLUTIONS.contactSysAdmin(),
+            I18n.errorResolutions.contactSysAdmin(),
             globals);
     }
 
@@ -140,22 +140,22 @@ public class ErrorDialog extends AbstractEditDialog {
         final String code = e.getCode();
 
         if ("ccc.api.exceptions.UnlockedException".equals(code)) {
-            return I18n.ERROR_RESOLUTIONS.unlocked();
+            return I18n.errorResolutions.unlocked();
         } else if ("ccc.api.exceptions.ResourceExistsException".equals(code)) {
-            return I18n.ERROR_RESOLUTIONS.exists();
+            return I18n.errorResolutions.exists();
         } else if ("ccc.api.exceptions.LockMismatchException".equals(code)) {
-            return I18n.ERROR_RESOLUTIONS.lockMismatch();
+            return I18n.errorResolutions.lockMismatch();
         } else if ("ccc.api.exceptions.CycleDetectedException".equals(code)) {
-            return I18n.ERROR_RESOLUTIONS.cycle();
+            return I18n.errorResolutions.cycle();
         } else if ("ccc.api.exceptions.InvalidException".equals(code)) {
             final String resolution = e.getParam(InvalidException.RESOLUTION);
             return
                 (null!=resolution)
                     ? resolution
-                    : I18n.ERROR_RESOLUTIONS.invalidCommand();
+                    : I18n.errorResolutions.invalidCommand();
         }
 
-        return I18n.ERROR_RESOLUTIONS.contactSysAdmin();
+        return I18n.errorResolutions.contactSysAdmin();
     }
 
 
@@ -164,22 +164,22 @@ public class ErrorDialog extends AbstractEditDialog {
         final String code = e.getCode();
 
         if ("ccc.api.exceptions.UnlockedException".equals(code)) {
-            return I18n.ERROR_DESCRIPTIONS.unlocked();
+            return I18n.errorDescriptions.unlocked();
         } else if ("ccc.api.exceptions.ResourceExistsException".equals(code)) {
-            return I18n.ERROR_DESCRIPTIONS.exists();
+            return I18n.errorDescriptions.exists();
         } else if ("ccc.api.exceptions.LockMismatchException".equals(code)) {
-            return I18n.ERROR_DESCRIPTIONS.lockMismatch();
+            return I18n.errorDescriptions.lockMismatch();
         } else if ("ccc.api.exceptions.CycleDetectedException".equals(code)) {
-            return I18n.ERROR_DESCRIPTIONS.cycle();
+            return I18n.errorDescriptions.cycle();
         } else if ("ccc.api.exceptions.InvalidException".equals(code)) {
             final String description = e.getParam(CCException.MESSAGE);
             return
                 (null!=description)
                     ? description
-                    : I18n.ERROR_DESCRIPTIONS.invalidCommand();
+                    : I18n.errorDescriptions.invalidCommand();
         }
 
-        return I18n.ERROR_DESCRIPTIONS.unknown()+"\n\n"+e.getMessage();
+        return I18n.errorDescriptions.unknown()+"\n\n"+e.getMessage();
     }
 
 

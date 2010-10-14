@@ -85,8 +85,8 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                                final String innerText,
                                final String cccId,
                                final boolean openInNew) {
-        super(I18n.UI_CONSTANTS.selectResource(),
-            InternalServices.GLOBALS);
+        super(I18n.uiConstants.selectResource(),
+            InternalServices.globals);
         _targetRoot = targetRoot;
         _elementid = elementid;
         if (cccId != null
@@ -221,7 +221,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                     _md = folderSelect.selectedResource();
                     if (_md != null
                        && _md.getType() != ResourceType.RANGE_FOLDER) {
-                        final String appContext = InternalServices.GLOBALS
+                        final String appContext = InternalServices.globals
                         .getSetting(API.APPLICATION_CONTEXT);
                         final String path =_md.getAbsolutePath();
                         _linkPath.setValue(appContext+path);

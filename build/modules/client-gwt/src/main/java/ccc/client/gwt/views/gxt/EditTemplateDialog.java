@@ -104,8 +104,8 @@ public class EditTemplateDialog
      */
     public EditTemplateDialog(final UUID parentFolderId,
                               final SingleSelectionModel ssm) {
-        super(I18n.UI_CONSTANTS.editTemplate(),
-            InternalServices.GLOBALS);
+        super(I18n.uiConstants.editTemplate(),
+            InternalServices.globals);
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
         _mode = DialogMode.CREATE;
@@ -138,7 +138,7 @@ public class EditTemplateDialog
     public EditTemplateDialog(final Template model,
                               final ResourceSummary proxy,
                               final SingleSelectionModel ssm) {
-        super(I18n.UI_CONSTANTS.editTemplate(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.editTemplate(), InternalServices.globals);
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
         _mode = DialogMode.UPDATE;
@@ -256,29 +256,29 @@ public class EditTemplateDialog
 
                 final ValidationResult vr = new ValidationResult();
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _definition.getEditorCode(),
                         getUiConstants().definitionXML()));
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _name.getValue(), _name.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _body.getEditorCode(), getUiConstants().body()));
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _mimePrimary.getValue(), _mimePrimary.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _mimeSub.getValue(), _mimeSub.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.notValidResourceName(
+                    validator.notValidResourceName(
                         _name.getValue(), _name.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.notValidXML(_definition.getEditorCode()));
+                    validator.notValidXML(_definition.getEditorCode()));
 
                 if (!vr.isValid()) {
-                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    InternalServices.window.alert(vr.getErrorText());
                     return;
                 }
 
@@ -321,7 +321,7 @@ public class EditTemplateDialog
                 }.execute();
                 break;
             default:
-                InternalServices.WINDOW.alert(constants().error());
+                InternalServices.window.alert(constants().error());
             break;
         }
     }

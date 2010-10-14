@@ -65,12 +65,13 @@ implements
         getView().show(this);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void cancel() {
-
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public void save() {
         if (getView().getValidationResult().isValid()) {
@@ -88,11 +89,12 @@ implements
             new UpdateFolderAction(f).execute();
 
         } else {
-            InternalServices.WINDOW.alert(
-                I18n.UI_CONSTANTS.resourceNameIsInvalid());
+            InternalServices.window.alert(
+                I18n.uiConstants.resourceNameIsInvalid());
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void handle(final Event<CommandType> event) {
         switch (event.getType()) {

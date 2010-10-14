@@ -87,7 +87,7 @@ public class ResourceContextMenu
         AbstractContextMenu {
 
     private final ResourceTable _table;
-    private final Globals _globals = InternalServices.GLOBALS;
+    private final Globals _globals = InternalServices.globals;
 
     // Actions
     private final Action _publishAction;
@@ -420,7 +420,7 @@ public class ResourceContextMenu
                         updateFile(item);
                         break;
                     default:
-                        InternalServices.WINDOW.alert(
+                        InternalServices.window.alert(
                             getConstants().noEditorForResource());
                 }
             }
@@ -467,7 +467,7 @@ public class ResourceContextMenu
                 @Override
                 public void onSuccess(final Template template) {
                     if (null==template) {
-                        InternalServices.WINDOW.alert(getConstants().noTemplateFound());
+                        InternalServices.window.alert(getConstants().noTemplateFound());
                     } else {
                         new PageDeltaAction(getConstants().updateContent(), item)
                         .execute(new DefaultCallback<Page>(

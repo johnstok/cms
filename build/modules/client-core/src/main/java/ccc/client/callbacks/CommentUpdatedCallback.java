@@ -62,6 +62,6 @@ public class CommentUpdatedCallback extends DefaultCallback<Void> {
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.COMMENT_UPDATE);
         event.addProperty("comment", _comment);
-        InternalServices.REMOTING_BUS.fireEvent(event);
+        InternalServices.remotingBus.fireEvent(event);
     }
 }

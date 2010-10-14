@@ -86,7 +86,7 @@ public class CreateTextFilePresenter
             new CreateTextFileAction(dto).execute();
 
         } else {
-            InternalServices.WINDOW.alert(
+            InternalServices.window.alert(
                 view.getValidationResult().getErrorText());
         }
     }

@@ -288,12 +288,12 @@ public class EditPagePanel
 
     private void addStaticFields() {
         _title = new TextField<String>();
-        _title.setFieldLabel(I18n.UI_CONSTANTS.title());
+        _title.setFieldLabel(I18n.uiConstants.title());
         _title.setAllowBlank(false);
         add(_title, new FormData("95%"));
 
         _name = new TextField<String>();
-        _name.setFieldLabel(I18n.UI_CONSTANTS.name());
+        _name.setFieldLabel(I18n.uiConstants.name());
         _name.setAllowBlank(false);
         add(_name, new FormData("95%"));
 

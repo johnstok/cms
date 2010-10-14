@@ -66,7 +66,7 @@ public class S11nHelper {
      * @param serializersAdapter
      */
     public S11nHelper() {
-        this(InternalServices.SERIALIZERS);
+        this(InternalServices.serializers);
     }
 
 
@@ -121,7 +121,11 @@ public class S11nHelper {
                                                       final Response response) {
         return
             serializers()
-                .create(PagedCollection.class)
+                .create(
+                    new PagedCollection<ResourceSummary>(
+                                                        ResourceSummary.class) {
+                        /* No methods. */
+                    }.getClass())
                 .read(response.getText());
     }
 
@@ -137,7 +141,10 @@ public class S11nHelper {
                                                       final Response response) {
         return
             serializers()
-                .create(PagedCollection.class)
+                .create(
+                    new PagedCollection<ActionSummary>(ActionSummary.class) {
+                        /* No methods. */
+                    }.getClass())
                 .read(response.getText());
     }
 
@@ -152,7 +159,10 @@ public class S11nHelper {
     public PagedCollection<File> readFileSummaries(final Response response) {
         return
             serializers()
-                .create(PagedCollection.class)
+                .create(
+                    new PagedCollection<File>(File.class) {
+                        /* No methods. */
+                    }.getClass())
                 .read(response.getText());
     }
 
@@ -167,7 +177,10 @@ public class S11nHelper {
     public PagedCollection<Template> readTemplates(final Response response) {
         return
             serializers()
-                .create(PagedCollection.class)
+                .create(
+                    new PagedCollection<Template>(Template.class) {
+                        /* No methods. */
+                    }.getClass())
                 .read(response.getText());
     }
 
@@ -182,7 +195,10 @@ public class S11nHelper {
     public PagedCollection<Comment> readComments(final Response response) {
         return
             serializers()
-                .create(PagedCollection.class)
+                .create(
+                    new PagedCollection<Comment>(Comment.class) {
+                        /* No methods. */
+                    }.getClass())
                 .read(response.getText());
     }
 
@@ -198,7 +214,10 @@ public class S11nHelper {
                                                       final Response response) {
         return
             serializers()
-                .create(new PagedCollection(User.class).getClass())
+                .create(
+                    new PagedCollection<User>(User.class) {
+                        /* No methods. */
+                    }.getClass())
                 .read(response.getText());
     }
 
@@ -213,7 +232,10 @@ public class S11nHelper {
     public PagedCollection<Group> readGroups(final Response response) {
         return
             serializers()
-                .create(PagedCollection.class)
+                .create(
+                    new PagedCollection<Group>(Group.class) {
+                        /* No methods. */
+                    }.getClass())
                 .read(response.getText());
     }
 
@@ -229,7 +251,10 @@ public class S11nHelper {
                                                       final Response response) {
         return
             serializers()
-                .create(PagedCollection.class)
+                .create(
+                    new PagedCollection<Revision>(Revision.class) {
+                        /* No methods. */
+                    }.getClass())
                 .read(response.getText());
     }
 

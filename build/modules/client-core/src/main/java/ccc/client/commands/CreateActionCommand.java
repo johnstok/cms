@@ -77,7 +77,7 @@ public class CreateActionCommand
                 path,
                 writeAction(_action),
                 new CallbackResponseHandler<Action>(
-                    I18n.UI_CONSTANTS.createAction(),
+                    I18n.uiConstants.createAction(),
                     callback,
                     new Parser<Action>() {
                         @Override public Action parse(final Response response) {

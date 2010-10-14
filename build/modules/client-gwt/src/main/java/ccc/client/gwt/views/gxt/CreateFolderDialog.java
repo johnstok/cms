@@ -59,7 +59,7 @@ public class CreateFolderDialog
      * Constructor.
      */
     public CreateFolderDialog() {
-        super(I18n.UI_CONSTANTS.createFolder(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.createFolder(), InternalServices.globals);
 
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
         setLayout(new FitLayout());
@@ -121,10 +121,10 @@ public class CreateFolderDialog
         final ValidationResult result = new ValidationResult();
 
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _text.getValue(), _text.getFieldLabel()));
         result.addError(
-            VALIDATOR.notValidResourceName(
+            validator.notValidResourceName(
                 _text.getValue(), _text.getFieldLabel()));
 
         return result;

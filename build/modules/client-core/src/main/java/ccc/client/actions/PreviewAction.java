@@ -59,12 +59,12 @@ public final class PreviewAction
     public void execute() {
         final ResourceSummary item = _selectionModel.tableSelection();
         final String url =
-            InternalServices.GLOBALS.appURL()
+            InternalServices.globals.appURL()
                 + "preview"
                 + item.getAbsolutePath()
                 + ((_useWorkingCopy) ? "?wc" : "");
 
-        InternalServices.WINDOW.openUrl(
+        InternalServices.window.openUrl(
             url,
             "ccc_preview",
             "menubar=no,"

@@ -104,8 +104,8 @@ public class ListUsersAction
 
         return
             Globals.API_URL
-            + new Link(InternalServices.USERS.getLink("self"))
-                .build(params, InternalServices.ENCODER);
+            + new Link(InternalServices.users.getLink("self"))
+                .build(params, InternalServices.encoder);
     }
 
 

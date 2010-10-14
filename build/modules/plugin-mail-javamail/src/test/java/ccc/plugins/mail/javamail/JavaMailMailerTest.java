@@ -38,7 +38,6 @@ import org.jvnet.mock_javamail.Mailbox;
 
 import ccc.api.types.EmailAddress;
 import ccc.plugins.mail.Mailer;
-import ccc.plugins.mail.javamail.JavaMailMailer;
 
 
 /**

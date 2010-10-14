@@ -39,7 +39,7 @@ import ccc.client.core.RemotingAction;
  */
 public class ValidateFieldAction
     extends
-        RemotingAction {
+        RemotingAction<String> {
 
     private final Page _page;
 
@@ -58,7 +58,7 @@ public class ValidateFieldAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return InternalServices.API.getLink(Page.Links.VALIDATOR);
+        return InternalServices.api.getLink(Page.Links.VALIDATOR);
     }
 
 

@@ -168,18 +168,18 @@ public class CommentView
         }
 
         result.addError(
-            VALIDATOR.notValidURL(_url.getValue()));
+            validator.notValidURL(_url.getValue()));
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _author.getValue(), _author.getFieldLabel()));
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _email.getValue(), _email.getFieldLabel()));
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 _body.getValue(), _body.getFieldLabel()));
         result.addError(
-            VALIDATOR.notValidEmail(
+            validator.notValidEmail(
                 _email.getValue(), _email.getFieldLabel()));
 
         return result;

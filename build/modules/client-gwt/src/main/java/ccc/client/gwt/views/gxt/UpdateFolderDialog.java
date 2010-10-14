@@ -99,7 +99,7 @@ implements UpdateFolder {
      *
      */
     public UpdateFolderDialog() {
-        super(I18n.UI_CONSTANTS.edit(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.edit(), InternalServices.globals);
 
         setHeight(Globals.DEFAULT_HEIGHT);
 
@@ -176,7 +176,7 @@ implements UpdateFolder {
                     params.put("page", new String[] {"1"});
                     params.put("count", new String[] {"1000"});
                     return _folder.list().build(
-                        params, InternalServices.ENCODER);
+                        params, InternalServices.encoder);
             }
 
             /** {@inheritDoc} */

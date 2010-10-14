@@ -66,7 +66,7 @@ public class LoginDialog
      * Constructor.
      */
     public LoginDialog() {
-        super(I18n.UI_CONSTANTS.login(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.login(), InternalServices.globals);
         LoginDialog.this.setHeading(
             constants().login()
             + " - "

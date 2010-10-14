@@ -81,8 +81,8 @@ public class UploadFileDialog extends AbstractEditDialog {
      */
     public UploadFileDialog(final ResourceSummary parentFolder,
                             final SingleSelectionModel ssm) {
-        super(I18n.UI_CONSTANTS.uploadFileTo()
-            +": "+parentFolder.getName(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.uploadFileTo()
+            +": "+parentFolder.getName(), InternalServices.globals);
 
         _parent = parentFolder;
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
@@ -90,7 +90,7 @@ public class UploadFileDialog extends AbstractEditDialog {
         // Create a FormPanel and point it at a service.
         getPanel().setAction(
             Globals.API_URL
-            + InternalServices.API.getLink(File.Links.LIST_BINARY));
+            + InternalServices.api.getLink(File.Links.LIST_BINARY));
         getPanel().setEncoding(FormPanel.Encoding.MULTIPART);
         getPanel().setMethod(FormPanel.Method.POST);
 
@@ -131,7 +131,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                     // TODO: Handle 404 with notfound.jsp
 
                     if (SessionTimeoutException.isTimedout(response)) {
-                        InternalServices.EX_HANDLER.unexpectedError(
+                        InternalServices.exHandler.unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             getUiConstants().uploadFile());
 
@@ -141,7 +141,7 @@ public class UploadFileDialog extends AbstractEditDialog {
 
                         // Error.
                         try {
-                            InternalServices.EX_HANDLER.unexpectedError(
+                            InternalServices.exHandler.unexpectedError(
                                 new RemoteException(
                                     _s11n.readFailure(response)),
                                 getUiConstants().uploadFile());
@@ -170,14 +170,14 @@ public class UploadFileDialog extends AbstractEditDialog {
 
                 final ValidationResult vr = new ValidationResult();
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _fileName.getValue(), _fileName.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.notValidResourceName(
+                    validator.notValidResourceName(
                         _fileName.getValue(), _fileName.getFieldLabel()));
 
                 if (!vr.isValid()) {
-                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    InternalServices.window.alert(vr.getErrorText());
                     return;
                 }
 

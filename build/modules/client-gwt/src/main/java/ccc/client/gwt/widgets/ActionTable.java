@@ -88,7 +88,7 @@ public class ActionTable
      */
     public ActionTable() {
 
-        InternalServices.REMOTING_BUS.registerHandler(this);
+        InternalServices.remotingBus.registerHandler(this);
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 

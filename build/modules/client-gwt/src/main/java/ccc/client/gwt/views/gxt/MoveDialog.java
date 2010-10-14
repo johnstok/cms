@@ -74,7 +74,7 @@ public class MoveDialog extends AbstractEditDialog {
     public MoveDialog(final ResourceSummary item,
                       final SingleSelectionModel ssm,
                       final ResourceSummary root) {
-        super(I18n.UI_CONSTANTS.move(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.move(), InternalServices.globals);
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _ssm = ssm;
 
@@ -129,12 +129,12 @@ public class MoveDialog extends AbstractEditDialog {
 
                 final ValidationResult vr = new ValidationResult();
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _parentFolder.getValue(),
                         _parentFolder.getFieldLabel()));
 
                 if (!vr.isValid()) {
-                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    InternalServices.window.alert(vr.getErrorText());
                     return;
                 }
 

@@ -40,7 +40,7 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 public class MetadataGrid extends ContentPanel {
     private static final int GRID_WIDTH = 610;
     private static final int GRID_HEIGHT = 270;
-    private final UIConstants _constants = I18n.UI_CONSTANTS;
+    private final UIConstants _constants = I18n.uiConstants;
     private final Grid<ModelData> _grid;
     private final ListStore<ModelData> _dataStore = new ListStore<ModelData>();
     private CheckBoxSelectionModel<ModelData> _sm;

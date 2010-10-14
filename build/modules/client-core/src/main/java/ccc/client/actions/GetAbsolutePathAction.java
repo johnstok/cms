@@ -73,7 +73,7 @@ public class GetAbsolutePathAction
             new Request(
                 HttpMethod.GET,
                 Globals.API_URL
-                    + _resource.uriAbsPath().build(InternalServices.ENCODER),
+                    + _resource.uriAbsPath().build(InternalServices.encoder),
                 "",
                 new CallbackResponseHandler<String>(
                     _name,

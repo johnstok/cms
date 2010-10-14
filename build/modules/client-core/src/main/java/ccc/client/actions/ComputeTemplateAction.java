@@ -72,7 +72,7 @@ public final class ComputeTemplateAction
         return new Request(
             HttpMethod.GET,
             Globals.API_URL
-                + _resourceLink.build(InternalServices.ENCODER),
+                + _resourceLink.build(InternalServices.encoder),
             "",
             new CallbackResponseHandler<Template>(
                 _name,

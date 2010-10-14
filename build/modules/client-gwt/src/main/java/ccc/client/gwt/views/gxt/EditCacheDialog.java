@@ -71,8 +71,8 @@ public class EditCacheDialog extends AbstractEditDialog {
      */
     public EditCacheDialog(final ResourceSummary item,
                            final Duration ds) {
-        super(I18n.UI_CONSTANTS.editCacheDuration(),
-            InternalServices.GLOBALS);
+        super(I18n.uiConstants.editCacheDuration(),
+            InternalServices.globals);
         _item = item;
         setHeight(DIALOG_HEIGHT);
         setWidth(DIALOG_WIDTH);
@@ -129,20 +129,20 @@ public class EditCacheDialog extends AbstractEditDialog {
 
                 final ValidationResult vr = new ValidationResult();
                 vr.addError(
-                    VALIDATOR.emptyOrNumber(
+                    validator.emptyOrNumber(
                         _days.getValue(), _days.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.emptyOrNumber(
+                    validator.emptyOrNumber(
                         _hours.getValue(), _hours.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.emptyOrNumber(
+                    validator.emptyOrNumber(
                         _minutes.getValue(), _minutes.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.emptyOrNumber(
+                    validator.emptyOrNumber(
                         _seconds.getValue(), _seconds.getFieldLabel()));
 
                 if (!vr.isValid()) {
-                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    InternalServices.window.alert(vr.getErrorText());
                     return;
                 }
 

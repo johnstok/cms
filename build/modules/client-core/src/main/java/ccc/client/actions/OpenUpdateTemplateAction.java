@@ -63,14 +63,14 @@ public class OpenUpdateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _template.self().build(InternalServices.ENCODER);
+        return _template.self().build(InternalServices.encoder);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final Template delta) {
-        InternalServices.DIALOGS.editTemplate(
+        InternalServices.dialogs.editTemplate(
             delta,
             _template,
             _table)

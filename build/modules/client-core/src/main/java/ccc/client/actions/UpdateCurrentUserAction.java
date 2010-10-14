@@ -57,7 +57,7 @@ public abstract class UpdateCurrentUserAction
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return InternalServices.USERS.getLink("me");
+        return InternalServices.users.getLink("me");
     }
 
 

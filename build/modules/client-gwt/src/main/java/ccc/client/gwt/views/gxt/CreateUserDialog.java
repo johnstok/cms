@@ -79,8 +79,8 @@ public class CreateUserDialog
      * @param allGroups The list of all groups.
      */
     public CreateUserDialog(final Collection<Group> allGroups) {
-        super(I18n.UI_CONSTANTS.createUser(),
-            InternalServices.GLOBALS);
+        super(I18n.uiConstants.createUser(),
+            InternalServices.globals);
 
         setLabelWidth(LABEL_WIDTH); // Long labels, should fit to one line.
 
@@ -183,36 +183,36 @@ public class CreateUserDialog
         final ValidationResult result = new ValidationResult();
 
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 getUsername(), constants().username()));
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 getName(), constants().name()));
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 getEmail(), constants().email()));
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 getPassword1(), constants().password()));
         result.addError(
-            VALIDATOR.notEmpty(
+            validator.notEmpty(
                 getPassword2(), constants().confirmPassword()));
         if (!result.getErrors().isEmpty()) {
             return result;
         }
 
         result.addError(
-            VALIDATOR.notValidUserName(
+            validator.notValidUserName(
                 getUsername(), constants().username()));
         result.addError(
-            VALIDATOR.notValidEmail(
+            validator.notValidEmail(
                 getEmail(), constants().email()));
         result.addError(
-            VALIDATOR.passwordStrength(getPassword1()));
+            validator.passwordStrength(getPassword1()));
         result.addError(
-            VALIDATOR.matchingPasswords(getPassword1(), getPassword2()));
+            validator.matchingPasswords(getPassword1(), getPassword2()));
         result.addError(
-            VALIDATOR.minLength(
+            validator.minLength(
                 getUsername(),
                 constants().username(),
                 Globals.MIN_USER_NAME_LENGTH));
@@ -228,7 +228,7 @@ public class CreateUserDialog
                                 final ValidationResult result) {
         new UniqueUsernameAction(username).execute(
             new DefaultCallback<Boolean>(
-                                      I18n.USER_ACTIONS.checkUniqueUsername()) {
+                                      I18n.userActions.checkUniqueUsername()) {
             @Override
             public void onSuccess(final Boolean usernameExists) {
                 if (usernameExists.booleanValue()) {
@@ -242,6 +242,6 @@ public class CreateUserDialog
     /** {@inheritDoc} */
     @Override
     public void alert(final String message) {
-        InternalServices.WINDOW.alert(message);
+        InternalServices.window.alert(message);
     }
 }

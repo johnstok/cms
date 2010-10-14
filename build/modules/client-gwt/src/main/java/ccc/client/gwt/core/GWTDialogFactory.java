@@ -276,7 +276,7 @@ class GWTDialogFactory
         final LeftRightPane contentPane = new LeftRightPane();
         contentPane.setRightHandPane(new ContentPanel());
         ResourceSummary root = null;
-        for (final ResourceSummary rr : InternalServices.ROOTS.getElements()) {
+        for (final ResourceSummary rr : InternalServices.roots.getElements()) {
             if (rr.getName().toString().equals("content")) {
                 root = rr;
             }

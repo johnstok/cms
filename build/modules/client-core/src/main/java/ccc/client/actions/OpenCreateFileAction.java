@@ -55,9 +55,9 @@ public final class OpenCreateFileAction
     public void execute() {
         final ResourceSummary parent = _selectionModel.treeSelection();
         if (parent == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
+            InternalServices.window.alert(UI_CONSTANTS.noFolderSelected());
         } else {
-            InternalServices.DIALOGS.uploadFile(parent, _selectionModel).show();
+            InternalServices.dialogs.uploadFile(parent, _selectionModel).show();
         }
     }
 }

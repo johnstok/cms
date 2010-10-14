@@ -59,7 +59,7 @@ public class UpdateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _details.self().build(InternalServices.ENCODER);
+        return _details.self().build(InternalServices.encoder);
     }
 
 

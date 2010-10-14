@@ -67,7 +67,7 @@ public class DeleteResourceAction
                 _selectionModel
                     .tableSelection()
                     .getLink(Resource.Links.DELETE))
-            .build(InternalServices.ENCODER);
+            .build(InternalServices.encoder);
     }
 
 
@@ -78,14 +78,14 @@ public class DeleteResourceAction
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.RESOURCE_DELETE);
         event.addProperty("resource", item.getId());
-        InternalServices.REMOTING_BUS.fireEvent(event);
+        InternalServices.remotingBus.fireEvent(event);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected boolean beforeExecute() {
-        return InternalServices.WINDOW.confirm(
+        return InternalServices.window.confirm(
             "Are sure you want to delete the selected resource?");
     }
 }

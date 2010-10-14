@@ -58,7 +58,7 @@ public class CancelActionCommand
                 path,
                 "",
                 new CallbackResponseHandler<Void>(
-                    I18n.UI_CONSTANTS.cancel(),
+                    I18n.uiConstants.cancel(),
                     callback,
                     new Parser<Void>() {
                         @Override public Void parse(final Response response) {

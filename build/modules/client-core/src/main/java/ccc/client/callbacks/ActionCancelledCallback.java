@@ -49,7 +49,7 @@ public class ActionCancelledCallback extends DefaultCallback<Void> {
      * @param action The resource whose WC has been applied.
      */
     public ActionCancelledCallback(final ActionSummary action) {
-        super(I18n.UI_CONSTANTS.cancel());
+        super(I18n.uiConstants.cancel());
         _event = new Event<CommandType>(CommandType.ACTION_CANCEL);
         _event.addProperty("action", action);
     }
@@ -58,6 +58,6 @@ public class ActionCancelledCallback extends DefaultCallback<Void> {
     /** {@inheritDoc} */
     @Override
     public void onSuccess(final Void result) {
-        InternalServices.REMOTING_BUS.fireEvent(_event);
+        InternalServices.remotingBus.fireEvent(_event);
     }
 }

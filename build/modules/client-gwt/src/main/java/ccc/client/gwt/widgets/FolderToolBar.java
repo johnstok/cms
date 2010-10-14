@@ -46,7 +46,7 @@ public class FolderToolBar
     extends
         AbstractToolBar {
 
-    private final UIConstants _constants = I18n.UI_CONSTANTS;
+    private final UIConstants _constants = I18n.uiConstants;
 
 
     /**

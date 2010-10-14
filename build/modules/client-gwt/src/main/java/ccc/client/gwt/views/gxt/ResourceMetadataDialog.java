@@ -77,7 +77,7 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
     public ResourceMetadataDialog(final ResourceSummary resource,
                           final Collection<Map.Entry<String, String>> data,
                           final SingleSelectionModel ssm) {
-        super(I18n.UI_CONSTANTS.metadata(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.metadata(), InternalServices.globals);
 
         _ssm = ssm;
         _resource = resource;
@@ -130,14 +130,14 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
                     vr.addError(constants().titlesMustNotContainBrackets());
                 }
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _title.getValue(), _title.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.validateMetadataValues(
+                    validator.validateMetadataValues(
                         _metadataPanel.currentMetadata()));
 
                 if (!vr.isValid()) {
-                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    InternalServices.window.alert(vr.getErrorText());
                     return;
                 }
 

@@ -120,7 +120,7 @@ public class CCTextField
         final String fieldText = getValueText();
         if (null!= fieldText
             && fieldText.length() > Paragraph.MAX_TEXT_LENGTH) {
-            vResult.addError(I18n.UI_MESSAGES.paragraphTooLarge(fieldName));
+            vResult.addError(I18n.uiMessages.paragraphTooLarge(fieldName));
         }
     }
 }

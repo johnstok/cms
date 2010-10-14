@@ -65,7 +65,7 @@ public class RemoveFromMainMenuAction
             _selectionModel
                 .tableSelection()
                 .excludeMM()
-                .build(InternalServices.ENCODER);
+                .build(InternalServices.encoder);
     }
 
 

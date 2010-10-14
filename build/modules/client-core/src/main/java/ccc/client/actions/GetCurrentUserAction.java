@@ -52,7 +52,7 @@ public class GetCurrentUserAction
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final User user) {
-        InternalServices.GLOBALS.currentUser(user);
+        InternalServices.globals.currentUser(user);
         new DrawMainWindowAction(user).execute();
     }
 
@@ -60,7 +60,7 @@ public class GetCurrentUserAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return InternalServices.USERS.getLink("me");
+        return InternalServices.users.getLink("me");
     }
 
 

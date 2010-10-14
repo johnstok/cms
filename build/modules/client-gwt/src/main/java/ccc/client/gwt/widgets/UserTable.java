@@ -115,7 +115,7 @@ public class UserTable
      */
     UserTable() {
 
-        InternalServices.REMOTING_BUS.registerHandler(this);
+        InternalServices.remotingBus.registerHandler(this);
 
         setId("UserDetails");
         setHeading(UI_CONSTANTS.userDetails());

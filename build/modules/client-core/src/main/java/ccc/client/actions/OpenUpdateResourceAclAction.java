@@ -69,7 +69,7 @@ public final class OpenUpdateResourceAclAction
     protected String getPath() {
         final ResourceSummary delegate =
             _selectionModel.tableSelection();
-        return delegate.acl().build(InternalServices.ENCODER);
+        return delegate.acl().build(InternalServices.encoder);
     }
 
 
@@ -77,7 +77,7 @@ public final class OpenUpdateResourceAclAction
     @Override
     protected void onSuccess(final ACL acl) {
         final ResourceSummary item = _selectionModel.tableSelection();
-        InternalServices.DIALOGS.updateAcl(
+        InternalServices.dialogs.updateAcl(
             item,
             acl,
             _groups)

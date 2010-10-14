@@ -68,15 +68,15 @@ public class LoginAction
         params.put("u", new String[] {_dialog.getUsername()});
         params.put("p", new String[] {_dialog.getPassword()});
         return
-            new Link(InternalServices.API.getLink(User.Links.COLLECTION))
-            .build(params, InternalServices.ENCODER);
+            new Link(InternalServices.api.getLink(User.Links.COLLECTION))
+            .build(params, InternalServices.encoder);
     }
 
 
     /** {@inheritDoc} */
     @Override protected void onSuccess(final Boolean success) {
         if (success.booleanValue()) {
-            InternalServices.WINDOW.refresh();
+            InternalServices.window.refresh();
         } else {
             _dialog.loginFailed();
         }

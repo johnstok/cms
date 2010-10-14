@@ -45,16 +45,25 @@ import ccc.client.i18n.UIMessages;
  *
  * @author Civic Computing Ltd.
  */
-public class I18n {
+public final class I18n {
 
-    public static UIConstants UI_CONSTANTS;
-    public static UIMessages UI_MESSAGES;
-    public static ErrorDescriptions ERROR_DESCRIPTIONS;
-    public static ErrorResolutions ERROR_RESOLUTIONS;
-    public static ActionStatusConstants ACTION_STATUSES;
-    public static CommandTypeConstants COMMAND_TYPES;
-    public static ActionNameConstants USER_ACTIONS;
+    /** uiConstants : UIConstants. */
+    public static UIConstants           uiConstants;
+    /** uiMessages : UIMessages. */
+    public static UIMessages            uiMessages;
+    /** errorDescriptions : ErrorDescriptions. */
+    public static ErrorDescriptions     errorDescriptions;
+    /** errorResolutions : ErrorResolutions. */
+    public static ErrorResolutions      errorResolutions;
+    /** actionStatuses : ActionStatusConstants. */
+    public static ActionStatusConstants actionStatuses;
+    /** commandTypes : CommandTypeConstants. */
+    public static CommandTypeConstants  commandTypes;
+    /** userActions : ActionNameConstants. */
+    public static ActionNameConstants   userActions;
 
+
+    private I18n() { super(); }
 
     /**
      * Looks up for localised string for the {@link ActionStatus}.
@@ -64,7 +73,7 @@ public class I18n {
      * @return The localised string or name of the enum if nothing found.
      */
     public static String getLocalisedStatus(final ActionStatus status) {
-        final ActionStatusConstants types = ACTION_STATUSES;
+        final ActionStatusConstants types = actionStatuses;
 
         String local = null;
         try {
@@ -83,7 +92,7 @@ public class I18n {
      * @return The localised string or name of the enum if nothing found.
      */
     public static String getLocalisedType(final CommandType command) {
-        final CommandTypeConstants types = COMMAND_TYPES;
+        final CommandTypeConstants types = commandTypes;
 
         String local = null;
         try {

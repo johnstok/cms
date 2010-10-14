@@ -63,7 +63,7 @@ public final class OpenEditTextFileAction
     @Override
     protected String getPath() {
         final ResourceSummary item = _selectionModel.tableSelection();
-        return item.self().build(InternalServices.ENCODER);
+        return item.self().build(InternalServices.encoder);
     }
 
 
@@ -72,10 +72,10 @@ public final class OpenEditTextFileAction
     protected void onSuccess(final File dto) {
         if (dto.getContent() != null) {
             new EditTextFilePresenter(
-                InternalServices.DIALOGS.editTextFile(),
+                InternalServices.dialogs.editTextFile(),
                 dto);
         } else {
-            InternalServices.WINDOW.alert(
+            InternalServices.window.alert(
                 UI_CONSTANTS.noEditorForResource());
         }
     }

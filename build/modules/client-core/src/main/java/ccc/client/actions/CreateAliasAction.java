@@ -60,7 +60,7 @@ public final class CreateAliasAction
     @Override
     public void execute() {
         new CreateAliasCommand(_alias).invoke(
-            InternalServices.API,
-            new AliasCreatedCallback(I18n.UI_CONSTANTS.createAlias()));
+            InternalServices.api,
+            new AliasCreatedCallback(I18n.uiConstants.createAlias()));
     }
 }

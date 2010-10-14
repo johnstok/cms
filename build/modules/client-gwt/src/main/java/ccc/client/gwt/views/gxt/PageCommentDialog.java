@@ -70,8 +70,8 @@ public class PageCommentDialog extends AbstractEditDialog {
      */
     public PageCommentDialog(final Set<Paragraph> paras,
                              final UpdatePageDialog updatePageDialog) {
-        super(I18n.UI_CONSTANTS.pageEditComment(),
-            InternalServices.GLOBALS);
+        super(I18n.uiConstants.pageEditComment(),
+            InternalServices.globals);
         _paras = paras;
         _updatePageDialog = updatePageDialog;
         setModal(true);
@@ -100,11 +100,11 @@ public class PageCommentDialog extends AbstractEditDialog {
 
                 final ValidationResult vr = new ValidationResult();
                 vr.addError(
-                    VALIDATOR.noBrackets(
+                    validator.noBrackets(
                         _comment.getValue(), _comment.getFieldLabel()));
 
                 if (!vr.isValid()) {
-                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    InternalServices.window.alert(vr.getErrorText());
                     return;
                 }
 

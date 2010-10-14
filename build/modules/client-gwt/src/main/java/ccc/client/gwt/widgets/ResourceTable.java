@@ -103,7 +103,7 @@ public class ResourceTable
     ResourceTable(final ResourceSummary root,
         final ResourceTree tree) {
 
-        InternalServices.REMOTING_BUS.registerHandler(this);
+        InternalServices.remotingBus.registerHandler(this);
         _root = root;
         _tree = tree;
         toolBar = new FolderToolBar(this);

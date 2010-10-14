@@ -52,7 +52,7 @@ public interface ResponseHandler {
     /**
      * TODO: Add a description for this method.
      *
-     * @param response
+     * @param response The server response.
      */
     void onMethodNotAllowed(final Response response);
 
@@ -60,7 +60,7 @@ public interface ResponseHandler {
     /**
      * TODO: Add a description for this method.
      *
-     * @param response
+     * @param response The server response.
      */
     void onBadRequest(final Response response);
 
@@ -68,49 +68,49 @@ public interface ResponseHandler {
     /**
      * TODO: Add a description for this method.
      *
-     * @param response
+     * @param response The server response.
      */
     void onSessionTimeout(final Response response);
 
     /**
      * TODO: Add a description for this method.
      *
-     * @param response
+     * @param response The server response.
      */
     void onUnsupported(final Response response);
 
     /**
      * TODO: Add a description for this method.
      *
-     * @param throwable
+     * @param throwable The exception describing the failure.
      */
     void onFailed(final Throwable throwable);
 
     /**
      * TODO: Add a description for this method.
      *
-     * @param response
+     * @param response The server response.
      */
     void onNotFound(Response response);
 
     /**
      * TODO: Add a description for this method.
      *
-     * @param response
+     * @param response The server response.
      */
     void onError(Response response);
 
     /**
      * TODO: Add a description for this method.
      *
-     * @param response
+     * @param response The server response.
      */
     void onUnauthorized(Response response);
 
     /**
      * TODO: Add a description for this method.
      *
-     * @param response
+     * @param response The server response.
      */
     void onConflict(Response response);
 }

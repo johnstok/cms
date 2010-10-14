@@ -63,6 +63,6 @@ public class ApplyWorkingCopyAction
 
         new ApplyWorkingCopyCommand().invoke(
             rs,
-            new WCAppliedCallback(I18n.UI_CONSTANTS.applyWorkingCopy(), rs));
+            new WCAppliedCallback(I18n.uiConstants.applyWorkingCopy(), rs));
     }
 }

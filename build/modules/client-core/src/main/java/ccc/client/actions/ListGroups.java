@@ -89,8 +89,8 @@ public class ListGroups
         params.put("order", new String[] {_order.name()});
         return
             Globals.API_URL
-            + new Link(InternalServices.GROUPS.getLink("self"))
-                .build(params, InternalServices.ENCODER);
+            + new Link(InternalServices.groups.getLink("self"))
+                .build(params, InternalServices.encoder);
     }
 
 
@@ -108,7 +108,8 @@ public class ListGroups
                 new Parser<PagedCollection<Group>>() {
 
                     @Override
-                    public PagedCollection<Group> parse(final Response response) {
+                    public PagedCollection<Group> parse(
+                                                    final Response response) {
                         return readGroups(response);
                     }}));
     }

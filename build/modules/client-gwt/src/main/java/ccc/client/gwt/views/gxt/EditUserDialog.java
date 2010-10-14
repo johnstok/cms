@@ -76,7 +76,7 @@ public class EditUserDialog
      */
     public EditUserDialog(final User userDTO,
                           final Collection<Group> allGroups) {
-        super(I18n.UI_CONSTANTS.editUser(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.editUser(), InternalServices.globals);
 
         _userDTO   = userDTO;
 
@@ -111,17 +111,17 @@ public class EditUserDialog
 
                 final ValidationResult vr = new ValidationResult();
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _email.getValue(), _email.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _name.getValue(), _name.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.notValidEmail(
+                    validator.notValidEmail(
                         _email.getValue(), _email.getFieldLabel()));
 
                 if (!vr.isValid()) {
-                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    InternalServices.window.alert(vr.getErrorText());
                     return;
                 }
 
@@ -147,9 +147,9 @@ public class EditUserDialog
         _userDTO.setGroups(validGroups);
 
         new UpdateUserAction(_userDTO).execute(
-            new DefaultCallback<User>(I18n.UI_CONSTANTS.editUser()) {
+            new DefaultCallback<User>(I18n.uiConstants.editUser()) {
             @Override public void onSuccess(final User result) {
-                InternalServices.REMOTING_BUS.fireEvent(
+                InternalServices.remotingBus.fireEvent(
                     new Event<CommandType>(CommandType.USER_UPDATE));
                 hide();
             }

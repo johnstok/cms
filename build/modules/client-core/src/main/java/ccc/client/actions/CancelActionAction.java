@@ -63,12 +63,12 @@ public class CancelActionAction
         final ActionSummary action = _table.getSelectedItem();
 
         if (null==action) {
-            InternalServices.WINDOW.alert(
+            InternalServices.window.alert(
                 UI_CONSTANTS.pleaseChooseAnAction());
 
         } else if (
             ActionStatus.SCHEDULED != action.getStatus()) {
-            InternalServices.WINDOW.alert(
+            InternalServices.window.alert(
                 UI_CONSTANTS.thisActionHasAlreadyCompleted());
 
         } else {

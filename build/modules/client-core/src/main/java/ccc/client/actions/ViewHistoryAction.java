@@ -56,7 +56,7 @@ public final class ViewHistoryAction
      * @param selectionModel The selection model.
      */
     public ViewHistoryAction(final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.viewHistory());
+        super(I18n.uiConstants.viewHistory());
         _selectionModel = selectionModel;
     }
 
@@ -80,7 +80,7 @@ public final class ViewHistoryAction
     /** {@inheritDoc} */
     @Override
     public void execute() {
-        execute(new ViewHistoryCallback(I18n.UI_CONSTANTS.viewHistory(),
+        execute(new ViewHistoryCallback(I18n.uiConstants.viewHistory(),
             _selectionModel));
     }
 }

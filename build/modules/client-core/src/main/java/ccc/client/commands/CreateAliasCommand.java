@@ -66,7 +66,7 @@ public class CreateAliasCommand
     @Override
     public void invoke(final API subject,
                        final Callback<ResourceSummary> callback) {
-        final String path = Globals.API_URL+InternalServices.API.aliases();
+        final String path = Globals.API_URL+InternalServices.api.aliases();
 
         final Request r =
             new Request(
@@ -74,7 +74,7 @@ public class CreateAliasCommand
                 path,
                 writeAlias(_alias),
                 new CallbackResponseHandler<ResourceSummary>(
-                    I18n.UI_CONSTANTS.createAlias(),
+                    I18n.uiConstants.createAlias(),
                     callback,
                     resourceSummaryParser()));
 

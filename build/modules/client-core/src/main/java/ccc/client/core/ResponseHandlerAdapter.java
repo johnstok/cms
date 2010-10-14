@@ -126,7 +126,7 @@ public class ResponseHandlerAdapter
     /** {@inheritDoc} */
     @Override
     public void onFailed(final Throwable throwable) {
-        InternalServices.CORE_BUS.fireEvent(
+        InternalServices.coreBus.fireEvent(
             new Event<CoreEvents>(CoreEvents.ERROR)
                 .addProperty("exception", throwable)
                 .addProperty("name",      _name));

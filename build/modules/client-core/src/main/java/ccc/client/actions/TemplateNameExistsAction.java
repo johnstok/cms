@@ -61,8 +61,8 @@ public abstract class TemplateNameExistsAction
     @Override
     protected String getPath() {
         return
-            new Link(InternalServices.API.getLink(Template.Links.EXISTS))
-            .build("name", _name, InternalServices.ENCODER);
+            new Link(InternalServices.api.getLink(Template.Links.EXISTS))
+            .build("name", _name, InternalServices.encoder);
     }
 
 

@@ -1,8 +1,6 @@
 package ccc.web.filters;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -11,13 +9,12 @@ import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- * A stub, implementing the {@link ServletRequest} interface.
+ * A stub, implementing the {@link HttpServletRequest} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -50,274 +47,333 @@ public final class ServletRequestStub
         _queryParams = queryParams;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getAuthType() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getContextPath() {
         return _contextPath;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Cookie[] getCookies() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public long getDateHeader(final String name) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getHeader(final String name) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked") // Existing API.
     public Enumeration getHeaderNames() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked") // Existing API.
     public Enumeration getHeaders(final String name) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getIntHeader(final String name) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getMethod() {
         return "GET";
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getPathInfo() {
         return _pathInfo;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getPathTranslated() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getQueryString() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getRemoteUser() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getRequestURI() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public StringBuffer getRequestURL() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getRequestedSessionId() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getServletPath() {
         return _servletPath;
     }
 
+    /** {@inheritDoc} */
     @Override
     public HttpSession getSession() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public HttpSession getSession(final boolean create) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public Principal getUserPrincipal() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isRequestedSessionIdFromCookie() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isRequestedSessionIdFromURL() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isRequestedSessionIdFromUrl() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isRequestedSessionIdValid() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isUserInRole(final String role) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public Object getAttribute(final String name) {
         return _attributes.get(name);
     }
 
+    /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked") // Existing API.
     public Enumeration getAttributeNames() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getCharacterEncoding() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getContentLength() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getContentType() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
-    public ServletInputStream getInputStream() throws IOException {
+    public ServletInputStream getInputStream() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getLocalAddr() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getLocalName() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getLocalPort() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public Locale getLocale() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked") // Existing API.
     public Enumeration getLocales() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getParameter(final String name) {
         return _queryParams.get(name);
     }
 
+    /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked") // Existing API.
     public Map getParameterMap() {
         return new HashMap<String, String>(_queryParams);
     }
 
+    /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked") // Existing API.
     public Enumeration getParameterNames() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String[] getParameterValues(final String name) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getProtocol() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
-    public BufferedReader getReader() throws IOException {
+    public BufferedReader getReader() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getRealPath(final String path) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getRemoteAddr() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getRemoteHost() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getRemotePort() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public RequestDispatcher getRequestDispatcher(final String path) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getScheme() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getServerName() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getServerPort() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isSecure() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public void removeAttribute(final String name) {
         _attributes.remove(name);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setAttribute(final String name, final Object o) {
         _attributes.put(name, o);
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void setCharacterEncoding(final String env)
-        throws UnsupportedEncodingException {
+    public void setCharacterEncoding(final String env) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 }

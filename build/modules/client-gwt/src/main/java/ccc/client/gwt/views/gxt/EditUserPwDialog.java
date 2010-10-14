@@ -58,7 +58,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
      * @param userDTO The userDTO of the selected user.
      */
     public EditUserPwDialog(final User userDTO) {
-        super(I18n.UI_CONSTANTS.editUserPw(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.editUserPw(), InternalServices.globals);
 
         _userDTO = userDTO;
 
@@ -87,13 +87,13 @@ public class EditUserPwDialog extends AbstractEditDialog {
             @Override public void componentSelected(final ButtonEvent ce) {
 
                 final ValidationResult vr = new ValidationResult();
-                vr.addError(VALIDATOR.passwordStrength(_password1.getValue()));
+                vr.addError(validator.passwordStrength(_password1.getValue()));
                 vr.addError(
-                    VALIDATOR.matchingPasswords(
+                    validator.matchingPasswords(
                         _password1.getValue(), _password2.getValue()));
 
                 if (!vr.isValid()) {
-                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    InternalServices.window.alert(vr.getErrorText());
                     return;
                 }
 

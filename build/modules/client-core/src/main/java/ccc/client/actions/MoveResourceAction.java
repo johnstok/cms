@@ -64,7 +64,7 @@ public class MoveResourceAction
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return _resource.move().build(InternalServices.ENCODER);
+        return _resource.move().build(InternalServices.encoder);
     }
 
 

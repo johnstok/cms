@@ -59,6 +59,6 @@ public class WCAppliedCallback extends DefaultCallback<Void> {
     /** {@inheritDoc} */
     @Override
     public void onSuccess(final Void result) {
-        InternalServices.REMOTING_BUS.fireEvent(_event);
+        InternalServices.remotingBus.fireEvent(_event);
     }
 }

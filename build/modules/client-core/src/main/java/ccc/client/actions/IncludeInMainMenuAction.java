@@ -63,7 +63,7 @@ public class IncludeInMainMenuAction
     protected String getPath() {
         final ResourceSummary delegate =
             _selectionModel.tableSelection();
-        return delegate.includeMM().build(InternalServices.ENCODER);
+        return delegate.includeMM().build(InternalServices.encoder);
     }
 
 

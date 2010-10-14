@@ -70,7 +70,7 @@ public class CreateFolderCommand
                 path,
                 writeFolder(_f),
                 new CallbackResponseHandler<Folder>(
-                    I18n.UI_CONSTANTS.createFolder(),
+                    I18n.uiConstants.createFolder(),
                     callback,
                     new Parser<Folder>() {
                         @Override public Folder parse(final Response response) {

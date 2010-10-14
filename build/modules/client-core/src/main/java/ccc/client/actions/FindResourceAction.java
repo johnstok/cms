@@ -63,8 +63,8 @@ public abstract class FindResourceAction
     @Override
     protected String getPath() {
         return
-            new Link(InternalServices.ROOTS.getLink("element")).build(
-            "id", _resourceId.toString(), InternalServices.ENCODER);
+            new Link(InternalServices.roots.getLink("element")).build(
+            "id", _resourceId.toString(), InternalServices.encoder);
 
     }
 

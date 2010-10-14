@@ -55,16 +55,16 @@ public final class LogoutAction
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final Void v) {
-        InternalServices.GLOBALS.currentUser(null);
-        InternalServices.WINDOW.disableExitConfirmation();
-        InternalServices.WINDOW.redirectTo(Globals.APP_URL);
+        InternalServices.globals.currentUser(null);
+        InternalServices.window.disableExitConfirmation();
+        InternalServices.window.redirectTo(Globals.APP_URL);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return InternalServices.API.getLink(User.Links.CURRENT);
+        return InternalServices.api.getLink(User.Links.CURRENT);
     }
 
 

@@ -56,6 +56,6 @@ public class FolderCreatedCallback extends DefaultCallback<Folder> {
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.FOLDER_CREATE);
         event.addProperty("resource", rs);
-        InternalServices.REMOTING_BUS.fireEvent(event);
+        InternalServices.remotingBus.fireEvent(event);
     }
 }

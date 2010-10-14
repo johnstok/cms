@@ -53,7 +53,7 @@ public class ApplyWorkingCopyCommand
         final Request r =
             new Request(
                 HttpMethod.POST,
-                getBaseUrl()+ rs.wc().build(InternalServices.ENCODER),
+                getBaseUrl()+ rs.wc().build(InternalServices.encoder),
                 "",
                 new CallbackResponseHandler<Void>(
                     "",

@@ -53,7 +53,7 @@ public final class OpenCreateAliasAction
      * @param selectionModel The selection model.
      */
     public OpenCreateAliasAction(final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.createAlias());
+        super(I18n.uiConstants.createAlias());
         _selectionModel = selectionModel;
     }
 
@@ -64,7 +64,7 @@ public final class OpenCreateAliasAction
         final ResourceSummary item = _selectionModel.tableSelection();
 
         if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
+            InternalServices.window.alert(UI_CONSTANTS.noResourceSelected());
             return false;
         }
 
@@ -76,14 +76,14 @@ public final class OpenCreateAliasAction
     @Override
     protected String getPath() {
         return _selectionModel.tableSelection().delete().build(
-            InternalServices.ENCODER);
+            InternalServices.encoder);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void onSuccess(final Resource item) {
-        new CreateAliasPresenter(InternalServices.DIALOGS.createAlias(), item);
+        new CreateAliasPresenter(InternalServices.dialogs.createAlias(), item);
     }
 
 

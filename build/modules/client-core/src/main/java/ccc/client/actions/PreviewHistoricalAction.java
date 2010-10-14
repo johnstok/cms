@@ -73,12 +73,12 @@ public final class PreviewHistoricalAction
                 new DefaultCallback<String>(UI_CONSTANTS.preview()) {
                     @Override public void onSuccess(final String path) {
                         final String url =
-                            InternalServices.GLOBALS.appURL()
+                            InternalServices.globals.appURL()
                             + "preview"
                             + path
                             + "?v="
                             + item.getIndex();
-                        InternalServices.WINDOW.openUrl(
+                        InternalServices.window.openUrl(
                             url,
                             "ccc_preview",
                             "menubar=no,"

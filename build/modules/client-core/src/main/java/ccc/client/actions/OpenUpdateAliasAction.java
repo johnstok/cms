@@ -63,14 +63,14 @@ public class OpenUpdateAliasAction
     @Override
     protected String getPath() {
         final ResourceSummary delegate = _alias;
-        return delegate.targetName().build(InternalServices.ENCODER);
+        return delegate.targetName().build(InternalServices.encoder);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final String targetName) {
-        InternalServices.DIALOGS.updateAlias(_alias, targetName, _targetRoot)
+        InternalServices.dialogs.updateAlias(_alias, targetName, _targetRoot)
         .show();
     }
 

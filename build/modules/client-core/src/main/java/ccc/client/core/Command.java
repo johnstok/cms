@@ -44,8 +44,8 @@ public abstract class Command<T, U>
     extends
         S11nHelper {
 
-    private RequestExecutor _executor = InternalServices.EXECUTOR;
-    private Encoder         _encoder  = InternalServices.ENCODER;
+    private RequestExecutor _executor = InternalServices.executor;
+    private Encoder         _encoder  = InternalServices.encoder;
 
 
     /**
@@ -76,6 +76,11 @@ public abstract class Command<T, U>
     }
 
 
+    /**
+     * Get the base URL for a command.
+     *
+     * @return The URL as a string.
+     */
     protected final String getBaseUrl() { return Globals.API_URL; }
 
 
@@ -83,6 +88,11 @@ public abstract class Command<T, U>
      * Parser factory.
      * ================================================================== */
 
+    /**
+     * Create a parser for a resource.
+     *
+     * @return A {@link Parser} implementation.
+     */
     protected Parser<Resource> resourceParser() {
         return new Parser<Resource>() {
             @Override
@@ -93,6 +103,11 @@ public abstract class Command<T, U>
     }
 
 
+    /**
+     * Create a NULL parser for a void response.
+     *
+     * @return A {@link Parser} implementation.
+     */
     protected Parser<Void> voidParser() {
         return new Parser<Void>() {
             @Override public Void parse(final Response response) {
@@ -102,6 +117,11 @@ public abstract class Command<T, U>
     }
 
 
+    /**
+     * Create a parser for a resource summary.
+     *
+     * @return A {@link Parser} implementation.
+     */
     protected Parser<ResourceSummary> resourceSummaryParser() {
         return new Parser<ResourceSummary>() {
             @Override

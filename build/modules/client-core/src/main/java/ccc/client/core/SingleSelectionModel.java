@@ -98,5 +98,5 @@ public interface SingleSelectionModel {
      *
      * @return The resource summary for the root.
      */
-    public ResourceSummary root();
+    ResourceSummary root();
 }

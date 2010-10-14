@@ -56,6 +56,6 @@ public class FolderUpdatedCallback extends DefaultCallback<Folder> {
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.FOLDER_UPDATE);
         event.addProperty("resource", rs);
-        InternalServices.REMOTING_BUS.fireEvent(event);
+        InternalServices.remotingBus.fireEvent(event);
     }
 }

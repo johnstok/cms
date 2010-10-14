@@ -64,14 +64,14 @@ public class OpenTemplateRevisionAction
     @Override
     protected String getPath() {
         return _template.templateRevision().build(
-            "revision", ""+_index, InternalServices.ENCODER);
+            "revision", ""+_index, InternalServices.encoder);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final Template delta) {
-        InternalServices.DIALOGS.previewTemplate(delta)
+        InternalServices.dialogs.previewTemplate(delta)
         .show();
     }
 

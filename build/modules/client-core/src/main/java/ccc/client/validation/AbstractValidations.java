@@ -61,9 +61,9 @@ public abstract class AbstractValidations {
     /** MAX_NUMBER_OF_PARAGRAPHS : int. */
     public static final int MAX_NUMBER_OF_PARAGRAPHS = 32;
     /** UI_CONSTANTS : UIConstants. */
-    protected static final UIConstants UI_CONSTANTS = I18n.UI_CONSTANTS;
+    protected static final UIConstants UI_CONSTANTS = I18n.uiConstants;
     /** UI_MESSAGES : UIMessages. */
-    protected static final UIMessages UI_MESSAGES = I18n.UI_MESSAGES;
+    protected static final UIMessages UI_MESSAGES = I18n.uiMessages;
 
 
     /**
@@ -267,7 +267,9 @@ public abstract class AbstractValidations {
 
 
     /**
-     * Factory method for metadata validators.
+     * Validate metadata.
+     *
+     * @param data The metadata to validate
      *
      * @return The error message as a string or NULL if the value is valid.
      */

@@ -89,8 +89,8 @@ public abstract class AbstractResourceTree {
             Loader.LoadException,
             new Listener<TreeLoadEvent>() {
                 @Override public void handleEvent(final TreeLoadEvent be) {
-                    InternalServices.EX_HANDLER.unexpectedError(
-                        be.exception, I18n.USER_ACTIONS.internalAction());
+                    InternalServices.exHandler.unexpectedError(
+                        be.exception, I18n.userActions.internalAction());
                 }});
 
         _tree.setIconProvider(

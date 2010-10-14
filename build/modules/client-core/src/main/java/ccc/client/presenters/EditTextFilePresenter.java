@@ -88,7 +88,7 @@ public class EditTextFilePresenter
             new EditTextFileAction(dto).execute();
 
         } else {
-            InternalServices.WINDOW.alert(
+            InternalServices.window.alert(
                 getView().getValidationResult().getErrorText());
         }
     }

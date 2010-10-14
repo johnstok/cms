@@ -65,11 +65,11 @@ public class UniqueUsernameAction
     protected String getPath() {
         return
             Globals.API_URL
-            + new Link(InternalServices.USERS.getLink("exists"))
+            + new Link(InternalServices.users.getLink("exists"))
                 .build(
                     "uname",
                     _username.toString(),
-                    InternalServices.ENCODER);
+                    InternalServices.encoder);
     }
 
 

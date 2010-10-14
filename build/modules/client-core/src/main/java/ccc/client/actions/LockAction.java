@@ -62,7 +62,7 @@ public class LockAction
     protected String getPath() {
         final ResourceSummary delegate =
             _selectionModel.tableSelection();
-        return delegate.lock().build(InternalServices.ENCODER);
+        return delegate.lock().build(InternalServices.encoder);
     }
 
 
@@ -71,7 +71,7 @@ public class LockAction
     protected void onSuccess(final Void v) {
         final ResourceSummary item = _selectionModel.tableSelection();
         item.setLockedBy(
-            InternalServices.GLOBALS.currentUser().getUsername());
+            InternalServices.globals.currentUser().getUsername());
         _selectionModel.update(item);
     }
 

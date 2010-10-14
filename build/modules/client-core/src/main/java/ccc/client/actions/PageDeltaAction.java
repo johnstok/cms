@@ -73,7 +73,7 @@ public class PageDeltaAction
         return
             Globals.API_URL
             + new Link(_resource.getLink(Page.Links.WORKING_COPY))
-              .build(InternalServices.ENCODER);
+              .build(InternalServices.encoder);
     }
 
 

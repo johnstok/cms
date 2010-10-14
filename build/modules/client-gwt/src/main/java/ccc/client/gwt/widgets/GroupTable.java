@@ -88,7 +88,7 @@ public class GroupTable
      * Constructor.
      */
     GroupTable() {
-        InternalServices.REMOTING_BUS.registerHandler(this);
+        InternalServices.remotingBus.registerHandler(this);
 
         setHeading(UI_CONSTANTS.groups());
         setLayout(new FitLayout());

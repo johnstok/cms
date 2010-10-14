@@ -49,7 +49,7 @@ public class AbstractToolBar
     extends
         ToolBar {
 
-    private final Globals _globals = InternalServices.GLOBALS;
+    private final Globals _globals = InternalServices.globals;
 
     /**
      * Adds a new {@link LabelToolItem}.

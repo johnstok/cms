@@ -56,10 +56,10 @@ public final class OpenCreateActionAction
     public void execute() {
         final ResourceSummary item = _ssm.tableSelection();
         if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
+            InternalServices.window.alert(UI_CONSTANTS.noResourceSelected());
         } else {
             new CreateActionPresenter(
-                InternalServices.DIALOGS.createAction(),
+                InternalServices.dialogs.createAction(),
                 item.getId());
         }
     }

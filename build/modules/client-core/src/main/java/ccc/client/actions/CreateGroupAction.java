@@ -63,8 +63,8 @@ public class CreateGroupAction
     @Override
     protected String getPath() {
         return
-            new Link(InternalServices.GROUPS.getLink("self"))
-            .build(InternalServices.ENCODER);
+            new Link(InternalServices.groups.getLink("self"))
+            .build(InternalServices.encoder);
     }
 
 

@@ -73,7 +73,7 @@ public class CreatePageCommand
                 path,
                 writePage(_page),
                 new CallbackResponseHandler<Page>(
-                    I18n.UI_CONSTANTS.createPage(),
+                    I18n.uiConstants.createPage(),
                     callback,
                     new Parser<Page>() {
                         @Override public Page parse(final Response response) {

@@ -64,14 +64,14 @@ public class UpdateFolderCommand
     @Override
     public void invoke(final API api, final Callback<Folder> callback) {
         final String path =
-            getBaseUrl()+_f.self().build(InternalServices.ENCODER);
+            getBaseUrl()+_f.self().build(InternalServices.encoder);
         final Request r =
             new Request(
                 HttpMethod.PUT,
                 path,
                 writeFolder(_f),
                 new CallbackResponseHandler<Folder>(
-                    I18n.UI_CONSTANTS.updateFolder(),
+                    I18n.uiConstants.updateFolder(),
                     callback,
                     new Parser<Folder>() {
                         @Override public Folder parse(final Response response) {

@@ -60,7 +60,7 @@ public class OpenUpdateFolderAction
     @Override
     protected void onSuccess(final Folder folder) {
         new UpdateFolderPresenter(
-            InternalServices.DIALOGS.updateFolder(), folder);
+            InternalServices.dialogs.updateFolder(), folder);
     }
 
 
@@ -68,7 +68,7 @@ public class OpenUpdateFolderAction
     @Override
     protected String getPath() {
         return _selectionModel.tableSelection().delete().build(
-            InternalServices.ENCODER);
+            InternalServices.encoder);
     }
 
 

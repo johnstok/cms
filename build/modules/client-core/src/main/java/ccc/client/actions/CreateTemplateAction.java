@@ -68,8 +68,8 @@ public abstract class CreateTemplateAction
         params.put("count", new String[] {"999"});
         params.put("page", new String[] {"1"});
         return
-            new Link(InternalServices.API.templates())
-            .build(params, InternalServices.ENCODER);
+            new Link(InternalServices.api.templates())
+            .build(params, InternalServices.encoder);
     }
 
 

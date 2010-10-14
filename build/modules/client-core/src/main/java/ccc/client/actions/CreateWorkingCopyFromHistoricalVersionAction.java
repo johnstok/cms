@@ -62,7 +62,7 @@ public class CreateWorkingCopyFromHistoricalVersionAction
     @Override
     protected String getPath() {
         final Link link = _dialog.getResource().revisions();
-        return link.build(InternalServices.ENCODER);
+        return link.build(InternalServices.encoder);
     }
 
 

@@ -60,7 +60,7 @@ public class UpdateMetadataAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _resource.uriMetadata().build(InternalServices.ENCODER);
+        return _resource.uriMetadata().build(InternalServices.encoder);
     }
 
 

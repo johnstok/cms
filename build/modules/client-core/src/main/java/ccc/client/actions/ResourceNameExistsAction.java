@@ -63,7 +63,7 @@ public abstract class ResourceNameExistsAction
     @Override
     protected String getPath() {
         return _folder.exists().build(
-            "name", _resourceName.toString(), InternalServices.ENCODER);
+            "name", _resourceName.toString(), InternalServices.encoder);
 
     }
 

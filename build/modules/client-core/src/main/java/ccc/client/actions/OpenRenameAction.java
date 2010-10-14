@@ -53,7 +53,7 @@ public final class OpenRenameAction
      * @param selectionModel The selection model.
      */
     public OpenRenameAction(final SingleSelectionModel selectionModel) {
-        super(I18n.UI_CONSTANTS.rename());
+        super(I18n.uiConstants.rename());
         _selectionModel = selectionModel;
     }
 
@@ -64,7 +64,7 @@ public final class OpenRenameAction
         final ResourceSummary item = _selectionModel.tableSelection();
 
         if (item == null) {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
+            InternalServices.window.alert(UI_CONSTANTS.noResourceSelected());
             return false;
         }
 
@@ -76,7 +76,7 @@ public final class OpenRenameAction
     @Override
     protected String getPath() {
         return _selectionModel.tableSelection().delete().build(
-                InternalServices.ENCODER);
+                InternalServices.encoder);
     }
 
 
@@ -85,7 +85,7 @@ public final class OpenRenameAction
     @Override
     public void onSuccess(final Resource r) {
         new RenameResourcePresenter(
-            InternalServices.DIALOGS.renameResource(), r);
+            InternalServices.dialogs.renameResource(), r);
     }
 
 

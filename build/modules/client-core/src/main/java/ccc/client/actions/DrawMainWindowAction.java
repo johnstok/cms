@@ -55,8 +55,8 @@ public final class DrawMainWindowAction
     /** {@inheritDoc} */
     @Override
     protected void onSuccess(final PagedCollection<ResourceSummary> roots) {
-        InternalServices.ROOTS = roots;
-        InternalServices.DIALOGS.mainWindow(_user);
+        InternalServices.roots = roots;
+        InternalServices.dialogs.mainWindow(_user);
 
     }
 }

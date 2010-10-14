@@ -82,9 +82,9 @@ public abstract class AbstractBaseDialog
         super();
 
         _globals = globals;
-        _constants = I18n.UI_CONSTANTS;
-        _messages  = I18n.UI_MESSAGES;
-        _userActions = I18n.USER_ACTIONS;
+        _constants = I18n.uiConstants;
+        _messages  = I18n.uiMessages;
+        _userActions = I18n.userActions;
 
         _cancel = cancelButton();
 

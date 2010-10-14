@@ -69,13 +69,13 @@ public final class ContentCreator implements EntryPoint {
      */
     public ContentCreator() {
 
-        I18n.UI_CONSTANTS =
+        I18n.uiConstants =
             GWT.<UIConstants>create(GWTUIConstants.class);
-        I18n.UI_MESSAGES =
+        I18n.uiMessages =
             GWT.<UIMessages>create(GWTUIMessages.class);
-        I18n.ERROR_DESCRIPTIONS =
+        I18n.errorDescriptions =
             GWT.<ErrorDescriptions>create(GWTErrorDescriptions.class);
-        I18n.ERROR_RESOLUTIONS =
+        I18n.errorResolutions =
             GWT.<ErrorResolutions>create(GWTErrorResolutions.class);
 
         GWTGlobals.setUserActions(
@@ -85,28 +85,28 @@ public final class ContentCreator implements EntryPoint {
         GWTGlobals.setCommandConstants(
             GWT.<CommandTypeConstants>create(GWTCommandTypeConstants.class));
 
-        InternalServices.PARSER      = new GWTTextParser();
-        InternalServices.GLOBALS     = _globals;
-        InternalServices.TIMERS      = new GWTTimers();
-        InternalServices.VALIDATOR   = new GWTValidations();
-        InternalServices.EXECUTOR    = new GWTRequestExecutor();
-        InternalServices.SERIALIZERS =
-            new SerializerFactory(InternalServices.PARSER);
-        InternalServices.ENCODER     = new GWTTemplateEncoder();
-        InternalServices.WINDOW      = new GWTWindow();
-        InternalServices.EX_HANDLER  =
-            new GWTExceptionHandler(InternalServices.WINDOW);
-        InternalServices.DIALOGS     = new GWTDialogFactory();
+        InternalServices.parser      = new GWTTextParser();
+        InternalServices.globals     = _globals;
+        InternalServices.timers      = new GWTTimers();
+        InternalServices.validator   = new GWTValidations();
+        InternalServices.executor    = new GWTRequestExecutor();
+        InternalServices.serializers =
+            new SerializerFactory(InternalServices.parser);
+        InternalServices.encoder     = new GWTTemplateEncoder();
+        InternalServices.window      = new GWTWindow();
+        InternalServices.exHandler  =
+            new GWTExceptionHandler(InternalServices.window);
+        InternalServices.dialogs     = new GWTDialogFactory();
 
 
         if (paramExists("dec")) {
-            InternalServices.WINDOW.enableExitConfirmation();
+            InternalServices.window.enableExitConfirmation();
         }
     }
 
 
     private boolean paramExists(final String paramName) {
-        return null!=InternalServices.WINDOW.getParameter(paramName);
+        return null!=InternalServices.window.getParameter(paramName);
     }
 
 
@@ -117,13 +117,13 @@ public final class ContentCreator implements EntryPoint {
 
         installUnexpectedExceptionHandler();
 
-        InternalServices.CORE_BUS.registerHandler(
+        InternalServices.coreBus.registerHandler(
             new EventHandler<CoreEvents>() {
                 @Override
                 public void handle(final Event<CoreEvents> event) {
                     switch (event.getType()) {
                         case ERROR:
-                            InternalServices.EX_HANDLER.unexpectedError(
+                            InternalServices.exHandler.unexpectedError(
                                 event.<Throwable>getProperty("exception"),
                                 event.<String>getProperty("name"));
                         default:
@@ -137,7 +137,7 @@ public final class ContentCreator implements EntryPoint {
             @Override
             protected void onSuccess(final API api) {
                 super.onSuccess(api);
-                _globals.setSettings(InternalServices.API.getProps());
+                _globals.setSettings(InternalServices.api.getProps());
                 new IsLoggedInAction().execute();
             }}.execute();
 
@@ -148,8 +148,8 @@ public final class ContentCreator implements EntryPoint {
         GWT.setUncaughtExceptionHandler(
             new UncaughtExceptionHandler(){
                 public void onUncaughtException(final Throwable e) {
-                    InternalServices.EX_HANDLER.unexpectedError(
-                        e, I18n.USER_ACTIONS.unknownAction());
+                    InternalServices.exHandler.unexpectedError(
+                        e, I18n.userActions.unknownAction());
                 }
             }
         );

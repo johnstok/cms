@@ -28,10 +28,20 @@ package ccc.client.core;
 
 
 /**
- * TODO: Add a description for this type.
+ * Response parser.
+ *
+ * @param <T> The type the response will be parsed into.
  *
  * @author Civic Computing Ltd.
  */
 public interface Parser<T> {
+
+    /**
+     * Parse a response.
+     *
+     * @param response The response to parse.
+     *
+     * @return An object of type T, equivalent to the response.
+     */
     T parse(final Response response);
 }

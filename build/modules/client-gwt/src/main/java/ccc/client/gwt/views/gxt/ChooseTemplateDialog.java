@@ -83,7 +83,7 @@ public class ChooseTemplateDialog
      * Constructor.
      */
     public ChooseTemplateDialog() {
-        super(I18n.UI_CONSTANTS.chooseTemplate(), InternalServices.GLOBALS);
+        super(I18n.uiConstants.chooseTemplate(), InternalServices.globals);
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
 
         _selectedTemplate.setFieldLabel(constants().defaultTemplate());

@@ -48,7 +48,7 @@ public class CommentTree extends Tree {
     private static final int USER_TREE_HEIGHT = 300;
 
     private final CommentTable _commentTable;
-    private final UIConstants _constants = I18n.UI_CONSTANTS;
+    private final UIConstants _constants = I18n.uiConstants;
     private final LeftRightPane _view;
 
     /**

@@ -59,8 +59,8 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
      *
      */
     public UpdateCurrentUserDialog() {
-        super(I18n.UI_CONSTANTS.editUser(), InternalServices.GLOBALS);
-        _user = InternalServices.GLOBALS.currentUser();
+        super(I18n.uiConstants.editUser(), InternalServices.globals);
+        _user = InternalServices.globals.currentUser();
 
         _username.setFieldLabel(constants().username());
         _username.setReadOnly(true);
@@ -100,26 +100,26 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
 
                 final ValidationResult vr = new ValidationResult();
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _email.getValue(), _email.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.notEmpty(
+                    validator.notEmpty(
                         _name.getValue(), _name.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.notValidEmail(
+                    validator.notValidEmail(
                         _email.getValue(), _email.getFieldLabel()));
 
                 if (null!=_password1.getValue()
                     || null!=_password2.getValue()) {
                     vr.addError(
-                        VALIDATOR.passwordStrength(_password1.getValue()));
+                        validator.passwordStrength(_password1.getValue()));
                     vr.addError(
-                        VALIDATOR.matchingPasswords(
+                        validator.matchingPasswords(
                             _password1.getValue(), _password2.getValue()));
                 }
 
                 if (!vr.isValid()) {
-                    InternalServices.WINDOW.alert(vr.getErrorText());
+                    InternalServices.window.alert(vr.getErrorText());
                     return;
                 }
 
@@ -147,7 +147,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
         new UpdateCurrentUserAction(user){
             /** {@inheritDoc} */
             @Override protected void onSuccess(final User newUser) {
-                InternalServices.GLOBALS.currentUser(newUser);
+                InternalServices.globals.currentUser(newUser);
                 hide();
             }
 

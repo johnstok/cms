@@ -60,7 +60,7 @@ public class ActionTree extends Tree {
     private static final int ACTION_TREE_HEIGHT = 300;
 
     private final ActionTable _actionTable;
-    private final UIConstants _uiConstants = I18n.UI_CONSTANTS;
+    private final UIConstants _uiConstants = I18n.uiConstants;
     private final LeftRightPane _view;
 
     /**

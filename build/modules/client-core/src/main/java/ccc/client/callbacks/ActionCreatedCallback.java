@@ -47,7 +47,7 @@ public class ActionCreatedCallback
      * Constructor.
      */
     public ActionCreatedCallback() {
-        super(I18n.UI_CONSTANTS.createAction());
+        super(I18n.uiConstants.createAction());
     }
 
     /** {@inheritDoc} */
@@ -55,6 +55,6 @@ public class ActionCreatedCallback
     public void onSuccess(final Action result) {
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.ACTION_CREATE);
-        InternalServices.REMOTING_BUS.fireEvent(event);
+        InternalServices.remotingBus.fireEvent(event);
     }
 }

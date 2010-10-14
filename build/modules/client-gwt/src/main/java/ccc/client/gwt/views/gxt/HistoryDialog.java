@@ -75,8 +75,8 @@ public class HistoryDialog
     public HistoryDialog(final Collection<Revision> data,
                          final ResourceType resourceType,
                          final SingleSelectionModel ssm) {
-        super(I18n.UI_CONSTANTS.resourceHistory(),
-            InternalServices.GLOBALS,
+        super(I18n.uiConstants.resourceHistory(),
+            InternalServices.globals,
               data,
               false);
 

@@ -61,7 +61,7 @@ public final class CreateTextFileAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return InternalServices.API.files();
+        return InternalServices.api.files();
     }
 
 
@@ -76,7 +76,7 @@ public final class CreateTextFileAction
         final Event<CommandType> event =
             new Event<CommandType>(CommandType.FILE_CREATE);
         event.addProperty("resource", rs);
-        InternalServices.REMOTING_BUS.fireEvent(event);
+        InternalServices.remotingBus.fireEvent(event);
     }
 
 

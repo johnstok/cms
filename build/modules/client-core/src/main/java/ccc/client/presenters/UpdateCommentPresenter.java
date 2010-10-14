@@ -91,7 +91,7 @@ public class UpdateCommentPresenter
             new UpdateCommentAction(updated).execute();
 
         } else {
-            InternalServices.WINDOW.alert(result.getErrors().get(0));
+            InternalServices.window.alert(result.getErrors().get(0));
         }
     }
 
