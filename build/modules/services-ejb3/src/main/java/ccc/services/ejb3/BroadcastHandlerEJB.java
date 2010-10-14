@@ -26,6 +26,7 @@
  */
 package ccc.services.ejb3;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.jms.Message;
@@ -33,7 +34,9 @@ import javax.jms.MessageListener;
 
 import org.apache.log4j.Logger;
 
-import ccc.search.SearchHelper;
+import ccc.api.types.CommandType;
+import ccc.commands.anonymous.AnonymousCommand;
+import ccc.commands.anonymous.CommandFactory;
 
 
 /**
@@ -58,18 +61,28 @@ public class BroadcastHandlerEJB
     private static final Logger LOG =
         Logger.getLogger(BroadcastHandlerEJB.class);
 
+    private CommandFactory _commandFactory;
+
 
     /** {@inheritDoc} */
     @Override
     public void onMessage(final Message msg) {
         try {
-            new SearchHelper(
-                getRepoFactory().createResourceRepository(),
-                getRepoFactory().createDataRepository(),
-                getRepoFactory().createSettingsRepository()
-            ).index();
+            final String cTypeString = msg.getStringProperty("command");
+            final CommandType cType  = CommandType.valueOf(cTypeString);
+            final AnonymousCommand c = _commandFactory.createCommand(cType);
+
+            c.execute();
+
         } catch (final Exception e) {
             LOG.error("Error handling broadcast.", e);
         }
+    }
+
+
+    @PostConstruct
+    @SuppressWarnings("unused")
+    private void postConstruct() {
+        _commandFactory = new CommandFactory(getRepoFactory());
     }
 }
