@@ -122,9 +122,9 @@ public class PageCommentDialog extends AbstractEditDialog {
         update.setComment(_comment.getValue());
         update.setMajorChange(_majorEdit.getValue().booleanValue());
         update.addLink(
-            Resource.SELF,
+            Resource.Links.SELF,
             _updatePageDialog
-                .getModelData().getLink(Resource.SELF));
+                .getModelData().getLink(Resource.Links.SELF));
 
         new UpdatePageAction(update) {
                 /** {@inheritDoc} */

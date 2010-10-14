@@ -134,7 +134,7 @@ public class CreatePageDialog
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         final ColumnConfig templateNameColumn = new ColumnConfig();
-        templateNameColumn.setId(Template.NAME);
+        templateNameColumn.setId(ResourceSummary.Properties.NAME);
         templateNameColumn.setHeader(getUiConstants().name());
         templateNameColumn.setWidth(NAME_COLUMN_WIDTH);
         configs.add(templateNameColumn);
@@ -160,7 +160,7 @@ public class CreatePageDialog
         _templateGrid.addListener(Events.RowClick, gridEventlistener);
 
         _templatesStore.add(DataBinding.bindTemplateDelta(list));
-        _templatesStore.sort(Template.NAME, SortDir.ASC);
+        _templatesStore.sort(ResourceSummary.Properties.NAME, SortDir.ASC);
 
         _templatePanel.setHeaderVisible(true);
         _templatePanel.setHeading(getUiConstants().template());
@@ -294,7 +294,10 @@ public class CreatePageDialog
 
 
     private Template findTemplate(final UUID t) {
-        return _templatesStore.findModel(ResourceSummary.UUID, t).getBean();
+        return
+            _templatesStore
+            .findModel(ResourceSummary.Properties.UUID, t)
+            .getBean();
     }
 
     /** {@inheritDoc} */

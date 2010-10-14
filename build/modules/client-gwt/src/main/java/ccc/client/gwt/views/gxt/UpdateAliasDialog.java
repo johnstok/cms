@@ -115,7 +115,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
         if (isChanged()) {
             final Alias a = new Alias(_targetName.getTarget().getId());
             a.setId(_alias.getId());
-            a.addLink(Resource.SELF, _alias.getLink(Resource.SELF));
+            a.addLink(Resource.Links.SELF, _alias.getLink(Resource.Links.SELF));
 
             new UpdateAliasAction(a){
                 /** {@inheritDoc} */

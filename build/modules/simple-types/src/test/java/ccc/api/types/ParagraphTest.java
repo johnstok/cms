@@ -214,12 +214,15 @@ public final class ParagraphTest extends TestCase {
      */
     public void testFloatConstructor() {
 
+        // ARRANGE
+        final double oneTenth = 0.1d;
+
         // ACT
         final Paragraph p = Paragraph.fromNumber("foo", 0.1d);
 
         // ASSERT
         assertEquals(ParagraphType.NUMBER, p.getType());
-        assertEquals(String.valueOf(0.1d), p.getNumber().toString());
+        assertEquals(String.valueOf(oneTenth), p.getNumber().toString());
         assertEquals("foo", p.getName());
     }
 

@@ -347,11 +347,11 @@ public class UserEntity
         dto.setPermissions(getPermissions());
 
         dto.addLink(
-            User.PASSWORD,
+            User.Links.PASSWORD,
             new Link(ccc.api.synchronous.ResourceIdentifiers.User.PASSWORD)
                 .build("id", getId().toString(), new NormalisingEncoder()));
         dto.addLink(
-            User.SELF,
+            User.Links.SELF,
             new Link(ccc.api.synchronous.ResourceIdentifiers.User.ELEMENT)
                 .build("id", getId().toString(), new NormalisingEncoder()));
 

@@ -42,262 +42,377 @@ public interface ResourceIdentifiers {
      *
      * @author Civic Computing Ltd.
      */
-    public static interface Scheduler {
+    public static final class Scheduler {
+        private Scheduler() { super(); }
+
         /** SCHEDULER : String. */
-        String SCHEDULER   = "/scheduler";
+        public static final String SCHEDULER =
+            "/scheduler";
     }
+
 
     /**
      * URIs for the search API.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface SearchEngine {
+    public static final class SearchEngine {
+        private SearchEngine() { super(); }
+
         /** COLLECTION : String. */
-        String COLLECTION = "/secure/search";
+        public static final String COLLECTION =
+            "/secure/search";
         /** FIND : String. */
-        String FIND       = "/find";
+        public static final String FIND       =
+            "/find";
         /** FIND_SORT : String. */
-        String FIND_SORT       = "/find_sort";
+        public static final String FIND_SORT  =
+            "/find_sort";
         /** SIMILAR : String. */
-        String SIMILAR    = "/similar";
+        public static final String SIMILAR    =
+            "/similar";
         /** INDEX : String. */
-        String INDEX      = "/index";
+        public static final String INDEX      =
+            "/index";
     }
+
 
     /**
      * URIs for the security API.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface Security {
+    public static final class Security {
+        private Security() { super(); }
+
         /** COLLECTION : String. */
-        String COLLECTION = "/public/sessions";
+        public static final String COLLECTION =
+            "/public/sessions";
         /** CURRENT : String. */
-        String CURRENT    = COLLECTION+"/current";
+        public static final String CURRENT    =
+            COLLECTION+"/current";
     }
+
 
     /**
      * URIs for the templates API.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface Template {
+    public static final class Template {
+        private Template() { super(); }
+
         /** COLLECTION : String. */
-        String COLLECTION = "/secure/templates";
+        public static final String COLLECTION =
+            "/secure/templates";
         /** ELEMENT : String. */
-        String ELEMENT    = COLLECTION + "/{id}";
+        public static final String ELEMENT    =
+            COLLECTION + "/{id}";
         /** EXISTS : String. */
-        String EXISTS     = COLLECTION + "/{name}/exists";
+        public static final String EXISTS     =
+            COLLECTION + "/{name}/exists";
         /** REVISION : String. */
-        String REVISION   = ELEMENT + "/{revision}";
+        public static final String REVISION   =
+            ELEMENT + "/{revision}";
     }
+
 
     /**
      * URIs for the page API.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface Page {
+    public static final class Page {
+        private Page() { super(); }
+
         /** COLLECTION : String. */
-        String COLLECTION  = "/secure/pages";
+        public static final String COLLECTION =
+            "/secure/pages";
         /** VALIDATOR : String. */
-        String VALIDATOR   = COLLECTION + "/validator";
+        public static final String VALIDATOR  =
+            COLLECTION + "/validator";
         /** SEARCH : String. */
-        String SEARCH   = COLLECTION + "/search";
+        public static final String SEARCH     =
+            COLLECTION + "/search";
         /** ELEMENT : String. */
-        String ELEMENT     = COLLECTION + "/{id}";
+        public static final String ELEMENT    =
+            COLLECTION + "/{id}";
         /** WC : String. */
-        String WC          = ELEMENT + "/wc";
+        public static final String WC         =
+            ELEMENT + "/wc";
     }
+
 
     /**
      * URIs for the groups API.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface Group {
+    public static final class Group {
+        private Group() { super(); }
+
         /** COLLECTION : String. */
-        String COLLECTION = "/secure/groups";
+        public static final String COLLECTION =
+            "/secure/groups";
         /** ELEMENT : String. */
-        String ELEMENT = COLLECTION+"/{id}";
+        public static final String ELEMENT    =
+            COLLECTION+"/{id}";
     }
+
 
     /**
      * URIs for the folders API.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface Folder {
+    public static final class Folder {
+        private Folder() { super(); }
+
         /** COLLECTION : String. */
-        String COLLECTION            = "/secure/folders";
+        public static final String COLLECTION            =
+            "/secure/folders";
         /** ELEMENT : String. */
-        String ELEMENT               = COLLECTION + "/{id}";
+        public static final String ELEMENT               =
+            COLLECTION + "/{id}";
         /** ROOTS : String. */
-        String ROOTS                 = COLLECTION + "/roots";
+        public static final String ROOTS                 =
+            COLLECTION + "/roots";
         /** FOLDER_CHILDREN : String. */
-        String FOLDER_CHILDREN       = ELEMENT + "/folder-children";
+        public static final String FOLDER_CHILDREN       =
+            ELEMENT + "/folder-children";
         /** CHILDREN : String. */
-        String CHILDREN              = ELEMENT + "/children";
+        public static final String CHILDREN              =
+            ELEMENT + "/children";
         /** ACCESSIBLE_CHILDREN : String. */
-        String ACCESSIBLE_CHILDREN   = ELEMENT + "/accessible-children";
+        public static final String ACCESSIBLE_CHILDREN   =
+            ELEMENT + "/accessible-children";
         /** CHILDREN_MANUAL_ORDER : String. */
-        String CHILDREN_MANUAL_ORDER = ELEMENT + "/children-manual-order";
+        public static final String CHILDREN_MANUAL_ORDER =
+            ELEMENT + "/children-manual-order";
         /** EXISTS : String. */
-        String EXISTS                = ELEMENT + "/{name}/exists";
+        public static final String EXISTS                =
+            ELEMENT + "/{name}/exists";
         /** DEPRECATED : String. */
-        String DEPRECATED            = COLLECTION + "/deprecated";
+        public static final String DEPRECATED            =
+            COLLECTION + "/deprecated";
         /** ROOT_NAME : String. */
-        String ROOT_NAME             = ROOTS + "/{name}";
+        public static final String ROOT_NAME             =
+            ROOTS + "/{name}";
     }
+
 
     /**
      * URIs for the files API.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface File {
+    public static final class File {
+        private File() { super(); }
+
         /** COLLECTION : String. */
-        String COLLECTION        = "/secure/files";
+        public static final String COLLECTION        =
+            "/secure/files";
         /** IMAGES : String. */
-        String IMAGES            = COLLECTION + "/images/";
+        public static final String IMAGES            =
+            COLLECTION + "/images/";
         /** ELEMENT : String. */
-        String ELEMENT           = COLLECTION + "/{id}";
+        public static final String ELEMENT           =
+            COLLECTION + "/{id}";
         /** BINARY_COLLECTION : String. */
-        String BINARY_COLLECTION = COLLECTION + "/bin";
+        public static final String BINARY_COLLECTION =
+            COLLECTION + "/bin";
         /** BINARY_ELEMENT : String. */
-        String BINARY_ELEMENT    = BINARY_COLLECTION + "/{id}";
+        public static final String BINARY_ELEMENT    =
+            BINARY_COLLECTION + "/{id}";
         /** BINARY_WC : String. */
-        String BINARY_WC         = BINARY_ELEMENT + "/wc";
+        public static final String BINARY_WC         =
+            BINARY_ELEMENT + "/wc";
         /** BINARY_REVISION : String. */
-        String BINARY_REVISION   = BINARY_ELEMENT + "/rev";
+        public static final String BINARY_REVISION   =
+            BINARY_ELEMENT + "/rev";
     }
+
 
     /**
      * URIs for the comments API.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface Comment {
+    public static final class Comment {
+        private Comment() { super(); }
+
         /** COLLECTION : String. */
-        String COLLECTION = "/secure/comments";
+        public static final String COLLECTION =
+            "/secure/comments";
         /** ELEMENT : String. */
-        String ELEMENT = COLLECTION+"/{id}";
+        public static final String ELEMENT    =
+            COLLECTION+"/{id}";
     }
+
 
     /**
      * URIs for the users API.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface User {
+    public static final class User {
+        private User() { super(); }
+
         /** COLLECTION : String. */
-        String  COLLECTION = "/secure/users";
+        public static final String  COLLECTION =
+            "/secure/users";
         /** ELEMENT : String. */
-        String  ELEMENT    = COLLECTION + "/{id}";
+        public static final String  ELEMENT    =
+            COLLECTION + "/{id}";
         /** ME : String. */
-        String  ME         = COLLECTION + "/me";
+        public static final String  ME         =
+            COLLECTION + "/me";
         /** EXISTS : String. */
-        String  EXISTS     = COLLECTION + "/{uname}/exists";
+        public static final String  EXISTS     =
+            COLLECTION + "/{uname}/exists";
         /** LEGACY : String. */
-        String  LEGACY     = COLLECTION + "/by-legacy-id/{id}";
+        public static final String  LEGACY     =
+            COLLECTION + "/by-legacy-id/{id}";
         /** METADATA : String. */
-        String  METADATA   = COLLECTION + "/metadata/{key}";
+        public static final String  METADATA   =
+            COLLECTION + "/metadata/{key}";
         /** DELTA : String. */
-        String  DELTA      = ELEMENT + "/delta";
+        public static final String  DELTA      =
+            ELEMENT + "/delta";
         /** PASSWORD : String. */
-        String  PASSWORD   = ELEMENT + "/password";
+        public static final String  PASSWORD   =
+            ELEMENT + "/password";
     }
+
 
     /**
      * URIs for the actions API.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface Action {
+    public static final class Action {
+        private Action() { super(); }
+
         /** COLLECTION : String. */
-        String  COLLECTION  = "/secure/actions";
+        public static final String  COLLECTION  =
+            "/secure/actions";
         /** ELEMENT : String. */
-        String  ELEMENT     = "/{id}";
+        public static final String  ELEMENT     =
+            "/{id}";
         /** EXECUTE : String. */
-        String  EXECUTE     = "/all";
+        public static final String  EXECUTE     =
+            "/all";
     }
+
 
     /**
      * URIs for the aliases API.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface Alias {
+    public static final class Alias {
+        private Alias() { super(); }
+
         /** COLLECTION : String. */
-        String COLLECTION  = "/secure/aliases";
+        public static final String COLLECTION  =
+            "/secure/aliases";
         /** ELEMENT : String. */
-        String ELEMENT     = COLLECTION + "/{id}";
+        public static final String ELEMENT     =
+            COLLECTION + "/{id}";
         /** TARGET_NAME : String. */
-        String TARGET_NAME = ELEMENT + "/targetname";
+        public static final String TARGET_NAME =
+            ELEMENT + "/targetname";
     }
+
 
     /**
      * URIs for the resources API.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface Resource {
+    public static final class Resource {
+        private Resource() { super(); }
 
         /** COLLECTION : String. */
-        String COLLECTION         = "/secure/resources";
-
+        public static final String COLLECTION         =
+            "/secure/resources";
         /** LOCKED : String. */
-        String LOCKED             = COLLECTION + "/locked";
+        public static final String LOCKED             =
+            COLLECTION + "/locked";
         /** SEARCH_PATH_SIMPLE : String. */
-        String SEARCH_PATH_SIMPLE = COLLECTION + "/by-path";
+        public static final String SEARCH_PATH_SIMPLE =
+            COLLECTION + "/by-path";
         /** SEARCH_PATH : String. */
-        String SEARCH_PATH        = SEARCH_PATH_SIMPLE + "{path:.*}";
+        public static final String SEARCH_PATH        =
+            SEARCH_PATH_SIMPLE + "{path:.*}";
         /** SEARCH_LEGACY : String. */
-        String SEARCH_LEGACY      = COLLECTION + "/by-legacy-id/{id}";
+        public static final String SEARCH_LEGACY      =
+            COLLECTION + "/by-legacy-id/{id}";
         /** SEARCH_METADATA : String. */
-        String SEARCH_METADATA    = COLLECTION + "/by-metadata-key/{id}";
+        public static final String SEARCH_METADATA    =
+            COLLECTION + "/by-metadata-key/{id}";
         /** TEXT_SIMPLE : String. */
-        String TEXT_SIMPLE        = COLLECTION + "/text-content";
+        public static final String TEXT_SIMPLE        =
+            COLLECTION + "/text-content";
         /** TEXT : String. */
-        String TEXT               = TEXT_SIMPLE + "{path:.*}";
+        public static final String TEXT               =
+            TEXT_SIMPLE + "{path:.*}";
         /** PATH_SECURE : String. */
-        String PATH_SECURE        = COLLECTION + "/by-path-secure{path:.*}";
+        public static final String PATH_SECURE        =
+            COLLECTION + "/by-path-secure{path:.*}";
         /** PATH_WC : String. */
-        String PATH_WC            = COLLECTION + "/by-path-wc{path:.*}";
+        public static final String PATH_WC            =
+            COLLECTION + "/by-path-wc{path:.*}";
         /** SEARCH : String. */
-        String SEARCH             = COLLECTION + "/search/{id}/{title}";
+        public static final String SEARCH             =
+            COLLECTION + "/search/{id}/{title}";
         /** SEARCH : String. */
-        String SEARCH2            = COLLECTION + "/search2";
+        public static final String SEARCH2            =
+            COLLECTION + "/search2";
         /** ELEMENT : String. */
-        String ELEMENT            = COLLECTION + "/{id}";
+        public static final String ELEMENT            =
+            COLLECTION + "/{id}";
         /** PATH : String. */
-        String PATH               = ELEMENT + "/path";
+        public static final String PATH               =
+            ELEMENT + "/path";
         /** REVISIONS : String. */
-        String REVISIONS          = ELEMENT + "/revisions";
+        public static final String REVISIONS          =
+            ELEMENT + "/revisions";
         /** METADATA : String. */
-        String METADATA           = ELEMENT + "/metadata";
+        public static final String METADATA           =
+            ELEMENT + "/metadata";
         /** ACL : String. */
-        String ACL                = ELEMENT + "/acl";
+        public static final String ACL                =
+            ELEMENT + "/acl";
         /** DURATION : String. */
-        String DURATION           = ELEMENT + "/duration";
+        public static final String DURATION           =
+            ELEMENT + "/duration";
         /** TEMPLATE : String. */
-        String TEMPLATE           = ELEMENT + "/template";
+        public static final String TEMPLATE           =
+            ELEMENT + "/template";
         /** LOCK : String. */
-        String LOCK               = ELEMENT + "/lock";
+        public static final String LOCK               =
+            ELEMENT + "/lock";
         /** PUBLISH : String. */
-        String PUBLISH            = ELEMENT + "/publish";
+        public static final String PUBLISH            =
+            ELEMENT + "/publish";
         /** PARENT : String. */
-        String PARENT             = ELEMENT + "/parent";
+        public static final String PARENT             =
+            ELEMENT + "/parent";
         /** NAME : String. */
-        String NAME               = ELEMENT + "/name";
+        public static final String NAME               =
+            ELEMENT + "/name";
         /** EXCLUDE_MM : String. */
-        String EXCLUDE_MM         = ELEMENT + "/exclude-mm";
+        public static final String EXCLUDE_MM         =
+            ELEMENT + "/exclude-mm";
         /** INCLUDE_MM : String. */
-        String INCLUDE_MM         = ELEMENT + "/include-mm";
+        public static final String INCLUDE_MM         =
+            ELEMENT + "/include-mm";
         /** WC : String. */
-        String WC                 = ELEMENT + "/wc";
+        public static final String WC                 =
+            ELEMENT + "/wc";
         /** LOG_ENTRY : String. */
-        String LOG_ENTRY          = ELEMENT + "/logentry-create";
+        public static final String LOG_ENTRY          =
+            ELEMENT + "/logentry-create";
     }
 }

@@ -352,7 +352,7 @@ public class FileEntity
         final File fs = forCurrentRevision();
         fs.setContent((!isText()) ? null : read(dataRepo, this));
         fs.addLink(
-            Resource.SELF,
+            Resource.Links.SELF,
             new Link(ccc.api.synchronous.ResourceIdentifiers.File.ELEMENT)
                 .build("id", getId().toString(), new NormalisingEncoder()));
         return fs;

@@ -26,10 +26,7 @@
  */
 package ccc.plugins.scripting.velocity;
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.*;
 
 import java.io.StringWriter;
 import java.util.Collections;
@@ -213,7 +210,8 @@ public class VelocityProcessorTest extends TestCase {
         // ASSERT
         } catch (final ProcessingException e) {
             assertEquals(
-                "Error processing script 'test' [line number 1].",
+                "Error processing Velocity script 'test' "
+                + "[line number 1, column number 1].",
                 e.getMessage());
             assertTrue(e.getCause() instanceof ParseErrorException);
             assertTrue(e.getCause().getMessage().startsWith(expectedMessage));
@@ -249,7 +247,8 @@ public class VelocityProcessorTest extends TestCase {
         // ASSERT
         } catch (final ProcessingException e) {
             assertEquals(
-                "Error processing script 'test' [line number 1].",
+                "Error processing Velocity script 'test' "
+                + "[line number 1, column number 11].",
                 e.getMessage());
             assertTrue(e.getCause() instanceof MethodInvocationException);
             assertTrue(e.getCause().getMessage().startsWith(expectedMessage));

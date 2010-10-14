@@ -188,7 +188,7 @@ public class EditCacheDialog extends AbstractEditDialog {
         final Resource r = new Resource();
         r.setId(_item.getId());
         r.setCacheDuration(updatedDs);
-        r.addLink(Resource.DURATION,
+        r.addLink(Resource.Links.DURATION,
                   _item.duration().toString());
 
         new UpdateCacheDurationAction(r){

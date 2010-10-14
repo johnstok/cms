@@ -79,7 +79,7 @@ public abstract class AbstractResourceTree {
         _store = new TreeStore<BeanModel>(_loader);
         _tree = new TreePanel<BeanModel>(_store);
         _tree.setCaching(false);
-        _tree.setDisplayProperty(ResourceSummary.NAME);
+        _tree.setDisplayProperty(ResourceSummary.Properties.NAME);
         _tree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         _tree.setStyleAttribute("background", "white");
         _tree.setLabelProvider(
@@ -182,11 +182,14 @@ public abstract class AbstractResourceTree {
                      final ResourceSummary newParent,
                      final ResourceSummary model) {
         final BeanModel pBean =
-            _store.findModel(ResourceSummary.UUID, oldParent.getId());
+            _store.findModel(
+                ResourceSummary.Properties.UUID, oldParent.getId());
         final BeanModel mBean =
-            _store.findModel(ResourceSummary.UUID, model.getId());
+            _store.findModel(
+                ResourceSummary.Properties.UUID, model.getId());
         final BeanModel destinationFolder =
-            _store.findModel(ResourceSummary.UUID, newParent.getId());
+            _store.findModel(
+                ResourceSummary.Properties.UUID, newParent.getId());
 
         _store.remove(pBean, mBean);
 
@@ -212,12 +215,12 @@ public abstract class AbstractResourceTree {
      */
     public void removeResource(final UUID item) {
         final BeanModel tBean =
-            _store.findModel(ResourceSummary.UUID, item);
+            _store.findModel(ResourceSummary.Properties.UUID, item);
 
         if (null!=tBean) {
             final ResourceSummary target = tBean.<ResourceSummary>getBean();
             final BeanModel pBean =
-                _store.findModel(ResourceSummary.UUID, target.getParent());
+                _store.findModel(ResourceSummary.Properties.UUID, target.getParent());
 
             _store.remove(tBean);
 
@@ -245,9 +248,11 @@ public abstract class AbstractResourceTree {
      */
     public void updateResource(final ResourceSummary model) {
         final BeanModel tBean =
-            _store.findModel(ResourceSummary.UUID, model.getId());
+            _store.findModel(
+                ResourceSummary.Properties.UUID, model.getId());
         final BeanModel pBean =
-            _store.findModel(ResourceSummary.UUID, model.getParent());
+            _store.findModel(
+                ResourceSummary.Properties.UUID, model.getParent());
 
         _store.update(tBean);
 
@@ -265,7 +270,8 @@ public abstract class AbstractResourceTree {
      */
     public boolean addResource(final ResourceSummary model) {
         final BeanModel pBean =
-            _store.findModel(ResourceSummary.UUID, model.getParent());
+            _store.findModel(
+                ResourceSummary.Properties.UUID, model.getParent());
 
         if (null!=pBean) { // May not exist in the store
             if (model.getType() == ResourceType.FOLDER) {

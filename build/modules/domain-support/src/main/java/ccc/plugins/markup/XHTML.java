@@ -30,14 +30,12 @@ package ccc.plugins.markup;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-import javax.xml.xpath.XPath;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 
 /**
- * TODO: Add a description for this type.
+ * API for manipulating XHTML.
  *
  * @author Civic Computing Ltd.
  */

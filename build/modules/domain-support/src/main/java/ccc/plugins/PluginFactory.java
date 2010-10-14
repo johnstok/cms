@@ -47,6 +47,11 @@ import ccc.plugins.security.Sessions;
  */
 public class PluginFactory {
 
+    /**
+     * Create a new XHTML plugin.
+     *
+     * @return The XHTML plugin.
+     */
     public XHTML html() {
         return
             construct(
@@ -55,6 +60,11 @@ public class PluginFactory {
     }
 
 
+    /**
+     * Create a new serializers plugin.
+     *
+     * @return The serializers plugin.
+     */
     public Serializers serializers() {
         try {
             final Class<?>[] types = new Class<?>[] {
@@ -83,6 +93,11 @@ public class PluginFactory {
     }
 
 
+    /**
+     * Create a new mailer plugin.
+     *
+     * @return The mailer plugin.
+     */
     public Mailer createMailer() {
         return
             construct(
@@ -91,6 +106,11 @@ public class PluginFactory {
     }
 
 
+    /**
+     * Create a new templating plugin.
+     *
+     * @return The templating plugin.
+     */
     public TextProcessor createTemplating() {
         return
             construct(
@@ -99,6 +119,11 @@ public class PluginFactory {
     }
 
 
+    /**
+     * Create a new scripting plugin.
+     *
+     * @return The scripting plugin.
+     */
     public TextProcessor createScripting() {
         return
             construct(
@@ -107,6 +132,13 @@ public class PluginFactory {
     }
 
 
+    /**
+     * Create a new index plugin.
+     *
+     * @param theArguments Arguments required by the plugin.
+     *
+     * @return The index plugin.
+     */
     public Index createIndex(final Object... theArguments) {
         return
             construct(
@@ -116,6 +148,13 @@ public class PluginFactory {
     }
 
 
+    /**
+     * Create a new indexer plugin.
+     *
+     * @param theArguments Arguments required by the plugin.
+     *
+     * @return The indexer plugin.
+     */
     public Indexer createIndexer(final Object... theArguments) {
         return
             construct(
@@ -125,6 +164,11 @@ public class PluginFactory {
     }
 
 
+    /**
+     * Create a new sessions plugin.
+     *
+     * @return The sessions plugin.
+     */
     public Sessions createSessions() {
         return
             construct(
@@ -133,6 +177,16 @@ public class PluginFactory {
     }
 
 
+    /**
+     * Create a new multipart form data plugin.
+     *
+     * @param charEncoding  The character encoding for the content.
+     * @param contentLength The length of the multipart content.
+     * @param contentType   The mime-type for the content.
+     * @param inputStream   The input stream for reading the content.
+     *
+     * @return The multipart form data plugin.
+     */
     public MultipartFormData createFormData(final String charEncoding,
                                             final int contentLength,
                                             final String contentType,

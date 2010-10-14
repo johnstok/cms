@@ -84,7 +84,7 @@ public class EditTextFilePresenter
                 new MimeType(view.getPrimaryMime(), view.getSubMime()),
                 view.isMajorEdit(),
                 view.getComment());
-            dto.addLink(Resource.SELF, getModel().self().toString());
+            dto.addLink(Resource.Links.SELF, getModel().self().toString());
             new EditTextFileAction(dto).execute();
 
         } else {

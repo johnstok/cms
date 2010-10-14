@@ -258,20 +258,29 @@ public final class ActionSummary extends Res {
     }
 
 
-    /** ID : String. */
-    public static final String ID = "id";
-    /** TYPE : String. */
-    public static final String TYPE = "type";
-    /** USERNAME : String. */
-    public static final String USERNAME = "actorUsername";
-    /** EXECUTE_AFTER : String. */
-    public static final String EXECUTE_AFTER = "executeAfter";
-    /** PATH : String. */
-    public static final String PATH = "subjectPath";
-    /** SUBJECT_TYPE : String. */
-    public static final String SUBJECT_TYPE = "subjectType";
-    /** STATUS : String. */
-    public static final String STATUS = "status";
-    /** FAILURE : String. */
-    public static final String FAILURE_CODE = "failureCode";
+    /**
+     * Property names for this class.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static final class Properties {
+        private Properties() { super(); }
+
+        /** ID : String. */
+        public static final String ID = "id";
+        /** TYPE : String. */
+        public static final String TYPE = "type";
+        /** USERNAME : String. */
+        public static final String USERNAME = "actorUsername";
+        /** EXECUTE_AFTER : String. */
+        public static final String EXECUTE_AFTER = "executeAfter";
+        /** PATH : String. */
+        public static final String PATH = "subjectPath";
+        /** SUBJECT_TYPE : String. */
+        public static final String SUBJECT_TYPE = "subjectType";
+        /** STATUS : String. */
+        public static final String STATUS = "status";
+        /** FAILURE : String. */
+        public static final String FAILURE_CODE = "failureCode";
+    }
 }

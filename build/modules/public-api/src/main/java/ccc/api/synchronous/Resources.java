@@ -265,6 +265,8 @@ public interface Resources {
      * Apply a resource's working copy.
      *
      * @param resourceId The id of the resource.
+     *
+     * @return The updated resource.
      */
     @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.WC)
     Resource applyWorkingCopy(@PathParam("id") UUID resourceId);
@@ -275,6 +277,8 @@ public interface Resources {
      *
      * @param resourceId The id of the resource to update.
      * @param template DTO specifying the new template to set for the resource.
+     *
+     * @return The updated resource.
      */
     @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.TEMPLATE)
     Resource updateResourceTemplate(
@@ -305,6 +309,8 @@ public interface Resources {
      * Publish the specified resource.
      *
      * @param resourceId The id of the resource to update.
+     *
+     * @return The published resource.
      */
     @POST @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.PUBLISH)
     Resource publish(@PathParam("id") UUID resourceId);
@@ -422,8 +428,9 @@ public interface Resources {
      * @return The contents as a string or null if not found.
      */
     @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Resource.TEXT)
-    String fileContentsFromPath(@PathParam("path") String absolutePath,
-                                @QueryParam("charset") @DefaultValue("UTF-8") String charset);
+    String fileContentsFromPath(
+                @PathParam("path") String absolutePath,
+                @QueryParam("charset") @DefaultValue("UTF-8") String charset);
 
 
     /**

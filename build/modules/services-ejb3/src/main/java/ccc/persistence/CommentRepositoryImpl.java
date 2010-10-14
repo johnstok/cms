@@ -148,12 +148,12 @@ public class CommentRepositoryImpl
 
 
     private String mapSortColumn(final String sort) {
-        if (Comment.AUTHOR.equals(sort)) {
+        if (Comment.Properties.AUTHOR.equals(sort)) {
             return "_author";
-        } else if (Comment.URL.equals(sort)) {
+        } else if (Comment.Properties.URL.equals(sort)) {
             return "_url";
         } else if ("date-created".equals(sort) // Legacy.
-                   || Comment.DATE_CREATED.equals(sort)) {
+                   || Comment.Properties.DATE_CREATED.equals(sort)) {
             return "_timestamp";
         }
         return "_status";

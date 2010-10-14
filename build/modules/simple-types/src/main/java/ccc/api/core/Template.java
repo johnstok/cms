@@ -147,16 +147,17 @@ public class Template
     }
 
 
-    /** EXISTS : String. */
-    public static final String EXISTS = "template-exists";
-
-    /** REVISION : String. */
-    public static final String REVISION = "revision";
-
-
-    /*
-     * Property names.
+    /**
+     * Rel names for links on this class.
+     *
+     * @author Civic Computing Ltd.
      */
-    /** NAME : String. */
-    public static final String NAME = "name";
+    public static final class Links {
+        private Links() { super(); }
+
+        /** EXISTS : String. */
+        public static final String EXISTS = "template-exists";
+        /** REVISION : String. */
+        public static final String REVISION = "revision";
+    }
 }

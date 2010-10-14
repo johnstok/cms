@@ -90,7 +90,7 @@ public class UploadFileDialog extends AbstractEditDialog {
         // Create a FormPanel and point it at a service.
         getPanel().setAction(
             Globals.API_URL
-            + InternalServices.API.getLink(File.LIST_BINARY));
+            + InternalServices.API.getLink(File.Links.LIST_BINARY));
         getPanel().setEncoding(FormPanel.Encoding.MULTIPART);
         getPanel().setMethod(FormPanel.Method.POST);
 

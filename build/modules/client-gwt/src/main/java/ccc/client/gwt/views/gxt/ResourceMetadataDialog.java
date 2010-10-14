@@ -161,7 +161,7 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
         r.setMetadata(metadata);
         r.setTags(tags);
         r.addLink(
-            Resource.METADATA,
+            Resource.Links.METADATA,
             _resource.uriMetadata().toString());
 
         new UpdateMetadataAction(r) {

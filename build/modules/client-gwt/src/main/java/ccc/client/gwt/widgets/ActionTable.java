@@ -105,7 +105,7 @@ public class ActionTable
         final ColumnModel cm = new ColumnModel(configs);
 
         _grid = new Grid<BeanModel>(_actionStore, cm);
-        _grid.setAutoExpandColumn(ActionSummary.PATH);
+        _grid.setAutoExpandColumn(ActionSummary.Properties.PATH);
         _grid.setId("action-grid");
 
         add(_grid);
@@ -117,43 +117,43 @@ public class ActionTable
     private void createColumnConfigs(final List<ColumnConfig> configs) {
         addColumn(
             configs,
-            ActionSummary.TYPE,
+            ActionSummary.Properties.TYPE,
             UI_CONSTANTS.action(),
             TYPE_COLUMN).setRenderer(
                 ResourceTypeRendererFactory.rendererForActionSummary());
         addColumn(
             configs,
-            ActionSummary.USERNAME,
+            ActionSummary.Properties.USERNAME,
             UI_CONSTANTS.scheduledBy(),
             SMALL_COLUMN);
         addColumn(
             configs,
-            ActionSummary.EXECUTE_AFTER,
+            ActionSummary.Properties.EXECUTE_AFTER,
             UI_CONSTANTS.scheduledFor(),
             SMALL_COLUMN)
             .setDateTimeFormat(DateTimeFormat.getShortDateTimeFormat());
         addColumn(
             configs,
-            ActionSummary.STATUS,
+            ActionSummary.Properties.STATUS,
             UI_CONSTANTS.status(),
             SMALL_COLUMN)
             .setRenderer(
                 ResourceTypeRendererFactory.rendererForActionSummary());
         addColumn(
             configs,
-            ActionSummary.FAILURE_CODE,
+            ActionSummary.Properties.FAILURE_CODE,
             UI_CONSTANTS.failureCode(),
             SMALL_COLUMN);
         addColumn(
             configs,
-            ActionSummary.SUBJECT_TYPE,
+            ActionSummary.Properties.SUBJECT_TYPE,
             UI_CONSTANTS.type(),
             V_SMALL_COLUMN)
             .setRenderer(
                 ResourceTypeRendererFactory.rendererForActionSummary());
         addColumn(
             configs,
-            ActionSummary.PATH,
+            ActionSummary.Properties.PATH,
             UI_CONSTANTS.resourcePath(),
             MEDIUM_COLUMN);
     }
@@ -294,9 +294,13 @@ public class ActionTable
             case ACTION_CANCEL:
                 final ActionSummary as = event.getProperty("action");
                 final BeanModel bm =
-                    _actionStore.findModel(ActionSummary.ID, as.getId());
+                    _actionStore.findModel(
+                        ActionSummary.Properties.ID,
+                        as.getId());
                 if (null!=bm) {
-                    bm.set(ActionSummary.STATUS, ActionStatus.CANCELLED);
+                    bm.set(
+                        ActionSummary.Properties.STATUS,
+                        ActionStatus.CANCELLED);
                     update(bm);
                 }
                 break;

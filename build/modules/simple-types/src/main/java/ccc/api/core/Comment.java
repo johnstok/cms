@@ -222,17 +222,24 @@ public class Comment
      */
     public String self() { return getLink("self"); }
 
-    /*
-     * Property constants.
+
+    /**
+     * Property names for this class.
+     *
+     * @author Civic Computing Ltd.
      */
-    /** ID : String. */
-    public static final String ID           = "id";
-    /** AUTHOR : String. */
-    public static final String AUTHOR       = "author";
-    /** URL : String. */
-    public static final String URL          = "url";
-    /** DATE_CREATED : String. */
-    public static final String DATE_CREATED = "timestamp";
-    /** STATUS : String. */
-    public static final String STATUS       = "status";
+    public static final class Properties {
+        private Properties() { super(); }
+
+        /** ID : String. */
+        public static final String ID           = "id";
+        /** AUTHOR : String. */
+        public static final String AUTHOR       = "author";
+        /** URL : String. */
+        public static final String URL          = "url";
+        /** DATE_CREATED : String. */
+        public static final String DATE_CREATED = "timestamp";
+        /** STATUS : String. */
+        public static final String STATUS       = "status";
+    }
 }

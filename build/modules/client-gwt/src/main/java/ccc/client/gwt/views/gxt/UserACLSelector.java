@@ -109,7 +109,7 @@ public class UserACLSelector extends Window {
 
         _addUserGrid = new Grid<BeanModel>(
            new ListStore<BeanModel>(loader), defineAddUserCM());
-        _addUserGrid.setAutoExpandColumn(User.USERNAME);
+        _addUserGrid.setAutoExpandColumn(User.Properties.USERNAME);
         _addUserGrid.setSelectionModel(_addUserSM);
         _addUserGrid.addPlugin(_addUserSM);
         _addUserGrid.setBorders(false);
@@ -125,7 +125,7 @@ public class UserACLSelector extends Window {
 
         _pagerBar = new PagingToolBar(PAGER_LIMIT);
         loader.setRemoteSort(true);
-        loader.setSortField(User.USERNAME);
+        loader.setSortField(User.Properties.USERNAME);
         _pagerBar.bind(loader);
         loader.load(0, PAGER_LIMIT);
 
@@ -206,7 +206,7 @@ public class UserACLSelector extends Window {
         configs.add(_addUserSM.getColumn());
         final ColumnConfig keyColumn =
             new ColumnConfig(
-                User.USERNAME,
+                User.Properties.USERNAME,
                 _constants.name(),
                 100);
         final TextField<String> keyField = new TextField<String>();

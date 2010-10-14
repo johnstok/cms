@@ -165,9 +165,9 @@ public class UpdatePageDialog
         update.setId(getModelData().getId());
         update.setParagraphs(getParagraphs());
         update.addLink(
-            Page.WORKING_COPY,
+            Page.Links.WORKING_COPY,
             _modelData.getLink(
-                Page.WORKING_COPY));
+                Page.Links.WORKING_COPY));
 
         new UpdateWorkingCopyAction(update) {
             /** {@inheritDoc} */

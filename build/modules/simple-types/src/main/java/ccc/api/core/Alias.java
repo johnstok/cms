@@ -118,6 +118,15 @@ public class Alias
     }
 
 
-    /** TARGET_NAME : String. */
-    public static final String TARGET_NAME = "target_name";
+    /**
+     * Rel names for links on this class.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static final class Links {
+        private Links() { super(); }
+
+        /** TARGET_NAME : String. */
+        public static final String TARGET_NAME = "target_name";
+    }
 }

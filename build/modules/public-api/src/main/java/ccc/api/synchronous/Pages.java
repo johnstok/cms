@@ -96,6 +96,8 @@ public interface Pages {
      *
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
+     *
+     * @return The updated page.
      */
     @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Page.ELEMENT)
     Page update(@PathParam("id") UUID pageId, Page delta);
@@ -106,6 +108,8 @@ public interface Pages {
      *
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
+     *
+     * @return The updated page.
      */
     @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Page.WC)
     Page updateWorkingCopy(@PathParam("id") UUID pageId, Page delta);

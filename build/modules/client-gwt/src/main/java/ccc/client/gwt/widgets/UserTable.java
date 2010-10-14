@@ -246,13 +246,13 @@ public class UserTable
         configs.add(gp);
 
         final ColumnConfig usernameColumn = new ColumnConfig();
-        usernameColumn.setId(User.USERNAME);
+        usernameColumn.setId(User.Properties.USERNAME);
         usernameColumn.setHeader(UI_CONSTANTS.username());
         usernameColumn.setWidth(COLUMN_WIDTH);
         configs.add(usernameColumn);
 
         final ColumnConfig emailColumn = new ColumnConfig();
-        emailColumn.setId(User.EMAIL);
+        emailColumn.setId(User.Properties.EMAIL);
         emailColumn.setHeader(UI_CONSTANTS.email());
         emailColumn.setWidth(COLUMN_WIDTH);
         configs.add(emailColumn);

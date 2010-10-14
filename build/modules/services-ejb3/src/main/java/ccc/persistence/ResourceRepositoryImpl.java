@@ -666,42 +666,44 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
 
     private boolean appendSorting(final String sort,
-                               final SortOrder sortOrder,
-                               final StringBuffer query) {
+                                  final SortOrder sortOrder,
+                                  final StringBuffer query) {
         if (null != sort) {
             boolean knownSort = true;
             if ("title".equalsIgnoreCase(sort)) {
                 query.append(" ORDER BY upper(r._title) ");
 
             } else if ("mm_include".equalsIgnoreCase(sort)
-                       || ResourceSummary.MM_INCLUDE.equals(sort)) {
+                       || ResourceSummary.Properties.MM_INCLUDE.equals(sort)) {
                 query.append(" ORDER BY upper(r._includeInMainMenu) ");
 
             } else if ("locked".equalsIgnoreCase(sort)
-                       || ResourceSummary.LOCKED.equals(sort)) {
+                       || ResourceSummary.Properties.LOCKED.equals(sort)) {
                 query.append(" ORDER BY upper(r._lockedBy._username) ");
 
             } else if ("published".equalsIgnoreCase(sort)
-                       || ResourceSummary.PUBLISHED.equals(sort)) {
+                       || ResourceSummary.Properties.PUBLISHED.equals(sort)) {
                 query.append(" ORDER BY upper(r._publishedBy._username) ");
 
             } else if ("name".equalsIgnoreCase(sort)
-                       || ResourceSummary.NAME.equals(sort)) {
+                       || ResourceSummary.Properties.NAME.equals(sort)) {
                 query.append(" ORDER BY upper(r._name) ");
 
             } else if ("type".equalsIgnoreCase(sort)
-                       || ResourceSummary.TYPE.equals(sort)) {
+                       || ResourceSummary.Properties.TYPE.equals(sort)) {
                 query.append(" ORDER BY r.class ");
 
             } else if ("manual".equalsIgnoreCase(sort)) {
                 query.append(" ORDER BY r._parentIndex ");
 
-            } else if ("date_changed".equalsIgnoreCase(sort)
-                       || ResourceSummary.DATE_CHANGED.equals(sort)) {
+            } else if (
+                    "date_changed".equalsIgnoreCase(sort)
+                    || ResourceSummary.Properties.DATE_CHANGED.equals(sort)) {
                 query.append(" ORDER BY r._dateChanged ");
 
-            } else if ("date_created".equalsIgnoreCase(sort)
-                       || ResourceSummary.DATE_CREATED.equals(sort)) {
+            } else if (
+                    "date_created".equalsIgnoreCase(sort)
+                    || ResourceSummary.Properties.DATE_CREATED.equals(sort)) {
                 query.append(" ORDER BY r._dateCreated ");
 
             } else {

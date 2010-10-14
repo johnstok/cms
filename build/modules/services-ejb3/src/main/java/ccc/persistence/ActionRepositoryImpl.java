@@ -161,13 +161,13 @@ class ActionRepositoryImpl
 
 
     private String mapSortColumn(final String sort) {
-        if (ActionSummary.USERNAME.equals(sort)) {
+        if (ActionSummary.Properties.USERNAME.equals(sort)) {
             return "_actor";
-        } else if (ActionSummary.TYPE.equals(sort)) {
+        } else if (ActionSummary.Properties.TYPE.equals(sort)) {
             return "_type";
-        } else if (ActionSummary.STATUS.equals(sort)) {
+        } else if (ActionSummary.Properties.STATUS.equals(sort)) {
             return "_status";
-        } else if (ActionSummary.FAILURE_CODE.equals(sort)) {
+        } else if (ActionSummary.Properties.FAILURE_CODE.equals(sort)) {
             return "_code";
         } else {
             return "_executeAfter";

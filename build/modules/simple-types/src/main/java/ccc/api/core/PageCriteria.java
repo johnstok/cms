@@ -48,7 +48,8 @@ public class PageCriteria
         ResourceCriteria {
 
     private final Set<Paragraph> _paraMatches = new HashSet<Paragraph>();
-    private final Map<String, Range<?>> _paraRanges = new HashMap<String, Range<?>>();
+    private final Map<String, Range<?>> _paraRanges =
+        new HashMap<String, Range<?>>();
 
     private String _sortField;
     private SortOrder _sortOrder;
@@ -152,7 +153,8 @@ public class PageCriteria
 //    public void rangeParagraph(final String name,
 //                               final Long from,
 //                               final Long to) {
-//        final BigDecimal fDecimal = (null==from) ? null : new BigDecimal(from);
+//        final BigDecimal fDecimal =
+//            (null==from) ? null : new BigDecimal(from);
 //        final BigDecimal tDecimal = (null==to)   ? null : new BigDecimal(to);
 //        rangeParagraph(name, fDecimal, tDecimal);
 //    }
@@ -161,7 +163,8 @@ public class PageCriteria
 //    public void rangeParagraph(final String name,
 //                               final Double from,
 //                               final Double to) {
-//        final BigDecimal fDecimal = (null==from) ? null : new BigDecimal(from);
+//        final BigDecimal fDecimal =
+//            (null==from) ? null : new BigDecimal(from);
 //        final BigDecimal tDecimal = (null==to)   ? null : new BigDecimal(to);
 //        rangeParagraph(name, fDecimal, tDecimal);
 //    }
@@ -170,7 +173,8 @@ public class PageCriteria
 //    public void rangeParagraph(final String name,
 //                               final Float from,
 //                               final Float to) {
-//        final BigDecimal fDecimal = (null==from) ? null : new BigDecimal(from);
+//        final BigDecimal fDecimal =
+//            (null==from) ? null : new BigDecimal(from);
 //        final BigDecimal tDecimal = (null==to)   ? null : new BigDecimal(to);
 //        rangeParagraph(name, fDecimal, tDecimal);
 //    }
@@ -179,7 +183,8 @@ public class PageCriteria
 //    public void rangeParagraph(final String name,
 //                               final Integer from,
 //                               final Integer to) {
-//        final BigDecimal fDecimal = (null==from) ? null : new BigDecimal(from);
+//        final BigDecimal fDecimal =
+//            (null==from) ? null : new BigDecimal(from);
 //        final BigDecimal tDecimal = (null==to)   ? null : new BigDecimal(to);
 //        rangeParagraph(name, fDecimal, tDecimal);
 //    }

@@ -211,13 +211,13 @@ implements UpdateFolder {
         cb.setFieldLabel(label);
         cb.setAllowBlank(false);
         cb.setId(id);
-        cb.setDisplayField(ResourceSummary.NAME);
+        cb.setDisplayField(ResourceSummary.Properties.NAME);
         cb.setTemplate(
             "<tpl for=\".\">"
             +"<div class=x-combo-list-item id=\"{"
-            + ResourceSummary.NAME
+            + ResourceSummary.Properties.NAME
             +"}\">{"
-            + ResourceSummary.NAME
+            + ResourceSummary.Properties.NAME
             + "}</div></tpl>");
         cb.setEditable(false);
         cb.setStore(store);
@@ -230,7 +230,7 @@ implements UpdateFolder {
             DateTimeFormat.getFormat("dd.MM.yyyy");
 
         final ColumnConfig typeColumn = new ColumnConfig(
-            ResourceSummary.TYPE,
+            ResourceSummary.Properties.TYPE,
             getUiConstants().type(),
             40);
         typeColumn.setSortable(false);
@@ -240,7 +240,7 @@ implements UpdateFolder {
         configs.add(typeColumn);
 
         final ColumnConfig nameColumn = new ColumnConfig(
-            ResourceSummary.NAME,
+            ResourceSummary.Properties.NAME,
             getUiConstants().name(),
             180);
         nameColumn.setSortable(false);
@@ -248,7 +248,7 @@ implements UpdateFolder {
         configs.add(nameColumn);
 
         final ColumnConfig titleColumn = new ColumnConfig(
-            ResourceSummary.TITLE,
+            ResourceSummary.Properties.TITLE,
             getUiConstants().title(),
             180);
         titleColumn.setSortable(false);
@@ -256,7 +256,7 @@ implements UpdateFolder {
         configs.add(titleColumn);
 
         final ColumnConfig createdColumn = new ColumnConfig(
-            ResourceSummary.DATE_CREATED,
+            ResourceSummary.Properties.DATE_CREATED,
             getUiConstants().created(),
             75);
         createdColumn.setSortable(false);
@@ -265,7 +265,7 @@ implements UpdateFolder {
         configs.add(createdColumn);
 
         final ColumnConfig changedColumn = new ColumnConfig(
-            ResourceSummary.DATE_CHANGED,
+            ResourceSummary.Properties.DATE_CHANGED,
             getUiConstants().changed(),
             75);
         changedColumn.setSortable(false);

@@ -55,35 +55,42 @@ public class API
     /** BUILD_NUMBER : String. */
     public static final String BUILD_NUMBER = "buildNumber";
 
-    /*
-     * Link names.
+
+    /**
+     * Rel names for links on this class.
+     *
+     * @author Civic Computing Ltd.
      */
-    /** RESOURCES : String. */
-    public static final String RESOURCES = "resources";
-    /** SEARCH : String. */
-    public static final String SEARCH = "search";
-    /** SECURITY : String. */
-    public static final String SECURITY = "security";
-    /** TEMPLATES : String. */
-    public static final String TEMPLATES = "templates";
-    /** USERS : String. */
-    public static final String USERS = "users";
-    /** PAGES : String. */
-    public static final String PAGES = "pages";
-    /** GROUPS : String. */
-    public static final String GROUPS = "groups";
-    /** FOLDERS : String. */
-    public static final String FOLDERS = "folders";
-    /** FILES : String. */
-    public static final String FILES = "files";
-    /** COMMENTS : String. */
-    public static final String COMMENTS = "comments";
-    /** ALIASES : String. */
-    public static final String ALIASES = "aliases";
-    /** ACTIONS : String. */
-    public static final String ACTIONS = "actions";
-    /** ACTIONS : String. */
-    public static final String IMAGES = "images";
+    public static final class Links {
+        private Links() { super(); }
+
+        /** RESOURCES : String. */
+        public static final String RESOURCES = "resources";
+        /** SEARCH : String. */
+        public static final String SEARCH = "search";
+        /** SECURITY : String. */
+        public static final String SECURITY = "security";
+        /** TEMPLATES : String. */
+        public static final String TEMPLATES = "templates";
+        /** USERS : String. */
+        public static final String USERS = "users";
+        /** PAGES : String. */
+        public static final String PAGES = "pages";
+        /** GROUPS : String. */
+        public static final String GROUPS = "groups";
+        /** FOLDERS : String. */
+        public static final String FOLDERS = "folders";
+        /** FILES : String. */
+        public static final String FILES = "files";
+        /** COMMENTS : String. */
+        public static final String COMMENTS = "comments";
+        /** ALIASES : String. */
+        public static final String ALIASES = "aliases";
+        /** ACTIONS : String. */
+        public static final String ACTIONS = "actions";
+        /** ACTIONS : String. */
+        public static final String IMAGES = "images";
+    }
 
     private Map<String, String> _props = new HashMap<String, String>();
 
@@ -93,7 +100,7 @@ public class API
      *
      * @return A link to the actions collection.
      */
-    public String actions() { return getLink(ACTIONS); }
+    public String actions() { return getLink(Links.ACTIONS); }
 
 
     /**
@@ -101,7 +108,7 @@ public class API
      *
      * @return A link to the aliases collection.
      */
-    public String aliases() { return getLink(ALIASES); }
+    public String aliases() { return getLink(Links.ALIASES); }
 
 
     /**
@@ -109,7 +116,7 @@ public class API
      *
      * @return A link to the comments collection.
      */
-    public String comments() { return getLink(COMMENTS); }
+    public String comments() { return getLink(Links.COMMENTS); }
 
 
     /**
@@ -117,7 +124,7 @@ public class API
      *
      * @return A link to the files collection.
      */
-    public String files() { return getLink(FILES); }
+    public String files() { return getLink(Links.FILES); }
 
 
     /**
@@ -125,7 +132,7 @@ public class API
      *
      * @return A link to the actions collection.
      */
-    public String folders() { return getLink(FOLDERS); }
+    public String folders() { return getLink(Links.FOLDERS); }
 
 
     /**
@@ -133,7 +140,7 @@ public class API
      *
      * @return A link to the groups collection.
      */
-    public String groups() { return getLink(GROUPS); }
+    public String groups() { return getLink(Links.GROUPS); }
 
 
     /**
@@ -141,7 +148,7 @@ public class API
      *
      * @return A link to the pages collection.
      */
-    public String pages() { return getLink(PAGES); }
+    public String pages() { return getLink(Links.PAGES); }
 
 
     /**
@@ -149,7 +156,7 @@ public class API
      *
      * @return A link to the resources collection.
      */
-    public String resources() { return getLink(RESOURCES); }
+    public String resources() { return getLink(Links.RESOURCES); }
 
 
     /**
@@ -157,7 +164,7 @@ public class API
      *
      * @return A link to the search collection.
      */
-    public String search() { return getLink(SEARCH); }
+    public String search() { return getLink(Links.SEARCH); }
 
 
     /**
@@ -165,7 +172,7 @@ public class API
      *
      * @return A link to the security collection.
      */
-    public String security() { return getLink(SECURITY); }
+    public String security() { return getLink(Links.SECURITY); }
 
 
     /**
@@ -173,7 +180,7 @@ public class API
      *
      * @return A link to the templates collection.
      */
-    public String templates() { return getLink(TEMPLATES); }
+    public String templates() { return getLink(Links.TEMPLATES); }
 
 
     /**
@@ -181,7 +188,7 @@ public class API
      *
      * @return A link to the users collection.
      */
-    public String users() { return getLink(USERS); }
+    public String users() { return getLink(Links.USERS); }
 
 
     /**
@@ -189,7 +196,7 @@ public class API
      *
      * @return A link to the images collection.
      */
-    public String images() { return getLink(IMAGES); }
+    public String images() { return getLink(Links.IMAGES); }
 
 
     /**

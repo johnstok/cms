@@ -78,6 +78,8 @@ public interface Files {
      *
      * @param id The ID of the file to update.
      * @param file The new file representation.
+     *
+     * @return The updated file.
      */
     @POST @Path(ccc.api.synchronous.ResourceIdentifiers.File.ELEMENT)
     File update(@PathParam("id") UUID id, File file);

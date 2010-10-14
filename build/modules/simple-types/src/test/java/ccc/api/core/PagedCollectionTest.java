@@ -65,7 +65,13 @@ public class PagedCollectionTest
 
         // ARRANGE
         int i = 0;
-        final Integer[] elements = {0, 1, 2, 3, 4};
+        final Integer[] elements = {
+            Integer.valueOf(0),
+            Integer.valueOf(1),
+            Integer.valueOf(2),
+            Integer.valueOf(3),
+            Integer.valueOf(4)
+        };
 
         // ACT
         final Iterable<Integer> integers =

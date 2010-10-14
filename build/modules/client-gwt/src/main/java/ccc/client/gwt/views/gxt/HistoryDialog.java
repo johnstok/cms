@@ -85,8 +85,8 @@ public class HistoryDialog
         _toolBar.disable();
         setTopComponent(_toolBar);
         getDataStore().add(DataBinding.bindLogEntrySummary(getData()));
-        getDataStore().sort(Revision.HAPPENED_ON, SortDir.DESC);
-        getGrid().setAutoExpandColumn(Revision.COMMENT);
+        getDataStore().sort(Revision.Properties.HAPPENED_ON, SortDir.DESC);
+        getGrid().setAutoExpandColumn(Revision.Properties.COMMENT);
         getGrid().addListener(
             Events.RowClick,
             new Listener<GridEvent<?>>(){
@@ -118,14 +118,14 @@ public class HistoryDialog
 
         final ColumnConfig userColumn =
             new ColumnConfig(
-                Revision.USERNAME,
+                Revision.Properties.USERNAME,
                 getUiConstants().user(),
                 100);
         configs.add(userColumn);
 
         final ColumnConfig timeColumn =
             new ColumnConfig(
-                Revision.HAPPENED_ON,
+                Revision.Properties.HAPPENED_ON,
                 getUiConstants().time(),
                 150);
         timeColumn.setDateTimeFormat(DateTimeFormat.getMediumDateTimeFormat());
@@ -133,13 +133,13 @@ public class HistoryDialog
 
         final ColumnConfig majorEditColumn =
             new ColumnConfig(
-                Revision.IS_MAJOR_EDIT,
+                Revision.Properties.IS_MAJOR_EDIT,
                 getUiConstants().majorEdit(),
                 70);
         configs.add(majorEditColumn);
 
         final ColumnConfig commentColumn = new ColumnConfig();
-        commentColumn.setId(Revision.COMMENT);
+        commentColumn.setId(Revision.Properties.COMMENT);
         commentColumn.setHeader(getUiConstants().comment());
         configs.add(commentColumn);
 

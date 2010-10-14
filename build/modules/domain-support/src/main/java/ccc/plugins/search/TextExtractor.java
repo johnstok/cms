@@ -41,5 +41,10 @@ public interface TextExtractor
     /** MAX_PAGES_TO_INDEX : int. */
     int MAX_PAGES_TO_INDEX = 10;
 
+    /**
+     * Extract text from a data stream.
+     *
+     * @return The text as a string.
+     */
     String getText();
 }

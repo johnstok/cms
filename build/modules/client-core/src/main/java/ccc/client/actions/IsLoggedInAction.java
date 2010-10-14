@@ -66,7 +66,7 @@ public class IsLoggedInAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return InternalServices.API.getLink(User.CURRENT);
+        return InternalServices.API.getLink(User.Links.CURRENT);
     }
 
 

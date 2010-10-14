@@ -59,7 +59,7 @@ public abstract class GetRootsAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Globals.API_URL+InternalServices.API.getLink(Folder.ROOTS);
+        return Globals.API_URL+InternalServices.API.getLink(Folder.Links.ROOTS);
     }
 
 

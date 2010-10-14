@@ -82,8 +82,8 @@ implements
             f.setIndex(getView().getIndexPage());
             f.setSortList(orderList);
             f.addLink(
-                Resource.SELF,
-                getView().getFolder().getLink(Resource.SELF));
+                Resource.Links.SELF,
+                getView().getFolder().getLink(Resource.Links.SELF));
 
             new UpdateFolderAction(f).execute();
 

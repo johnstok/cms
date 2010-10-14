@@ -92,7 +92,7 @@ public abstract class AbstractXHTML
         public InputSource resolveEntity(final String publicId,
                                          final String systemId) {
             final InputStream stream =
-                getClass().getResourceAsStream(dtdFilename(systemId));
+                AbstractXHTML.class.getResourceAsStream(dtdFilename(systemId));
             return new InputSource(new InputStreamReader(stream));
         }
 
@@ -221,7 +221,8 @@ public abstract class AbstractXHTML
 
     /** {@inheritDoc} */
     @Override
-    public String evaluateXPath(final InputStream page, final String xpathExpression) {
+    public String evaluateXPath(final InputStream page,
+                                final String xpathExpression) {
 
         try {
             final Document doc = parse(page);
@@ -238,7 +239,8 @@ public abstract class AbstractXHTML
 
     /** {@inheritDoc} */
     @Override
-    public NodeList evaluateXPathToNodeList(final Document doc, final String xpathExpression) {
+    public NodeList evaluateXPathToNodeList(final Document doc,
+                                            final String xpathExpression) {
         try {
             final XPath xpath = createXPath();
 

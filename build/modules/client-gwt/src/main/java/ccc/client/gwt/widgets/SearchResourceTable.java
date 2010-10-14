@@ -101,7 +101,7 @@ public class SearchResourceTable
             new BasePagingLoader<PagingLoadResult<BeanModel>>(proxy) {
             @Override
             protected Object newLoadConfig() {
-                     BasePagingLoadConfig config = new BaseFilterPagingLoadConfig();
+                     final BasePagingLoadConfig config = new BaseFilterPagingLoadConfig();
                      return config;
             }
         };
@@ -112,8 +112,8 @@ public class SearchResourceTable
         setUpGrid();
         _pagerBar.bind(loader);
 
-        GridFilters filters = new GridFilters();
-        StringFilter nameFilter = new StringFilter("name");
+        final GridFilters filters = new GridFilters();
+        final StringFilter nameFilter = new StringFilter("name");
         nameFilter.getMenu().setAutoWidth(false);
         nameFilter.getMenu().setWidth(190);
         filters.addFilter(nameFilter);
@@ -133,7 +133,7 @@ public class SearchResourceTable
 
         final ColumnConfig typeColumn =
             new ColumnConfig(
-                ResourceSummary.TYPE,
+                ResourceSummary.Properties.TYPE,
                 UI_CONSTANTS.type(),
                 40);
         typeColumn.setRenderer(rsRenderer);
@@ -141,14 +141,14 @@ public class SearchResourceTable
 
         final ColumnConfig nameColumn =
             new ColumnConfig(
-                ResourceSummary.NAME,
+                ResourceSummary.Properties.NAME,
                 UI_CONSTANTS.name(),
                 250);
         configs.add(nameColumn);
 
         final ColumnConfig titleColumn =
             new ColumnConfig(
-                ResourceSummary.TITLE,
+                ResourceSummary.Properties.TITLE,
                 UI_CONSTANTS.title(),
                 250);
         configs.add(titleColumn);
@@ -181,7 +181,7 @@ public class SearchResourceTable
         gsm.setSelectionMode(SelectionMode.SINGLE);
         _grid.setSelectionModel(gsm);
         _grid.setAutoExpandColumn(
-            ResourceSummary.TITLE);
+            ResourceSummary.Properties.TITLE);
     }
 
 

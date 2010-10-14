@@ -37,10 +37,13 @@ import org.apache.log4j.Logger;
  *
  * @author Civic Computing Ltd.
  */
-public class Environment {
+public final class Environment {
     private static final Logger LOG = Logger.getLogger(Environment.class);
 
     private static final String HOSTNAME = cacheHostname();
+
+    private Environment() { super(); }
+
 
     /**
      * Query the hostname for this server.

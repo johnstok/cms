@@ -126,17 +126,23 @@ public final class Revision
     }
 
 
-    /*
-     * Property names.
+    /**
+     * Property names for this class.
+     *
+     * @author Civic Computing Ltd.
      */
-    /** USERNAME : String. */
-    public static final String USERNAME      = "actorUsername";
-    /** HAPPENED_ON : String. */
-    public static final String HAPPENED_ON   = "happenedOn";
-    /** COMMENT : String. */
-    public static final String COMMENT       = "comment";
-    /** IS_MAJOR_EDIT : String. */
-    public static final String IS_MAJOR_EDIT = "major";
-    /** INDEX : String. */
-    public static final String INDEX         = "index";
+    public static final class Properties {
+        private Properties() { super(); }
+
+        /** USERNAME : String. */
+        public static final String USERNAME      = "actorUsername";
+        /** HAPPENED_ON : String. */
+        public static final String HAPPENED_ON   = "happenedOn";
+        /** COMMENT : String. */
+        public static final String COMMENT       = "comment";
+        /** IS_MAJOR_EDIT : String. */
+        public static final String IS_MAJOR_EDIT = "major";
+        /** INDEX : String. */
+        public static final String INDEX         = "index";
+    }
 }

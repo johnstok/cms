@@ -109,7 +109,8 @@ public class ScriptRunnerTest
         // ASSERT
         } catch (final ProcessingException e) {
             assertEquals(
-                "Error processing script 'test' [line number 1].",
+                "Error processing Rhino script 'test' "
+                + "[line number 1, column number 0].",
                 e.getMessage());
         }
     }

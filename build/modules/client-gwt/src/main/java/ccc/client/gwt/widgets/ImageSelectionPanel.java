@@ -347,17 +347,17 @@ public class ImageSelectionPanel extends ContentPanel {
         return
             "<tpl for=\".\">"
             + "<div class=\"thumb-wrap\" id=\"{"
-            + File.NAME
+            + ResourceSummary.Properties.NAME
             + "}\" style=\"border: 1px solid white\">"
             + "<div class=\"thumb\">"
             + "<img src=\"preview/{"
-            + File.PATH
+            + File.Properties.PATH
             + "}?thumb=200\" title=\"{"
-            + File.TITLE + "}\"></div>"
+            + ResourceSummary.Properties.TITLE + "}\"></div>"
             + "<span class=\"x-editable\">{"
-            + File.SHORT_NAME + "} {"
-            + File.WIDTH + "}x{"
-            + File.HEIGHT + "}px</span></div>"
+            + ResourceSummary.Properties.TITLE + "} {"
+            + File.Properties.WIDTH + "}x{"
+            + File.Properties.HEIGHT + "}px</span></div>"
             + "</tpl>"
             + "<div class=\"x-clear\"></div>";
      }

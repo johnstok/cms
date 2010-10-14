@@ -85,7 +85,9 @@ public class TestingTest
 
         // ASSERT
         } catch (final UnsupportedOperationException e) {
-
+            assertEquals(
+                "Method 'run()' invoked on dummy for type 'Runnable'.",
+                e.getMessage());
         }
     }
 

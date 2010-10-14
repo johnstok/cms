@@ -46,7 +46,6 @@ public final class File
         Resource {
 
     private MimeType              _mimeType;
-    private String                _path;
     private Map<String, String>   _properties = new HashMap<String, String>();
     private String                _charset;
     private long                  _size;
@@ -59,6 +58,9 @@ public final class File
     private UUID                  _dataId;
     private transient InputStream _inputStream;
     private String                _content;
+
+    // TODO: Remove.
+    private String                _path; // Duplicate of ResSumm.getAbsPath()?
 
 
     /**
@@ -448,25 +450,34 @@ public final class File
     }
 
 
-    /** LIST_BINARY : String. */
-    public static final String LIST_BINARY = "list_binary";
-    /** SELF_BINARY : String. */
-    public static final String SELF_BINARY = "self_binary";
-
-
-    /*
-     * Property names.
+    /**
+     * Rel names for links on this class.
+     *
+     * @author Civic Computing Ltd.
      */
-    /** NAME : String. */
-    public static final String NAME = "name";
-    /** PATH : String. */
-    public static final String PATH = "path";
-    /** TITLE : String. */
-    public static final String TITLE = "title";
-    /** SHORT_NAME : String. */
-    public static final String SHORT_NAME = "title";
-    /** WIDTH : String. */
-    public static final String WIDTH = "width";
-    /** HEIGHT : String. */
-    public static final String HEIGHT = "height";
+    public static final class Links {
+        private Links() { super(); }
+
+        /** LIST_BINARY : String. */
+        public static final String LIST_BINARY = "list_binary";
+        /** SELF_BINARY : String. */
+        public static final String SELF_BINARY = "self_binary";
+    }
+
+
+    /**
+     * Property names for this class.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static final class Properties {
+        private Properties() { super(); }
+
+        /** PATH : String. */
+        public static final String PATH = "path";
+        /** WIDTH : String. */
+        public static final String WIDTH = "width";
+        /** HEIGHT : String. */
+        public static final String HEIGHT = "height";
+    }
 }

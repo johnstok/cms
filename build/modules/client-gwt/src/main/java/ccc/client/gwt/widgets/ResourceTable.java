@@ -124,7 +124,8 @@ public class ResourceTable
         loader = new BasePagingLoader<PagingLoadResult<BeanModel>>(_proxy) {
             @Override
             protected Object newLoadConfig() {
-                     final BasePagingLoadConfig config = new BaseFilterPagingLoadConfig();
+                     final BasePagingLoadConfig config =
+                         new BaseFilterPagingLoadConfig();
                      return config;
             }
         };
@@ -200,7 +201,7 @@ public class ResourceTable
 
         final ColumnConfig typeColumn =
             new ColumnConfig(
-                ResourceSummary.TYPE,
+                ResourceSummary.Properties.TYPE,
                 UI_CONSTANTS.type(),
                 40);
         typeColumn.setRenderer(rsRenderer);
@@ -208,7 +209,7 @@ public class ResourceTable
 
         final ColumnConfig workingCopyColumn =
             new ColumnConfig(
-                ResourceSummary.WORKING_COPY,
+                ResourceSummary.Properties.WORKING_COPY,
                 UI_CONSTANTS.draft(),
                 40);
         workingCopyColumn.setSortable(false);
@@ -218,7 +219,7 @@ public class ResourceTable
 
         final ColumnConfig mmIncludeColumn =
             new ColumnConfig(
-                ResourceSummary.MM_INCLUDE,
+                ResourceSummary.Properties.MM_INCLUDE,
                 UI_CONSTANTS.menu(),
                 40);
         mmIncludeColumn.setRenderer(rsRenderer);
@@ -226,7 +227,7 @@ public class ResourceTable
 
         final ColumnConfig createdColumn =
             new ColumnConfig(
-                ResourceSummary.DATE_CREATED,
+                ResourceSummary.Properties.DATE_CREATED,
                 UI_CONSTANTS.dateCreated(),
                 100);
         createdColumn.setDateTimeFormat(
@@ -236,7 +237,7 @@ public class ResourceTable
 
         final ColumnConfig updatedColumn =
             new ColumnConfig(
-                ResourceSummary.DATE_CHANGED,
+                ResourceSummary.Properties.DATE_CHANGED,
                 UI_CONSTANTS.dateChanged(),
                 100);
         updatedColumn.setDateTimeFormat(
@@ -246,7 +247,7 @@ public class ResourceTable
 
         final ColumnConfig visibleColumn =
             new ColumnConfig(
-                ResourceSummary.VISIBLE,
+                ResourceSummary.Properties.VISIBLE,
                 UI_CONSTANTS.visible(),
                 45);
         visibleColumn.setRenderer(rsRenderer);
@@ -255,28 +256,28 @@ public class ResourceTable
 
         final ColumnConfig lockedColumn =
             new ColumnConfig(
-                ResourceSummary.LOCKED,
+                ResourceSummary.Properties.LOCKED,
                 UI_CONSTANTS.lockedBy(),
                 80);
         configs.add(lockedColumn);
 
         final ColumnConfig publishedByColumn =
             new ColumnConfig(
-                ResourceSummary.PUBLISHED,
+                ResourceSummary.Properties.PUBLISHED,
                 UI_CONSTANTS.publishedBy(),
                 80);
         configs.add(publishedByColumn);
 
         final ColumnConfig nameColumn =
             new ColumnConfig(
-                ResourceSummary.NAME,
+                ResourceSummary.Properties.NAME,
                 UI_CONSTANTS.name(),
                 250);
         configs.add(nameColumn);
 
         final ColumnConfig titleColumn =
             new ColumnConfig(
-                ResourceSummary.TITLE,
+                ResourceSummary.Properties.TITLE,
                 UI_CONSTANTS.title(),
                 250);
         configs.add(titleColumn);
@@ -309,7 +310,7 @@ public class ResourceTable
         gsm.setSelectionMode(SelectionMode.SINGLE);
         _grid.setSelectionModel(gsm);
         _grid.setAutoExpandColumn(
-            ResourceSummary.TITLE);
+            ResourceSummary.Properties.TITLE);
     }
 
 
@@ -361,7 +362,7 @@ public class ResourceTable
 
     private void updateResource(final UUID id) {
         final BeanModel tBean =
-            _detailsStore.findModel(ResourceSummary.UUID, id);
+            _detailsStore.findModel(ResourceSummary.Properties.UUID, id);
         if (null!=tBean) {
             _detailsStore.update(tBean);
         }
@@ -370,7 +371,7 @@ public class ResourceTable
 
     private void removeResource(final UUID id) {
         final BeanModel tBean =
-            _detailsStore.findModel(ResourceSummary.UUID, id);
+            _detailsStore.findModel(ResourceSummary.Properties.UUID, id);
         if (null!=tBean) {
             _detailsStore.remove(tBean);
         }
@@ -414,7 +415,8 @@ public class ResourceTable
             case RESOURCE_RENAME:
                 final BeanModel bm1 =
                     _detailsStore.findModel(
-                        ResourceSummary.UUID, event.getProperty("id"));
+                        ResourceSummary.Properties.UUID,
+                        event.getProperty("id"));
                 final ResourceSummary md1 = bm1.<ResourceSummary>getBean();
                 md1.setAbsolutePath(
                     event.<ResourcePath>getProperty("path").toString());
@@ -426,7 +428,8 @@ public class ResourceTable
             case RESOURCE_CHANGE_TEMPLATE:
                 final BeanModel bm2 =
                     _detailsStore.findModel(
-                        ResourceSummary.UUID, event.getProperty("resource"));
+                        ResourceSummary.Properties.UUID,
+                        event.getProperty("resource"));
                 if (null==bm2) { return; } // Not present in table.
                 final ResourceSummary md2 = bm2.<ResourceSummary>getBean();
                 md2.setTemplateId(event.<UUID>getProperty("template"));
@@ -455,7 +458,8 @@ public class ResourceTable
 
     private void mergeAndUpdate(final ResourceSummary rs) {
         final BeanModel tBean =
-            _detailsStore.findModel(ResourceSummary.UUID, rs.getId());
+            _detailsStore.findModel(
+                ResourceSummary.Properties.UUID, rs.getId());
         if (null!=tBean) {
             tBean.setProperties(
                 DataBinding.bindResourceSummary(rs).getProperties());

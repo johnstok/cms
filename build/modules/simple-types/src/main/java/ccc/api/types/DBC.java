@@ -223,6 +223,8 @@ public final class DBC {
      *
      * @param criteria The lower bound.
      * @param value    The value to test.
+     *
+     * @return The specified 'value' parameter.
      */
     public int greaterThan(final int criteria, final int value) {
         if (value<=criteria) {

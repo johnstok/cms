@@ -27,13 +27,13 @@
 package ccc.plugins.markup;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
 
 import ccc.plugins.PluginFactory;
 
@@ -107,8 +107,7 @@ final class WhitelistContentHandler
     /** {@inheritDoc} */
     @Override public void ignorableWhitespace(final char[] ch,
                                               final int start,
-                                              final int length)
-    throws SAXException {
+                                              final int length) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
@@ -127,8 +126,7 @@ final class WhitelistContentHandler
 
 
     /** {@inheritDoc} */
-    @Override public void skippedEntity(final String name)
-    throws SAXException {
+    @Override public void skippedEntity(final String name) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
@@ -184,7 +182,7 @@ final class WhitelistContentHandler
     public void setAllowedElements(final String... elements) {
         _allowed.clear();
         for (final String element : elements) {
-            _allowed.add(element.toLowerCase());
+            _allowed.add(element.toLowerCase(Locale.US));
         }
     }
 
@@ -197,18 +195,18 @@ final class WhitelistContentHandler
     public void setIgnoredElements(final String... ignored) {
         _ignored.clear();
         for (final String element : ignored) {
-            _ignored.add(element.toLowerCase());
+            _ignored.add(element.toLowerCase(Locale.US));
         }
     }
 
 
     private boolean isIgnored(final String name) {
-        return _ignored.contains(name.toLowerCase());
+        return _ignored.contains(name.toLowerCase(Locale.US));
     }
 
 
     private boolean isAllowed(final String name) {
-        return _allowed.contains(name.toLowerCase());
+        return _allowed.contains(name.toLowerCase(Locale.US));
     }
 
 

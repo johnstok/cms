@@ -43,7 +43,6 @@ public class MemoryServiceLocator
     private Folders         _folders;
     private Users           _userCommands;
     private Actions         _actions;
-    private Scheduler       _actionscheduler;
     private Files           _files;
     private SearchEngine    _search;
     private Aliases         _aliases;

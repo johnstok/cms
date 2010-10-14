@@ -69,6 +69,6 @@ public abstract class AbstractTextProcessor
                                          final int lineNo,
                                          final int colNo)
                                                     throws ProcessingException {
-        throw new ProcessingException(title, lineNo, e);
+        throw new ProcessingException(engine, title, lineNo, colNo, e);
     }
 }

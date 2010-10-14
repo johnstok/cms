@@ -97,6 +97,8 @@ public interface Templates {
      *
      * @param templateId The id of the template to update.
      * @param delta The changes to apply.
+     *
+     * @return The updated template.
      */
     @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Template.ELEMENT)
     Template update(

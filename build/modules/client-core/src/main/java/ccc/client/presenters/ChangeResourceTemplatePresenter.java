@@ -83,8 +83,8 @@ public class ChangeResourceTemplatePresenter
         r.setId(getModel().getId());
         r.setTemplate(getView().getSelectedTemplate());
         r.addLink(
-            Resource.TEMPLATE,
-            getModel().getLink(Resource.TEMPLATE));
+            Resource.Links.TEMPLATE,
+            getModel().getLink(Resource.Links.TEMPLATE));
         new UpdateResourceTemplateAction(r).execute();
     }
 

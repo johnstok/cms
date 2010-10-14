@@ -130,6 +130,8 @@ public interface Users {
      *
      * @param userId The id of the user to update.
      * @param delta The changes to apply.
+     *
+     * @return The updated user.
      */
     @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.User.ELEMENT)
     User update(@PathParam("id") UUID userId, User delta);
@@ -149,6 +151,8 @@ public interface Users {
      * Update the email and/or password for the current user.
      *
      * @param user New details for the user.
+     *
+     * @return The updated user.
      */
     @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.User.ME)
     User updateCurrent(User user);

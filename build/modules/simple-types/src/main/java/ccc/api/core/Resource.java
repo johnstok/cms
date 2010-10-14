@@ -349,7 +349,7 @@ public class Resource
      */
     @Override
     public Link uriMetadata() {
-        return new Link(getLink(METADATA));
+        return new Link(getLink(Links.METADATA));
     }
 
 
@@ -360,7 +360,7 @@ public class Resource
      */
     @Override
     public Link uriTemplate() {
-        return new Link(getLink(TEMPLATE));
+        return new Link(getLink(Links.TEMPLATE));
     }
 
 
@@ -371,7 +371,7 @@ public class Resource
      */
     @Override
     public Link duration() {
-        return new Link(getLink(DURATION));
+        return new Link(getLink(Links.DURATION));
     }
 
 
@@ -382,7 +382,7 @@ public class Resource
      */
     @Override
     public final Link self() {
-        return new Link(getLink(SELF));
+        return new Link(getLink(Links.SELF));
     }
 
 
@@ -392,42 +392,52 @@ public class Resource
      * @return A link to this resource's name.
      */
     public Link rename() {
-        return new Link(getLink(NAME));
+        return new Link(getLink(Links.NAME));
     }
 
 
-    /** NAME : String. */
-    public static final String NAME = "name";
-    /** WC_APPLY : String. */
-    public static final String WC = "wc";
-    /** LIST : String. */
-    public static final String LIST = "list";
-    /** REVISIONS : String. */
-    public static final String REVISIONS = "revisions";
-    /** ABSOLUTE_PATH : String. */
-    public static final String ABSOLUTE_PATH = "absolute-path";
-    /** INCLUDE_MM : String. */
-    public static final String INCLUDE_MM = "include_mm";
-    /** LOCK : String. */
-    public static final String LOCK = "lock";
-    /** PARENT : String. */
-    public static final String PARENT = "parent";
-    /** DURATION : String. */
-    public static final String DURATION = "duration";
-    /** ACL : String. */
-    public static final String ACL = "acl";
-    /** PUBLISH : String. */
-    public static final String PUBLISH = "publish";
-    /** EXCLUDE_MM : String. */
-    public static final String EXCLUDE_MM = "exclude_mm";
-    /** METADATA : String. */
-    public static final String METADATA = "metadata";
-    /** TEMPLATE : String. */
-    public static final String TEMPLATE = "template";
-    /** SELF : String. */
-    public static final String SELF = "self";
-    /** DELETE : String. */
-    public static final String DELETE = "delete";
-    /** SEARCH : String. */
-    public static final String SEARCH = "search";
+
+    /**
+     * Rel names for links on the resource class.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static final class Links {
+        private Links() { super(); }
+
+        /** NAME : String. */
+        public static final String NAME = "name";
+        /** WC_APPLY : String. */
+        public static final String WC = "wc";
+        /** LIST : String. */
+        public static final String LIST = "list";
+        /** REVISIONS : String. */
+        public static final String REVISIONS = "revisions";
+        /** ABSOLUTE_PATH : String. */
+        public static final String ABSOLUTE_PATH = "absolute-path";
+        /** INCLUDE_MM : String. */
+        public static final String INCLUDE_MM = "include_mm";
+        /** LOCK : String. */
+        public static final String LOCK = "lock";
+        /** PARENT : String. */
+        public static final String PARENT = "parent";
+        /** DURATION : String. */
+        public static final String DURATION = "duration";
+        /** ACL : String. */
+        public static final String ACL = "acl";
+        /** PUBLISH : String. */
+        public static final String PUBLISH = "publish";
+        /** EXCLUDE_MM : String. */
+        public static final String EXCLUDE_MM = "exclude_mm";
+        /** METADATA : String. */
+        public static final String METADATA = "metadata";
+        /** TEMPLATE : String. */
+        public static final String TEMPLATE = "template";
+        /** SELF : String. */
+        public static final String SELF = "self";
+        /** DELETE : String. */
+        public static final String DELETE = "delete";
+        /** SEARCH : String. */
+        public static final String SEARCH = "search";
+    }
 }

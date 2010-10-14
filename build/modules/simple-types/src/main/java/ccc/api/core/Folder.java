@@ -124,10 +124,19 @@ public class Folder
     }
 
 
-    /** ROOTS : String. */
-    public static final String ROOTS = "roots";
-    /** IMAGES : String. */
-    public static final String IMAGES = "images";
-    /** EXISTS : String. */
-    public static final String EXISTS = "exists";
+    /**
+     * Rel names for links on this class.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static final class Links {
+        private Links() { super(); }
+
+        /** ROOTS : String. */
+        public static final String ROOTS = "roots";
+        /** IMAGES : String. */
+        public static final String IMAGES = "images";
+        /** EXISTS : String. */
+        public static final String EXISTS = "exists";
+    }
 }

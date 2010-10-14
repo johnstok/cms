@@ -68,47 +68,47 @@ public class ServicesImpl {
 
         final API api = new API();
 
-        api.addLink(API.ACTIONS,   Action.COLLECTION);
-        api.addLink(API.ALIASES,   Alias.COLLECTION);
-        api.addLink(API.COMMENTS,  Comment.COLLECTION);
-        api.addLink(API.FILES,     File.COLLECTION);
-        api.addLink(API.FOLDERS,   Folder.COLLECTION);
-        api.addLink(API.GROUPS,    Group.COLLECTION);
-        api.addLink(API.PAGES,     Page.COLLECTION);
-        api.addLink(API.RESOURCES, Resource.COLLECTION);
-        api.addLink(API.SEARCH,    SearchEngine.COLLECTION);
-        api.addLink(API.SECURITY,  Security.COLLECTION);
-        api.addLink(API.USERS,     User.COLLECTION);
-        api.addLink(API.TEMPLATES, Template.COLLECTION
-                                   + "?{-join|&|count,page}");
-        api.addLink(API.IMAGES,    File.IMAGES
-                                   + "?{-join|&|count,page,sort,order}");
+        api.addLink(API.Links.ACTIONS,   Action.COLLECTION);
+        api.addLink(API.Links.ALIASES,   Alias.COLLECTION);
+        api.addLink(API.Links.COMMENTS,  Comment.COLLECTION);
+        api.addLink(API.Links.FILES,     File.COLLECTION);
+        api.addLink(API.Links.FOLDERS,   Folder.COLLECTION);
+        api.addLink(API.Links.GROUPS,    Group.COLLECTION);
+        api.addLink(API.Links.PAGES,     Page.COLLECTION);
+        api.addLink(API.Links.RESOURCES, Resource.COLLECTION);
+        api.addLink(API.Links.SEARCH,    SearchEngine.COLLECTION);
+        api.addLink(API.Links.SECURITY,  Security.COLLECTION);
+        api.addLink(API.Links.USERS,     User.COLLECTION);
+        api.addLink(API.Links.TEMPLATES, Template.COLLECTION
+                                         + "?{-join|&|count,page}");
+        api.addLink(API.Links.IMAGES,    File.IMAGES
+                                         + "?{-join|&|count,page,sort,order}");
 
         api.addLink(
-            ccc.api.core.Folder.ROOTS,
+            ccc.api.core.Folder.Links.ROOTS,
             Folder.ROOTS);
 
         api.addLink(
-            ccc.api.core.Resource.SEARCH,
+            ccc.api.core.Resource.Links.SEARCH,
             Resource.SEARCH2 + "?{-join|&|count,page,sort,order}");
 
         api.addLink(
-            ccc.api.core.Template.EXISTS,
+            ccc.api.core.Template.Links.EXISTS,
             ccc.api.synchronous.ResourceIdentifiers.Template.EXISTS);
 
         api.addLink(
-            ccc.api.core.Page.VALIDATOR,
+            ccc.api.core.Page.Links.VALIDATOR,
             ccc.api.synchronous.ResourceIdentifiers.Page.VALIDATOR);
 
         api.addLink(
-            ccc.api.core.User.CURRENT,
+            ccc.api.core.User.Links.CURRENT,
             Security.CURRENT);
         api.addLink(
-            ccc.api.core.User.COLLECTION,
+            ccc.api.core.User.Links.COLLECTION,
             Security.COLLECTION+"?{-join|&|u,p}");
 
         api.addLink(
-            ccc.api.core.File.LIST_BINARY,
+            ccc.api.core.File.Links.LIST_BINARY,
             File.BINARY_COLLECTION);
 
         final Map<String, String> props = new HashMap<String, String>();

@@ -58,7 +58,7 @@ public class ValidateFieldAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return InternalServices.API.getLink(Page.VALIDATOR);
+        return InternalServices.API.getLink(Page.Links.VALIDATOR);
     }
 
 

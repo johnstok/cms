@@ -42,6 +42,15 @@ public final class Reflection {
     private Reflection() { super(); }
 
 
+    /**
+     * Create a new object.
+     *
+     * @param <T>           The type of object to return.
+     * @param expectedClass Class representing the type of object returned.
+     * @param className     The type of object to create.
+     *
+     * @return An object of type 'className'.
+     */
     public static <T> T construct(final Class<T> expectedClass,
                                   final String className) {
         try {
@@ -61,6 +70,16 @@ public final class Reflection {
     }
 
 
+    /**
+     * Create a new object.
+     *
+     * @param <T>           The type of object to create.
+     * @param expectedClass The class representing the type of the object.
+     * @param className     The type of object to create.
+     * @param theArguments  The arguments to the object's constructor.
+     *
+     * @return An object of type 'className'.
+     */
     public static <T> T construct(final Class<T> expectedClass,
                                   final String className,
                                   final Object[] theArguments) {
@@ -74,11 +93,22 @@ public final class Reflection {
             construct(
                 expectedClass,
                 className,
-                types.toArray(new Class[] {}),
+                types.toArray(new Class[types.size()]),
                 theArguments);
     }
 
 
+    /**
+     * Create a new object.
+     *
+     * @param <T>           The type of object to create.
+     * @param expectedClass The class representing the type of the object.
+     * @param className     The type of object to create.
+     * @param types         The types of the constructor's arguments.
+     * @param theArguments  The arguments to the object's constructor.
+     *
+     * @return An object of type 'className'.
+     */
     public static <T> T construct(final Class<T> expectedClass,
                                   final String className,
                                   final Class<?>[] types,

@@ -66,7 +66,7 @@ public class DeleteResourceAction
             new Link(
                 _selectionModel
                     .tableSelection()
-                    .getLink(Resource.DELETE))
+                    .getLink(Resource.Links.DELETE))
             .build(InternalServices.ENCODER);
     }
 

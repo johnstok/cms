@@ -310,7 +310,7 @@ public class EditTemplateDialog
 
                 delta.setId(_id);
                 delta.addLink(
-                    Resource.SELF, _model.getLink(Resource.SELF));
+                    Resource.Links.SELF, _model.getLink(Resource.Links.SELF));
 
                 new UpdateTemplateAction(delta) {
                     /** {@inheritDoc} */

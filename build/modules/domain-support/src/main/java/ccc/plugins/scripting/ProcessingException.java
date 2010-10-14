@@ -40,15 +40,23 @@ public class ProcessingException
     /**
      * Constructor.
      *
+     * @param engine The name of the text processing engine.
      * @param title  The title of the script.
      * @param lineNo The line of the script that failed.
+     * @param colNo  The column the line that that failed.
      * @param cause  The cause of the failure.
      */
-    public ProcessingException(final String title,
+    public ProcessingException(final String engine,
+                               final String title,
                                final int lineNo,
+                               final int colNo,
                                final Throwable cause) {
         super(
-            "Error processing script '"+title+"' [line number "+lineNo+"].",
+            "Error processing "+engine
+            +" script '"+title
+            +"' [line number "+lineNo
+            +", column number "+colNo
+            +"].",
             cause);
     }
 }

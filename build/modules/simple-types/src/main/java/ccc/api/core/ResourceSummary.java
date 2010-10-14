@@ -548,7 +548,7 @@ public class ResourceSummary extends Res {
      * @return A link to this resource's working copy.
      */
     public Link wc() {
-        return new Link(getLink(Resource.WC));
+        return new Link(getLink(Resource.Links.WC));
     }
 
 
@@ -559,7 +559,7 @@ public class ResourceSummary extends Res {
      */
     @Deprecated
     public Link delete() {
-        return new Link(getLink(Resource.DELETE));
+        return new Link(getLink(Resource.Links.DELETE));
     }
 
 
@@ -569,7 +569,7 @@ public class ResourceSummary extends Res {
      * @return A link to the resource collection.
      */
     public Link list() {
-        return new Link(getLink(Resource.LIST));
+        return new Link(getLink(Resource.Links.LIST));
     }
 
 
@@ -579,7 +579,7 @@ public class ResourceSummary extends Res {
      * @return A link to this resource's history.
      */
     public Link revisions() {
-        return new Link(getLink(Resource.REVISIONS));
+        return new Link(getLink(Resource.Links.REVISIONS));
     }
 
 
@@ -589,7 +589,7 @@ public class ResourceSummary extends Res {
      * @return A link to this resource's history.
      */
     public Link templateRevision() {
-        return new Link(getLink(Template.REVISION));
+        return new Link(getLink(Template.Links.REVISION));
     }
 
 
@@ -599,7 +599,7 @@ public class ResourceSummary extends Res {
      * @return A link to this resource's absolute path.
      */
     public Link uriAbsPath() {
-        return new Link(getLink(Resource.ABSOLUTE_PATH));
+        return new Link(getLink(Resource.Links.ABSOLUTE_PATH));
     }
 
 
@@ -609,7 +609,7 @@ public class ResourceSummary extends Res {
      * @return A link to this resource's 'include in menu' resource.
      */
     public Link includeMM() {
-        return new Link(getLink(Resource.INCLUDE_MM));
+        return new Link(getLink(Resource.Links.INCLUDE_MM));
     }
 
 
@@ -619,7 +619,7 @@ public class ResourceSummary extends Res {
      * @return A link to the user who has locked this resource.
      */
     public Link lock() {
-        return new Link(getLink(Resource.LOCK));
+        return new Link(getLink(Resource.Links.LOCK));
     }
 
 
@@ -629,7 +629,7 @@ public class ResourceSummary extends Res {
      * @return A link to this resource's parent.
      */
     public Link move() {
-        return new Link(getLink(Resource.PARENT));
+        return new Link(getLink(Resource.Links.PARENT));
     }
 
 
@@ -639,7 +639,7 @@ public class ResourceSummary extends Res {
      * @return A link to this resource's duration.
      */
     public Link duration() {
-        return new Link(getLink(Resource.DURATION));
+        return new Link(getLink(Resource.Links.DURATION));
     }
 
 
@@ -649,7 +649,7 @@ public class ResourceSummary extends Res {
      * @return A link to this resource's ACL.
      */
     public Link acl() {
-        return new Link(getLink(Resource.ACL));
+        return new Link(getLink(Resource.Links.ACL));
     }
 
 
@@ -659,7 +659,7 @@ public class ResourceSummary extends Res {
      * @return A link to this resource's publisher.
      */
     public Link uriPublish() {
-        return new Link(getLink(Resource.PUBLISH));
+        return new Link(getLink(Resource.Links.PUBLISH));
     }
 
 
@@ -669,7 +669,7 @@ public class ResourceSummary extends Res {
      * @return A link to this resource's 'include in menu' resource.
      */
     public Link excludeMM() {
-        return new Link(getLink(Resource.EXCLUDE_MM));
+        return new Link(getLink(Resource.Links.EXCLUDE_MM));
     }
 
 
@@ -679,7 +679,7 @@ public class ResourceSummary extends Res {
      * @return A link to this resource's metadata.
      */
     public Link uriMetadata() {
-        return new Link(getLink(Resource.METADATA));
+        return new Link(getLink(Resource.Links.METADATA));
     }
 
 
@@ -689,7 +689,7 @@ public class ResourceSummary extends Res {
      * @return A link to this resource's template.
      */
     public Link uriTemplate() {
-        return new Link(getLink(Resource.TEMPLATE));
+        return new Link(getLink(Resource.Links.TEMPLATE));
     }
 
 
@@ -699,7 +699,7 @@ public class ResourceSummary extends Res {
      * @return A link to this folder's images collection.
      */
     public Link images() {
-        return new Link(getLink(Folder.IMAGES));
+        return new Link(getLink(Folder.Links.IMAGES));
     }
 
 
@@ -709,7 +709,7 @@ public class ResourceSummary extends Res {
      * @return A link to this resource.
      */
     public Link self() {
-        return new Link(getLink(Resource.SELF));
+        return new Link(getLink(Resource.Links.SELF));
     }
 
 
@@ -719,7 +719,7 @@ public class ResourceSummary extends Res {
      * @return A link to this file's binary resource.
      */
     public Link selfBinary() {
-        return new Link(getLink(File.SELF_BINARY));
+        return new Link(getLink(File.Links.SELF_BINARY));
     }
 
 
@@ -730,7 +730,7 @@ public class ResourceSummary extends Res {
      */
     public Link exists() {
         return
-            new Link(getLink(Folder.EXISTS));
+            new Link(getLink(Folder.Links.EXISTS));
     }
 
 
@@ -741,7 +741,7 @@ public class ResourceSummary extends Res {
      */
     public Link targetName() {
         return
-            new Link(getLink(Alias.TARGET_NAME));
+            new Link(getLink(Alias.Links.TARGET_NAME));
     }
 
 
@@ -764,41 +764,48 @@ public class ResourceSummary extends Res {
         return _isVisible;
     }
 
-    /*
-     * Properties.
+
+    /**
+     * Property names for this class.
+     *
+     * @author Civic Computing Ltd.
      */
-    /** UUID : String. */
-    public static final String UUID          = "id";
-    /** PARENT : String. */
-    public static final String PARENT        = "parent";
-    /** NAME : String. */
-    public static final String NAME          = "name";
-    /** PUBLISHED : String. */
-    public static final String PUBLISHED     = "publishedBy";
-    /** TITLE : String. */
-    public static final String TITLE         = "title";
-    /** LOCKED : String. */
-    public static final String LOCKED        = "lockedBy";
-    /** TYPE : String. */
-    public static final String TYPE          = "type";
-    /** CHILD_COUNT : String. */
-    public static final String CHILD_COUNT   = "childCount";
-    /** FOLDER_COUNT : String. */
-    public static final String FOLDER_COUNT  = "folderCount";
-    /** MM_INCLUDE : String. */
-    public static final String MM_INCLUDE    = "includeInMainMenu";
-    /** WORKING_COPY : String. */
-    public static final String WORKING_COPY  = "hasWorkingCopy";
-    /** DATE_CHANGED : String. */
-    public static final String DATE_CHANGED  = "dateChanged";
-    /** DATE_CREATED : String. */
-    public static final String DATE_CREATED  = "dateCreated";
-    /** ABSOLUTE_PATH : String. */
-    public static final String ABSOLUTE_PATH = "absolutePath";
-    /** INDEX_PAGE_ID : String. */
-    public static final String INDEX_PAGE_ID = "indexPageId";
-    /** DESCRIPTION : String. */
-    public static final String DESCRIPTION   = "description";
-    /** VISIBLE : String. */
-    public static final String VISIBLE       = "visible";
+    public static final class Properties {
+        private Properties() { super(); }
+
+        /** UUID : String. */
+        public static final String UUID          = "id";
+        /** PARENT : String. */
+        public static final String PARENT        = "parent";
+        /** NAME : String. */
+        public static final String NAME          = "name";
+        /** PUBLISHED : String. */
+        public static final String PUBLISHED     = "publishedBy";
+        /** TITLE : String. */
+        public static final String TITLE         = "title";
+        /** LOCKED : String. */
+        public static final String LOCKED        = "lockedBy";
+        /** TYPE : String. */
+        public static final String TYPE          = "type";
+        /** CHILD_COUNT : String. */
+        public static final String CHILD_COUNT   = "childCount";
+        /** FOLDER_COUNT : String. */
+        public static final String FOLDER_COUNT  = "folderCount";
+        /** MM_INCLUDE : String. */
+        public static final String MM_INCLUDE    = "includeInMainMenu";
+        /** WORKING_COPY : String. */
+        public static final String WORKING_COPY  = "hasWorkingCopy";
+        /** DATE_CHANGED : String. */
+        public static final String DATE_CHANGED  = "dateChanged";
+        /** DATE_CREATED : String. */
+        public static final String DATE_CREATED  = "dateCreated";
+        /** ABSOLUTE_PATH : String. */
+        public static final String ABSOLUTE_PATH = "absolutePath";
+        /** INDEX_PAGE_ID : String. */
+        public static final String INDEX_PAGE_ID = "indexPageId";
+        /** DESCRIPTION : String. */
+        public static final String DESCRIPTION   = "description";
+        /** VISIBLE : String. */
+        public static final String VISIBLE       = "visible";
+    }
 }

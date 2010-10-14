@@ -80,6 +80,8 @@ public interface Aliases {
      *
      * @param aliasId The id of the alias to update.
      * @param delta The changes to apply.
+     *
+     * @return The updated alias.
      */
     @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Alias.ELEMENT)
     Alias update(@PathParam("id") UUID aliasId, Alias delta);

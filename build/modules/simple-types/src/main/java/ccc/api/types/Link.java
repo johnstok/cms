@@ -356,6 +356,6 @@ public class Link {
          *
          * @return The encoded URI.
          */
-        String encode(String string);
+        String encode(String uri);
     }
 }

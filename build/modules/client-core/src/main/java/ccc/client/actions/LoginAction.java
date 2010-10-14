@@ -68,7 +68,7 @@ public class LoginAction
         params.put("u", new String[] {_dialog.getUsername()});
         params.put("p", new String[] {_dialog.getPassword()});
         return
-            new Link(InternalServices.API.getLink(User.COLLECTION))
+            new Link(InternalServices.API.getLink(User.Links.COLLECTION))
             .build(params, InternalServices.ENCODER);
     }
 

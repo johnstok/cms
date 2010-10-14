@@ -66,7 +66,8 @@ public interface Folders {
      *
      * @return The folder's of children.
      */
-    @GET @Path(ccc.api.synchronous.ResourceIdentifiers.Folder.ACCESSIBLE_CHILDREN)
+    @GET
+    @Path(ccc.api.synchronous.ResourceIdentifiers.Folder.ACCESSIBLE_CHILDREN)
     PagedCollection<ResourceSummary> getAccessibleChildren(
         @PathParam("id") UUID folderId);
 
@@ -107,6 +108,8 @@ public interface Folders {
      *
      * @param folderId The id of the folder to update.
      * @param delta The updated details of the folder.
+     *
+     * @return The updated folder.
      */
     @PUT @Path(ccc.api.synchronous.ResourceIdentifiers.Folder.ELEMENT)
     Folder update(@PathParam("id") UUID folderId, Folder delta);

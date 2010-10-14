@@ -124,11 +124,17 @@ public class Group
 
 
 
-    /*
-     * Property names.
+    /**
+     * Property names for this class.
+     *
+     * @author Civic Computing Ltd.
      */
-    /** NAME : String. */
-    public static final String NAME = "name";
-    /** ID : String. */
-    public static final String ID   = "id";
+    public static final class Properties {
+        private Properties() { super(); }
+
+        /** NAME : String. */
+        public static final String NAME = "name";
+        /** ID : String. */
+        public static final String ID   = "id";
+    }
 }

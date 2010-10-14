@@ -50,9 +50,12 @@ public class CreateAliasAcceptanceTest
 
         // ARRANGE
         final String exists =
-            getCommands().resourceForPath("").getLinks().get(Folder.EXISTS);
+            getCommands()
+            .resourceForPath("")
+            .getLinks()
+            .get(Folder.Links.EXISTS);
         final ResourceSummary rs = new ResourceSummary();
-        rs.addLink(Folder.EXISTS, exists);
+        rs.addLink(Folder.Links.EXISTS, exists);
         final Resource welcome = getCommands().resourceForPath("/welcome");
 
         final CreateAliasPresenter p =

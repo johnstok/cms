@@ -107,12 +107,12 @@ public abstract class AbstractAcceptanceTest
 
     static {
         final API api = new API();
-        api.addLink(API.ALIASES, "/secure/aliases");
-        api.addLink(API.USERS, "/secure/users");
-        api.addLink(API.PAGES, "/secure/pages");
-        api.addLink(API.FOLDERS, "/secure/folders");
-        api.addLink(API.FILES, "/secure/files");
-        api.addLink(API.FOLDERS, "/secure/folders");
+        api.addLink(API.Links.ALIASES, "/secure/aliases");
+        api.addLink(API.Links.USERS, "/secure/users");
+        api.addLink(API.Links.PAGES, "/secure/pages");
+        api.addLink(API.Links.FOLDERS, "/secure/folders");
+        api.addLink(API.Links.FILES, "/secure/files");
+        api.addLink(API.Links.FOLDERS, "/secure/folders");
         InternalServices.API = api;
 
         I18n.USER_ACTIONS =

@@ -263,7 +263,7 @@ public class User
      *
      * @return A link to this user.
      */
-    public String self() { return getLink(SELF); }
+    public String self() { return getLink(Links.SELF); }
 
 
     /**
@@ -271,26 +271,41 @@ public class User
      *
      * @return A link to this user's password.
      */
-    public String uriPassword() { return getLink(PASSWORD); }
+    public String uriPassword() { return getLink(Links.PASSWORD); }
 
 
-    /** PASSWORD : String. */
-    public static final String PASSWORD = "password";
-    /** SELF : String. */
-    public static final String SELF = "self";
-
-    // Security related link names - move elsewhere. Session object?
-    /** CURRENT : String. */
-    public static final String CURRENT = "current";
-    /** COLLECTION : String. */
-    public static final String COLLECTION = "collection";
-
-
-    /*
-     * Property names.
+    /**
+     * Rel names for links on this class.
+     *
+     * @author Civic Computing Ltd.
      */
-    /** EMAIL : String. */
-    public static final String EMAIL = "email";
-    /** USERNAME : String. */
-    public static final String USERNAME = "username";
+    public static final class Links {
+        private Links() { super(); }
+
+        /** PASSWORD : String. */
+        public static final String PASSWORD = "password";
+        /** SELF : String. */
+        public static final String SELF = "self";
+
+        // Security related link names - move elsewhere. Session object?
+        /** CURRENT : String. */
+        public static final String CURRENT = "current";
+        /** COLLECTION : String. */
+        public static final String COLLECTION = "collection";
+    }
+
+
+    /**
+     * Property names for this class.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static final class Properties {
+        private Properties() { super(); }
+
+        /** EMAIL : String. */
+        public static final String EMAIL = "email";
+        /** USERNAME : String. */
+        public static final String USERNAME = "username";
+    }
 }

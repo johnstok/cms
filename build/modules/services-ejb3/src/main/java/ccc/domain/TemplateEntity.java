@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.core.Resource;
 import ccc.api.core.Template;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
@@ -175,8 +176,8 @@ public class TemplateEntity
     /** {@inheritDoc} */
     @Override
     public Template forSpecificRevision(final int revNo) {
-        TemplateRevision rev = revision(revNo);
-        Template dto = summarize();
+        final TemplateRevision rev = revision(revNo);
+        final Template dto = summarize();
         dto.setDefinition(rev.getDefinition());
         dto.setBody(rev.getBody());
         dto.setMimeType(rev.getMimeType());
@@ -210,7 +211,7 @@ public class TemplateEntity
         dto.setRevision(currentRevisionNo());
 
         dto.addLink(
-            Template.SELF,
+            Resource.Links.SELF,
             new Link(ccc.api.synchronous.ResourceIdentifiers.Template.ELEMENT)
             .build("id", getId().toString(), new NormalisingEncoder()));
 

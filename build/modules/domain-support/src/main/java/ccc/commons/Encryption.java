@@ -43,7 +43,9 @@ import org.apache.log4j.Logger;
 public final class Encryption {
     private static final Logger LOG = Logger.getLogger(Encryption.class);
 
+    /** SHA_HASH_LENGTH : int. */
     public static final int SHA_HASH_LENGTH = 32;
+    /** HASH_REPETITIONS : int. */
     public static final int HASH_REPETITIONS = 1000;
 
 

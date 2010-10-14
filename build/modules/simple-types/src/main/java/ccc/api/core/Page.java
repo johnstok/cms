@@ -177,12 +177,21 @@ public class Page
      * @return The link to this Page's working copy.
      */
     public Link workingCopy() {
-        return new Link(getLink(WORKING_COPY));
+        return new Link(getLink(Links.WORKING_COPY));
     }
 
 
-    /** WORKING_COPY : String. */
-    public static final String WORKING_COPY = "wc_p";
-    /** VALIDATOR : String. */
-    public static final String VALIDATOR = "page-validator";
+    /**
+     * Rel names for links on this class.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static final class Links {
+        private Links() { super(); }
+
+        /** WORKING_COPY : String. */
+        public static final String WORKING_COPY = "wc_p";
+        /** VALIDATOR : String. */
+        public static final String VALIDATOR = "page-validator";
+    }
 }
