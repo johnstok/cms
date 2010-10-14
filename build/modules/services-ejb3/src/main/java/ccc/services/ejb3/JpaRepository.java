@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.persistence;
+package ccc.services.ejb3;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -41,6 +41,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.types.DBC;
 import ccc.domain.Entity;
+import ccc.persistence.Repository;
 
 
 /**
@@ -48,7 +49,7 @@ import ccc.domain.Entity;
  *
  * @author Civic Computing Ltd.
  */
-public class JpaRepository
+class JpaRepository
     implements
         Repository {
 
@@ -62,7 +63,7 @@ public class JpaRepository
      *
      * @param em The JPA entity manager for this DAO.
      */
-    public JpaRepository(final EntityManager em) {
+    JpaRepository(final EntityManager em) {
         DBC.require().notNull(em);
         _em = em;
     }

@@ -34,8 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.persistence.EntityNotFoundException;
-
 import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Failure;
@@ -206,8 +204,6 @@ public class ActionEntity extends Entity {
                 return FailureCode.LOCK_MISMATCH;
             } else if (InsufficientPrivilegesException.class==failureClass) {
                 return FailureCode.PRIVILEGES;
-            } else if (EntityNotFoundException.class==failureClass) {
-                return FailureCode.NOT_FOUND;
             } else if (CycleDetectedException.class==failureClass) {
                 return FailureCode.CYCLE;
             }

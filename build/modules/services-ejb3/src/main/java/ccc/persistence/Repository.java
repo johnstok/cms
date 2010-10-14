@@ -40,7 +40,7 @@ import ccc.domain.Entity;
  *
  * @author Civic Computing Ltd.
  */
-interface Repository {
+public interface Repository {
 
 
     /**

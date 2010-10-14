@@ -50,7 +50,6 @@ import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
-import ccc.persistence.JpaRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.RepositoryFactory;
 import ccc.persistence.ResourceRepository;

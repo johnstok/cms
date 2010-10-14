@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.persistence;
+package ccc.services.ejb3;
 
 import static org.easymock.EasyMock.*;
 
@@ -40,6 +40,7 @@ import ccc.domain.PageEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UserEntity;
+import ccc.services.ejb3.JpaRepository;
 
 
 /**
