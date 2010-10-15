@@ -87,9 +87,9 @@ public class UUIDUserType implements UserType, Serializable {
 
     /** {@inheritDoc} */
     @Override
-    public Object nullSafeGet(final ResultSet rs,
-                              final String[] names,
-                              final Object owner) throws SQLException {
+    public UUID nullSafeGet(final ResultSet rs,
+                            final String[] names,
+                            final Object owner) throws SQLException {
 
         final String value = rs.getString(names[0]);
         if (null == value) {

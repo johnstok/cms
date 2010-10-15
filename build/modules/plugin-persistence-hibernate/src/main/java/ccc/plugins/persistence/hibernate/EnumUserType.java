@@ -49,6 +49,9 @@ public class EnumUserType<T extends Enum<T>> implements UserType,
                                                         ParameterizedType,
                                                         Serializable {
 
+    /** PROPERTY_TYPE : String. */
+    static final String PROPERTY_TYPE = "type";
+    
     private Class<T> _enumClass;
 
     /**
@@ -69,11 +72,12 @@ public class EnumUserType<T extends Enum<T>> implements UserType,
     @SuppressWarnings("unchecked")  // Class class doesn't support generics
     @Override
     public void setParameterValues(final Properties parameters) {
-        final String enumClassName = parameters.getProperty("type");
+        final String enumClassName = parameters.getProperty(PROPERTY_TYPE);
         try {
             _enumClass = (Class<T>) Class.forName(enumClassName);
-        } catch (final ClassNotFoundException cnfe) {
-            throw new HibernateException("Enum class not found.", cnfe);
+        } catch (final Exception cnfe) {
+            throw new HibernateException(
+                "Enum class not found: "+enumClassName, cnfe);
         }
     }
 
@@ -115,9 +119,9 @@ public class EnumUserType<T extends Enum<T>> implements UserType,
 
     /** {@inheritDoc} */
     @Override
-    public Object nullSafeGet(final ResultSet rs,
-                              final String[] names,
-                              final Object owner) throws SQLException {
+    public T nullSafeGet(final ResultSet rs,
+                         final String[] names,
+                         final Object owner) throws SQLException {
 
         final String value = rs.getString(names[0]);
         if (null == value) {

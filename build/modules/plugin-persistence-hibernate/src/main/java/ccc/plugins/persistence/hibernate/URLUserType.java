@@ -38,7 +38,7 @@ import org.hibernate.usertype.UserType;
 
 
 /**
- * A hibernate {@link UserType} used to persist {@link UUID} objects.
+ * A hibernate {@link UserType} used to persist {@link URL} objects.
  *
  * @author Civic Computing Ltd.
  */
@@ -89,8 +89,8 @@ public class URLUserType implements UserType, Serializable {
     /** {@inheritDoc} */
     @Override
     public URL nullSafeGet(final ResultSet rs,
-                              final String[] names,
-                              final Object owner) throws SQLException {
+                           final String[] names,
+                           final Object owner) throws SQLException {
 
         final String value = rs.getString(names[0]);
         if (null == value) {

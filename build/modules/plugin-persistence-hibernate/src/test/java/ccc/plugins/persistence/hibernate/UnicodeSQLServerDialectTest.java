@@ -26,35 +26,40 @@
  */
 package ccc.plugins.persistence.hibernate;
 
+import static ccc.plugins.persistence.hibernate.UnicodeSQLServerDialect.*;
+
 import java.sql.Types;
 
-import org.hibernate.dialect.SQLServerDialect;
+import junit.framework.TestCase;
 
 
 /**
- * Dialect for MS SQLServer handing UTF.
+ * Tests for the {@link UnicodeSQLServerDialect} class.
  *
  * @author Civic Computing Ltd.
  */
-public class UnicodeSQLServerDialect extends SQLServerDialect{
-
-    /** COLUMN_TYPE_CLOB : String. */
-    public static final String COLUMN_TYPE_CLOB    = "nvarchar(max)";
-    /** COLUMN_TYPE_VARCHAR : String. */
-    public static final String COLUMN_TYPE_VARCHAR = "nvarchar($l)";
-    /** COLUMN_TYPE_CHAR : String. */
-    public static final String COLUMN_TYPE_CHAR    = "nchar(1)";
+public class UnicodeSQLServerDialectTest
+    extends
+        TestCase {
 
     /**
-     * Constructor.
+     * Test.
      */
-    public UnicodeSQLServerDialect() {
-      super();
-      registerColumnType(Types.CHAR,        COLUMN_TYPE_CHAR);
-      registerColumnType(Types.VARCHAR,     COLUMN_TYPE_VARCHAR);
-      registerColumnType(Types.LONGVARCHAR, COLUMN_TYPE_VARCHAR);
-      registerColumnType(Types.CLOB,        COLUMN_TYPE_CLOB);
+    public void testColumnTypesResgiteredCorrectly() {
+
+        // ARRANGE
+        final UnicodeSQLServerDialect dialect = new UnicodeSQLServerDialect();
+
+        // ACT
+
+        // ASSERT
+        assertEquals(
+            COLUMN_TYPE_CHAR, dialect.getTypeName(Types.CHAR));
+        assertEquals(
+            COLUMN_TYPE_VARCHAR, dialect.getTypeName(Types.VARCHAR));
+        assertEquals(
+            COLUMN_TYPE_VARCHAR, dialect.getTypeName(Types.LONGVARCHAR));
+        assertEquals(
+            COLUMN_TYPE_CLOB, dialect.getTypeName(Types.CLOB));
     }
-
-
 }
