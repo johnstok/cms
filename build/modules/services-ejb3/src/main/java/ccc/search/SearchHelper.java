@@ -150,37 +150,42 @@ public class SearchHelper
     private void indexFiles(final Indexer lucene) {
         final List<FileEntity> files = _resources.files();
         for (final FileEntity f : files) {
-            if (canIndex(f)) {
-                if (!PredefinedResourceNames.CONTENT.equals(
-                    f.getRoot().getName().toString())) {
-                    LOG.debug(
-                        "Skipped indexing for non content file : "
-                        +f.getTitle());
-                    continue;
-                }
+            indexFile(lucene, f);
+        }
+    }
 
-                final TextExtractor extractor =
-                    lucene.createExtractor(f.getMimeType());
-                if (null==extractor) {
-                    LOG.debug("No extractor for mime-type: "+f.getMimeType());
-                    continue;
-                }
 
-                // Work around JBAS-6615
-                _data.retrieve(f.getData(), extractor);
-                final String content =
-                    new PluginFactory().html()
-                        .cleanUpContent(f.getTitle()+" "+extractor.getText());
-                lucene.createDocument(
-                    f.getId(),
-                    f.getAbsolutePath(),
-                    f.getName(),
-                    f.getTitle(),
-                    f.getTags(),
-                    content,
-                    null);
-                LOG.debug("Indexed file: "+f.getTitle());
+    private void indexFile(final Indexer lucene, final FileEntity f) {
+        if (canIndex(f)) {
+            if (!PredefinedResourceNames.CONTENT.equals(
+                f.getRoot().getName().toString())) {
+                LOG.debug(
+                    "Skipped indexing for non content file : "
+                    +f.getTitle());
+                return;
             }
+
+            final TextExtractor extractor =
+                lucene.createExtractor(f.getMimeType());
+            if (null==extractor) {
+                LOG.debug("No extractor for mime-type: "+f.getMimeType());
+                return;
+            }
+
+            // Work around JBAS-6615
+            _data.retrieve(f.getData(), extractor);
+            final String content =
+                new PluginFactory().html()
+                    .cleanUpContent(f.getTitle()+" "+extractor.getText());
+            lucene.createDocument(
+                f.getId(),
+                f.getAbsolutePath(),
+                f.getName(),
+                f.getTitle(),
+                f.getTags(),
+                content,
+                null);
+            LOG.debug("Indexed file: "+f.getTitle());
         }
     }
 
@@ -189,17 +194,22 @@ public class SearchHelper
         final List<PageEntity> pages = _resources.pages();
         for (final PageEntity p : pages) {
             if (canIndex(p)) {
-                lucene.createDocument(
-                    p.getId(),
-                    p.getAbsolutePath(),
-                    p.getName(),
-                    p.getTitle(),
-                    p.getTags(),
-                    extractContent(p),
-                    p.currentRevision().getParagraphs());
-                LOG.debug("Indexed page: "+p.getTitle());
+                indexPage(lucene, p);
             }
         }
+    }
+
+
+    private void indexPage(final Indexer lucene, final PageEntity p) {
+        lucene.createDocument(
+            p.getId(),
+            p.getAbsolutePath(),
+            p.getName(),
+            p.getTitle(),
+            p.getTags(),
+            extractContent(p),
+            p.currentRevision().getParagraphs());
+        LOG.debug("Indexed page: "+p.getTitle());
     }
 
 
@@ -222,8 +232,9 @@ public class SearchHelper
         final boolean indexable = r.isIndexable();
         final boolean canIndex = visible && !secure && indexable;
 
-        LOG.info(
-            "{secure="+secure
+        LOG.debug(
+            "canIndex="+canIndex
+            +" {secure="+secure
             +", visible="+visible
             +", indexable="+indexable+"} "
             +r.getAbsolutePath());
@@ -250,5 +261,40 @@ public class SearchHelper
 
     private Index createIndex() {
         return new PluginFactory().createIndex(getIndexPath());
+    }
+
+
+    /**
+     * Re-index a specific resource.
+     *
+     * @param resource The resource to re-index.
+     */
+    public void index(final ResourceEntity resource) {
+        final Indexer lucene = createIndexer();
+
+        try {
+            lucene.startAddition();
+
+            if (resource instanceof PageEntity) {
+                final PageEntity page = (PageEntity) resource;
+                indexPage(lucene, page);
+                LOG.info("Indexed "+resource.getAbsolutePath());
+
+            } else if (resource instanceof FileEntity) {
+                final FileEntity file = (FileEntity) resource;
+                indexFile(lucene, file);
+                LOG.info("Indexed "+resource.getAbsolutePath());
+
+            } else {
+                LOG.debug(
+                    "Ignored request to index resource type "
+                    +resource.getType());
+            }
+
+            lucene.commitUpdate();
+        } catch (final RuntimeException e) {
+            LOG.error("Error indexing resource.", e);
+            lucene.rollbackUpdate();
+        }
     }
 }

@@ -26,7 +26,10 @@
  */
 package ccc.commands.anonymous;
 
+import java.util.Map;
+
 import ccc.api.types.CommandType;
+import ccc.messaging.Producer;
 import ccc.persistence.IRepositoryFactory;
 
 
@@ -38,15 +41,19 @@ import ccc.persistence.IRepositoryFactory;
 public class CommandFactory {
 
     private final IRepositoryFactory _repoFactory;
+    private final Producer           _broadcast;
 
 
     /**
      * Constructor.
      *
      * @param repoFactory The repository factory to create repositories.
+     * @param broadcast   The producer for sending broadcast messages.
      */
-    public CommandFactory(final IRepositoryFactory repoFactory) {
+    public CommandFactory(final IRepositoryFactory repoFactory,
+                          final Producer broadcast) {
         _repoFactory = repoFactory;
+        _broadcast   = broadcast;
     }
 
 
@@ -54,18 +61,22 @@ public class CommandFactory {
      * Create a command of the specified type.
      *
      * @param type The type of command to create.
+     * @param params The command's parameters.
      *
      * @return An instance of the specified command type.
      */
-    public AnonymousCommand createCommand(final CommandType type) {
+    public AnonymousCommand createCommand(final CommandType type,
+                                          final Map<String, String> params) {
         switch (type) {
 
-            case SEARCH_INDEX_ALL:
+            case SEARCH_INDEX_RESOURCE:
                 return
-                    new IndexAllCommand(
+                    new IndexRecursiveCommand(
                         _repoFactory.createResourceRepository(),
                         _repoFactory.createDataRepository(),
-                        _repoFactory.createSettingsRepository());
+                        _repoFactory.createSettingsRepository(),
+                        _broadcast,
+                        params);
 
             default:
                 throw new RuntimeException(

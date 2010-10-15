@@ -298,6 +298,20 @@ public class SimpleLuceneFS
 
 
     /**
+     * Removes all entries for a specific document id from the lucene index.
+     *
+     * @param id The document id to clear.
+     *
+     * @throws IOException If index writing fails.
+     */
+    private void clearDocuments(final UUID id) throws IOException {
+        _writer.deleteDocuments(new TermQuery(new Term("id", id.toString())));
+        _writer.expungeDeletes();
+        LOG.debug("Deleted all existing documents with id: "+id);
+    }
+
+
+    /**
      * Removes all entries from the lucene index.
      *
      * @throws ParseException If the document query fails.
@@ -311,7 +325,7 @@ public class SimpleLuceneFS
                 new StandardAnalyzer(LUCENE_VERSION))
             .parse("*"));
         _writer.expungeDeletes();
-        LOG.info("Deleted all existing documents.");
+        LOG.debug("Deleted all existing documents.");
     }
 
 
@@ -325,7 +339,7 @@ public class SimpleLuceneFS
         }
         try {
             _writer.close();
-            LOG.info("Commited index update.");
+            LOG.debug("Commited index update.");
         } catch (final IOException e) {
             LOG.error("Failed to close index writer.", e);
         }
@@ -338,7 +352,7 @@ public class SimpleLuceneFS
     public void rollbackUpdate() {
         try {
             if (null!=_writer) { _writer.rollback(); }
-            LOG.info("Rolled back index update.");
+            LOG.debug("Rolled back index update.");
         } catch (final IOException e) {
             _writer = null;
             LOG.error("Error rolling back lucene write.", e);
@@ -352,10 +366,22 @@ public class SimpleLuceneFS
         try {
             _writer = createWriter();
             clearIndex();
-            LOG.info("Starting index update.");
+            LOG.debug("Starting index update.");
         } catch (final IOException e) {
             throw new CCException("Failed to start index update.", e);
         } catch (final ParseException e) {
+            throw new CCException("Failed to start index update.", e);
+        }
+    }
+
+
+    /** {@inheritDoc}*/
+    @Override
+    public void startAddition() {
+        try {
+            _writer = createWriter();
+            LOG.debug("Starting index addition.");
+        } catch (final IOException e) {
             throw new CCException("Failed to start index update.", e);
         }
     }
@@ -371,6 +397,8 @@ public class SimpleLuceneFS
                                final String content,
                                final Set<Paragraph> paragraphs) {
         try {
+            clearDocuments(id);
+
             final Document d = new Document();
 
             if (paragraphs != null) {

@@ -26,6 +26,9 @@
  */
 package ccc.services.ejb3;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
@@ -68,6 +71,14 @@ class JmsProducer
     /** {@inheritDoc} */
     @Override
     public void broadcastMessage(final CommandType command) {
+        broadcastMessage(command, new HashMap<String, String>());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void broadcastMessage(final CommandType command,
+                                 final Map<String, String> params) {
         try {
             final Connection connection =
                 _connectionFactory.createConnection();
@@ -77,8 +88,12 @@ class JmsProducer
                   session.createProducer(_topic);
 
               final TextMessage message = session.createTextMessage();
-              message.setStringProperty(
-                  "command", command.name());
+
+              for (final Map.Entry<String, String> param : params.entrySet()) {
+                  message.setStringProperty(param.getKey(), param.getValue());
+              }
+
+              message.setStringProperty("command", command.name());
 
               producer.send(message);
 

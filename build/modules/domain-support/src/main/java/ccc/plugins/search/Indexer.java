@@ -50,6 +50,12 @@ public interface Indexer {
 
 
     /**
+     * Start a transaction.
+     */
+    void startAddition();
+
+
+    /**
      * Commit a transaction.
      */
     void commitUpdate();

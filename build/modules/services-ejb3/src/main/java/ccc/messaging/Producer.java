@@ -26,6 +26,8 @@
  */
 package ccc.messaging;
 
+import java.util.Map;
+
 import ccc.api.types.CommandType;
 
 
@@ -36,10 +38,21 @@ import ccc.api.types.CommandType;
  */
 public interface Producer {
 
+
     /**
      * Broadcast a command to all nodes.
      *
      * @param command The command to broadcast.
      */
     void broadcastMessage(final CommandType command);
+
+
+    /**
+     * Broadcast a command to all nodes.
+     *
+     * @param command The command to broadcast.
+     * @param params  The parameters to the command.
+     */
+    void broadcastMessage(CommandType command,
+                          Map<String, String> params);
 }

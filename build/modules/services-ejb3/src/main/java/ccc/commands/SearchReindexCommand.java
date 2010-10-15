@@ -26,11 +26,14 @@
  */
 package ccc.commands;
 
+import java.util.Collections;
 import java.util.Date;
 
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.api.types.Permission;
+import ccc.api.types.ResourcePath;
+import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.messaging.Producer;
 import ccc.persistence.IRepositoryFactory;
@@ -64,7 +67,13 @@ public class SearchReindexCommand
     /** {@inheritDoc} */
     @Override
     protected Void doExecute(final UserEntity actor, final Date happenedOn) {
-        _producer.broadcastMessage(CommandType.SEARCH_INDEX_ALL);
+        final ResourceEntity resource =
+            getRepository().lookup(new ResourcePath(""));
+
+        _producer.broadcastMessage(
+            CommandType.SEARCH_INDEX_RESOURCE,
+            Collections.singletonMap("resource", resource.getId().toString()));
+
         return null;
     }
 

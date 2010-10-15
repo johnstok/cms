@@ -26,11 +26,19 @@
  */
 package ccc.services.ejb3;
 
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.annotation.Resource.AuthenticationType;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.jms.Topic;
+import javax.jms.TopicConnectionFactory;
 
 import org.apache.log4j.Logger;
 
@@ -61,16 +69,35 @@ public class BroadcastHandlerEJB
     private static final Logger LOG =
         Logger.getLogger(BroadcastHandlerEJB.class);
 
+    @Resource(
+        name="topic_conn_factory",
+        authenticationType=AuthenticationType.CONTAINER,
+        type=TopicConnectionFactory.class)
+    private TopicConnectionFactory _connectionFactory;
+
+    @Resource(name="topic_broadcast")
+    private Topic _broadcast;
+
     private CommandFactory _commandFactory;
 
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked") // JEE API isn't aware of generics.
     public void onMessage(final Message msg) {
         try {
+            final Map<String, String> props = new HashMap<String, String>();
+
+            final Enumeration<String> pNames = msg.getPropertyNames();
+            while (pNames.hasMoreElements()) {
+                final String pName = pNames.nextElement();
+                props.put(pName, msg.getStringProperty(pName));
+            }
+
             final String cTypeString = msg.getStringProperty("command");
             final CommandType cType  = CommandType.valueOf(cTypeString);
-            final AnonymousCommand c = _commandFactory.createCommand(cType);
+            final AnonymousCommand c =
+                _commandFactory.createCommand(cType, props);
 
             c.execute();
 
@@ -83,6 +110,9 @@ public class BroadcastHandlerEJB
     @PostConstruct
     @SuppressWarnings("unused")
     private void postConstruct() {
-        _commandFactory = new CommandFactory(getRepoFactory());
+        _commandFactory =
+            new CommandFactory(
+                getRepoFactory(),
+                new JmsProducer(_connectionFactory, _broadcast));
     }
 }
