@@ -35,6 +35,7 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.core.SingleSelectionModel;
+import ccc.client.presenters.UpdateResourceAclPresenter;
 
 /**
  * Action to launch the 'update resource acl' dialog.
@@ -47,7 +48,7 @@ public final class OpenUpdateResourceAclAction
 
 
     private final SingleSelectionModel _selectionModel;
-    private Collection<Group> _groups;
+    private final Collection<Group> _groups;
 
 
     /**
@@ -77,11 +78,7 @@ public final class OpenUpdateResourceAclAction
     @Override
     protected void onSuccess(final ACL acl) {
         final ResourceSummary item = _selectionModel.tableSelection();
-        InternalServices.dialogs.updateAcl(
-            item,
-            acl,
-            _groups)
-        .show();
+        new UpdateResourceAclPresenter(InternalServices.dialogs.updateAcl(acl, _groups), item);
     }
 
 

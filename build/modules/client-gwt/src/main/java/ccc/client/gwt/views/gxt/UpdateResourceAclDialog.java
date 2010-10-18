@@ -37,11 +37,13 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
 import ccc.client.actions.GetUserAction;
-import ccc.client.actions.UpdateResourceAclAction;
 import ccc.client.core.DefaultCallback;
+import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.DataBinding;
+import ccc.client.views.UpdateResourceAcl;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -74,8 +76,10 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
  * @author Civic Computing Ltd.
  */
 public class UpdateResourceAclDialog
-    extends
-        AbstractEditDialog {
+    extends AbstractEditDialog
+    implements UpdateResourceAcl {
+
+    private Editable _presenter;
 
     private CheckBoxSelectionModel<BaseModelData> _groupSM;
     private final ListStore<BaseModelData> _groupStore =
@@ -89,7 +93,7 @@ public class UpdateResourceAclDialog
     private EditorGrid<BeanModel> _userGrid;
     private final ContentPanel _userGridPanel = new ContentPanel();
 
-    private final ResourceSummary _resource;
+    private ResourceSummary _resource;
 
     private final ACL _acl;
     private final Collection<Group> _allGroups;
@@ -104,16 +108,13 @@ public class UpdateResourceAclDialog
     /**
      * Constructor.
      *
-     * @param resource The resource whose ACL will be updated.
      * @param acl The access control list for the resource.
      * @param allGroups A list of all groups available in the system.
      */
-    public UpdateResourceAclDialog(final ResourceSummary resource,
-                                   final ACL acl,
+    public UpdateResourceAclDialog(final ACL acl,
                                    final Collection<Group> allGroups) {
         super(I18n.uiConstants.updateRoles(),
             InternalServices.globals);
-        _resource = resource;
         _acl = acl;
         _allGroups = allGroups;
         setLayout(new BorderLayout());
@@ -309,53 +310,53 @@ public class UpdateResourceAclDialog
         return new ColumnModel(configs);
     }
 
+    @Override
+    public ACL getAcl() {
 
+        final List<Entry> newGroups = new ArrayList<Entry>();
+        for (final BaseModelData selected : _groupStore.getModels()) {
+            final Entry e = new Entry();
+            assignRW(e, selected);
+            e.setPrincipal(selected.<UUID>get("id"));
+            newGroups.add(e);
+        }
+        final List<Entry> newUsers = new ArrayList<Entry>();
+        for (final BeanModel um : _userStore.getModels()) {
+            final Entry e = new Entry();
+            assignRW(e, um);
+            e.setPrincipal(um.<User>getBean().getId());
+            newUsers.add(e);
+        }
+
+        return new ACL().setGroups(newGroups).setUsers(newUsers);
+    }
+
+    private void assignRW(final Entry e, final BaseModelData selected) {
+        final String rw = selected.get("rwid");
+        if (rw.indexOf('r')> -1) {
+            e.setReadable(true);
+        }
+        if (rw.indexOf('w')> -1) {
+            e.setWriteable(true);
+        }
+    }
     /** {@inheritDoc} */
     @Override
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
-            @Override
-            public void componentSelected(final ButtonEvent ce) {
-
-                final List<Entry> newGroups = new ArrayList<Entry>();
-                for (final BaseModelData selected : _groupStore.getModels()) {
-                    final Entry e = new Entry();
-                    assignRW(e, selected);
-                    e.setPrincipal(selected.<UUID>get("id"));
-                    newGroups.add(e);
-                }
-                final List<Entry> newUsers = new ArrayList<Entry>();
-                for (final BeanModel um : _userStore.getModels()) {
-                    final Entry e = new Entry();
-                    assignRW(e, um);
-                    e.setPrincipal(um.<User>getBean().getId());
-                    newUsers.add(e);
-                }
-
-                final ACL acl =
-                    new ACL()
-                        .setGroups(newGroups)
-                        .setUsers(newUsers);
-
-                new UpdateResourceAclAction(_resource, acl) {
-                    /** {@inheritDoc} */
-                    @Override
-                    protected void onSuccess(final Void response) {
-                        hide();
-                    }
-                }.execute();
-            }
-
-            private void assignRW(final Entry e, final BaseModelData selected) {
-                final String rw = selected.get("rwid");
-                if (rw.indexOf('r')> -1) {
-                    e.setReadable(true);
-                }
-                if (rw.indexOf('w')> -1) {
-                    e.setWriteable(true);
-                }
+            @Override public void componentSelected(final ButtonEvent ce) {
+                getPresenter().save();
             }
         };
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the presenter.
+     */
+    Editable getPresenter() {
+        return _presenter;
     }
 
     private void addGroupToolbar() {
@@ -417,5 +418,28 @@ public class UpdateResourceAclDialog
 
         toolBar.add(new SeparatorToolItem());
         _userGridPanel.setBottomComponent(toolBar);
+    }
+
+
+    @Override
+    public void show(final Editable presenter) {
+        _presenter = presenter;
+        super.show();
+    }
+
+    @Override
+    public ValidationResult getValidationResult() {
+
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    @Override
+    public ResourceSummary getResourceSummary() {
+        return _resource;
+    }
+
+    @Override
+    public void setResourceSummary(final ResourceSummary model) {
+        _resource = model;
     }
 }

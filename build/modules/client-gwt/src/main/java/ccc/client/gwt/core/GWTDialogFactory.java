@@ -53,7 +53,6 @@ import ccc.client.gwt.views.gxt.CreatePageDialog;
 import ccc.client.gwt.views.gxt.CreateTextFileDialog;
 import ccc.client.gwt.views.gxt.CreateUserDialog;
 import ccc.client.gwt.views.gxt.EditCacheDialog;
-import ccc.client.gwt.views.gxt.UpdateFolderDialog;
 import ccc.client.gwt.views.gxt.EditTemplateDialog;
 import ccc.client.gwt.views.gxt.EditTextFileDialog;
 import ccc.client.gwt.views.gxt.EditUserDialog;
@@ -65,6 +64,7 @@ import ccc.client.gwt.views.gxt.RenameDialog;
 import ccc.client.gwt.views.gxt.ResourceMetadataDialog;
 import ccc.client.gwt.views.gxt.UpdateAliasDialog;
 import ccc.client.gwt.views.gxt.UpdateCurrentUserDialog;
+import ccc.client.gwt.views.gxt.UpdateFolderDialog;
 import ccc.client.gwt.views.gxt.UpdateResourceAclDialog;
 import ccc.client.gwt.views.gxt.UploadFileDialog;
 import ccc.client.gwt.widgets.LeftRightPane;
@@ -77,9 +77,10 @@ import ccc.client.views.CreateFolder;
 import ccc.client.views.CreatePage;
 import ccc.client.views.CreateTextFile;
 import ccc.client.views.CreateUser;
-import ccc.client.views.UpdateFolder;
 import ccc.client.views.EditTextFile;
 import ccc.client.views.RenameResource;
+import ccc.client.views.UpdateFolder;
+import ccc.client.views.UpdateResourceAcl;
 
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
@@ -216,10 +217,9 @@ class GWTDialogFactory
 
     /** {@inheritDoc} */
     @Override
-    public LegacyView updateAcl(final ResourceSummary item,
-                                final ACL acl,
+    public UpdateResourceAcl updateAcl(final ACL acl,
                                 final Collection<Group> groups) {
-        return new UpdateResourceAclDialog(item, acl, groups);
+        return new UpdateResourceAclDialog(acl, groups);
     }
 
 

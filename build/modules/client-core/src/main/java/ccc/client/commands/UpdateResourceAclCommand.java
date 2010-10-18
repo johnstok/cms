@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,33 +21,33 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.actions;
+package ccc.client.commands;
 
 import ccc.api.core.ACL;
+import ccc.api.core.API;
 import ccc.api.core.ResourceSummary;
-import ccc.client.callbacks.ResourceAclUpdatedCallback;
-import ccc.client.commands.UpdateResourceAclCommand;
+import ccc.client.core.Callback;
+import ccc.client.core.CallbackResponseHandler;
+import ccc.client.core.Command;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
-import ccc.client.core.RemotingAction;
+import ccc.client.core.Request;
 
 
 /**
- * Remote action for resource's ACL updating.
+ * Command for resource's ACL updating.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateResourceAclAction
-    extends
-        RemotingAction<Void> {
+public class UpdateResourceAclCommand  extends
+Command<API, Void> {
 
     private final ResourceSummary _resource;
     private final ACL _acl;
-
 
     /**
      * Constructor.
@@ -55,18 +55,28 @@ public class UpdateResourceAclAction
      * @param resource The resource to update.
      * @param acl The updated access control list.
      */
-    public UpdateResourceAclAction(final ResourceSummary resource,
-                                   final ACL acl) {
-        super(UI_CONSTANTS.updateRoles(), HttpMethod.POST);
+    public UpdateResourceAclCommand(final ResourceSummary resource,
+                                    final ACL acl) {
         _resource = resource;
         _acl = acl;
     }
 
-    /** {@inheritDoc} */
     @Override
-    public void execute() {
-        new UpdateResourceAclCommand(_resource, _acl).invoke(
-            InternalServices.api,
-            new ResourceAclUpdatedCallback(I18n.uiConstants.updateRoles()));
+    public void invoke(final API subject, final Callback<Void> callback) {
+        final String path =
+            getBaseUrl()+_resource.acl().build(InternalServices.encoder);
+
+        final Request r =
+            new Request(
+                HttpMethod.POST,
+                path,
+                writeACL(_acl),
+                new CallbackResponseHandler<Void>(
+                    I18n.uiConstants.updateRoles(),
+                    callback,
+                    voidParser()));
+
+        getExecutor().invokeRequest(r);
     }
+
 }

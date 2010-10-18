@@ -47,9 +47,10 @@ import ccc.client.views.CreateFolder;
 import ccc.client.views.CreatePage;
 import ccc.client.views.CreateTextFile;
 import ccc.client.views.CreateUser;
-import ccc.client.views.UpdateFolder;
 import ccc.client.views.EditTextFile;
 import ccc.client.views.RenameResource;
+import ccc.client.views.UpdateFolder;
+import ccc.client.views.UpdateResourceAcl;
 
 
 /**
@@ -206,14 +207,12 @@ public interface DialogFactory {
     /**
      * Create a dialog.
      *
-     * @param resource The resource whose ACL will be updated.
      * @param acl The access control list for the resource.
      * @param groups A list of all groups available in the system.
      *
      * @return The required dialog.
      */
-    LegacyView updateAcl(ResourceSummary resource,
-                         ACL acl,
+    UpdateResourceAcl updateAcl(ACL acl,
                          Collection<Group> groups);
 
 
