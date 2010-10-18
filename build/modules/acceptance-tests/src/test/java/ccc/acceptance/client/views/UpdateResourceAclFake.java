@@ -24,66 +24,67 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.presenters;
+package ccc.acceptance.client.views;
 
+import ccc.api.core.ACL;
 import ccc.api.core.ResourceSummary;
-import ccc.api.types.CommandType;
-import ccc.client.actions.UpdateResourceAclAction;
-import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
-import ccc.client.events.Event;
+import ccc.client.core.ValidationResult;
 import ccc.client.views.UpdateResourceAcl;
 
 
 /**
- *  MVP presenter for ACL update.
+ * Fake implementation of the {@link UpdateResourceAcl} view.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateResourceAclPresenter
-extends
-AbstractPresenter<UpdateResourceAcl, ResourceSummary>
-implements
-    Editable {
+public class UpdateResourceAclFake implements UpdateResourceAcl {
+
+
+    private final ACL _acl;
+    private ResourceSummary _rs;
+    private Editable _presenter;
 
     /**
      * Constructor.
      *
-     * @param view The view for this presenter.
-     * @param model The ResourceSummary.
+     * @param acl ACL
+     * @param rs ResourceSumamry
      */
-    public UpdateResourceAclPresenter(final UpdateResourceAcl view,
-                                      final ResourceSummary model) {
-
-        super(view, model);
-        getView().setResourceSummary(model);
-        getView().show(this);
+    public UpdateResourceAclFake(final ACL acl, final ResourceSummary rs) {
+        _acl = acl;
+        _rs = rs;
     }
 
     @Override
-    public void cancel() {
+    public ACL getAcl() {
+        return _acl;
+    }
+
+    @Override
+    public ResourceSummary getResourceSummary() {
+        return _rs;
+    }
+
+    @Override
+    public void setResourceSummary(final ResourceSummary model) {
+        _rs = model;
+    }
+
+    @Override
+    public void hide() {
+        return;
+    }
+
+    @Override
+    public void show(final Editable presenter) {
+        _presenter = presenter;
+    }
+
+    @Override
+    public ValidationResult getValidationResult() {
 
         throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-    @Override
-    public void save() {
-
-        new UpdateResourceAclAction(getView().getResourceSummary(),
-                                    getView().getAcl()).execute();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void handle(final Event<CommandType> event) {
-        switch (event.getType()) {
-            case RESOURCE_CHANGE_ROLES:
-                dispose();
-                break;
-
-            default:
-                break;
-        }
     }
 
 }
