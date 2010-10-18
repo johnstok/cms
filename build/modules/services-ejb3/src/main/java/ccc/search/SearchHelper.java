@@ -272,29 +272,31 @@ public class SearchHelper
     public void index(final ResourceEntity resource) {
         final Indexer lucene = createIndexer();
 
-        try {
-            lucene.startAddition();
+        if (resource instanceof PageEntity || resource instanceof FileEntity) {
+            try {
+                lucene.startAddition();
 
-            if (resource instanceof PageEntity) {
-                final PageEntity page = (PageEntity) resource;
-                indexPage(lucene, page);
-                LOG.info("Indexed "+resource.getAbsolutePath());
+                if (resource instanceof PageEntity) {
+                    final PageEntity page = (PageEntity) resource;
+                    indexPage(lucene, page);
+                    LOG.info("Indexed "+resource.getAbsolutePath());
 
-            } else if (resource instanceof FileEntity) {
-                final FileEntity file = (FileEntity) resource;
-                indexFile(lucene, file);
-                LOG.info("Indexed "+resource.getAbsolutePath());
+                } else if (resource instanceof FileEntity) {
+                    final FileEntity file = (FileEntity) resource;
+                    indexFile(lucene, file);
+                    LOG.info("Indexed "+resource.getAbsolutePath());
 
-            } else {
-                LOG.debug(
-                    "Ignored request to index resource type "
-                    +resource.getType());
+                }
+
+                lucene.commitUpdate();
+            } catch (final RuntimeException e) {
+                LOG.error("Error indexing resource.", e);
+                lucene.rollbackUpdate();
             }
-
-            lucene.commitUpdate();
-        } catch (final RuntimeException e) {
-            LOG.error("Error indexing resource.", e);
-            lucene.rollbackUpdate();
+        } else {
+            LOG.debug(
+                "Ignored request to index resource type "
+                +resource.getType());
         }
     }
 }
