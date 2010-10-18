@@ -42,6 +42,7 @@ import ccc.domain.PageEntity;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Search;
 import ccc.domain.TemplateEntity;
+import ccc.messaging.Producer;
 import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
@@ -57,6 +58,7 @@ public class CommandFactory {
     private final ResourceRepository _repository;
     private final LogEntryRepository _audit;
     private final DataRepository     _files;
+    private final Producer           _producer;
 
 
     /**
@@ -65,10 +67,12 @@ public class CommandFactory {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      * @param data  The data repository for storing binary data.
+     * @param producer The message producer to broadcast messages.
      */
     public CommandFactory(final ResourceRepository repository,
                           final LogEntryRepository audit,
-                          final DataRepository data) {
+                          final DataRepository data,
+                          final Producer producer) {
         /*
          * TODO: The command factory should accept a repository factory.
          */
@@ -78,6 +82,7 @@ public class CommandFactory {
         _repository = repository;
         _audit = audit;
         _files = data;
+        _producer = DBC.require().notNull(producer);
     }
 
 
@@ -89,7 +94,9 @@ public class CommandFactory {
      * @return The corresponding command.
      */
     public Command<Void> createDeleteResourceCmd(final UUID resourceId) {
-        return new DeleteResourceCommand(_repository, _audit, resourceId);
+        return
+            new DeleteResourceCommand(
+                _repository, _audit, _producer, resourceId);
     }
 
 
@@ -150,6 +157,7 @@ public class CommandFactory {
             _repository,
             _audit,
             _files,
+            _producer,
             parentFolder,
             file,
             title,
@@ -210,6 +218,7 @@ public class CommandFactory {
         return new CreatePageCommand(
             _repository,
             _audit,
+            _producer,
             parentId,
             page);
     }

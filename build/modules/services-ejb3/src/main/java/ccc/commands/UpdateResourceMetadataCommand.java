@@ -26,6 +26,7 @@
  */
 package ccc.commands;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +36,7 @@ import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
+import ccc.messaging.Producer;
 import ccc.persistence.IRepositoryFactory;
 
 
@@ -52,7 +54,8 @@ public class UpdateResourceMetadataCommand
     private final String              _description;
     private final Set<String>         _tags;
     private final Map<String, String> _metadata;
-    private final ResourceEntity _r;
+    private final ResourceEntity      _r;
+    private final Producer            _producer;
 
     /**
      * Constructor.
@@ -65,12 +68,14 @@ public class UpdateResourceMetadataCommand
      * @param tags The new tags for the resource.
      */
     public UpdateResourceMetadataCommand(final IRepositoryFactory repoFactory,
+                                         final Producer producer,
                                          final UUID id,
                                          final String title,
                                          final String description,
                                          final Set<String> tags,
                                          final Map<String, String> metadata) {
         super(repoFactory);
+        _producer  = producer;
         _id = id;
         _title = title;
         _description = description;
@@ -95,6 +100,10 @@ public class UpdateResourceMetadataCommand
         }
 
         auditResourceCommand(actor, happenedOn, _r);
+
+        _producer.broadcastMessage(
+            CommandType.SEARCH_INDEX_RESOURCE,
+            Collections.singletonMap("resource", _r.getId().toString()));
 
         return null;
     }

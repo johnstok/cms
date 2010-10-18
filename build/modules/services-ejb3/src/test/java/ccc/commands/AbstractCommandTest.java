@@ -36,6 +36,7 @@ import ccc.api.types.EmailAddress;
 import ccc.api.types.Username;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UserEntity;
+import ccc.messaging.Producer;
 import ccc.persistence.GroupRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
@@ -67,6 +68,8 @@ public abstract class AbstractCommandTest
     private GroupRepository _groups;
     private UserRepository _um;
 
+    private Producer _producer;
+
 
     /** Constructor. */
     public AbstractCommandTest() {
@@ -92,6 +95,16 @@ public abstract class AbstractCommandTest
      */
     public Date getNow() {
         return _now;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the broadcast producer.
+     */
+    public Producer getProducer() {
+        return _producer;
     }
 
 
@@ -148,6 +161,7 @@ public abstract class AbstractCommandTest
     /** {@inheritDoc} */
     @Override protected void setUp() {
         _repository = createStrictMock(ResourceRepository.class);
+        _producer = createStrictMock(Producer.class);
         _audit = createStrictMock(LogEntryRepository.class);
         _groups = createStrictMock(GroupRepository.class);
         _um = createStrictMock(UserRepository.class);
@@ -167,18 +181,19 @@ public abstract class AbstractCommandTest
         _um = null;
         _groups = null;
         _audit = null;
+        _producer = null;
         _repository = null;
     }
 
 
     /** Verify all mocks. */
     protected void verifyAll() {
-        verify(_repository, _audit, _groups, _um);
+        verify(_repository, _producer, _audit, _groups, _um);
     }
 
 
     /** Replay all mocks. */
     protected void replayAll() {
-        replay(_repository, _audit, _groups, _um);
+        replay(_repository, _producer, _audit, _groups, _um);
     }
 }

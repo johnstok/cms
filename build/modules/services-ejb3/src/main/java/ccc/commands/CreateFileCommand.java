@@ -27,6 +27,7 @@
 package ccc.commands;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
@@ -38,6 +39,7 @@ import ccc.domain.FileEntity;
 import ccc.domain.FileHelper;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UserEntity;
+import ccc.messaging.Producer;
 import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
@@ -58,6 +60,7 @@ class CreateFileCommand extends CreateResourceCommand<FileEntity> {
     private final ResourceName _name;
     private final RevisionMetadata _rm;
     private final InputStream _dataStream;
+    private final Producer    _producer;
 
     /**
      * Constructor.
@@ -78,6 +81,7 @@ class CreateFileCommand extends CreateResourceCommand<FileEntity> {
     public CreateFileCommand(final ResourceRepository repository,
                              final LogEntryRepository audit,
                              final DataRepository data,
+                             final Producer producer,
                              final UUID parentFolder,
                              final File file,
                              final String title,
@@ -86,6 +90,7 @@ class CreateFileCommand extends CreateResourceCommand<FileEntity> {
                              final RevisionMetadata rm,
                              final InputStream dataStream) {
         super(repository, audit);
+        _producer  = producer;
         _data = data;
         _parentFolder = parentFolder;
         _file = file;
@@ -120,6 +125,10 @@ class CreateFileCommand extends CreateResourceCommand<FileEntity> {
                 _rm);
 
         create(_rm.getActor(), _rm.getTimestamp(), _parentFolder, f);
+
+        _producer.broadcastMessage(
+            CommandType.SEARCH_INDEX_RESOURCE,
+            Collections.singletonMap("resource", f.getId().toString()));
 
         return f;
     }

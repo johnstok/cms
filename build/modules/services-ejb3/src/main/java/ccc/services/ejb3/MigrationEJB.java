@@ -128,6 +128,7 @@ public class MigrationEJB
         sudoExecute(
             new UpdatePageCommand(
                 getRepoFactory(),
+                getProducer(),
                 pageId,
                 delta),
             actorId,
@@ -225,6 +226,7 @@ public class MigrationEJB
         sudoExecute(
             new UpdateResourceMetadataCommand(
                 getRepoFactory(),
+                getProducer(),
                 resourceId,
                 title,
                 description,
@@ -245,6 +247,7 @@ public class MigrationEJB
         sudoExecute(
             new UpdateResourceAclCommand(
                 getRepoFactory(),
+                getProducer(),
                 resourceId,
                 acl),
             actorId,
@@ -263,6 +266,7 @@ public class MigrationEJB
         sudoExecute(
             new ApplyWorkingCopyCommand(
                 getRepoFactory(),
+                getProducer(),
                 resourceId,
                 comment,
                 isMajorEdit),

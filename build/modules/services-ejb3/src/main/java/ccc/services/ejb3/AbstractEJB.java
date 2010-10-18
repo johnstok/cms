@@ -33,8 +33,12 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.annotation.Resource.AuthenticationType;
 import javax.ejb.EJBContext;
 import javax.ejb.TimerService;
+import javax.jms.Topic;
+import javax.jms.TopicConnectionFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
@@ -48,6 +52,7 @@ import ccc.commands.CommandFactory;
 import ccc.commons.Exceptions;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
+import ccc.messaging.Producer;
 import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
@@ -63,10 +68,18 @@ import ccc.persistence.UserRepository;
  */
 abstract class AbstractEJB {
 
-    private static Logger log = Logger.getLogger(AbstractEJB.class);
+    private static final Logger LOG = Logger.getLogger(AbstractEJB.class);
 
     @javax.annotation.Resource private EJBContext    _context;
-    @PersistenceContext        private EntityManager   _em;
+    @PersistenceContext        private EntityManager _em;
+    @Resource(
+        name="topic_conn_factory",
+        authenticationType=AuthenticationType.CONTAINER,
+        type=TopicConnectionFactory.class)
+    private TopicConnectionFactory _connectionFactory;
+
+    @Resource(name="topic_broadcast")
+    private Topic _broadcast;
 
     private UserRepository     _users;
     private ResourceRepository _resources;
@@ -75,6 +88,7 @@ abstract class AbstractEJB {
 
     private CommandFactory     _cFactory;
     private IRepositoryFactory _rf;
+    private Producer           _producer;
 
 
     @PostConstruct @SuppressWarnings("unused")
@@ -84,7 +98,18 @@ abstract class AbstractEJB {
         _users = _rf.createUserRepo();
         _resources = _rf.createResourceRepository();
         _dm = _rf.createDataRepository();
-        _cFactory = new CommandFactory(_resources, _audit, _dm);
+        _producer = new JmsProducer(_connectionFactory, _broadcast);
+        _cFactory = new CommandFactory(_resources, _audit, _dm, _producer);
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the broadcast producer.
+     */
+    protected Producer getProducer() {
+        return _producer;
     }
 
 

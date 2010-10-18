@@ -26,23 +26,8 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.ACTION_EXECUTE;
-import static ccc.api.types.Permission.LOG_ENTRY_CREATE;
-import static ccc.api.types.Permission.RESOURCE_ACL_UPDATE;
-import static ccc.api.types.Permission.RESOURCE_CACHE_UPDATE;
-import static ccc.api.types.Permission.RESOURCE_DELETE;
-import static ccc.api.types.Permission.RESOURCE_LOCK;
-import static ccc.api.types.Permission.RESOURCE_MM;
-import static ccc.api.types.Permission.RESOURCE_MOVE;
-import static ccc.api.types.Permission.RESOURCE_PUBLISH;
-import static ccc.api.types.Permission.RESOURCE_READ;
-import static ccc.api.types.Permission.RESOURCE_RENAME;
-import static ccc.api.types.Permission.RESOURCE_UNLOCK;
-import static ccc.api.types.Permission.RESOURCE_UNPUBLISH;
-import static ccc.api.types.Permission.RESOURCE_UPDATE;
-import static ccc.api.types.Permission.SEARCH_CREATE;
-import static javax.ejb.TransactionAttributeType.REQUIRED;
-import static javax.ejb.TransactionAttributeType.REQUIRES_NEW;
+import static ccc.api.types.Permission.*;
+import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
 import java.util.List;
@@ -166,6 +151,7 @@ public class ResourcesEJB
         sudoExecute(
             new ApplyWorkingCopyCommand(
                 getRepoFactory(),
+                getProducer(),
                 action.getSubject().getId(),
                 action.getParams().get("COMMENT"),
                 Boolean
@@ -209,7 +195,10 @@ public class ResourcesEJB
 
         execute(
             new MoveResourceCommand(
-                getRepoFactory(), resourceId, newParentId));
+                getRepoFactory(),
+                getProducer(),
+                resourceId,
+                newParentId));
     }
 
 
@@ -232,6 +221,7 @@ public class ResourcesEJB
             new RenameResourceCommand(
                 getRepoFactory().createResourceRepository(),
                 getRepoFactory().createLogEntryRepo(),
+                getProducer(),
                 resourceId,
                 name));
     }
@@ -358,6 +348,7 @@ public class ResourcesEJB
         execute(
             new UpdateResourceMetadataCommand(
                 getRepoFactory(),
+                getProducer(),
                 resourceId,
                 title,
                 description,
@@ -388,7 +379,11 @@ public class ResourcesEJB
         checkPermission(RESOURCE_ACL_UPDATE);
 
         execute(
-            new UpdateResourceAclCommand(getRepoFactory(), resourceId, acl));
+            new UpdateResourceAclCommand(
+                getRepoFactory(),
+                getProducer(),
+                resourceId,
+                acl));
     }
 
 
@@ -401,6 +396,7 @@ public class ResourcesEJB
             execute(
                 new ApplyWorkingCopyCommand(
                     getRepoFactory(),
+                    getProducer(),
                     resourceId,
                     null,
                     false));

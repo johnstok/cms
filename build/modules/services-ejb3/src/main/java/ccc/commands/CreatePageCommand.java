@@ -26,6 +26,7 @@
  */
 package ccc.commands;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -37,6 +38,7 @@ import ccc.domain.PageEntity;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.TemplateEntity;
 import ccc.domain.UserEntity;
+import ccc.messaging.Producer;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 
@@ -50,6 +52,7 @@ class CreatePageCommand extends CreateResourceCommand<PageEntity> {
 
     private final Page _page;
     private final UUID _parentFolder;
+    private final Producer _producer;
 
 
     /**
@@ -62,9 +65,11 @@ class CreatePageCommand extends CreateResourceCommand<PageEntity> {
      */
     public CreatePageCommand(final ResourceRepository repository,
                              final LogEntryRepository audit,
+                             final Producer producer,
                              final UUID parentFolder,
                              final Page page) {
         super(repository, audit);
+        _producer  = producer;
         _parentFolder = parentFolder;
         _page = page;
     }
@@ -72,8 +77,7 @@ class CreatePageCommand extends CreateResourceCommand<PageEntity> {
 
     /** {@inheritDoc} */
     @Override
-    public PageEntity doExecute(final UserEntity actor,
-                          final Date happenedOn) {
+    public PageEntity doExecute(final UserEntity actor, final Date happenedOn) {
 
         final TemplateEntity template =
             (null==_page.getTemplate())
@@ -99,6 +103,10 @@ class CreatePageCommand extends CreateResourceCommand<PageEntity> {
                 paras.toArray(new Paragraph[paras.size()]));
 
         create(actor, happenedOn, _parentFolder, page);
+
+        _producer.broadcastMessage(
+            CommandType.SEARCH_INDEX_RESOURCE,
+            Collections.singletonMap("resource", page.getId().toString()));
 
         return page;
     }

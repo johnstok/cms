@@ -26,6 +26,7 @@
  */
 package ccc.commands;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
@@ -34,6 +35,7 @@ import ccc.api.types.CommandType;
 import ccc.domain.FolderEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
+import ccc.messaging.Producer;
 import ccc.persistence.IRepositoryFactory;
 
 
@@ -49,6 +51,7 @@ public class MoveResourceCommand
     private final UUID _resourceId;
     private final UUID _newParentId;
     private final ResourceEntity _resource;
+    private final Producer       _producer;
 
     /**
      * Constructor.
@@ -58,9 +61,11 @@ public class MoveResourceCommand
      * @param newParentId The id of the new parent.
      */
     public MoveResourceCommand(final IRepositoryFactory repoFactory,
+                               final Producer producer,
                                final UUID resourceId,
                                final UUID newParentId) {
         super(repoFactory);
+        _producer  = producer;
         _resourceId = resourceId;
         _newParentId = newParentId;
         _resource = getRepository().find(ResourceEntity.class, _resourceId);
@@ -78,6 +83,10 @@ public class MoveResourceCommand
         newParent.add(_resource);
 
         auditResourceCommand(actor, happenedOn, _resource);
+
+        _producer.broadcastMessage(
+            CommandType.SEARCH_INDEX_RESOURCE,
+            Collections.singletonMap("resource", _resource.getId().toString()));
 
         return null;
     }

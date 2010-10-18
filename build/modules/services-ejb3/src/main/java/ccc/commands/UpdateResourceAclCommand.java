@@ -26,6 +26,7 @@
  */
 package ccc.commands;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
@@ -36,6 +37,7 @@ import ccc.api.types.CommandType;
 import ccc.domain.AccessPermission;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
+import ccc.messaging.Producer;
 import ccc.persistence.IRepositoryFactory;
 
 
@@ -51,6 +53,7 @@ public class UpdateResourceAclCommand
     private final UUID _id;
     private final ACL _acl;
     private final ResourceEntity _r;
+    private final Producer       _producer;
 
     /**
      * Constructor.
@@ -60,9 +63,11 @@ public class UpdateResourceAclCommand
      * @param acl The new access control list.
      */
     public UpdateResourceAclCommand(final IRepositoryFactory repoFactory,
+                                    final Producer producer,
                                       final UUID id,
                                       final ACL acl) {
         super(repoFactory);
+        _producer  = producer;
         _id = id;
         _acl = acl;
         _r = getRepository().find(ResourceEntity.class, _id);
@@ -79,6 +84,10 @@ public class UpdateResourceAclCommand
         lookupUsers();
 
         auditResourceCommand(actor, happenedOn, _r);
+
+        _producer.broadcastMessage(
+            CommandType.SEARCH_INDEX_RESOURCE,
+            Collections.singletonMap("resource", _r.getId().toString()));
 
         return null;
     }

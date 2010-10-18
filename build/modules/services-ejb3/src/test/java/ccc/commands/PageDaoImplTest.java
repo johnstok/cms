@@ -26,12 +26,13 @@
  */
 package ccc.commands;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.*;
 
 import java.util.Collections;
+import java.util.Map;
 
 import ccc.api.core.Page;
+import ccc.api.types.CommandType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.domain.LogEntry;
@@ -65,6 +66,8 @@ public class PageDaoImplTest
         expect(
             getRepository().find(
                 PageEntity.class, page.getId())).andReturn(page);
+        getProducer().broadcastMessage(
+            eq(CommandType.SEARCH_INDEX_RESOURCE), isA(Map.class));
         getAudit().record(isA(LogEntry.class));
         replayAll();
 
@@ -77,7 +80,7 @@ public class PageDaoImplTest
         page.lock(getUser());
         final UpdatePageCommand updatePage =
             new UpdatePageCommand(
-                getRepoFactory(), page.getId(), delta);
+                getRepoFactory(), getProducer(), page.getId(), delta);
 
 
 

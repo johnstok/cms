@@ -49,8 +49,8 @@ import ccc.api.types.SortOrder;
  * @author Civic Computing Ltd.
  */
 public class SearchEngineAcceptanceTest
-extends
-AbstractAcceptanceTest {
+    extends
+        AbstractAcceptanceTest {
 
 
     /**

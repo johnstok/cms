@@ -26,6 +26,7 @@
  */
 package ccc.commands;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
@@ -36,6 +37,7 @@ import ccc.api.types.CommandType;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UserEntity;
 import ccc.domain.WorkingCopySupport;
+import ccc.messaging.Producer;
 import ccc.persistence.IRepositoryFactory;
 
 
@@ -52,6 +54,7 @@ public class ApplyWorkingCopyCommand
     private final String _comment;
     private final boolean _isMajorEdit;
     private final WorkingCopySupport<?, ?, ?> _r;
+    private final Producer                    _producer;
 
     /**
      * Constructor.
@@ -62,10 +65,12 @@ public class ApplyWorkingCopyCommand
      * @param isMajorEdit A boolean for major edit.
      */
     public ApplyWorkingCopyCommand(final IRepositoryFactory repoFactory,
+                                   final Producer producer,
                                    final UUID id,
                                    final String comment,
                                    final boolean isMajorEdit) {
         super(repoFactory);
+        _producer  = producer;
         _id = id;
         _comment = comment;
         _isMajorEdit = isMajorEdit;
@@ -88,6 +93,10 @@ public class ApplyWorkingCopyCommand
         _r.applyWorkingCopy(rm);
 
         update(_r, actor, happenedOn);
+
+        _producer.broadcastMessage(
+            CommandType.SEARCH_INDEX_RESOURCE,
+            Collections.singletonMap("resource", _r.getId().toString()));
 
         return _r.forCurrentRevision();
     }

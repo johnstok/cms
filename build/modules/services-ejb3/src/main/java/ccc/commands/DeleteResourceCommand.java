@@ -26,6 +26,7 @@
  */
 package ccc.commands;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
@@ -36,6 +37,7 @@ import ccc.api.types.ResourceName;
 import ccc.domain.FolderEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
+import ccc.messaging.Producer;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 
@@ -49,6 +51,8 @@ public class DeleteResourceCommand extends Command<Void> {
 
     private final UUID _resourceId;
     private final ResourceEntity _resource;
+    private final Producer       _producer;
+
 
     /**
      * Constructor.
@@ -59,8 +63,10 @@ public class DeleteResourceCommand extends Command<Void> {
      */
     public DeleteResourceCommand(final ResourceRepository repository,
                                  final LogEntryRepository audit,
+                                 final Producer producer,
                                  final UUID resourceId) {
         super(repository, audit, null, null);
+        _producer  = producer;
         _resourceId = resourceId;
         _resource =  getRepository().find(ResourceEntity.class, _resourceId);
     }
@@ -86,6 +92,10 @@ public class DeleteResourceCommand extends Command<Void> {
         _resource.unlock(actor);
 
         auditResourceCommand(actor, happenedOn, _resource);
+
+        _producer.broadcastMessage(
+            CommandType.SEARCH_INDEX_RESOURCE,
+            Collections.singletonMap("resource", _resource.getId().toString()));
 
         return null;
     }

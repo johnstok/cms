@@ -36,7 +36,6 @@ import java.util.UUID;
 
 import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
-import javax.ejb.EJBContext;
 import javax.ejb.EJBException;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -80,13 +79,13 @@ public class ActionsEJB
     implements
         Actions {
 
-    private static final int TIMEOUT_DELAY_SECS = 60*1000;
-    private static final int INITIAL_DELAY_SECS = 30*1000;
-    private static final String TIMER_NAME = "action_scheduler";
     private static final Logger LOG =
         Logger.getLogger(ActionsEJB.class.getName());
 
-    @javax.annotation.Resource private EJBContext  _context;
+    private static final int TIMEOUT_DELAY_SECS = 60*1000;
+    private static final int INITIAL_DELAY_SECS = 30*1000;
+    private static final String TIMER_NAME = "action_scheduler";
+
     @EJB(name=Resources.NAME) private ResourcesExt _resourcesExt;
 
 
@@ -214,7 +213,7 @@ public class ActionsEJB
         if (isRunning()) {
             LOG.debug("Scheduler already running.");
         } else {
-            _context.getTimerService().createTimer(
+            getTimerService().createTimer(
                 INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
             LOG.debug("Started scheduler.");
         }
@@ -228,7 +227,7 @@ public class ActionsEJB
         checkPermission(ACTION_SCHEDULE);
 
         LOG.debug("Stopping scheduler.");
-        final Collection<Timer> c = _context.getTimerService().getTimers();
+        final Collection<Timer> c = getTimerService().getTimers();
         for (final Timer t : c) {
             if (TIMER_NAME.equals(t.getInfo())) {
                 t.cancel();
@@ -244,7 +243,7 @@ public class ActionsEJB
     public boolean isRunning() {
         checkPermission(ACTION_SCHEDULE);
 
-        final Collection<Timer> c = _context.getTimerService().getTimers();
+        final Collection<Timer> c = getTimerService().getTimers();
         for (final Timer t : c) {
             if (TIMER_NAME.equals(t.getInfo())) {
                 return true;

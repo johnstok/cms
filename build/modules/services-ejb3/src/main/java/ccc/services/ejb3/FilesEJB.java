@@ -26,10 +26,8 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.FILE_CREATE;
-import static ccc.api.types.Permission.FILE_READ;
-import static ccc.api.types.Permission.FILE_UPDATE;
-import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static ccc.api.types.Permission.*;
+import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
@@ -147,6 +145,7 @@ public class FilesEJB
             execute(
                 new UpdateFileCommand(
                     getRepoFactory(),
+                    getProducer(),
                     fileId,
                     new File(
                         file.getMimeType(),

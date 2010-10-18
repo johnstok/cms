@@ -26,6 +26,7 @@
  */
 package ccc.commands;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
@@ -35,6 +36,7 @@ import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
+import ccc.messaging.Producer;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 
@@ -51,6 +53,7 @@ public class RenameResourceCommand
     private final UUID   _resourceId;
     private final String _name;
     private final ResourceEntity _resource;
+    private final Producer       _producer;
 
     /**
      * Constructor.
@@ -62,9 +65,11 @@ public class RenameResourceCommand
      */
     public RenameResourceCommand(final ResourceRepository repository,
                                  final LogEntryRepository audit,
+                                 final Producer producer,
                                  final UUID resourceId,
                                  final String name) {
         super(repository, audit, null, null);
+        _producer  = producer;
         _resourceId = resourceId;
         _name = name;
         _resource = getRepository().find(ResourceEntity.class, _resourceId);
@@ -89,6 +94,10 @@ public class RenameResourceCommand
         _resource.setName(new ResourceName(_name));
 
         auditResourceCommand(actor, happenedOn, _resource);
+
+        _producer.broadcastMessage(
+            CommandType.SEARCH_INDEX_RESOURCE,
+            Collections.singletonMap("resource", _resource.getId().toString()));
 
         return null;
     }

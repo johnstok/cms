@@ -31,16 +31,11 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
 
-import javax.annotation.Resource;
-import javax.annotation.Resource.AuthenticationType;
-import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TransactionAttribute;
-import javax.jms.Topic;
-import javax.jms.TopicConnectionFactory;
 
 import org.apache.log4j.Logger;
 
@@ -65,22 +60,13 @@ public class SearchEngineEJB
     implements
         SearchEngine {
 
-    private static final int TIMEOUT_DELAY_SECS = 60*60*1000;
-    private static final int INITIAL_DELAY_SECS = 1;
-    private static final String TIMER_NAME = "index_scheduler";
     private static final Logger LOG =
         Logger.getLogger(SearchEngineEJB.class.getName());
 
-    @javax.annotation.Resource private EJBContext _context;
+    private static final int TIMEOUT_DELAY_SECS = 60*60*1000;
+    private static final int INITIAL_DELAY_SECS = 1;
+    private static final String TIMER_NAME = "index_scheduler";
 
-    @Resource(
-        name="topic_conn_factory",
-        authenticationType=AuthenticationType.CONTAINER,
-        type=TopicConnectionFactory.class)
-    private TopicConnectionFactory _connectionFactory;
-
-    @Resource(name="topic_broadcast")
-    private Topic _broadcast;
 
     /** Constructor. */
     public SearchEngineEJB() { super(); }
@@ -133,10 +119,7 @@ public class SearchEngineEJB
     /** {@inheritDoc} */
     @Override
     public void index() {
-        execute(
-            new SearchReindexCommand(
-                getRepoFactory(),
-                new JmsProducer(_connectionFactory, _broadcast)));
+        execute(new SearchReindexCommand(getRepoFactory(), getProducer()));
     }
 
 
@@ -155,7 +138,7 @@ public class SearchEngineEJB
         if (isRunning()) {
             LOG.debug("Indexer already running.");
         } else {
-            _context.getTimerService().createTimer(
+            getTimerService().createTimer(
                 INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
             LOG.debug("Started indexer.");
         }
@@ -169,7 +152,7 @@ public class SearchEngineEJB
         checkPermission(SEARCH_SCHEDULE);
 
         LOG.debug("Stopping indexer.");
-        final Collection<Timer> c = _context.getTimerService().getTimers();
+        final Collection<Timer> c = getTimerService().getTimers();
         for (final Timer t : c) {
             if (TIMER_NAME.equals(t.getInfo())) {
                 t.cancel();
@@ -185,7 +168,7 @@ public class SearchEngineEJB
     public boolean isRunning() {
         checkPermission(SEARCH_SCHEDULE);
 
-        final Collection<Timer> c = _context.getTimerService().getTimers();
+        final Collection<Timer> c = getTimerService().getTimers();
         for (final Timer t : c) {
             if (TIMER_NAME.equals(t.getInfo())) {
                 return true;

@@ -31,14 +31,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.annotation.Resource.AuthenticationType;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.Topic;
-import javax.jms.TopicConnectionFactory;
 
 import org.apache.log4j.Logger;
 
@@ -68,15 +64,6 @@ public class BroadcastHandlerEJB
 
     private static final Logger LOG =
         Logger.getLogger(BroadcastHandlerEJB.class);
-
-    @Resource(
-        name="topic_conn_factory",
-        authenticationType=AuthenticationType.CONTAINER,
-        type=TopicConnectionFactory.class)
-    private TopicConnectionFactory _connectionFactory;
-
-    @Resource(name="topic_broadcast")
-    private Topic _broadcast;
 
     private CommandFactory _commandFactory;
 
@@ -113,6 +100,6 @@ public class BroadcastHandlerEJB
         _commandFactory =
             new CommandFactory(
                 getRepoFactory(),
-                new JmsProducer(_connectionFactory, _broadcast));
+                getProducer());
     }
 }

@@ -26,6 +26,7 @@
  */
 package ccc.commands;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
@@ -35,6 +36,7 @@ import ccc.api.types.CommandType;
 import ccc.domain.PageEntity;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UserEntity;
+import ccc.messaging.Producer;
 import ccc.persistence.IRepositoryFactory;
 
 
@@ -50,6 +52,8 @@ public class UpdatePageCommand
     private final UUID      _id;
     private final Page _delta;
     private final PageEntity _page;
+    private final Producer   _producer;
+
 
     /**
      * Constructor.
@@ -59,9 +63,11 @@ public class UpdatePageCommand
      * @param delta The changes to the page.
      */
     public UpdatePageCommand(final IRepositoryFactory repoFactory,
+                             final Producer producer,
                              final UUID id,
                              final Page delta) {
         super(repoFactory);
+        _producer  = producer;
         _id = id;
         _delta = delta;
         _page = getRepository().find(PageEntity.class, _id);
@@ -85,6 +91,10 @@ public class UpdatePageCommand
         _page.applyWorkingCopy(rm);
 
         update(_page, actor, happenedOn);
+
+        _producer.broadcastMessage(
+            CommandType.SEARCH_INDEX_RESOURCE,
+            Collections.singletonMap("resource", _page.getId().toString()));
 
         return _page.forCurrentRevision();
     }

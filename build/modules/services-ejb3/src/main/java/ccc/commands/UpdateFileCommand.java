@@ -27,6 +27,7 @@
 package ccc.commands;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
@@ -38,6 +39,7 @@ import ccc.domain.FileEntity;
 import ccc.domain.FileHelper;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UserEntity;
+import ccc.messaging.Producer;
 import ccc.persistence.IRepositoryFactory;
 
 
@@ -51,11 +53,12 @@ public class UpdateFileCommand
         UpdateResourceCommand<FileEntity> {
 
     private final UUID        _fileId;
-    private final File   _fileDelta;
+    private final File        _fileDelta;
     private final String      _comment;
     private final boolean     _isMajorEdit;
     private final InputStream _dataStream;
-    private final FileEntity _f;
+    private final FileEntity  _f;
+    private final Producer    _producer;
 
     /**
      * Constructor.
@@ -69,12 +72,14 @@ public class UpdateFileCommand
      * @param isMajorEdit Is this a major change.
      */
     public UpdateFileCommand(final IRepositoryFactory repoFactory,
+                             final Producer producer,
                              final UUID fileId,
                              final File fileDelta,
                              final String comment,
                              final boolean isMajorEdit,
                              final InputStream dataStream) {
         super(repoFactory);
+        _producer  = producer;
         _fileId = fileId;
         _fileDelta = fileDelta;
         _comment = comment;
@@ -109,6 +114,10 @@ public class UpdateFileCommand
         _f.applyWorkingCopy(rm);
 
         update(_f, actor, happenedOn);
+
+        _producer.broadcastMessage(
+            CommandType.SEARCH_INDEX_RESOURCE,
+            Collections.singletonMap("resource", _f.getId().toString()));
 
         return _f;
     }

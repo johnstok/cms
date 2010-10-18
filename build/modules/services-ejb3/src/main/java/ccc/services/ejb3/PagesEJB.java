@@ -26,10 +26,8 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.PAGE_CREATE;
-import static ccc.api.types.Permission.PAGE_UPDATE;
-import static ccc.api.types.Permission.RESOURCE_READ;
-import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static ccc.api.types.Permission.*;
+import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -89,6 +87,7 @@ public class PagesEJB
             execute(
                 new UpdatePageCommand(
                     getRepoFactory(),
+                    getProducer(),
                     pageId,
                     delta));
     }

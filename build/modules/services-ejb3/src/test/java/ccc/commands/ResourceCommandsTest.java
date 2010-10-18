@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import ccc.api.types.CommandType;
 import ccc.api.types.Duration;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -88,6 +89,8 @@ public class ResourceCommandsTest
         expect(
             getRepository().find(
                 ResourceEntity.class, _r.getId())).andReturn(_r);
+        getProducer().broadcastMessage(
+            eq(CommandType.SEARCH_INDEX_RESOURCE), isA(Map.class));
         getAudit().record(isA(LogEntry.class));
         replayAll();
 
@@ -96,6 +99,7 @@ public class ResourceCommandsTest
         props.put("bodyId", "example");
         new UpdateResourceMetadataCommand(
             getRepoFactory(),
+            getProducer(),
             _r.getId(),
             "newTitle",
             "newDesc",
@@ -167,11 +171,14 @@ public class ResourceCommandsTest
             .andReturn(_r);
         expect(getRepository().find(FolderEntity.class, newParent.getId()))
             .andReturn(newParent);
+        getProducer().broadcastMessage(
+            eq(CommandType.SEARCH_INDEX_RESOURCE), isA(Map.class));
         getAudit().record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new MoveResourceCommand(getRepoFactory(), _r.getId(), newParent.getId())
+        new MoveResourceCommand(
+            getRepoFactory(), getProducer(), _r.getId(), newParent.getId())
             .execute(getUser(), new Date());
 
         // ASSERT
@@ -190,12 +197,14 @@ public class ResourceCommandsTest
         expect(
             getRepository().find(
                 ResourceEntity.class, _r.getId())).andReturn(_r);
+        getProducer().broadcastMessage(
+            eq(CommandType.SEARCH_INDEX_RESOURCE), isA(Map.class));
         getAudit().record(isA(LogEntry.class));
         replayAll();
 
         // ACT
         new RenameResourceCommand(
-            getRepository(), getAudit(), _r.getId(), "baz")
+            getRepository(), getAudit(), getProducer(), _r.getId(), "baz")
             .execute(getUser(), new Date());
 
         // ASSERT
