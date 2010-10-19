@@ -28,6 +28,7 @@ package ccc.commands;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.ACL;
@@ -35,6 +36,7 @@ import ccc.api.core.ACL.Entry;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.AccessPermission;
+import ccc.domain.GroupEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.messaging.Producer;
@@ -119,7 +121,13 @@ public class UpdateResourceAclCommand
 
     @Override
     protected void authorize(final UserEntity actor) {
-        if (!_r.isWriteableBy(actor)) {
+        if (!_r.isWriteableBy(actor)){
+            final Set<GroupEntity> groups = actor.getGroups();
+            for (final GroupEntity group : groups) {
+                if (group.getName().equals("ADMINISTRATOR")) {
+                    return;
+                }
+            }
             throw new UnauthorizedException(_id, actor.getId());
         }
     }

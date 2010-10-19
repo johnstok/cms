@@ -575,30 +575,30 @@ public class ResourceAcceptanceTest
     /**
      * Test.
      */
-    public void testLockResourceFailPermission() {
+    public void testLockResourceAdminPermission() {
 
         // ARRANGE
         final Folder folder = tempFolder();
         getCommands().lock(folder.getId());
         final User u = getUsers().retrieveCurrent();
         setNoWriteACL(folder, u);
+        getCommands().unlock(folder.getId());
 
         // ACT
-        try {
-            getCommands().lock(folder.getId());
-            // ASSERT
-            fail();
-        } catch (final UnauthorizedException ex) {
-            assertEquals(folder.getId(), ex.getTarget());
-            assertEquals(u.getId(), ex.getUser());
-        }
+        getCommands().lock(folder.getId());
+
+        // ASSERT
+        final Resource updatedRoot =
+            getCommands().retrieve(folder.getId());
+        assertEquals(u.getId(), updatedRoot.getLockedById());
+        getCommands().unlock(folder.getId());
     }
 
 
     /**
      * Test.
      */
-    public void testUnlockResourceFailPermission() {
+    public void testUnlockResourceAdminPermission() {
 
         // ARRANGE
         final Folder folder = tempFolder();
@@ -607,14 +607,10 @@ public class ResourceAcceptanceTest
         setNoWriteACL(folder, u);
 
         // ACT
-        try {
-            getCommands().unlock(folder.getId());
-            // ASSERT
-            fail();
-        } catch (final UnauthorizedException ex) {
-            assertEquals(folder.getId(), ex.getTarget());
-            assertEquals(u.getId(), ex.getUser());
-        }
+        getCommands().unlock(folder.getId());
+
+        // ASSERT
+        assertNull(folder.getLockedById());
     }
 
 
@@ -819,29 +815,6 @@ public class ResourceAcceptanceTest
         try {
             // ASSERT
             getCommands().updateMetadata(folder.getId(), folder);
-            fail();
-        } catch (final UnauthorizedException ex) {
-            assertEquals(folder.getId(), ex.getTarget());
-            assertEquals(u.getId(), ex.getUser());
-        }
-    }
-
-
-    /**
-     * Test.
-     */
-    public void testUpdateACLFailPermission() {
-
-        // ARRANGE
-        final Folder folder = tempFolder();
-        getCommands().lock(folder.getId());
-        final User u = getUsers().retrieveCurrent();
-        setNoWriteACL(folder, u);
-
-        // ACT
-        try {
-            // ASSERT
-            setNoWriteACL(folder, u);
             fail();
         } catch (final UnauthorizedException ex) {
             assertEquals(folder.getId(), ex.getTarget());

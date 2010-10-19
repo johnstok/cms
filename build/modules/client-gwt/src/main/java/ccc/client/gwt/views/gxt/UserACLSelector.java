@@ -138,7 +138,7 @@ public class UserACLSelector extends Window {
                 final List<BeanModel> items =
                     _addUserGrid.getSelectionModel().getSelectedItems();
                 for (final BeanModel m : items) {
-                    m.set("rwid", "r");
+                    m.set("rwid", "r+w");
                     _store.add(m);
                 }
                 hide();

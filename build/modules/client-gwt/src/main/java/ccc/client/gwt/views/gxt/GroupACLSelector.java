@@ -89,7 +89,7 @@ class GroupACLSelector extends Window {
             if (!contains) {
                 d.set("name", g.getName());
                 d.set("id", g.getId());
-                d.set("rwid", "r");
+                d.set("rwid", "r+w");
                 gData.add(d);
             }
         }
