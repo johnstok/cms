@@ -33,6 +33,7 @@ import java.util.UUID;
 
 import ccc.api.core.ACL;
 import ccc.api.core.Folder;
+import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
@@ -52,6 +53,43 @@ public class FolderAcceptanceTest
     extends
         AbstractAcceptanceTest {
     private static final int PAGE_SIZE = 1000;
+
+
+    /**
+     * Test.
+     */
+    public void testFolderWriteability() {
+
+        // ARRANGE
+        final String fName = UUID.randomUUID().toString();
+        final ResourceSummary content = getCommands().resourceForPath("");
+        final ResourceSummary testFolder =
+            getFolders().create(
+                new Folder(content.getId(), new ResourceName(fName)));
+
+        final PagedCollection<Group> groups =
+            getGroups().query("ADMINISTRATOR", 1, 1);
+
+        getCommands().lock(testFolder.getId());
+
+        final ACL.Entry entry = new ACL.Entry();
+        entry.setReadable(true);
+        entry.setWriteable(true);
+        entry.setPrincipal(groups.getElements().get(0).getId());
+        final ACL acl = new ACL();
+        acl.setGroups(Collections.singleton(entry));
+        getCommands().changeAcl(testFolder.getId(), acl);
+
+        final Folder f = new Folder();
+        f.setIndexPage(null);
+        f.setSortList(new ArrayList<String>());
+
+        // ACT
+        getFolders().update(testFolder.getId(), f);
+
+        // ASSERT
+        // No assertions - update() will fail if current user is unauthorised.
+    }
 
     /**
      * Test.
