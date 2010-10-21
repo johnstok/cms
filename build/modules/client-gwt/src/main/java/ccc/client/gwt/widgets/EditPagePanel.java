@@ -250,6 +250,7 @@ public class EditPagePanel
             final String title         = field.getAttribute("title");
             final String desc          = field.getAttribute("description");
             final String regexp        = field.getAttribute("regexp");
+            final String vocabulary    = field.getAttribute("vocabulary");
             final List<Option> options = parseOptions(field);
 
             PageElement<? extends Component> pe = null;
@@ -274,6 +275,8 @@ public class EditPagePanel
                 pe = new CCImageField(name, title, desc);
             } else if ("resource".equals(type)) {
                 pe = new CCResourceField(name, title, desc, _targetRoot);
+            } else if ("taxonomy".equals(type)) {
+                pe = new CCTaxonomyField(name, title, desc,vocabulary, _targetRoot );
             } else if ("number".equals(type)) {
                 pe = new CCNumberField(name, title, desc);
             }

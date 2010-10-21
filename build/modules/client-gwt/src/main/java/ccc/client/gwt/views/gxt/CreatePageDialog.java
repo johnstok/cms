@@ -142,7 +142,6 @@ public class CreatePageDialog
         final ColumnModel cm = new ColumnModel(configs);
 
         _templateGrid = new Grid<BeanModel>(_templatesStore, cm);
-//        _templateGrid.setId("TemplateGrid");
         _templateGrid.setHeight(TEMPLATE_GRID_HEIGHT);
 
         final Listener<GridEvent<?>> gridEventlistener =
