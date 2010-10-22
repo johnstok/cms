@@ -53,6 +53,7 @@ import ccc.api.types.ResourcePath;
 import ccc.commons.EnumTools;
 import ccc.commons.Environment;
 import ccc.commons.HTTP;
+import ccc.commons.TaxonomyTools;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.Serializers;
 import ccc.plugins.scripting.Context;
@@ -228,7 +229,7 @@ public class ContentServlet
         context.add("enums",       new EnumTools());
         context.add("hostname",    Environment.getHostname());
         context.add("apiTypes",    ObjectFactory.class);
-
+        context.add("taxonomy",    new TaxonomyTools());
         return context;
     }
 
