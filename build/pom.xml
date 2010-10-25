@@ -64,12 +64,6 @@
             <version>${lib.version.easymock}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${lib.version.log4j}</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <modules>

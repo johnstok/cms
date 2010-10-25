@@ -20,6 +20,11 @@
             <artifactId>api-types</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${lib.version.log4j}</version>
+        </dependency>
     </dependencies>
     
 </project>
