@@ -97,6 +97,7 @@ cd cc-server-$cc_version
 ../$script_dir/mailconfig.sh $mail_host $mail_username $mail_password
 ../$script_dir/apacheconfig.sh $cc_url $cc_admin_email  $app_name
 ../$script_dir/logconfig.sh $log_path
+../$script_dir/messagingconfig.sh cc7 $app_name
 cd ..
 
 echo
