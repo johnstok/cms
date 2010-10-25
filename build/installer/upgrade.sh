@@ -35,6 +35,11 @@ read mail_password
 echo -n " Enter a host: "
 read mail_host
 
+echo
+echo "Logging config"
+echo -n " Full path to log file (eg /var/log/cc/"$app_name".log): "
+read log_path
+
 mkdir cc-$cc_version
 unzip cc-$cc_version.ear -d cc-$cc_version > /dev/null
 
@@ -42,6 +47,7 @@ cd cc-$cc_version
 ../$script_dir/rename.sh cc7 $app_name
 ../$script_dir/dbconfig.sh $db_type $db_url $db_user $db_password
 ../$script_dir/mailconfig.sh $mail_host $mail_username $mail_password
+../$script_dir/logconfig.sh $log_path
 cd ..
 
 echo
