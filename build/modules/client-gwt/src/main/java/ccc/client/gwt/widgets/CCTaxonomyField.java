@@ -70,7 +70,7 @@ public class CCTaxonomyField
     @Override
     public Paragraph getValue() {
         final String terms = _uiControl.getTerms();
-        return Paragraph.fromText(getName(), "ID"+_vocabularyID+":"+terms);
+        return Paragraph.fromText(getName(), terms);
     }
 
 
@@ -82,10 +82,7 @@ public class CCTaxonomyField
     /** {@inheritDoc} */
     @Override
     public void setValue(final Paragraph para) {
-        String text = para.getText();
-        if (text != null && text.length()>39) {
-            text = text.substring(39);
-        }
+        final String text = para.getText();
         _uiControl.setTerms(text);
     }
 }

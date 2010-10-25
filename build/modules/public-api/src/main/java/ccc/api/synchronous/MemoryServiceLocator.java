@@ -218,4 +218,13 @@ public class MemoryServiceLocator
     public void setGroups(final Groups groups) {
         _groups = groups;
     }
+
+    /**
+     * Mutator.
+     *
+     * @param templates The templates to set.
+     */
+    public void setTemplates(final Templates templates) {
+        _templates = templates;
+    }
 }

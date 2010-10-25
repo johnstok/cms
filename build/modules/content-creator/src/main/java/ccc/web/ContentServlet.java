@@ -245,6 +245,7 @@ public class ContentServlet
         sl.setSearch(getSearch());
         sl.setComments(getComments());
         sl.setGroups(getGroups());
+        sl.setTemplates(getTemplates());
         return sl;
     }
 

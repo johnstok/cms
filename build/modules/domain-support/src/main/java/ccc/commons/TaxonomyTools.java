@@ -27,7 +27,8 @@ public final class TaxonomyTools {
      * @param termID The term id to resolve.
      * @return The title of the term.
      */
-    public String resolveTermId(final String vocabulary, final String termID) {
+    public String resolveTermTitle(final String vocabulary,
+                                   final String termID) {
         try {
             final DocumentBuilderFactory factory =
                 DocumentBuilderFactory.newInstance();
@@ -49,6 +50,36 @@ public final class TaxonomyTools {
         return null;
     }
 
+    /**
+     * Resolves id from the template definition XML.
+     *
+     * @param fieldName The name of the field.
+     * @param definitionXML The definition XML of the template.
+     * @return The id of the vocabulary for the field.
+     */
+    public String resolveVocabularyID(final String fieldName,
+                                      final String definitionXML) {
+        try {
+            final DocumentBuilderFactory factory =
+                DocumentBuilderFactory.newInstance();
+            final DocumentBuilder builder = factory.newDocumentBuilder();
+            final Reader reader =
+                new CharArrayReader(definitionXML.toCharArray());
+            final Document doc = builder.parse(new InputSource(reader));
 
+            final NodeList list = doc.getElementsByTagName("field");
+            for (int a=0; a<list.getLength(); a++) {
+                if (list.item(a).getNodeType() == Node.ELEMENT_NODE) {
+                    final Element e = (Element) list.item(a);
+                    if (null != e && e.getAttribute("name").equals(fieldName)) {
+                        return e.getAttribute("vocabulary");
+                    }
+                }
+            }
+        } catch (final Exception e) {
+            return "fault:"+e; // FIXME
+        }
+        return null;
+    }
 
 }
