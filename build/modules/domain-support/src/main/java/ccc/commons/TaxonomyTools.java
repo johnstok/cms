@@ -2,6 +2,8 @@ package ccc.commons;
 
 import java.io.CharArrayReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -82,4 +84,33 @@ public final class TaxonomyTools {
         return null;
     }
 
+
+    /**
+     * Create option list from vocabulary.
+     *
+     * @param vocabulary The vocabulary XML.
+     * @return List of options tags in HTML.
+     */
+    public List<String> listTerms(final String vocabulary) {
+        final List<String> results = new ArrayList<String>();
+        try {
+            final DocumentBuilderFactory factory =
+                DocumentBuilderFactory.newInstance();
+            final DocumentBuilder builder = factory.newDocumentBuilder();
+            final Reader reader = new CharArrayReader(vocabulary.toCharArray());
+            final Document doc = builder.parse(new InputSource(reader));
+            final NodeList list = doc.getElementsByTagName("term");
+            for (int a=0; a<list.getLength(); a++) {
+                if (list.item(a).getNodeType() == Node.ELEMENT_NODE) {
+                    final Element e = (Element) list.item(a);
+                    results.add("<option value=\""+e.getAttribute("id")+"\">"
+                        +e.getAttribute("title")+"</option>");
+                }
+            }
+        } catch (final Exception e) {
+            return null; // FIXME
+        }
+        return results;
+
+    }
 }

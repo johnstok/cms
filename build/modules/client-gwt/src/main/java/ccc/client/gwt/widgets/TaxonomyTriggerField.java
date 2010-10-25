@@ -177,7 +177,9 @@ TriggerField<String> {
          * @param selection The string of selected items.
          */
         public void checkSelected(final String selection) {
-
+            if (null == selection) {
+                return;
+            }
             final List<String>  list = Arrays.asList(selection.split(","));
             for (final ModelData item : store.getAllItems()) {
                 for (final String term : list) {

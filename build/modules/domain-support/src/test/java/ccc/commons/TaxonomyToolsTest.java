@@ -26,6 +26,8 @@
  */
 package ccc.commons;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 
 
@@ -79,4 +81,28 @@ public class TaxonomyToolsTest extends TestCase {
         assertEquals("car", result);
 
     }
+
+
+    /**
+     * Test.
+     *
+     */
+    public void testListTerms() {
+
+        // ARRANGE
+        final TaxonomyTools tools = new TaxonomyTools();
+        final String vocabulary = "<vocabulary>"
+            + "<term id=\"12.1\" title=\"ground\">"
+            + "<term id=\"12.2\" title=\"car\"/>"
+            + "<term id=\"12.3\" title=\"truck\"/>"
+            + "</term></vocabulary>";
+
+        // ACT
+        final List<String> result = tools.listTerms(vocabulary);
+
+        // ASSERT
+        assertEquals(3, result.size());
+        assertEquals("<option value=\"12.2\">car</option>", result.get(1));
+    }
+
 }
