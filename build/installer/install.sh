@@ -1,5 +1,31 @@
 #!/bin/bash
 
+#-----------------------------------------------------------------------------
+# Copyright (c) 2009 Civic Computing Ltd.
+# All rights reserved.
+#
+# This file is part of Content Control.
+#
+# Content Control is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Content Control is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Content Control.  If not, see http://www.gnu.org/licenses/.
+#
+# Revision      $Rev$
+# Modified by   $Author$
+# Modified on   $Date$
+#
+# Changes: see subversion log.
+#-----------------------------------------------------------------------------
+
 script_dir=`dirname $0`
 cc_version="${project.version}"
 
@@ -62,10 +88,10 @@ chmod a+w filestore
 mkdir lucene
 chmod a+w lucene
 
-mkdir cc-$cc_version
-unzip cc-$cc_version.ear -d cc-$cc_version > /dev/null
+mkdir cc-server-$cc_version
+unzip cc-server-$cc_version.ear -d cc-server-$cc_version > /dev/null
 
-cd cc-$cc_version
+cd cc-server-$cc_version
 ../$script_dir/rename.sh cc7 $app_name
 ../$script_dir/dbconfig.sh $db_type $db_url $db_user $db_password
 ../$script_dir/mailconfig.sh $mail_host $mail_username $mail_password

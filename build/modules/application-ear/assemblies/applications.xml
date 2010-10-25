@@ -44,11 +44,15 @@
     <files>
         <file>
             <source>../shell-tools/target/client-shell-${project.version}-jar-with-dependencies.jar</source>
-            <destName>client-shell-${project.version}.jar</destName>
+            <destName>cc-shell-${project.version}.jar</destName>
         </file>
         <file>
             <source>target/${application.name}.ear</source>
-            <destName>cc-${project.version}.ear</destName>
+            <destName>cc-server-${project.version}.ear</destName>
+        </file>
+        <file>
+            <source>${basedir}/../../gpl.txt</source>
+            <destName>gpl.txt</destName>
         </file>
     </files>
 </assembly>
