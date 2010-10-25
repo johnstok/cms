@@ -94,7 +94,6 @@ public class JaxrsConfiguration
         final Set<Class<?>> providers = new HashSet<Class<?>>();
 
         providers.add(RestExceptionMapper.class);
-        providers.add(EJBExceptionMapper.class);
 
         providers.add(SecurityImpl.class);
         providers.add(ServicesImpl.class);

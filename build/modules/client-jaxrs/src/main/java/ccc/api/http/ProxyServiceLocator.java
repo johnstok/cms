@@ -29,6 +29,7 @@ package ccc.api.http;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ProxyFactory;
+import org.jboss.resteasy.client.core.executors.ApacheHttpClientExecutor;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
@@ -39,6 +40,7 @@ import ccc.api.jaxrs.FilesImpl;
 import ccc.api.jaxrs.FoldersImpl;
 import ccc.api.jaxrs.GroupsImpl;
 import ccc.api.jaxrs.PagesImpl;
+import ccc.api.jaxrs.ResourcesImpl;
 import ccc.api.jaxrs.SearchImpl;
 import ccc.api.jaxrs.SecurityImpl2;
 import ccc.api.jaxrs.TemplatesImpl;
@@ -128,68 +130,31 @@ public class ProxyServiceLocator implements ServiceLocator {
 
         LOG.debug("API URL: "+_api);
 
-        _commands  =
-            new ResourcesDecorator(
-                ProxyFactory.create(
-                    Resources.class,
-                    _api, _httpClient),
-                _api,
-                _httpClient);
-        _users =
-            new UsersImpl(
-                ProxyFactory.create(
-                    Users.class,
-                    _api, _httpClient));
+        _commands = new ResourcesImpl(createProxy(Resources.class, _api));
+        _users = new UsersImpl(createProxy(Users.class, _api));
         _actions  =
             new ActionsImpl(
-                ProxyFactory.create(
+                createProxy(
                     Actions.class,
-                    _api+ccc.api.synchronous.ResourceIdentifiers.Action.COLLECTION, _httpClient));
-        _folders =
-            new FoldersImpl(
-                ProxyFactory.create(
-                    Folders.class,
-                    _api, _httpClient));
-        _pages =
-            new PagesImpl(
-                ProxyFactory.create(
-                    Pages.class,
-                    _api, _httpClient));
-        _security =
-            new SecurityImpl2(
-                ProxyFactory.create(
-                    Security.class,
-                    _api, _httpClient));
-        _templates =
-            new TemplatesImpl(
-                ProxyFactory.create(
-                    Templates.class,
-                    _api, _httpClient));
-        _comments =
-            new CommentsImpl(
-                ProxyFactory.create(
-                    Comments.class,
-                    _api, _httpClient));
-        _files =
-            new FilesImpl(
-                ProxyFactory.create(
-                    Files.class,
-                    _api, _httpClient));
-        _groups =
-            new GroupsImpl(
-                ProxyFactory.create(
-                    Groups.class,
-                    _api, _httpClient));
-        _aliases =
-            new AliasesImpl(
-                ProxyFactory.create(
-                    Aliases.class,
-                    _api, _httpClient));
+                    _api + ccc.api.synchronous.ResourceIdentifiers
+                                              .Action
+                                              .COLLECTION));
+        _folders = new FoldersImpl(createProxy(Folders.class, _api));
+        _pages = new PagesImpl(createProxy(Pages.class, _api));
+        _security = new SecurityImpl2(createProxy(Security.class, _api));
+        _templates = new TemplatesImpl(createProxy(Templates.class, _api));
+        _comments = new CommentsImpl(createProxy(Comments.class, _api));
+        _files = new FilesImpl(createProxy(Files.class, _api));
+        _groups = new GroupsImpl(createProxy(Groups.class, _api));
+        _aliases = new AliasesImpl(createProxy(Aliases.class, _api));
         _search =
             new SearchImpl(
-                ProxyFactory.create(
+                createProxy(
                     SearchEngine.class,
-                    _api+ccc.api.synchronous.ResourceIdentifiers.SearchEngine.COLLECTION, _httpClient));
+                    _api
+                        + ccc.api.synchronous.ResourceIdentifiers
+                                             .SearchEngine
+                                             .COLLECTION));
     }
 
 
@@ -269,4 +234,15 @@ public class ProxyServiceLocator implements ServiceLocator {
      * @return The HTTP client for this service locator.
      */
     public HttpClient getHttpClient() { return _httpClient; }
+
+
+    private <T> T createProxy(final Class<T> clazz, final String uri) {
+        return
+            ProxyFactory.create(
+                clazz,
+                ProxyFactory.createUri(uri),
+                new ApacheHttpClientExecutor(_httpClient),
+                ResteasyProviderFactory.getInstance(),
+                new EnhancedEntityExtractorFactory());
+    }
 }

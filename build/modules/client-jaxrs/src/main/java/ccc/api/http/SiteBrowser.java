@@ -69,11 +69,11 @@ public interface SiteBrowser {
     /**
      * Send an HTTP post to a resource.
      *
-     * @param rs The resource to request.
+     * @param resource The resource to request.
      *
      * @return The rendered resource as a String.
      */
-    String post(final Resource r);
+    String post(final Resource resource);
 
     /**
      * Send an HTTP GET for a path.

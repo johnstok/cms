@@ -28,6 +28,7 @@ package ccc.api.jaxrs.providers;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 
 import ccc.api.core.Failure;
 import ccc.api.exceptions.CCException;
@@ -46,6 +47,7 @@ import ccc.plugins.s11n.Serializers;
  *
  * @author Civic Computing Ltd.
  */
+@Provider
 public class RestExceptionMapper
     implements
         ExceptionMapper<CCException> {

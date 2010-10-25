@@ -29,6 +29,7 @@ package ccc.api.jaxrs;
 
 import java.io.UnsupportedEncodingException;
 
+import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
@@ -44,6 +45,7 @@ import ccc.commons.Reflection;
  * @author Civic Computing Ltd.
  */
 public abstract class JaxrsCollection {
+    private static final Logger LOG = Logger.getLogger(JaxrsCollection.class);
 
     /**
      * Convert a runtime exception to a CC specific exception.
@@ -52,6 +54,7 @@ public abstract class JaxrsCollection {
      *
      * @return The converted exception.
      */
+    @SuppressWarnings("unchecked") // RestEasy methods not generic.
     public RuntimeException convertException(final RuntimeException e) {
         if (e instanceof ClientResponseFailure) {
             final ClientResponseFailure ex = (ClientResponseFailure) e;
@@ -65,6 +68,12 @@ public abstract class JaxrsCollection {
                 }
             } catch (final UnsupportedEncodingException ee) {
                 throw new InternalError("Unsupported encoding.");
+            } finally {
+                try {
+                    ex.getResponse().releaseConnection();
+                } catch (final Exception e1) {
+                    LOG.warn("Failed to release HTTP connection.", e1);
+                }
             }
         } else if (Reflection.isClass("javax.ejb.EJBException", e)) {
             if (e.getCause() instanceof CCException) {
