@@ -26,7 +26,7 @@
  */
 package ccc.api.types;
 
-import static ccc.api.types.DBC.*;
+import static ccc.api.types.DBC.require;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -79,6 +79,12 @@ public final class Paragraph implements Serializable {
         require().notNull(text);
         _text = text;
         _type = ParagraphType.LIST;
+    }
+
+    private void taxonomy(final String text) {
+        require().notNull(text);
+        _text = text;
+        _type = ParagraphType.TAXONOMY;
     }
 
 
@@ -218,6 +224,24 @@ public final class Paragraph implements Serializable {
 
         p.name(name);
         p.list(listToText(list));
+
+        return p;
+    }
+
+
+    /**
+     * Factory method. Creates a paragraph representing a list of strings.
+     *
+     * @param name The name of the paragraph.
+     * @param list The list for the paragraph.
+     * @return A paragraph with list content.
+     */
+    public static Paragraph fromTaxonomy(final String name,
+                                     final List<String> list) {
+        final Paragraph p = new Paragraph();
+
+        p.name(name);
+        p.taxonomy(listToText(list));
 
         return p;
     }

@@ -87,6 +87,7 @@ class ParagraphSerializer extends BaseSerializer<Paragraph> {
                     name, json.getDate(JsonKeys.DATE));
 
             case LIST:
+            case TAXONOMY:
             case TEXT:
                 return Paragraph.fromText(
                     name, json.getString(JsonKeys.TEXT));

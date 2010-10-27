@@ -475,6 +475,17 @@ public class SimpleLuceneFS
                 d,
                 paragraph.getName(),
                 paragraph.getBoolean().booleanValue());
+        } else if (paragraph.getType() == ParagraphType.TAXONOMY
+                && paragraph.getList() != null) {
+           for (final String term : paragraph.getList()) {
+               d.add(
+                   new Field(
+                       paragraph.getName(),
+                       term,
+                       Field.Store.NO,
+                       Field.Index.NOT_ANALYZED));
+           }
+
         }
     }
 

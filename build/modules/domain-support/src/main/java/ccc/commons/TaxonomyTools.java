@@ -103,7 +103,12 @@ public final class TaxonomyTools {
             for (int a=0; a<list.getLength(); a++) {
                 if (list.item(a).getNodeType() == Node.ELEMENT_NODE) {
                     final Element e = (Element) list.item(a);
-                    results.add("<option value=\""+e.getAttribute("id")+"\">"
+
+                    // document -1, vocabulary 0, 1st term 1, 2nd term 2
+                    final int depth = countDepth(e, -1);
+
+                    results.add("<option class=\"taxonomy"+depth+"\" value=\""
+                        +e.getAttribute("id")+"\">"
                         +e.getAttribute("title")+"</option>");
                 }
             }
@@ -113,4 +118,14 @@ public final class TaxonomyTools {
         return results;
 
     }
+
+    private int countDepth(final Node e, final int a) {
+        final Node node = e.getParentNode();
+
+        if (node != null) {
+            return countDepth(node, a+1);
+        }
+        return a;
+    }
 }
+

@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.widgets;
 
+import java.util.List;
+
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
 import ccc.client.widgets.PageElement;
@@ -69,8 +71,8 @@ public class CCTaxonomyField
     /** {@inheritDoc} */
     @Override
     public Paragraph getValue() {
-        final String terms = _uiControl.getTerms();
-        return Paragraph.fromText(getName(), terms);
+        final List<String> terms = _uiControl.getTerms();
+        return Paragraph.fromTaxonomy(getName(), terms);
     }
 
 
@@ -82,7 +84,7 @@ public class CCTaxonomyField
     /** {@inheritDoc} */
     @Override
     public void setValue(final Paragraph para) {
-        final String text = para.getText();
+        final List<String> text = para.getList();
         _uiControl.setTerms(text);
     }
 }

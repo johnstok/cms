@@ -92,9 +92,9 @@ public class TaxonomyToolsTest extends TestCase {
         // ARRANGE
         final TaxonomyTools tools = new TaxonomyTools();
         final String vocabulary = "<vocabulary>"
-            + "<term id=\"12.1\" title=\"ground\">"
-            + "<term id=\"12.2\" title=\"car\"/>"
-            + "<term id=\"12.3\" title=\"truck\"/>"
+            + "<term id=\"1.1\" title=\"ground\">"
+                + "<term id=\"1.2\" title=\"car\"/>"
+                + "<term id=\"1.3\" title=\"truck\"/>"
             + "</term></vocabulary>";
 
         // ACT
@@ -102,7 +102,11 @@ public class TaxonomyToolsTest extends TestCase {
 
         // ASSERT
         assertEquals(3, result.size());
-        assertEquals("<option value=\"12.2\">car</option>", result.get(1));
+        assertEquals(
+            "<option class=\"taxonomy1\" value=\"1.1\">ground</option>",
+            result.get(0));
+        assertEquals("<option class=\"taxonomy2\" value=\"1.2\">car</option>",
+            result.get(1));
     }
 
 }

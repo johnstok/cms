@@ -27,10 +27,12 @@
 package ccc.plugins.search.lucene;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -583,5 +585,58 @@ public class SimpleLuceneFSTest
         assertEquals(1, result.totalResults());
         assertEquals(result.hits().size(), 1);
         assertEquals(id, result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testIndexTaxonomy() {
+
+        // ARRANGE
+        final UUID id = UUID.randomUUID();
+        final UUID id2 = UUID.randomUUID();
+        final Set<Paragraph> paras =
+            new HashSet<Paragraph>(){{
+                final List<String> terms =
+                    Arrays.asList("1.2,1.7,1.8,2".split(","));
+                add(Paragraph.fromTaxonomy("text", terms));
+            }};
+            final Set<Paragraph> paras2 =
+                new HashSet<Paragraph>(){{
+                    final List<String> terms =
+                        Arrays.asList("1.3,1.1,1.8,2".split(","));
+                    add(Paragraph.fromTaxonomy("text", terms));
+                }};
+            final SimpleLuceneFS searchEngine =
+                new SimpleLuceneFS(
+                    new File("target/test13/lucene").getAbsolutePath());
+
+            // ACT
+            searchEngine.startUpdate();
+            searchEngine.createDocument(
+                id,
+                new ResourcePath("/foo"),
+                new ResourceName("foo"),
+                "foo",
+                Collections.singleton("foo"),
+                "foo",
+                paras);
+            searchEngine.createDocument(
+                id2,
+                new ResourcePath("/foo2"),
+                new ResourceName("foo2"),
+                "foo2",
+                Collections.singleton("foo2"),
+                "foo2",
+                paras2);
+            searchEngine.commitUpdate();
+
+            // ASSERT
+            final SearchResult result = searchEngine.find("text:1.8", 5, 1);
+            assertEquals(2, result.totalResults());
+            assertEquals(result.hits().size(), 2);
+            assertEquals(id, result.hits().iterator().next());
+
     }
 }

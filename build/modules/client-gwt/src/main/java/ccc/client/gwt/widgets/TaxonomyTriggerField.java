@@ -27,25 +27,31 @@
 package ccc.client.gwt.widgets;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
 import ccc.client.actions.FindFileAction;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 
+import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.data.BaseTreeModel;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelKeyProvider;
 import com.extjs.gxt.ui.client.data.TreeModel;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Window;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -61,9 +67,9 @@ import com.google.gwt.xml.client.XMLParser;
  */
 public class TaxonomyTriggerField
 extends
-TriggerField<String> {
+TriggerField<List<String>> {
 
-    private String _terms;
+    private List<String> _terms;
 
 
     /**
@@ -101,7 +107,7 @@ TriggerField<String> {
      *
      * @return The selected terms.
      */
-    public String getTerms() { return _terms; }
+    public List<String>  getTerms() { return _terms; }
 
 
     /**
@@ -109,7 +115,7 @@ TriggerField<String> {
      *
      * @param terms The terms to set.
      */
-    public void setTerms(final String terms) {
+    public void setTerms(final List<String> terms) {
         _terms = terms;
         if (null!=_terms) {
             setValue(_terms);
@@ -120,53 +126,68 @@ TriggerField<String> {
 
 
     /**
-     * TODO: Add a description for this type.
+     * Selector window for the taxonomy term selection.
      *
      * @author Civic Computing Ltd.
      */
     public class TaxonomySelector extends Window {
-        final ContentPanel cp = new ContentPanel();
-        final TreeStore<ModelData> store = new TreeStore<ModelData>();
-        final TreePanel<ModelData> tree;
+        private final ContentPanel _cp = new ContentPanel();
+        private final TreeStore<ModelData> _store = new TreeStore<ModelData>();
+        private final TreePanel<ModelData> _tree;
 
+        private static final int DIALOG_HEIGHT = 400;
+        private static final int DIALOG_WIDTH = 400;
         /**
          * Constructor.
          *
          * @param vocabularyXML The XML for the selector.
          */
         public TaxonomySelector(final String vocabularyXML) {
-            setHeight(400);
-            setWidth(400);
+            setModal(true);
+            setBodyStyle("backgroundColor: white;");
+            setHeading(I18n.uiConstants.selectTerms());
+            setWidth(DIALOG_WIDTH);
+            setHeight(DIALOG_HEIGHT);
+            setMinWidth(Globals.MIN_WIDTH);
+            setLayout(new FitLayout());
 
             parseXMLtoModel(vocabularyXML);
-            tree = new TreePanel<ModelData>(store);
-            tree.setCheckable(true);
-            tree.setAutoLoad(true);
-            tree.setDisplayProperty("name");
-            store.setKeyProvider(new ModelKeyProvider<ModelData>() {
+            _tree = new TreePanel<ModelData>(_store);
+            _tree.setCheckable(true);
+            _tree.setAutoLoad(true);
+            _tree.setDisplayProperty("name");
+            _store.setKeyProvider(new ModelKeyProvider<ModelData>() {
                 public String getKey(final ModelData model) {
                     return model.get("id");
                 }
             });
-            cp.add(tree);
-            add(cp);
+            _cp.setScrollMode(Scroll.AUTOY);
+            _cp.add(_tree);
 
+            final Button save = new Button(
+                I18n.uiConstants.save(),
+                new SelectionListener<ButtonEvent>() {
+                    @Override public void componentSelected(
+                                                         final ButtonEvent ce) {
+                        hide();
+                    }
+                }
+            );
+
+            add(_cp);
+            addButton(save);
 
             addListener(Events.Hide,
                 new Listener<ComponentEvent>() {
                 @Override
                 public void handleEvent(final ComponentEvent be) {
-                    final StringBuilder sb = new StringBuilder();
-                    for (final ModelData item : tree.getCheckedSelection()) {
-                        if(sb.length()>0) {
-                            sb.append(",");
-                        }
-                        sb.append((String) item.get("id"));
-                      }
-                    _terms = sb.toString();
-                    setValue(_terms);
-                }
+                    final List<String> terms = new ArrayList<String>();
 
+                    for (final ModelData item : _tree.getCheckedSelection()) {
+                        terms.add((String) item.get("id"));
+                      }
+                    setTerms(terms);
+                }
             });
         }
 
@@ -174,17 +195,16 @@ TriggerField<String> {
         /**
          * Toggles selected tree items.
          *
-         * @param selection The string of selected items.
+         * @param list The list of selected terms.
          */
-        public void checkSelected(final String selection) {
-            if (null == selection) {
+        public void checkSelected(final List<String> list) {
+            if (null == list) {
                 return;
             }
-            final List<String>  list = Arrays.asList(selection.split(","));
-            for (final ModelData item : store.getAllItems()) {
+            for (final ModelData item : _store.getAllItems()) {
                 for (final String term : list) {
                     if (((String) item.get("id")).equals(term)) {
-                        tree.setChecked(item, true);
+                        _tree.setChecked(item, true);
                     }
                 }
             }
@@ -199,16 +219,15 @@ TriggerField<String> {
             Node n = def.getFirstChild().getFirstChild();
 
             while (n != null) {
-
-               final TreeModel tm =  handle(n);
-               if (tm != null) {
-                   models.add(tm);
-               }
+                final TreeModel tm =  handle(n);
+                if (tm != null) {
+                    models.add(tm);
+                }
                 n = n.getNextSibling();
-
             }
-            store.add(models, true);
+            _store.add(models, true);
         }
+
 
         private TreeModel handle(final Node n) {
             if (n.getNodeType() == Node.ELEMENT_NODE) {

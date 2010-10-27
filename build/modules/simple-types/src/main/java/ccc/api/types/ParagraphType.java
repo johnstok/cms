@@ -45,5 +45,9 @@ public enum ParagraphType {
     NUMBER,
 
     /** LIST : ParagraphType. */
-    LIST
+    LIST,
+
+    /** TAXONOMY : ParagraphType. */
+    TAXONOMY
+
 }
