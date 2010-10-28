@@ -143,9 +143,11 @@ public class SimpleLuceneFS
                              final int pageNo) {
 
         final Sort sorter =
-            new Sort(
-                new SortField(
-                    sort, SortField.STRING_VAL, (SortOrder.DESC==order)));
+            (null==sort)
+                ? null
+                : new Sort(
+                    new SortField(
+                        sort, SortField.STRING_VAL, (SortOrder.DESC==order)));
 
         if (searchTerms == null || searchTerms.trim().equals("")) {
             return
@@ -183,9 +185,11 @@ public class SimpleLuceneFS
                              final int pageNo) {
 
         final Sort sorter =
-            new Sort(
-                new SortField(
-                    sort, SortField.STRING_VAL, (SortOrder.DESC==order)));
+            (null==sort)
+                ? null
+                : new Sort(
+                    new SortField(
+                        sort, SortField.STRING_VAL, (SortOrder.DESC==order)));
 
         if (searchTerms == null || searchTerms.trim().equals("")) {
             return

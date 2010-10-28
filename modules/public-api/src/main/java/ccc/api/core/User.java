@@ -259,6 +259,16 @@ public class User
 
 
     /**
+     * Add a new group for this user.
+     *
+     * @param id The group's UUID.
+     */
+    public void addGroup(final UUID id) {
+        _groups.add(id);
+    }
+
+
+    /**
      * Link.
      *
      * @return A link to this user.

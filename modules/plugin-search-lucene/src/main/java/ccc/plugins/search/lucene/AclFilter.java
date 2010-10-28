@@ -104,6 +104,10 @@ public class AclFilter
 
 
     private boolean isReadable(final ACL acl) {
+        if (acl.getGroups().isEmpty() && acl.getUsers().isEmpty()) {
+            return true;
+        }
+
         for (final Entry group : acl.getGroups()) {
             if (group.isReadable() && permsIncludeGroup(group.getPrincipal())) {
                 return true;
@@ -114,6 +118,7 @@ public class AclFilter
                 return true;
             }
         }
+
         return false;
     }
 

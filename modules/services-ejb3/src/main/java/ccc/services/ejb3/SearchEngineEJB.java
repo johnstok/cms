@@ -29,8 +29,11 @@ package ccc.services.ejb3;
 import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
@@ -46,6 +49,7 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.core.ACL;
 import ccc.api.core.SearchEngine;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Paragraph;
@@ -57,6 +61,7 @@ import ccc.domain.FileEntity;
 import ccc.domain.PageEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.Setting;
+import ccc.domain.UserEntity;
 import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.ResourceRepository;
@@ -77,7 +82,11 @@ import ccc.plugins.search.TextExtractor;
 @TransactionAttribute(REQUIRED)
 @Local(SearchEngine.class)
 @RolesAllowed({})
-public class SearchEngineEJB  implements SearchEngine {
+public class SearchEngineEJB
+    extends
+        AbstractEJB
+    implements
+        SearchEngine {
 
     private static final int TIMEOUT_DELAY_SECS = 60*60*1000;
     private static final int INITIAL_DELAY_SECS = 1;
@@ -110,7 +119,17 @@ public class SearchEngineEJB  implements SearchEngine {
     public SearchResult find(final String searchTerms,
                              final int resultCount,
                              final int page) {
-        return createIndex().find(searchTerms, resultCount, page);
+        final long then = System.currentTimeMillis();
+        final SearchResult res =
+            createIndex().find(
+                searchTerms,
+                null,
+                null,
+                userPermissions(currentUser()),
+                resultCount,
+                page);
+        LOG.debug("Search time in millis: "+(System.currentTimeMillis()-then));
+        return res;
     }
 
 
@@ -122,7 +141,36 @@ public class SearchEngineEJB  implements SearchEngine {
                              final SortOrder order,
                              final int resultCount,
                              final int page) {
-        return createIndex().find(searchTerms, sort, order, resultCount, page);
+        final long then = System.currentTimeMillis();
+        final SearchResult res =
+            createIndex().find(
+                searchTerms,
+                sort,
+                order,
+                userPermissions(currentUser()),
+                resultCount,
+                page);
+        LOG.debug("Search time in millis: "+(System.currentTimeMillis()-then));
+        return res;
+    }
+
+
+    private ACL userPermissions(final UserEntity currentUser) {
+        final ACL acl = new ACL();
+
+        final ACL.Entry userPrincipal = new ACL.Entry();
+        userPrincipal.setPrincipal(currentUser.getId());
+        acl.setUsers(Collections.singletonList(userPrincipal));
+
+        final List<ACL.Entry> userGroups = new ArrayList<ACL.Entry>();
+        for (final UUID groupId : currentUser.getGroupIds()) {
+            final ACL.Entry groupPrincipal = new ACL.Entry();
+            groupPrincipal.setPrincipal(groupId);
+            userGroups.add(groupPrincipal);
+        }
+        acl.setGroups(userGroups);
+
+        return acl;
     }
 
 
@@ -244,7 +292,8 @@ public class SearchEngineEJB  implements SearchEngine {
                     f.getTitle(),
                     f.getTags(),
                     content,
-                    null);
+                    null,
+                    collectAcls(f));
                 LOG.debug("Indexed file: "+f.getTitle());
             }
         }
@@ -262,10 +311,31 @@ public class SearchEngineEJB  implements SearchEngine {
                     p.getTitle(),
                     p.getTags(),
                     extractContent(p),
-                    p.currentRevision().getParagraphs());
+                    p.currentRevision().getParagraphs(),
+                    collectAcls(p));
                 LOG.debug("Indexed page: "+p.getTitle());
             }
         }
+    }
+
+
+    /**
+     * Collect all the ACLs for a resource.
+     *
+     * @param r The resource to collect from.
+     *
+     * @return A collection of all ACLs for a given resource.
+     */
+    private Collection<ACL> collectAcls(final ResourceEntity r) {
+        final List<ACL> acls = new ArrayList<ACL>();
+
+        ResourceEntity level = r;
+        do {
+            acls.add(level.getAcl());
+            level = level.getParent();
+        } while (null != level);
+
+        return acls;
     }
 
 
@@ -282,7 +352,7 @@ public class SearchEngineEJB  implements SearchEngine {
 
 
     private boolean canIndex(final ResourceEntity r) {
-        return r.isVisible() && !r.isSecure() && r.isIndexable();
+        return r.isVisible() && r.isIndexable();
     }
 
 
