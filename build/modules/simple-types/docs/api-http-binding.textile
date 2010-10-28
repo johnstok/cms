@@ -1,0 +1,23 @@
+h1. HTTP Binding
+
+h2. Operations
+
+h3. Create
+
+POST
+
+h3. Retrieve
+
+GET
+
+h3. Update
+
+PUT
+
+h3. Delete
+
+DELETE
+
+h2. URIs
+
+h3. URI Templates

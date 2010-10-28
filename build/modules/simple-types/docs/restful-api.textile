@@ -1,0 +1,48 @@
+h1. CC RESTful API
+
+h2. Types
+
+h3. User
+
+h4. Fields
+
+|_.Field|_.Type|
+|email|email|
+|name|string|
+|id|uuid|
+|username|username|
+|groups|set< uuid >|
+|permissions|set< string >|
+|metadata|map< string, string >|
+|password|string|
+
+h4. Relations
+
+|_.Relation|_.Description|
+|self|This resource|
+|password|This resource's password.|
+
+h4. Bindings
+
+h5. JSON
+
+h5. Form Encoded
+
+h2. Values
+
+h3. Email
+
+h3. URI
+
+h2. Operations
+
+h3. Create
+
+h3. Retrieve
+
+h3. Update
+
+h3. Delete
+
+
+
