@@ -2,6 +2,8 @@
 #set ($folders = $services.getFolders())
 #set ($pages = $services.getPages())
 #set ($comments = $services.getComments())
+#set ($templates = $services.getTemplates())
+#set($files = $services.getFiles())
 
 ## Wrapper macro to hide output
 #macro( call $this )

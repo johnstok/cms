@@ -1,0 +1,8 @@
+## Retrieves vocabulary used by the taxonomy field and assigns it to the vocabulary variable.
+#macro(loadVocabulary $field $vocabulary)
+  #set($templateid = $resource.getTemplate())
+  #set($template = $templates.retrieve($templateid))
+  #set($definition = $template.getDefinition())
+  #set($vocabularyId = $uuid.fromString($taxonomy.resolveVocabularyID($field, $definition)))
+  #set($vocabulary = $files.retrieve($vocabularyId).getContent())
+#end
