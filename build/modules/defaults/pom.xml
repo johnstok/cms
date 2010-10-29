@@ -48,9 +48,6 @@
         <lib.version.commons-fileupload>1.2.1</lib.version.commons-fileupload>
         <lib.version.gwt-math>2.1</lib.version.gwt-math>
         <lib.version.resteasy>2.0.1.GA</lib.version.resteasy>
-        
-        <!-- CCC properties should be 'ccc.{prop-name}' -->
-        <parent_basedir>${basedir}/../..</parent_basedir>
     </properties>
     
     <repositories>
@@ -188,7 +185,7 @@
                         <effort>Max</effort>
                         <threshold>Low</threshold>
                         <excludeFilterFile>
-                            ${parent_basedir}/configuration/findbugs-excludes.xml
+                            ${basedir}/../../configuration/findbugs-excludes.xml
                         </excludeFilterFile>
                     </configuration>
                 </plugin>
@@ -198,7 +195,7 @@
                     <version>2.5</version>
                     <configuration>
                         <configLocation>
-                            ${parent_basedir}/configuration/checkstyle.xml
+                            ${basedir}/../../configuration/checkstyle.xml
                         </configLocation>
                     </configuration>
                 </plugin>
