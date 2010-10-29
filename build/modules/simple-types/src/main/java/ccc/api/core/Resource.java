@@ -439,5 +439,7 @@ public class Resource
         public static final String DELETE = "delete";
         /** SEARCH : String. */
         public static final String SEARCH = "search";
+        /** RETRIVE_WITH_PATH : String. */
+        public static final String RETRIVE_WITH_PATH = "retrive_with_path";
     }
 }

@@ -60,9 +60,9 @@ public abstract class FindResourceWithPathAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        // FIXME hard coded path
-        return new Link("/secure/resources/by-path-secure{path}")
-        .build("path", _path, InternalServices.encoder);
+        return new Link(
+         InternalServices.api.getLink(Resource.Links.RETRIVE_WITH_PATH))
+        .build("path:.*", _path, InternalServices.encoder);
     }
 
 

@@ -61,8 +61,8 @@ public abstract class FindFileAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        // FIXME hard coded path
-        return new Link("/secure/files/{id}")
+            return new Link(
+             InternalServices.api.getLink(File.Links.RETRIVE_WITH_ID))
             .build("id", _id.toString(), InternalServices.encoder);
     }
 

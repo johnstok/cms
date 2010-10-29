@@ -462,6 +462,8 @@ public final class File
         public static final String LIST_BINARY = "list_binary";
         /** SELF_BINARY : String. */
         public static final String SELF_BINARY = "self_binary";
+        /** RETRIVE_WITH_ID : String. */
+        public static final String RETRIVE_WITH_ID = "retrive_with_id";
     }
 
 

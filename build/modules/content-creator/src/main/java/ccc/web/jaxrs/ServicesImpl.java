@@ -116,6 +116,12 @@ public class ServicesImpl {
             ccc.api.core.File.Links.LIST_BINARY,
             File.BINARY_COLLECTION);
 
+        api.addLink(ccc.api.core.Resource.Links.RETRIVE_WITH_PATH,
+            Resource.PATH_SECURE);
+
+        api.addLink(ccc.api.core.File.Links.RETRIVE_WITH_ID,
+            File.ELEMENT);
+
         final Map<String, String> props = new HashMap<String, String>();
         props.put(API.BUILD_NUMBER, CCCProperties.buildNumber());
         props.put(API.CCC_VERSION, CCCProperties.version());
