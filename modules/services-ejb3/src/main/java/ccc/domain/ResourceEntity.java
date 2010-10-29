@@ -27,7 +27,7 @@
 
 package ccc.domain;
 
-import static ccc.api.types.DBC.require;
+import static ccc.api.types.DBC.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,6 +40,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.ACL;
+import ccc.api.core.AccessController;
 import ccc.api.core.Alias;
 import ccc.api.core.File;
 import ccc.api.core.Folder;
@@ -664,55 +665,21 @@ public abstract class ResourceEntity
 
     /** {@inheritDoc} */
     public boolean isReadableBy(final UserEntity user) {
-        final boolean parentIsAccessible =
-            (null==_parent) ? true : getParent().isReadableBy(user);
-
-        if (0==_groupAcl.size() && 0==_userAcl.size()) {
-            return parentIsAccessible;
-        }
-
-        if (null==user) { return false; }
-
-        for (final AccessPermission p : _groupAcl) {
-            if (p.allowsRead(user)) {
-                return parentIsAccessible;
-            }
-        }
-
-        for (final AccessPermission p : _userAcl) {
-            if (p.allowsRead(user)) {
-                return parentIsAccessible;
-            }
-        }
-
-        return false;
+        final ACL userPrincipals =
+            (null==user)
+                ? new ACL()
+                : user.getPrincipals();
+        return new AccessController(userPrincipals).canRead(getAclHierarchy());
     }
 
 
     /** {@inheritDoc} */
     public boolean isWriteableBy(final UserEntity user) {
-        final boolean parentIsWriteable =
-            (null==_parent) ? true : getParent().isWriteableBy(user);
-
-        if (0==_groupAcl.size() && 0==_userAcl.size()) {
-            return parentIsWriteable;
-        }
-
-        if (null==user) { return false; }
-
-        for (final AccessPermission p : _groupAcl) {
-            if (p.allowsWrite(user)) {
-                return parentIsWriteable;
-            }
-        }
-
-        for (final AccessPermission p : _userAcl) {
-            if (p.allowsWrite(user)) {
-                return parentIsWriteable;
-            }
-        }
-
-        return false;
+        final ACL userPrincipals =
+            (null==user)
+                ? new ACL()
+                : user.getPrincipals();
+        return new AccessController(userPrincipals).canWrite(getAclHierarchy());
     }
 
 
@@ -1140,5 +1107,25 @@ public abstract class ResourceEntity
      */
     public void clearUserAcl() {
         _userAcl.clear();
+    }
+
+
+    /**
+     * Collect all the ACLs for a resource.
+     *
+     * @param r The resource to collect from.
+     *
+     * @return A collection of all ACLs for a given resource.
+     */
+    public Collection<ACL> getAclHierarchy() {
+        final List<ACL> acls = new ArrayList<ACL>();
+
+        ResourceEntity level = this;
+        do {
+            acls.add(level.getAcl());
+            level = level.getParent();
+        } while (null != level);
+
+        return acls;
     }
 }

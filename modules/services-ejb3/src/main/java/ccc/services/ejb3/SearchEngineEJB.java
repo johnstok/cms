@@ -29,11 +29,8 @@ package ccc.services.ejb3;
 import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
@@ -49,7 +46,6 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.ACL;
 import ccc.api.core.SearchEngine;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Paragraph;
@@ -61,7 +57,6 @@ import ccc.domain.FileEntity;
 import ccc.domain.PageEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.Setting;
-import ccc.domain.UserEntity;
 import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.ResourceRepository;
@@ -125,7 +120,7 @@ public class SearchEngineEJB
                 searchTerms,
                 null,
                 null,
-                userPermissions(currentUser()),
+                currentUser().getPrincipals(),
                 resultCount,
                 page);
         LOG.debug("Search time in millis: "+(System.currentTimeMillis()-then));
@@ -147,30 +142,11 @@ public class SearchEngineEJB
                 searchTerms,
                 sort,
                 order,
-                userPermissions(currentUser()),
+                currentUser().getPrincipals(),
                 resultCount,
                 page);
         LOG.debug("Search time in millis: "+(System.currentTimeMillis()-then));
         return res;
-    }
-
-
-    private ACL userPermissions(final UserEntity currentUser) {
-        final ACL acl = new ACL();
-
-        final ACL.Entry userPrincipal = new ACL.Entry();
-        userPrincipal.setPrincipal(currentUser.getId());
-        acl.setUsers(Collections.singletonList(userPrincipal));
-
-        final List<ACL.Entry> userGroups = new ArrayList<ACL.Entry>();
-        for (final UUID groupId : currentUser.getGroupIds()) {
-            final ACL.Entry groupPrincipal = new ACL.Entry();
-            groupPrincipal.setPrincipal(groupId);
-            userGroups.add(groupPrincipal);
-        }
-        acl.setGroups(userGroups);
-
-        return acl;
     }
 
 
@@ -293,7 +269,7 @@ public class SearchEngineEJB
                     f.getTags(),
                     content,
                     null,
-                    collectAcls(f));
+                    f.getAclHierarchy());
                 LOG.debug("Indexed file: "+f.getTitle());
             }
         }
@@ -312,30 +288,10 @@ public class SearchEngineEJB
                     p.getTags(),
                     extractContent(p),
                     p.currentRevision().getParagraphs(),
-                    collectAcls(p));
+                    p.getAclHierarchy());
                 LOG.debug("Indexed page: "+p.getTitle());
             }
         }
-    }
-
-
-    /**
-     * Collect all the ACLs for a resource.
-     *
-     * @param r The resource to collect from.
-     *
-     * @return A collection of all ACLs for a given resource.
-     */
-    private Collection<ACL> collectAcls(final ResourceEntity r) {
-        final List<ACL> acls = new ArrayList<ACL>();
-
-        ResourceEntity level = r;
-        do {
-            acls.add(level.getAcl());
-            level = level.getParent();
-        } while (null != level);
-
-        return acls;
     }
 
 

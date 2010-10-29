@@ -108,6 +108,41 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
+    public void testWriteCheckRespectsAclCombinations() {
+
+        // ARRANGE
+        final UserEntity tom =
+            new UserEntity(new Username("tom"), "password");
+        tom.addGroup(BAZ);
+        final UserEntity dick =
+            new UserEntity(new Username("dick"), "password");
+        dick.addGroup(FOO);
+        final UserEntity harry =
+            new UserEntity(new Username("harry"), "password");
+        harry.addGroup(FOO);
+
+        final FolderEntity f = new FolderEntity();
+        f.addUserPermission(new AccessPermission(false, true, tom));
+        f.addUserPermission(new AccessPermission(false, true, harry));
+
+        final PageEntity p = new PageEntity();
+        p.addGroupPermission(new AccessPermission(false, true, FOO));
+        p.addGroupPermission(new AccessPermission(false, true, BAR));
+        f.add(p);
+
+        // ACT
+
+        // ASSERT
+        assertTrue(p.isSecure());
+        assertTrue(p.isWriteableBy(harry));
+        assertFalse(p.isWriteableBy(tom)); // Doesn't have FOO or BAR.
+        assertFalse(p.isWriteableBy(dick)); // Isn't tom or harry.
+    }
+
+
+    /**
+     * Test.
+     */
     public void testAccessibilityCheckRespectsAclCombinations() {
 
         // ARRANGE
@@ -122,12 +157,12 @@ public final class ResourceTest extends TestCase {
         harry.addGroup(FOO);
 
         final FolderEntity f = new FolderEntity();
-        f.addUserPermission(new AccessPermission(true, true, tom));
-        f.addUserPermission(new AccessPermission(true, true, harry));
+        f.addUserPermission(new AccessPermission(true, false, tom));
+        f.addUserPermission(new AccessPermission(true, false, harry));
 
         final PageEntity p = new PageEntity();
-        p.addGroupPermission(new AccessPermission(true, true, FOO));
-        p.addGroupPermission(new AccessPermission(true, true, BAR));
+        p.addGroupPermission(new AccessPermission(true, false, FOO));
+        p.addGroupPermission(new AccessPermission(true, false, BAR));
         f.add(p);
 
         // ACT
@@ -144,11 +179,34 @@ public final class ResourceTest extends TestCase {
      * Test.
      *
      */
+    public void testWriteCheckRespectsAclUsersFromParent() {
+
+        // ARRANGE
+        final FolderEntity f = new FolderEntity();
+        f.addUserPermission(new AccessPermission(false, true, _jill));
+        final PageEntity p = new PageEntity();
+        f.add(p);
+
+        // ACT
+        final boolean isAccessible = p.isWriteableBy(_jill);
+        final boolean isNotAccessible = p.isWriteableBy(_jack);
+
+        // ASSERT
+        assertTrue(p.isSecure());
+        assertTrue(isAccessible);
+        assertFalse(isNotAccessible);
+    }
+
+
+    /**
+     * Test.
+     *
+     */
     public void testAccessibilityCheckRespectsAclUsersFromParent() {
 
         // ARRANGE
         final FolderEntity f = new FolderEntity();
-        f.addUserPermission(new AccessPermission(true, true, _jill));
+        f.addUserPermission(new AccessPermission(true, false, _jill));
         final PageEntity p = new PageEntity();
         f.add(p);
 
@@ -170,7 +228,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final PageEntity p = new PageEntity();
-        p.addUserPermission(new AccessPermission(true, true, _jill));
+        p.addUserPermission(new AccessPermission(true, false, _jill));
 
         // ACT
         final boolean isAccessible = p.isReadableBy(_jill);
@@ -186,12 +244,32 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
+    public void testWriteCheckAllowsAclUser() {
+
+        // ARRANGE
+        final PageEntity p = new PageEntity();
+        p.addUserPermission(new AccessPermission(false, true, _jill));
+
+        // ACT
+        final boolean isAccessible = p.isWriteableBy(_jill);
+        final boolean isNotAccessible = p.isWriteableBy(_jack);
+
+        // ASSERT
+        assertTrue(p.isSecure());
+        assertTrue(isAccessible);
+        assertFalse(isNotAccessible);
+    }
+
+
+    /**
+     * Test.
+     */
     public void testAccessibilityCheckAllowsAclUserWithGroupsInAcl() {
 
         // ARRANGE
         final PageEntity p = new PageEntity();
-        p.addGroupPermission(new AccessPermission(true, true, FOO));
-        p.addUserPermission(new AccessPermission(true, true, _jill));
+        p.addGroupPermission(new AccessPermission(true, false, FOO));
+        p.addUserPermission(new AccessPermission(true, false, _jill));
 
         // ACT
         final boolean isAccessible = p.isReadableBy(_jill);
@@ -201,6 +279,43 @@ public final class ResourceTest extends TestCase {
         assertTrue(p.isSecure());
         assertTrue(isAccessible);
         assertFalse(isNotAccessible);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testWriteCheckAllowsAclUserWithGroupsInAcl() {
+
+        // ARRANGE
+        final PageEntity p = new PageEntity();
+        p.addGroupPermission(new AccessPermission(false, true, FOO));
+        p.addUserPermission(new AccessPermission(false, true, _jill));
+
+        // ACT
+        final boolean isAccessible = p.isWriteableBy(_jill);
+        final boolean isNotAccessible = p.isWriteableBy(_jack);
+
+        // ASSERT
+        assertTrue(p.isSecure());
+        assertTrue(isAccessible);
+        assertFalse(isNotAccessible);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testWriteCheckHandlesNullUser() {
+
+        // ARRANGE
+        final PageEntity p = new PageEntity();
+
+        // ACT
+        final boolean isAccessible = p.isWriteableBy(null);
+
+        // ASSERT
+        assertTrue(isAccessible);
     }
 
 
@@ -227,10 +342,27 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final PageEntity p = new PageEntity();
-        p.addGroupPermission(new AccessPermission(true, true, FOO));
+        p.addGroupPermission(new AccessPermission(true, false, FOO));
 
         // ACT
         final boolean isAccessible = p.isReadableBy(null);
+
+        // ASSERT
+        assertFalse(isAccessible);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testSecureResourceUnwriteableToNullUser() {
+
+        // ARRANGE
+        final PageEntity p = new PageEntity();
+        p.addGroupPermission(new AccessPermission(false, true, FOO));
+
+        // ACT
+        final boolean isAccessible = p.isWriteableBy(null);
 
         // ASSERT
         assertFalse(isAccessible);
@@ -245,7 +377,7 @@ public final class ResourceTest extends TestCase {
         // ARRANGE
         final FolderEntity f = new FolderEntity();
         final PageEntity p = new PageEntity();
-        p.addGroupPermission(new AccessPermission(true, true, FOO));
+        p.addGroupPermission(new AccessPermission(false, false, FOO));
         f.add(p);
 
         // ACT
@@ -263,9 +395,9 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final FolderEntity f = new FolderEntity();
-        f.addGroupPermission(new AccessPermission(true, true, FOO));
+        f.addGroupPermission(new AccessPermission(false, false, FOO));
         final PageEntity p = new PageEntity();
-        p.addGroupPermission(new AccessPermission(true, true, BAR));
+        p.addGroupPermission(new AccessPermission(false, false, BAR));
         f.add(p);
 
         // ACT
@@ -283,7 +415,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final FolderEntity f = new FolderEntity();
-        f.addGroupPermission(new AccessPermission(true, true, FOO));
+        f.addGroupPermission(new AccessPermission(false, false, FOO));
         final PageEntity p = new PageEntity();
         f.add(p);
 
@@ -320,7 +452,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final PageEntity p = new PageEntity();
-        p.addGroupPermission(new AccessPermission(true, true, FOO));
+        p.addGroupPermission(new AccessPermission(false, false, FOO));
 
         // ACT
         final boolean secure = p.isSecure();
@@ -353,9 +485,9 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final FolderEntity f = new FolderEntity();
-        f.addGroupPermission(new AccessPermission(true, true, BAR));
+        f.addGroupPermission(new AccessPermission(true, false, BAR));
         final ResourceEntity r = new PageEntity();
-        r.addGroupPermission(new AccessPermission(true, true, FOO));
+        r.addGroupPermission(new AccessPermission(true, false, FOO));
         f.add(r);
 
         final UserEntity tom = new UserEntity(new Username("paul"), "password");
@@ -367,6 +499,30 @@ public final class ResourceTest extends TestCase {
         // ASSERT
         assertFalse(isAccessible);
     }
+
+
+    /**
+     * Test.
+     */
+    public void testResourceWritabilityRespectsParentalAcl() {
+
+        // ARRANGE
+        final FolderEntity f = new FolderEntity();
+        f.addGroupPermission(new AccessPermission(false, true, BAR));
+        final ResourceEntity r = new PageEntity();
+        r.addGroupPermission(new AccessPermission(false, true, FOO));
+        f.add(r);
+
+        final UserEntity tom = new UserEntity(new Username("paul"), "password");
+        tom.addGroup(FOO);
+
+        // ACT
+        final boolean isAccessible = r.isWriteableBy(tom);
+
+        // ASSERT
+        assertFalse(isAccessible);
+    }
+
 
     /**
      * Test.
@@ -386,6 +542,45 @@ public final class ResourceTest extends TestCase {
         assertTrue(isAccessible);
     }
 
+
+    /**
+     * Test.
+     */
+    public void testResourcesWithEmptyAclAreWriteable() {
+
+        // ARRANGE
+        final ResourceEntity r = new PageEntity();
+        r.clearGroupAcl();
+        r.clearUserAcl();
+        final UserEntity tom = new UserEntity(new Username("paul"), "password");
+
+        // ACT
+        final boolean isAccessible = r.isWriteableBy(tom);
+
+        // ASSERT
+        assertTrue(isAccessible);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testResourceIsWriteableToUser() {
+
+        // ARRANGE
+        final ResourceEntity r = new PageEntity();
+        r.addGroupPermission(new AccessPermission(false, true, FOO));
+        final UserEntity tom = new UserEntity(new Username("paul"), "password");
+        tom.addGroup(FOO);
+
+        // ACT
+        final boolean isAccessible = r.isWriteableBy(tom);
+
+        // ASSERT
+        assertTrue(isAccessible);
+    }
+
+
     /**
      * Test.
      */
@@ -393,7 +588,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final ResourceEntity r = new PageEntity();
-        r.addGroupPermission(new AccessPermission(true, true, FOO));
+        r.addGroupPermission(new AccessPermission(true, false, FOO));
         final UserEntity tom = new UserEntity(new Username("paul"), "password");
         tom.addGroup(FOO);
 
@@ -403,6 +598,7 @@ public final class ResourceTest extends TestCase {
         // ASSERT
         assertTrue(isAccessible);
     }
+
 
     /**
      * Test.
@@ -411,8 +607,8 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final ResourceEntity r = new PageEntity();
-        r.addGroupPermission(new AccessPermission(true, true, FOO));
-        r.addGroupPermission(new AccessPermission(true, true, BAR));
+        r.addGroupPermission(new AccessPermission(true, false, FOO));
+        r.addGroupPermission(new AccessPermission(true, false, BAR));
         final UserEntity tom = new UserEntity(new Username("paul"), "password");
         tom.addGroup(FOO);
 
@@ -423,6 +619,27 @@ public final class ResourceTest extends TestCase {
         assertTrue(isAccessible);
     }
 
+
+    /**
+     * Test.
+     */
+    public void testGroupsOnResourceUseOrLogicForWrite() {
+
+        // ARRANGE
+        final ResourceEntity r = new PageEntity();
+        r.addGroupPermission(new AccessPermission(false, true, FOO));
+        r.addGroupPermission(new AccessPermission(false, true, BAR));
+        final UserEntity tom = new UserEntity(new Username("paul"), "password");
+        tom.addGroup(FOO);
+
+        // ACT
+        final boolean isAccessible = r.isWriteableBy(tom);
+
+        // ASSERT
+        assertTrue(isAccessible);
+    }
+
+
     /**
      * Test.
      */
@@ -430,11 +647,11 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final FolderEntity f = new FolderEntity();
-        f.addGroupPermission(new AccessPermission(true, true, BAR));
-        f.addGroupPermission(new AccessPermission(true, true, BAZ));
+        f.addGroupPermission(new AccessPermission(true, false, BAR));
+        f.addGroupPermission(new AccessPermission(true, false, BAZ));
         final ResourceEntity r = new PageEntity();
-        r.addGroupPermission(new AccessPermission(true, true, FOO));
-        r.addGroupPermission(new AccessPermission(true, true, FOZ));
+        r.addGroupPermission(new AccessPermission(true, false, FOO));
+        r.addGroupPermission(new AccessPermission(true, false, FOZ));
         f.add(r);
 
         final UserEntity tom = new UserEntity(new Username("paul"), "password");
@@ -448,6 +665,33 @@ public final class ResourceTest extends TestCase {
         assertTrue(isAccessible);
     }
 
+
+    /**
+     * Test.
+     */
+    public void testGroupsOnParentUseAndLogicForWrite() {
+
+        // ARRANGE
+        final FolderEntity f = new FolderEntity();
+        f.addGroupPermission(new AccessPermission(false, true, BAR));
+        f.addGroupPermission(new AccessPermission(false, true, BAZ));
+        final ResourceEntity r = new PageEntity();
+        r.addGroupPermission(new AccessPermission(false, true, FOO));
+        r.addGroupPermission(new AccessPermission(false, true, FOZ));
+        f.add(r);
+
+        final UserEntity tom = new UserEntity(new Username("paul"), "password");
+        tom.addGroup(FOO);
+        tom.addGroup(BAR);
+
+        // ACT
+        final boolean isAccessible = r.isWriteableBy(tom);
+
+        // ASSERT
+        assertTrue(isAccessible);
+    }
+
+
     /**
      * Test.
      */
@@ -455,7 +699,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final ResourceEntity r = new PageEntity();
-        r.addGroupPermission(new AccessPermission(true, true, FOO));
+        r.addGroupPermission(new AccessPermission(true, false, FOO));
 
         // ACT
         final boolean isAccessible = r.isReadableBy(_jack);
@@ -464,14 +708,32 @@ public final class ResourceTest extends TestCase {
         assertFalse(isAccessible);
     }
 
+
+    /**
+     * Test.
+     */
+    public void testResourceIsNotWriteableByUser() {
+
+        // ARRANGE
+        final ResourceEntity r = new PageEntity();
+        r.addGroupPermission(new AccessPermission(false, true, FOO));
+
+        // ACT
+        final boolean isAccessible = r.isWriteableBy(_jack);
+
+        // ASSERT
+        assertFalse(isAccessible);
+    }
+
+
     /**
      * Test.
      */
     public void testGroupsProperty() {
 
         // ARRANGE
-        final AccessPermission foo = new AccessPermission(true, true, FOO);
-        final AccessPermission bar = new AccessPermission(true, true, BAR);
+        final AccessPermission foo = new AccessPermission(false, false, FOO);
+        final AccessPermission bar = new AccessPermission(false, false, BAR);
         final ResourceEntity r = new PageEntity();
 
         // ACT

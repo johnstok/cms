@@ -32,9 +32,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
-import java.util.UUID;
 
-import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
@@ -43,12 +41,11 @@ import org.apache.lucene.search.Filter;
 import org.apache.lucene.util.OpenBitSet;
 
 import ccc.api.core.ACL;
-import ccc.api.core.ACL.Entry;
-import ccc.api.types.DBC;
+import ccc.api.core.AccessController;
 
 
 /**
- * TODO: Add a description for this type.
+ * Lucene filter that applies access control for a search result.
  *
  * @author Civic Computing Ltd.
  */
@@ -56,10 +53,8 @@ public class AclFilter
     extends
         Filter {
 
-    private static final Logger LOG  = Logger.getLogger(AclFilter.class);
-
-    private final ACL _perms;
-    private final String _field;
+    private final AccessController _ac;
+    private final String           _field;
 
 
     /**
@@ -70,7 +65,7 @@ public class AclFilter
      */
     public AclFilter(final String field, final ACL perms) {
         _field = field;
-        _perms = DBC.require().notNull(perms);
+        _ac = new AccessController(perms);
     }
 
 
@@ -86,7 +81,7 @@ public class AclFilter
             final Document d = reader.document(i);
             final Field aclField = d.getField(_field);
             if (null!=aclField
-                  && isAccessible(deserialise(aclField.getBinaryValue()))) {
+                  && _ac.canRead(deserialise(aclField.getBinaryValue()))) {
                 docs.set(i);
             }
         }
@@ -95,55 +90,12 @@ public class AclFilter
     }
 
 
-    private boolean isAccessible(final Collection<ACL> docAcl) {
-        for (final ACL acl : docAcl) {
-            if (!isReadable(acl)) { return false; }
-        }
-        return true;
-    }
-
-
-    private boolean isReadable(final ACL acl) {
-        if (acl.getGroups().isEmpty() && acl.getUsers().isEmpty()) {
-            return true;
-        }
-
-        for (final Entry group : acl.getGroups()) {
-            if (group.isReadable() && permsIncludeGroup(group.getPrincipal())) {
-                return true;
-            }
-        }
-        for (final Entry user : acl.getUsers()) {
-            if (user.isReadable() && permsIncludeUser(user.getPrincipal())) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    private boolean permsIncludeUser(final UUID principal) {
-        for (final Entry user : _perms.getUsers()) {
-            if (principal.equals(user.getPrincipal())) { return true; }
-        }
-        return false;
-    }
-
-
-    private boolean permsIncludeGroup(final UUID principal) {
-        for (final Entry group : _perms.getGroups()) {
-            if (principal.equals(group.getPrincipal())) { return true; }
-        }
-        return false;
-    }
-
-
     /**
-     * TODO: Add a description for this method.
+     * Serialise a collection of ACLs..
      *
-     * @param acl
-     * @return
+     * @param acl The collection of ACLs to serialise.
+     *
+     * @return The serialised collection, as a byte array.
      */
     static byte[] serialise(final Collection<ACL> acl) {
         try {
@@ -158,11 +110,13 @@ public class AclFilter
 
 
     /**
-     * TODO: Add a description for this method.
+     * De-serialise a collection of ACL objects.
      *
-     * @param acl
-     * @return
+     * @param bytes The serialised representation.
+     *
+     * @return The de-serialised collection.
      */
+    @SuppressWarnings("unchecked") // API doesn't support generics.
     static Collection<ACL> deserialise(final byte[] bytes) {
         try {
             final ByteArrayInputStream is = new ByteArrayInputStream(bytes);
