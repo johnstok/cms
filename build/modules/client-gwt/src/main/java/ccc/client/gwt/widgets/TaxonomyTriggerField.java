@@ -28,11 +28,11 @@ package ccc.client.gwt.widgets;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
 import ccc.client.actions.FindFileAction;
+import ccc.client.actions.FindResourceWithPathAction;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 
@@ -76,10 +76,10 @@ TriggerField<List<String>> {
      * Constructor.
      *
      * @param targetRoot The root resource containing resources.
-     * @param vocabularyID The id of the vocabulary.
+     * @param vocabularyPath The path of the vocabulary.
      */
     public TaxonomyTriggerField(final ResourceSummary targetRoot,
-                                final String vocabularyID) {
+                                final String vocabularyPath) {
         super();
 
         setEditable(false);
@@ -88,13 +88,23 @@ TriggerField<List<String>> {
             Events.TriggerClick,
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be1) {
-                    new FindFileAction(UUID.fromString(vocabularyID)) {
+                    new FindResourceWithPathAction(vocabularyPath) {
+
                         @Override
-                        public void onSuccess(final File item) {
-                            final TaxonomySelector ts =
-                                new TaxonomySelector(item.getContent());
-                            ts.show();
-                            ts.checkSelected(_terms);
+                        protected void execute(final ResourceSummary resource) {
+                            if (resource == null) {
+                                return;
+                            }
+
+                            new FindFileAction(resource.getId()) {
+                                @Override
+                                public void onSuccess(final File item) {
+                                    final TaxonomySelector ts =
+                                        new TaxonomySelector(item.getContent());
+                                    ts.show();
+                                    ts.checkSelected(_terms);
+                                }
+                            }.execute();
                         }
                     }.execute();
                 }

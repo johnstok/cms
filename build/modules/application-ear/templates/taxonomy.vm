@@ -3,6 +3,8 @@
   #set($templateid = $resource.getTemplate())
   #set($template = $templates.retrieve($templateid))
   #set($definition = $template.getDefinition())
-  #set($vocabularyId = $uuid.fromString($taxonomy.resolveVocabularyID($field, $definition)))
+  #set($vocabularyPath = $taxonomy.resolveVocabularyID($field, $definition))
+  #set($vocabularyId = $resources.resourceForPathSecure($vocabularyPath).getId())
   #set($vocabulary = $files.retrieve($vocabularyId).getContent())
 #end
+
