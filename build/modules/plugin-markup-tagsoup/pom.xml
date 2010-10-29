@@ -2,13 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <artifactId>build</artifactId>
+        <artifactId>defaults</artifactId>
         <groupId>com.civicuk.cc</groupId>
         <version>7.3.0-SNAPSHOT</version>
     </parent>
-    <properties>
-        <parent_basedir>${basedir}/../..</parent_basedir>
-    </properties>
+
     <artifactId>plugin-markup-tagsoup</artifactId>
     <name>plugin-markup-tagsoup</name>
     
