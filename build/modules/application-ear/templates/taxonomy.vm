@@ -8,3 +8,10 @@
   #set($vocabulary = $files.retrieve($vocabularyId).getContent())
 #end
 
+## Lists selected vocabulary term titles of the page
+#macro(listSelected $field $vocabulary)
+  #set($terms = $resource.getParagraph($field).getList())
+  #foreach($term in $terms)
+  <p>$taxonomy.resolveTermTitle($vocabulary, $term)</p>
+  #end
+#end
