@@ -137,6 +137,38 @@ public class SearchEngineAcceptanceTest
     /**
      * Test.
      */
+    public void testFindChinese() {
+
+        // ARRANGE
+        final String searchTerm = "案例学习"+uid();
+        final Resource parent = getCommands().resourceForPath("");
+        final Page page   = tempPage(parent.getId(), null);
+
+        final Resource metadata = new Resource();
+        metadata.setTitle(searchTerm);
+        metadata.setDescription(searchTerm);
+        metadata.setTags(Collections.singleton(searchTerm));
+        metadata.setMetadata(Collections.singletonMap("searchable", "true"));
+        getCommands().lock(page.getId());
+        getCommands().updateMetadata(page.getId(), metadata);
+        getCommands().publish(page.getId());
+
+        getSearch().index();
+        delay(); // Allow indexing to complete.
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(searchTerm, 10, 1);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     */
     public void testIdSearch() {
 
         // ARRANGE

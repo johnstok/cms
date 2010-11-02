@@ -41,6 +41,7 @@ import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
 import ccc.plugins.scripting.TextProcessor;
+import ccc.web.TmpRenderer;
 import ccc.web.exceptions.RequestFailedException;
 
 
@@ -81,7 +82,9 @@ public class ScriptBody
             new PrintWriter(new OutputStreamWriter(os, charset));
 
         final List<String> whiteList =
-            Resources.readIntoList("/scripting_whitelist.txt", Resources.UTF8);
+            Resources.readIntoList(
+                "/scripting_whitelist.txt",
+                Charset.forName(TmpRenderer.DEFAULT_CHARSET));
 
         final TextProcessor scriptRunner =
             new PluginFactory().createScripting();

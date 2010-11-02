@@ -77,22 +77,4 @@ public class PageBody
             throw new RequestFailedException(e);
         }
     }
-
-
-//    /** BUILT_IN_PAGE_TEMPLATE : Template. */
-//    public static final Template BUILT_IN_PAGE_TEMPLATE =
-//        new Template(
-//            "BUILT_IN_PAGE_TEMPLATE",
-//            "BUILT_IN_PAGE_TEMPLATE",
-//            Resources.readIntoString(
-//                PageBody.class.getResource(
-//                    "/ccc/content/server/default-page-template.txt"),
-//                Charset.forName("UTF-8")),
-//            "<fields/>",
-//            MimeType.HTML,
-//            new RevisionMetadata(
-//                new Date(),
-//                User.SYSTEM_USER,
-//                true,
-//                "Created."));
 }

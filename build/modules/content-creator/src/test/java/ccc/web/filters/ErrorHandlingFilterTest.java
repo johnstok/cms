@@ -28,8 +28,6 @@ package ccc.web.filters;
 
 import static org.easymock.EasyMock.*;
 
-import java.util.HashMap;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletOutputStream;
@@ -70,8 +68,7 @@ public class ErrorHandlingFilterTest
 
         // ACT
         f.doFilter(
-            new ServletRequestStub(
-                "/context", "/servlet", "/path", new HashMap<String, String>()),
+            new ServletRequestStub("/context", "/servlet", "/path"),
             _response,
             new FilterChain() {
                 @Override
@@ -102,16 +99,15 @@ public class ErrorHandlingFilterTest
 
         // ACT
         f.doFilter(
-            new ServletRequestStub(
-                "/context", "/servlet", "/path", new HashMap<String, String>()),
+            new ServletRequestStub("/context", "/servlet", "/path"),
                 _response,
                 new FilterChain() {
-                @Override
-                public void doFilter(final ServletRequest request,
-                                     final ServletResponse response) {
-                    throw new RedirectRequiredException("/foo");
-                }
-            });
+                    @Override
+                    public void doFilter(final ServletRequest request,
+                                         final ServletResponse response) {
+                        throw new RedirectRequiredException("/foo");
+                    }
+                });
 
         // ASSERT
         verifyAll();
@@ -134,16 +130,15 @@ public class ErrorHandlingFilterTest
 
         // ACT
         f.doFilter(
-            new ServletRequestStub(
-                "/context", "/servlet", "/path", new HashMap<String, String>()),
+            new ServletRequestStub("/context", "/servlet", "/path"),
                 _response,
                 new FilterChain() {
-                @Override
-                public void doFilter(final ServletRequest request,
-                                     final ServletResponse response) {
-                    throw new AuthenticationRequiredException("/foo");
-                }
-            });
+                    @Override
+                    public void doFilter(final ServletRequest request,
+                                         final ServletResponse response) {
+                        throw new AuthenticationRequiredException("/foo");
+                    }
+                });
 
         // ASSERT
         verifyAll();
@@ -169,16 +164,15 @@ public class ErrorHandlingFilterTest
 
         // ACT
         f.doFilter(
-            new ServletRequestStub(
-                "/context", "/servlet", "/path", new HashMap<String, String>()),
+            new ServletRequestStub("/context", "/servlet", "/path"),
                 _response,
                 new FilterChain() {
-                @Override
-                public void doFilter(final ServletRequest request,
-                                     final ServletResponse response) {
-                    throw new RuntimeException();
-                }
-            });
+                    @Override
+                    public void doFilter(final ServletRequest request,
+                                         final ServletResponse response) {
+                        throw new RuntimeException();
+                    }
+                });
 
         // ASSERT
         verifyAll();
@@ -204,19 +198,15 @@ public class ErrorHandlingFilterTest
         // ACT
         try {
             f.doFilter(
-                new ServletRequestStub(
-                    "/context",
-                    "/servlet",
-                    "/path",
-                    new HashMap<String, String>()),
+                new ServletRequestStub("/context", "/servlet", "/path"),
                 _response,
                 new FilterChain() {
-                @Override
-                public void doFilter(final ServletRequest request,
-                                     final ServletResponse response) {
-                    throw rootCause;
-                }
-            });
+                    @Override
+                    public void doFilter(final ServletRequest request,
+                                         final ServletResponse response) {
+                        throw rootCause;
+                    }
+                });
 
         // ASSERT
         } catch (final RequestFailedException e) {
@@ -243,16 +233,15 @@ public class ErrorHandlingFilterTest
 
         // ACT
         f.doFilter(
-            new ServletRequestStub(
-                "/context", "/servlet", "/path", new HashMap<String, String>()),
+            new ServletRequestStub("/context", "/servlet", "/path"),
                 _response,
                 new FilterChain() {
-                @Override
-                public void doFilter(final ServletRequest request,
-                                     final ServletResponse response) {
-                    throw new RuntimeException(new ClientAbortException());
-                }
-            });
+                    @Override
+                    public void doFilter(final ServletRequest request,
+                                         final ServletResponse response) {
+                        throw new RuntimeException(new ClientAbortException());
+                    }
+                });
 
         // ASSERT
         verifyAll();
@@ -318,6 +307,6 @@ public class ErrorHandlingFilterTest
      * @author Civic Computing Ltd.
      */
     private static final class ClientAbortException extends Exception {
-        /* No methods. */
+        ClientAbortException() { super(); }
     }
 }

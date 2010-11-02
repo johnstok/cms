@@ -25,9 +25,10 @@ public final class ServletRequestStub
     private String _contextPath;
     private String _servletPath;
     private String _pathInfo;
-    private Map<String, String> _queryParams;
+    private Map<String, String[]> _queryParams;
     private final Map<String, Object> _attributes =
         new HashMap<String, Object>();
+
 
     /**
      * Constructor.
@@ -40,11 +41,29 @@ public final class ServletRequestStub
     public ServletRequestStub(final String contextPath,
                               final String servletPath,
                               final String pathInfo,
-                              final Map<String, String> queryParams) {
+                              final Map<String, String[]> queryParams) {
         _contextPath = contextPath;
         _servletPath = servletPath;
         _pathInfo = pathInfo;
         _queryParams = queryParams;
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param contextPath The request's context path.
+     * @param servletPath The request's servlet path.
+     * @param pathInfo The request's path info.
+     */
+    public ServletRequestStub(final String contextPath,
+                              final String servletPath,
+                              final String pathInfo) {
+        this(
+            contextPath,
+            servletPath,
+            pathInfo,
+            new HashMap<String, String[]>());
     }
 
     /** {@inheritDoc} */
@@ -79,15 +98,13 @@ public final class ServletRequestStub
 
     /** {@inheritDoc} */
     @Override
-    @SuppressWarnings("unchecked") // Existing API.
-    public Enumeration getHeaderNames() {
+    public Enumeration<String> getHeaderNames() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
     /** {@inheritDoc} */
     @Override
-    @SuppressWarnings("unchecked") // Existing API.
-    public Enumeration getHeaders(final String name) {
+    public Enumeration<String> getHeaders(final String name) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
@@ -207,8 +224,7 @@ public final class ServletRequestStub
 
     /** {@inheritDoc} */
     @Override
-    @SuppressWarnings("unchecked") // Existing API.
-    public Enumeration getAttributeNames() {
+    public Enumeration<String> getAttributeNames() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
@@ -262,35 +278,34 @@ public final class ServletRequestStub
 
     /** {@inheritDoc} */
     @Override
-    @SuppressWarnings("unchecked") // Existing API.
-    public Enumeration getLocales() {
+    public Enumeration<Locale> getLocales() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
     /** {@inheritDoc} */
     @Override
     public String getParameter(final String name) {
-        return _queryParams.get(name);
+        return _queryParams.get(name)[0];
     }
 
     /** {@inheritDoc} */
     @Override
-    @SuppressWarnings("unchecked") // Existing API.
-    public Map getParameterMap() {
-        return new HashMap<String, String>(_queryParams);
+    public Map<String, String[]> getParameterMap() {
+        return new HashMap<String, String[]>(_queryParams);
     }
 
     /** {@inheritDoc} */
     @Override
-    @SuppressWarnings("unchecked") // Existing API.
-    public Enumeration getParameterNames() {
-        throw new UnsupportedOperationException("Method not implemented.");
+    public Enumeration<String> getParameterNames() {
+        return
+            new CharsetConvertingServletRequest.IteratorEnumeration(
+                _queryParams.keySet().iterator());
     }
 
     /** {@inheritDoc} */
     @Override
     public String[] getParameterValues(final String name) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return _queryParams.get(name);
     }
 
     /** {@inheritDoc} */

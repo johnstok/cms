@@ -67,6 +67,10 @@
         <filter-name>method-filter</filter-name>
         <filter-class>ccc.web.filters.MethodOverrideFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>charset-filter</filter-name>
+        <filter-class>ccc.web.filters.CharsetFilter</filter-class>
+    </filter>
 
     <servlet>
         <servlet-name>Resteasy</servlet-name>
@@ -114,6 +118,11 @@
         <servlet-name>login-error-page</servlet-name>
         <jsp-file>/static/LoginError.html</jsp-file>
     </servlet>
+    
+    <filter-mapping>
+        <filter-name>charset-filter</filter-name>
+        <servlet-name>*</servlet-name>
+    </filter-mapping> 
 
     <filter-mapping>
         <filter-name>method-filter</filter-name>

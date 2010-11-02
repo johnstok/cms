@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.plugins.scripting.Context;
+import ccc.web.TmpRenderer;
 
 /**
  * Tests for the {@link RenderResourceAction} class.
@@ -64,7 +65,8 @@ public final class RenderResourceActionTest extends TestCase {
 
         _response.reset();
         expect(_response.getOutputStream()).andReturn(os);
-        expect(_response.getCharacterEncoding()).andReturn("UTF-8");
+        expect(_response.getCharacterEncoding())
+            .andReturn(TmpRenderer.DEFAULT_CHARSET);
         b.write(os, null, new Context(), null);
         replayAll();
 
@@ -127,7 +129,10 @@ public final class RenderResourceActionTest extends TestCase {
 
         /** {@inheritDoc} */
         @Override public String toString() {
-            return new String(_baos.toByteArray(), Charset.forName("UTF-8"));
+            return
+                new String(
+                    _baos.toByteArray(),
+                    Charset.forName(TmpRenderer.DEFAULT_CHARSET));
         }
     }
 

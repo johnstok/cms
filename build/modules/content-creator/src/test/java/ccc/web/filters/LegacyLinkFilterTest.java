@@ -66,10 +66,9 @@ public class LegacyLinkFilterTest
 
         // ACT
         f.doFilter(
-            new ServletRequestStub(
-                "/shc", "", goodPath, new HashMap<String, String>()),
-                null,
-                Testing.stub(FilterChain.class));
+            new ServletRequestStub("/shc", "", goodPath),
+            null,
+            Testing.stub(FilterChain.class));
 
         // ASSERT
     }
@@ -96,10 +95,9 @@ public class LegacyLinkFilterTest
         // ACT
         try {
             f.doFilter(
-                new ServletRequestStub(
-                    "/shc", "", badPath, new HashMap<String, String>()),
-                    null,
-                    null);
+                new ServletRequestStub("/shc", "", badPath),
+                null,
+                null);
 
         // ASSERT
         } catch (final RedirectRequiredException rre) {
@@ -131,10 +129,9 @@ public class LegacyLinkFilterTest
         // ACT
         try {
             f.doFilter(
-                new ServletRequestStub(
-                    "/shc", "", badPath, new HashMap<String, String>()),
-                    null,
-                    null);
+                new ServletRequestStub("/shc", "", badPath),
+                null,
+                null);
 
             // ASSERT
         } catch (final RedirectRequiredException rre) {
@@ -160,8 +157,7 @@ public class LegacyLinkFilterTest
         // ACT
         try {
             f.doFilter(
-                new ServletRequestStub(
-                    "/shc", "", badPath, new HashMap<String, String>()),
+                new ServletRequestStub("/shc", "", badPath),
                 null,
                 null);
 
@@ -188,10 +184,9 @@ public class LegacyLinkFilterTest
         // ACT
         try {
             f.doFilter(
-                new ServletRequestStub(
-                    "/shc", "", badPath, new HashMap<String, String>()),
-                    null,
-                    null);
+                new ServletRequestStub("/shc", "", badPath),
+                null,
+                null);
 
             // ASSERT
         } catch (final RedirectRequiredException rre) {
@@ -216,10 +211,9 @@ public class LegacyLinkFilterTest
         // ACT
         try {
             f.doFilter(
-                new ServletRequestStub(
-                    "/shc", "", badPath, new HashMap<String, String>()),
-                    null,
-                    null);
+                new ServletRequestStub("/shc", "", badPath),
+                null,
+                null);
 
             // ASSERT
         } catch (final RedirectRequiredException rre) {
@@ -244,10 +238,11 @@ public class LegacyLinkFilterTest
 
         final LegacyLinkFilter f = new LegacyLinkFilter(_resources);
         final String goodPath = "/foo";
-        final Map<String, String> queryParams = new HashMap<String, String>();
-        queryParams.put("p_applic", "CCC");
-        queryParams.put("p_service", "Content.show");
-        queryParams.put("pContentID", "415");
+        final Map<String, String[]> queryParams =
+            new HashMap<String, String[]>();
+        queryParams.put("p_applic",   new String[] {"CCC"});
+        queryParams.put("p_service",  new String[] {"Content.show"});
+        queryParams.put("pContentID", new String[] {"415"});
 
         // ACT
         try {

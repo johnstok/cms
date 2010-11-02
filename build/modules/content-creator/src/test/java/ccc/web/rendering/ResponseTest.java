@@ -39,6 +39,7 @@ import ccc.api.types.Duration;
 import ccc.api.types.MimeType;
 import ccc.commons.Resources;
 import ccc.plugins.scripting.Script;
+import ccc.web.TmpRenderer;
 
 
 /**
@@ -91,7 +92,7 @@ public class ResponseTest
     public void testCharSetProperty() {
 
         // ARRANGE
-        _r.setCharSet("UTF-8");
+        _r.setCharSet(TmpRenderer.DEFAULT_CHARSET);
 
         // ACT
         final Map<String, Header>headers = _r.getHeaders();
@@ -99,7 +100,8 @@ public class ResponseTest
         // ASSERT
         assertTrue(
             headers.containsValue(
-                new CharEncodingHeader(Charset.forName("UTF-8"))));
+                new CharEncodingHeader(
+                    Charset.forName(TmpRenderer.DEFAULT_CHARSET))));
     }
 
     /**
@@ -181,7 +183,7 @@ public class ResponseTest
                     Resources.readIntoString(
                         PageBody.class.getResource(
                         "/ccc/content/server/default-page-template.txt"),
-                        Charset.forName("UTF-8")),
+                        Charset.forName(TmpRenderer.DEFAULT_CHARSET)),
                 "test"));
         final Response r = new Response(expected);
 
@@ -297,9 +299,9 @@ public class ResponseTest
 
         // ARRANGE
         final Response r = new Response(new EmptyBody());
-        r.setCharSet("UTF-8");
+        r.setCharSet(TmpRenderer.DEFAULT_CHARSET);
 
-        _response.setCharacterEncoding("UTF-8");
+        _response.setCharacterEncoding(TmpRenderer.DEFAULT_CHARSET);
         replayAll();
 
         // ACT

@@ -52,13 +52,14 @@ import ccc.web.rendering.SearchBody;
 
 
 /**
- * TODO: Add a description for this type.
+ * Generates a HTTP response for the supplied resource.
  *
  * @author Civic Computing Ltd.
  */
 public class TmpRenderer {
 
-    private static final String DEFAULT_CHARSET = "UTF-8";
+    /** DEFAULT_CHARSET : String. */
+    public static final String DEFAULT_CHARSET = "UTF-8";
 
     private final Templates _templates;
     private final Resources _resources;
@@ -214,6 +215,8 @@ public class TmpRenderer {
         r.setMimeType(s.getMimeType());
         r.setLength(s.getSize());
         r.setExpiry(s.getCacheDuration());
+        final String charset = s.getCharset();
+        if (null!=charset) { r.setCharSet(charset); }
         if (s.isCacheable()) {
             r.setEtag(s.getId()+"-"+s.getRevision(), false);
             r.setLastModified(s.getDateChanged());
