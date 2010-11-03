@@ -1647,4 +1647,11 @@ public interface UIConstants {
      */
     String selectTerms();
 
+    /**
+     * "term(s) selected".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String termsSelected();
+
 }

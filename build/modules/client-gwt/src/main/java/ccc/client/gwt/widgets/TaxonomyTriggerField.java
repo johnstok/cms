@@ -67,7 +67,7 @@ import com.google.gwt.xml.client.XMLParser;
  */
 public class TaxonomyTriggerField
 extends
-TriggerField<List<String>> {
+TriggerField<String> {
 
     private List<String> _terms;
 
@@ -128,7 +128,7 @@ TriggerField<List<String>> {
     public void setTerms(final List<String> terms) {
         _terms = terms;
         if (null!=_terms) {
-            setValue(_terms);
+            setValue(_terms.size()+" "+I18n.uiConstants.termsSelected());
         } else {
             setValue(null);
         }
