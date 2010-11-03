@@ -38,7 +38,7 @@ import ccc.api.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
-public class JaxrsRequestContext implements RequestContext {
+class JaxrsRequestContext implements RequestContext {
 
     private final String      _charEncoding;
     private final int         _contentLength;
@@ -59,7 +59,7 @@ public class JaxrsRequestContext implements RequestContext {
                                final int contentLength,
                                final String contentType,
                                final InputStream inputStream) {
-        _charEncoding = charEncoding;
+        _charEncoding = DBC.require().notEmpty(charEncoding);
         DBC.require().greaterThan(0, contentLength);
         _contentLength = contentLength;
         _contentType = DBC.require().notEmpty(contentType);

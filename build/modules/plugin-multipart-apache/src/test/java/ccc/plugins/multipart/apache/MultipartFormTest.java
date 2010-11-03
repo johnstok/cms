@@ -142,6 +142,53 @@ public class MultipartFormTest extends TestCase {
             f.getFormItemNames());
     }
 
+
+    /**
+     * Test.
+     */
+    public void testParseUnicode() {
+
+        // ARRANGE
+        final String charEncoding = null;
+        final int contentLength = 1068;
+        final String contentType =
+            "multipart/form-data;"
+            + "boundary=\"---------------------------"
+            + "1145133423187368413760068182\"";
+
+
+        // ACT
+        final MultipartForm f =
+            new MultipartForm(
+                charEncoding,
+                contentLength,
+                contentType,
+                getClass().getResourceAsStream("/unicode.multipart"));
+
+        // ASSERT
+        assertEquals(
+            "案例学习", f.getString("‡"));
+        assertEquals(
+            "Created.", f.getString("comment"));
+        assertEquals(
+            "", f.getString("majorEdit"));
+        assertEquals(
+            "4acbac13-679c-4abc-8d51-d6c013db74d2", f.getString("path"));
+        assertEquals(
+            "Hello world!", f.getString("file"));
+        assertEquals(
+            "simple.txt", f.getString("fileName"));
+        assertEquals(
+            Arrays.asList(new String[] {
+                "‡",
+                "file",
+                "path",
+                "fileName",
+                "comment",
+            "majorEdit"}),
+            f.getFormItemNames());
+    }
+
     /**
      * Test.
      */
@@ -151,10 +198,10 @@ public class MultipartFormTest extends TestCase {
         final FileItem foo = new TestFileItem("foo");
         final List<FileItem> items =
             Arrays.asList(
-                new FileItem[]{foo });
+                new FileItem[]{foo});
 
         // ACT
-        final MultipartForm f = new MultipartForm(items);
+        final MultipartForm f = new MultipartForm(items, "UTF-8");
 
         assertSame("foo", f.getString("foo"));
 
@@ -215,7 +262,7 @@ public class MultipartFormTest extends TestCase {
         }
 
         public String getString(final String arg0) {
-            throw new UnsupportedOperationException("Method not implemented.");
+            return _fieldName;
         }
 
         public boolean isFormField() {

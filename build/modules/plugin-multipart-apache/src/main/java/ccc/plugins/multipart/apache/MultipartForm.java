@@ -28,6 +28,7 @@ package ccc.plugins.multipart.apache;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,8 +39,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.FileUploadBase
-       .FileSizeLimitExceededException;
+import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 
@@ -63,16 +63,20 @@ public class MultipartForm implements MultipartFormData {
         new HashMap<String, FileItem>();
     private final Map<String, FileItem> _files =
         new HashMap<String, FileItem>();
+    private final String _charEncoding;
 
 
     /**
      * Constructor.
      *
-     * @param items The list of items on this form.
+     * @param items        The list of items on this form.
+     * @param charEncoding The character encoding of the input stream.
      */
-    public MultipartForm(final List<FileItem> items) {
-        DBC.require().notNull(items);
+    public MultipartForm(final List<FileItem> items,
+                         final String charEncoding) {
+        _charEncoding = selectEncoding(charEncoding);
 
+        DBC.require().notNull(items);
         for (final FileItem item : items) {
             final String key = item.getFieldName();
 
@@ -105,7 +109,11 @@ public class MultipartForm implements MultipartFormData {
         this(
             parseFileItems(
                 new JaxrsRequestContext(
-                    charEncoding, contentLength, contentType, inputStream)));
+                    selectEncoding(charEncoding),
+                    contentLength,
+                    contentType,
+                    inputStream)),
+            charEncoding);
     }
 
 
@@ -150,8 +158,13 @@ public class MultipartForm implements MultipartFormData {
     /** {@inheritDoc} */
     @Override
     public String getString(final String string) {
-        final FileItem item = getFormItem(string);
-        return (null==item) ? null : item.getString();
+        try {
+            final FileItem item = getFormItem(string);
+            return (null==item) ? null : item.getString(_charEncoding);
+        } catch (final UnsupportedEncodingException e) {
+            throw new RuntimeException(
+                "JVM doesn't support encoding: "+_charEncoding, e);
+        }
     }
 
 
@@ -267,5 +280,10 @@ public class MultipartForm implements MultipartFormData {
         } catch (final RuntimeException e) {
             return defaultValue;
         }
+    }
+
+
+    private static String selectEncoding(final String charEncoding) {
+        return (null==charEncoding) ? "UTF-8" : charEncoding;
     }
 }
