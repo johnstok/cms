@@ -72,18 +72,15 @@ public class LoginDialog
             + " - "
             + getGlobals().getSetting(API.APPLICATION_NAME));
 
-        setPanelId("LoginPanel");
 
         final Html disclaimer = new Html(constants().disclaimer());
         getPanel().add(disclaimer);
 
         _username.setFieldLabel(constants().username());
-        _username.setId("username");
         _username.setAllowBlank(false);
         addField(_username);
 
         _password.setFieldLabel(constants().password());
-        _password.setId("password");
         _password.setPassword(true);
         _password.setAllowBlank(false);
         addField(_password);

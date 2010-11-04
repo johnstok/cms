@@ -285,7 +285,6 @@ public class ResourceTable
 
 
     private void setUpGrid() {
-        _grid.setId("ResourceGrid");
         _grid.setLoadMask(true);
         _grid.setBorders(false);
 

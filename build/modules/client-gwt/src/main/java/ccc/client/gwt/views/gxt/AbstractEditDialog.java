@@ -62,8 +62,6 @@ public abstract class AbstractEditDialog
     public AbstractEditDialog(final String title, final Globals globals) {
         super(title, globals);
 
-        _save.setId("save");
-
         _panel.setWidth("100%");
         _panel.setBorders(false);
         _panel.setBodyBorder(false);
@@ -83,16 +81,6 @@ public abstract class AbstractEditDialog
      */
     protected void addField(final Widget widget) {
         _panel.add(widget, new FormData("95%"));
-    }
-
-
-    /**
-     * Set the id for this dialog's form panel.
-     *
-     * @param id The id as a string.
-     */
-    protected void setPanelId(final String id) {
-        _panel.setId(id);
     }
 
 

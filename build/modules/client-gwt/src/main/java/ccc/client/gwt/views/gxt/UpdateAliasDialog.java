@@ -27,7 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.validator;
 import ccc.api.core.Alias;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
@@ -70,7 +70,6 @@ public class UpdateAliasDialog extends AbstractEditDialog {
         _alias = alias;
         setLayout(new FitLayout());
 
-        setPanelId("AliasPanel");
 
         _aliasName.setFieldLabel(constants().name());
         _aliasName.setValue(_alias.getName().toString());
@@ -80,7 +79,6 @@ public class UpdateAliasDialog extends AbstractEditDialog {
 
         _targetName.setFieldLabel(constants().target());
         _targetName.setValue(targetName);
-        _targetName.setId("target");
         _targetName.setEditable(false);
         addField(_targetName);
     }

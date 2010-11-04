@@ -27,7 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.validator;
 import ccc.api.core.User;
 import ccc.client.actions.UpdateCurrentUserAction;
 import ccc.client.core.I18n;
@@ -64,33 +64,26 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
 
         _username.setFieldLabel(constants().username());
         _username.setReadOnly(true);
-        _username.setId("username");
         _username.setValue(_user.getUsername().toString());
         addField(_username);
 
         _name.setFieldLabel(constants().fullName());
         _name.setAllowBlank(false);
-        _name.setId("name");
         _name.setValue(_user.getName());
         addField(_name);
 
         _email.setFieldLabel(constants().email());
         _email.setAllowBlank(false);
-        _email.setId("useremail");
         _email.setValue(_user.getEmail());
         addField(_email);
 
         _password1.setPassword(true);
         _password1.setFieldLabel(constants().newPassword());
-        _password1.setId("user_password");
         addField(_password1);
 
         _password2.setPassword(true);
         _password2.setFieldLabel(constants().confirmNewPassword());
-        _password2.setId("user_confirmPassword");
         addField(_password2);
-
-        setPanelId("UserPanel");
     }
 
     /** {@inheritDoc} */

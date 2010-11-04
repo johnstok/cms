@@ -127,7 +127,6 @@ public class MainMenu
         if (_user.hasPermission(Permission.USER_CREATE)
             ||_user.hasPermission(Permission.GROUP_CREATE)) {
             final Button item = new Button(_constants.users());
-            item.setId("users-menu");
             item.setMenu(itemMenu);
             add(item);
         }
@@ -154,7 +153,6 @@ public class MainMenu
                                        final String label) {
 
         final Button rootItem = new Button(label);
-        rootItem.setId(rootName+"Root-menu");
 
         final Menu rootMenu = new Menu();
         rootMenu.setEnableScrolling(false);

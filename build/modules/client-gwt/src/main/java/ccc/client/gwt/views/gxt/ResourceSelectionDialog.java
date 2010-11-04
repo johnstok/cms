@@ -98,7 +98,6 @@ public class ResourceSelectionDialog extends Window {
         );
 
         add(tabPanel);
-        save.setId("ResourceSelectSave");
         addButton(save);
     }
 

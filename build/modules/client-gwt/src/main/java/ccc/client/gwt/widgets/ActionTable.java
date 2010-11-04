@@ -92,7 +92,6 @@ public class ActionTable
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-        setId("action-details");
         setHeading(UI_CONSTANTS.actionDetails());
         setLayout(new FitLayout());
 
@@ -106,8 +105,6 @@ public class ActionTable
 
         _grid = new Grid<BeanModel>(_actionStore, cm);
         _grid.setAutoExpandColumn(ActionSummary.Properties.PATH);
-        _grid.setId("action-grid");
-
         add(_grid);
 
         _pagerBar = new PagingToolBar(PAGING_ROW_COUNT);

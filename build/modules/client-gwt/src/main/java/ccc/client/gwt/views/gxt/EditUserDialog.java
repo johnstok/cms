@@ -27,7 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.validator;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -82,26 +82,21 @@ public class EditUserDialog
 
         _username.setFieldLabel(constants().username());
         _username.setReadOnly(true);
-        _username.setId("username");
         _username.setValue(_userDTO.getUsername().toString());
         addField(_username);
 
         _name.setFieldLabel(constants().fullName());
         _name.setAllowBlank(false);
-        _name.setId("name");
         _name.setValue(_userDTO.getName());
         addField(_name);
 
         _email.setFieldLabel(constants().email());
         _email.setAllowBlank(false);
-        _email.setId("useremail");
         _email.setValue(_userDTO.getEmail());
         addField(_email);
 
         _groups = new GroupListField(allGroups, _userDTO.getGroups());
         addField(_groups);
-
-        setPanelId("UserPanel");
     }
 
     /** {@inheritDoc} */

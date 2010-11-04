@@ -27,7 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.validator;
 import ccc.api.core.User;
 import ccc.client.actions.UpdateUserPasswordAction;
 import ccc.client.core.I18n;
@@ -64,21 +64,16 @@ public class EditUserPwDialog extends AbstractEditDialog {
 
         _username.setFieldLabel(constants().username());
         _username.setReadOnly(true);
-        _username.setId("username");
         _username.setValue(_userDTO.getUsername().toString());
         addField(_username);
 
         _password1.setPassword(true);
         _password1.setFieldLabel(constants().password());
-        _password1.setId("user_password");
         addField(_password1);
 
         _password2.setPassword(true);
         _password2.setFieldLabel(constants().confirmPassword());
-        _password2.setId("user_confirmPassword");
         addField(_password2);
-
-        setPanelId("UserPwPanel");
     }
 
     /** {@inheritDoc} */

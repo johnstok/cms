@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.validator;
 
 import java.util.Set;
 
@@ -80,14 +80,12 @@ public class PageCommentDialog extends AbstractEditDialog {
         setWidth(DIALOG_WIDTH);
         setHeight(DIALOG_HEIGHT);
 
-        _majorEdit.setId("majorEdit");
         _majorEdit.setValue(Boolean.FALSE);
         _majorEdit.setBoxLabel(getUiConstants().yes());
         _majorEdit.setFieldLabel(getUiConstants().majorEdit());
         addField(_majorEdit);
 
         _comment.setFieldLabel(getUiConstants().comment());
-        _comment.setId("comment");
         addField(_comment);
     }
 

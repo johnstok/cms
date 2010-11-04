@@ -68,7 +68,6 @@ public class ResourceNavigator extends ContentPanel {
     public ResourceNavigator(final LeftRightPane view,
                       final ResourceSummary root,
                       final User user) {
-        setId("resource-navigator");
 
         _view = view;
 
@@ -80,7 +79,6 @@ public class ResourceNavigator extends ContentPanel {
             new EnhancedResourceTree(root, _view, _globals);
         _rootTrees.add(enhancedResourceTree);
         final ContentPanel contentPanel = new ContentPanel();
-        contentPanel.getHeader().setId(root.getName()+"-navigator");
         contentPanel.setAnimCollapse(false);
         contentPanel.setScrollMode(Scroll.AUTO);
         contentPanel.setHeading(I18n.uiConstants.content());
@@ -121,7 +119,6 @@ public class ResourceNavigator extends ContentPanel {
                           final String text,
                           final Tree actionTree) {
 
-        panel.getHeader().setId(id);
         panel.setAnimCollapse(false);
         panel.setScrollMode(Scroll.AUTO);
         panel.setHeading(text);

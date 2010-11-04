@@ -107,11 +107,9 @@ public class LinkSelectionDialog extends AbstractEditDialog {
         }
 
         _linkTitle.setFieldLabel(constants().title());
-        _linkTitle.setId("linkName");
         _linkTitle.setAllowBlank(false);
 
         _linkInnerText.setFieldLabel(constants().textOfTheLink());
-        _linkInnerText.setId("linkInnerText");
         _linkInnerText.setAllowBlank(false);
 
         _openInNew.setValue(new Boolean(openInNew));
@@ -119,7 +117,6 @@ public class LinkSelectionDialog extends AbstractEditDialog {
         _cbg.setFieldLabel(constants().openInNewWindow());
 
         _linkPath.setFieldLabel(constants().path());
-        _linkPath.setId("linkPath");
         _linkPath.setAllowBlank(false);
         _linkPath.addListener(Events.TriggerClick, new LinkListener());
 

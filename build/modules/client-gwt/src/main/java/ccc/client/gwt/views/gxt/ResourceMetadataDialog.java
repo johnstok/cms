@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.validator;
 
 import java.util.Collection;
 import java.util.Map;
@@ -58,8 +58,8 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 public class ResourceMetadataDialog extends AbstractEditDialog {
 
 
-    private ResourceSummary _resource;
-    private SingleSelectionModel _ssm;
+    private final ResourceSummary _resource;
+    private final SingleSelectionModel _ssm;
 
     private final TextField<String> _title = new TextField<String>();
     private final TextField<String> _description = new TextField<String>();
@@ -84,17 +84,14 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
 
         _title.setFieldLabel(constants().title());
         _title.setAllowBlank(false);
-        _title.setId("title");
         _title.setValue(resource.getTitle());
 
         _description.setFieldLabel(constants().description());
         _description.setAllowBlank(true);
-        _description.setId("description");
         _description.setValue(resource.getDescription());
 
         _tags.setFieldLabel(constants().tags());
         _tags.setAllowBlank(true);
-        _tags.setId("tags");
         _tags.setValue(tagString(resource.getTags()));
 
         addField(_title);

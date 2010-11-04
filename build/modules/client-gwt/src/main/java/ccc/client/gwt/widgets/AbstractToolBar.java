@@ -87,7 +87,6 @@ public class AbstractToolBar
         if (permission == null
             || _globals.currentUser().hasPermission(permission)) {
             final Button toolItem = new Button(text);
-            toolItem.setId(id);
             toolItem.addListener(Events.Select, new ListenerAction(action));
             add(toolItem);
         }
@@ -108,7 +107,6 @@ public class AbstractToolBar
         if (permission == null
             || _globals.currentUser().hasPermission(permission)) {
             final Button item = new Button(text);
-            item.setId(id);
             final Menu itemMenu = new Menu();
             for (final MenuItem child : children) {
                 itemMenu.add(child);
@@ -130,7 +128,6 @@ public class AbstractToolBar
                                       final String text,
                                       final Action action) {
         final MenuItem item = new MenuItem();
-        item.setId(id);
         item.setText(text);
         item.addSelectionListener(new MenuSelectionListenerAction(action));
         return item;

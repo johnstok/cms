@@ -92,7 +92,6 @@ public class EnhancedResourceTree extends ResourceTree {
 
         addListener(Events.SelectionChange, listener);
 
-        _contextMenu.setId("navigator-menu");
         setContextMenu(_contextMenu);
         setStyleAttribute("overflow", "hidden");
     }

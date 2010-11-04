@@ -84,10 +84,6 @@ public abstract class AbstractWizardDialog
         _prev.setVisible(false);
         _save.setVisible(false);
 
-        _next.setId("next");
-        _prev.setId("previous");
-        _save.setId("save");
-
         addButton(getCancel());
         addButton(_prev);
         addButton(_save);

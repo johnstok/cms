@@ -60,7 +60,6 @@ public class MetadataGrid extends ContentPanel {
         setLayout(new FitLayout());
 
         _grid = new EditorGrid<ModelData>(_dataStore, cm);
-        _grid.setId("metadata-grid");
         _grid.setAutoExpandColumn("value");
         _grid.setSelectionModel(_sm);
         _grid.addPlugin(_sm);
@@ -83,7 +82,6 @@ public class MetadataGrid extends ContentPanel {
         final ColumnConfig keyColumn =
             new ColumnConfig("key", _constants.key(), 100);
         final TextField<String> keyField = new TextField<String>();
-        keyField.setId("key-editor");
         keyField.setAllowBlank(false);
         keyField.setAutoValidate(true);
         keyColumn.setEditor(new CellEditor(keyField));
@@ -93,7 +91,6 @@ public class MetadataGrid extends ContentPanel {
         valueColumn.setId("value");
         valueColumn.setHeader(_constants.value());
         final TextField<String> valueField = new TextField<String>();
-        valueField.setId("value-editor");
         valueField.setAllowBlank(false);
         valueField.setAutoValidate(true);
         valueColumn.setEditor(new CellEditor(valueField));
@@ -108,7 +105,6 @@ public class MetadataGrid extends ContentPanel {
         toolBar.add(new SeparatorToolItem());
 
         final Button add = new Button(_constants.newLabel());
-        add.setId("new-metadatum");
         add.addSelectionListener(new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 final ModelData datum = new BaseModelData();
@@ -124,7 +120,6 @@ public class MetadataGrid extends ContentPanel {
         toolBar.add(new SeparatorToolItem());
 
         final Button remove = new Button(_constants.remove());
-        remove.setId("remove-metadatum");
         remove.addSelectionListener(new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 ((EditorGrid<ModelData>) _grid).stopEditing();

@@ -221,7 +221,6 @@ public class CreatePageDialog
     private class DefaultCheckBox extends CheckBox {
         DefaultCheckBox() {
             setBoxLabel(getUiConstants().useDefaultTemplate());
-            setId(getUiConstants().useDefaultTemplate());
 
             addListener(Events.Change, new Listener<FieldEvent>() {
                 public void handleEvent(final FieldEvent be) {

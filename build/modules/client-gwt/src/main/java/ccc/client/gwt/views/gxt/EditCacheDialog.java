@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.validator;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Duration;
@@ -85,13 +85,9 @@ public class EditCacheDialog extends AbstractEditDialog {
         getPanel().add(_cbg);
 
         _days.setFieldLabel(getUiConstants().days());
-        _days.setId("cacheDurationDays");
         _hours.setFieldLabel(getUiConstants().hours());
-        _hours.setId("cacheDurationHours");
         _minutes.setFieldLabel(getUiConstants().minutes());
-        _minutes.setId("cacheDurationMinutes");
         _seconds.setFieldLabel(getUiConstants().seconds());
-        _seconds.setId("cacheDurationSeconds");
 
         if (ds != null) {
             _useDefault.setValue(Boolean.FALSE);

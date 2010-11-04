@@ -47,7 +47,7 @@ public class CCRadioField
     extends
         PageElement<RadioGroup> {
 
-    private RadioGroup _radioGroup;
+    private final RadioGroup _radioGroup;
 
 
     /**
@@ -74,7 +74,6 @@ public class CCRadioField
             final Radio r = new Radio();
 
             r.setBoxLabel(o.getTitle());
-            r.setId(o.getValue());
             r.setValue(o.isDefault());
 
             rg.add(r);

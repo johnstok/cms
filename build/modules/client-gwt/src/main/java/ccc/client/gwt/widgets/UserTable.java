@@ -117,23 +117,19 @@ public class UserTable
 
         InternalServices.remotingBus.registerHandler(this);
 
-        setId("UserDetails");
         setHeading(UI_CONSTANTS.userDetails());
         setLayout(new FitLayout());
 
         _searchString = new TextField<String>();
         _searchString.setToolTip(UI_CONSTANTS.searchToolTip());
-        _searchString.setId("searchString");
 
         _searchButton = new Button(UI_CONSTANTS.search());
-        _searchButton.setId("searchButton");
 
         _searchButton.addListener(Events.Select, new SearchListener());
         createToolBar();
         setTopComponent(_toolBar);
 
         final Menu contextMenu = new Menu();
-        contextMenu.setId("userContextMenu");
         final ContextActionGridPlugin gp =
             new ContextActionGridPlugin(contextMenu);
         gp.setRenderer(new ContextMenuRenderer());
@@ -142,7 +138,6 @@ public class UserTable
         final ColumnModel cm = new ColumnModel(configs);
 
         _grid = new Grid<BeanModel>(_detailsStore, cm);
-        _grid.setId("UserGrid");
 
         if (GLOBALS.currentUser().hasPermission(Permission.USER_UPDATE)) {
             contextMenu.add(createEditUserMenu(_grid));
@@ -160,7 +155,6 @@ public class UserTable
 
     private MenuItem createEditUserMenu(final Grid<BeanModel> grid) {
         final MenuItem editUser = new MenuItem(UI_CONSTANTS.editUser());
-        editUser.setId("editUserMenu");
         editUser.addSelectionListener(
             new SelectionListener<MenuEvent>() {
                 @Override public void componentSelected(final MenuEvent ce) {
@@ -188,7 +182,6 @@ public class UserTable
 
     private MenuItem createEditPwMenu(final Grid<BeanModel> grid) {
         final MenuItem editUserPw = new MenuItem(UI_CONSTANTS.editUserPw());
-        editUserPw.setId("editUserPwMenu");
         editUserPw.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
                 final BeanModel userDTO =
@@ -203,7 +196,6 @@ public class UserTable
                          final Grid<BeanModel> grid) {
         final MenuItem editUserMeta =
             new MenuItem(UI_CONSTANTS.editUserMetadata());
-        editUserMeta.setId("editUserMetadataMenu");
         editUserMeta.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
                 final BeanModel modeldata =
@@ -222,11 +214,9 @@ public class UserTable
         _usernameRadio.setName("Username");
         _usernameRadio.setBoxLabel(UI_CONSTANTS.username());
         _usernameRadio.setValue(Boolean.TRUE);
-        _usernameRadio.setId("usernameRadio");
 
         _emailRadio.setName("Email");
         _emailRadio.setBoxLabel(UI_CONSTANTS.email());
-        _emailRadio.setId("emailRadio");
 
         _radioGroup.setFieldLabel(UI_CONSTANTS.searchField());
         _radioGroup.add(_usernameRadio);
@@ -236,7 +226,6 @@ public class UserTable
         _toolBar.add(_searchString);
         _toolBar.add(new SeparatorToolItem());
         _toolBar.add(_searchButton);
-        _toolBar.setId("toolbar");
     }
 
     private List<ColumnConfig> createColumnConfigs(

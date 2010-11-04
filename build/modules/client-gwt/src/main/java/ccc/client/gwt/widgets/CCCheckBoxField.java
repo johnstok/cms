@@ -48,7 +48,7 @@ public class CCCheckBoxField
     extends
         PageElement<CheckBoxGroup> {
 
-    private CheckBoxGroup _checkBoxGroup;
+    private final CheckBoxGroup _checkBoxGroup;
 
 
     /**
@@ -75,7 +75,6 @@ public class CCCheckBoxField
             final CheckBox cb = new CheckBox();
 
             cb.setBoxLabel(o.getTitle());
-            cb.setId(o.getValue());
             cb.setValue(o.isDefault());
 
             cbg.add(cb);

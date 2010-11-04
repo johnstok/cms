@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.validator;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.client.actions.MoveResourceAction;
@@ -81,8 +81,6 @@ public class MoveDialog extends AbstractEditDialog {
         _target = item;
         setLayout(new FitLayout());
 
-        setPanelId("MovePanel");
-
         _targetName.setFieldLabel(constants().target());
         _targetName.setValue(item.getName().toString());
         _targetName.setReadOnly(true);
@@ -90,7 +88,6 @@ public class MoveDialog extends AbstractEditDialog {
         addField(_targetName);
 
         _parentFolder.setFieldLabel(constants().folder());
-        _parentFolder.setId("parent-folder");
         _parentFolder.setValue("");
         _parentFolder.setEditable(false);
         _parentFolder.addListener(

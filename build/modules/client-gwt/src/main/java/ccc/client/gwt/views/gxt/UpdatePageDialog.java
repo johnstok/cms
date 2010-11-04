@@ -108,7 +108,6 @@ public class UpdatePageDialog
         _applyNowButton = new Button(
             getUiConstants().applyNow(),
             applyNowAction());
-        _applyNowButton.setId("applyNow");
         return _applyNowButton;
     }
 
@@ -117,7 +116,6 @@ public class UpdatePageDialog
         _saveDraftButton = new Button(
             getUiConstants().saveDraft(),
             saveDraftAction());
-        _saveDraftButton.setId("saveDraft");
         return _saveDraftButton;
     }
 

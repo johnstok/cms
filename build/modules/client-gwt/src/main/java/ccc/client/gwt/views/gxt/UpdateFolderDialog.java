@@ -210,7 +210,6 @@ implements UpdateFolder {
                                    final String label) {
         cb.setFieldLabel(label);
         cb.setAllowBlank(false);
-        cb.setId(id);
         cb.setDisplayField(ResourceSummary.Properties.NAME);
         cb.setTemplate(
             "<tpl for=\".\">"

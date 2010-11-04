@@ -27,7 +27,7 @@
 
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.validator;
 
 import java.util.UUID;
 
@@ -193,7 +193,6 @@ public class EditTemplateDialog
 
         _name.setFieldLabel(getUiConstants().name());
         _name.setAllowBlank(false);
-        _name.setId("name");
         _first.add(_name, new FormData("95%"));
 
         _mimePrimary.setFieldLabel(getUiConstants().mimePrimaryType());

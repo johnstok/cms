@@ -108,7 +108,6 @@ public class ImageSelectionPanel extends ContentPanel {
 
         final ToolBar toolBar = new ToolBar();
 
-        _folderField.setId("image-folder");
         _folderField.setValue("");
         _folderField.setEditable(false);
         _folderField.addListener(Events.TriggerClick,
@@ -132,7 +131,6 @@ public class ImageSelectionPanel extends ContentPanel {
 
         setCollapsible(false);
         setAnimCollapse(false);
-        setId("images-view");
         setHeaderVisible(false);
         setAutoWidth(true);
         setHeight(PANEL_HEIGHT);

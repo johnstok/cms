@@ -81,7 +81,6 @@ public abstract class AbstractTableDialog<T, S extends ModelData>
         } else {
             _grid = new Grid<S>(_dataStore, cm);
         }
-        _grid.setId(title);
         _grid.setBorders(false);
         _grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 

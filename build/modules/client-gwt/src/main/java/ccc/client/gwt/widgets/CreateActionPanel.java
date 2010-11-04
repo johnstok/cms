@@ -77,7 +77,6 @@ public class CreateActionPanel
     public CreateActionPanel() {
         setLayout(new BorderLayout());
 
-        _parameters.setId("action-parameters");
         _parameters.setLayout(new FormLayout());
         _parameters.setBorders(true);
         _parameters.setStyleAttribute("backgroundColor", "white");

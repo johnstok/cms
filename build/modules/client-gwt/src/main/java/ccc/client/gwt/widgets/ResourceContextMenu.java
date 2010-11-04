@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.widgets;
 
-import static ccc.client.gwt.views.gxt.AbstractBaseDialog.*;
+import static ccc.client.gwt.views.gxt.AbstractBaseDialog.CONTEXT_MENU_WIDTH;
 import ccc.api.core.Group;
 import ccc.api.core.Page;
 import ccc.api.core.PagedCollection;
@@ -402,7 +402,6 @@ public class ResourceContextMenu
     private void addEditResource() {
         final MenuItem update = new MenuItem();
         final ResourceSummary item = _table.tableSelection();
-        update.setId("edit-resource");
         update.setText(getConstants().edit());
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {

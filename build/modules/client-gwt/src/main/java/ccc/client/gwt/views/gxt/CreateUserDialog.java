@@ -27,7 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.validator;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -87,36 +87,30 @@ public class CreateUserDialog
         _username.setFieldLabel(constants().username());
         _username.setAllowBlank(false);
         _username.setMinLength(Globals.MIN_USER_NAME_LENGTH);
-        _username.setId("username");
         addField(_username);
 
         _name.setFieldLabel(constants().fullName());
         _name.setAllowBlank(false);
         _name.setMinLength(Globals.MIN_USER_NAME_LENGTH);
-        _name.setId("name");
         addField(_name);
 
         _email.setFieldLabel(constants().email());
         _email.setAllowBlank(false);
-        _email.setId("user_email");
         addField(_email);
 
         _password1.setPassword(true);
         _password1.setFieldLabel(constants().password());
         _password1.setAllowBlank(false);
-        _password1.setId("user_password");
         addField(_password1);
 
         _password2.setPassword(true);
         _password2.setFieldLabel(constants().confirmPassword());
         _password2.setAllowBlank(false);
-        _password2.setId("user_confirmPassword");
         addField(_password2);
 
         _groups = new GroupListField(allGroups, new HashSet<UUID>());
         addField(_groups);
 
-        setPanelId("UserPanel");
     }
 
 

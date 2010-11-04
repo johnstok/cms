@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.validator;
 import ccc.client.core.Editable;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
@@ -63,9 +63,7 @@ public class CreateFolderDialog
 
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
         setLayout(new FitLayout());
-        setPanelId("create-folder-dialog");
 
-        _text.setId("folder-name");
         _text.setFieldLabel(constants().name());
         _text.setEmptyText(constants().theFolderName());
         _text.setAllowBlank(false);
