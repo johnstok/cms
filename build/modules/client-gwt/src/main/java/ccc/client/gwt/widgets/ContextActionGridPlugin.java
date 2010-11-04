@@ -66,7 +66,6 @@ public class ContextActionGridPlugin
         setFixed(true);
         setMenuDisabled(true);
         setDataIndex("");
-        setId("ToolGridExtension");
     }
 
     /** {@inheritDoc} */

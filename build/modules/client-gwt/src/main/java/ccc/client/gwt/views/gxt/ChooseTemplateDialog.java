@@ -87,9 +87,6 @@ public class ChooseTemplateDialog
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
 
         _selectedTemplate.setFieldLabel(constants().defaultTemplate());
-//        _selectedTemplate.setTemplate("<tpl for=\".\">"
-//            +"<div class=x-combo-list-item id={NAME}>{NAME}</div></tpl>");
-//        _selectedTemplate.setId("default-template");
         _selectedTemplate.setDisplayField(ResourceSummary.Properties.NAME);
         _selectedTemplate.setForceSelection(true);
         _selectedTemplate.setEditable(false);
