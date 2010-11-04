@@ -115,7 +115,7 @@ public class FileProvider
 
         try {
             final MultipartFormData form =
-                new PluginFactory().createFormData(
+                new PluginFactory().createMultipart().parse(
                     arg3.getParameters().get("charset"),
                     Integer.parseInt(arg4.getFirst("Content-Length")),
                     arg3.toString(),

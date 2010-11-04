@@ -29,12 +29,21 @@ package ccc.api.http;
 import static ccc.api.types.HttpStatusCode.*;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
@@ -96,39 +105,139 @@ public class SiteBrowserImpl
     /** {@inheritDoc} */
     @Override
     public String post(final ResourceSummary rs) {
-        return invoke(new PostMethod(_hostUrl+rs.getAbsolutePath()));
+        return postUrlEncoded(rs, new HashMap<String, String[]>());
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public String post(final Resource rs) {
-        return invoke(new PostMethod(_hostUrl+rs.getAbsolutePath()));
+    public String postUrlEncoded(final ResourceSummary rs,
+                                 final Map<String, String[]> params) {
+        /* This method deliberately elides charset values to replicate the
+         * behaviour of a typical browser.                                    */
+
+        final PostMethod post = new PostMethod(_hostUrl+rs.getAbsolutePath());
+        post.setRequestHeader(
+            "Content-Type", "application/x-www-form-urlencoded");
+
+        final List<NameValuePair> qParams = new ArrayList<NameValuePair>();
+        for (final Map.Entry<String, String[]> param : params.entrySet()) {
+            for (final String value : param.getValue()) {
+                final NameValuePair qParam =
+                    new NameValuePair(param.getKey(), value);
+                qParams.add(qParam);
+            }
+        }
+
+        final StringBuilder buffer = createQueryString(qParams);
+        post.setRequestEntity(new StringRequestEntity(buffer.toString()));
+
+        return invoke(post);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String postMultipart(final ResourceSummary rs,
+                                final Map<String, String> params) {
+        /* This method deliberately elides charset values to replicate the
+         * behaviour of a typical browser.                                    */
+
+        final String boundary = UUID.randomUUID().toString().substring(0, 7);
+        final String newLine  = "\r\n";
+
+        final PostMethod post = new PostMethod(_hostUrl+rs.getAbsolutePath());
+        post.setRequestHeader(
+            "Content-Type", "multipart/form-data; boundary="+boundary);
+
+        final StringBuilder buffer = new StringBuilder();
+        buffer.append("Content-Type: multipart/form-data");
+        buffer.append("; boundary=");
+        buffer.append(boundary);
+        buffer.append(newLine);
+        buffer.append(newLine);
+        for (final Map.Entry<String, String> param : params.entrySet()) {
+            buffer.append("--");
+            buffer.append(boundary);
+            buffer.append(newLine);
+            buffer.append("Content-Disposition: form-data; name=\"");
+            buffer.append(param.getKey());
+            buffer.append("\"");
+            buffer.append(newLine);
+            buffer.append(newLine);
+            buffer.append(param.getValue());
+            buffer.append(newLine);
+        }
+        buffer.append("--");
+        buffer.append(boundary);
+        buffer.append("--");
+        buffer.append(newLine);
+
+        post.setRequestEntity(new StringRequestEntity(buffer.toString()));
+
+        return invoke(post);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public String get(final String absolutePath) {
-        return invoke(new GetMethod(_hostUrl+absolutePath));
+        return get(absolutePath, new HashMap<String, String[]>());
     }
 
 
-    private String invoke(final HttpMethod get) {
+    /** {@inheritDoc} */
+    @Override
+    public String get(final String absolutePath,
+                      final Map<String, String[]> params) {
+        final GetMethod get = new GetMethod(_hostUrl+absolutePath);
+        final List<NameValuePair> qParams = new ArrayList<NameValuePair>();
+        for (final Map.Entry<String, String[]> param : params.entrySet()) {
+            for (final String value : param.getValue()) {
+                final NameValuePair qParam =
+                    new NameValuePair(param.getKey(), value);
+                qParams.add(qParam);
+            }
+        }
+
+        final StringBuilder buffer = createQueryString(qParams);
+        get.setQueryString(buffer.toString());
+
+        return invoke(get);
+    }
+
+
+    private String invoke(final HttpMethod m) {
         try {
-            _httpClient.executeMethod(get);
-            final int status = get.getStatusCode();
+            _httpClient.executeMethod(m);
+            final int status = m.getStatusCode();
             if (OK==status) {
-                return get.getResponseBodyAsString();
+                return m.getResponseBodyAsString();
             }
             throw new RuntimeException(
-                status+": "+get.getResponseBodyAsString());
+                status+": "+m.getResponseBodyAsString());
         } catch (final HttpException e) {
             throw new InternalError(); // FIXME: Report error.
         } catch (final IOException e) {
             throw new InternalError(); // FIXME: Report error.
         } finally {
-            get.releaseConnection();
+            m.releaseConnection();
         }
+    }
+
+
+    private StringBuilder createQueryString(final List<NameValuePair> qParams) {
+        final StringBuilder buffer = new StringBuilder();
+        for (final NameValuePair pair : qParams) {
+            try {
+                buffer.append(URLEncoder.encode(pair.getName(), "UTF-8"));
+                buffer.append('=');
+                buffer.append(URLEncoder.encode(pair.getValue(), "UTF-8"));
+                buffer.append('&');
+            } catch (final UnsupportedEncodingException e) {
+                throw new RuntimeException("UTF-8 encoding not available.", e);
+            }
+        }
+        return buffer;
     }
 }

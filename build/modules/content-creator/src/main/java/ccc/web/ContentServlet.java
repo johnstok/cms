@@ -27,8 +27,7 @@
 
 package ccc.web;
 
-import static ccc.commons.Strings.nvl;
-import static ccc.commons.Strings.removeTrailing;
+import static ccc.commons.Strings.*;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -230,6 +229,7 @@ public class ContentServlet
         context.add("hostname",    Environment.getHostname());
         context.add("apiTypes",    ObjectFactory.class);
         context.add("taxonomy",    new TaxonomyTools());
+        context.add("multipart",   new PluginFactory().createMultipart());
         return context;
     }
 

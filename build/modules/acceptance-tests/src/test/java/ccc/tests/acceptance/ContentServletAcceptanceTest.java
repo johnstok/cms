@@ -35,6 +35,7 @@ import ccc.api.core.Alias;
 import ccc.api.core.File;
 import ccc.api.core.Page;
 import ccc.api.core.Resource;
+import ccc.api.core.Template;
 import ccc.api.core.User;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
@@ -420,6 +421,107 @@ public class ContentServletAcceptanceTest
         } catch (final RuntimeException e) {
             assertTrue(is500(e));
         }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUrlEncodedParamsCorrectlyDecoded() {
+
+        // ARRANGE
+        final Resource folder = getCommands().resourceForPath("");
+
+        final Template t = new Template();
+        t.setName(new ResourceName(uid()));
+        t.setParent(folder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody("$!request.getParameter(\"‡\")");
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
+        final Template template = getTemplates().create(t);
+
+        final Page page = tempPage(folder.getId(), template.getId());
+        getCommands().lock(page.getId());
+        getCommands().publish(page.getId());
+
+        // ACT
+        final String pContent =
+            getBrowser().get(
+                page.getAbsolutePath(),
+                Collections.singletonMap("‡", new String[] {"案例学习"}));
+
+        // ASSERT
+        assertEquals("案例学习", pContent);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUrlEncodedBodyCorrectlyDecoded() {
+
+        // ARRANGE
+        final Resource folder = getCommands().resourceForPath("");
+
+        final Template t = new Template();
+        t.setName(new ResourceName(uid()));
+        t.setParent(folder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody("$!request.getParameter(\"‡\")");
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
+        final Template template = getTemplates().create(t);
+
+        final Page page = tempPage(folder.getId(), template.getId());
+        getCommands().lock(page.getId());
+        getCommands().publish(page.getId());
+
+        // ACT
+        final String pContent =
+            getBrowser().postUrlEncoded(
+                page,
+                Collections.singletonMap("‡", new String[] {"案例学习"}));
+
+        // ASSERT
+        assertEquals("案例学习", pContent);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testMultipartBodyCorrectlyDecoded() {
+
+        // ARRANGE
+        final Resource folder = getCommands().resourceForPath("");
+
+        final Template t = new Template();
+        t.setName(new ResourceName(uid()));
+        t.setParent(folder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody(
+            "#set ($upload = $multipart.parse($request.getCharacterEncoding(), $request.getContentLength(), $request.getContentType(), $request.getInputStream()))" +
+    		"$upload.getString(\"‡\")");
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
+        final Template template = getTemplates().create(t);
+
+        final Page page = tempPage(folder.getId(), template.getId());
+        getCommands().lock(page.getId());
+        getCommands().publish(page.getId());
+
+        // ACT
+        final String pContent =
+            getBrowser().postMultipart(
+                page,
+                Collections.singletonMap("‡", "案例学习"));
+
+        // ASSERT
+        assertEquals("案例学习", pContent);
     }
 
 

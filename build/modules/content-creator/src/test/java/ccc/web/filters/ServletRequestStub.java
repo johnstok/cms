@@ -1,6 +1,7 @@
 package ccc.web.filters;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.security.Principal;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -25,6 +26,10 @@ public final class ServletRequestStub
     private String _contextPath;
     private String _servletPath;
     private String _pathInfo;
+    private String _queryString;
+    private String _contentType;
+    private byte[] _entity;
+    private String _charset;
     private Map<String, String[]> _queryParams;
     private final Map<String, Object> _attributes =
         new HashMap<String, Object>();
@@ -135,7 +140,7 @@ public final class ServletRequestStub
     /** {@inheritDoc} */
     @Override
     public String getQueryString() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return _queryString;
     }
 
     /** {@inheritDoc} */
@@ -231,7 +236,7 @@ public final class ServletRequestStub
     /** {@inheritDoc} */
     @Override
     public String getCharacterEncoding() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return _charset;
     }
 
     /** {@inheritDoc} */
@@ -243,13 +248,22 @@ public final class ServletRequestStub
     /** {@inheritDoc} */
     @Override
     public String getContentType() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return _contentType;
     }
 
     /** {@inheritDoc} */
     @Override
     public ServletInputStream getInputStream() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return (null==_entity) ? null : new ServletInputStream() {
+
+            private ByteArrayInputStream _delegate =
+                new ByteArrayInputStream(_entity);
+
+            @Override
+            public int read() {
+                return _delegate.read();
+            }
+        };
     }
 
     /** {@inheritDoc} */
@@ -388,7 +402,37 @@ public final class ServletRequestStub
 
     /** {@inheritDoc} */
     @Override
-    public void setCharacterEncoding(final String env) {
-        throw new UnsupportedOperationException("Method not implemented.");
+    public void setCharacterEncoding(final String charset) {
+        _charset = charset;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param queryString The queryString to set.
+     */
+    public void setQueryString(final String queryString) {
+        _queryString = queryString;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param contentType The contentType to set.
+     */
+    public void setContentType(final String contentType) {
+        _contentType = contentType;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param entity The entity to set.
+     */
+    public void setEntity(final byte[] entity) {
+        _entity = entity;
     }
 }

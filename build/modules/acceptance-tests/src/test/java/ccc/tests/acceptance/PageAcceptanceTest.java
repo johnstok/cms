@@ -93,6 +93,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
             true);
         page.setParagraphs(new HashSet<Paragraph>(){{
             add(Paragraph.fromText("test", hw));
+            add(Paragraph.fromText("chinese", "案例学习"));
         }});
 
         // ACT
@@ -101,6 +102,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         // ASSERT
         final Page pd = getPages().retrieve(ps.getId());
         assertEquals(hw, pd.getParagraph("test").getText());
+        assertEquals("案例学习", pd.getParagraph("chinese").getText());
     }
 
 

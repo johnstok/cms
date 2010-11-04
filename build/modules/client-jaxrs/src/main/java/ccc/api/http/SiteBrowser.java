@@ -26,6 +26,8 @@
  */
 package ccc.api.http;
 
+import java.util.Map;
+
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 
@@ -45,7 +47,7 @@ public interface SiteBrowser {
      *
      * @return The rendered resource as a String.
      */
-    String previewContent(final ResourceSummary rs, final boolean wc);
+    String previewContent(ResourceSummary rs, boolean wc);
 
     /**
      * Preview how the specified resource will be rendered.
@@ -55,16 +57,7 @@ public interface SiteBrowser {
      *
      * @return The rendered resource as a String.
      */
-    String previewContent(final Resource r, final boolean wc);
-
-    /**
-     * Send an HTTP post to a resource.
-     *
-     * @param rs The resource to request.
-     *
-     * @return The rendered resource as a String.
-     */
-    String post(final ResourceSummary rs);
+    String previewContent(Resource r, boolean wc);
 
     /**
      * Send an HTTP post to a resource.
@@ -73,7 +66,32 @@ public interface SiteBrowser {
      *
      * @return The rendered resource as a String.
      */
-    String post(final Resource resource);
+    String post(ResourceSummary resource);
+
+    /**
+     * Send an HTTP post to a resource.
+     * <br>The request body will be encoded as
+     * application/x-www-form-urlencoded.
+     *
+     * @param resource The resource to request.
+     * @param params   The request parameters.
+     *
+     * @return The rendered resource as a String.
+     */
+    String postUrlEncoded(ResourceSummary resource,
+                          Map<String, String[]> params);
+
+    /**
+     * Send an HTTP post to a resource.
+     * <br>The request body will be encoded as multipart/form-data.
+     *
+     * @param resource The resource to request.
+     * @param params   The request parameters.
+     *
+     * @return The rendered resource as a String.
+     */
+    String postMultipart(ResourceSummary resource,
+                         Map<String, String> params);
 
     /**
      * Send an HTTP GET for a path.
@@ -83,4 +101,14 @@ public interface SiteBrowser {
      * @return The response body, as a string.
      */
     String get(String absolutePath);
+
+    /**
+     * Send an HTTP GET for a path.
+     *
+     * @param absolutePath The path to GET.
+     * @param params       The request parameters.
+     *
+     * @return The response body, as a string.
+     */
+    String get(String absolutePath, Map<String, String[]> params);
 }

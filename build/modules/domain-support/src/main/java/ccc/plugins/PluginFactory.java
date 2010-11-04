@@ -27,12 +27,9 @@
 package ccc.plugins;
 
 import static ccc.commons.Reflection.*;
-
-import java.io.InputStream;
-
 import ccc.plugins.mail.Mailer;
 import ccc.plugins.markup.XHTML;
-import ccc.plugins.multipart.MultipartFormData;
+import ccc.plugins.multipart.MultipartParser;
 import ccc.plugins.s11n.Serializers;
 import ccc.plugins.scripting.TextProcessor;
 import ccc.plugins.search.Index;
@@ -178,39 +175,14 @@ public class PluginFactory {
 
 
     /**
-     * Create a new multipart form data plugin.
+     * Create a new multipart parser.
      *
-     * @param charEncoding  The character encoding for the content.
-     * @param contentLength The length of the multipart content.
-     * @param contentType   The mime-type for the content.
-     * @param inputStream   The input stream for reading the content.
-     *
-     * @return The multipart form data plugin.
+     * @return The new multipart parser.
      */
-    public MultipartFormData createFormData(final String charEncoding,
-                                            final int contentLength,
-                                            final String contentType,
-                                            final InputStream inputStream) {
-
-        final Class<?>[] types = new Class<?>[] {
-            String.class,
-            int.class,
-            String.class,
-            InputStream.class
-        };
-
-        final Object[] values = new Object[] {
-            charEncoding,
-            Integer.valueOf(contentLength),
-            contentType,
-            inputStream
-        };
-
+    public MultipartParser createMultipart() {
         return
             construct(
-                MultipartFormData.class,
-                "ccc.plugins.multipart.apache.MultipartForm",
-                types,
-                values);
+                MultipartParser.class,
+                "ccc.plugins.multipart.apache.CommonsMultipartParser");
     }
 }

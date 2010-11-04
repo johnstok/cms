@@ -26,13 +26,16 @@
  */
 package ccc.web.filters;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -40,7 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import ccc.api.types.DBC;
-import ccc.web.TmpRenderer;
+import ccc.commons.Resources;
 
 
 /**
@@ -84,7 +87,8 @@ public class CharsetConvertingServletRequest
     }
 
 
-    private final Map<String, String[]> _params;
+    private final Map<String, String[]> _params =
+        new HashMap<String, String[]>();
 
 
     /**
@@ -93,27 +97,34 @@ public class CharsetConvertingServletRequest
      * @param request The request to wrap.
      *
      * @throws ServletException If an error occurs while wrapping the exception.
+     * @throws IOException      If an error occurs while reading the entity.
      */
-    @SuppressWarnings("unchecked") // API doesn't support generics.
     public CharsetConvertingServletRequest(final HttpServletRequest request)
-                                                       throws ServletException {
+                                                       throws ServletException,
+                                                              IOException {
         super(request);
 
         try {
-            final Map<String, String[]> params =
-                new HashMap<String, String[]>();
-            final Enumeration<String> paramNames =
-                request.getParameterNames();
+            final Map<String, List<String>> params =
+                new HashMap<String, List<String>>();
 
-            while (paramNames.hasMoreElements()) {
-                final String pName = paramNames.nextElement();
-                final String[] pValues = request.getParameterValues(pName);
-                params.put(
-                    recode(pName, "iso-8859-1", TmpRenderer.DEFAULT_CHARSET),
-                    recode(pValues, "iso-8859-1", TmpRenderer.DEFAULT_CHARSET));
+            reparseQueryString(request.getQueryString(), "UTF-8", params);
+
+            final String contentType = request.getContentType();
+            if (isUrlEncoded(contentType)) {
+                final String requestCharset = request.getCharacterEncoding();
+                reparseQueryString(
+                    Resources.readIntoString(
+                        request.getInputStream(), Charset.forName("ASCII")),
+                    (null==requestCharset) ? "UTF-8" : requestCharset,
+                    params);
             }
 
-            _params = params;
+            for (final Map.Entry<String, List<String>> p : params.entrySet()) {
+                _params.put(
+                    p.getKey(),
+                    p.getValue().toArray(new String[p.getValue().size()]));
+            }
 
         } catch (final UnsupportedEncodingException e) {
             throw
@@ -122,31 +133,44 @@ public class CharsetConvertingServletRequest
     }
 
 
-    private String[] recode(final String[] strings,
-                            final String currentEncoding,
-                            final String targetEncoding)
-                                           throws UnsupportedEncodingException {
-        if (null==strings) { return null; }
-
-        final String[] recoded = new String[strings.length];
-        for (int i=0; i<strings.length; i++) {
-            recoded[i] =
-                recode(strings[i], currentEncoding, targetEncoding);
-        }
-
-        return recoded;
+    private boolean isUrlEncoded(final String contentType) {
+        return
+            null!=contentType
+            && contentType.startsWith("application/x-www-form-urlencoded");
     }
 
 
-    private String recode(final String string,
-                          final String currentEncoding,
-                          final String targetEncoding)
+    private void reparseQueryString(final String queryString,
+                                    final String charset,
+                                    final Map<String, List<String>> params)
                                            throws UnsupportedEncodingException {
-        if (null==string) { return null; }
 
-        final String unencoded = URLEncoder.encode(string, currentEncoding);
+        if (null==queryString || 0==queryString.length()) { return; }
 
-        return URLDecoder.decode(unencoded, targetEncoding);
+        final String[] paramStrings = queryString.split("&");
+        for (final String paramString : paramStrings) {
+
+            if (!paramString.matches("[^\\=]+\\=[^\\=]*")) { continue; }
+
+            final String[] paramParts = paramString.split("=");
+            if (2<paramParts.length || 0==paramParts[0].trim().length()) {
+                continue;
+                // log warning?
+            }
+
+            final String key = URLDecoder.decode(paramParts[0], charset);
+            final String value =
+                (1==paramParts.length)
+                    ? ""
+                    : URLDecoder.decode(paramParts[1], charset);
+
+            List<String> values = params.get(key);
+            if (values == null) {
+                values = new ArrayList<String>();
+                params.put(key, values);
+            }
+            values.add(value);
+        }
     }
 
 
