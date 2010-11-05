@@ -1,0 +1,14 @@
+h1. Documentation
+
+All documentation for CC will be managed under version control. This means that you can be sure that the documentation bundled with a specific release is relevant.
+
+All documentation will be written in Textile.
+
+h2. Layout
+
+Documentation will be provided for each CC module, located in a 'docs' folder. Different documentation is relevant to different CC users, therefore, we will add a number of sub-folders containing documentation relevant to different user types as follows:
+
+* editor
+* build
+* administrator
+* developer
