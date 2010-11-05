@@ -47,7 +47,6 @@ public final class File
 
     private MimeType              _mimeType;
     private Map<String, String>   _properties = new HashMap<String, String>();
-    private String                _charset;
     private long                  _size;
     private boolean               _isImage;
     private boolean               _isExecutable;
@@ -196,7 +195,7 @@ public final class File
      * @return The character set for the file or NULL if charset is available.
      */
     public String getCharset() {
-        return _charset;
+        return _properties.get(FilePropertyNames.CHARSET);
     }
 
 
@@ -276,7 +275,7 @@ public final class File
      * @param charset The charset to set.
      */
     public void setCharset(final String charset) {
-        _charset = charset;
+        _properties.put(FilePropertyNames.CHARSET, charset);
     }
 
 

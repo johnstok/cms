@@ -504,8 +504,12 @@ public class ContentServletAcceptanceTest
         t.setDescription("t-desc");
         t.setTitle("t-title");
         t.setBody(
-            "#set ($upload = $multipart.parse($request.getCharacterEncoding(), $request.getContentLength(), $request.getContentType(), $request.getInputStream()))" +
-    		"$upload.getString(\"‡\")");
+            "#set ($upload = $multipart.parse("
+                + "$request.getCharacterEncoding(), "
+                + "$request.getContentLength(), "
+                + "$request.getContentType(), "
+                + "$request.getInputStream()))"
+            + "$upload.getString(\"‡\")");
         t.setDefinition("<fields/>");
         t.setMimeType(MimeType.HTML);
         final Template template = getTemplates().create(t);

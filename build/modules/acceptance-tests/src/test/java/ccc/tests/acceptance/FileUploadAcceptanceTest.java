@@ -157,15 +157,16 @@ public class FileUploadAcceptanceTest
         final String fName = "log4j.properties";
         final Folder filesFolder = tempFolder();
         final File f = new File(
-            new MimeType("application", "octet-stream"),
+            MimeType.TEXT,
             null,
             null,
             new ResourceName(fName),
             fName,
             new HashMap<String, String>()
         );
+        f.setCharset("utf-8");
 
-        f.setDescription(fName);
+        f.setDescription("案例学习");
         f.setParent(filesFolder.getId());
         f.setInputStream(new ByteArrayInputStream(new byte[] {0, 1, 2, 3, 4}));
         f.setSize(5);
@@ -177,7 +178,11 @@ public class FileUploadAcceptanceTest
         final File actual = getFiles().retrieve(rs.getId());
         assertEquals(fName, rs.getName().toString());
         assertEquals(filesFolder.getId(), rs.getParent());
+        assertEquals("案例学习", actual.getDescription());
         assertEquals(null, actual.getComment());
+        assertEquals("utf-8", actual.getCharset());
+        assertEquals(MimeType.TEXT, actual.getMimeType());
+
     }
 
     /**

@@ -48,13 +48,10 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.PartSource;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.File;
@@ -258,27 +255,34 @@ public class FileProvider
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream entityStream) throws IOException {
         try {
+            final String providedCharset =
+                mediaType.getParameters().get("charset");
+            final String charset =
+                (null==providedCharset) ? "utf-8" : providedCharset;
+            final String boundary = UUID.randomUUID().toString();
+
             final List<Part> parts = new ArrayList<Part>();
 
-            addPart(parts, TITLE,       t.getTitle());
-            addPart(parts, DESCRIPTION, t.getDescription());
-            addPart(parts, COMMENT,     t.getComment());
-            addPart(parts, FILE_NAME,   t.getName().toString());
-            addPart(parts, PATH,        t.getParent().toString());
-            addPart(parts, MAJOR_EDIT,  t.isMajorEdit());
-            addPart(parts, LAST_UPDATE, t.getDateChanged());
+            addPart(parts, TITLE,       charset, t.getTitle());
+            addPart(parts, DESCRIPTION, charset, t.getDescription());
+            addPart(parts, COMMENT,     charset, t.getComment());
+            addPart(parts, FILE_NAME,   charset, t.getName().toString());
+            addPart(parts, PATH,        charset, t.getParent().toString());
+            addPart(parts, MAJOR_EDIT,  charset, t.isMajorEdit());
+            addPart(parts, LAST_UPDATE, charset, t.getDateChanged());
 
-            final FilePart fp = new FilePart(FILE, new SimplePart(t));
+            final FilePart fp =
+                new UnicodeFilePart(FILE, new SimplePart(t), charset);
             fp.setContentType(t.getMimeType().toString());
             fp.setCharSet(t.getCharset());
             parts.add(fp);
 
-            final RequestEntity entity =
-                new MultipartRequestEntity(
-                    parts.toArray(new Part[] {}), new HttpMethodParams());
-
-            httpHeaders.add("Content-Type", entity.getContentType());
-            entity.writeRequest(entityStream);
+            httpHeaders.add(
+                "Content-Type", mediaType.toString()+";boundary="+boundary);
+            Part.sendParts(
+                entityStream,
+                parts.toArray(new Part[parts.size()]),
+                boundary.getBytes("ascii"));
 
         } finally {
             try {
@@ -292,24 +296,116 @@ public class FileProvider
 
     private void addPart(final List<Part> parts,
                          final String partName,
+                         final String charset,
                          final Date value) {
         if (null!=value) {
-            addPart(parts, partName, String.valueOf(value.getTime()));
+            addPart(parts, partName, charset, String.valueOf(value.getTime()));
         }
     }
 
 
     private void addPart(final List<Part> parts,
                          final String partName,
+                         final String charset,
                          final boolean value) {
-        addPart(parts, partName, String.valueOf(value));
+        addPart(parts, partName, charset, String.valueOf(value));
     }
 
 
     private void addPart(final List<Part> parts,
                          final String partName,
+                         final String charset,
                          final String value) {
-        if (null!=value) { parts.add(new StringPart(partName, value)); }
+        if (null!=value) {
+            parts.add(new UnicodeStringPart(partName, value, charset, charset));
+        }
+    }
+
+
+    /**
+     * String part that allows non ASCII encoding of the disposition.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private static final class UnicodeStringPart
+        extends
+            StringPart {
+
+        private final String _outerCharset;
+
+
+        /**
+         * Constructor.
+         *
+         * @param name         The name of the part.
+         * @param value        The string to post.
+         * @param charset      The charset to be used to encode the string.
+         * @param outerCharset The charset for the disposition.
+         */
+        UnicodeStringPart(final String name,
+                          final String value,
+                          final String charset,
+                          final String outerCharset) {
+            super(name, value, charset);
+            _outerCharset = outerCharset;
+        }
+
+
+        /** {@inheritDoc} */
+        @Override
+        protected void sendDispositionHeader(final OutputStream out)
+                                                    throws IOException {
+            out.write(CONTENT_DISPOSITION_BYTES);
+            out.write(QUOTE_BYTES);
+            out.write(getName().getBytes(_outerCharset));
+            out.write(QUOTE_BYTES);
+        }
+    }
+
+
+    /**
+     * File part that allows non ASCII encoding of the disposition.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private static final class UnicodeFilePart
+        extends
+            FilePart {
+
+        private final String _outerCharset;
+
+
+        /**
+         * FilePart Constructor.
+         *
+         * @param name         The name for this part.
+         * @param partSource   The source for this part.
+         * @param outerCharset The charset for the disposition.
+         */
+        UnicodeFilePart(final String name,
+                        final PartSource partSource,
+                        final String outerCharset) {
+            super(name, partSource);
+            _outerCharset = outerCharset;
+        }
+
+
+        /** {@inheritDoc} */
+        @Override
+        protected void sendDispositionHeader(final OutputStream out)
+                                                    throws IOException {
+            out.write(CONTENT_DISPOSITION_BYTES);
+            out.write(QUOTE_BYTES);
+            out.write(getName().getBytes(_outerCharset));
+            out.write(QUOTE_BYTES);
+            final String filename = getSource().getFileName();
+            if (filename != null) {
+                out.write("; filename=".getBytes("ASCII"));
+                out.write(QUOTE_BYTES);
+                out.write(filename.getBytes(_outerCharset));
+                out.write(QUOTE_BYTES);
+            }
+        }
     }
 
 
