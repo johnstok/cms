@@ -1,0 +1,40 @@
+<h1 class="replace-text">Supported Platforms</h1>
+   <div class="intro"><p>Content Control leverages an open, industry standard technology stack allowing it to run on a broad variety of platforms.</p></div>
+<h3><br />
+Server</h3>
+<h4>Operating Systems</h4>
+<ul>
+    <li>Windows Server</li>
+
+    <li>Linux (RedHat, Ubuntu Server, Debian)</li>
+    <li>Solaris 9, 10</li>
+</ul>
+<h4>JVMs</h4>
+<ul>
+    <li>Sun 1.6.0 JRE</li>
+    <li>Open JDK 6</li>
+</ul>
+
+<h4>JEE Containers</h4>
+<ul>
+    <li>JBoss 5.1.0</li>
+</ul>
+<h4>Databases</h4>
+<ul>
+    <li>MySQL 5</li>
+    <li>Oracle 9 onwards</li>
+    <li>Microsoft SQL Server 2005 onwards</li>
+
+</ul>
+<h3><br />
+Client</h3>
+<h4>Browsers</h4>
+<ul>
+    <li>Firefox 2, 3</li>
+    <li>Internet Explorer 6, 7</li>
+    <li>Safari 3</li>
+</ul>
+
+    
+     
+</div>
