@@ -1,0 +1,15 @@
+h1. Glossary
+
+This page describes the key terms in the CCC7 domain model and their usage.
+
+h2. Resource
+
+h3. Name
+
+h3. Title
+
+h2. Content
+
+h2. Folder
+
+h2. Asset
