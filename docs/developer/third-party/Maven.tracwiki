@@ -1,0 +1,11 @@
+= Maven =
+
+== Useful resources ==
+ * [http://docs.codehaus.org/display/MAVENUSER/Mini+Guides A series of mini guides for Maven].
+ * [http://docs.codehaus.org/display/MAVENUSER/MavenPropertiesGuide A guide to maven properties].
+ * [http://nexus.sonatype.org/index.html Nexus is Maven repository manager].
+  * http://apollo-vm226:8081/nexus
+ * http://www.sonatype.com/book/reference/public-book.html
+
+== Issues ==
+In some cases a library may not be available from the standard maven repositiory. This is typically due to licensing issues. In such cases you will need to download the jar manually and install to local maven repository using Nexus.
