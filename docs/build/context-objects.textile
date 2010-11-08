@@ -1,0 +1,40 @@
+These are the objects available in the Velocity context.
+
+<h2>$user</h2>
+<p>Currently logged in user as ccc.rest.dto.UserDto. See UserDTO API</p>
+<h2>$request</h2>
+<p>javax.servlet.http.HttpServletRequest</p>
+<h2>$response</h2>
+<p>javax.servlet.http.HttpServletResponse</p>
+<h2>$services</h2>
+<p>Locator for ContentCreator business services. See&nbsp;ServiceLocator API</p>
+<h2>$resource</h2>
+<p>A read-only snapshot of a resource (usually the page) that is being rendered using a template.</p>
+<h2>$mail</h2>
+<p>Instance of mailer.</p>
+<h2>$http</h2>
+<p>Common HTTP utilities.</p>
+<h2>$random</h2>
+<p>Instance of java.util.Random.</p>
+<h2>$math</h2>
+<p>java.lang.Math.class</p>
+<h2>$collections</h2>
+<p>&nbsp;java.util.Collections.class.</p>
+<h2>$calendar</h2>
+<p>java.util.Calendar.class.&nbsp;</p>
+<h2>$html</h2>
+<p>ccc.commons.XHTML.class. Helper methods for working with XHTML.</p>
+<h2>$uuid</h2>
+<p>java.util.UUID.class</p>
+<h2>$enums</h2>
+<p>ccc.rendering.velocity.Velocity.EnumTools. Velocity tool for helping with Java5 enum's.</p>
+<h2>$hostname</h2>
+<p>Hostname.</p>
+<h2>$dateTool</h2>
+<p>Apache VelocityTools DateTool</p>
+<h2>$sortTool</h2>
+<p>Apache VelocityTools SortTool</p>
+<h2>$apiTypes</h2>
+<p>Object factory of criteria objects for Velocity context use.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

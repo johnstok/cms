@@ -1,0 +1,51 @@
+The XML definition of the template is a simple list of fields. Each field in the definition represents a field in the page editor.
+
+<h3 id="ExampleXMLfortemplate">Example XML for template definition (7.2)</h3>
+<pre class="wiki">
+&lt;fields&gt;
+    &lt;field name=&quot;dateField&quot; type=&quot;date&quot; description=&quot;birthday&quot;/&gt;
+    &lt;field name=&quot;oneLine&quot; type=&quot;text_field&quot; /&gt;
+    &lt;field name=&quot;oneLineWithValidation&quot; type=&quot;text_field&quot; regexp=&quot;\d{1,3}&quot;/&gt;
+    &lt;field name=&quot;manyLines&quot; type=&quot;text_area&quot; title=&quot;Longer text&quot; /&gt;
+    &lt;field name=&quot;richText&quot; type=&quot;html&quot; /&gt;
+    &lt;field name=&quot;checkBoxes&quot; type=&quot;checkbox&quot;&gt;
+        &lt;option default=&quot;true&quot; title=&quot;My Value&quot; value=&quot;my_value&quot;/&gt;
+        &lt;option title=&quot;Other Value&quot; value=&quot;other_value&quot;/&gt;
+    &lt;/field&gt;
+    &lt;field name=&quot;radio&quot; type=&quot;radio&quot;&gt;
+        &lt;option default=&quot;true&quot; title=&quot;My Value&quot; value=&quot;my_value&quot;/&gt;
+        &lt;option title=&quot;Other Value&quot; value=&quot;other_value&quot;/&gt;
+    &lt;/field&gt;
+    &lt;field name=&quot;combos&quot; type=&quot;combobox&quot;&gt;
+        &lt;option default=&quot;true&quot; title=&quot;My Value&quot; value=&quot;my_value&quot;/&gt;
+        &lt;option title=&quot;Other Value&quot; value=&quot;other_value&quot;/&gt;
+    &lt;/field&gt;
+    &lt;field name=&quot;list&quot; type=&quot;list&quot;&gt;
+        &lt;option default=&quot;true&quot; title=&quot;My Value&quot; value=&quot;my_value&quot;/&gt;
+        &lt;option title=&quot;Other Value&quot; value=&quot;other_value&quot;/&gt;
+    &lt;/field&gt;
+    &lt;field name=&quot;photo&quot; type=&quot;image&quot;/&gt;
+    &lt;field name=&quot;number&quot; type=&quot;number&quot;/&gt;
+&lt;/fields&gt;
+</pre>
+<h3 id="Attributes">Attributes</h3>
+<ul>
+    <li><strong>name</strong> = name of the field.</li>
+    <li><strong>type</strong> = type of the field, see below.</li>
+    <li><strong>regexp</strong> = <i>Optional</i> regular expression for the field validation.</li>
+    <li><strong>title</strong> = <i>Optional</i> title of the field. Used instead of name for the page editing dialog. Can be changed without affecting the template processing</li>
+    <li><strong>description</strong> = <i>Optional</i> description of the field. Displayed in the tool tips of the page editing dialog. C
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">an be changed without affecting the template processing                              </meta>
+    </li>
+</ul>
+<h3 id="Fieldtypes">Field types</h3>
+<ul>
+    <li><tt>date</tt> date field with calendar popup.</li>
+    <li><tt>html</tt> FCKEditor for rich text editing.</li>
+    <li><tt>checkbox</tt> checkbox group with defined option values.</li>
+    <li><tt>radio</tt> radio button group with defined option values.</li>
+    <li><tt>combobox</tt> combobox group with defined option values.</li>
+    <li><tt>list</tt> list with defined option values.</li>
+    <li><tt>image</tt> image selector.</li>
+    <li><tt>number</tt> number, stored as BigDecimal.</li>
+</ul>

@@ -1,0 +1,46 @@
+= MIGRATED TO CC SITE =
+[[BR]][[BR]][[BR]]
+
+= API: Templates =
+'''This page describes the public API for templates.'''
+
+Changes between 7.0 and 7.1 - [wiki:APIchanges7.0to7.1]
+
+== Objects Available ==
+Added in ccc.remoting.actions.!RenderResourceAction
+||$user || currentUser ||
+||$request || request ||
+||$response || response ||
+||$search || ccc.search.!SearchEngine ||
+||$data || ccc.persistence.!DataRepository ||
+||$services || !RequestScopeServiceLocator ||
+
+Added in ccc.rendering.!DefaultRenderer
+||$resource|| The resource (usually the page) that is being rendered and is using the template.''TODO''
+
+Added in ccc.rendering.velocity.!VelocityProcessor
+||$random || instance of java.util.Random ||
+||$math || java.lang.Math.class ||
+||$collections || java.util.Collections.class ||
+||$calendar ||''TODO - to be removed'' ||
+||$html || ccc.commons.XHTML.class ||
+||$uuid || java.util.UUID.class ||
+||$enums || ccc.rendering.velocity.VelocityProcessor.EnumTools ||
+||$hostname || HOSTNAME ||
+||$dateTool || Apache !VelocityTools !DateTool ||
+||$sortTool || Apache !VelocityTools !SortTool ||
+
+== Methods ==
+=== !ResourceSnapshot ===
+=== !PageSnapshot ===
+
+
+== Definition XML ==
+''We may not want to publish all field types in the first instance.''
+See [wiki:CCCTemplateXML].
+
+== Ways of resource accessing ==
+
+=== REST API ($services) ===
+ - Resources.resource(), Resources.resourceForPath(), Resource.resourceForLegacyId() return ResourceSummary - no check for published state or roles.
+ - Folders.getChildren/getChildrenManualOrder/getFolderChildren return collection of ResourceSummaries - no check for published state or roles.
