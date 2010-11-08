@@ -1,0 +1,8 @@
+h1. Sprint Planning
+
+# Review top 20 tickets.
+# Select ticket.
+# Discuss acceptance criteria.
+# Agree estimate.
+# Repeat 2-4.
+# Ask "can we commit to this?"

@@ -1,0 +1,10 @@
+h1. Completing An Iteration.
+
+# Tag build.
+# Deploy build.
+# Update task board.
+# Tidy up product backlog.
+# Book next iteration meeting.
+# Close the milestone release in Jira.
+# Create release notes page.
+# Send email.
