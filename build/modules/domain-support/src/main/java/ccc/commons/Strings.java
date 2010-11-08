@@ -27,6 +27,8 @@
 
 package ccc.commons;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Helper methods for strings.
  *
@@ -60,5 +62,17 @@ public final class Strings {
             (foo.endsWith("" + c))
             ? foo.substring(0, foo.length() - 1)
             : foo;
+    }
+
+    public static String hex(final char c,
+                             final String enc)
+                                           throws UnsupportedEncodingException {
+        final StringBuilder buffer = new StringBuilder();
+        final byte[] bytes = Character.toString(c).getBytes(enc);
+        for (final byte b : bytes) {
+            buffer.append("%");
+            buffer.append(String.format("%02x", b));
+        }
+        return buffer.toString();
     }
 }

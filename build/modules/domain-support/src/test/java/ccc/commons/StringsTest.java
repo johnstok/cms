@@ -40,6 +40,55 @@ public class StringsTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testEscapeString() throws Exception {
+
+        // ARRANGE
+        final String foo = "\"foo%";
+
+        // ACT
+        final String escaped =
+            foo.replace("%",  Strings.hex('%', "utf-8"))
+               .replace("\"", Strings.hex('"', "utf-8"));
+
+        // ASSERT
+        assertEquals(escaped, "%22foo%25");
+    }
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testHexPercent() throws Exception {
+
+        // ARRANGE
+
+        // ACT
+
+        // ASSERT
+        assertEquals("%25", Strings.hex('%', "utf-8"));
+    }
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testHexQuote() throws Exception {
+
+        // ARRANGE
+
+        // ACT
+
+        // ASSERT
+        assertEquals("%22", Strings.hex('"', "iso-8859-1"));
+    }
+
+    /**
+     * Test.
      */
     public void testNvl() {
 

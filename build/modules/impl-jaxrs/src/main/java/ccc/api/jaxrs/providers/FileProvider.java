@@ -60,6 +60,7 @@ import ccc.api.types.DBC;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
+import ccc.commons.Strings;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.multipart.MultipartFormData;
 
@@ -357,7 +358,11 @@ public class FileProvider
                                                     throws IOException {
             out.write(CONTENT_DISPOSITION_BYTES);
             out.write(QUOTE_BYTES);
-            out.write(getName().getBytes(_outerCharset));
+            out.write(
+                getName()
+                    .replace("%",  Strings.hex('%', _outerCharset))
+                    .replace("\"", Strings.hex('"', _outerCharset))
+                    .getBytes(_outerCharset));
             out.write(QUOTE_BYTES);
         }
     }
@@ -396,13 +401,21 @@ public class FileProvider
                                                     throws IOException {
             out.write(CONTENT_DISPOSITION_BYTES);
             out.write(QUOTE_BYTES);
-            out.write(getName().getBytes(_outerCharset));
+            out.write(
+                getName()
+                    .replace("%",  Strings.hex('%', _outerCharset))
+                    .replace("\"", Strings.hex('"', _outerCharset))
+                    .getBytes(_outerCharset));
             out.write(QUOTE_BYTES);
             final String filename = getSource().getFileName();
             if (filename != null) {
                 out.write("; filename=".getBytes("ASCII"));
                 out.write(QUOTE_BYTES);
-                out.write(filename.getBytes(_outerCharset));
+                out.write(
+                    filename
+                        .replace("%",  Strings.hex('%', _outerCharset))
+                        .replace("\"", Strings.hex('"', _outerCharset))
+                        .getBytes(_outerCharset));
                 out.write(QUOTE_BYTES);
             }
         }

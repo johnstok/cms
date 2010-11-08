@@ -54,7 +54,7 @@ import ccc.plugins.s11n.json.ServerTextParser;
  *
  * @author Civic Computing Ltd.
  */
-public class AbstractProvider {
+public abstract class AbstractProvider {
 
     private final Serializers _serializers = new PluginFactory().serializers();
 
