@@ -99,12 +99,7 @@ public class MainMenu
             createMenuItem(
                 "update-account-details",
                 _constants.yourDetails(),
-                new OpenUpdateCurrentUserAction()),
-            createMenuItem(
-                "logout-menu-item",
-                _constants.logout(),
-                new LogoutAction())
-        );
+                new OpenUpdateCurrentUserAction()));
 
         addMenu(null,
             "help-menu",
@@ -116,8 +111,10 @@ public class MainMenu
             createMenuItem(
                 "open-manual",
                 _constants.manual(),
-                new OpenHelpAction())
-        );
+                new OpenHelpAction()));
+
+        addButton(
+            null, "logout-menu-item", _constants.logout(), new LogoutAction());
     }
 
     private void createUserMenu() {
