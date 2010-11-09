@@ -1,0 +1,4 @@
+= Release Checklist =
+'''A list of all the things we need to do before a release'''
+ * All acceptance tests pass.
+ * Build scripts run for each DB.
