@@ -72,6 +72,7 @@ public class UploadFileDialog extends AbstractEditDialog {
     private final FileUploadField           _file = new FileUploadField();
 
     private final CheckBox _majorEdit = new CheckBox();
+    private final CheckBox _publish   = new CheckBox();
     private final TextArea _comment = new TextArea();
 
     private final Image _image =
@@ -112,6 +113,13 @@ public class UploadFileDialog extends AbstractEditDialog {
         _path.setName("path");
         _path.setValue(_parent.getId().toString());
         addField(_path);
+
+        _publish.setName("publish");
+        _publish.setValue(Boolean.FALSE);
+        _publish.setBoxLabel(getUiConstants().yes());
+        _publish.setFieldLabel(getUiConstants().publish());
+        _publish.setValueAttribute("true");
+        addField(_publish);
 
         _majorEdit.setName("majorEdit");
         _majorEdit.setValue(Boolean.TRUE);
