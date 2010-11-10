@@ -133,47 +133,79 @@ public final class Create extends CccApp {
             resources.updateMetadata(assets.getId(), aMetadata);
             resources.unlock(assets.getId());
 
-            final Template t = new Template();
-            t.setBody(
-                "<html>\n"
-                    + "    <head><title>$resource.getTitle()</title></head>\n"
-                    + "    <body>"
-                    + "$resource.getParagraph('content').getText()"
-                    + "</body>\n"
-                    + "</html>");
-            t.setDefinition(
-                "<fields>\n"
-                    + "    <field name=\"content\" type=\"html\" />\n"
-                    + "</fields>");
-            t.setName(new ResourceName("simple"));
-            t.setTitle("Simple template");
-            t.setDescription("Simple template with a single HTML field.");
-            t.setMimeType(MimeType.HTML);
-            t.setParent(tFolder.getId());
-            final Template ts = templates.create(t);
+            final Template ts = createDefaultTemplate(tFolder, templates);
 
-            final Page p = new Page();
-            p.setParagraphs(
-                Collections.singleton(
-                    Paragraph.fromText(
-                        "content",
-                        "<br><br><center><h1>"
-                            + "Welcome to Content Control!</h1></center>")));
-            p.setName(new ResourceName("welcome"));
-            p.setTemplate(ts.getId());
-            p.setTitle("Welcome");
-            p.setParent(content.getId());
-            final Page ps = pages.create(p);
-            resources.lock(ps.getId());
-            resources.publish(ps.getId());
-            resources.unlock(ps.getId());
-
+            createDefaultPages(resources, pages, content, ts);
 
             LOG.info("Created default folder structure.");
         } catch (final CCException e) {
             LOG.error("Failed to create app.", e);
         }
     }
+
+
+    private Template createDefaultTemplate(final Folder tFolder,
+                                           final Templates templates) {
+
+        final Template t = new Template();
+        t.setBody(
+            "<html>\n"
+                + "    <head><title>$resource.getTitle()</title></head>\n"
+                + "    <body>"
+                + "$resource.getParagraph('content').getText()"
+                + "</body>\n"
+                + "</html>");
+        t.setDefinition(
+            "<fields>\n"
+                + "    <field name=\"content\" type=\"html\" />\n"
+                + "</fields>");
+        t.setName(new ResourceName("simple"));
+        t.setTitle("Simple template");
+        t.setDescription("Simple template with a single HTML field.");
+        t.setMimeType(MimeType.HTML);
+        t.setParent(tFolder.getId());
+        return templates.create(t);
+    }
+
+
+    private void createDefaultPages(final Resources resources,
+                                    final Pages pages,
+                                    final Folder content,
+                                    final Template ts) {
+
+        final Page p = new Page();
+        p.setParagraphs(
+            Collections.singleton(
+                Paragraph.fromText(
+                    "content",
+                    "<br><br><center><h1>"
+                        + "Welcome to Content Control!</h1></center>")));
+        p.setName(new ResourceName("welcome"));
+        p.setTemplate(ts.getId());
+        p.setTitle("Welcome");
+        p.setParent(content.getId());
+        final Page ps = pages.create(p);
+        resources.lock(ps.getId());
+        resources.publish(ps.getId());
+        resources.unlock(ps.getId());
+
+        final Page p404 = new Page();
+        p404.setParagraphs(
+            Collections.singleton(
+                Paragraph.fromText(
+                    "content",
+                    "<br><br><center><h1>"
+                        + "404</h1></center>")));
+        p404.setName(new ResourceName("notfound"));
+        p404.setTemplate(ts.getId());
+        p404.setTitle("Not found");
+        p404.setParent(content.getId());
+        final Page ps404 = pages.create(p404);
+        resources.lock(ps404.getId());
+        resources.publish(ps404.getId());
+        resources.unlock(ps404.getId());
+    }
+
 
     @Option(
         name="-u", required=true, usage="Username for connecting to CCC.")
