@@ -52,6 +52,20 @@ public final class Resources {
 
 
     /**
+     * Determine the last part of a slash delimited path.
+     *
+     * @param path The path to split.
+     *
+     * @return The last part, as a string.
+     */
+    public static String lastPart(final String path) {
+        if (null==path) { return null; }
+        final String[] parts = path.split("/|\\\\");
+        return parts[parts.length-1];
+    }
+
+
+    /**
      * Read a URL resource into memory as a string.
      *
      * @param url The url to read from.

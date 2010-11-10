@@ -154,6 +154,14 @@ public class MultipartForm implements MultipartFormData {
     }
 
 
+    /** {@inheritDoc} */
+    @Override
+    public String getFilename(final String key) {
+        final FileItem item = getFormItem(key);
+        return (null==item) ? null : Resources.lastPart(item.getName());
+    }
+
+
     private void addItem(final Map<String, FileItem> items,
                          final String key,
                          final FileItem item) {

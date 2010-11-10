@@ -155,7 +155,9 @@ public class FileReader
         final boolean p =
             (null==publish) ? false : Boolean.parseBoolean(publish);
         final ResourceName fName =
-            (null==name) ? null : new ResourceName(name);
+            (null==name)
+                ? ResourceName.escape(form.getFilename(FILE))
+                : new ResourceName(name);
 
         final Map<String, String> props = new HashMap<String, String>();
         props.put(FilePropertyNames.CHARSET, toCharset(fileType));

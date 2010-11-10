@@ -66,10 +66,10 @@ import com.google.gwt.user.client.ui.Image;
  */
 public class UploadFileDialog extends AbstractEditDialog {
 
-    private final TextField<String>   _fileName = new TextField<String>();
-    private final ResourceSummary _parent;
+    private final TextField<String>   _title = new TextField<String>();
+    private final ResourceSummary     _parent;
     private final HiddenField<String> _path = new HiddenField<String>();
-    private final FileUploadField           _file = new FileUploadField();
+    private final FileUploadField     _file = new FileUploadField();
 
     private final CheckBox _majorEdit = new CheckBox();
     private final CheckBox _publish   = new CheckBox();
@@ -99,16 +99,16 @@ public class UploadFileDialog extends AbstractEditDialog {
         getPanel().setEncoding(FormPanel.Encoding.MULTIPART);
         getPanel().setMethod(FormPanel.Method.POST);
 
-        _fileName.setName("fileName");
-        _fileName.setFieldLabel(getUiConstants().fileName());
-        _fileName.setAllowBlank(false);
-        addField(_fileName);
-
         _file.setName("file");
         _file.setWidth("100%");
         _file.setFieldLabel(getUiConstants().localFile());
         _file.setAllowBlank(false);
         addField(_file);
+
+        _title.setName("title");
+        _title.setFieldLabel(getUiConstants().title());
+        _title.setAllowBlank(true);
+        addField(_title);
 
         _path.setName("path");
         _path.setValue(_parent.getId().toString());
@@ -186,10 +186,10 @@ public class UploadFileDialog extends AbstractEditDialog {
                 final ValidationResult vr = new ValidationResult();
                 vr.addError(
                     VALIDATOR.notEmpty(
-                        _fileName.getValue(), _fileName.getFieldLabel()));
+                        _title.getValue(), _title.getFieldLabel()));
                 vr.addError(
-                    VALIDATOR.notValidResourceName(
-                        _fileName.getValue(), _fileName.getFieldLabel()));
+                    VALIDATOR.noBrackets(
+                        _title.getValue(), _title.getFieldLabel()));
 
                 if (!vr.isValid()) {
                     InternalServices.WINDOW.alert(vr.getErrorText());

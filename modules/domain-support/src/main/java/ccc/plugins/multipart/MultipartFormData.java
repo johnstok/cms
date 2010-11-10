@@ -76,4 +76,12 @@ public interface MultipartFormData {
      */
     String getString(final String key);
 
+    /**
+     * Get the filename for a form item.
+     *
+     * @param key The key to the item.
+     *
+     * @return The item filename, as a string.
+     */
+    String getFilename(String key);
 }
