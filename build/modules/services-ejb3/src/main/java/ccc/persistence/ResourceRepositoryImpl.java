@@ -110,11 +110,9 @@ class ResourceRepositoryImpl implements ResourceRepository {
     @Override
     public ResourceEntity lookupWithLegacyId(final String legacyId) {
         return
-            discardDeleted(
-                _repository.find(
-                    QueryNames.RESOURCE_BY_LEGACY_ID,
-                    ResourceEntity.class,
-                    legacyId));
+            find(QueryNames.RESOURCE_BY_LEGACY_ID,
+                 ResourceEntity.class,
+                 legacyId);
     }
 
 
@@ -122,11 +120,9 @@ class ResourceRepositoryImpl implements ResourceRepository {
     @Override
     public List<ResourceEntity> lookupWithMetadataKey(final String key) {
         return
-            discardDeleted(
-                _repository.list(
-                    QueryNames.RESOURCE_BY_METADATA_KEY,
-                    ResourceEntity.class,
-                    key));
+            list(QueryNames.RESOURCE_BY_METADATA_KEY,
+                 ResourceEntity.class,
+                 key);
     }
 
 
@@ -177,12 +173,13 @@ class ResourceRepositoryImpl implements ResourceRepository {
         }
 
         return
-        _repository.listDyn(
-            query.toString(),
-            FileEntity.class,
-            pageNo,
-            pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
-            params);
+            discardInvalid(
+                _repository.listDyn(
+                    query.toString(),
+                    FileEntity.class,
+                    pageNo,
+                    pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
+                    params));
     }
 
 
@@ -192,7 +189,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
         final List<FolderEntity> roots =
             new ArrayList<FolderEntity>();
         final List<FolderEntity> allRoots =
-            list(QueryNames.ROOTS, FolderEntity.class);
+            _repository.list(QueryNames.ROOTS, FolderEntity.class);
 
         // Exclude the trash root.
         for (final FolderEntity root : allRoots) {
@@ -252,15 +249,15 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
 
     private <T extends ResourceEntity> List<T> list(final String queryName,
-                                              final Class<T> resultType,
-                                              final Object... params) {
-        return discardDeleted(_repository.list(queryName, resultType, params));
+                                                    final Class<T> resultType,
+                                                    final Object... params) {
+        return discardInvalid(_repository.list(queryName, resultType, params));
     }
 
 
     private <T extends ResourceEntity> T find(final String queryName,
-                                        final Class<T> resultType,
-                                        final Object... params) {
+                                              final Class<T> resultType,
+                                              final Object... params) {
         return discardDeleted(_repository.find(queryName, resultType, params));
     }
 
@@ -273,11 +270,12 @@ class ResourceRepositoryImpl implements ResourceRepository {
     }
 
 
-    private <T extends ResourceEntity> List<T> discardDeleted(
+    private <T extends ResourceEntity> List<T> discardInvalid(
                                                             final List<T> all) {
         final List<T> nondeleted = new ArrayList<T>();
         for (final T r : all) {
-            if (!r.isDeleted()) { nondeleted.add(r); }
+            if (r.isDeleted() || null==r.getParent()) { continue; }
+            nondeleted.add(r);
         }
         return nondeleted;
     }
@@ -305,12 +303,13 @@ class ResourceRepositoryImpl implements ResourceRepository {
         appendSorting(sort, sortOrder, query);
 
         return
-            _repository.listDyn(
-                query.toString(),
-                ResourceEntity.class,
-                pageNo,
-                pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
-                params);
+            discardInvalid(
+                _repository.listDyn(
+                    query.toString(),
+                    ResourceEntity.class,
+                    pageNo,
+                    pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
+                    params));
     }
 
 
@@ -354,12 +353,13 @@ class ResourceRepositoryImpl implements ResourceRepository {
         }
 
         return
-            _repository.listDyn(
-                query.toString(),
-                PageEntity.class,
-                pageNo,
-                pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
-                params);
+            discardInvalid(
+                _repository.listDyn(
+                    query.toString(),
+                    PageEntity.class,
+                    pageNo,
+                    pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
+                    params));
     }
 
 
@@ -775,7 +775,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
     @Override
     public WorkingCopySupport<?, ?, ?> findWcAware(final UUID id) {
         final List<WorkingCopySupport> results =
-            discardDeleted(
+            discardInvalid(
                 _repository.list(
                     QueryNames.WC_BY_ID,
                     WorkingCopySupport.class,

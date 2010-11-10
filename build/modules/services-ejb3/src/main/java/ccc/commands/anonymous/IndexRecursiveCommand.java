@@ -88,7 +88,7 @@ class IndexRecursiveCommand
     @Override
     public void execute() {
         final SearchHelper search =
-            new SearchHelper(_resRepo, _dataRepo, _settingsRepo);
+            new SearchHelper(_resRepo, _dataRepo, _settingsRepo, null);
 
         final ResourceEntity r =
             _resRepo.find(ResourceEntity.class, _resourceId);

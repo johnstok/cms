@@ -40,6 +40,7 @@ import ccc.domain.FileEntity;
 import ccc.domain.PageEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.Setting;
+import ccc.domain.UserEntity;
 import ccc.persistence.DataRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.SettingsRepository;
@@ -63,6 +64,7 @@ public class SearchHelper
     private final ResourceRepository _resources;
     private final DataRepository     _data;
     private final SettingsRepository _settings;
+    private final UserEntity         _user;
 
 
     /**
@@ -71,13 +73,17 @@ public class SearchHelper
      * @param resources The resource repo for retrieving resources.
      * @param data      The data repo for retrieving file contents.
      * @param settings  The settings repo for retrieving CC settings.
+     * @param user      The user performing the search.
      */
     public SearchHelper(final ResourceRepository resources,
-                    final DataRepository data,
-                    final SettingsRepository settings) {
+                        final DataRepository data,
+                        final SettingsRepository settings,
+                        final UserEntity user) {
         _resources = resources;
         _data = data;
         _settings = settings;
+        _user = user;
+        // FIXME: Handle NULL user.
     }
 
 
@@ -100,9 +106,19 @@ public class SearchHelper
     /** {@inheritDoc} */
     @Override
     public SearchResult find(final String searchTerms,
-                             final int noOfResultsPerPage,
+                             final int resultCount,
                              final int page) {
-        return createIndex().find(searchTerms, noOfResultsPerPage, page);
+        final long then = System.currentTimeMillis();
+        final SearchResult res =
+            createIndex().find(
+                searchTerms,
+                null,
+                null,
+                _user.getPrincipals(),
+                resultCount,
+                page);
+        LOG.debug("Search time in millis: "+(System.currentTimeMillis()-then));
+        return res;
     }
 
 
@@ -113,7 +129,17 @@ public class SearchHelper
                              final SortOrder order,
                              final int resultCount,
                              final int page) {
-        return createIndex().find(searchTerms, sort, order, resultCount, page);
+        final long then = System.currentTimeMillis();
+        final SearchResult res =
+            createIndex().find(
+                searchTerms,
+                sort,
+                order,
+                _user.getPrincipals(),
+                resultCount,
+                page);
+        LOG.debug("Search time in millis: "+(System.currentTimeMillis()-then));
+        return res;
     }
 
 
@@ -184,7 +210,8 @@ public class SearchHelper
                 f.getTitle(),
                 f.getTags(),
                 content,
-                null);
+                null,
+                f.getAclHierarchy());
             LOG.debug("Indexed file: "+f.getTitle());
         }
     }
@@ -208,7 +235,8 @@ public class SearchHelper
             p.getTitle(),
             p.getTags(),
             extractContent(p),
-            p.currentRevision().getParagraphs());
+            p.currentRevision().getParagraphs(),
+            p.getAclHierarchy());
         LOG.debug("Indexed page: "+p.getTitle());
     }
 
@@ -228,14 +256,12 @@ public class SearchHelper
 
     private boolean canIndex(final ResourceEntity r) {
         final boolean visible = r.isVisible();
-        final boolean secure  = r.isSecure();
         final boolean indexable = r.isIndexable();
-        final boolean canIndex = visible && !secure && indexable;
+        final boolean canIndex = visible && indexable;
 
         LOG.debug(
             "canIndex="+canIndex
-            +" {secure="+secure
-            +", visible="+visible
+            +" {visible="+visible
             +", indexable="+indexable+"} "
             +r.getAbsolutePath());
         return canIndex;

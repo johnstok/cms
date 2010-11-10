@@ -32,11 +32,15 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
+import ccc.api.core.ACL;
 import ccc.api.core.Folder;
+import ccc.api.core.Group;
 import ccc.api.core.Page;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
+import ccc.api.core.User;
 import ccc.api.types.Paragraph;
 import ccc.api.types.SearchResult;
 import ccc.api.types.SortOrder;
@@ -163,6 +167,157 @@ public class SearchEngineAcceptanceTest
         // ASSERT
         assertEquals(1, result.totalResults());
         assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testSearchFindsSecureResourcesForUser() {
+
+        // ARRANGE
+        final User u = getUsers().retrieveCurrent();
+
+        final String searchTerm = "bbbbbbbb"+uid();
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary page   = tempPage(parent.getId(), null);
+
+        final Resource metadata = new Resource();
+        metadata.setTitle(searchTerm);
+        metadata.setDescription(searchTerm);
+        metadata.setTags(new HashSet<String>());
+        metadata.setMetadata(Collections.singletonMap("searchable", "true"));
+        getCommands().lock(page.getId());
+        getCommands().updateMetadata(page.getId(), metadata);
+
+
+        final ACL acl = getCommands().acl(page.getId());
+        final ACL.Entry aclEntry = new ACL.Entry();
+        aclEntry.setPrincipal(u.getId());
+        aclEntry.setReadable(true);
+        aclEntry.setWriteable(true);
+        acl.setUsers(Collections.singletonList(aclEntry));
+
+        getCommands().changeAcl(page.getId(), acl);
+        getCommands().publish(page.getId());
+
+        getSearch().index();
+        delay(); // Allow indexing to complete.
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 1);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(1, result.hits().size());
+        assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testSearchFindsSecureResourcesForGroup() {
+
+        // ARRANGE
+        final Group g = tempGroup();
+
+        final User u = getUsers().retrieveCurrent();
+        final Set<UUID> groups = u.getGroups();
+        groups.add(g.getId());
+        u.setGroups(groups);
+        getUsers().update(u.getId(), u);
+
+        final String searchTerm = "dddddddd"+uid();
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary page   = tempPage(parent.getId(), null);
+
+        final Resource metadata = new Resource();
+        metadata.setTitle(searchTerm);
+        metadata.setDescription(searchTerm);
+        metadata.setTags(new HashSet<String>());
+        metadata.setMetadata(Collections.singletonMap("searchable", "true"));
+        getCommands().lock(page.getId());
+        getCommands().updateMetadata(page.getId(), metadata);
+
+
+        final ACL acl = getCommands().acl(page.getId());
+        final ACL.Entry aclEntry = new ACL.Entry();
+        aclEntry.setPrincipal(g.getId());
+        aclEntry.setReadable(true);
+        aclEntry.setWriteable(true);
+        acl.setGroups(Collections.singletonList(aclEntry));
+
+        getCommands().changeAcl(page.getId(), acl);
+        getCommands().publish(page.getId());
+
+        getSearch().index();
+        delay(); // Allow indexing to complete.
+
+        // ACT
+        final SearchResult result = getSearch().find(searchTerm, 10, 1);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(1, result.hits().size());
+        assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+
+    /**
+     * Create a temporary group for testing.
+     *
+     * @return The new group.
+     */
+    private Group tempGroup() {
+        final Group group = new Group();
+        group.setName(uid());
+        return getGroups().create(group);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testSearchRejectsSecureResourcesForUnauthorisedUsers() {
+
+        // ARRANGE
+        final User u = tempUser();
+
+        final String searchTerm = "cccccccc"+uid();
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary page   = tempPage(parent.getId(), null);
+
+        final Resource metadata = new Resource();
+        metadata.setTitle(searchTerm);
+        metadata.setDescription(searchTerm);
+        metadata.setTags(new HashSet<String>());
+        metadata.setMetadata(Collections.singletonMap("searchable", "true"));
+        getCommands().lock(page.getId());
+        getCommands().updateMetadata(page.getId(), metadata);
+
+
+        final ACL acl = getCommands().acl(page.getId());
+        final ACL.Entry aclEntry = new ACL.Entry();
+        aclEntry.setPrincipal(u.getId());
+        aclEntry.setReadable(true);
+        aclEntry.setWriteable(true);
+        acl.setUsers(Collections.singletonList(aclEntry));
+
+        getCommands().publish(page.getId());
+        getCommands().changeAcl(page.getId(), acl);
+
+        getSearch().index();
+        delay(); // Allow indexing to complete.
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 1);
+
+        // ASSERT
+        assertEquals(0, result.totalResults());
+        assertEquals(0, result.hits().size());
     }
 
 
@@ -434,8 +589,8 @@ public class SearchEngineAcceptanceTest
 
     private void delay() {
         try {
-            final int tenSecs = 10000;
-            Thread.sleep(tenSecs);
+            final int twentySecs = 20000;
+            Thread.sleep(twentySecs);
         } catch (final InterruptedException e) {
             throw new RuntimeException("Delay failed.", e);
         }

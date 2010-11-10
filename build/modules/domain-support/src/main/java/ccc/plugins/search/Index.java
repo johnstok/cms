@@ -26,6 +26,7 @@
  */
 package ccc.plugins.search;
 
+import ccc.api.core.ACL;
 import ccc.api.types.SearchResult;
 import ccc.api.types.SortOrder;
 
@@ -64,6 +65,26 @@ public interface Index {
                       SortOrder order,
                       int resultCount,
                       int page);
+
+    /**
+     * Find the results that match the specified search terms.
+     *
+     * @param searchTerms The terms to match.
+     * @param sort The field to sort on.
+     * @param order The order of the sort.
+     * @param userPerms The permissions for the user running the query.
+     * @param resultCount The number of results to return.
+     * @param page The page of results to return (first page has index of 0).
+     *
+     * @return The SearchResult object with set entities and total count.
+     */
+    SearchResult find(String searchTerms,
+                      String sort,
+                      SortOrder order,
+                      ACL userPerms,
+                      int resultCount,
+                      int page);
+
 
     /**
      * Find the results that are similar to the specified page.

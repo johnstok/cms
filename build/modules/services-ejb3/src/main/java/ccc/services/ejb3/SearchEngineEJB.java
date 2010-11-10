@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
-r * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -81,7 +81,8 @@ public class SearchEngineEJB
             new SearchHelper(
                 getRepoFactory().createResourceRepository(),
                 getRepoFactory().createDataRepository(),
-                getRepoFactory().createSettingsRepository())
+                getRepoFactory().createSettingsRepository(),
+                currentUser())
             .find(searchTerms, resultCount, page);
     }
 
@@ -97,7 +98,8 @@ public class SearchEngineEJB
             new SearchHelper(
                 getRepoFactory().createResourceRepository(),
                 getRepoFactory().createDataRepository(),
-                getRepoFactory().createSettingsRepository())
+                getRepoFactory().createSettingsRepository(),
+                currentUser())
             .find(searchTerms, sort, order, resultCount, page);
     }
 
@@ -111,7 +113,8 @@ public class SearchEngineEJB
             new SearchHelper(
                 getRepoFactory().createResourceRepository(),
                 getRepoFactory().createDataRepository(),
-                getRepoFactory().createSettingsRepository())
+                getRepoFactory().createSettingsRepository(),
+                currentUser())
             .similar(uuid, noOfResultsPerPage, page);
     }
 

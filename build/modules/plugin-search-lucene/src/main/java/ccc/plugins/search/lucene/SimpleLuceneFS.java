@@ -27,6 +27,7 @@
 package ccc.plugins.search.lucene;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -57,6 +58,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.NumericUtils;
 import org.apache.lucene.util.Version;
 
+import ccc.api.core.ACL;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
@@ -83,6 +85,7 @@ public class SimpleLuceneFS
     private static final String  SORT_FIELD_PREFIX = "_";
     private static final Version LUCENE_VERSION = Version.LUCENE_30;
     private static final String  DEFAULT_FIELD = "allcontent";
+    private static final String  ACL_FIELD = SORT_FIELD_PREFIX+"acl";
     private static final Logger  LOG =
         Logger.getLogger(SimpleLuceneFS.class.getName());
 
@@ -121,7 +124,7 @@ public class SimpleLuceneFS
         final CapturingHandler capturingHandler =
             new CapturingHandler(nofOfResultsPerPage, page);
 
-        find(searchTerms, maxHits, null, capturingHandler);
+        find(searchTerms, maxHits, null, null, capturingHandler);
 
         return new SearchResult(
             capturingHandler.getHits(),
@@ -141,9 +144,11 @@ public class SimpleLuceneFS
                              final int pageNo) {
         final int page = pageNo - 1;
         final Sort sorter =
-            new Sort(
-                new SortField(
-                    sort, SortField.STRING_VAL, (SortOrder.DESC==order)));
+            (null==sort)
+                ? null
+                : new Sort(
+                    new SortField(
+                        sort, SortField.STRING_VAL, (SortOrder.DESC==order)));
 
         if (searchTerms == null || searchTerms.trim().equals("")) {
             return
@@ -159,7 +164,51 @@ public class SimpleLuceneFS
         final CapturingHandler capturingHandler =
             new CapturingHandler(nofOfResultsPerPage, page);
 
-        find(searchTerms, maxHits, sorter, capturingHandler);
+        find(searchTerms, maxHits, sorter, null, capturingHandler);
+
+        return new SearchResult(
+            capturingHandler.getHits(),
+            capturingHandler.getTotalResultsCount(),
+            nofOfResultsPerPage,
+            searchTerms,
+            page);
+
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public SearchResult find(final String searchTerms,
+                             final String sort,
+                             final SortOrder order,
+                             final ACL userPerms,
+                             final int nofOfResultsPerPage,
+                             final int pageNo) {
+        final int page = pageNo - 1;
+        final Sort sorter =
+            (null==sort)
+                ? null
+                : new Sort(
+                    new SortField(
+                        sort, SortField.STRING_VAL, (SortOrder.DESC==order)));
+
+        if (searchTerms == null || searchTerms.trim().equals("")) {
+            return
+            new SearchResult(
+                new HashSet<UUID>(),
+                0,
+                nofOfResultsPerPage,
+                searchTerms,
+                page);
+        }
+
+        final int maxHits = (page+1)*nofOfResultsPerPage;
+        final CapturingHandler capturingHandler =
+            new CapturingHandler(nofOfResultsPerPage, page);
+
+
+        find(searchTerms, maxHits, sorter, userPerms, capturingHandler);
+
 
         return new SearchResult(
             capturingHandler.getHits(),
@@ -196,8 +245,10 @@ public class SimpleLuceneFS
     private void find(final String searchTerms,
                       final int maxHits,
                       final Sort sorter,
+                      final ACL userPerms,
                       final CapturingHandler sh) {
         IndexSearcher searcher = null;
+
         try {
             searcher =
                 new IndexSearcher(
@@ -207,12 +258,16 @@ public class SimpleLuceneFS
             if (null==sorter) {
                 docs = searcher.search(
                     createParser().parse(searchTerms),
-                    null,
+                    new AclFilter(
+                        ACL_FIELD,
+                        (null==userPerms) ? new ACL() : userPerms),
                     maxHits);
             } else {
                 docs = searcher.search(
                     createParser().parse(searchTerms),
-                    null,
+                    new AclFilter(
+                        ACL_FIELD,
+                        (null==userPerms) ? new ACL() : userPerms),
                     maxHits,
                     sorter);
             }
@@ -396,6 +451,20 @@ public class SimpleLuceneFS
                                final Set<String> tags,
                                final String content,
                                final Set<Paragraph> paragraphs) {
+        createDocument(id, path, name, title, tags, content, paragraphs, new ArrayList<ACL>());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void createDocument(final UUID id,
+                               final ResourcePath path,
+                               final ResourceName name,
+                               final String title,
+                               final Set<String> tags,
+                               final String content,
+                               final Set<Paragraph> paragraphs,
+                               final Collection<ACL> acl) {
         try {
             clearDocuments(id);
 
@@ -408,6 +477,14 @@ public class SimpleLuceneFS
             }
 
 
+            final byte[] s11nAcl = AclFilter.serialise(acl);
+            d.add(
+                new Field(
+                    ACL_FIELD,
+                    s11nAcl,
+                    0,
+                    s11nAcl.length,
+                    Field.Store.YES));
             d.add(
                 new Field(
                     DEFAULT_FIELD,

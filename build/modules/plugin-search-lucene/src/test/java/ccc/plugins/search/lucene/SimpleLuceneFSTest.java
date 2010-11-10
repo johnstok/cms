@@ -37,6 +37,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import junit.framework.TestCase;
+import ccc.api.core.ACL;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
@@ -132,6 +133,123 @@ public class SimpleLuceneFSTest
 
         // ACT
         final SearchResult result = searchEngine.find("", 5, 1);
+
+        // ASSERT
+        assertEquals(0, result.totalResults());
+        assertEquals(result.hits().size(), 0);
+    }
+
+
+    public void testSecureResourcesHiddenFromAnonymousUser() {
+
+        // ARRANGE
+        final UUID allowedPrincipal = UUID.randomUUID();
+        final ACL allowedAcl = createAcl(allowedPrincipal);
+
+        final UUID id = UUID.randomUUID();
+        final SimpleLuceneFS searchEngine =
+            new SimpleLuceneFS(
+                new File("target/test14/lucene").getAbsolutePath());
+
+        // ACT
+        searchEngine.startUpdate();
+        searchEngine.createDocument(
+            UUID.randomUUID(),
+            new ResourcePath("/foo"),
+            new ResourceName("foo"),
+            "foo",
+            new HashSet<String>() {{ add("foo"); add("bar"); }},
+            "foo",
+            new HashSet<Paragraph>(),
+            Collections.singletonList(allowedAcl));
+        searchEngine.createDocument(
+            id,
+            new ResourcePath("/bar"),
+            new ResourceName("bar"),
+            "foo",
+            new HashSet<String>() {{ add("foo"); add("bar"); }},
+            "foo",
+            new HashSet<Paragraph>(),
+            Collections.<ACL>emptyList());
+        searchEngine.commitUpdate();
+        final SearchResult result = searchEngine.find("foo", 5, 1);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(result.hits().size(), 1);
+        assertEquals(id, result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testSecureResourcesVisibleToPermittedUser() {
+
+        // ARRANGE
+        final UUID allowedGroup = UUID.randomUUID();
+        final ACL allowedAcl = createAcl(allowedGroup);
+
+        final ACL userAcl = createAcl(allowedGroup);
+
+        final UUID id = UUID.randomUUID();
+        final SimpleLuceneFS searchEngine =
+            new SimpleLuceneFS(
+                new File("target/test15/lucene").getAbsolutePath());
+
+        // ACT
+        searchEngine.startUpdate();
+        searchEngine.createDocument(
+            id,
+            new ResourcePath("/foo"),
+            new ResourceName("foo"),
+            "foo",
+            new HashSet<String>() {{ add("foo"); add("bar"); }},
+            "foo",
+            new HashSet<Paragraph>(),
+            Collections.singletonList(allowedAcl));
+        searchEngine.commitUpdate();
+        final SearchResult result =
+            searchEngine.find("foo", "title", SortOrder.ASC, userAcl, 5, 1);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(result.hits().size(), 1);
+        assertEquals(id, result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testSecureResourcesHiddenFromNonpermittedUser() {
+
+        // ARRANGE
+        final UUID allowedGroup = UUID.randomUUID();
+        final ACL allowedAcl = createAcl(allowedGroup);
+
+        final UUID disallowedGroup = UUID.randomUUID();
+        final ACL userAcl = createAcl(disallowedGroup);
+
+        final UUID id = UUID.randomUUID();
+        final SimpleLuceneFS searchEngine =
+            new SimpleLuceneFS(
+                new File("target/test15/lucene").getAbsolutePath());
+
+        // ACT
+        searchEngine.startUpdate();
+        searchEngine.createDocument(
+            id,
+            new ResourcePath("/foo"),
+            new ResourceName("foo"),
+            "foo",
+            new HashSet<String>() {{ add("foo"); add("bar"); }},
+            "foo",
+            new HashSet<Paragraph>(),
+            Collections.singletonList(allowedAcl));
+        searchEngine.commitUpdate();
+        final SearchResult result =
+            searchEngine.find("foo", "title", SortOrder.ASC, userAcl, 5, 1);
 
         // ASSERT
         assertEquals(0, result.totalResults());
@@ -639,4 +757,15 @@ public class SimpleLuceneFSTest
             assertEquals(id, result.hits().iterator().next());
 
     }
+
+
+    private ACL createAcl(final UUID principal) {
+        final ACL.Entry entry = new ACL.Entry();
+        entry.setPrincipal(principal);
+        entry.setReadable(true);
+        final ACL acl = new ACL();
+        acl.setGroups(Collections.singletonList(entry));
+        return acl;
+    }
+
 }

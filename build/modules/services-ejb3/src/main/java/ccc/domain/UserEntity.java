@@ -32,6 +32,7 @@ import static ccc.commons.Encryption.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -40,6 +41,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.Map.Entry;
 
+import ccc.api.core.ACL;
 import ccc.api.core.User;
 import ccc.api.types.DBC;
 import ccc.api.types.EmailAddress;
@@ -397,4 +399,28 @@ public class UserEntity
      * @return The user's password.
      */
     public byte[] getPassword() { return Arrays.copyOf(_hash, _hash.length); }
+
+
+    /**
+     * Retrieve all the principals for this user.
+     *
+     * @return The collection of principals.
+     */
+    public ACL getPrincipals() {
+        final ACL acl = new ACL();
+
+        final ACL.Entry userPrincipal = new ACL.Entry();
+        userPrincipal.setPrincipal(getId());
+        acl.setUsers(Collections.singletonList(userPrincipal));
+
+        final List<ACL.Entry> userGroups = new ArrayList<ACL.Entry>();
+        for (final UUID groupId : getGroupIds()) {
+            final ACL.Entry groupPrincipal = new ACL.Entry();
+            groupPrincipal.setPrincipal(groupId);
+            userGroups.add(groupPrincipal);
+        }
+        acl.setGroups(userGroups);
+
+        return acl;
+    }
 }
