@@ -1,0 +1,12 @@
+set($url = $request.getAttribute("javax.servlet.error.request_uri"))
+#set($cut = $url.lastIndexOf("/") + 1)
+#set($name = $url.substring($cut, $url.length()))
+#set($terms = "name:"+$name+"*")
+  
+Were you looking for one these pages instead?<br/>
+#set($results = $search.find($terms, 20, 1))
+  
+#foreach($item in $results.hits())
+  #set($r = $resources.retrieve($item))
+  <a href="$r.getAbsolutePath()">$r.getTitle()</a><br/>
+#end
