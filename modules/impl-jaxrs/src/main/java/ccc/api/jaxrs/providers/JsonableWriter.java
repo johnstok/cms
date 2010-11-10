@@ -93,6 +93,8 @@ public class JsonableWriter<T extends Jsonable2>
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
+        writeContentType(mediaType, httpHeaders);
+
         final PrintWriter pw = createWriter(outputStream);
         if (MediaType.TEXT_HTML_TYPE.equals(mediaType)) {
             pw.print("<html><body>");

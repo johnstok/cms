@@ -95,6 +95,7 @@ public class StringCollectionWriter
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
+        writeContentType(mediaType, httpHeaders);
 
         // FIXME: Use JsonImpl.
         // FIXME: Send an object, not an array.

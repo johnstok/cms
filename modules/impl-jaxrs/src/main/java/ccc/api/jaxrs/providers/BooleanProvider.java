@@ -117,12 +117,14 @@ public class BooleanProvider
                         final Class<?> arg1,
                         final Type arg2,
                         final Annotation[] arg3,
-                        final MediaType arg4,
-                        final MultivaluedMap<String, Object> arg5,
+                        final MediaType mediaType,
+                        final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
+        writeContentType(mediaType, httpHeaders);
+
         final PrintWriter pw = createWriter(outputStream);
 
-        if (MediaType.TEXT_HTML_TYPE.equals(arg4)) {
+        if (MediaType.TEXT_HTML_TYPE.equals(mediaType)) {
             pw.print("<h2>");
             pw.print(arg0);
             pw.print("</h2>");

@@ -40,7 +40,9 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import ccc.commons.IO;
 import ccc.plugins.s11n.Json;
@@ -53,6 +55,21 @@ import ccc.plugins.s11n.json.JsonImpl;
  * @author Civic Computing Ltd.
  */
 public class AbstractProvider {
+
+
+
+    /**
+     * Writes an appropriate 'Content-Type' header with the default charset.
+     *
+     * @param mediaType   The media type this provider is writing.
+     * @param httpHeaders The headers for the HTTP response.
+     */
+    protected void writeContentType(
+                          final MediaType mediaType,
+                          final MultivaluedMap<String, Object> httpHeaders) {
+        httpHeaders.putSingle(
+            HttpHeaders.CONTENT_TYPE, mediaType.toString() + ";charset=UTF-8");
+    }
 
     /**
      * Determine if a type is a collection of the specified class.

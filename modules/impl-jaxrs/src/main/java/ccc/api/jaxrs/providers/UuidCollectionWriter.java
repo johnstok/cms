@@ -95,6 +95,7 @@ public class UuidCollectionWriter
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
+        writeContentType(mediaType, httpHeaders);
 
         final List<String> strings = new ArrayList<String>();
         for (final UUID uuid : object) {

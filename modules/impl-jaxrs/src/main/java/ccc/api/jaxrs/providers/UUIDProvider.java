@@ -119,9 +119,11 @@ public class UUIDProvider
                         final Class<?> arg1,
                         final Type arg2,
                         final Annotation[] arg3,
-                        final MediaType arg4,
-                        final MultivaluedMap<String, Object> arg5,
+                        final MediaType mediaType,
+                        final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
+        writeContentType(mediaType, httpHeaders);
+
         final PrintWriter pw = createWriter(outputStream);
         pw.print(arg0);
         pw.flush();
