@@ -1,0 +1,19 @@
+<h2>ACL</h2>
+
+Access control can be configured on groups or on users. By default, new resource does not have any groups or users assigned and therefore anyone can read and modify it. 
+
+By assigning a group to a resource only members of that group can access the resource. 
+
+By assigning an user to a resource only that user can access the resource.
+
+There can be any combination of users and groups, see table below.
+
+|_. group |_. user |_. who can access |
+| admin | | only members of admin group |
+| admin | john |	members of admin group and john |
+| admin | john,lisa | members of admin group, john and lisa |
+
+The default assigned group or user gets read and write permission (R+W) for the resource.
+
+Read and write permissions can be changed but with *caution*. 
+Assigning read only permissions will *lock* resource and other hand a resource with only write permissions is *invisible*. Only admin users can change access rights in these cases.
