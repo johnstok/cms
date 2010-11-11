@@ -72,13 +72,6 @@ public class GWTWindow
 
     /** {@inheritDoc} */
     @Override
-    public void redirectTo(final String relativeURL) {
-        Window.Location.assign(new GlobalsImpl().hostURL()+relativeURL);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public String getParameter(final String string) {
         return Window.Location.getParameter(string);
     }
