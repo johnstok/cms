@@ -31,11 +31,8 @@ import ccc.api.types.ResourceType;
 import ccc.client.core.Globals;
 
 import com.extjs.gxt.ui.client.data.BeanModel;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
-import com.extjs.gxt.ui.client.event.TreePanelEvent;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 
 
@@ -44,7 +41,9 @@ import com.extjs.gxt.ui.client.widget.menu.Menu;
  *
  * @author Civic Computing Ltd.
  */
-public class EnhancedResourceTree extends ResourceTree {
+public class EnhancedResourceTree
+    extends
+        ResourceTree {
 
     private final Menu _contextMenu;
     private final LeftRightPane _view;
@@ -80,17 +79,6 @@ public class EnhancedResourceTree extends ResourceTree {
                 }
             }
         );
-
-        final Listener<TreePanelEvent<BeanModel>> listener =
-            new Listener<TreePanelEvent<BeanModel>>() {
-                @Override public void handleEvent(
-                           final TreePanelEvent<BeanModel> be) {
-                    _rt.displayResourcesFor(
-                        getSelectedItem());
-                }
-            };
-
-        addListener(Events.SelectionChange, listener);
 
         _contextMenu.setId("navigator-menu");
         setContextMenu(_contextMenu);

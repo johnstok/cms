@@ -45,14 +45,6 @@ public interface SingleSelectionModel {
 
 
     /**
-     * Access the currently selected tree node.
-     *
-     * @return The selected model data.
-     */
-    ResourceSummary treeSelection();
-
-
-    /**
      * Update the specified model data if it exists in the data store.
      *
      * @param model The model to update
@@ -81,4 +73,12 @@ public interface SingleSelectionModel {
      */
     @Deprecated
     void create(ResourceSummary model);
+
+
+    /**
+     * The folder that is currently being displayed.
+     *
+     * @return The folder displayed, or null if no folder is being displayed.
+     */
+    ResourceSummary currentFolder();
 }

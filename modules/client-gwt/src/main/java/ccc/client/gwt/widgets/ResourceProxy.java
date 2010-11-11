@@ -28,6 +28,7 @@ package ccc.client.gwt.widgets;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
@@ -50,20 +51,23 @@ final class ResourceProxy extends RpcProxy<PagingLoadResult<BeanModel>> {
     private ResourceSummary _folder;
     private final ResourceType _type;
 
+
     /**
      * Constructor.
      *
      * @param ResourceSummary The parent folder
      * @param ResourceType The resource type
      */
-    ResourceProxy(ResourceSummary folder, ResourceType type) {
+    ResourceProxy(final ResourceSummary folder, final ResourceType type) {
         _folder = folder;
         _type = type;
     }
 
-    void setFolder(ResourceSummary folder) {
+
+    void setFolder(final ResourceSummary folder) {
         _folder = folder;
     }
+
 
     @Override
     protected void load(final Object loadConfig,
@@ -88,13 +92,13 @@ final class ResourceProxy extends RpcProxy<PagingLoadResult<BeanModel>> {
 
             String name = null;
             if (config.getFilterConfigs() != null) {
-            for (FilterConfig cc : config.getFilterConfigs()) {
+            for (final FilterConfig cc : config.getFilterConfigs()) {
                 if (cc.getField().equals("name") && cc.getValue() != null) {
                     name = (String)cc.getValue()+"%";
                 }
             }
             }
-            ResourceCriteria criteria = new ResourceCriteria();
+            final ResourceCriteria criteria = new ResourceCriteria();
             criteria.setParent((_folder == null) ? null :_folder.getId());
             criteria.setName(name);
             criteria.setSortField(config.getSortField());
@@ -124,5 +128,27 @@ final class ResourceProxy extends RpcProxy<PagingLoadResult<BeanModel>> {
                 }
             }.execute();
         }
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The current folder for this proxy.
+     */
+    public ResourceSummary getFolder() {
+        return _folder;
+    }
+
+
+    /**
+     * Check if this proxy is displaying a specified folder.
+     *
+     * @param id The folder's ID.
+     *
+     * @return True if the proxy is displaying the folder, false otherwise.
+     */
+    public boolean isDisplaying(final UUID id) {
+        return null!=getFolder() && getFolder().getId().equals(id);
     }
 }

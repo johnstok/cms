@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.DBC;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Globals;
 import ccc.client.gwt.binding.DataBinding;
@@ -59,15 +60,19 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
  */
 public abstract class AbstractResourceTree {
 
-    private final TreePanel<BeanModel> _tree;
-    private final TreeStore<BeanModel> _store;
+    private final TreePanel<BeanModel>      _tree;
+    private final TreeStore<BeanModel>      _store;
     private final BaseTreeLoader<BeanModel> _loader;
+    private final ResourceSummary           _root;
+
 
     /**
      * Constructor.
      *
+     * @param root The root of the tree.
      */
-    public AbstractResourceTree() {
+    public AbstractResourceTree(final ResourceSummary root) {
+        _root = DBC.require().notNull(root);
         _loader = createLoader();
 
         _store = new TreeStore<BeanModel>(_loader);
@@ -174,25 +179,43 @@ public abstract class AbstractResourceTree {
     public void move(final ResourceSummary oldParent,
                      final ResourceSummary newParent,
                      final ResourceSummary model) {
-        final BeanModel pBean =
-            _store.findModel(ResourceSummary.UUID, oldParent.getId());
         final BeanModel mBean =
             _store.findModel(ResourceSummary.UUID, model.getId());
-        final BeanModel destinationFolder =
+        final BeanModel sBean =
+            _store.findModel(ResourceSummary.UUID, model.getParent());
+        final BeanModel tBean =
             _store.findModel(ResourceSummary.UUID, newParent.getId());
 
-        _store.remove(pBean, mBean);
+        // Correct the resource's fields.
+        model.setAbsolutePath(newParent.getAbsolutePath()+"/"+model.getName());
+        model.setParent(newParent.getId());
 
-        if (null!=destinationFolder) { // May not exist in other store
-            final String newPath = newParent.getAbsolutePath();
-            final String oldPath = oldParent.getAbsolutePath();
-            final String currentPath = model.getAbsolutePath();
-            final String newModelPath =
-                currentPath.replaceFirst(oldPath, newPath);
-            model.setAbsolutePath(newModelPath);
-            if (ResourceType.FOLDER==model.getType()) {
-                newParent.incrementFolderCount();
-                _store.add(destinationFolder, mBean, false);
+        if (ResourceType.FOLDER==model.getType()) {
+
+            // Update the old parent.
+            if (null!=sBean) { // May not exist in tree store.
+                final ResourceSummary source = sBean.getBean();
+                source.decrementFolderCount();
+                if (source.getFolderCount()<1) {
+                    _tree.setExpanded(sBean, false);
+                }
+                if (null!=mBean) {
+                    _store.remove(mBean);
+                }
+                _store.update(sBean);
+            }
+
+            // Update the new parent.
+            if (null!=tBean) { // May not exist in tree store.
+                final ResourceSummary target = tBean.getBean();
+                target.incrementFolderCount();
+                if (null!=mBean) {
+                    _store.add(tBean, mBean, false);
+                } else {
+                    _store.add(
+                        tBean, DataBinding.bindResourceSummary(model), false);
+                }
+                _store.update(tBean);
             }
         }
     }
@@ -252,18 +275,18 @@ public abstract class AbstractResourceTree {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Add a resource to the tree.
      *
-     * @param model
+     * @param res The resource to add.
      */
-    public boolean addResource(final ResourceSummary model) {
-        final BeanModel pBean =
-            _store.findModel(ResourceSummary.UUID, model.getParent());
+    public void addResource(final ResourceSummary res) {
+        if (res.getType() == ResourceType.FOLDER) {
 
-        if (null!=pBean) { // May not exist in the store
-            if (model.getType() == ResourceType.FOLDER) {
+            final BeanModel pBean =
+                _store.findModel(ResourceSummary.UUID, res.getParent());
 
-                final BeanModel tBean = DataBinding.bindResourceSummary(model);
+            if (null!=pBean) { // May not exist in the store
+                final BeanModel tBean = DataBinding.bindResourceSummary(res);
                 _store.add(pBean, tBean, false);
 
                 final ResourceSummary parent = pBean.<ResourceSummary>getBean();
@@ -272,9 +295,7 @@ public abstract class AbstractResourceTree {
                 _store.update(tBean);
                 _store.update(pBean);
             }
-            return pBean.equals(_tree.getSelectionModel().getSelectedItem());
         }
-        return false;
     }
 
 
@@ -301,14 +322,14 @@ public abstract class AbstractResourceTree {
      * @param parent The parent folder.
      * @return The list of range folders.
      */
-    protected List<ResourceSummary> createRangeFolders(int count,
-        final ResourceSummary parent) {
+    protected List<ResourceSummary> createRangeFolders(
+                                               final int count,
+                                               final ResourceSummary parent) {
 
-        List<ResourceSummary> children =
-            new ArrayList<ResourceSummary>();
+        final List<ResourceSummary> children = new ArrayList<ResourceSummary>();
         int page = 1;
         for (int i = 0; i < count; i=i+Globals.MAX_FETCH) {
-            ResourceSummary rs = new ResourceSummary();
+            final ResourceSummary rs = new ResourceSummary();
             rs.setName(""+(i+1)+" ... "+((i+Globals.MAX_FETCH) > count
                     ? count
                     : i+Globals.MAX_FETCH));
@@ -323,5 +344,23 @@ public abstract class AbstractResourceTree {
             page++;
         }
         return children;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The root resource for this tree.
+     */
+    protected ResourceSummary getRoot() {
+        return _root;
+    }
+
+
+    /**
+     * Clear any selections made on the tree.
+     */
+    public void clearSelection() {
+       _tree.getSelectionModel().deselectAll();
     }
 }

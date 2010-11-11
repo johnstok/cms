@@ -54,7 +54,7 @@ public final class OpenCreateFileAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ResourceSummary parent = _selectionModel.treeSelection();
+        final ResourceSummary parent = _selectionModel.currentFolder();
         if (parent == null) {
             InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
         } else {

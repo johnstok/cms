@@ -55,7 +55,7 @@ public final class OpenCreateTextFileAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ResourceSummary item = _selectionModel.treeSelection();
+        final ResourceSummary item = _selectionModel.currentFolder();
         if (item == null) {
             InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
         } else {
