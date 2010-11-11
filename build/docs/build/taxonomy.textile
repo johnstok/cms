@@ -1,0 +1,33 @@
+<h2>Taxonomy</h2>
+
+Taxonomy is used to categorise pages in CC7. There are three different parts of a taxonomy - vocabulary, template and page.
+
+The vocabulary is a XML text file containing all the terms. There can be more than one vocabulary for a site.
+
+In order to use that vocabulary the template must have a field of type 'taxonomy'. This field defines the path to the vocabulary file.
+
+Finally, the page using a template with taxonomy field has a paragraph for selected taxonomy term IDs. These are stored as a comma separated list.
+
+
+
+Template XML definition:
+@<fields>@
+    @<field name="category" type="taxonomy" vocabulary="/assets/transport" />@
+@</fields>@
+
+Example taxonomy vocabulary
+File path /assets/transport
+
+@<vocabulary>@
+  @<term id="1" title="ground">@
+    @<term id="1.1" title="car"/>@
+    @<term id="1.2" title="truck"/>@
+  @</term>@
+  @<term id="2" title="air">@
+    @<term id="2.1" title="plane"/>@
+    @<term id="2.2" title="helicopter"/>@
+  @</term>@
+  @<term id="3" title="sea">@
+    @<term id="3.1" title="ship"/>@
+  @</term>@
+@</vocabulary>@

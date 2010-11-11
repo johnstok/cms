@@ -44,15 +44,22 @@ TODO: Decide if we should use 'mvn release:release'...
 == Making a bugfix release ==
 N.B. bugfix releases are always made from a branch.
 
- 1. Prepare release with maven:
+ 1. Perform an svn 'status' to confirm there are no outstanding changes.
+ 2. Perform an svn 'update' to ensure the local copy is up to date.
+ 1. Create a release with a script release.sh. When prompted, verify the version number and type right release tag:
+ 
 {{{
-mvn -DtagBase=http://svn.contentcontrol.com/ContentControl/tags release:prepare
+What is the release version for "build"? (com.civicuk.cc:build) 7.2.14: : 
+What is SCM release tag or label for "build"? (com.civicuk.cc:build) build-7.2.14: : release-7.2.14
+What is the new development version for "build"? (com.civicuk.cc:build) 7.2.15-SNAPSHOT: : 
+
 }}}
- 1. Checkout the tag
- 1. Build the tag
+ 1. After script finishes, checkout the tag
+ 1. Add your Nexus username and password to settings-release.xml. Build the tag
 {{{
-mvn clean install
+build_release.sh
 }}}
+
 
 == Merging ==
  * Rule: always merge branches into trunk.

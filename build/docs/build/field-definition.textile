@@ -1,32 +1,33 @@
 The XML definition of the template is a simple list of fields. Each field in the definition represents a field in the page editor.
 
-<h3 id="ExampleXMLfortemplate">Example XML for template definition (7.2)</h3>
+<h3 id="ExampleXMLfortemplate">Example XML for template definition (7.3)</h3>
 <pre class="wiki">
-&lt;fields&gt;
-    &lt;field name=&quot;dateField&quot; type=&quot;date&quot; description=&quot;birthday&quot;/&gt;
-    &lt;field name=&quot;oneLine&quot; type=&quot;text_field&quot; /&gt;
-    &lt;field name=&quot;oneLineWithValidation&quot; type=&quot;text_field&quot; regexp=&quot;\d{1,3}&quot;/&gt;
-    &lt;field name=&quot;manyLines&quot; type=&quot;text_area&quot; title=&quot;Longer text&quot; /&gt;
-    &lt;field name=&quot;richText&quot; type=&quot;html&quot; /&gt;
-    &lt;field name=&quot;checkBoxes&quot; type=&quot;checkbox&quot;&gt;
-        &lt;option default=&quot;true&quot; title=&quot;My Value&quot; value=&quot;my_value&quot;/&gt;
-        &lt;option title=&quot;Other Value&quot; value=&quot;other_value&quot;/&gt;
-    &lt;/field&gt;
-    &lt;field name=&quot;radio&quot; type=&quot;radio&quot;&gt;
-        &lt;option default=&quot;true&quot; title=&quot;My Value&quot; value=&quot;my_value&quot;/&gt;
-        &lt;option title=&quot;Other Value&quot; value=&quot;other_value&quot;/&gt;
-    &lt;/field&gt;
-    &lt;field name=&quot;combos&quot; type=&quot;combobox&quot;&gt;
-        &lt;option default=&quot;true&quot; title=&quot;My Value&quot; value=&quot;my_value&quot;/&gt;
-        &lt;option title=&quot;Other Value&quot; value=&quot;other_value&quot;/&gt;
-    &lt;/field&gt;
-    &lt;field name=&quot;list&quot; type=&quot;list&quot;&gt;
-        &lt;option default=&quot;true&quot; title=&quot;My Value&quot; value=&quot;my_value&quot;/&gt;
-        &lt;option title=&quot;Other Value&quot; value=&quot;other_value&quot;/&gt;
-    &lt;/field&gt;
-    &lt;field name=&quot;photo&quot; type=&quot;image&quot;/&gt;
-    &lt;field name=&quot;number&quot; type=&quot;number&quot;/&gt;
-&lt;/fields&gt;
+@<fields>@
+    @<field name="dateField" type="date" description="birthday"/>@
+    @<field name="oneLine" type="text_field" />@
+    @<field name="oneLineWithValidation" type="text_field" regexp="\d{1,3}"/>@
+    @<field name="manyLines" type="text_area" title="Longer text" />@
+    @<field name="richText" type="html" />@
+   @<field name="checkBoxes" type="checkbox">@
+        @<option default="true" title="My Value" value="my_value"/>@
+        @<option title="Other Value" value="other_value"/>@
+    @</field>@
+    @<field name="radio" type="radio">@
+        @<option default="true" title="My Value" value="my_value"/>@
+        @<option title="Other Value" value="other_value"/>@
+    @</field>@
+    @<field name="combos" type="combobox">@
+        @<option default="true" title="My Value" value="my_value"/>@
+        @<option title="Other Value" value="other_value"/>@
+    @</field>@
+    @<field name="list" type="list">@
+        @<option default="true" title="My Value" value="my_value"/>@
+        @<option title="Other Value" value="other_value"/>@
+    @</field>@
+    @<field name="photo" type="image"/>@
+    @<field name="number" type="number"/>@
+    @<field name="category" type="taxonomy" vocabulary="/path/to/file"/>@
+@</fields>@
 </pre>
 <h3 id="Attributes">Attributes</h3>
 <ul>
@@ -48,4 +49,5 @@ The XML definition of the template is a simple list of fields. Each field in the
     <li><tt>list</tt> list with defined option values.</li>
     <li><tt>image</tt> image selector.</li>
     <li><tt>number</tt> number, stored as BigDecimal.</li>
+    <li><tt>taxonomy</tt> taxonomy field with specified vocabulary. Selected terms are stored as list.</li>
 </ul>
