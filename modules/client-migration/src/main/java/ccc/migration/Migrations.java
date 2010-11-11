@@ -250,11 +250,10 @@ public class Migrations extends BaseMigrations {
             publish(r, rs, le);
             showInMainMenu(r, rs, le);
             setMetadata(r, rs, le);
+            migrateResources(rs.getId(), r.contentId());
             setResourceRoles(r, rs, le);
             getMigrations().unlock(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
-
-            migrateResources(rs.getId(), r.contentId());
 
         } catch (final Exception e) {
 //          log.warn("Error migrating folder "+r.contentId(),  e);
