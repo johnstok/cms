@@ -59,15 +59,6 @@ public interface Window {
 
 
     /**
-     * Redirect to another url. Use with caution the application will exit and
-     * all local state will be lost.
-     *
-     * @param relativeURL The host-relative URL.
-     */
-    void redirectTo(final String relativeURL);
-
-
-    /**
      * Get a startup parameter.
      *
      * @param string The parameter name.

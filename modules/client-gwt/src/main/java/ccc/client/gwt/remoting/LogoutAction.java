@@ -27,7 +27,6 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Security;
-import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
@@ -58,7 +57,7 @@ public final class LogoutAction
     protected void onNoContent(final Response response) {
         new GlobalsImpl().currentUser(null);
         InternalServices.WINDOW.disableExitConfirmation();
-        InternalServices.WINDOW.redirectTo(Globals.APP_URL);
+        InternalServices.WINDOW.refresh();
     }
 
 

@@ -81,13 +81,6 @@ public class WindowStub
 
     /** {@inheritDoc} */
     @Override
-    public void redirectTo(final String relativeURL) {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public void refresh() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
