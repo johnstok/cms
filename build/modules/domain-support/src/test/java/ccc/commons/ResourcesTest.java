@@ -44,6 +44,29 @@ public final class ResourcesTest extends TestCase {
     /**
      * Test.
      */
+    public void testLastPart() {
+
+        // ARRANGE
+
+        // ACT
+
+        // ASSERT
+        assertEquals("foo.jpg", Resources.lastPart("/baz/bar/foo.jpg"));
+        assertEquals("foo.jpg", Resources.lastPart("c:\\baz\\bar\\foo.jpg"));
+        assertEquals("foo.jpg", Resources.lastPart("baz/bar/foo.jpg"));
+        assertEquals("foo.jpg", Resources.lastPart("baz\\bar\\foo.jpg"));
+        assertEquals("foo.jpg", Resources.lastPart("/baz\\bar/foo.jpg"));
+        assertEquals("foo.jpg", Resources.lastPart("foo.jpg"));
+        assertEquals("bar",     Resources.lastPart("/baz/bar/"));
+        assertEquals("bar",     Resources.lastPart("c:\\baz\\bar\\"));
+        assertEquals("",        Resources.lastPart(""));
+
+        assertNull(Resources.lastPart(null));
+    }
+
+    /**
+     * Test.
+     */
     public void testReadIntoMemory() {
 
         // ARRANGE

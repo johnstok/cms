@@ -1,0 +1,18 @@
+All,
+
+There is a new iteration of CCC7 available for you to try!
+
+You can access the release at the following URLs:
+ * Content Server:  ${content-server-url}
+ * Content Creator: ${content-creator-url}
+
+The new features to look at in this release are:
+ * ${features}
+ 
+The following changes / bug-fixes have also been completed:
+ * ${fixes}
+ 
+We encourage you to drive the system and welcome all feedback.
+
+Regards,
+The technical team.

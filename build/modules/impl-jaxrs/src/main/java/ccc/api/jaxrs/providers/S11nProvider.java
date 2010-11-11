@@ -95,6 +95,9 @@ public class S11nProvider<T>
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
+
+        writeContentType(mediaType, httpHeaders);
+
         final Serializer<T> s = (Serializer<T>) getSerializers().create(clazz);
         final String body =  s.write(object);
 
@@ -131,7 +134,7 @@ public class S11nProvider<T>
         try {
             final Serializer<T> s = getSerializers().create(clazz);
             String entity = readString(mimetype, is);
-            if (MediaType.TEXT_HTML_TYPE.equals(mimetype)) {
+            if (MediaType.TEXT_HTML_TYPE.isCompatible(mimetype)) {
                 entity = entity.substring(12, entity.length()-14);
             }
             return s.read(entity);

@@ -1,0 +1,73 @@
+h1. Breaking changes in API 7.1
+
+h2. Action Scheduler
+
+* Uses REST API now.
+
+h2. Actions
+
+* All Actions paths have no longer @/action@ in the beginning.
+
+h2. Files
+
+* @getAllContentImages@ is removed - use @getPagedImages@ instead.
+
+h2. Folders
+
+* All Folders paths have no longer @/folders@ in the beginning.
+
+h2. Pages
+
+* All Pages paths have no longer @/pages@ in the beginning.
+
+h2. Resources
+
+* All Resources paths have no longer @/resources@ in the beginning.
+* @fail@ method removed.
+* @changeRoles@ method takes @AclDto@ as a parameter instead of collection of strings.
+* @roles@ method returns @AclDto@ instead of collection of strings.
+
+h2. Search Engine
+
+* Uses REST API now.
+
+
+h2. Templates
+
+* All Templates paths have no longer @/templates@ in the beginning.
+
+h2. Users
+
+* All Users paths have no longer @/users@ in the beginning.
+
+<hr>
+
+h1. New or extended REST APIs in 7.1
+
+h2. Comments
+
+* New API with create, retrieve, update, delete, list methods.
+
+h2. Groups
+
+* New API with list, find, create, update  methods.
+
+h2. Scheduler
+
+* New API with start, stop, isRunning methods.
+
+h2. Folders
+
+* New method getChildrenPaged added.
+
+h2. Files
+
+* New method getPagedImages added.
+
+h2. Resources
+
+* New method list method added.
+
+h2. Service Locator
+
+* Added getComments, lookupActionScheduler, getGroups methods

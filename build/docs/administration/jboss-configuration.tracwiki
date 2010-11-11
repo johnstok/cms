@@ -1,0 +1,24 @@
+= jBoss Cofiguration =
+This page documents various aspects of jBoss configuration.
+
+== Logging each deployment separately ==
+''TODO: describe the jars to patch.''
+
+You can direct logging output for a specific ear using a log4j filter. See the following example:
+{{{
+   <appender name="cc7" class="org.jboss.logging.appender.DailyRollingFileAppender">
+      <errorHandler class="org.jboss.logging.util.OnlyOnceErrorHandler"/>
+      <param name="File" value="${jboss.server.log.dir}/cc7.log"/>
+      <param name="Append" value="true"/>
+      <param name="Threshold" value="DEBUG"/>
+      <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+      <layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
+      </layout>
+      <filter class="org.jboss.logging.filter.TCLMCFilter">
+        <param name="AcceptOnMatch" value="true"/>
+        <param name="DeployURL" value="cc7.ear"/>
+      </filter>
+      <filter class="org.apache.log4j.varia.DenyAllFilter"></filter>
+   </appender>
+}}}

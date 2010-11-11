@@ -1,0 +1,96 @@
+The build machine for continuous integration is running as a VM image.
+
+== Installed software: ==
+
+  * Operating system: Windows 2003 Server.
+  * Windows Server 2003 Resource Kit Tools
+  * Java 1.6.0_11-b03
+  * Python 2.5
+  * Genshi 0.5.1
+  * Maven 2.0.9
+  * Trac 0.11.2.1
+  * Hudson 1.262
+
+  * Firefox 3.0.5
+  * Safari 3.2.1
+  * IE 6
+  * Opera 9.63
+  * Chrome 1.0.154.43
+
+== Environment setup ==
+
+=== Added user variables ===
+
+{{{
+FirefoxPath: C:\Program Files\Mozilla Firefox\
+SafariPath: C:\Program Files\Safari\
+OperaPath: C:\Program Files\Opera\
+HUDSON_HOME: C:\hudson
+JAVA_HOME: C:\Program Files\Java\jdk1.6.0_11
+M2: %M2_HOME%\bin
+M2_HOME: C:\Program Files\apache-maven-2.0.9
+resourceKit: C:\Program Files\Windows Resource Kits\Tools
+Path: %resourceKit%;%OperaPath%;%SafariPath%;%FirefoxPath%;%JAVA_HOME%\bin;%M2%
+}}}
+
+=== Added system variables ===
+
+{{{
+NOPAUSE: true
+Path: %SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;C:\Python25;C:\Program Files\Subversion\bin
+}}}
+
+=== Firefox settings ===
+
+Check: [wiki:SeleniumRC]
+
+
+== Startup commands ==
+
+{{{
+Hudson home:
+c:\hudson
+
+Hudson war:
+c:\hudson.war
+
+Hudson start:
+java -DHUDSON_HOME=c:\hudson -jar c:\hudson.war --httpPort=9090 --ajp13Port=9009
+
+Tracd:
+c:\Python25\Scripts\
+
+Tracd start:
+tracd -p 8000 --auth=ccc7,\ccc7\conf\users.htdigest,ccc7 \ccc7
+
+H2 start: (no longer needed as tests start and stop H2)
+
+}}}
+
+== Hudson jobs ==
+
+=== Acceptance test ===
+
+Execute Windows batch command
+{{{
+Shut down existing JBoss instance:
+start  /B \hudson\jobs\CCC7_acceptance_ie\workspace\trunk\build\deploy\jboss-4.2.2.GA\bin\shutdown.bat -S
+
+Wait 3 min test to JBoss shutdown to finish:
+sleep 180
+
+Start up new JBoss instance:
+start /B \hudson\jobs\CCC7_acceptance_ie\workspace\trunk\build\deploy\jboss-4.2.2.GA\bin\run.bat -b 0.0.0.0 
+}}}
+
+Maven
+{{{
+clean install -P deploy,migrate,ie-acceptance,migration-acceptance
+}}}
+
+
+
+
+
+
+ 

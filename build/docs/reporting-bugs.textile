@@ -1,0 +1,30 @@
+<h1 id="ReportingBugs">Reporting Bugs</h1>
+<p><strong>Purpose</strong>: This page describes how to report a bug in CCC7. <br />
+&nbsp;</p>
+<h2 id="Wheretoreportthebug">Where to report the bug</h2>
+<p>Bugs can be emailed to Petteri or Keith. <br />
+&nbsp;</p>
+<h2 id="Whatinformationtoinclude">What information to include</h2>
+<p>1. <strong>What were you trying to do?</strong><br />
+e.g. <i>Create a page</i>; <i>Move a folder</i>.</p>
+<p>2. <strong>What steps did you perform?</strong><br />
+For example:</p>
+<ol>
+    <li><i>Opened the 'create page' form.</i></li>
+    <li><i>Set the title to 'foo'.</i></li>
+    <li><i>Clicked the save button.</i></li>
+</ol>
+<p>3. <strong>What did you expect to happen?</strong><br />
+e.g. <i>Page saved, UI updated.</i></p>
+<p>4. <strong>What was the error that you received?</strong><br />
+e.g. <i>An error dialog appeared with the message &quot;An unexpected error occurred&quot;.</i>  <br />
+&nbsp;</p>
+<h2 id="Notes">Notes</h2>
+<ul>
+    <li>The purpose of the information requested above is to allow us to reproduce the bug. If we can't reproduce the bug it is very hard to fix. One-liner bug reports such as 'Create page is broken' will be ruthlessly ignored.</li>
+    <li><i>Be specific</i>. If you can do the same thing two different ways, state which one you used. &quot;I selected Load&quot; might mean &quot;I clicked on Load&quot; or &quot;I pressed Alt-L&quot;.</li>
+    <li><i>Be verbose</i>. Give more information rather than less. If you say too much, we can ignore some of it. If you say too little, we have to come back and ask more questions.</li>
+    <li><i>Be careful of pronouns</i>. Don't use words like &quot;it&quot;, or references like &quot;the window&quot;, when it's unclear what they mean. Consider this: &quot;I started FooApp. It put up a warning window. I tried to close it and it crashed.&quot; It isn't clear what the user tried to close. Did they try to close the warning window, or the whole of FooApp? It makes a difference. Instead, you could say &quot;I started FooApp, which put up a warning window. I tried to close the warning window, and FooApp crashed.&quot; This is longer and more repetitive, but also clearer and less easy to misunderstand.</li>
+    <li><i>Read what you wrote</i>. Read the report back to yourself, and see if you think it's clear. If you have listed a sequence of actions which should produce the failure, try following them yourself, to see if you missed a step.</li>
+    <li>Further detail can be found in the <a href="http://www.chiark.greenend.org.uk/~sgtatham/bugs.html" class="ext-link"><span class="icon">following article</span></a>.</li>
+</ul>

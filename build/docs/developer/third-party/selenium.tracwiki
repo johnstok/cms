@@ -1,0 +1,108 @@
+= Common =
+
+== General ==
+ * When acceptance test is running on the build machine, do not connect using VNC and fool around there. Test cases are fragile and get upset easily.
+ * Use Selenium IDE to create test case as far as possible.
+ * FireBug is useful tool to find out id values for elements. 
+ * Because some items are populated when they are expanded, it is required to use {{{selenium.setSpeed(1000)}}} or similar approach to give time for the item to expand.
+
+== Right click / context menu ==
+
+Use mouseUpRightAt command to bring up the context menu. This is not recorded by Selenium-IDE so do normal click on the item and modify test script manually. For some reason mouseDownRightAt command is not required.
+
+== File upload ==
+
+Could work with Firefox but requires some config modifications: http://cakebaker.42dh.com/2006/03/29/file-upload-with-selenium/
+
+= GXT =
+
+== General ==
+Set ID where ever you can.
+
+== Disposing a dialog ==
+You can simulate disposing a dialog with a press of the escape key in Selenium as follows:
+||keyPress||//body||\\27||
+
+== Grid ==
+
+Grid rows do not have ID as a default. Create GridCellRenderer and then use click command in Selenium as usually.
+{{{
+#!java
+        nameColumn.setRenderer(new GridCellRenderer<TemplateDTO>() {
+
+            public String render(final TemplateDTO model,
+                                 final String property,
+                                 final ColumnData config,
+                                 final int rowIndex,
+                                 final int colIndex,
+                                 final ListStore<TemplateDTO> store) {
+
+                String value = "";
+
+                if (null != model) {
+                final StringBuilder html = new StringBuilder();
+                html.append("<div id='");
+                html.append(model.getName());
+                html.append("'>");
+                html.append(model.getName());
+                html.append("</div>");
+                value = html.toString();
+                }
+                return value;
+            }
+        });
+}}}
+
+== Combobox ==
+ * To expand a combo-box you can must click on an image:
+||click||//div[@id='default-template']/img|| ||
+ * To assert the value of a combo-box you must access the input field:
+||assertValue||//div[@id='default-template']/input||ash_display.jsp
+ * Selecting an item from the drop-down:
+||mouseDown||//div[@id='ash_display.jsp']
+||mouseUp||//div[@id='ash_display.jsp']
+||click||//div[@id='ash_display.jsp']
+A single click command wont actually select the item from the list. The fix is to use mouseDown, mouseUp and then call click command.
+
+= GWT =
+
+== General ==
+ * Use ensureDebugId for all elements you might end up testing - otherwise reaching those elements from Selenium is pain. Requires {{{<inherits name="com.google.gwt.user.Debug" />}}} in relevant .gwt.xml
+
+
+== How to test tree (plain GWT) ==
+
+=== Expanding (plain GWT) ===
+
+Expanding tree items by clicking +/- images is difficult as they do not have id. Using complicate xpath might work but it leads to fragile test cases and does not work exactly same way in IE and Firefox.
+
+Easier way is to add double click handling to the tree. Extend tree and override onBrowserEvent to handle double click {{{ DOM.eventGetType(event) == Event.ONDBLCLICK)}}} and tell tree to catch double click events {{{tree.sinkEvents(Event.ONDBLCLICK)}}}. In Selenium test script use doubleClick.
+
+=== Selecting tree item (plain GWT) ===
+
+Here the trick is to use {{{selenium.mouseDown}}} instead of {{{selenium.click}}}
+
+
+== How to test !RichTextArea (plain GWT) ==
+
+Typing in the text field of the rich text area requires to select the right iframe first. But before that, ensure debug id:
+{{{
+#!java
+RichTextArea bodyRTA = new RichTextArea();
+bodyRTA.ensureDebugId("bodyRTACONTENT);
+}}}
+
+In the Selenium test select right iframe, type text and return back to original frame.
+
+{{{
+#!java
+selenium.selectFrame("xpath=//iframe[@id='gwt-debug-bodyRTACONTENT']");
+selenium.isElementPresent("//html/body");
+selenium.type("//html/body", "New Test Content");
+
+selenium.selectFrame("relative=top");
+selenium.click("gwt-debug-saveButton");
+}}}
+
+= Other help =
+http://release.seleniumhq.org/selenium-remote-control/0.9.0/doc/dotnet/html/Selenium.html

@@ -1,0 +1,4 @@
+= Securing JBoss =
+ * Remove jsp and default servlets
+ * Move from hypersonic to oracle
+ * Disable hot deployment? http://www.jboss.org/community/docs/DOC-9387

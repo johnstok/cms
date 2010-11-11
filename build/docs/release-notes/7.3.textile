@@ -1,0 +1,11 @@
+h2. General
+
+@EntityNotFoundException@ removed. Trying to retrieve deleted or non existing resource returns @null@ instead of @EntityNotFoundException@.
+
+h2. Actions
+
+@listActions@ takes now more parameters for criteria.
+
+h2. Search
+
+The first page of search results is now 1 instead of 0.

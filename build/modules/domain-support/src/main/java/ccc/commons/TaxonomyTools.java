@@ -53,13 +53,13 @@ public final class TaxonomyTools {
     }
 
     /**
-     * Resolves id from the template definition XML.
+     * Resolves path from the template definition XML.
      *
      * @param fieldName The name of the field.
      * @param definitionXML The definition XML of the template.
      * @return The id of the vocabulary for the field.
      */
-    public String resolveVocabularyID(final String fieldName,
+    public String resolveVocabularyPath(final String fieldName,
                                       final String definitionXML) {
         try {
             final DocumentBuilderFactory factory =

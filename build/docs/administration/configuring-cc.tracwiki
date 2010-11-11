@@ -1,0 +1,7 @@
+= Configuring CCC =
+ * war file 'context-uri'
+ * Data sources
+ * Message queues
+ * persistence units
+ * EJBs
+ * Security: use !DynamicLoginConfig

@@ -130,7 +130,7 @@ public class TaxonomyAcceptanceTest extends AbstractAcceptanceTest {
 
         final String fields = "<fields>"
             + "<field name=\"category\" type=\"taxonomy\" vocabulary=\""
-            +rs.getId().toString()+"\"/>"
+            +rs.getAbsolutePath()+"\"/>"
             + "</fields>";
 
         final String body = ""
@@ -141,7 +141,8 @@ public class TaxonomyAcceptanceTest extends AbstractAcceptanceTest {
        		+ "#set($templateid = $resource.getTemplate())"
        		+ "#set($template = $templates.retrieve($templateid))"
        		+ "#set($definition = $template.getDefinition())"
-       		+ "#set($vocabularyId = $uuid.fromString($taxonomy.resolveVocabularyID(\"category\", $definition)))"
+       		+ "#set($vocabularyPath = $taxonomy.resolveVocabularyPath(\"category\", $definition))"
+       		+ "#set($vocabularyId = $resources.resourceForPathSecure($vocabularyPath).getId())"
        		+ "#set($vocabulary = $files.retrieve($vocabularyId).getContent())"
        		+ "#set($terms = $resource.getParagraph(\"category\").getList())"
        		+ "#foreach($term in $terms)"

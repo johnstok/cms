@@ -63,14 +63,18 @@ import com.google.gwt.user.client.ui.Image;
  */
 public class UploadFileDialog extends AbstractEditDialog {
 
+    private final TextField<String>   _title = new TextField<String>();
     private final ResourceSummary     _parent;
     private final S11nHelper          _s11n      = new S11nHelper();
     private final TextField<String>   _fileName  = new TextField<String>();
     private final HiddenField<String> _path      = new HiddenField<String>();
     private final FileUploadField     _file      = new FileUploadField();
-    private final CheckBox            _majorEdit = new CheckBox();
-    private final TextArea            _comment   = new TextArea();
-    private final Image               _image     =
+
+    private final CheckBox _majorEdit = new CheckBox();
+    private final CheckBox _publish   = new CheckBox();
+    private final TextArea _comment = new TextArea();
+
+    private final Image _image =
         new Image(ImagePaths.LARGE_LOADING);
 
     /**
@@ -94,20 +98,27 @@ public class UploadFileDialog extends AbstractEditDialog {
         getPanel().setEncoding(FormPanel.Encoding.MULTIPART);
         getPanel().setMethod(FormPanel.Method.POST);
 
-        _fileName.setName("fileName");
-        _fileName.setFieldLabel(getUiConstants().fileName());
-        _fileName.setAllowBlank(false);
-        addField(_fileName);
-
         _file.setName("file");
         _file.setWidth("100%");
         _file.setFieldLabel(getUiConstants().localFile());
         _file.setAllowBlank(false);
         addField(_file);
 
+        _title.setName("title");
+        _title.setFieldLabel(getUiConstants().title());
+        _title.setAllowBlank(true);
+        addField(_title);
+
         _path.setName("path");
         _path.setValue(_parent.getId().toString());
         addField(_path);
+
+        _publish.setName("publish");
+        _publish.setValue(Boolean.FALSE);
+        _publish.setBoxLabel(getUiConstants().yes());
+        _publish.setFieldLabel(getUiConstants().publish());
+        _publish.setValueAttribute("true");
+        addField(_publish);
 
         _majorEdit.setName("majorEdit");
         _majorEdit.setValue(Boolean.TRUE);
@@ -171,10 +182,14 @@ public class UploadFileDialog extends AbstractEditDialog {
                 final ValidationResult vr = new ValidationResult();
                 vr.addError(
                     validator.notEmpty(
-                        _fileName.getValue(), _fileName.getFieldLabel()));
+                        _title.getValue(), _title.getFieldLabel()));
                 vr.addError(
                     validator.notValidResourceName(
                         _fileName.getValue(), _fileName.getFieldLabel()));
+                vr.addError(
+                    validator.noBrackets(
+                        _title.getValue(), _title.getFieldLabel()));
+
 
                 if (!vr.isValid()) {
                     InternalServices.window.alert(vr.getErrorText());

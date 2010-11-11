@@ -42,7 +42,7 @@ public class TaxonomyToolsTest extends TestCase {
      * Test.
      *
      */
-    public void testResolveVocabularyID() {
+    public void testResolveVocabularyPath() {
 
         // ARRANGE
         final TaxonomyTools tools = new TaxonomyTools();
@@ -53,7 +53,7 @@ public class TaxonomyToolsTest extends TestCase {
 
         // ACT
         final String result =
-            tools.resolveVocabularyID("category", definitionXML);
+            tools.resolveVocabularyPath("category", definitionXML);
 
         // ASSERT
         assertEquals("123", result);

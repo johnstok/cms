@@ -147,14 +147,11 @@ public class ContentServletAcceptanceTest
         // ARRANGE
 
         // ACT
-        try {
-            getBrowser().get("/4444.html");
-            fail();
+        final String content = getBrowser().get("/4444.html");
 
-            // ASSERT
-        } catch (final RuntimeException e) {
-            assertTrue(is404(e));
-        }
+
+        // ASSERT
+        assertTrue(content.contains("404"));
     }
 
 
@@ -221,14 +218,10 @@ public class ContentServletAcceptanceTest
         getCommands().lock(p.getId());
 
         // ACT
-        try {
-            getBrowser().get(p.getAbsolutePath());
-            fail();
+        final String content = getBrowser().get(p.getAbsolutePath());
 
-            // ASSERT
-        } catch (final RuntimeException e) {
-            assertTrue(is404(e));
-        }
+        // ASSERT
+        assertTrue(content.contains("404"));
     }
 
 

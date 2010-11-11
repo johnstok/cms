@@ -1,0 +1,148 @@
+A template body can be written in plain HTML or combination of HTML and Velocity markup. The available objects for the Velocity context are described in API for templates.
+
+<h2 id="Commonusage">Velocity examples (7.2)</h2>
+<h3 id="Titleofthepage">Title of the page</h3>
+<pre class="wiki">
+$resource.getTitle()
+</pre>
+<h3><span class="whitespace">Get a service object</span></h3>
+<p><span class="whitespace"> </span><span class="xml-text">#set ($resources = $services.getResources())</span><br />
+<span class="xml-text">#set ($folders = $services.getFolders())</span></p>
+<h3>Display paragraph</h3>
+<pre class="wiki">
+$resource.getParagraph(&quot;HEADER&quot;).getText()
+</pre>
+<h3 id="Arrayandrandomselection">Array and random selection</h3>
+<pre class="wiki">
+#set( $randomStyles = [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;, &quot;four&quot;, &quot;five&quot;, &quot;six&quot;, &quot;seven&quot;, &quot;eight&quot;] )
+</pre>
+<p>Random access (assuming that an instance of java.util.Random in the Velocity context with name random)</p>
+<pre class="wiki">
+&lt;body id=&quot;home&quot; class=&quot;$randomStyles.get($random.nextInt(8))&quot;&gt; 
+</pre>
+<h3 id="Createacontentindex">Create a content index</h3>
+<pre class="wiki">
+#set($folderResource= $resources.resourceForPathSecure(&quot;/Events&quot;))
+#set($type = $enums.of(&quot;ccc.types.ResourceType&quot;, &quot;PAGE&quot;))
+#set($criteria = $apiTypes.createResourceCriteria())
+$criteria.setParent($folderResource.getId())
+$criteria.setPublished(true)
+$criteria.setMainmenu(true)
+$criteria.setType($type)</pre>
+<p>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" /></p>
+<pre class="wiki">
+
+#set($folder = $resources.list($criteria,1,20))
+
+#foreach ($pageRS in $folder)
+#set($page = $pages.retrieve($pageRS.getId()))
+      &lt;h2&gt;&lt;a href=&quot;$pageRS.getAbsolutePath()&quot;&gt;$pageRS.getTitle()&lt;/a&gt;&lt;/h2&gt;
+      &lt;p&gt;$page.getParagraph(&quot;Summary&quot;).getText()&lt;/p&gt;
+       &lt;ul class=&quot;eventlist&quot;&gt;
+    #set($rawDate = $page.getParagraph(&quot;Date&quot;).getDate())
+    &lt;li&gt;Date: $dateTool.format('d MMMMM yyyy', $rawDate)&lt;/li&gt;
+    &lt;li&gt;Time: $page.getParagraph(&quot;Time&quot;).getText()&lt;/li&gt;
+    &lt;/ul&gt;
+#end
+</pre>
+<h3 id="Displaysearchresultsforsearchresourcestemplate">Display search results (for 'search' resource's template)</h3>
+<pre class="wiki">
+#set($resources = $services.getResources())
+#foreach($hit in $result.hits()) 
+    #if($resources.exists($hit))
+        #set ($hitResource = $resources.retrieve($hit))
+        $hitResource.getTitle()&lt;/br&gt;
+    #end
+#end</pre>
+<p>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" /></p>
+<pre class="wiki">
+&lt;form name=&quot;search&quot; action=&quot;$resource.getName()&quot;&gt;
+    &lt;input name=&quot;q&quot; autocomplete=&quot;off&quot; value=&quot;$terms&quot;/&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Search&quot;  name=&quot;go&quot;/&gt;
+&lt;/form&gt;
+ 
+Shown Hits: $!result.hits().size() - Total: $!result.totalResults()&lt;/br&gt;
+ 
+#set ($pages = ($result.totalResults()+9)/10)
+#if ( $result.totalResults() &gt; 0) 
+    #foreach($page in [1..$pages]) 
+        #set ($linkNumber = ($page+-1))
+        #if ($linkNumber == $pageNumber)
+            &lt;b&gt;$page&lt;/b&gt;
+        #elseif ($linkNumber != $pageNumber)
+            &lt;a href=&quot;$resource.name()?q=$terms&amp;p=$linkNumber&quot;&gt;$page&lt;/a&gt;
+        #end
+    #end
+#end
+</pre>
+<h3 id="Displayoptionalparagraph">Display optional paragraph</h3>
+<p><span class="xml-text">#macro( optional $name $startText $endText)</span><br />
+<span class="whitespace">&nbsp; &nbsp;&nbsp;</span><span class="xml-text">#foreach( $para in $resource.getParagraphs() )</span><br />
+<span class="whitespace">&nbsp; &nbsp; &nbsp; &nbsp;</span><span class="xml-text">#if ($para.getName() == $name </span><span class="xml-entity">&amp;&amp; $para.getText())</span><br />
+<span class="whitespace">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span><span class="xml-text">$startText</span><br />
+<span class="whitespace">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span><span class="xml-text">$para.getText()</span><br />
+<span class="whitespace">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span><span class="xml-text">$endText</span><br />
+<span class="whitespace">&nbsp; &nbsp; &nbsp; &nbsp;</span><span class="xml-text">#end</span><br />
+<span class="whitespace">&nbsp; &nbsp;&nbsp;</span><span class="xml-text">#end</span><br />
+<span class="xml-text">#end</span></p>
+<p>Normal $resource.getParagraph(&quot;NAME&quot;).getText() causes an exception in case there is no paragraph with matching name.</p>
+<p>Following macro takes three parameters. $name is for the paragraph name, $startText is the text to be appended before the paragraph text, $endText is the text to be appended after the paragraph.</p>
+<p>Usage:</p>
+<pre class="wiki">
+#optional('PanelOne_Custom' '&lt;div id=&quot;panel&quot;&gt;' '&lt;/div&gt;' )
+</pre>
+<p>&nbsp;</p>
+<h3 id="Displaybreadcrumb">Display breadcrumb</h3>
+<pre class="wiki">
+#macro ( breadcrumb) 
+   #foreach ($element in $resource.getAbsolutePath().substring(9).split(&quot;/&quot;))
+      $element
+      &lt;br/&gt;
+   #end
+#end
+</pre>
+<h3 id="Includeanotherresource">Include another resource</h3>
+<pre class="wiki">
+#include(&quot;/assets/templates/header.vm&quot;)
+</pre>
+<h3 id="Parseanotherresource">Parse another resource</h3>
+<pre class="wiki">
+#parse(&quot;/assets/templates/header.vm&quot;)
+</pre>
+<h3 id="Readmetadatavaluewithdefault">Read metadata value with default value</h3>
+<pre class="wiki">
+#macro(getStyle)
+    #if(!$resource.getMetadatum(&quot;bodyId&quot;))
+        default
+    #else 
+        $resource.getMetadatum(&quot;bodyId&quot;)
+    #end
+#end
+</pre>
+<pre class="wiki">
+#getStyle
+</pre>
+<h3 id="Displaycurrentyear">Display current year</h3>
+<pre class="wiki">
+#macro (currentYear)
+    #set ($cal = $calendar.getInstance())
+    $cal.get(1)
+#end
+</pre>
+<p>or</p>
+<pre class="wiki">
+$dateTools.get('yyyy')
+</pre>
+<h3 id="Displayimagetypeparagraph">Display image type paragraph</h3>
+<pre class="wiki">
+#macro( optionalImage $name)
+#foreach( $para in $resource.getParagraphs() )
+#if ($para.getName() == $name &amp;&amp; $para.getText())
+#set($imageResource = $resources.retrieve($uuid.fromString($para.getText())))
+$imageResource.getAbsolutePath()
+#end
+#end
+#end</pre>
+<p>&nbsp;</p>

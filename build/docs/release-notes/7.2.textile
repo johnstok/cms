@@ -1,0 +1,45 @@
+h1. Breaking changes between 7.1 and 7.2
+
+h2. All Resources
+
+* Security permissions have been applied to a number of methods that were  previously available to all users. To enable these methods for anonymous  access add the appropriate permission to the 'anonymous' user.
+
+h2. Paging
+
+* DtoCollection has been renamed to PagedCollection.
+
+h2. Mail
+
+* It is no longer possible to instantiate a Mailer object. You  should instead use the supplied mailer under the variable name 'mail'.
+* The mail API has changed:
+** You no longer need to pass the JNDI reference.
+** You do now need to specify the 'from address'.
+** Both to and from addresses should now be passed as type ccc.types.EmailAddress.
+
+h2. Paragraphs
+
+* Accessor methods on paragraphs now follow the JavaBeans convention (getText, getBoolean, etc.).
+
+h2. Templating
+
+* Services no longer bound as request attributes - use service locator instead.
+
+h2. Resources
+
+* Improved list method. It takes more parameters and returns PagedCollection.</li>
+* Following methods removed: getSiblings and locked. Use enhanced list method.</li>
+* history and resourceForMetadataKey methods return PagedCollection.</li>
+* Resources.resource is Resources.retrieve</li>
+
+h2. Folders
+
+* Following methods have been deleted: getFolderChildren,  getChildrenPage, getChildren and getChildrenManualOrder. Use enhanced  list method instead.
+* getAccessibleChildren and roots methods return PagedCollection.
+
+h2. Users
+
+* Improved listUsers method replaces listUsersWithRole, listUsersWithUsername and listUsersWithEmail methods.
+
+h2. ResourceSummary
+
+* Removed getCappedName method.

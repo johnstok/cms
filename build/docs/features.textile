@@ -1,0 +1,67 @@
+h1. Features of CCC7
+
+J2EE, Open Source
+
+h2. User interface
+
+* Based on GXT. Works on major browsers (IE6/7/8, Firefox, Safari)
+* Closer to desktop application than traditional web application
+* Supports multiple user interface languages
+* Built-in help
+
+h2. User management
+
+Administrators can easily create or update users and assign roles for them.
+
+h3. Content management
+
+Based on user's role there are different possibilities available for content editing. 
+
+* Create Folder/Page/Template/Alias/Text file
+* Upload file
+* Edit text files
+* Edit resource
+* Preview resource
+* Rename resource
+* Move resource
+* Delete resource
+* Revert to previous version
+* Create working copy of a page
+* Set metadata for a resource
+* Set caching for a resource
+* Create action for a resource
+* Select template for a page or folder
+* Lock/unlock resource for editing
+* Publish/unpublish resource
+* Assign roles for resource
+
+h2. Resource types
+
+Folder, Page, Template, Alias, File, Action, Executable text file
+
+h2. Security
+
+* Passwords are stored in encrypted form in the database.
+* Three different roles for user interface access.
+* Resource level access control.
+* Potential threats like SQL injection and cross site scripting taken into account in the design.
+
+h2. Search
+
+Lucene based site search.
+
+h2. Templating
+
+* Content areas are defined in a simple XML format.
+* Templates use Apache Velocity for powerful templating.
+
+h2. Server side scripting
+
+* For site specific custom features it is possible to create server side JavaScripts. 
+* Easy to edit - no server restart needed.
+
+h2. Misc
+
+* REST API - exposes a subset of the core features.
+* Friendly URLs
+
