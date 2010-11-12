@@ -103,18 +103,21 @@ public class S11nProvider<T>
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
-        writeContentType(mediaType, httpHeaders);
+        final MediaType finalType =
+            (MediaType.TEXT_HTML_TYPE.isCompatible(mediaType))
+                ? MediaType.TEXT_HTML_TYPE : mediaType;
+        writeContentType(finalType, httpHeaders);
 
         final Serializer<T> s = (Serializer<T>) SerializerFactory.create(clazz);
         final JsonImpl json = new JsonImpl();
         s.write(json, object);
 
         final PrintWriter pw = createWriter(outputStream);
-        if (MediaType.TEXT_HTML_TYPE.equals(mediaType)) {
+        if (MediaType.TEXT_HTML_TYPE.equals(finalType)) {
             pw.print("<html><body>");
         }
         pw.print(json.getDetail());
-        if (MediaType.TEXT_HTML_TYPE.equals(mediaType)) {
+        if (MediaType.TEXT_HTML_TYPE.equals(finalType)) {
             pw.println("</body></html>");
         }
         pw.flush();

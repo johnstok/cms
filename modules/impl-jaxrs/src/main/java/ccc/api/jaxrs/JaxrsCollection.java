@@ -27,7 +27,9 @@
 
 package ccc.api.jaxrs;
 
-import java.io.UnsupportedEncodingException;
+import java.io.ByteArrayInputStream;
+
+import javax.ws.rs.core.MediaType;
 
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
@@ -55,17 +57,17 @@ public abstract class JaxrsCollection {
     public RuntimeException convertException(final RuntimeException e) {
         if (e instanceof ClientResponseFailure) {
             final ClientResponseFailure ex = (ClientResponseFailure) e;
+
+            final ClientResponse<byte[]> r = ex.getResponse();
             try {
-                final ClientResponse<byte[]> r = ex.getResponse();
-                try {
-                    final String body = new String(r.getEntity(), "UTF-8");
-                    return new RestExceptionMapper().fromResponse(body);
-                } catch (final NullPointerException npe) {
-                    throw e;
-                }
-            } catch (final UnsupportedEncodingException ee) {
-                throw new InternalError("Unsupported encoding.");
+                final MediaType mt =
+                    MediaType.valueOf(r.getHeaders().getFirst("Content-Type"));
+                return new RestExceptionMapper().fromResponse(
+                    new ByteArrayInputStream(r.getEntity()), mt);
+            } catch (final NullPointerException npe) {
+                throw e;
             }
+
         } else if (Reflection.isClass("javax.ejb.EJBException", e)) {
             if (e.getCause() instanceof CCException) {
                 return (CCException) e.getCause();
