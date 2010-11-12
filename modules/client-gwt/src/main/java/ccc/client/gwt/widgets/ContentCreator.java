@@ -122,6 +122,7 @@ public final class ContentCreator implements EntryPoint {
                             InternalServices.EX_HANDLER.unexpectedError(
                                 event.<Throwable>getProperty("exception"),
                                 event.<String>getProperty("name"));
+                            break;
                         default:
                             break;
                     }
