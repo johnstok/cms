@@ -9,3 +9,17 @@ h2. Actions
 h2. Search
 
 The first page of search results is now 1 instead of 0.
+
+h2. Velocity context
+
+Apache VelocityTools removed (date tool and sort tool)
+TaxonomyTools added.
+
+h2. ACL
+
+Resource access can be set for read and write separately.
+
+h2. Alias
+
+Alias can be an index page.
+Alias can be created to point to a folder or another alias.

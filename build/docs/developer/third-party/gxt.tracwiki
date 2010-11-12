@@ -18,7 +18,7 @@ For GXT only: http://extjs.com/forum/showthread.php?t=48834&highlight=hide+close
 GWT does not have close method for dialogs/windows.
 
 === SetId ===
-Allows Selenium to find the right element
+Allows Selenium to find the right element ( no longer used)
 
 === Validation ===
 
