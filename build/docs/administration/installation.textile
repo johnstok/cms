@@ -1,84 +1,51 @@
-<h3>&nbsp;</h3>
-<p>The following installation instructions assume that the installation is taking place on a unix OS using MySql as the database.</p>
-<h3>1.Download and Install JBoss</h3>
-<ul>
-    <li>Content Control runs on the JBoss application server. Before you can continue with the installation you need to ensure that JBoss is installed and running on your server.</li>
-    <li>You can download JBoss from http://www.jboss.org/jbossas/downloads/. Please download the latest stable version.</li>
-    <li>Once you have downloaded JBoss please follow the installation instructions on http://www.jboss.org/jbossas/docs/5-x.html</li>
-</ul>
-<h3>2. Create a new DB schema.</h3>
-<ul>
-    <li>Database specific.<br />
-    Please ensure that the new database user has full admin rights on the new database and is able to create and alter tables.<br />
-    For mysql you need to run the following commands to create your database with the correct priviledges:<br />
-    - mysql -u root -p<br />
-    -create database &lt;SCHEMA&gt;;<br />
-    -GRANT ALL PRIVILEGES ON &lt;SCHEMA&gt;.* to &quot;&lt;myDBUser&gt;&quot;@&quot;localhost&quot; identified by &quot;<tt>&lt;myDBPassword&gt;</tt>&quot;;<br />
-    -GRANT ALL PRIVILEGES ON &lt;SCHEMA&gt;.* to  &quot;&lt;myDBUser&gt;&quot;@&quot;%&quot; identified by &quot;<tt>&lt;myDBPassword&gt;</tt>&quot;;<br />
-    -FLUSH PRIVILEGES;<br />
-    &nbsp;</li>
-    <li>Please ensure that the JDBC Driver for your database is place in&nbsp; &lt;JBoss&gt;/commom/lib directory and that JBoss has been restarted so that the driver is loaded.</li>
-</ul>
-<h3>3. Pre deploy setup</h3>
-<ul>
-    <li>Create an empty folder to install the application &lt;CC_INSTALL&gt;</li>
-    <li>Expand the downloaded binary (ear file) into &lt;CC_INSTALL&gt;/cc7.ear</li>
-    <li>Create a folder for the file store at &lt;CC_INSTALL&gt;/filestore</li>
-    <li>Create a folder for the lucene index at &lt;CC_INSTALL&gt;/lucene</li>
-    <li>Create DB tables:<br />
-    <tt>java -cp shell-tools-&lt;version_number&gt;-jar-with-dependencies.jar ccc.cli.Schema -u &lt;myDBUser&gt; -p &lt;myDBPassword&gt; -c jdbc:mysql://&lt;DB_HOST&gt;:3306/&lt;SCHEMA&gt; -v 1</tt></li>
-    <li>Create the intial admin user:<br />
-    <tt>java -cp shell-tools-&lt;version_number&gt;-jar-with-dependencies.jar ccc.cli.Users -c jdbc:mysql://&lt;DB_HOST&gt;:3306/&lt;SCHEMA&gt; -ne &lt;admin@example.com&gt;&nbsp; </tt><tt>-nu &lt;admin_username&gt;&nbsp; </tt><tt>-np &lt;admin_password&gt;&nbsp; -u &lt;myDBUser&gt;</tt>&nbsp; <tt>-p &lt;myDBPasswor<span style="font-family: Arial,Verdana,sans-serif;">&gt;</span> </tt></li>
-    <li>Set file store and lucene index folder locations on the 'settings' table.<br />
-    <tt>java -cp shell-tools-&lt;version_number&gt;-jar-with-dependencies.jar ccc.cli.Settings -c jdbc:mysql://&lt;DB_HOST&gt;:3306/&lt;SCHEMA&gt; </tt><tt>-u &lt;myDBUser&gt; </tt><tt>-p &lt;myDBPassword&gt;&nbsp; -path &lt;CC_INSTALL&gt;</tt></li>
-    <li>Select the appropriate *-ds.xml file in the folder &lt;CC_INSTALL&gt;/cc7.ear; providing your JDBC connection URL; database username and password.</li>
-    <li>Edit the &lt;CC_INSTALL&gt;/cc7.ear/META-INF/jboss-app.xml file to specify the *-ds.xml file in the &lt;service&gt; selected in the step above. For mysql this should like like:<br />
-    &lt;service&gt;mysql-ds.xml&lt;/service&gt;</li>
-    <li>Edit the &lt;CC_INSTALL&gt;/cc7.ear/services-ejb3.jar/META-INF/persistence.xml file to specify your persistence dialect. The dialect is database specific, please choose one from the table below which reffers to your database.<br />
-    <br />
-    <table>
-        <tbody>
-            <tr>
-            </tr>
-            <tr>
-                <td><strong>Database</strong></td>
-                <td><strong>Dialect</strong></td>
-            </tr>
-            <tr>
-                <td>MySQL</td>
-                <td>org.hibernate.dialect.MySQL5InnoDBDialect</td>
-            </tr>
-            <tr>
-                <td>SQL  Server</td>
-                <td>org.hibernate.dialect.SQLServerDialect</td>
-            </tr>
-            <tr>
-                <td>Oracle</td>
-                <td>org.hibernate.dialect.Oracle9Dialect</td>
-            </tr>
-        </tbody>
-    </table>
-    </li>
-</ul>
-<h3>4. Deploy</h3>
-<ul>
-    <li>Create a symbolic link from the Jboss server deploy directory to the installation directory.<br />
-    <tt>ln -s &lt;CC_INSTALL&gt;/cc7.ear &lt;JBOSS_DEPLOY_DIR&gt;/cc7.ear</tt></li>
-    <li>Observe server log to monitor deployment.<br />
-    <tt>tail -f /usr/local/jboss/server/standard/log/server.log</tt></li>
-</ul>
-<h3>5. Post deploy setup</h3>
-<ul>
-    <li>Create default folder structure:<br />
-    <tt>java -cp shell-tools-&lt;version_number&gt;-jar-with-dependencies.jar ccc.cli.Create -a cc7 -p </tt><tt>admin</tt><tt> -u </tt><tt>admin</tt></li>
-    <li>Start the search indexer:<br />
-    <tt>java -cp shell-tools-&lt;version_number&gt;-jar-with-dependencies.jar ccc.cli.Search -b http://&lt;JBOSS_HOST&gt;:&lt;JBOSS_PORT&gt;/cc7 -p admin -u admin -c start</tt></li>
-    <li>Start the action schedule:<br />
-    <tt>java -cp shell-tools-&lt;version_number&gt;-jar-with-dependencies.jar ccc.cli.Scheduling -b http://&lt;JBOSS_HOST&gt;:&lt;JBOSS_PORT&gt;/cc7 -p admin -u admin -c start</tt></li>
-</ul>
-<h3>6. Confirm the installation.</h3>
-<ul>
-    <li>Navigate to <tt>http://&lt;JBOSS_HOST&gt;:&lt;JBOSS_PORT&gt;/cc7/ccc/client</tt> to see the login screen.</li>
-    <li>Log in with the initial admin user.</li>
-</ul>
-<p>&nbsp;</p>
+The following installation instructions assume that the installation is taking place on a unix OS using MySql as the database.
+
+h3. 1. Download and Install JBoss
+
+* Content Control runs on the JBoss application server. Before you can continue with the installation you need to ensure that JBoss is installed and running on your server.
+* You can download JBoss from http://www.jboss.org/jbossas/downloads/. Please download the latest stable version.
+* Once you have downloaded JBoss please follow the installation instructions on http://www.jboss.org/jbossas/docs/5-x.html
+
+h3. 2. Create a new DB schema
+
+* Ensure that the new database user has rights on the schema to allow creating and altering tables.
+* For mysql you need to run the following commands to create your database with the correct privileges:
+** @mysql -u root -p@
+** @CREATE DATABASE <db_schema>;@
+** @GRANT ALL PRIVILEGES ON <db_schema>.* TO "<db_username>"@<code> @ </code>@"localhost" IDENTIFIED BY "<db_password>";@
+** @GRANT ALL PRIVILEGES ON <db_schema>.* TO "<db_username>"@<code> @ </code>@"" IDENTIFIED BY "<db_password>";@
+** @FLUSH PRIVILEGES;@
+* Please ensure that the JDBC Driver for your database is place in @<JBoss>/commom/lib@ directory and that JBoss has been restarted so that the driver is loaded.
+
+h3. 3. Pre deploy setup
+
+* Create an empty folder to install the application @<cc_dir>@
+* Expand the downloaded binary (ear file) into @<cc_dir>/cc7.ear@
+* Create a folder for the file store at @<cc_dir>/filestore@
+* Create a folder for the lucene index at @<cc_dir>/lucene@
+* Create DB tables:<br>@java -cp shell-tools-<cc_version>-jar-with-dependencies.jar ccc.cli.Schema -u <db_username> -p <db_password> -c jdbc:mysql://<db_host>:3306/<db_schema> -v 1@
+* Create the intial admin user:<br> @java -cp shell-tools-<cc_version>-jar-with-dependencies.jar ccc.cli.Users -c jdbc:mysql://<DB_HOST>:3306/<SCHEMA> -ne <cc_admin_email> -nu <cc_admin_username> -np <cc_admin_password> -u <db_username> -p <db_password>@
+* Set file store and lucene index folder locations on the 'settings' table.<br>@java -cp shell-tools-<cc_version>-jar-with-dependencies.jar ccc.cli.Settings -c jdbc:mysql://<DB_HOST>:3306/<SCHEMA> -u <db_username> -p <db_password> -path <cc_dir>@
+* Select the appropriate @*-ds.xml@ file in the folder @<cc_dir>/cc7.ear@; providing your JDBC connection URL; database username and password.
+* Edit the @<cc_dir>/cc7.ear/META-INF/jboss-app.xml@ file to specify the @*-ds.xml@ file in the @<service>@ selected in the step above. For MySQL this should like like:<br>@<service>mysql-ds.xml</service>@
+* Edit the @<cc_dir>/cc7.ear/services-ejb3.jar/META-INF/persistence.xml@ file to specify your persistence dialect. The dialect is database specific, please choose one from the table below which refers to your database.
+|_. Database|_. Dialect|
+|MySQL      |org.hibernate.dialect.MySQL5InnoDBDialect|
+|SQL  Server|org.hibernate.dialect.SQLServerDialect|
+|Oracle     |org.hibernate.dialect.Oracle9Dialect|
+
+h3. 4. Deploy
+
+* Create a symbolic link from the Jboss server deploy directory to the installation directory.<br>@ln -s <cc_dir>/cc7.ear <JBOSS_DEPLOY_DIR>/cc7.ear@
+* Observe server log to monitor deployment.<br>@tail -f /usr/local/jboss/server/standard/log/server.log@
+
+h3. 5. Post deploy setup
+
+* Create default folder structure:<br>@java -cp shell-tools-<cc_version>-jar-with-dependencies.jar ccc.cli.Create -a cc7 -p <cc_admin_password> -u <cc_admin_username>@
+* Start the search indexer:<br>@java -cp shell-tools-<cc_version>-jar-with-dependencies.jar ccc.cli.Search -b http://<JBOSS_HOST>:<JBOSS_PORT>/cc7 -p <cc_admin_password> -u <cc_admin_username> -c start@
+* Start the action schedule:<br>@java -cp shell-tools-<cc_version>-jar-with-dependencies.jar ccc.cli.Scheduling -b http://<JBOSS_HOST>:<JBOSS_PORT>/cc7 -p <cc_admin_password> -u <cc_admin_username> -c start@
+
+h3. 6. Confirm the installation
+
+* Navigate to @http://<JBOSS_HOST>:<JBOSS_PORT>/cc7/ccc/client@ to see the login screen.
+* Log in with the initial admin user.
