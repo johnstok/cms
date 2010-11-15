@@ -1,0 +1,17 @@
+h1. Search
+
+Content Control uses the Lucene engine to provide full text search capabilities.
+
+h2. Index path
+
+Lucene writes files to disk to store the search index. The folder location for lucene is stored in the settings table of the CC database. The install & upgrade scripts allow the index path location to be changed. The path can also be changed using the command line settings tool.
+
+h2. Re-indexing
+
+When a resource is created / updated Lucene will perform a re-index. All re-indexing happens asynchronously. Only affected resources are re-indexed following a resource change / update.
+
+A JMS topic is used to store outstanding re-index operations. The necessary JMS topic is configured as a part of CC installation / upgrade.
+
+h2. Clustered operation
+
+When running multiple CC nodes in a cluster each node operates its own, independent Lucene index. The JMS topic that stores re-index events is clustered so the event is broadcast to all nodes to re-index.

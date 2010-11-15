@@ -20,7 +20,8 @@ h3. 2. Create a new DB schema
 h3. 3. Pre deploy setup
 
 * Create an empty folder to install the application @<cc_dir>@
-* Expand the downloaded binary (ear file) into @<cc_dir>/cc7.ear@
+* Copy the @topics-service.xml@ from the distribution to @<cc_dir>@
+* Unzip the ear file from the distribution into @<cc_dir>/cc7.ear@
 * Create a folder for the file store at @<cc_dir>/filestore@
 * Create a folder for the lucene index at @<cc_dir>/lucene@
 * Create DB tables:<br>@java -cp shell-tools-<cc_version>-jar-with-dependencies.jar ccc.cli.Schema -u <db_username> -p <db_password> -c jdbc:mysql://<db_host>:3306/<db_schema> -v 1@
@@ -28,6 +29,7 @@ h3. 3. Pre deploy setup
 * Set file store and lucene index folder locations on the 'settings' table.<br>@java -cp shell-tools-<cc_version>-jar-with-dependencies.jar ccc.cli.Settings -c jdbc:mysql://<DB_HOST>:3306/<SCHEMA> -u <db_username> -p <db_password> -path <cc_dir>@
 * Select the appropriate @*-ds.xml@ file in the folder @<cc_dir>/cc7.ear@; providing your JDBC connection URL; database username and password.
 * Edit the @<cc_dir>/cc7.ear/META-INF/jboss-app.xml@ file to specify the @*-ds.xml@ file in the @<service>@ selected in the step above. For MySQL this should like like:<br>@<service>mysql-ds.xml</service>@
+* Edit the @<cc_dir>/cc7.ear/log4j.properties@ file to specify an appropriate value for the @log4j.appender.CC.File@ setting.
 * Edit the @<cc_dir>/cc7.ear/services-ejb3.jar/META-INF/persistence.xml@ file to specify your persistence dialect. The dialect is database specific, please choose one from the table below which refers to your database.
 |_. Database|_. Dialect|
 |MySQL      |org.hibernate.dialect.MySQL5InnoDBDialect|
@@ -36,8 +38,9 @@ h3. 3. Pre deploy setup
 
 h3. 4. Deploy
 
-* Create a symbolic link from the Jboss server deploy directory to the installation directory.<br>@ln -s <cc_dir>/cc7.ear <JBOSS_DEPLOY_DIR>/cc7.ear@
 * Observe server log to monitor deployment.<br>@tail -f /usr/local/jboss/server/standard/log/server.log@
+* Create a symbolic link from the Jboss server deploy directory to the JMS configuration: @<cc_dir>/topics-service.xml@.
+* Create a symbolic link from the Jboss server deploy directory to the installation directory.<br>@ln -s <cc_dir>/cc7.ear <JBOSS_DEPLOY_DIR>/cc7.ear@
 
 h3. 5. Post deploy setup
 
