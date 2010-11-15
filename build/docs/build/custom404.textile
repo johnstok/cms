@@ -1,0 +1,13 @@
+<h2>Custom 404 page</h2>
+
+The site setup tools create a 404 page under content. By default this 'notfound' page displays static text.
+
+However, with the knowledge of the requested page it is possible to create a search.  
+
+The requested page can be read from the $request:
+@$request.getAttribute("javax.servlet.error.request_uri")@
+
+ The complete example template using Lucene search for that is 404search.vm
+ 
+
+
