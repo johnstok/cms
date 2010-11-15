@@ -41,7 +41,6 @@ import java.util.UUID;
 import javax.activation.MimeTypeParseException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -58,7 +57,7 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.File;
-import ccc.api.exceptions.InvalidException;
+import ccc.api.exceptions.CCException;
 import ccc.api.types.DBC;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
@@ -108,12 +107,11 @@ public class FileReader
     /** {@inheritDoc} */
     @Override
     public File readFrom(final Class<File> arg0,
-                             final Type arg1,
-                             final Annotation[] arg2,
-                             final MediaType arg3,
-                             final MultivaluedMap<String, String> arg4,
-                             final InputStream arg5) throws IOException {
-
+                         final Type arg1,
+                         final Annotation[] arg2,
+                         final MediaType arg3,
+                         final MultivaluedMap<String, String> arg4,
+                         final InputStream arg5) throws IOException {
         try {
             final MultipartFormData form =
                 new PluginFactory().createFormData(
@@ -125,9 +123,8 @@ public class FileReader
             final File f = parse(form);
             return f;
 
-        } catch (final InvalidException e) {
-            throw new WebApplicationException(
-                e, new RestExceptionMapper().toResponse(e, MimeType.HTML));
+        } catch (final CCException e) {
+            throw handleException(e);
         }
     }
 

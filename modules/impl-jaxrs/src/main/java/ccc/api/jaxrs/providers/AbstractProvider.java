@@ -40,10 +40,15 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Providers;
 
+import ccc.api.exceptions.CCException;
 import ccc.commons.IO;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.json.JsonImpl;
@@ -56,6 +61,7 @@ import ccc.plugins.s11n.json.JsonImpl;
  */
 public class AbstractProvider {
 
+    @Context private Providers _providers;
 
 
     /**
@@ -193,5 +199,14 @@ public class AbstractProvider {
             return (Class<T>) pType.getActualTypeArguments()[index];
         }
         throw new RuntimeException("Not a parameterized type: "+type);
+    }
+
+
+    protected WebApplicationException handleException(final CCException e) {
+        final Response r =
+            _providers
+                .getExceptionMapper(CCException.class)
+                .toResponse(e);
+        return new WebApplicationException(e, r);
     }
 }
