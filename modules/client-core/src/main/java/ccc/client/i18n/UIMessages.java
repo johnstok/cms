@@ -75,4 +75,13 @@ public interface UIMessages {
      * @return The constant, in the appropriate locale.
      */
     String paragraphTooLarge(String name);
+
+    /**
+     * "Field doesn''t match regular expression: {0}".
+     *
+     * @param regexp The regular expression.
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String fieldMustMatchRegex(String regexp);
 }

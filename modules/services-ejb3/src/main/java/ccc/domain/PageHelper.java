@@ -43,6 +43,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import ccc.api.exceptions.InvalidException;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
 
@@ -65,7 +66,7 @@ public class PageHelper {
                                       final String t) {
         final String errors = validateFields(delta, t);
         if (!errors.isEmpty()) {
-            throw new RuntimeException(
+            throw new InvalidException(
                 "Field validation failed: " + errors);
         }
     }
@@ -109,11 +110,11 @@ public class PageHelper {
                 }
             }
         } catch (final ParserConfigurationException e) {
-            throw new RuntimeException("Error with XML parsing ", e);
+            throw new InvalidException("Error with XML parsing ", e);
         } catch (final SAXException e) {
-            throw new RuntimeException("Error with XML parsing ", e);
+            throw new InvalidException("Error with XML parsing ", e);
         } catch (final IOException e) {
-            throw new RuntimeException("Error with XML parsing ", e);
+            throw new InvalidException("Error with XML parsing ", e);
         }
         return errors.toString();
     }

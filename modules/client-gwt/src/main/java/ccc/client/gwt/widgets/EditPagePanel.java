@@ -787,6 +787,8 @@ public class EditPagePanel
         ta.setToolTip(createTooltip(name, title, desc));
         if (regexp != null) {
             ta.setRegex(regexp);
+            ta.getMessages().setRegexText(
+                I18n.UI_MESSAGES.fieldMustMatchRegex(regexp));
         }
         add(ta, new FormData("95%"));
         final PageElement pe = new PageElement(name);
@@ -818,6 +820,8 @@ public class EditPagePanel
         tf.setToolTip(createTooltip(name, title, desc));
         if (regexp != null) {
             tf.setRegex(regexp);
+            tf.getMessages().setRegexText(
+                I18n.UI_MESSAGES.fieldMustMatchRegex(regexp));
         }
         add(tf, new FormData("95%"));
         final PageElement pe = new PageElement(name);
@@ -878,11 +882,14 @@ public class EditPagePanel
                             pTitle.substring(0, pTitle.length()-1)));
                 }
             } else if (FieldType.TEXT == c.fieldType()) {
+                final String pTitle = c.field().getFieldLabel();
                 if (c.field().getValue() != null &&
                     c.field().getValue().length() > Paragraph.MAX_TEXT_LENGTH) {
-                    final String pTitle = c.field().getFieldLabel();
                     vResult.addError(
                         I18n.UI_MESSAGES.paragraphTooLarge(pTitle));
+                }
+                if (!c.field().isValid()) {
+                    vResult.addError(pTitle+": "+c.field().getErrorMessage());
                 }
             }
         }
