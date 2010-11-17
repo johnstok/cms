@@ -87,6 +87,50 @@ public class ResourceAcceptanceTest
     /**
      * Test.
      */
+    public void testSearchForPublishedResources() {
+        // CC-1259
+        // ARRANGE.
+        final ResourceSummary folder = tempFolder();
+        getCommands().lock(folder.getId());
+        getCommands().publish(folder.getId());
+
+        final ResourceCriteria rc = new ResourceCriteria();
+        rc.setPublished(true);
+
+        // ACT
+        final PagedCollection<ResourceSummary> result =
+            getCommands().list(rc, 1, 1);
+
+        // ASSERT
+        // should contain at least one resource, no server error should happen.
+        assertTrue(result.getElements().size() > 0);
+    }
+
+
+     /**
+      * Test.
+      */
+    public void testSearchForLockedResources() {
+        // CC-1259
+        // ARRANGE
+        final ResourceSummary folder = tempFolder();
+        getCommands().lock(folder.getId());
+        final ResourceCriteria rc = new ResourceCriteria();
+        rc.setLocked(true);
+
+        // ACT
+        final PagedCollection<ResourceSummary> result =
+            getCommands().list(rc, 1, 1);
+
+        // ASSERT
+        // should contain at least one resource, no server error should happen.
+        assertTrue(result.getElements().size() > 0);
+    }
+
+
+    /**
+     * Test.
+     */
     public void testUnlockResource() {
 
         // ARRANGE

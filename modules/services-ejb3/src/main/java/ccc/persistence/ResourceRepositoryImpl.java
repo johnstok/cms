@@ -605,6 +605,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
             } else {
                 query.append(" r._publishedBy is null");
             }
+            params.put("published", null);
         }
 
         if (null!=criteria.getLocked()) {
@@ -614,6 +615,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
             } else {
                 query.append(" r._lockedBy is null");
             }
+            params.put("locked", null);
         }
         if (null!=criteria.getName()) {
             query.append((params.size()>0) ? " AND" : " WHERE");

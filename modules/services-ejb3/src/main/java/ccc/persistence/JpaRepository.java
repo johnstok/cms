@@ -108,7 +108,9 @@ class JpaRepository implements Repository {
 
         final Query q = _em.createQuery(queryString);
         for (final Entry<String, Object> entry : params.entrySet()) {
-            q.setParameter(entry.getKey(), entry.getValue());
+            if (entry.getValue() != null) {
+                q.setParameter(entry.getKey(), entry.getValue());
+            }
         }
         q.setMaxResults(pageSize);
         q.setFirstResult((pageNo-1)*pageSize);
@@ -179,7 +181,9 @@ class JpaRepository implements Repository {
 
         final Query q = _em.createQuery(queryString);
         for (final Entry<String, Object> entry : params.entrySet()) {
-            q.setParameter(entry.getKey(), entry.getValue());
+            if (entry.getValue() != null) {
+                q.setParameter(entry.getKey(), entry.getValue());
+            }
         }
         final Number result = (Number) q.getSingleResult();
         return result.longValue();
