@@ -1,0 +1,74 @@
+h2. Creating your first template
+
+Content Control uses templating to render page resources into HTML or other formats.
+
+Here we will describe how to create a simple template and render a page with it.
+
+h3. Name the template
+
+Select a folder and click the "Create template" button.
+
+!images/create-template-1.jpg!
+
+You must supply a name for your template and specify the mime type of the content that it produces. In our example we will generate HTML.
+
+h3. Choose the fields
+
+Click "next".
+
+!images/create-template-2.jpg!
+
+In the second step of the wizard you should define the fields that the template requires. When you later create a page you will be asked to provide a value for each of these fields.
+
+In this case our template has a single field that expects HTML content:
+
+bc. <fields>
+  <field
+    name="body"
+    type="html"
+    title="Body"
+    description="Body content for the article" />
+</fields>
+
+h3. Provide a body
+
+Click "next".
+
+!images/create-template-3.jpg!
+
+In the final step of the wizard you provide the template body that outputs HTML content. You can access the fields defined in the previous step and include them in the output:
+
+bc. <html>
+  <head>
+    <title>$resource.getTitle()</title>
+  </head>
+  <body>
+    $resource.getParagraph('body').getText()
+  </body>
+</html>
+
+The standard fields of a resource are also available. A number of other useful objects are available in the body context - see the "next steps" section below to learn more.
+
+Finally click "save".
+
+h3. Create a page
+
+Select a folder and click the "Create page" button.
+
+!images/create-template-4.jpg!
+
+Select the 'article' template and click "next".
+
+!images/create-template-5.jpg!
+
+Provide a name and some content for your article; click "next" and then "save".
+
+h3. View the result
+
+To preview the final page locate your newly created page in the table view and click the "cog" icon. Then choose the "preview" option.
+
+h3. Next steps
+
+* "Learn more about fields":field-definition.html
+* "Learn more about template syntax":intro-to-velocity.html
+* "Learn more about the templating context":context-objects.html
