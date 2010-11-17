@@ -1,6 +1,6 @@
 The XML definition of the template is a simple list of fields. Each field in the definition represents a field in the page editor.
 
-h3. Example XML for template definition (7.2)
+h3. Example XML for template definition
 
 bc. <fields>
     <field name="dateField" type="date" description="birthday"/>
@@ -46,3 +46,15 @@ h3. Field types
 * @list@ list with defined option values.
 * @image@ image selector.
 * @number@ number, stored as BigDecimal.
+
+h3. Reserved Field Names
+
+The following field names are reserved. Any paragraphs or metadata values with the same name will be ignored by the full text search.
+
+|_. field name|_. usage|
+| id          | UUID of the resource |
+| name        | Resource name        |
+| title       | Resource title       |
+| path        | Absolute path of the resource, including '/content/' |
+| tags        | Tags of resource, comma separated|
+| allcontent  | Content of the page, all paragraphs|
