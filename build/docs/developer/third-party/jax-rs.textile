@@ -1,0 +1,7 @@
+h1. Notes on developing with JAX-RS
+
+h2. Handling exceptions providers
+
+If an runtime exception is thrown from a provider it will be caught by the JAX-RS library and cause a @400 Bad Request@ response. To work around this you must wrap the exception in a @WebApplicationException@. This in turn requires an appropriate JAX-RS @Response@ object. To generate such a response you need an @ExceptionMapper@.
+
+A method @handleException()@ is available in the @AbstractProvider@ class that implements this behaviour; converting a @CCException@ to an exception that JAX-RS will use to return an appropriate response code.  

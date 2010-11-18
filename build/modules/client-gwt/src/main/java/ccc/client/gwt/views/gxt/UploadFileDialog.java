@@ -137,6 +137,8 @@ public class UploadFileDialog extends AbstractEditDialog {
             Events.Submit,
             new Listener<FormEvent>() {
                 public void handleEvent(final FormEvent be) {
+                    _image.setVisible(false);
+
                     final String response = be.getResultHtml();
 
                     // TODO: Handle 404 with notfound.jsp

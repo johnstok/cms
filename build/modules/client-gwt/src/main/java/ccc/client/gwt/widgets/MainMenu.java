@@ -297,32 +297,37 @@ public class MainMenu
             new SingleSelectionModel() {
                 private final ResourceSummary _md = root;
 
-                    public void create(final ResourceSummary model) {
-                        /* No-op */
-                    }
-                    public void move(final ResourceSummary model,
-                                     final ResourceSummary newParent,
-                                     final ResourceSummary oldParent) {
-                        /* No-op */
-                    }
-                    public ResourceSummary tableSelection() {
-                        return _md;
-                    }
-                    public ResourceSummary treeSelection() {
-                        throw new UnsupportedOperationException(
-                            "Method not implemented.");
-                    }
-                    public void update(final ResourceSummary model) {
-                        /* No-op */
-                    }
-                    public void create(final Resource model) {
-                        /* No-op */
-                    }
-                    public ResourceSummary root() {
-                        return null;
-                    }
+                @Override
+                public void create(final ResourceSummary model) { /* No-op */ }
 
-                };
+                @Override
+                public void move(final ResourceSummary model,
+                                 final ResourceSummary target,
+                                 final ResourceSummary source) { /* No-op */ }
+
+                @Override
+                public ResourceSummary tableSelection() { return _md; }
+
+                @Override
+                public void update(final ResourceSummary model) { /* No-op */ }
+
+                @Override
+                public ResourceSummary treeSelection() {
+                    return null;
+                }
+
+                @Override
+                public void create(final Resource model) {
+
+                    throw new UnsupportedOperationException("Method not implemented.");
+                }
+
+                @Override
+                public ResourceSummary root() {
+
+                    throw new UnsupportedOperationException("Method not implemented.");
+                }
+            };
         return ssm;
     }
 }

@@ -1,31 +1,29 @@
 ResourceCriteria and PageCriteria are meant to be used to simplify resource fetching. 
 
-<p>
-<meta content="text/html; charset=utf-8" http-equiv="content-type">The ResourceCriteria works with $resources.list method and PageCriteria is for $pages.list method.  </meta>
-</p>
-<div lang="x-western" class="moz-text-html"><br />
-<br />
-<b>Example of resource fetching</b><br />
-<br />
-First, we need to have a criteria:<br />
-<tt>#set($criteria = $apiTypes.createResourceCriteria())</tt><br />
-<br />
-Then we set some conditions in the criteria:<br />
-<tt>$criteria.setPublished(true)<br />
-$criteria.setParent($parentId)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;-- the id of the parent folder</tt><br />
-<br />
-And sorting:<br />
-<tt>$criteria.setSortField(&quot;title&quot;)<br />
-$criteria.setSortOrder($enums.of(&quot;ccc.api.types.SortOrder&quot;, &quot;DESC&quot;))</tt><br />
-<br />
-<br />
-Finally get the results (1=starting page, 20=items/page):<br />
-<tt><span class="xml-text">#set($results = $pages.list($criteria,1,20))</span></tt><br />
-<br />
-<br />
-The detailed list of options can be found from these JavaDocs. PageCriteria is an extension to the ResourceCriteria<br />
-<br />
-<a href="http://www.contentcontrol.com/javadoc/7.2.13/apidocs/ccc/api/core/ObjectFactory.html">http://www.contentcontrol.com/javadoc/7.2.13/apidocs/ccc/api/core/ObjectFactory.html</a><br />
-<a href="http://www.contentcontrol.com/javadoc/7.2.13/apidocs/ccc/api/core/ResourceCriteria.html">http://www.contentcontrol.com/javadoc/7.2.13/apidocs/ccc/api/core/ResourceCriteria.html</a><br />
-<a href="http://www.contentcontrol.com/javadoc/7.2.13/apidocs/ccc/api/core/PageCriteria.html">http://www.contentcontrol.com/javadoc/7.2.13/apidocs/ccc/api/core/PageCriteria.html</a></div>
-<p>&nbsp;</p>
+The ResourceCriteria works with $resources.list method and PageCriteria is for $pages.list method.
+
+*Example of resource fetching*
+
+First, we need to have a criteria:
+
+@#set($criteria = $apiTypes.createResourceCriteria())@
+
+Then we set some conditions in the criteria:
+
+bc. $criteria.setPublished(true)
+$criteria.setParent($parentId)           <-- the id of the parent folder
+
+And sorting:
+
+bc. $criteria.setSortField("title")
+$criteria.setSortOrder($enums.of("ccc.api.types.SortOrder", "DESC"))
+
+Finally get the results (1=starting page, 20=items/page):
+
+bc. #set($results = $pages.list($criteria,1,20))
+
+The detailed list of options can be found from these JavaDocs. PageCriteria is an extension to the ResourceCriteria.
+
+http://www.contentcontrol.com/javadoc/7.2.13/apidocs/ccc/api/core/ObjectFactory.html
+http://www.contentcontrol.com/javadoc/7.2.13/apidocs/ccc/api/core/ResourceCriteria.html
+http://www.contentcontrol.com/javadoc/7.2.13/apidocs/ccc/api/core/PageCriteria.html

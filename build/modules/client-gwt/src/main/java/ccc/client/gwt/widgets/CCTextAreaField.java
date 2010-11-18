@@ -44,14 +44,14 @@ public class CCTextAreaField
      * Constructor.
      *
      * @param name   The field's name.
+     * @param regexp The regular expression validating the field.
      * @param title  The field's title.
      * @param desc   The field's description.
-     * @param regexp The regular expression validating the field.
      */
     public CCTextAreaField(final String name,
+                           final String regexp,
                            final String title,
-                           final String desc,
-                           final String regexp) {
+                           final String desc) {
         super(name, title, desc, regexp);
     }
 

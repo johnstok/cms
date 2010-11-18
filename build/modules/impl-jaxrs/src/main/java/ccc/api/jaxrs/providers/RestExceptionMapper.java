@@ -26,9 +26,22 @@
  */
 package ccc.api.jaxrs.providers;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Variant;
 import javax.ws.rs.ext.ExceptionMapper;
+
 import javax.ws.rs.ext.Provider;
+
+import org.jboss.resteasy.core.Headers;
 
 import ccc.api.core.Failure;
 import ccc.api.exceptions.CCException;
@@ -36,7 +49,6 @@ import ccc.api.exceptions.ConflictException;
 import ccc.api.exceptions.InvalidException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.HttpStatusCode;
-import ccc.api.types.MimeType;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.S11nException;
 import ccc.plugins.s11n.Serializers;
@@ -52,22 +64,18 @@ public class RestExceptionMapper
     implements
         ExceptionMapper<CCException> {
 
+    @Context private Request _request;
+
+
     /** {@inheritDoc} */
     @Override
     public Response toResponse(final CCException e) {
-        return toResponse(e, MimeType.JSON);
-    }
 
-    /**
-     * Convert an exception to a JAX-RS response.
-     *
-     * @param e The exception to convert.
-     * @param responseType The mime type for the response.
-     *
-     * @return The corresponding JAX-RS response.
-     */
-    public Response toResponse(final CCException e,
-                               final MimeType responseType) {
+        final List<Variant> variants = new ArrayList<Variant>();
+        variants.add(new Variant(MediaType.TEXT_HTML_TYPE,        null, null));
+        variants.add(new Variant(MediaType.APPLICATION_JSON_TYPE, null, null));
+
+        final Variant v = _request.selectVariant(variants);
 
         int statusCode = HttpStatusCode.ERROR;
 
@@ -83,11 +91,13 @@ public class RestExceptionMapper
         }
 
         return
-            Response.status(statusCode)
-                .type(responseType.toString())
+            Response
+                .status(statusCode)
+                .type(v.getMediaType())
                 .entity(e.getFailure())
                 .build();
     }
+
 
     /**
      * Map from a response to the corresponding exception.
@@ -120,6 +130,50 @@ public class RestExceptionMapper
         } catch (final IllegalAccessException e) {
             throw new CCException(e.getMessage());
         } catch (final ClassNotFoundException e) {
+            throw new CCException(e.getMessage());
+        }
+    }
+
+
+    /**
+     * Map from a response to the corresponding exception.
+     *
+     * @param <T> The type of exception expected.
+     * @param is  The HTTP response body.
+     * @param mt  The media type of the response.
+     *
+     * @return The corresponding exception.
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends CCException> T fromResponse(final InputStream is,
+                                                  final MediaType mt) {
+
+        try {
+            final S11nProvider<Failure> s11n = new S11nProvider<Failure>();
+            final Failure f =
+                s11n.readFrom(
+                    Failure.class,
+                    Failure.class,
+                    new Annotation[] {},
+                    mt,
+                    new Headers<String>(),
+                    is);
+
+            try {
+                final T ex = (T) Class.forName(f.getCode()).newInstance();
+                ex.fillInStackTrace(); // Removes reflection stack entries.
+                ex.setId(f.getId());
+                ex.setParams(f.getParams());
+                return ex;
+
+            } catch (final InstantiationException e) {
+                throw new CCException(e.getMessage());
+            } catch (final IllegalAccessException e) {
+                throw new CCException(e.getMessage());
+            } catch (final ClassNotFoundException e) {
+                throw new CCException(e.getMessage());
+            }
+        } catch (final IOException e) {
             throw new CCException(e.getMessage());
         }
     }

@@ -50,6 +50,9 @@ import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.GridEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -78,16 +81,18 @@ public class ResourceTable
         EventHandler<CommandType>,
         SingleSelectionModel {
 
+    private static final int FILTER_MENU_WIDTH = 190;
+
     private ListStore<BeanModel> _detailsStore =
         new ListStore<BeanModel>();
 
-    final PagingLoader<PagingLoadResult<BeanModel>> loader;
+    private final PagingLoader<PagingLoadResult<BeanModel>> _loader;
 
     private final ResourceSummary _root;
     private final ResourceTree _tree;
     private final Grid<BeanModel> _grid;
     private final PagingToolBar _pagerBar;
-    private final FolderToolBar toolBar;
+    private final FolderToolBar _toolBar;
 
     private final GridFilters _filters;
 
@@ -101,13 +106,13 @@ public class ResourceTable
      * @param tree FolderResourceTree
      */
     ResourceTable(final ResourceSummary root,
-        final ResourceTree tree) {
+                  final ResourceTree tree) {
 
         InternalServices.remotingBus.registerHandler(this);
         _root = root;
         _tree = tree;
-        toolBar = new FolderToolBar(this);
-        setTopComponent(toolBar);
+        _toolBar = new FolderToolBar(this);
+        setTopComponent(_toolBar);
         setHeading(UI_CONSTANTS.resourceDetails());
         setLayout(new FitLayout());
 
@@ -121,7 +126,7 @@ public class ResourceTable
 
         _proxy = new ResourceProxy(null, null);
 
-        loader = new BasePagingLoader<PagingLoadResult<BeanModel>>(_proxy) {
+        _loader = new BasePagingLoader<PagingLoadResult<BeanModel>>(_proxy) {
             @Override
             protected Object newLoadConfig() {
                      final BasePagingLoadConfig config =
@@ -129,23 +134,34 @@ public class ResourceTable
                      return config;
             }
         };
-        loader.setRemoteSort(true);
-        _detailsStore = new ListStore<BeanModel>(loader);
+        _loader.setRemoteSort(true);
+        _detailsStore = new ListStore<BeanModel>(_loader);
 
         final ColumnModel cm = new ColumnModel(configs);
         _grid = new Grid<BeanModel>(_detailsStore, cm);
         setUpGrid();
         _grid.setContextMenu(contextMenu);
         _grid.addPlugin(gp);
+        _grid.addListener(
+            Events.CellDoubleClick,
+            new Listener<GridEvent<BeanModel>>(){
+                public void handleEvent(final GridEvent<BeanModel> ge) {
+                    final ResourceSummary rs = ge.getModel().getBean();
+                    if (ResourceType.FOLDER==rs.getType()) {
+                        _tree.clearSelection();
+                        displayResourcesFor(rs);
+                    }
+                }
+            });
 
         _pagerBar = new PagingToolBar(PAGING_ROW_COUNT);
         setBottomComponent(_pagerBar);
-        _pagerBar.bind(loader);
+        _pagerBar.bind(_loader);
 
         _filters = new GridFilters();
         final StringFilter nameFilter = new StringFilter("name");
         nameFilter.getMenu().setAutoWidth(false);
-        nameFilter.getMenu().setWidth(190);
+        nameFilter.getMenu().setWidth(FILTER_MENU_WIDTH);
         _filters.addFilter(nameFilter);
         _filters.setLocal(false);
         _grid.addPlugin(_filters);
@@ -170,11 +186,15 @@ public class ResourceTable
      * @param folder The parent folder for the records to display in the table.
      */
     public void displayResourcesFor(final ResourceSummary folder) {
+        if (null==folder) { return; }
+        if (_proxy.isDisplaying(folder.getId())) {
+            return; // Same folder.
+        }
         _proxy.setFolder(folder);
         final ColumnModel cm = _grid.getColumnModel();
         _filters.clearFilters();
         _grid.reconfigure(_detailsStore, cm);
-        loader.load(0, PAGING_ROW_COUNT);
+        _loader.load(0, PAGING_ROW_COUNT);
     }
 
 
@@ -324,16 +344,6 @@ public class ResourceTable
 
 
     /** {@inheritDoc} */
-    public ResourceSummary treeSelection() {
-        final ResourceSummary item = _tree.getSelectedItem();
-        if (item != null && item.getType() == ResourceType.RANGE_FOLDER) {
-            return null;
-        }
-        return item;
-    }
-
-
-    /** {@inheritDoc} */
     public void update(final ResourceSummary model) {
         updateResource(model.getId());
         _tree.updateResource(model);
@@ -354,8 +364,8 @@ public class ResourceTable
     /** {@inheritDoc} */
     @Override
     public void create(final ResourceSummary model) {
-        final boolean addedToSelectedTreeNode = _tree.addResource(model);
-        if (addedToSelectedTreeNode) { addResource(model); }
+        _tree.addResource(model);
+        addResource(model);
     }
 
 
@@ -378,8 +388,10 @@ public class ResourceTable
 
 
     private void addResource(final ResourceSummary model) {
-        final BeanModel tBean = DataBinding.bindResourceSummary(model);
-        _detailsStore.add(tBean);
+        if (_proxy.isDisplaying(model.getParent())) {
+            final BeanModel tBean = DataBinding.bindResourceSummary(model);
+            _detailsStore.add(tBean);
+        }
     }
 
 
@@ -466,9 +478,24 @@ public class ResourceTable
         }
     }
 
+//
+//    /** {@inheritDoc} */
+//    @Override
+//    public ResourceSummary currentFolder() {
+//        return _proxy.getFolder();
+//    }
+
+
+
+    @Override
+    public ResourceSummary treeSelection() {
+        return _proxy.getFolder();
+    }
+
 
     @Override
     public void create(final Resource model) {
-        create((ResourceSummary) model);
+
+        throw new UnsupportedOperationException("Method not implemented.");
     }
 }

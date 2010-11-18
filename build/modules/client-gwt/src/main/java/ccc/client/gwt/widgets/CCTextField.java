@@ -44,21 +44,21 @@ public class CCTextField
     extends
         PageElement<TextField<String>> {
 
-    private TextField<String> _field;
+    private final TextField<String> _field;
 
 
     /**
      * Constructor.
      *
      * @param name   The field's name.
+     * @param regexp The regular expression validating the field.
      * @param title  The field's title.
      * @param desc   The field's description.
-     * @param regexp The regular expression validating the field.
      */
     public CCTextField(final String name,
+                       final String regexp,
                        final String title,
-                       final String desc,
-                       final String regexp) {
+                       final String desc) {
         super(name);
 
         final TextField<String> tf = createField();

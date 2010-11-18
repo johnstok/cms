@@ -1,148 +1,146 @@
+h2. Velocity examples
+
 A template body can be written in plain HTML or combination of HTML and Velocity markup. The available objects for the Velocity context are described in API for templates.
 
-<h2 id="Commonusage">Velocity examples (7.2)</h2>
-<h3 id="Titleofthepage">Title of the page</h3>
-<pre class="wiki">
-$resource.getTitle()
-</pre>
-<h3><span class="whitespace">Get a service object</span></h3>
-<p><span class="whitespace"> </span><span class="xml-text">#set ($resources = $services.getResources())</span><br />
-<span class="xml-text">#set ($folders = $services.getFolders())</span></p>
-<h3>Display paragraph</h3>
-<pre class="wiki">
-$resource.getParagraph(&quot;HEADER&quot;).getText()
-</pre>
-<h3 id="Arrayandrandomselection">Array and random selection</h3>
-<pre class="wiki">
-#set( $randomStyles = [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;, &quot;four&quot;, &quot;five&quot;, &quot;six&quot;, &quot;seven&quot;, &quot;eight&quot;] )
-</pre>
-<p>Random access (assuming that an instance of java.util.Random in the Velocity context with name random)</p>
-<pre class="wiki">
-&lt;body id=&quot;home&quot; class=&quot;$randomStyles.get($random.nextInt(8))&quot;&gt; 
-</pre>
-<h3 id="Createacontentindex">Create a content index</h3>
-<pre class="wiki">
-#set($folderResource= $resources.resourceForPathSecure(&quot;/Events&quot;))
-#set($type = $enums.of(&quot;ccc.types.ResourceType&quot;, &quot;PAGE&quot;))
+h3. Title of the page
+
+bc. $resource.getTitle()
+
+h3. Get a service object
+
+bc. #set ($resources = $services.getResources())
+#set ($folders = $services.getFolders())
+
+h3. Display paragraph
+
+bc. $resource.getParagraph("HEADER").getText()
+
+h3. Array and random selection
+
+Random access (assuming that an instance of java.util.Random in the Velocity context with name random).
+
+bc. #set( $randomStyles = ["one", "two", "three", "four", "five", "six", "seven", "eight"] )
+<body id="home" class="$randomStyles.get($random.nextInt(8))">
+
+h3. Create a content index
+
+bc. #set($folderResource= $resources.resourceForPathSecure("/Events"))
+#set($type = $enums.of("ccc.types.ResourceType", "PAGE"))
 #set($criteria = $apiTypes.createResourceCriteria())
 $criteria.setParent($folderResource.getId())
 $criteria.setPublished(true)
 $criteria.setMainmenu(true)
-$criteria.setType($type)</pre>
-<p>
-<meta content="text/html; charset=utf-8" http-equiv="content-type" /></p>
-<pre class="wiki">
+$criteria.setType($type)
 
-#set($folder = $resources.list($criteria,1,20))
+bc. #set($folder = $resources.list($criteria,1,20))
 
-#foreach ($pageRS in $folder)
-#set($page = $pages.retrieve($pageRS.getId()))
-      &lt;h2&gt;&lt;a href=&quot;$pageRS.getAbsolutePath()&quot;&gt;$pageRS.getTitle()&lt;/a&gt;&lt;/h2&gt;
-      &lt;p&gt;$page.getParagraph(&quot;Summary&quot;).getText()&lt;/p&gt;
-       &lt;ul class=&quot;eventlist&quot;&gt;
-    #set($rawDate = $page.getParagraph(&quot;Date&quot;).getDate())
-    &lt;li&gt;Date: $dateTool.format('d MMMMM yyyy', $rawDate)&lt;/li&gt;
-    &lt;li&gt;Time: $page.getParagraph(&quot;Time&quot;).getText()&lt;/li&gt;
-    &lt;/ul&gt;
+bc. #foreach ($pageRS in $folder)
+    #set($page = $pages.retrieve($pageRS.getId()))
+    <h2><a href="$pageRS.getAbsolutePath()">$pageRS.getTitle()</a></h2>
+    <p>$page.getParagraph("Summary").getText()</p>
+    <ul class="eventlist">
+    #set($rawDate = $page.getParagraph("Date").getDate())
+    <li>Date: $dateTool.format('d MMMMM yyyy', $rawDate)</li>
+    <li>Time: $page.getParagraph("Time").getText()</li>
+    </ul>
 #end
-</pre>
-<h3 id="Displaysearchresultsforsearchresourcestemplate">Display search results (for 'search' resource's template)</h3>
-<pre class="wiki">
-#set($resources = $services.getResources())
+
+h3. Display search results (for 'search' resource's template)
+
+bc. #set($resources = $services.getResources())
 #foreach($hit in $result.hits()) 
     #if($resources.exists($hit))
         #set ($hitResource = $resources.retrieve($hit))
-        $hitResource.getTitle()&lt;/br&gt;
+        $hitResource.getTitle()</br>
     #end
-#end</pre>
-<p>
-<meta content="text/html; charset=utf-8" http-equiv="content-type" /></p>
-<pre class="wiki">
-&lt;form name=&quot;search&quot; action=&quot;$resource.getName()&quot;&gt;
-    &lt;input name=&quot;q&quot; autocomplete=&quot;off&quot; value=&quot;$terms&quot;/&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;Search&quot;  name=&quot;go&quot;/&gt;
-&lt;/form&gt;
+#end
+
+bc. <form name="search" action="$resource.getName()">
+    <input name="q" autocomplete="off" value="$terms"/>
+    <input type="submit" value="Search"  name="go"/>
+</form>
  
-Shown Hits: $!result.hits().size() - Total: $!result.totalResults()&lt;/br&gt;
+bc. Shown Hits: $!result.hits().size() - Total: $!result.totalResults()
  
-#set ($pages = ($result.totalResults()+9)/10)
-#if ( $result.totalResults() &gt; 0) 
-    #foreach($page in [1..$pages]) 
-        #set ($linkNumber = ($page+-1))
-        #if ($linkNumber == $pageNumber)
-            &lt;b&gt;$page&lt;/b&gt;
-        #elseif ($linkNumber != $pageNumber)
-            &lt;a href=&quot;$resource.name()?q=$terms&amp;p=$linkNumber&quot;&gt;$page&lt;/a&gt;
+bc. #set ( $pages=($result.totalResults()+9)/10 )
+#if ( $result.totalResults()>0 ) 
+    #foreach( $page in [1..$pages] ) 
+        #set ( $linkNumber=($page+-1) )
+        #if ( $linkNumber==$pageNumber )
+            <b>$page</b>
+        #elseif ( $linkNumber!=$pageNumber )
+            <a href="$resource.name()?q=$terms&p=$linkNumber">$page</a>
         #end
     #end
 #end
-</pre>
-<h3 id="Displayoptionalparagraph">Display optional paragraph</h3>
-<p><span class="xml-text">#macro( optional $name $startText $endText)</span><br />
-<span class="whitespace">&nbsp; &nbsp;&nbsp;</span><span class="xml-text">#foreach( $para in $resource.getParagraphs() )</span><br />
-<span class="whitespace">&nbsp; &nbsp; &nbsp; &nbsp;</span><span class="xml-text">#if ($para.getName() == $name </span><span class="xml-entity">&amp;&amp; $para.getText())</span><br />
-<span class="whitespace">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span><span class="xml-text">$startText</span><br />
-<span class="whitespace">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span><span class="xml-text">$para.getText()</span><br />
-<span class="whitespace">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span><span class="xml-text">$endText</span><br />
-<span class="whitespace">&nbsp; &nbsp; &nbsp; &nbsp;</span><span class="xml-text">#end</span><br />
-<span class="whitespace">&nbsp; &nbsp;&nbsp;</span><span class="xml-text">#end</span><br />
-<span class="xml-text">#end</span></p>
-<p>Normal $resource.getParagraph(&quot;NAME&quot;).getText() causes an exception in case there is no paragraph with matching name.</p>
-<p>Following macro takes three parameters. $name is for the paragraph name, $startText is the text to be appended before the paragraph text, $endText is the text to be appended after the paragraph.</p>
-<p>Usage:</p>
-<pre class="wiki">
-#optional('PanelOne_Custom' '&lt;div id=&quot;panel&quot;&gt;' '&lt;/div&gt;' )
-</pre>
-<p>&nbsp;</p>
-<h3 id="Displaybreadcrumb">Display breadcrumb</h3>
-<pre class="wiki">
-#macro ( breadcrumb) 
-   #foreach ($element in $resource.getAbsolutePath().substring(9).split(&quot;/&quot;))
-      $element
-      &lt;br/&gt;
-   #end
-#end
-</pre>
-<h3 id="Includeanotherresource">Include another resource</h3>
-<pre class="wiki">
-#include(&quot;/assets/templates/header.vm&quot;)
-</pre>
-<h3 id="Parseanotherresource">Parse another resource</h3>
-<pre class="wiki">
-#parse(&quot;/assets/templates/header.vm&quot;)
-</pre>
-<h3 id="Readmetadatavaluewithdefault">Read metadata value with default value</h3>
-<pre class="wiki">
-#macro(getStyle)
-    #if(!$resource.getMetadatum(&quot;bodyId&quot;))
-        default
-    #else 
-        $resource.getMetadatum(&quot;bodyId&quot;)
+
+h3. Display optional paragraph
+
+bc. #macro( optional $name $startText $endText)
+    #foreach( $para in $resource.getParagraphs() )
+        #if ($para.getName()==$name && $para.getText())
+            $startText
+            $para.getText()
+            $endText
+        #end
     #end
 #end
-</pre>
-<pre class="wiki">
-#getStyle
-</pre>
-<h3 id="Displaycurrentyear">Display current year</h3>
-<pre class="wiki">
-#macro (currentYear)
+
+Normal @$resource.getParagraph("NAME").getText()@ causes an exception in case there is no paragraph with matching name.
+
+Following macro takes three parameters. @$name@ is for the paragraph name, @$startText@ is the text to be appended before the paragraph text, @$endText@ is the text to be appended after the paragraph.
+
+Usage:
+
+bc. #optional('PanelOne_Custom' '<div id="panel">' '</div>' )
+
+h3. Display breadcrumb
+
+bc. #macro ( breadcrumb) 
+   #foreach ($element in $resource.getAbsolutePath().substring(9).split("/"))
+      $element
+      <br/>
+   #end
+#end
+
+h3. Include another resource
+
+bc. #include("/assets/templates/header.vm")
+
+h3. Parse another resource
+
+bc. #parse("/assets/templates/header.vm")
+
+h3. Read metadata value with default value
+
+bc. #macro(getStyle)
+    #if(!$resource.getMetadatum("bodyId"))
+        default
+    #else 
+        $resource.getMetadatum("bodyId")
+    #end
+#end
+
+bc. #getStyle
+
+h3. Display current year
+
+bc. #macro (currentYear)
     #set ($cal = $calendar.getInstance())
     $cal.get(1)
 #end
-</pre>
-<p>or</p>
-<pre class="wiki">
-$dateTools.get('yyyy')
-</pre>
-<h3 id="Displayimagetypeparagraph">Display image type paragraph</h3>
-<pre class="wiki">
-#macro( optionalImage $name)
-#foreach( $para in $resource.getParagraphs() )
-#if ($para.getName() == $name &amp;&amp; $para.getText())
-#set($imageResource = $resources.retrieve($uuid.fromString($para.getText())))
-$imageResource.getAbsolutePath()
+
+or
+
+bc. $dateTools.get('yyyy')
+
+h3. Display image type paragraph
+
+bc. #macro( optionalImage $name)
+    #foreach( $para in $resource.getParagraphs() )
+        #if ($para.getName() == $name &amp;&amp; $para.getText())
+            #set($imageResource = $resources.retrieve($uuid.fromString($para.getText())))
+            $imageResource.getAbsolutePath()
+        #end
+    #end
 #end
-#end
-#end</pre>
-<p>&nbsp;</p>

@@ -28,6 +28,7 @@ package ccc.client.gwt.widgets;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
@@ -50,6 +51,7 @@ final class ResourceProxy extends RpcProxy<PagingLoadResult<BeanModel>> {
     private ResourceSummary _folder;
     private final ResourceType _type;
 
+
     /**
      * Constructor.
      *
@@ -61,9 +63,11 @@ final class ResourceProxy extends RpcProxy<PagingLoadResult<BeanModel>> {
         _type = type;
     }
 
+
     void setFolder(final ResourceSummary folder) {
         _folder = folder;
     }
+
 
     @Override
     protected void load(final Object loadConfig,
@@ -124,5 +128,30 @@ final class ResourceProxy extends RpcProxy<PagingLoadResult<BeanModel>> {
                 }
             }.execute();
         }
+    }
+
+
+
+
+
+    /**
+     * Accessor.
+     *
+     * @return The current folder for this proxy.
+     */
+    public ResourceSummary getFolder() {
+        return _folder;
+    }
+
+
+    /**
+     * Check if this proxy is displaying a specified folder.
+     *
+     * @param id The folder's ID.
+     *
+     * @return True if the proxy is displaying the folder, false otherwise.
+     */
+    public boolean isDisplaying(final UUID id) {
+        return null!=getFolder() && getFolder().getId().equals(id);
     }
 }

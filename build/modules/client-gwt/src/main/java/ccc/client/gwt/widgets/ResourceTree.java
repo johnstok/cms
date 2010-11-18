@@ -51,8 +51,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class ResourceTree extends AbstractResourceTree {
 
-    private final ResourceSummary _root;
     private final ResourceType _type;
+
 
     /**
      * Constructor.
@@ -62,9 +62,10 @@ public class ResourceTree extends AbstractResourceTree {
      */
     public ResourceTree(final ResourceSummary root,
                         final ResourceType type) {
+        super(root);
         _type = type;
-        _root = root;
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -81,7 +82,7 @@ public class ResourceTree extends AbstractResourceTree {
                 if (null==loadConfig || !(loadConfig instanceof BeanModel)) {
                     callback.onSuccess(
                         DataBinding.bindResourceSummary(
-                            Collections.singletonList(_root)));
+                            Collections.singletonList(getRoot())));
                 } else {
                     final ResourceSummary parent =
                         ((BeanModel) loadConfig).<ResourceSummary>getBean();
@@ -97,7 +98,8 @@ public class ResourceTree extends AbstractResourceTree {
                             page = Integer.decode(parent.getAbsolutePath());
                         }
 
-                        final ResourceCriteria criteria = new ResourceCriteria();
+                        final ResourceCriteria criteria =
+                            new ResourceCriteria();
                         criteria.setParent(parent.getId());
                         criteria.setSortField("name");
                         criteria.setSortOrder(SortOrder.ASC);
@@ -108,7 +110,8 @@ public class ResourceTree extends AbstractResourceTree {
                                                    Globals.MAX_FETCH) {
 
                             /** {@inheritDoc} */
-                            @Override protected void onFailure(final Throwable t) {
+                            @Override protected void onFailure(
+                                                           final Throwable t) {
                                 callback.onFailure(t);
                             }
 
@@ -127,6 +130,7 @@ public class ResourceTree extends AbstractResourceTree {
         return proxy;
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected BaseTreeLoader<BeanModel> createLoader() {
@@ -137,6 +141,7 @@ public class ResourceTree extends AbstractResourceTree {
             }
         };
     }
+
 
     private int getChildCount(final ResourceSummary parent) {
         if (_type == ResourceType.FOLDER) {

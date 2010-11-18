@@ -124,7 +124,7 @@ public class FileProvider
 
         } catch (final InvalidException e) {
             throw new WebApplicationException(
-                e, new RestExceptionMapper().toResponse(e, MimeType.HTML));
+                e, new RestExceptionMapper().toResponse(e));
         }
     }
 

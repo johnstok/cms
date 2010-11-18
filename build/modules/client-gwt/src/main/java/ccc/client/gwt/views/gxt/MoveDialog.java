@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.validator;
+import static ccc.client.core.InternalServices.*;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.client.actions.MoveResourceAction;
@@ -100,7 +100,8 @@ public class MoveDialog extends AbstractEditDialog {
                     folderSelect.addListener(Events.Hide,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent ce) {
-                            final ResourceSummary _md = folderSelect.selectedResource();
+                            final ResourceSummary _md =
+                                folderSelect.selectedResource();
                             if (_md != null
                                && _md.getType() != ResourceType.RANGE_FOLDER) {
 
@@ -144,7 +145,7 @@ public class MoveDialog extends AbstractEditDialog {
         new MoveResourceAction(_target, _parent.getId()){
             /** {@inheritDoc} */
             @Override protected void onSuccess(final Void v) {
-                _ssm.move(_target, _parent, _ssm.treeSelection());
+                _ssm.move(_target, _parent, null);
                 hide();
             }
         }.execute();
