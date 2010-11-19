@@ -48,6 +48,9 @@ h3. All resources
 |*path*|The absolute path for the resource (e.g. /blog/my-first-post)|
 |*name*|The resource's name|
 |*tags*|The resource's tags|
+|*type*|The type of the resource|
+|*date_created*|The date the resource was created|
+|*date_changed*|The date the resource was last changed|
 |*allcontent*|All of the resources text content. For a page this will include all paragraphs. For files it will include all text within the file.|
 
 h3. Pages
