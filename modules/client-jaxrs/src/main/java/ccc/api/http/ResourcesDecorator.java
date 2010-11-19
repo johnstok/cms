@@ -91,7 +91,7 @@ class ResourcesDecorator
         }
         final String errorEntity =
             (String) response.getEntity(String.class);
-        throw new RestExceptionMapper().fromResponse(errorEntity);
+        throw RestExceptionMapper.fromResponse(errorEntity);
 
     }
 
@@ -99,7 +99,8 @@ class ResourcesDecorator
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
-    public String fileContentsFromPath(final String absolutePath, final String charset) {
+    public String fileContentsFromPath(final String absolutePath,
+                                       final String charset) {
         /* This method works around an encoding issue in REST-EASY 1.1. */
         final String uri =
             ccc.api.core.ResourceIdentifiers.Resource.TEXT_SIMPLE
@@ -123,7 +124,7 @@ class ResourcesDecorator
 
         final String errorEntity =
             (String) response.getEntity(String.class);
-        throw new RestExceptionMapper().fromResponse(errorEntity);
+        throw RestExceptionMapper.fromResponse(errorEntity);
 
     }
 }

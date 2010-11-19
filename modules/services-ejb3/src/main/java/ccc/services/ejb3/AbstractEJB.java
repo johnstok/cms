@@ -38,8 +38,6 @@ import javax.ejb.TimerService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.log4j.Logger;
-
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.DBC;
@@ -61,8 +59,6 @@ import ccc.persistence.UserRepository;
  * @author Civic Computing Ltd.
  */
 abstract class AbstractEJB {
-
-    private static Logger log = Logger.getLogger(AbstractEJB.class);
 
     @javax.annotation.Resource private EJBContext    _context;
     @PersistenceContext        private EntityManager   _em;

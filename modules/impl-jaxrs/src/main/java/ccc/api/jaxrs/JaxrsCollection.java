@@ -62,7 +62,7 @@ public abstract class JaxrsCollection {
             try {
                 final MediaType mt =
                     MediaType.valueOf(r.getHeaders().getFirst("Content-Type"));
-                return new RestExceptionMapper().fromResponse(
+                return RestExceptionMapper.fromResponse(
                     new ByteArrayInputStream(r.getEntity()), mt);
             } catch (final NullPointerException npe) {
                 throw e;

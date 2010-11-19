@@ -27,6 +27,8 @@
 package ccc.web.jaxrs;
 
 import javax.ejb.EJBException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
@@ -44,10 +46,12 @@ import ccc.api.jaxrs.providers.RestExceptionMapper;
 public class EJBExceptionMapper
     implements
         ExceptionMapper<EJBException> {
-    // TODO: Decide if we still need this class now that the client-jaxrs module handles EJBException.
+    // TODO: Do we still need this class? client-jaxrs handles EJBExceptions.
 
     private static final Logger LOG =
         Logger.getLogger(EJBExceptionMapper.class);
+
+    @Context private Request _request;
 
     /** {@inheritDoc} */
     @Override
@@ -55,7 +59,7 @@ public class EJBExceptionMapper
 
         if (e.getCausedByException() instanceof CCException) {
             return
-                new RestExceptionMapper().toResponse(
+                new RestExceptionMapper(_request).toResponse(
                     (CCException) e.getCausedByException());
         }
 
@@ -67,6 +71,6 @@ public class EJBExceptionMapper
         LOG.warn(
             "Converted unexpected EJB exception to error: "
             + re.getFailure().getExceptionId(), e);
-        return new RestExceptionMapper().toResponse(re);
+        return new RestExceptionMapper(_request).toResponse(re);
     }
 }
