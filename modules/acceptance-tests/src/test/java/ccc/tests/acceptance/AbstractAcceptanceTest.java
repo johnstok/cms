@@ -29,6 +29,7 @@ package ccc.tests.acceptance;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import junit.framework.TestCase;
@@ -424,6 +425,21 @@ public abstract class AbstractAcceptanceTest
      */
     protected String uid() {
         return UUID.randomUUID().toString().substring(0, 8);
+    }
+
+
+    /**
+     * Create a unique word containing the char's a-z.
+     *
+     * @return A randomly generated, 26 character word.
+     */
+    protected String word() {
+        final StringBuilder buf = new StringBuilder();
+        final Random r = new Random();
+        for (int i=0; i<26; i++) {
+            buf.append(Character.valueOf((char) ('a'+r.nextInt(26))));
+        }
+        return buf.toString();
     }
 
 

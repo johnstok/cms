@@ -46,6 +46,7 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.core.File;
 import ccc.api.core.SearchEngine;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Paragraph;
@@ -261,15 +262,9 @@ public class SearchEngineEJB
                 dr.retrieve(f.getData(), extractor);
                 final String content =
                     XHTML.cleanUpContent(f.getTitle()+" "+extractor.getText());
-                lucene.createDocument(
-                    f.getId(),
-                    f.getAbsolutePath(),
-                    f.getName(),
-                    f.getTitle(),
-                    f.getTags(),
-                    content,
-                    null,
-                    f.getAclHierarchy());
+                final File fDto = f.forCurrentRevision();
+                fDto.setContent(content);
+                lucene.createDocument(fDto, f.getAclHierarchy());
                 LOG.debug("Indexed file: "+f.getTitle());
             }
         }
@@ -281,14 +276,7 @@ public class SearchEngineEJB
         for (final PageEntity p : pages) {
             if (canIndex(p)) {
                 lucene.createDocument(
-                    p.getId(),
-                    p.getAbsolutePath(),
-                    p.getName(),
-                    p.getTitle(),
-                    p.getTags(),
-                    extractContent(p),
-                    p.currentRevision().getParagraphs(),
-                    p.getAclHierarchy());
+                    p.forCurrentRevision(), p.getAclHierarchy());
                 LOG.debug("Indexed page: "+p.getTitle());
             }
         }
