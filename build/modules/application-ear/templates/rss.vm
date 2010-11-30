@@ -1,6 +1,5 @@
 ## RSS feed, displays page summaries of $resourceList.
 #macro(rssFeed)
-#set($resourceList = $resources.resourceForMetadataKey("toRSS"))
 <rss version="2.0">
 <channel> 
     <title>a title  for rss</title>     
