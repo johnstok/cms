@@ -1,6 +1,6 @@
 The XML definition of the template is a simple list of fields. Each field in the definition represents a field in the page editor.
 
-h3. Example XML for template definition (7.2)
+h3. Example XML for template definition (7.3)
 
 bc. <fields>
     <field name="dateField" type="date" description="birthday"/>

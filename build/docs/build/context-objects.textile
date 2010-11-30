@@ -60,15 +60,10 @@ h2. $hostname
 
 Hostname.
 
-h2. $dateTool
-
-Apache VelocityTools DateTool
-
-h2. $sortTool
-
-Apache VelocityTools SortTool
-
 h2. $apiTypes
 
 Object factory of criteria objects for Velocity context use.
 
+h2. $taxonomy
+
+Object factory for taxonomy tools.
