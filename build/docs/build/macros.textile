@@ -38,3 +38,10 @@ h3. siteMap.vm
 Renders site map for the child resource's of the parent.
 #printChildren($parent)
 
+h3. taxonomy.vm
+
+Retrieves vocabulary used by the taxonomy field and assigns it to the vocabulary variable.
+#loadVocabulary($field $vocabulary)
+
+Lists selected vocabulary term titles of the page.
+#listSelected($field $vocabulary)
