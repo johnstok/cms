@@ -59,6 +59,8 @@ import org.apache.lucene.util.NumericUtils;
 import org.apache.lucene.util.Version;
 
 import ccc.api.core.ACL;
+import ccc.api.core.File;
+import ccc.api.core.Page;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
@@ -66,6 +68,7 @@ import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
+import ccc.api.types.ResourceType;
 import ccc.api.types.SearchResult;
 import ccc.api.types.SortOrder;
 import ccc.commons.Exceptions;
@@ -444,27 +447,140 @@ public class SimpleLuceneFS
 
     /** {@inheritDoc} */
     @Override
-    public void createDocument(final UUID id,
-                               final ResourcePath path,
-                               final ResourceName name,
-                               final String title,
-                               final Set<String> tags,
-                               final String content,
-                               final Set<Paragraph> paragraphs) {
-        createDocument(id, path, name, title, tags, content, paragraphs, new ArrayList<ACL>());
+    public void createDocument(final Page p, final Collection<ACL> acl) {
+        createDocument(
+            p.getId(),
+            new ResourcePath(p.getAbsolutePath()),
+            p.getName(),
+            p.getTitle(),
+            p.getTags(),
+            extractContent(p),
+            p.getParagraphs(),
+            p.getType(),
+            p.getDateCreated(),
+            p.getDateChanged(),
+            acl);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void createDocument(final UUID id,
-                               final ResourcePath path,
-                               final ResourceName name,
-                               final String title,
-                               final Set<String> tags,
-                               final String content,
-                               final Set<Paragraph> paragraphs,
-                               final Collection<ACL> acl) {
+    public void createDocument(final File f, final Collection<ACL> acl) {
+        createDocument(
+            f.getId(),
+            new ResourcePath(f.getAbsolutePath()),
+            f.getName(),
+            f.getTitle(),
+            f.getTags(),
+            f.getContent(),
+            null,
+            f.getType(),
+            f.getDateCreated(),
+            f.getDateChanged(),
+            acl);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public TextExtractor createExtractor(final MimeType mimeType) {
+        DBC.require().notNull(mimeType);
+
+        final String primaryType = mimeType.getPrimaryType();
+        final String subType     = mimeType.getSubType();
+
+        if ("pdf".equalsIgnoreCase(subType)) {
+            return new PdfLoader();
+
+        } else if ("msword".equalsIgnoreCase(subType)) {//no MS2007 support
+            return new WordExtractor();
+
+        } else if ("text".equalsIgnoreCase(primaryType)) {
+            return new TxtExtractor();
+
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
+     * Add a document to the search index.
+     *
+     * @param id The resource's ID.
+     * @param path The resource's absolute path.
+     * @param name The resource's name.
+     * @param title The resource's title.
+     * @param tags The resource's tags.
+     * @param content The document's content.
+     * @param paragraphs The paragraphs of the document.
+     */
+    void createDocument(final UUID id,
+                        final ResourcePath path,
+                        final ResourceName name,
+                        final String title,
+                        final Set<String> tags,
+                        final String content,
+                        final Set<Paragraph> paragraphs) {
+        createDocument(
+            id,
+            path,
+            name,
+            title,
+            tags,
+            content,
+            paragraphs,
+            new ArrayList<ACL>());
+    }
+
+
+    /**
+     * Add a document to the search index.
+     *
+     * @param id         The resource's ID.
+     * @param path       The resource's absolute path.
+     * @param name       The resource's name.
+     * @param title      The resource's title.
+     * @param tags       The resource's tags.
+     * @param content    The document's content.
+     * @param paragraphs The paragraphs of the document.
+     * @param acl        The ACL for the document.
+     */
+    void createDocument(final UUID id,
+                        final ResourcePath path,
+                        final ResourceName name,
+                        final String title,
+                        final Set<String> tags,
+                        final String content,
+                        final Set<Paragraph> paragraphs,
+                        final Collection<ACL> acl) {
+        createDocument(
+            id,
+            path,
+            name,
+            title,
+            tags,
+            content,
+            paragraphs,
+            null,
+            null,
+            null,
+            acl);
+    }
+
+
+
+    private void createDocument(final UUID id,
+                                final ResourcePath path,
+                                final ResourceName name,
+                                final String title,
+                                final Set<String> tags,
+                                final String content,
+                                final Set<Paragraph> paragraphs,
+                                final ResourceType type,
+                                final Date dateCreated,
+                                final Date dateChanged,
+                                final Collection<ACL> acl) {
         try {
             clearDocuments(id);
 
@@ -501,7 +617,7 @@ public class SimpleLuceneFS
             d.add(
                 new Field(
                     "path",
-                    path.toString().toLowerCase(_locale),
+                    "/content"+path.toString().toLowerCase(_locale),
                     Field.Store.NO,
                     Field.Index.NOT_ANALYZED));
             d.add(
@@ -510,9 +626,12 @@ public class SimpleLuceneFS
                     name.toString().toLowerCase(_locale),
                     Field.Store.NO,
                     Field.Index.NOT_ANALYZED));
+            addEnum(d, "type", type);
 
             addStringField(d, "title", title);
             addTagsField(d, "tags", tags);
+            addDateField(d, "date_created", dateCreated);
+            addDateField(d, "date_changed", dateChanged);
 
             _writer.addDocument(d);
             LOG.debug("Added document.");
@@ -520,6 +639,19 @@ public class SimpleLuceneFS
         } catch (final IOException e) {
             LOG.warn("Error adding document.", e);
         }
+    }
+
+
+    private void addEnum(final Document d,
+                         final String fieldName,
+                         final Enum<?> fieldValue) {
+        if (null==fieldValue) { return; }
+        d.add(
+            new Field(
+                fieldName,
+                fieldValue.name().toLowerCase(_locale),
+                Field.Store.NO,
+                Field.Index.NOT_ANALYZED));
     }
 
 
@@ -618,6 +750,7 @@ public class SimpleLuceneFS
     private void addDateField(final Document d,
                               final String fieldName,
                               final Date fieldValue) {
+        if (null==fieldValue) { return; }
         final NumericField nf =
             new NumericField(fieldName, Field.Store.NO, true);
         nf.setLongValue(fieldValue.getTime());
@@ -649,29 +782,6 @@ public class SimpleLuceneFS
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public TextExtractor createExtractor(final MimeType mimeType) {
-        DBC.require().notNull(mimeType);
-
-        final String primaryType = mimeType.getPrimaryType();
-        final String subType     = mimeType.getSubType();
-
-        if ("pdf".equalsIgnoreCase(subType)) {
-            return new PdfLoader();
-
-        } else if ("msword".equalsIgnoreCase(subType)) {//no MS2007 support
-            return new WordExtractor();
-
-        } else if ("text".equalsIgnoreCase(primaryType)) {
-            return new TxtExtractor();
-
-        } else {
-            return null;
-        }
-    }
-
-
     private QueryParser createParser() {
         final PerFieldAnalyzerWrapper wrapper =
             new PerFieldAnalyzerWrapper(new StandardAnalyzer(LUCENE_VERSION));
@@ -695,5 +805,18 @@ public class SimpleLuceneFS
                 new StandardAnalyzer(LUCENE_VERSION),
                 IndexWriter.MaxFieldLength.UNLIMITED);
         return writer;
+    }
+
+
+    private String extractContent(final Page page) {
+        final StringBuilder sb = new StringBuilder(page.getTitle());
+        for (final Paragraph p : page.getParagraphs()) {
+            if (ParagraphType.TEXT == p.getType() && p.getText() != null) {
+                sb.append(" ");
+                sb.append(
+                    new PluginFactory().html().cleanUpContent(p.getText()));
+            }
+        }
+        return sb.toString();
     }
 }

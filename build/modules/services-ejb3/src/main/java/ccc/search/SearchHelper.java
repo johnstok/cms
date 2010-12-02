@@ -30,9 +30,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.core.File;
 import ccc.api.synchronous.SearchEngine;
-import ccc.api.types.Paragraph;
-import ccc.api.types.ParagraphType;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.SearchResult;
 import ccc.api.types.SortOrder;
@@ -203,15 +202,9 @@ public class SearchHelper
             final String content =
                 new PluginFactory().html()
                     .cleanUpContent(f.getTitle()+" "+extractor.getText());
-            lucene.createDocument(
-                f.getId(),
-                f.getAbsolutePath(),
-                f.getName(),
-                f.getTitle(),
-                f.getTags(),
-                content,
-                null,
-                f.getAclHierarchy());
+            final File fDto = f.forCurrentRevision();
+            fDto.setContent(content);
+            lucene.createDocument(fDto, f.getAclHierarchy());
             LOG.debug("Indexed file: "+f.getTitle());
         }
     }
@@ -228,29 +221,8 @@ public class SearchHelper
 
 
     private void indexPage(final Indexer lucene, final PageEntity p) {
-        lucene.createDocument(
-            p.getId(),
-            p.getAbsolutePath(),
-            p.getName(),
-            p.getTitle(),
-            p.getTags(),
-            extractContent(p),
-            p.currentRevision().getParagraphs(),
-            p.getAclHierarchy());
+        lucene.createDocument(p.forCurrentRevision(), p.getAclHierarchy());
         LOG.debug("Indexed page: "+p.getTitle());
-    }
-
-
-    private String extractContent(final PageEntity page) {
-        final StringBuilder sb = new StringBuilder(page.getTitle());
-        for (final Paragraph p : page.currentRevision().getParagraphs()) {
-            if (ParagraphType.TEXT == p.getType() && p.getText() != null) {
-                sb.append(" ");
-                sb.append(
-                    new PluginFactory().html().cleanUpContent(p.getText()));
-            }
-        }
-        return sb.toString();
     }
 
 

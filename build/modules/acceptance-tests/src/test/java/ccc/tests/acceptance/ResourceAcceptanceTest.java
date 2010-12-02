@@ -102,7 +102,7 @@ public class ResourceAcceptanceTest
 
         // ACT
         final PagedCollection<ResourceSummary> result =
-            getCommands().list(rc, 1, 1);
+            getCommands().list(rc, 1, 10);
 
         // ASSERT
         // should contain at least one resource, no server error should happen.

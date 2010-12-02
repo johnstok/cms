@@ -189,7 +189,7 @@ public class FileUploader
                             filePost.getResponseBodyAsStream());
                 }
 
-                throw new RestExceptionMapper().fromResponse(
+                throw RestExceptionMapper.fromResponse(
                         filePost.getResponseBodyAsString());
 
             } finally {

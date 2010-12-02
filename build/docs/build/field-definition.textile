@@ -48,3 +48,18 @@ h3. Field types
 * @image@ image selector.
 * @number@ number, stored as BigDecimal.
 * @taxonomy@ taxonomy field with specified vocabulary. Selected terms are stored as list.
+
+= Reserved Field Names =
+Following Lucene index field names are reserved. Any paragraphs or metadata values with the same name will be overwritten.
+
+|| '''name'''  || '''usage''' ||
+|| id          || UUID of the resource ||
+|| name        || Resource name        ||
+|| title       || Resource title       ||
+|| path        || Absolute path of the resource, including '/content/' ||
+|| tags        || Tags of resource, comma separated ||
+|| all_content || Content of the page, all paragraphs ||
+
+
+
+

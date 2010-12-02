@@ -35,12 +35,14 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.ACL;
+import ccc.api.core.File;
 import ccc.api.core.Folder;
 import ccc.api.core.Group;
 import ccc.api.core.Page;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
+import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.SearchResult;
 import ccc.api.types.SortOrder;
@@ -167,6 +169,140 @@ public class SearchEngineAcceptanceTest
         // ASSERT
         assertEquals(1, result.totalResults());
         assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testFindByDate() {
+
+        // ARRANGE
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final Page page   = tempPage(parent.getId(), null);
+
+        updateMetadata(page);
+
+        getSearch().index();
+        delay();
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(
+                "date_created:["+(page.getDateCreated().getTime()-1000)+" TO "+(page.getDateCreated().getTime()+1000)+"]", 10, 1);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testFindPageById() {
+
+        // ARRANGE
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary page   = tempPage(parent.getId(), null);
+
+        getCommands().lock(page.getId());
+        getCommands().publish(page.getId());
+
+        getSearch().index();
+        delay();
+
+        // ACT
+        final SearchResult result =
+            getSearch().find("id:\""+page.getId()+"\" AND type:page", 10, 1);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(page.getId(), result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testFindFileById() {
+
+        // ARRANGE
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary res   =
+            getFiles().createTextFile(
+                new File(
+                    parent.getId(),
+                    uid(),
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "Hello!"));
+
+        getCommands().lock(res.getId());
+        getCommands().publish(res.getId());
+
+        getSearch().index();
+        delay();
+
+        // ACT
+        final SearchResult result =
+            getSearch().find("id:\""+res.getId()+"\" AND type:file", 10, 1);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(res.getId(), result.hits().iterator().next());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testFindAliasesFindsNothing() {
+
+        // ARRANGE
+        getSearch().index();
+
+        // ACT
+        final SearchResult result =
+            getSearch().find("type:alias", 10, 1);
+
+        // ASSERT
+        assertEquals(0, result.totalResults());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testFindFileByContent() {
+
+        // ARRANGE
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final String content = word();
+        final ResourceSummary res   =
+            getFiles().createTextFile(
+                new File(
+                    parent.getId(),
+                    uid(),
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    content));
+
+        getCommands().lock(res.getId());
+        getCommands().publish(res.getId());
+
+        getSearch().index();
+        delay();
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(content+" AND type:file", 10, 1);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(res.getId(), result.hits().iterator().next());
     }
 
 

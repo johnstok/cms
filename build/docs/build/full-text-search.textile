@@ -1,0 +1,66 @@
+h1. Full text search
+
+Content Control uses "Lucene":http://lucene.apache.org to provide full text search capabilities.
+
+h2. Searching for resources
+
+Access to the search engine is available in all templates via the @$services@ object. See documentation of the "search":ccc.api.core.SearchEngine class for full details of the methods available.
+
+bc. #set( $search=$services.getSearch() )
+#set ($result = find("content control", 20, 0);
+<ul>
+#foreach( $hit in $result.hits() )
+    <li>$hit</li>
+#end
+</ul>
+
+Query methods on the search engine always return a "search result":ccc.api.types.SearchResult object containing hits that match the search term.
+
+Each hit is the unique identifier of a resource in control. You could look up the resource using the "resources":ccc.api.coreResources object. For example:
+
+bc. #set( $resource=$services.getResources().retrieve($hit) )
+
+Query methods are always paged, the above snippet returns the first 20 results from the first (0th) page. If necessary you can implement "paging":paging.html to scroll through subsequent results.
+
+h2. Syntax for search terms.
+
+For simple searches it should be enough to pass one or more terms to the search engine:
+
+bc. "Java"
+"Content Control"
+"Content Management System"
+
+Lucene uses a tokeniser to split terms such as "open-source" (it would be equivalent to "open source").
+
+It is also possible to search on specific fields of a resource:
+
+bc. "title:blog"
+"tags:news"
+
+For full details of the search term syntax see the Lucene "query syntax":http://lucene.apache.org/java/3_0_2/queryparsersyntax.html.
+
+h2. Available fields
+
+h3. All resources
+
+|*title*|The resource's title|
+|*id*|The unique identifier of the resource|
+|*path*|The absolute path for the resource (e.g. /blog/my-first-post)|
+|*name*|The resource's name|
+|*tags*|The resource's tags|
+|*type*|The type of the resource|
+|*date_created*|The date the resource was created|
+|*date_changed*|The date the resource was last changed|
+|*allcontent*|All of the resources text content. For a page this will include all paragraphs. For files it will include all text within the file.|
+
+h3. Pages
+
+A field will be created for each paragraph on the page. So, for example, if page has a paragraph named 'article' you could search in the article paragraph with the following query:
+
+bc. "article:Java"
+
+If the paragraph contains text content both tokenised and un-tokenised fields are created. Un-tokenised fields are prefixed with an underscore (e.g. '_article'). This simplifies some queries such as "starts with". For example, to find all articles that start with a T you could use the following search:
+
+bc. "_article:T*"
+
+Un-tokenised text fields are also useful when sorting textual paragraphs.

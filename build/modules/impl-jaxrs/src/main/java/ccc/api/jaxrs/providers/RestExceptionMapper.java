@@ -67,6 +67,22 @@ public class RestExceptionMapper
     @Context private Request _request;
 
 
+    /**
+     * Constructor.
+     */
+    public RestExceptionMapper() { super(); }
+
+
+    /**
+     * Constructor.
+     *
+     * @param request The JAX-RS request for the mapper.
+     */
+    public RestExceptionMapper(@Context final Request request) {
+        _request = request;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public Response toResponse(final CCException e) {
@@ -108,7 +124,7 @@ public class RestExceptionMapper
      * @return The corresponding exception.
      */
     @SuppressWarnings("unchecked")
-    public <T extends CCException> T fromResponse(final String body) {
+    public static <T extends CCException> T fromResponse(final String body) {
 
         Failure f;
         try {
@@ -145,8 +161,8 @@ public class RestExceptionMapper
      * @return The corresponding exception.
      */
     @SuppressWarnings("unchecked")
-    public <T extends CCException> T fromResponse(final InputStream is,
-                                                  final MediaType mt) {
+    public static <T extends CCException> T fromResponse(final InputStream is,
+                                                         final MediaType mt) {
 
         try {
             final S11nProvider<Failure> s11n = new S11nProvider<Failure>();

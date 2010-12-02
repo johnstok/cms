@@ -28,14 +28,11 @@
 package ccc.plugins.search;
 
 import java.util.Collection;
-import java.util.Set;
-import java.util.UUID;
 
 import ccc.api.core.ACL;
+import ccc.api.core.File;
+import ccc.api.core.Page;
 import ccc.api.types.MimeType;
-import ccc.api.types.Paragraph;
-import ccc.api.types.ResourceName;
-import ccc.api.types.ResourcePath;
 
 
 /**
@@ -72,43 +69,19 @@ public interface Indexer {
     /**
      * Add a document to the search index.
      *
-     * @param id The resource's ID.
-     * @param path The resource's absolute path.
-     * @param name The resource's name.
-     * @param title The resource's title.
-     * @param tags The resource's tags.
-     * @param content The document's content.
-     * @param paragraphs The paragraphs of the document.
+     * @param f   The file to add.
+     * @param acl The ACL for the document.
      */
-    void createDocument(final UUID id,
-                        final ResourcePath path,
-                        final ResourceName name,
-                        final String title,
-                        final Set<String> tags,
-                        final String content,
-                        final Set<Paragraph> paragraphs);
+    void createDocument(File f, Collection<ACL> acl);
 
 
     /**
      * Add a document to the search index.
      *
-     * @param id         The resource's ID.
-     * @param path       The resource's absolute path.
-     * @param name       The resource's name.
-     * @param title      The resource's title.
-     * @param tags       The resource's tags.
-     * @param content    The document's content.
-     * @param paragraphs The paragraphs of the document.
-     * @param acl        The ACL for the document.
+     * @param p   The page to add.
+     * @param acl The ACL for the document.
      */
-    void createDocument(UUID id,
-                        ResourcePath path,
-                        ResourceName name,
-                        String title,
-                        Set<String> tags,
-                        String content,
-                        Set<Paragraph> paragraphs,
-                        Collection<ACL> acl);
+    void createDocument(Page p, Collection<ACL> acl);
 
 
     /**
