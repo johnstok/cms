@@ -160,7 +160,7 @@ public class SearchEngineAcceptanceTest
         // ACT
         final SearchResult result =
             getSearch().find(
-                "_date_created:["+page.getDateCreated().getTime()+" TO "+page.getDateCreated().getTime()+"]", 10, 0);
+                "date_created:["+(page.getDateCreated().getTime()-1000)+" TO "+(page.getDateCreated().getTime()+1000)+"]", 10, 0);
 
         // ASSERT
         assertEquals(1, result.totalResults());
