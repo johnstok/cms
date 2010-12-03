@@ -113,12 +113,14 @@ public class TaxonomyAcceptanceTest extends AbstractAcceptanceTest {
             +"</term>"
             +"</vocabulary>";
 
+        final MimeType mime = new MimeType("application", "vnd.cc.vocabulary.1+xml");
+
         final File rs =
             getFiles().createTextFile(
                 new File(
                     filesFolder.getId(),
                     fName,
-                    MimeType.TEXT,
+                    mime,
                     true,
                     "",
                     vocabulary));

@@ -24,7 +24,7 @@ h3. mainMenutag.vm
 
 #menuTag
 Renders dynamic navigation menu. Currently open page has css class 'hot' and any open parent folders have css class 'open'. 
-The optional variable $startLevel is used to control the starting level of the menu. The end level of the navigation menu is controlled with optional variabl $endLevel.
+The optional variable $startLevel is used to control the starting level of the menu. The end level of the navigation menu is controlled with optional variable $endLevel.
 
 
 h3. rss.vm

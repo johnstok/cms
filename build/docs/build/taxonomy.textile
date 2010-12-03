@@ -2,7 +2,7 @@
 
 Taxonomy is used to categorise pages in CC7. There are three different parts of a taxonomy - vocabulary, template and page.
 
-The vocabulary is a XML text file containing all the terms. There can be more than one vocabulary for a site.
+The vocabulary is a XML text file containing all the terms. There can be more than one vocabulary for a site. The mime type for the taxonomy file should be  application/vnd.cc.vocabulary.1+xml
 
 In order to use that vocabulary the template must have a field of type 'taxonomy'. This field defines the path to the vocabulary file.
 
