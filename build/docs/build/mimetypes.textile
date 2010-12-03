@@ -1,0 +1,5 @@
+h2. Mime type defined by Content Control
+
+h3. application/vnd.cc.vocabulary.1+xml
+
+Used for taxonomy files. They are text files and can be edited using inline editor.
