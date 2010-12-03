@@ -1,13 +1,21 @@
 ## Menutag
 #macro (menuTag)
+#set($output = "#createMenuTag")
+#if ($output.indexOf("li") > 0)
+<ul>
+$output
+</ul>
+#end
+#end
+
+#macro (createMenuTag)
+  #set($empty = true)
   #set($tree = [])
   #set ($tempResource = $resource)
   #populateTree($tempResource)
   $collections.reverse($tree)
   #startEndLevel
-  <ul>
-    #menulevel($startLevel)
-  </ul>
+  #menulevel($startLevel)  
 #end
 
 #macro (startEndLevel)
@@ -26,6 +34,7 @@
   #if($temp.getParent())
     #set($siblings=$resources.list($temp.getParent(),  null, null, null, "true", null, null, "true",
                                    "manual", $enums.of("ccc.api.types.SortOrder", "ASC"), 1, 100).getElements())
+    
 #call($tree.add($siblings))
     #set($papa = $resources.retrieve($temp.getParent()))
     #populateTree($papa)
@@ -34,22 +43,20 @@
 
 #macro ( menulevel $depth)
     #if ($tree.size() > $depth)
-    #if ($depth != $endLevel)
-        #set($jumpdepth = $depth + 1)
-        #if ($tree.get($jumpdepth).size() > 0)
-            #set($jumpID = $tree.get($jumpdepth).get(0).getParent())
-            #set($jumpName = $resources.retrieve($jumpID).getName())
-        #end
-    #end
-    <!-- this level $depth -->
+        #if ($depth != $endLevel)
+        	#set($jumpdepth = $depth + 1)
+       	    #set($paths = $resource.getAbsolutePath().split("/"))
+            #set($jumpName = $paths.get($jumpdepth))        
+    	#end
         #foreach( $entry in $tree.get($depth))
             #menuLinks
         #end
     #end
 #end
 
+
 #macro(menuLinks)
-    #if ($entry.getName().equals($jumpName) &&  $entry.getType().name() == "FOLDER")
+     #if ($entry.getName() == $jumpName &&  $entry.getType().name() == "FOLDER")
         <li class="open">
         <a href="$entry.getAbsolutePath()">$entry.getTitle() </a>
         #if ($depth != $endLevel)

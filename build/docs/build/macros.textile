@@ -24,6 +24,9 @@ h3. mainMenutag.vm
 
 #menuTag
 Renders dynamic navigation menu. Currently open page has css class 'hot' and any open parent folders have css class 'open'. 
+
+It works by creating a list of resources for each level, starting from the current resource towards the root. The list is fetched using $resources.list with parent and 'mainmenu' criterias. Finally the list is inverted and the macro renders each level. Removal of the 'mainmenu' criteria and doing the filtering in the Velocity code is not recommended as it affects performance.
+
 The optional variable $startLevel is used to control the starting level of the menu. The end level of the navigation menu is controlled with optional variable $endLevel.
 
 
