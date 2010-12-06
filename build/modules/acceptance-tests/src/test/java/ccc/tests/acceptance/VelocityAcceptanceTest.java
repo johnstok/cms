@@ -355,6 +355,68 @@ public class VelocityAcceptanceTest
             ,  pContent.indexOf("<ul>") == -1);
     }
 
+    /**
+     * Test.
+     * @throws IOException Exception.
+     */
+    public void testSiteMap() throws IOException {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        folder.setTitle("root");
+        getCommands().lock(folder.getId());
+        getCommands().updateMetadata(folder.getId(), folder);
+        getCommands().publish(folder.getId());
+
+        final StringBuffer macroContent = new StringBuffer();
+        macroContent.append(
+            readFile("../application-ear/templates/default.vm"));
+        macroContent.append("\n");
+        macroContent.append(
+            readFile("../application-ear/templates/siteMap.vm"));
+        macroContent.append("\n\n #set($parent = "
+            + "$resources.retrieve($uuid.fromString(\""
+            + folder.getId().toString()+"\")))");
+        macroContent.append("\n\n #printChildren($parent)");
+
+        final String fName = UUID.randomUUID().toString();
+        final Folder f2 = getFolders().create(
+            new Folder(folder.getId(), new ResourceName(fName)));
+        getCommands().lock(f2.getId());
+        f2.setTitle("f2");
+        getCommands().publish(f2.getId());
+        getCommands().updateMetadata(f2.getId(), f2);
+
+        final Template t = new Template();
+        t.setName(new ResourceName("template"));
+        t.setParent(folder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody(macroContent.toString());
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
+        final Template template = getTemplates().create(t);
+
+        final Page page = tempPage(f2.getId(), template.getId());
+        getCommands().lock(page.getId());
+        page.setTitle("page");
+        getCommands().updateMetadata(page.getId(), page);
+        getCommands().publish(page.getId());
+
+        // ACT
+        final String pContent = getBrowser().previewContent(page, false);
+
+        // ASSERT
+        assertTrue("Should not have 'root' entry"
+            ,  pContent.indexOf(folder.getTitle()) == -1);
+        assertTrue("Should have 'f2' entry"
+            ,  pContent.indexOf(f2.getTitle()) != -1);
+        assertTrue("Should have 'page' entry"
+            ,  pContent.indexOf(page.getTitle()) != -1);
+
+    }
+
+
     private static String readFile(final String path) throws IOException {
         final FileInputStream stream = new FileInputStream(new File(path));
         try {

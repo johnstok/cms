@@ -1,7 +1,7 @@
 ## Sitemap
 #macro(printChildren $parent)
   #set($children=$resources.list(
-    parent.getId(),
+    $parent.getId(),
     null,
     null,
     null,
