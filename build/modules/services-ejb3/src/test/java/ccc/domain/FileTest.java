@@ -182,6 +182,57 @@ public class FileTest extends TestCase {
         }
     }
 
+    /**
+     * Test.
+     */
+    public void testIsText() {
+
+        // ARRANGE
+        final FileEntity ff =
+            createFileEntity(new MimeType("foo", "bar"));
+
+        final FileEntity ftext =
+            createFileEntity(new MimeType("text", "html"));
+
+        final FileEntity applXMLText =
+            createFileEntity(new MimeType("application", "xml"));
+
+        final FileEntity applPlainText =
+            createFileEntity(new MimeType("application", "plain"));
+
+        final FileEntity applJavascriptText =
+            createFileEntity(new MimeType("application", "javascript"));
+
+        final FileEntity applXJavascriptText =
+            createFileEntity(new MimeType("application", "x-javascript"));
+
+        final FileEntity applVocabularyText = createFileEntity(
+            new MimeType("application", "vnd.cc.vocabulary.1+xml"));
+
+        // ASSERT
+        assertEquals("should not be text", ff.isText(), false);
+        assertEquals("should be text", ftext.isText(), true);
+        assertEquals("should be text", applXMLText.isText(), true);
+        assertEquals("should be text", applPlainText.isText(), true);
+        assertEquals("should be text", applJavascriptText.isText(), true);
+        assertEquals("should be text", applXJavascriptText.isText(), true);
+        assertEquals("should be text", applVocabularyText.isText(), true);
+
+    }
+
+    private FileEntity createFileEntity(final MimeType mime) {
+        return new FileEntity(
+            new ResourceName("foo"),
+            "foo",
+            "desc",
+            new Data(),
+            1,
+            mime,
+            new HashMap<String, String>(),
+            _rm);
+    }
+
+
     private final RevisionMetadata _rm =
         new RevisionMetadata(
             new Date(), UserEntity.SYSTEM_USER, true, "Created.");

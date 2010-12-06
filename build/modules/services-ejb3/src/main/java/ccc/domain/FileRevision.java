@@ -136,7 +136,8 @@ public class FileRevision
                 || "plain".equalsIgnoreCase(sub)
                 || "javascript".equalsIgnoreCase(sub)
                 || "x-javascript".equalsIgnoreCase(sub)
-                || "vnd.cc.vocabulary.1+xml".equalsIgnoreCase(sub)) {
+                || sub.toLowerCase().endsWith("+xml")
+                || sub.toLowerCase().endsWith("+json")) {
                 return true;
             }
         }
