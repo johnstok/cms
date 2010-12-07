@@ -48,3 +48,8 @@ Retrieves vocabulary used by the taxonomy field and assigns it to the vocabulary
 
 Lists selected vocabulary term titles of the page.
 #listSelected($field $vocabulary)
+
+h3. displayComments.vm
+
+Displays first 20 comments of a resource  with specified status. Comments are ordered with their date.
+#displayComments($resource.getId(), $enums.of("ccc.api.types.CommentStatus",  "APPROVED")
