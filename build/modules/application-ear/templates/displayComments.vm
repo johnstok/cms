@@ -1,0 +1,17 @@
+## display comments
+#macro(displayComments $id $status)
+
+#set($list = $comments.query(
+$id, 
+$status, 
+"date-created",
+$enums.of("ccc.api.types.SortOrder", "ASC"),
+1,
+20
+).getElements())
+
+#foreach($comment in $list)
+$comment.getBody()
+#end
+
+#end

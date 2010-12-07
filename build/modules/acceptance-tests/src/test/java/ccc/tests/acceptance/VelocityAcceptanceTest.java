@@ -33,11 +33,14 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.core.Comment;
 import ccc.api.core.Folder;
 import ccc.api.core.Page;
 import ccc.api.core.Template;
+import ccc.api.types.CommentStatus;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 
@@ -413,9 +416,60 @@ public class VelocityAcceptanceTest
             ,  pContent.indexOf(f2.getTitle()) != -1);
         assertTrue("Should have 'page' entry"
             ,  pContent.indexOf(page.getTitle()) != -1);
-
     }
 
+    /**
+     * Test.
+     * @throws IOException Exception.
+     */
+    public void testDisplayComments() throws IOException {
+
+        // ARRANGE
+        final StringBuffer macroContent = new StringBuffer();
+        macroContent.append(
+            readFile("../application-ear/templates/default.vm"));
+        macroContent.append("\n");
+        macroContent.append(
+            readFile("../application-ear/templates/displayComments.vm"));
+        macroContent.append("\n");
+        macroContent.append("#displayComments($resource.getId(), "
+            + "$enums.of(\"ccc.api.types.CommentStatus\", \"APPROVED\"))");
+
+        final Folder folder = tempFolder();
+
+        final Template t = new Template();
+        t.setName(new ResourceName("template"));
+        t.setParent(folder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody(macroContent.toString());
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
+        final Template template = getTemplates().create(t);
+
+        final Page page = tempPage(folder.getId(), template.getId());
+        final Comment approved =
+            new Comment("testUser", "ok", page.getId(), new Date(), null);
+        approved.setStatus(CommentStatus.APPROVED);
+        approved.setEmail("test@civicuk.com");
+        getComments().create(approved);
+
+        final Comment spam =
+            new Comment("spamUser", "spam", page.getId(), new Date(), null);
+        spam.setStatus(CommentStatus.SPAM);
+        spam.setEmail("spam@civicuk.com");
+        getComments().create(spam);
+
+        // ACT
+        final String pContent = getBrowser().previewContent(page, false);
+
+        // ASSERT
+        assertTrue("Should show approved comment body"
+            ,  pContent.indexOf("ok") != -1);
+        assertTrue("Should not show spam comment body"
+            ,  pContent.indexOf("spam") == -1);
+
+    }
 
     private static String readFile(final String path) throws IOException {
         final FileInputStream stream = new FileInputStream(new File(path));
