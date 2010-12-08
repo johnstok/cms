@@ -34,6 +34,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.Comment;
@@ -42,6 +43,7 @@ import ccc.api.core.Page;
 import ccc.api.core.Template;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.MimeType;
+import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 
 
@@ -470,6 +472,60 @@ public class VelocityAcceptanceTest
             ,  pContent.indexOf("spam") == -1);
 
     }
+
+    /**
+     * Test.
+     * @throws IOException Exception.
+     */
+    public void testOptionalImage() throws IOException {
+        // ARRANGE
+        final StringBuffer macroContent = new StringBuffer();
+        macroContent.append(
+            readFile("../application-ear/templates/default.vm"));
+        macroContent.append("\n");
+        macroContent.append("#optionalImage(\"ok\")\n");
+        macroContent.append("#optionalImage(\"fail\")\n");
+
+        final Folder folder = tempFolder();
+
+        final Template t = new Template();
+        t.setName(new ResourceName("template"));
+        t.setParent(folder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody(macroContent.toString());
+        t.setDefinition("<fields>"
+            + "<field name=\"fail\" type=\"image\"/>"
+            + "<field name=\"ok\" type=\"image\"/>"
+            + "</fields>");
+        t.setMimeType(MimeType.HTML);
+        final Template template = getTemplates().create(t);
+
+        final Page page = tempPage(folder.getId(), template.getId());
+        getCommands().lock(page.getId());
+        final Set<Paragraph> paras = page.getParagraphs();
+
+        final Paragraph fail =
+            Paragraph.fromText("fail", "d10ea9ad-55ca-45b6-9238-b03f10ddd979");
+        final Paragraph ok =
+            Paragraph.fromText("ok", folder.getId().toString());
+        paras.add(fail);
+        paras.add(ok);
+
+        page.setParagraphs(paras);
+        getPages().update(page.getId(), page);
+
+        // ACT
+        final String pContent = getBrowser().previewContent(page, false);
+
+        // ASSERT
+        assertTrue("Should show path of the image"
+            ,  pContent.indexOf(folder.getAbsolutePath()) != -1);
+        assertTrue("Should not show fail"
+            ,  pContent.indexOf("fail") == -1);
+
+    }
+
 
     private static String readFile(final String path) throws IOException {
         final FileInputStream stream = new FileInputStream(new File(path));

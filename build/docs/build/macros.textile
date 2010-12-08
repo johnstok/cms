@@ -13,6 +13,8 @@ From current page return the metadata value for bodyId key or 'default' if not s
 #optional ($name $startText $endText)
 Displays named paragraph if it is set in the page. Adds start and end texts if paragraph is found.
 
+#optionalImage($name)
+Returns the absolute path  of the image selected for the specified paragraph. Does not output anything if no image found.
 
 h3. breadCrumb.vm
 

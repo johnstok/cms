@@ -28,5 +28,16 @@
   #end
 #end
 
+## Returns absolute path of the image.
+#macro(optionalImage $name)
+#foreach( $para in $resource.getParagraphs() )
+#if ($para.getName() == $name && $para.getText() && !$para.getText().isEmpty())
+#set($imageResource = $resources.retrieve($uuid.fromString($para.getText())))
+#if ($imageResource)
+$imageResource.getAbsolutePath()
+#end
+#end
+#end
+#end
 
 
