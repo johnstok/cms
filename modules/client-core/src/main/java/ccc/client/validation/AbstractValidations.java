@@ -49,7 +49,7 @@ public abstract class AbstractValidations {
     /** VALID_CHARACTERS : String. */
     public static final String VALID_CHARACTERS = "[\\.\\-\\w]+";
     /** VALID_USERNAME_CHARACTERS : String. */
-    public static final String VALID_USERNAME_CHARACTERS = "[\\w]+";
+    public static final String VALID_USERNAME_CHARACTERS = "['@\\.\\-\\w]+";
     /** VALID_PASSWORD_CHARACTERS : String. */
     public static final String VALID_PASSWORD_CHARACTERS = "[\\S]+";
     /** NO_BRACKETS : String. */
