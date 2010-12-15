@@ -1,0 +1,81 @@
+h2. Paging of the search results
+
+Displaying results with paging requires two extra blocks of code for the template.
+
+h3. Request handling
+
+In the example below, the current page of the result set is read and stored in the variable 'p'. In case no value is found, the default value 0 is used. Another parameter read here is the query, i.e. search word used by the site visitor.
+
+bc. 
+#set($page=0)
+#set($p=$request.getParameter("p"))
+#if($p && 0!=$p.length()) #set($page=$page.decode($p)) #end
+#set($q=$request.getParameter("q"))
+ 
+ 
+h3. Form
+
+Use normal  search form. No changes needed for paging. 
+ 
+h3. Executing search
+
+Here the $page variable is used to tell the server to return the right set of results.
+
+bc. 
+#set($sortField="name")
+#set($sortOrder=$enums.of('ccc.api.types.SortOrder', 'ASC'))
+#set($result=$services.getSearch().find($terms,  $sortField, $sortOrder, 20, $page))
+
+h3. Processing search result
+
+Here we set bunch of variables from the search result
+
+bc. 
+#set ($noOfResultsToDisplayPerPage = $result.noOfResultsPerPage())
+#set ($currentPageNo = ($result.getPageNo()))
+#set ($displayedPageNo = ($result.getPageNo()+1))
+#set ($firstResultOnPage = ($currentPageNo*$noOfResultsToDisplayPerPage)+1)
+#set ($lastResultOnPage = ($displayedPageNo*$noOfResultsToDisplayPerPage))
+#set ($lastResultOnLastPage = ($result.totalResults()))
+#set ($noOfPages = ($result.totalResults()+$noOfResultsToDisplayPerPage+-1)/$noOfResultsToDisplayPerPage)
+
+
+h3. Displaying search results
+
+Display number of results.
+
+bc. 
+<p class="resultsheader">
+#if ( $displayedPageNo == $noOfPages) Results $firstResultOnPage - $lastResultOnLastPage.
+#else Results $firstResultOnPage - $lastResultOnPage of $!result.totalResults().
+#end Page $displayedPageNo of $noOfPages
+</p>
+
+Get list of UUIDs from the results and fetch pages and/or resources for each.
+
+bc. 
+#set($hits=$result.hits())
+#foreach($hit in $hits)<div class="resultbox"><!-- Hit: $hit -->
+ #set($hitPage=$services.getPages().retrieve($hit))
+ #set($hitResource=$services.getResources().retrieve($hit))
+ $hitResource.getTitle()
+#end
+
+h3. Displaying pager controls
+
+Displays first, previous, next and last links.
+
+bc. 
+<p class="resultsheader">Results Page: $displayedPageNo of $noOfPages</p>
+#if ( $result.totalResults() > 0) <p>
+ #if ($currentPageNo!=0) <a href="$resource.getName()?p=0$qString">&lt;&lt; first</a>
+  #set ($previousPage = ($currentPageNo+-1))
+  <a href="$resource.getName()?p=$previousPage$qString">&lt; previous</a>
+  #end
+ #if ($displayedPageNo < $noOfPages)
+  #set ($nextPage = ($currentPageNo+1))
+  <a href="$resource.getName()?p=$nextPage$qString">next &gt;</a>
+  #set ($lastPage = ($noOfPages+-1))
+  <a href="$resource.getName()?p=$lastPage$qString">last &gt;&gt;</a></p>
+ #end
+#end
