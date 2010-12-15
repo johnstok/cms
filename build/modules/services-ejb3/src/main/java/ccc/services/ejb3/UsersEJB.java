@@ -163,7 +163,8 @@ public class UsersEJB
             + "?{-join|&|count,page,sort,order,email,username,groups}");
         users.addLink(
             "exists",
-            ccc.api.synchronous.ResourceIdentifiers.User.EXISTS);
+            ccc.api.synchronous.ResourceIdentifiers.User.EXISTS
+            + "?{-join|&|uname}");
         return users;
     }
 

@@ -111,7 +111,7 @@ public interface Users {
      * @return True if the username is in use, false otherwise.
      */
     @GET @Path(ccc.api.synchronous.ResourceIdentifiers.User.EXISTS)
-    Boolean usernameExists(@PathParam("uname") Username username);
+    Boolean usernameExists(@QueryParam("uname") Username username);
 
 
     /**

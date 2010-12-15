@@ -269,7 +269,7 @@ public interface ResourceIdentifiers {
             COLLECTION + "/me";
         /** EXISTS : String. */
         public static final String  EXISTS     =
-            COLLECTION + "/{uname}/exists";
+            COLLECTION + "/exists";
         /** LEGACY : String. */
         public static final String  LEGACY     =
             COLLECTION + "/by-legacy-id/{id}";
