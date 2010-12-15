@@ -527,6 +527,66 @@ public class VelocityAcceptanceTest
     }
 
 
+    /**
+     * Test.
+     * @throws IOException Exception.
+     */
+    public void testCreateIndexMacro() throws IOException {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+
+        final StringBuffer macroContent = new StringBuffer();
+        macroContent.append(
+            readFile("../application-ear/templates/default.vm"));
+        macroContent.append("\n");
+        macroContent.append("#set($id = $uuid.fromString(\""
+            +folder.getId()+"\"))");
+        macroContent.append("\n\n #createIndex($id)");
+
+        getCommands().lock(folder.getId());
+        folder.setTitle("first");
+        getCommands().updateMetadata(folder.getId(), folder);
+        getCommands().publish(folder.getId());
+        getCommands().includeInMainMenu(folder.getId());
+
+        final Template t = new Template();
+        t.setName(new ResourceName("template"));
+        t.setParent(folder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody(macroContent.toString());
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
+        final Template template = getTemplates().create(t);
+
+        final Page page = tempPage(folder.getId(), template.getId());
+        getCommands().lock(page.getId());
+        page.setTitle("second");
+        getCommands().publish(page.getId());
+        getCommands().updateMetadata(page.getId(), page);
+
+        final Page page2 = tempPage(folder.getId(), template.getId());
+        getCommands().lock(page2.getId());
+        page2.setTitle("third");
+        getCommands().publish(page2.getId());
+        getCommands().updateMetadata(page2.getId(), page2);
+
+        // ACT
+        final String pContent = getBrowser().previewContent(page, false);
+
+        // ASSERT
+        assertTrue("Should not have 'first' entry"
+            ,  pContent.indexOf("first") == -1);
+        assertTrue("Should have 'second' entry"
+            ,  pContent.indexOf("second") != -1);
+        assertTrue("Should have 'third' entry"
+            ,  pContent.indexOf("third") != -1);
+        assertTrue("'second' should be after 'third'"
+            ,  pContent.indexOf("second") >  pContent.indexOf("third"));
+    }
+
+
     private static String readFile(final String path) throws IOException {
         final FileInputStream stream = new FileInputStream(new File(path));
         try {

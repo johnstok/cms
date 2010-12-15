@@ -40,4 +40,17 @@ $imageResource.getAbsolutePath()
 #end
 #end
 
+## Display published resources under specified folder sorted by date created.
+#macro(createIndex $folderId)
+#set($criteria = $apiTypes.createResourceCriteria())
+$criteria.setPublished(true)
+$criteria.setParent($folderId)
+$criteria.setSortField("dateCreated")
+$criteria.setSortOrder($enums.of("ccc.api.types.SortOrder", "DESC"))
+
+#set($results = $resources.list($criteria,1,20))
+#foreach($page in $results)
+$page.getTitle()
+#end
+#end
 
