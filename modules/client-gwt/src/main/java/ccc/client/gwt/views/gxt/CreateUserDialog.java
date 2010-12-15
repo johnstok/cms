@@ -217,6 +217,9 @@ public class CreateUserDialog
                 constants().username(),
                 Globals.MIN_USER_NAME_LENGTH));
 
+        if (!result.getErrors().isEmpty()) {
+            return result;
+        }
         // FIXME: Async validation.
         uniqueUsername(new Username(getUsername()), result);
 
