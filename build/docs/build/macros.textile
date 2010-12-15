@@ -16,6 +16,9 @@ Displays named paragraph if it is set in the page. Adds start and end texts if p
 #optionalImage($name)
 Returns the absolute path  of the image selected for the specified paragraph. Does not output anything if no image found.
 
+#createIndex($folderId)
+Displays published resources under specified folder sorted by date created.
+
 h3. breadCrumb.vm
 
 #breadcrumb
