@@ -4,7 +4,7 @@ h2. General
 
 h2. Actions
 
-@listActions@ takes now more parameters for criteria.
+@listActions@ takes now more parameters for criteria.  Methods listCompletedActions and listPendingActions removed.
 
 h2. Search
 
@@ -25,8 +25,22 @@ h2. Alias
 
 Alias can be an index page.
 Alias can be created to point to a folder or another alias.
+Create method returns Alias instead of ResourceSummary.
+Update method returns Alias instead of void.
+
+h2. Files
+
+Files.getPagedImages takes ResourceCriteria as a parameter instead of folder id.
+Create methods returns File instead of ResourceSummary.
+Update methods returns File instead of void.
 
 h2. Users
 
 The URL of the userExists has been changed. It uses request parameter instead of path parameter now.
+
+h2. Folders
+
+Deprecated method nameExistsInFolder returns ResourceSummary instead of boolean.
+Create methods returns Folder instead of ResourceSummary.
+Update methods returns Folder instead of void.
 

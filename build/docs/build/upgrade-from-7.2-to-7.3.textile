@@ -22,4 +22,11 @@ h3. Velocity Tools $dateTool and $sortTool are removed.
 
 Use $calendar (java.util.Calendar) or $collections (java.util.Collections) .
 
+h3. Replace Actions.listCompletedActions and listPendingActions
+
+Use Actions.listActions instead.
+
+h3. Modify Files.getPagedImages method calls
+
+Replace folder id with ResourceCriteria object.
 
