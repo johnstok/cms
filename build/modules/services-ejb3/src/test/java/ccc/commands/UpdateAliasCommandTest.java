@@ -31,7 +31,6 @@ import ccc.domain.AliasEntity;
 import ccc.domain.FolderEntity;
 import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
-import ccc.domain.Search;
 
 
 /**
@@ -49,8 +48,8 @@ public class UpdateAliasCommandTest
     public void testUpdateAlias() {
 
         // ARRANGE
-        final Search foo = new Search("foo");
-        final Search bar = new Search("bar");
+        final FolderEntity foo = new FolderEntity("foo");
+        final FolderEntity bar = new FolderEntity("bar");
         final FolderEntity parent = new FolderEntity("meh");
         final AliasEntity alias = new AliasEntity("alias", foo);
         parent.add(alias);

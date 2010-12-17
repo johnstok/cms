@@ -52,7 +52,6 @@ import ccc.domain.HistoricalResource;
 import ccc.domain.PageEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionEntity;
-import ccc.domain.Search;
 import ccc.domain.TemplateEntity;
 import ccc.domain.WorkingCopySupport;
 
@@ -631,11 +630,6 @@ class ResourceRepositoryImpl implements ResourceRepository {
                         query.append((params.size()>0) ? " AND" : " WHERE");
                         query.append(" r.class = ");
                         query.append(FolderEntity.class.getName());
-                        break;
-                    case SEARCH:
-                        query.append((params.size()>0) ? " AND" : " WHERE");
-                        query.append(" r.class = ");
-                        query.append(Search.class.getName());
                         break;
                     case PAGE:
                         query.append((params.size()>0) ? " AND" : " WHERE");

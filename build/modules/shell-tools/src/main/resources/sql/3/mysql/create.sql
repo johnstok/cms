@@ -5,3 +5,8 @@ UPDATE page_revision_paragraphs SET index_text=substring(value_text, 1, 1024) WH
 
 ALTER TABLE folders DROP FOREIGN KEY FK_FOLDER_INDEX_PAGE_ID;
 ALTER TABLE folders ADD CONSTRAINT FK_FOLDER_INDEX_PAGE_ID foreign key (index_page) REFERENCES resources (id);
+
+ALTER TABLE searches DROP FOREIGN KEY FK_SEARCH_RESOURCE_ID;
+DELETE FROM resources WHERE id IN (SELECT id FROM searches);
+DELETE FROM searches;
+DROP TABLE searches;

@@ -109,7 +109,6 @@ public final class Create extends CccApp {
                 new Folder(content.getId(), new ResourceName(FILES)));
             folders.create(
                 new Folder(content.getId(), new ResourceName(IMAGES)));
-            resources.createSearch(content.getId(), "search");
 
             resources.lock(content.getId());
             resources.publish(content.getId());

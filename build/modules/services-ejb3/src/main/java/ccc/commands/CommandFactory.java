@@ -40,7 +40,6 @@ import ccc.domain.FileEntity;
 import ccc.domain.FolderEntity;
 import ccc.domain.PageEntity;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.Search;
 import ccc.domain.TemplateEntity;
 import ccc.messaging.Producer;
 import ccc.persistence.DataRepository;
@@ -221,24 +220,6 @@ public class CommandFactory {
             _producer,
             parentId,
             page);
-    }
-
-
-    /**
-     * Create a 'create search' command.
-     *
-     * @param title The search's title.
-     * @param parentId The search's parent folder.
-     *
-     * @return The corresponding command.
-     */
-    public Command<Search> createSearchCommand(final UUID parentId,
-                                               final String title) {
-        return new CreateSearchCommand(
-            _repository,
-            _audit,
-            parentId,
-            title);
     }
 
 

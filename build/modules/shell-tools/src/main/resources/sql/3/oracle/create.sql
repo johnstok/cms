@@ -15,3 +15,8 @@ CREATE OR REPLACE VIEW resource_hierarchical AS SELECT id resource_id, CASE WHEN
 CREATE OR REPLACE VIEW resource_template_hierarchical AS SELECT id resource_id, substr(template, instr(template, '/', -1)+1) template_id FROM (SELECT id, rtrim(SYS_CONNECT_BY_PATH(template_id, '/'), '/') template FROM resources r START WITH parent_id is null CONNECT BY prior id = parent_id);
   
 CREATE OR REPLACE VIEW resource_tags_hierarchical AS SELECT DISTINCT r.id resource_id, t.tag_value FROM (SELECT id, SYS_CONNECT_BY_PATH(id, '/') id_path FROM resources START WITH parent_id is null CONNECT BY prior id = parent_id) r, resource_tags t WHERE id_path LIKE '%/'||t.resource_id||'%';
+
+ALTER TABLE searches DROP FOREIGN KEY FK_SEARCH_RESOURCE_ID;
+DELETE FROM resources WHERE id IN (SELECT id FROM searches);
+DELETE FROM searches;
+DROP TABLE searches;

@@ -359,22 +359,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    // FIXME: Move to SearchEngineEJB
-    public ResourceSummary createSearch(final UUID parentId,
-                                        final String title) {
-        checkPermission(SEARCH_CREATE);
-
-        return
-            commands().createSearchCommand(
-                parentId,
-                title)
-            .execute(currentUser(), new Date())
-            .mapResource();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public void changeAcl(final UUID resourceId, final ACL acl) {
         checkPermission(RESOURCE_ACL_UPDATE);
 

@@ -89,8 +89,7 @@ public final class ChooseTemplateAction
     @Override
     public void onSuccess(final Resource r) {
         if (ResourceType.PAGE==r.getType()
-            || ResourceType.FOLDER==r.getType()
-            || ResourceType.SEARCH==r.getType()) {
+            || ResourceType.FOLDER==r.getType()) {
             new GetTemplatesAction(UI_CONSTANTS.chooseTemplate()).execute(
                 new DefaultCallback<PagedCollection<Template>>(
                                                 UI_CONSTANTS.chooseTemplate()) {

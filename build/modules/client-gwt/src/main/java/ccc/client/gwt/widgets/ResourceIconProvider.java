@@ -55,8 +55,6 @@ final class ResourceIconProvider
                 return ImagePaths.ALIAS;
             case FILE:
                 return ImagePaths.FILE;
-            case SEARCH:
-                return ImagePaths.SEARCH;
             case RANGE_FOLDER:
                 return ImagePaths.FOLDER_GO;
             default:

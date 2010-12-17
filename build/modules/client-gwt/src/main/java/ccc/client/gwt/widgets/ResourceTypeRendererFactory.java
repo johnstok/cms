@@ -166,8 +166,6 @@ public final class ResourceTypeRendererFactory  {
             return "<img src='"+ImagePaths.TEMPLATE+"'/>&#160;";
         } else  if (type.equals(ResourceType.FILE)) {
             return "<img src='"+ImagePaths.FILE+"'/>&#160;";
-        } else  if (type.equals(ResourceType.SEARCH)) {
-            return "<img src='"+ImagePaths.SEARCH+"'/>&#160;";
         }
         return "unknown";
     }

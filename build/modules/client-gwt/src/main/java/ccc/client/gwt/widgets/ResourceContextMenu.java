@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.widgets;
 
-import static ccc.client.gwt.views.gxt.AbstractBaseDialog.CONTEXT_MENU_WIDTH;
+import static ccc.client.gwt.views.gxt.AbstractBaseDialog.*;
 import ccc.api.core.Group;
 import ccc.api.core.Page;
 import ccc.api.core.PagedCollection;
@@ -218,9 +218,6 @@ public class ResourceContextMenu
                         addEditResource();
                         addEditTextFile();
                         addDeleteResource();
-                        break;
-                    case SEARCH:
-                        addChooseTemplate();
                         break;
                     default:
                         break;

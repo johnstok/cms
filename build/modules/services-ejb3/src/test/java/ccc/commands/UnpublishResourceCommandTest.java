@@ -27,9 +27,9 @@
 package ccc.commands;
 
 import static org.easymock.EasyMock.*;
+import ccc.domain.FolderEntity;
 import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;
-import ccc.domain.Search;
 
 
 /**
@@ -47,7 +47,7 @@ public class UnpublishResourceCommandTest
     public void testUnpublishResource() {
 
         // ARRANGE
-        final Search s = new Search("foo");
+        final FolderEntity s = new FolderEntity("foo");
         s.lock(getUser());
         s.publish(getUser());
 

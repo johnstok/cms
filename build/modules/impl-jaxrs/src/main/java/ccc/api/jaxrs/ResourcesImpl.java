@@ -472,18 +472,6 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createSearch(final UUID parentId,
-                                        final String title) {
-        try {
-            return _delegate.createSearch(parentId, title);
-        } catch (final RuntimeException cfe) {
-            throw convertException(cfe);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public PagedCollection<ResourceSummary> list(
                                                 final ResourceCriteria criteria,
                                                 final int pageNo,

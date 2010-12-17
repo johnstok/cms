@@ -566,6 +566,13 @@ public class VelocityAcceptanceTest
         getCommands().publish(page.getId());
         getCommands().updateMetadata(page.getId(), page);
 
+        try {
+            final int twentySecs = 20000;
+            Thread.sleep(twentySecs);
+        } catch (final InterruptedException e) {
+            throw new RuntimeException("Delay failed.", e);
+        }
+
         final Page page2 = tempPage(folder.getId(), template.getId());
         getCommands().lock(page2.getId());
         page2.setTitle("third");

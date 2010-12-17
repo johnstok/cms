@@ -48,7 +48,6 @@ import ccc.web.rendering.PageBody;
 import ccc.web.rendering.RedirectRequiredException;
 import ccc.web.rendering.Response;
 import ccc.web.rendering.ScriptBody;
-import ccc.web.rendering.SearchBody;
 
 
 /**
@@ -103,30 +102,8 @@ public class TmpRenderer {
                 return render((Folder) s);
             case PAGE:
                 return render((Page) s);
-            case SEARCH:
-                return renderSearch(s);
             default:
                 throw new NotFoundException();
-        }
-    }
-
-
-    private Response renderSearch(final Resource s) {
-        try {
-            final UUID tId = s.getTemplate();
-            final Template t = _templates.retrieve(tId);
-            final Response r =
-                new Response(
-                    new SearchBody(
-                        new Script(t.getBody(), tId.toString())));
-            r.setCharSet(DEFAULT_CHARSET);
-            r.setMimeType(t.getMimeType());
-            r.setExpiry(s.getCacheDuration());
-            return r;
-
-        } catch (final CCException e) {
-            // TODO Auto-generated catch block
-            throw new RuntimeException(e);
         }
     }
 
