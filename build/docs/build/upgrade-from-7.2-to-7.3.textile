@@ -18,3 +18,8 @@ bc.
 #set($search=$services.getSearch())
 #set($results = $search.find($query, 20, 0);
 
+h3. Velocity Tools $dateTool and $sortTool are removed.
+
+Use $calendar (java.util.Calendar) or $collections (java.util.Collections) .
+
+
