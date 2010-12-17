@@ -290,20 +290,20 @@ public class UserTable extends TablePanel {
                 return;
             }
             _detailsStore.removeAll();
+            final UserCriteria uc = new UserCriteria();
+            if (null != _lastSelected
+                    && !UserTree.USERS.equals(_lastSelected.get("id"))) {
+                uc.setGroups((String) _lastSelected.get("id"));
+            }
+
             if (_radioGroup.getValue() == _usernameRadio) {
-                final UserCriteria uc = new UserCriteria();
-                if (!UserTree.USERS.equals(_lastSelected.get("id"))) {
-                    uc.setGroups((String) _lastSelected.get("id"));
-                }
                 uc.setUsername(
                     "%"+_searchString.getValue().replace('*', '%')+"%");
-                updatePager(uc);
-            } else if (_radioGroup.getValue() == _emailRadio) {
-                final UserCriteria uc = new UserCriteria();
+            } else  {
                 uc.setEmail(
                     "%"+_searchString.getValue().replace('*', '%')+"%");
-                updatePager(uc);
             }
+            updatePager(uc);
         }
     }
 
