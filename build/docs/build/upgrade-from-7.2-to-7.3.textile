@@ -1,0 +1,20 @@
+h2. Upgrade from 7.2  to 7.3
+
+h3. Resources.exists no longer available
+
+In 7.2 it was recommended  to call resources.exists before resources.retrieve in order to avoid exception . In 7.3 the resources.retrieve will return @null@ if no resource found.
+
+h3. Modify page parameter handling for Lucene searches
+
+The first page of search results is now 1 instead of 0. Update paging control to handle this properly.
+
+h3. Replace search resource with a page if necessary
+
+In 7.3 the search resource has been removed. If the site search was using that then it needs to be replaced with a page. The template used for the resource needs to be modified to do the search based on the search parameters.
+For example add:
+
+bc. 
+#set($query = $request.getParameter("q"))
+#set($search=$services.getSearch())
+#set($results = $search.find($query, 20, 0);
+

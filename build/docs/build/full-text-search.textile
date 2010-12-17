@@ -7,7 +7,7 @@ h2. Searching for resources
 Access to the search engine is available in all templates via the @$services@ object. See documentation of the "search":ccc.api.core.SearchEngine class for full details of the methods available.
 
 bc. #set( $search=$services.getSearch() )
-#set ($result = find("content control", 20, 0);
+#set ($result = $search.find("content control", 20, 0);
 <ul>
 #foreach( $hit in $result.hits() )
     <li>$hit</li>
