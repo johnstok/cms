@@ -1,35 +1,38 @@
-<h1 id="CodeStyleGuidelinesforCCC7">Code Style Guidelines for CCC7</h1>
-<p>In general we will use <a class="ext-link" href="http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html"><span class="icon">Sun's coding standards</span></a> for CCC7. The style guidelines are enforced using the checkstyle tool. Our checkstyle configuration can be found in svn at the relative path 'build/configuration/checkstyle.xml'.</p>
-<p>Extensions or deviations will be documented below.</p>
-<h2 id="Whitespace">Whitespace</h2>
-<p>Four spaces should be used as the unit of indentation.</p>
-<h2 id="Comments">Comments</h2>
-<p>Comments are often neglected, largely because developers are unclear about:</p>
-<ul>
-    <li>what they should write</li>
-    <li>how the javadoc tags work</li>
-</ul>
-<p>Sun provides excellent advice on javadoc usage:</p>
-<ul>
-    <li><a class="ext-link" href="http://java.sun.com/j2se/javadoc/writingdoccomments/index.html"><span class="icon">http://java.sun.com/j2se/javadoc/writingdoccomments/index.html</span></a></li>
-    <li><a class="ext-link" href="http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/javadoc.html"><span class="icon">http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/javadoc.html</span></a></li>
-    <li><a class="ext-link" href="http://java.sun.com/j2se/javadoc/index.jsp"><span class="icon">http://java.sun.com/j2se/javadoc/index.jsp</span></a></li>
-</ul>
-<p>A comment is required for each type (class, interface, enum) and for each non-private type member.</p>
-<h2 id="Java5specific">Java 5 specific</h2>
-<ul>
-    <li>Always provide types for generic types.</li>
-    <li>Always narrow return types if possible.</li>
-    <li>Always prefer the enhanced for loop.</li>
-</ul>
-<h2 id="Textfileformat">Text file format</h2>
-<ul>
-    <li>All text files should be saved with UTF-8 encoding</li>
-    <li>All files should end with a single (unix style) line feed character.</li>
-    <li>All Java source files should be limited to 80 characters in width.</li>
-</ul>
-<h2 id="Otherstyleguidelinesthatwehaveconsulted">Other style guidelines that we have consulted</h2>
-<ul>
-    <li><a class="ext-link" href="http://code.google.com/webtoolkit/makinggwtbetter.html#codestyle"><span class="icon">GWT style guide</span></a></li>
-    <li><a class="ext-link" href="http://checkstyle.sourceforge.net/"><span class="icon">Checkstyle guide</span></a></li>
-</ul>
+h1. Code Style for Java
+
+In general we will use "Sun's coding standards":http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html for CCC7. The style guidelines are enforced using the checkstyle tool. Our checkstyle configuration can be found in svn at the relative path 'build/configuration/checkstyle.xml'. Extensions or deviations will be documented below.
+
+h2. Whitespace
+
+Four spaces should be used as the unit of indentation.
+
+h2. Comments
+
+Comments are often neglected, largely because developers are unclear about:
+
+* what they should write
+* how the javadoc tags work
+
+Sun provides excellent advice on javadoc usage:
+* "http://java.sun.com/j2se/javadoc/writingdoccomments/index.html":http://java.sun.com/j2se/javadoc/writingdoccomments/index.html
+* "http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/javadoc.html":http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/javadoc.html
+* "http://java.sun.com/j2se/javadoc/index.jsp":http://java.sun.com/j2se/javadoc/index.jsp
+
+A comment is required for each type (class, interface, enum) and for each non-private type member.
+
+h2. Java 5 specific
+
+* Always provide types for generic types.
+* Always narrow return types if possible.
+* Always prefer the enhanced for loop.
+
+h2. Text file format
+
+* All text files should be saved with UTF-8 encoding.
+* All line should end with a single (unix style) line feed character.
+* All lines should be limited to 80 characters in width.
+
+h2. Other style guidelines that we have consulted
+
+* "GWT style guide":http://code.google.com/webtoolkit/makinggwtbetter.html#codestyle
+* "Checkstyle guide":http://checkstyle.sourceforge.net/
