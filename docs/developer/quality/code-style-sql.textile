@@ -1,0 +1,74 @@
+h1. Code Style for SQL
+
+h2. General advice
+
+* Be explicit when writing queries. This makes it easier for others to understand the intent of your query; also, it prevents errors when a schema changes, causing assumptions to no longer be true.
+
+h2. Indentation
+
+* Place each clause on a new line:
+bc. select column ...
+from ...
+where ...
+group by ...
+order by ...
+
+* If a line is too long, place each argument to a clause on a new line and indent:
+bc. select
+    column1,
+    column2,
+    column3,
+    column4,
+from ...
+where ...
+
+* Always indent sub-clauses:
+bc. select column ...
+from ...
+    inner join ...
+    inner join ...
+    left outer join ...
+where ...
+
+* Indent subqueries, keep parentheses on the same line:
+bc. select column ...
+from ...
+    inner join (
+        select column ...
+        from table ...
+    ) as x ...
+    inner join ...
+    left outer join ...
+where ...
+
+h2. Case
+
+* Write language keywords ('SELECT', 'WHERE', etc.) in uppercase.
+* Write object names ('my_table', 'my_function', etc.) in lowercase.
+
+Some databases can be case-sensitive with respect to object names, so consistency is key.
+
+h2. Object names
+
+* Table names should be written in the plural (ie 'pages' not 'page').
+* Column names should not be prefixed by the table name (ie 'title' not 'page_title').
+* Use underscores to separate words (eg 'my_table').
+* Avoid using reserved words as object names - even if the database permits it. If you are unsure about an object name "check it first":http://www.petefreitag.com/tools/sql_reserved_words_checker/.
+* Avoid "Hungarian notation":http://en.wikipedia.org/wiki/Hungarian_notation.
+
+h2. Joins
+
+* Prefer a join clause over a where clause when performing a join.
+* Always explicitly name the tables in each clause.
+
+h2. Text file format
+
+* All text files should be saved with UTF-8 encoding.
+* All lines should end with a single (unix-style) line feed character.
+* All lines should be limited to 80 characters in width.
+* All indents should be 4 spaces.
+
+h2. References
+
+* "Xaprb":http://www.xaprb.com/blog/2006/04/26/sql-coding-standards/
+* "Drupal SQL Coding Conventions":http://drupal.org/node/2497
