@@ -29,7 +29,7 @@ h2. Java 5 specific
 h2. Text file format
 
 * All text files should be saved with UTF-8 encoding.
-* All line should end with a single (unix style) line feed character.
+* All lines should end with a single (unix-style) line feed character.
 * All lines should be limited to 80 characters in width.
 
 h2. Other style guidelines that we have consulted
