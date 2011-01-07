@@ -1,0 +1,21 @@
+h2. Introduction to Velocity
+
+Velocity is a simple template language and it used in CC7 for the dynamic parts of the web page. It allows builder to include CC7 resources, write macros and use functionalities provided by CC7 API.
+
+h3. Basic syntax of Velocity
+
+Velocity uses two special characters (# and $) to mark its code. 
+# is used in front of built in functions and macros. #foreach, #end, #if
+$ is used in front of variable names. $pages, $folder, $item
+
+One line statements do not need any closing character but block statements are always ended with #end:
+#if($a==1)
+ do something
+#end
+
+Comments can be written using ## before the text. Comments wont be visible in the rendered page.
+
+h3. Further reading
+Official Apache Velocity documentation
+http://velocity.apache.org/engine/releases/velocity-1.7/
+
