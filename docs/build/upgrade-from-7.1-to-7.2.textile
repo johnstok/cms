@@ -1,0 +1,46 @@
+h2. Upgrade from 7.1  to 7.2
+
+Most of the changes are related resource fetching. Many methods have been removed and the list method has been improved.
+
+h3. Security
+Security permissions have been applied to a number of methods that were previously available to all users. To enable these methods for anonymous  access add the appropriate permission to the 'anonymous' user.
+
+h3. Paging
+
+Replace DtoCollection with PagedCollection.
+
+h3. Mail
+
+Instead of instantiating a Mailer object you  should instead use the supplied mailer under the variable name 'mail'.
+
+The mail API has changed:
+You no longer need to pass the JNDI reference.
+You do now need to specify the 'from address'.
+Both to and from addresses should now be passed as type ccc.types.EmailAddress.
+
+h3. Paragraphs
+
+Modify templates to use renamed accessor methods on paragraphs (getText, getBoolean, etc.).
+
+h3. Services for templates
+Use service locator to access service objects.
+
+h3. Resources
+
+Improved list method. It takes more parameters and returns PagedCollection.
+Following methods removed: getSiblings and locked. Use enhanced list method.
+history and resourceForMetadataKey methods return PagedCollection.
+Resources.resource is renamed to be Resources.retrieve
+
+h3. Folders
+
+The improved list method replaces following methods: getFolderChildren, getChildrenPage, getChildren and getChildrenManualOrder.
+getAccessibleChildren and roots methods return PagedCollection.
+
+h3. Users
+
+The Improved listUsers method replaces listUsersWithRole, listUsersWithUsername and listUsersWithEmail methods.
+
+h3. ResourceSummary
+
+getCappedName method is removed.
