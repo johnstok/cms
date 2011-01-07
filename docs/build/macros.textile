@@ -14,6 +14,9 @@ From current page return the metadata value for bodyId key or 'default' if not s
 Displays named paragraph if it is set in the page. Adds start and end texts if paragraph is found.
 
 
+#tags
+Displays comma separated list of tags assigned to the resource.
+
 h3. breadCrumb.vm
 
 #breadcrumb

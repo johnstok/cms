@@ -19,3 +19,8 @@ h3. Further reading
 Official Apache Velocity documentation
 http://velocity.apache.org/engine/releases/velocity-1.7/
 
+Good presentation with examples about Velocity
+http://www.slideshare.net/hgschmie/apache-velocity-16
+
+Content Control 7 
+http://www.contentcontrol.com/support/documentation-v7/UserGuide/templates/index

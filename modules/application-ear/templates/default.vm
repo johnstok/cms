@@ -115,3 +115,6 @@
     #end
 #end
 
+#macro(tags)
+#foreach($tag in $resource.getTags())$tag#if($velocityHasNext),#end#end
+#end
