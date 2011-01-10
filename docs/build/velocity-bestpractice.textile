@@ -1,0 +1,17 @@
+h2. Velocity best practices
+
+Use #parse only for resources that have Velocity code, otherwise use #include.
+
+Place macros in a single file, for example snippets.vm
+
+Use existing API methods as much as possible - avoid reinventing wheel in Velocity.
+
+Avoid fetching huge amount of data to be processed in Velocity, this will ruin performance.
+
+If you need a functionality that cannot be implemented in Velocity, try server side JavaScript.
+
+Macro output can be stored into a $variable, but it requires special notation: #set($variable = "#myMacro")
+
+
+
+
