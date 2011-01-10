@@ -1,17 +1,21 @@
 h2. Velocity best practices
 
-Use #parse only for resources that have Velocity code, otherwise use #include.
+* Use #parse only for resources that have Velocity code, otherwise use #include.
 
-Place macros in a single file, for example snippets.vm
+* Place macros in a single file, for example snippets.vm
 
-Use existing API methods as much as possible - avoid reinventing wheel in Velocity.
+* Use existing API methods as much as possible - avoid reinventing wheel in Velocity.
 
-Avoid fetching huge amount of data to be processed in Velocity, this will ruin performance.
+* Avoid fetching huge amount of data to be processed in Velocity, this will ruin performance.
 
-If you need a functionality that cannot be implemented in Velocity, try server side JavaScript.
+* If you need a functionality that cannot be implemented in Velocity, try server side JavaScript.
 
-Macro output can be stored into a $variable, but it requires special notation: #set($variable = "#myMacro")
+* Macro output can be stored into a $variable, but it requires special notation: #set($variable = "#myMacro")
 
+* Empty list can be created with #set($myList = []), empty map can be created with #set($myMap = {}).
 
+* Some Java methods return true and that might end up in the rendered webpage. Use #call macro to silence the output.
+
+* Use following to parse String into Integer: #set($intString = "2011") #set($Integer = 0) $Integer.parseInt($intString)
 
 
