@@ -26,7 +26,7 @@
  */
 package ccc.cli;
 
-import static ccc.commons.Exceptions.*;
+import static ccc.commons.Exceptions.swallow;
 
 import java.nio.charset.Charset;
 import java.sql.Connection;
@@ -165,6 +165,12 @@ public class Schema
 
             for (int i=(currentVersion+1); i<=_version; i++) {
                 doCreate(vendor, newConnection, i);
+                // execute only when upgrading from 2 to 3.
+                if (i == 3 && currentVersion < 3) {
+                    final StringToDecConverterUtil stdcu =
+                        new StringToDecConverterUtil();
+                    stdcu.convertParagraphs(newConnection);
+                }
             }
 
             commit(newConnection);
@@ -219,12 +225,34 @@ public class Schema
         LOG.info("Running script: "+create);
         final List<String> statements =
             Resources.readIntoList(create, Charset.forName("UTF-8"));
-        LOG.info("Statements to process: "+statements.size());
-        for (final String statement : statements) {
-            if (statement.trim().length()<1) { continue; }
-//            LOG.debug("Executing statement: "+statement);
-            execute(newConnection, statement);
+        final StringBuilder statement = new StringBuilder();
+
+        int statementCount = 0;
+        for (final String line : statements) {
+            if (line.trim().length()<1) {
+                if (0<statement.length()) {
+                    LOG.info("Executing statement: "+statement);
+                    execute(newConnection, statement.toString());
+                    statement.setLength(0);
+                    statementCount++;
+                }
+            } else if(!line.trim().startsWith("--")) {
+                statement.append(line);
+                if(!create.toLowerCase().contains("oracle")) {
+                    statement.append("\n");
+                } else {
+                    if(statement.lastIndexOf(";") != statement.length() -1) {
+                        statement.append(" ");
+                    }
+                }
+            } else { LOG.info("Ignoring: "+line); }
         }
+        if (0<statement.length()) {
+            LOG.debug("Executing statement: "+statement);
+            execute(newConnection, statement.toString());
+            statementCount++;
+        }
+        LOG.info("Statements to process: "+statementCount);
     }
 
 
@@ -288,8 +316,19 @@ public class Schema
      * @param args String array of application arguments.
      */
     public static final void main(final String[] args) {
+//    throws Exception {
         final Schema s = parseOptions(args, Schema.class);
         s.create();
+
+        /*final String source = "sql/0/oracle/create.sql";
+        final List<String> strlist =
+            Resources.readIntoList(source, Charset.forName("UTF-8"));
+
+        for(final String line : strlist) {
+            System.out.println("Line is: "+line);
+            System.out.println("Matches? "
+                +line.matches(".*[^\\u0020-\\u007e]?"));
+        }*/
     }
 
     /**
@@ -313,4 +352,6 @@ public class Schema
     public void setPassword(final String password) {
         _password = password;
     }
+
 }
+
