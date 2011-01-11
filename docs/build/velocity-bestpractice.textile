@@ -4,6 +4,10 @@ h2. Velocity best practices
 
 * Place macros in a single file, for example snippets.vm
 
+* Metadata key/value of the resources fields are inherited, normal paragraph fields are not. Use metadata if you need to pass the setting to children of a folder.
+
+* Note that in 7.2 the Lucene search pager starts from 0 and other searches start from 1.
+
 * Use existing API methods as much as possible - avoid reinventing wheel in Velocity.
 
 * Avoid fetching huge amount of data to be processed in Velocity, this will ruin performance.
