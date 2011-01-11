@@ -10,3 +10,5 @@ ALTER TABLE searches DROP FOREIGN KEY FK_SEARCH_RESOURCE_ID;
 DELETE FROM resources WHERE id IN (SELECT id FROM searches);
 DELETE FROM searches;
 DROP TABLE searches;
+
+ALTER TABLE page_revision_paragraphs ADD value_decimal DECIMAL(19,6);
