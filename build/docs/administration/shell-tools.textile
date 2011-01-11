@@ -189,5 +189,37 @@
         </tr>
     </tbody>
 </table>
+<p><strong>Description</strong><br />
+This class uses the core functionality of the utility below to automatically convert the string valued paragraphs of type 'number' into decimal. It only executes when converting paragraphs from version 7.2.x to 7.3.x 
+</p>
+<p><tt>java -cp shell-tools-</tt><tt>7</tt><tt>.1.7</tt><tt>-jar-with-dependencies.jar ccc.cli.Schema -c </tt><tt>jdbc:mysql://localhost:3306/cc7</tt><tt> -p </tt><tt>admin</tt><tt> -u </tt><tt>admin</tt><tt> -v 1<br />
+</tt></p>
+
+<h2 id="StringToDec">StringToDecConverter</h2>
+<p>Convert paragraph values from text to decimal.</p>
+<p><tt>ccc.cli.StringToDecConverter</tt></p>
+<table class="wiki">	
+	<tbody>
+        <tr>
+            <td><strong>option</strong></td>
+            <td><strong>usage</strong></td>
+        </tr>
+        <tr>
+            <td>-u</td>
+            <td>Username for connecting to the DB schema.</td>
+        </tr>
+        <tr>
+            <td>-p</td>
+            <td>Password for connecting to the DB schema.</td>
+        </tr>
+        <tr>
+            <td>-c</td>
+            <td>Connection string for the DB.</td>
+        </tr>
+    </tbody>    
+</table>
+<p><strong>Description</strong><br />
+This class is used to convert paragraph text values with the corresponding 'type' column value set to 'number', to decimal values in the new (introduced in 7.3.x) column 'value_decimal'. As a requirement of course this column must exist before any script that runs this conversion is executed.
+</p>
 <p><tt>java -cp shell-tools-</tt><tt>7</tt><tt>.1.7</tt><tt>-jar-with-dependencies.jar ccc.cli.Schema -c </tt><tt>jdbc:mysql://localhost:3306/cc7</tt><tt> -p </tt><tt>admin</tt><tt> -u </tt><tt>admin</tt><tt> -v 1<br />
 </tt></p>
