@@ -288,6 +288,13 @@ public class ResourceTable
                 80);
         configs.add(publishedByColumn);
 
+        final ColumnConfig changedByColumn =
+            new ColumnConfig(
+                ResourceSummary.Properties.CHANGED_BY,
+                UI_CONSTANTS.changedBy(),
+                45);
+        configs.add(changedByColumn);
+
         final ColumnConfig nameColumn =
             new ColumnConfig(
                 ResourceSummary.Properties.NAME,

@@ -1654,4 +1654,11 @@ public interface UIConstants {
      */
     String termsSelected();
 
+    /**
+     * "Changed by".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String changedBy();
+
 }
