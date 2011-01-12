@@ -299,6 +299,14 @@ public class ResourceTable
                 UI_CONSTANTS.title(),
                 250);
         configs.add(titleColumn);
+        
+        final ColumnConfig changedByColumn =
+        	new ColumnConfig(
+        	ResourceSummary.CHANGED_BY,
+        	UI_CONSTANTS.changedBy(),
+        	80);
+            changedByColumn.setHidden(true);
+            configs.add(changedByColumn);
     }
 
 
@@ -407,6 +415,8 @@ public class ResourceTable
     @Override
     public void handle(final Event<CommandType> event) {
         switch (event.getType()) {
+	        case PAGE_UPDATE:
+	        case FOLDER_UPDATE:
             case RESOURCE_PUBLISH:
                 mergeAndUpdate(event.<ResourceSummary>getProperty("resource"));
                 break;

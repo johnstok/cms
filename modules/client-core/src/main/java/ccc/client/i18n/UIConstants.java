@@ -1590,4 +1590,12 @@ public interface UIConstants {
      * @return The constant, in the appropriate locale.
      */
     String dateCannotBeInPast();
+    
+    /**
+    * "Changed by".
+    *
+    * @return The constant, in the appropriate locale.
+    */
+    String changedBy();
+     
 }

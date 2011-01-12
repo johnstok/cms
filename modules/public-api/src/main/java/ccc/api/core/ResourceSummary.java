@@ -849,4 +849,6 @@ public final class ResourceSummary extends Res {
     public static final String DESCRIPTION   = "description";
     /** VISIBLE : String. */
     public static final String VISIBLE       = "visible";
+    /** CHANGED_BY : String. */
+    public static final String CHANGED_BY = "changedBy";
 }
