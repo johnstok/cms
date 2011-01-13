@@ -10,6 +10,7 @@ dbtype=$1
 DB_URL=$2
 DB_USERNAME=$3
 DB_PASSWORD=$4
+properties="<!-- DB specific properties -->"
 
 case "$dbtype" in
         1)
@@ -39,3 +40,5 @@ $SED -i 's|<xa-datasource-property name=\"URL\">[^<]*</xa-datasource-property>|<
 $SED -i 's|<xa-datasource-class>[^<]*</xa-datasource-class>|<xa-datasource-class>'"$datasource"'</xa-datasource-class>|' database-ds.xml
 $SED -i 's|<user-name>[^<]*</user-name>|<user-name>'"$DB_USERNAME"'</user-name>|' database-ds.xml
 $SED -i 's|<password>[^<]*</password>|<password>'"$DB_PASSWORD"'</password>|' database-ds.xml
+
+$SED -i 's|<!-- DB specific properties -->|'"$properties"'|' database-ds.xml
