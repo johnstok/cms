@@ -805,7 +805,6 @@ public final class ResourceTest extends TestCase {
         final ResourceEntity r = new PageEntity();
         final UserEntity u = new UserEntity();
         u.setUsername(new Username("abcd"));
-        Thread.sleep(WAIT_LENGTH); // Wait
 
         // ACT
         r.setDateChanged(new Date(), u);
