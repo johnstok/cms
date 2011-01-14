@@ -65,7 +65,7 @@ public class EnhancedResourceTree
 
         super(root, ResourceType.FOLDER);
         Map<String, String> usermeta = globals.currentUser().getMetadata();
-        String columnPref = usermeta.get("ccc.client.resource.columns");
+        String columnPref = usermeta.get(ColumnConfigSupport.RESOURCE_COLUMNS);
         _rt = new ResourceTable(root, this, columnPref);
         _view = view;
         _contextMenu = new FolderContextMenu(_rt);
