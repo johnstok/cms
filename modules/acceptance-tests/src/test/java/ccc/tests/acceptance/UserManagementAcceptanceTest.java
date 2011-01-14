@@ -166,7 +166,7 @@ public class UserManagementAcceptanceTest
 
         // ASSERT
         final User ud = getUsers().retrieve(us.getId());
-//        assertEquals(username, ud.getUsername());
+        assertEquals(username, ud.getUsername());
         assertEquals(email, ud.getEmail());
         assertEquals(name, ud.getName());
         assertEquals(1, ud.getGroups().size());

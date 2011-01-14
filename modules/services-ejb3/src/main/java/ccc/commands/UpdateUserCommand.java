@@ -72,8 +72,10 @@ public class UpdateUserCommand
                           final Date happenedOn) {
 
         final UserEntity current = getUsers().find(_userId);
-
-        // current.username(delta.getUsername().toString()); #571
+        
+        if (!actor.getId().equals(_userId)) {
+            current.setUsername(_delta.getUsername());
+        }
         current.setEmail(new EmailAddress(_delta.getEmail()));
         current.setName(_delta.getName());
         current.clearGroups();

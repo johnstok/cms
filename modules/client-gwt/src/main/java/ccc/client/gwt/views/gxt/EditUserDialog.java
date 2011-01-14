@@ -27,7 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.VALIDATOR;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -36,6 +36,7 @@ import java.util.UUID;
 
 import ccc.api.core.Group;
 import ccc.api.core.User;
+import ccc.api.types.Username;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
@@ -83,7 +84,9 @@ public class EditUserDialog extends AbstractEditDialog {
         _userTable = userTable;
 
         _username.setFieldLabel(constants().username());
-        _username.setReadOnly(true);
+        if (getGlobals().currentUser().getId().equals(userDTO.getId())) {
+            _username.setReadOnly(true);
+        }
         _username.setId("username");
         _username.setValue(_userDTO.getUsername().toString());
         addField(_username);
@@ -117,6 +120,9 @@ public class EditUserDialog extends AbstractEditDialog {
                         _email.getValue(), _email.getFieldLabel()));
                 vr.addError(
                     VALIDATOR.notEmpty(
+                        _username.getValue(), _username.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.notEmpty(
                         _name.getValue(), _name.getFieldLabel()));
                 vr.addError(
                     VALIDATOR.notValidEmail(
@@ -139,6 +145,9 @@ public class EditUserDialog extends AbstractEditDialog {
      * @return
      */
     private void updateUser() {
+        if (!getGlobals().currentUser().getId().equals(_userDTO.getId())) {
+            _userDTO.setUsername(new Username(_username.getValue()));
+        }
         _userDTO.setEmail(_email.getValue());
         _userDTO.setName(_name.getValue());
 
