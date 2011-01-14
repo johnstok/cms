@@ -1597,5 +1597,12 @@ public interface UIConstants {
     * @return The constant, in the appropriate locale.
     */
     String changedBy();
+
+    /**
+     * "Columns saved.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String columnsSaved();
      
 }

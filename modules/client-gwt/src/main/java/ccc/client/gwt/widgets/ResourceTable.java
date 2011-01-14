@@ -77,7 +77,8 @@ public class ResourceTable
         TablePanel
     implements
         EventHandler<CommandType>,
-        SingleSelectionModel {
+        SingleSelectionModel,
+        ColumnConfigSupport {
 
     private static final int FILTER_MENU_WIDTH = 190;
 
@@ -95,6 +96,8 @@ public class ResourceTable
     private final GridFilters _filters;
 
     private final ResourceProxy _proxy;
+    
+    private final String _preferences;
 
 
     /**
@@ -104,9 +107,11 @@ public class ResourceTable
      * @param tree FolderResourceTree
      */
     ResourceTable(final ResourceSummary root,
-                  final ResourceTree tree) {
+                  final ResourceTree tree,
+                  final String preferences) {
 
         InternalServices.REMOTING_BUS.registerHandler(this);
+        _preferences = preferences;
         _root = root;
         _tree = tree;
         _toolBar = new FolderToolBar(this);
@@ -115,13 +120,14 @@ public class ResourceTable
         setLayout(new FitLayout());
 
         final Menu contextMenu = new ResourceContextMenu(this);
-        final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
+        List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         final ContextActionGridPlugin gp =
-            new ContextActionGridPlugin(contextMenu);
+            new ContextActionGridPlugin(contextMenu, this);
         gp.setRenderer(new ResourceContextRenderer());
         configs.add(gp);
         createColumnConfigs(configs);
-
+        applyPreferences(configs);
+        
         _proxy = new ResourceProxy(null, null);
 
         _loader = new BasePagingLoader<PagingLoadResult<BeanModel>>(_proxy) {
@@ -168,7 +174,21 @@ public class ResourceTable
     }
 
 
-    /**
+    private void applyPreferences(List<ColumnConfig> configs) {
+    	if (_preferences != null) {
+    		for (ColumnConfig config : configs) {
+    			if (_preferences.indexOf(config.getId()) == -1 
+    					&& !config.getHeader().equals("")) {
+    				config.setHidden(true);
+    			} else {
+    				config.setHidden(false);
+    			}
+    		}
+    	}
+    }
+
+
+	/**
      * Accessor for this table's root.
      *
      * @return The resource summary for the root.
@@ -489,5 +509,26 @@ public class ResourceTable
     @Override
     public ResourceSummary currentFolder() {
         return _proxy.getFolder();
+    }
+    
+    public String visibleColumns() {
+    	StringBuilder names = new StringBuilder();
+    	List<ColumnConfig> columns =
+    		_grid.getColumnModel().getColumns();
+    	for (ColumnConfig c : columns) {
+    		if (!c.isHidden()) {
+    			if (names.length() > 0) {
+    				names.append(",");
+    			}
+    			names.append(c.getId());
+    		}
+    	}
+    	return names.toString();
+    }
+
+
+    @Override
+    public String preferenceName() {
+        return RESOURCE_COLUMNS;
     }
 }

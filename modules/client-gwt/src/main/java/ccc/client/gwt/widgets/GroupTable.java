@@ -72,7 +72,8 @@ public class GroupTable
     extends
         TablePanel
     implements
-        EventHandler<CommandType> {
+        EventHandler<CommandType>,
+        ColumnConfigSupport {
 
     private ListStore<BeanModel> _detailsStore =
         new ListStore<BeanModel>();
@@ -94,7 +95,7 @@ public class GroupTable
 
         final Menu contextMenu = new Menu();
         final ContextActionGridPlugin gp =
-            new ContextActionGridPlugin(contextMenu);
+            new ContextActionGridPlugin(contextMenu, this);
         gp.setRenderer(new ContextMenuRenderer());
         final List<ColumnConfig> configs = createColumnConfigs(gp);
 
@@ -247,5 +248,18 @@ public class GroupTable
             gMD.setProperties(bm.getProperties());
             _detailsStore.update(gMD);
         }
+    }
+
+
+	@Override
+	public String visibleColumns() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+    @Override
+    public String preferenceName() {
+        return GROUP_COLUMNS;
     }
 }

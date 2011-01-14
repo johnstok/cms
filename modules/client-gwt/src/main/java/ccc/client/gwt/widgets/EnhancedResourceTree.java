@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.widgets;
 
+import java.util.Map;
+
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Globals;
@@ -62,8 +64,9 @@ public class EnhancedResourceTree
                          final Globals globals) {
 
         super(root, ResourceType.FOLDER);
-
-        _rt = new ResourceTable(root, this);
+        Map<String, String> usermeta = globals.currentUser().getMetadata();
+        String columnPref = usermeta.get("ccc.client.resource.columns");
+        _rt = new ResourceTable(root, this, columnPref);
         _view = view;
         _contextMenu = new FolderContextMenu(_rt);
 

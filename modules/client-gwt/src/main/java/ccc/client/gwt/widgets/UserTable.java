@@ -80,7 +80,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Civic Computing Ltd.
  */
-public class UserTable extends TablePanel {
+public class UserTable extends TablePanel implements ColumnConfigSupport{
 
     private ListStore<BeanModel> _detailsStore =
         new ListStore<BeanModel>();
@@ -124,7 +124,7 @@ public class UserTable extends TablePanel {
         final Menu contextMenu = new Menu();
         contextMenu.setId("userContextMenu");
         final ContextActionGridPlugin gp =
-            new ContextActionGridPlugin(contextMenu);
+            new ContextActionGridPlugin(contextMenu, this);
         gp.setRenderer(new ContextMenuRenderer());
         final List<ColumnConfig> configs = createColumnConfigs(gp);
 
@@ -363,5 +363,15 @@ public class UserTable extends TablePanel {
         loader.load(0, PAGING_ROW_COUNT);
         final ColumnModel cm = _grid.getColumnModel();
         _grid.reconfigure(_detailsStore, cm);
+    }
+
+	@Override
+	public String visibleColumns() {
+		return null;
+	}
+
+    @Override
+    public String preferenceName() {
+        return USER_COLUMNS;
     }
 }
