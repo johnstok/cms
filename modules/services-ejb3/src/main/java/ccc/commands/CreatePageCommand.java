@@ -97,9 +97,11 @@ class CreatePageCommand extends CreateResourceCommand<PageEntity> {
                 template,
                 rm,
                 paras.toArray(new Paragraph[paras.size()]));
-
+        if (_page.isPublished()) {
+            page.publish(actor);
+        }
         create(actor, happenedOn, _parentFolder, page);
-
+        
         return page;
     }
 

@@ -76,6 +76,13 @@ public interface CreatePage extends View<Editable>, Validatable {
      * @return The major edit.
      */
     boolean getMajorEdit();
+    
+    /**
+     * Accessor.
+     *
+     * @return The publish.
+     */
+    boolean getPublish();
 
     /**
      * Accessor.

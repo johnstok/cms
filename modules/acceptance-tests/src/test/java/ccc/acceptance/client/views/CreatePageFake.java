@@ -44,6 +44,7 @@ public class CreatePageFake implements CreatePage {
 
     private final String _comment;
     private final boolean _majorEdit;
+    private final boolean _publish;
     private final String _name;
     private final Set<Paragraph> _paragraphs;
     private final Template _template;
@@ -56,18 +57,21 @@ public class CreatePageFake implements CreatePage {
      *
      * @param name The name
      * @param majorEdit Major edit.
+     * @param publish Publish.
      * @param comment Comment.
      * @param paragraphs Paragraph of the page.
      * @param template Template.
      */
     public CreatePageFake(final String name,
                           final boolean majorEdit,
+                          final boolean publish,
                           final String comment,
                           final Set<Paragraph> paragraphs,
                           final Template template) {
         _comment = comment;
         _name = name;
         _majorEdit = majorEdit;
+        _publish = publish;
         _paragraphs = paragraphs;
         _template = template;
     }
@@ -86,6 +90,11 @@ public class CreatePageFake implements CreatePage {
     @Override
     public boolean getMajorEdit() {
         return _majorEdit;
+    }
+    
+    @Override
+    public boolean getPublish() {
+        return _publish;
     }
 
     @Override

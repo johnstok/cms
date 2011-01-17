@@ -63,6 +63,7 @@ public class CreatePageAcceptanceTest extends AbstractAcceptanceTest {
         CreatePage view = new CreatePageFake(
             "testname"+UUID.randomUUID().toString(),
             true,
+            false,
             "testComment",
             paragraphs,
             getTemplates().retrieve(testTemplate.getId()));
@@ -80,7 +81,45 @@ public class CreatePageAcceptanceTest extends AbstractAcceptanceTest {
 
         assertEquals(view.getName(), pr.getName());
         assertEquals("sample text", page.getParagraph("content").getText());
-
+        assertEquals(false, page.isPublished());
+    }
+    
+    /**
+     * Test.
+     *
+     */
+    public void testCreatePublishedPageSuccess() {
+        
+        // ARRANGE
+        
+        ResourceSummary model = tempFolder();
+        ResourceSummary testTemplate = dummyTemplate(model);
+        
+        Set<Paragraph> paragraphs = new HashSet<Paragraph>();
+        paragraphs.add(Paragraph.fromText("content", "sample text"));
+        
+        CreatePage view = new CreatePageFake(
+            "testname"+UUID.randomUUID().toString(),
+            true,
+            true,
+            "testComment",
+            paragraphs,
+            getTemplates().retrieve(testTemplate.getId()));
+        
+        CreatePagePresenter p = new CreatePagePresenter(view, model);
+        
+        // ACT
+        p.save();
+        
+        // ASSERT
+        ResourceSummary pr = getCommands().resourceForPath(
+            model.getAbsolutePath()+"/"+view.getName());
+        
+        Page page = getPages().retrieve(pr.getId());
+        
+        assertEquals(view.getName(), pr.getName());
+        assertEquals("sample text", page.getParagraph("content").getText());
+        assertEquals(true, page.isPublished());
     }
 
 }
