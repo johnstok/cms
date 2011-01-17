@@ -174,6 +174,46 @@ public class UserManagementAcceptanceTest
         // TODO: Test metadata set correctly.
     }
 
+    
+    /**
+     * Test.
+     */
+    public void testUpdateCurrentUser() {
+
+        // ARRANGE
+        final Username username = dummyUsername();
+        final String email = username+"@abc.def";
+        final String name = "testuser";
+
+        final List<Group> groups =
+            getGroups().query("SITE_BUILDER",
+                              1,
+                              PAGE_SIZE).getElements();
+        final Group siteBuilder = groups.iterator().next();
+
+        final User us = getUsers().retrieveCurrent();
+
+        // ACT
+
+        getUsers().update(
+            us.getId(),
+            new User()
+                .setEmail(email)
+                .setUsername(username)
+                .setName(name)
+                .setGroups(Collections.singleton(siteBuilder.getId()))
+                .setMetadata(Collections.singletonMap("key2", "value2")));
+
+        // ASSERT
+        final User ud = getUsers().retrieve(us.getId());
+        // must not be able to change own username
+        assertEquals(us.getUsername(), ud.getUsername()); 
+        assertEquals(email, ud.getEmail());
+        assertEquals(name, ud.getName());
+        assertEquals(1, ud.getGroups().size());
+        assertEquals(siteBuilder.getId(), ud.getGroups().iterator().next());
+    }
+    
 
     /**
      * Test.
