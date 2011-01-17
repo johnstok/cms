@@ -42,6 +42,7 @@ import ccc.api.exceptions.LockMismatchException;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.exceptions.UnlockedException;
+import ccc.api.exceptions.UsernameNotFoundException;
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
@@ -209,6 +210,8 @@ public class ActionEntity extends Entity {
                 return FailureCode.NOT_FOUND;
             } else if (CycleDetectedException.class==failureClass) {
                 return FailureCode.CYCLE;
+            } else if (UsernameNotFoundException.class==failureClass) {
+                return FailureCode.USER_NOT_FOUND;
             }
 
             return FailureCode.UNEXPECTED;

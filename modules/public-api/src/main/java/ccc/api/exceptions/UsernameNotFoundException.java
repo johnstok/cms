@@ -17,41 +17,46 @@
  * You should have received a copy of the GNU General Public License
  * along with Content Control.  If not, see http://www.gnu.org/licenses/.
  *
- * Revision      $Rev$
- * Modified by   $Author$
- * Modified on   $Date$
+ * Revision      $Rev: 2841 $
+ * Modified by   $Author: keith $
+ * Modified on   $Date: 2010-05-27 18:22:22 +0100 (Thu, 27 May 2010) $
  *
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.types;
+package ccc.api.exceptions;
+
+import java.util.HashMap;
 
 
 /**
- * Failure codes for the public API.
+ * This exception indicates that an user was not found. User's username has 
+ * been modified or it never existed.
  *
  * @author Civic Computing Ltd.
  */
-public enum  FailureCode {
+public class UsernameNotFoundException
+    extends
+    InvalidException {
+    
+    private static final String ENTITY   = "username";
 
-    /** UNEXPECTED : FailureCode. */
-    UNEXPECTED,
-    /** UNLOCKED : FailureCode. */
-    UNLOCKED,
-    /** LOCK_MISMATCH : FailureCode. */
-    LOCK_MISMATCH,
-    /** EXISTS : FailureCode. */
-    EXISTS,
-    /** PRIVILEGES : FailureCode. */
-    PRIVILEGES,
-    /** WC_UNSUPPORTED : FailureCode. */
-    WC_UNSUPPORTED,
-    /** CYCLE : FailureCode. */
-    CYCLE,
-    /** NOT_FOUND : FailureCode. */
-    NOT_FOUND,
-    /** INVALID : FailureCode. */
-    INVALID,
-    /** USER_NOT_FOUND : FailureCode. */
-    USER_NOT_FOUND;
+    /** Constructor. */
+    public UsernameNotFoundException() { super(); }
+
+
+    /**
+     * Constructor.
+     *
+     * @param resource The resource for which a cycle was detected.
+     */
+    public UsernameNotFoundException(final String username) {
+        super(
+            "No user with username: "
+                + username
+                + ".",
+            new HashMap<String, String>() {{
+                put(ENTITY,   (null==username) ? null : username.toString());
+            }});
+    }
 }

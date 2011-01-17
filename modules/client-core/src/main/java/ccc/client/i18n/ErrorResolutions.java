@@ -75,4 +75,11 @@ public interface ErrorResolutions {
      * @return The message, in the appropriate locale.
      */
     String invalidCommand();
+
+    /**
+     * "Contact system administrator to verify username.".
+     *
+     * @return The message, in the appropriate locale.
+     */
+    String usernameNotFound();
 }

@@ -85,4 +85,11 @@ public interface ErrorDescriptions {
      * @return The message, in the appropriate locale.
      */
     String invalidCommand();
+
+    /**
+     * "Username not found.".
+     *
+     * @return The message, in the appropriate locale.
+     */
+    String usernameNotFound();
 }
