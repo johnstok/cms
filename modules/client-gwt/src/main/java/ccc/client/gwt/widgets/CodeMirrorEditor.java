@@ -168,7 +168,7 @@ public class CodeMirrorEditor extends Composite {
     protected void onLoad() {
         _editor = initCodeMirror(this,
             _id,
-            GWT.getModuleBaseURL()+"js/codemirror/",
+            GWT.getModuleBaseURL()+"js/codemirror/0.92/",
             _readOnly);
     }
 
@@ -211,14 +211,15 @@ public class CodeMirrorEditor extends Composite {
         var editor = $wnd.CodeMirror.fromTextArea(id, {
             height: "300px",
             parserfile: ["parsedummy.js",
-                         "parsexml.js",
+                         "parsexmlvelocity.js",
                          "parsecss.js",
                          "tokenizejavascript.js",
                          "parsejavascript.js",
                          "parsehtmlmixed.js"],
             stylesheet: [baseUrl+"css/xmlcolors.css",
                          baseUrl+"css/jscolors.css",
-                         baseUrl+"css/csscolors.css"],
+                         baseUrl+"css/csscolors.css",
+                         baseUrl+"css/velocitycolors.css"],
             path: baseUrl+"js/",
             continuousScanning: 1000,
             textWrapping: false,
