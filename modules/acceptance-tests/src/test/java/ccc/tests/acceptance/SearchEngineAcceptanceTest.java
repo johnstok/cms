@@ -145,10 +145,15 @@ public class SearchEngineAcceptanceTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testFindByDate() {
+    public void testFindByDate() throws Exception {
 
         // ARRANGE
+        final int twoSecs = 2000;
+        Thread.sleep(twoSecs); // Ensure no other pages are created this second.
+
         final ResourceSummary parent = getCommands().resourceForPath("");
         final ResourceSummary page   = tempPage(parent.getId(), null);
 
@@ -160,7 +165,12 @@ public class SearchEngineAcceptanceTest
         // ACT
         final SearchResult result =
             getSearch().find(
-                "date_created:["+(page.getDateCreated().getTime()-1000)+" TO "+(page.getDateCreated().getTime()+1000)+"]", 10, 0);
+                "date_created:["
+                    + (page.getDateCreated().getTime()-1000)
+                    + " TO "
+                    + (page.getDateCreated().getTime()+1000)+"]",
+                10,
+                0);
 
         // ASSERT
         assertEquals(1, result.totalResults());
