@@ -72,6 +72,7 @@ public class LoginDialog extends AbstractEditDialog {
         _username.setFieldLabel(constants().username());
         _username.setId("username");
         _username.setAllowBlank(false);
+        _username.setSelectOnFocus(true);
         addField(_username);
 
         _password.setFieldLabel(constants().password());
@@ -102,6 +103,7 @@ public class LoginDialog extends AbstractEditDialog {
     /** {@inheritDoc} */
     @Override
     protected void onKeyPress(final WindowEvent we) {
+        _message.setText("");
         if (we.getKeyCode() == ENTER_KEY) {
             we.preventDefault();
             new LoginAction(LoginDialog.this).execute();
@@ -113,6 +115,8 @@ public class LoginDialog extends AbstractEditDialog {
      */
     public void loginFailed() {
         _message.setText(getUiConstants().loginFailed());
+        _username.focus();
+        _password.clear();
     }
 
     /**
