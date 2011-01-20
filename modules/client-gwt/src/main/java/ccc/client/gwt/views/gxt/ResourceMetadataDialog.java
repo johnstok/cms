@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.VALIDATOR;
 
 import java.util.Collection;
 import java.util.Map;
@@ -42,6 +42,7 @@ import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.UpdateMetadataAction;
 import ccc.client.gwt.widgets.MetadataGrid;
+import ccc.client.validation.AbstractValidations;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -126,10 +127,15 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-
                 final ValidationResult vr = new ValidationResult();
-                if (!_title.getValue().matches("[^<^>]*")) {
+                if (!_title.getValue().matches(AbstractValidations.NO_BRACKETS)) {
                     vr.addError(constants().titlesMustNotContainBrackets());
+                }
+                if (!_description.getValue().matches(AbstractValidations.NO_BRACKETS)) {
+                    vr.addError(constants().descriptionMustNotContainBrackets());
+                }
+                if (!_tags.getValue().matches(AbstractValidations.NO_BRACKETS)) {
+                    vr.addError(constants().tagsMustNotContainBrackets());
                 }
                 vr.addError(
                     VALIDATOR.notEmpty(
