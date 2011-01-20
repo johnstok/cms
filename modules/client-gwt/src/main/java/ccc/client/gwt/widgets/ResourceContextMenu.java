@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.widgets;
 
-import static ccc.client.gwt.views.gxt.AbstractBaseDialog.*;
+import static ccc.client.gwt.views.gxt.AbstractBaseDialog.CONTEXT_MENU_WIDTH;
 import ccc.api.core.Group;
 import ccc.api.core.Page;
 import ccc.api.core.PagedCollection;
@@ -178,6 +178,9 @@ public class ResourceContextMenu
         addViewHistory();
         if (null==item.getLockedBy()
             || "".equals(item.getLockedBy().toString())) {
+            if (item.isHasWorkingCopy()) {
+                addPreviewWorkingCopy();
+            }
             addLockResource();
         } else {
             if (item.getLockedBy().equals(_globals.currentUser().getUsername())
