@@ -42,6 +42,10 @@
        <param-name>resteasy.servlet.mapping.prefix</param-name>
        <param-value>/ccc/api</param-value>
     </context-param>
+    <context-param>
+        <param-name>ccc.web.domain</param-name>
+        <param-value></param-value>
+    </context-param>
 
     <listener>
         <listener-class>
