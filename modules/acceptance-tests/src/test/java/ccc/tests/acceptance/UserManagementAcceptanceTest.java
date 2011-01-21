@@ -185,12 +185,7 @@ public class UserManagementAcceptanceTest
         final String email = username+"@abc.def";
         final String name = "testuser";
 
-        final List<Group> groups =
-            getGroups().query("SITE_BUILDER",
-                              1,
-                              PAGE_SIZE).getElements();
-        final Group siteBuilder = groups.iterator().next();
-
+      
         final User us = getUsers().retrieveCurrent();
 
         // ACT
@@ -201,7 +196,7 @@ public class UserManagementAcceptanceTest
                 .setEmail(email)
                 .setUsername(username)
                 .setName(name)
-                .setGroups(Collections.singleton(siteBuilder.getId()))
+                .setGroups(us.getGroups())
                 .setMetadata(Collections.singletonMap("key2", "value2")));
 
         // ASSERT
@@ -210,8 +205,6 @@ public class UserManagementAcceptanceTest
         assertEquals(us.getUsername(), ud.getUsername()); 
         assertEquals(email, ud.getEmail());
         assertEquals(name, ud.getName());
-        assertEquals(1, ud.getGroups().size());
-        assertEquals(siteBuilder.getId(), ud.getGroups().iterator().next());
     }
     
 
