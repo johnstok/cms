@@ -42,7 +42,6 @@ import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.UpdateMetadataAction;
 import ccc.client.gwt.widgets.MetadataGrid;
-import ccc.client.validation.AbstractValidations;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -128,18 +127,23 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 final ValidationResult vr = new ValidationResult();
-                if (!_title.getValue().matches(AbstractValidations.NO_BRACKETS)) {
-                    vr.addError(constants().titlesMustNotContainBrackets());
-                }
-                if (!_description.getValue().matches(AbstractValidations.NO_BRACKETS)) {
-                    vr.addError(constants().descriptionMustNotContainBrackets());
-                }
-                if (!_tags.getValue().matches(AbstractValidations.NO_BRACKETS)) {
-                    vr.addError(constants().tagsMustNotContainBrackets());
-                }
+                
                 vr.addError(
                     VALIDATOR.notEmpty(
                         _title.getValue(), _title.getFieldLabel()));
+                
+                vr.addError(
+                    VALIDATOR.noBrackets(
+                        _title.getValue(), _title.getFieldLabel()));
+                
+                vr.addError(
+                    VALIDATOR.noBrackets(
+                        _description.getValue(), _description.getFieldLabel()));
+                
+                vr.addError(
+                    VALIDATOR.noBrackets(
+                        _tags.getValue(), _tags.getFieldLabel()));
+                
                 vr.addError(
                     VALIDATOR.validateMetadataValues(
                         _metadataPanel.currentMetadata()));
