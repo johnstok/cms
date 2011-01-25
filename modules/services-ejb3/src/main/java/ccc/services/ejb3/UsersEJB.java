@@ -47,6 +47,8 @@ import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 import ccc.commands.CreateUserCommand;
+import ccc.commands.ResetPasswordCommand;
+import ccc.commands.SendTokenCommand;
 import ccc.commands.UpdateCurrentUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
@@ -214,6 +216,27 @@ public class UsersEJB
         } catch (final EntityNotFoundException e) {
             return null;
         }
+    }
+
+
+    @Override
+    @PermitAll
+    public void resetPassword(String password, String token) {
+        execute(
+            new ResetPasswordCommand(
+                getRepoFactory(),
+                password,
+                token));
+    }
+
+
+    @Override
+    @PermitAll
+    public void sendToken(String username) {
+        execute(
+            new SendTokenCommand(
+                getRepoFactory(),
+                username));
     }
 
 }

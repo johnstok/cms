@@ -209,6 +209,10 @@ public interface ResourceIdentifiers {
         String  DELTA      = ELEMENT + "/delta";
         /** PASSWORD : String. */
         String  PASSWORD   = ELEMENT + "/password";
+        /** TOKEN : String. */
+        String  TOKEN   = COLLECTION + "/token";
+        /** TOKEN : String. */
+        String  RESET_PASSWORD   = COLLECTION + "/resetpassword";
     }
 
     /**

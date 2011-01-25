@@ -171,4 +171,24 @@ public interface Users {
     Collection<String> listUserMetadataValuesWithKey(
         @PathParam("key") String key);
 
+    /**
+     * Sends an email to user. Email contains link with the correct password
+     * reset token.
+     *
+     * @param username The user's username.
+     */
+    @PUT @Path(ccc.api.core.ResourceIdentifiers.User.TOKEN)
+    void sendToken(@QueryParam("username") String username);
+    
+    /**
+     * Reset the password with given new password. The token must match the 
+     * right token sent in email.
+     *
+     * @param password The new password.
+     * @param token The reset token.
+     */
+    @PUT @Path(ccc.api.core.ResourceIdentifiers.User.RESET_PASSWORD)
+    void resetPassword(@QueryParam("password") String password,
+                       @QueryParam("token") String token);
+    
 }

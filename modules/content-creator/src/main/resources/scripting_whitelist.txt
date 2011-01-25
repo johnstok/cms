@@ -32,4 +32,5 @@ ccc.commands.CreateFolderCommand
 ccc.persistence.ResourceRepositoryImpl
 ccc.persistence.LogEntryRepositoryImpl
 ccc.api.jaxrs.ResourcesImpl
+ccc.api.jaxrs.UsersImpl
 ccc.api.jaxrs.CommentsImpl

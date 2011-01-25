@@ -26,13 +26,16 @@
  */
 package ccc.tests.acceptance;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
+import ccc.api.exceptions.CCException;
 import ccc.api.types.Username;
 
 
@@ -410,5 +413,110 @@ public class UserManagementAcceptanceTest
         assertEquals(us.getUsername(), ul.getUsername());
         assertEquals(us.getEmail(), ul.getEmail());
         assertEquals(0, ul.getGroups().size());
+    }
+    
+    
+    /**
+     * Test.
+     */
+    public void testSetToken() {
+        
+        // ARRANGE
+        final User us = tempUser();
+        
+        // ACT
+        getUsers().sendToken(us.getUsername().toString());
+        
+        // ASSERT
+        final User ud = getUsers().retrieve(us.getId());
+        assertEquals(us.getUsername(), ud.getUsername());
+        assertEquals(1, ud.getMetadata().size());
+        assertFalse("Token must not be set",
+            ud.getMetadata().keySet().contains("token"));
+        assertFalse("Token expiry must not be set",
+            ud.getMetadata().keySet().contains("tokenExpiry"));
+    }
+    
+    
+    /**
+     * Test.
+     */
+    public void testResetPasswordWithBadToken() {
+        
+        // ARRANGE
+        final User us = tempUser();
+        getUsers().sendToken(us.getUsername().toString());
+        
+        // ACT
+        try {
+            getUsers().resetPassword("TestTest123--", "faultytoken");
+        } catch (CCException e) {
+            // ASSERT
+            assertEquals(
+            		"java.lang.RuntimeException: No user found with the token.",
+                e.getMessage());
+        }
+    }
+    
+    
+    /**
+     * Test.
+     */
+    public void testResetPasswordWithExpiredToken() {
+        
+        // ARRANGE
+        User us = tempUser();
+        Map<String, String> meta = us.getMetadata();
+        meta.put("token", "abc"+us.getId().toString());
+        meta.put("tokenExpiry", "100");
+        us.setMetadata(meta);
+        getUsers().update(us.getId(), us);
+        
+        // ACT
+        try {
+            getUsers().resetPassword("TestTest123--", 
+                "abc"+us.getId().toString());
+        } catch (CCException e) {
+            // ASSERT
+            assertEquals(
+                    "java.lang.RuntimeException: Token has expired.",
+                e.getMessage());
+        }
+    }
+    
+    
+    /**
+     * Test.
+     */
+    public void testResetPassword() {
+        
+        // ARRANGE
+        User user = tempUser();
+
+        
+        String token = user.getId().toString();
+        Map<String, String> meta = user.getMetadata();
+        meta.put("token", token);
+        
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR, 1);
+        
+        meta.put("tokenExpiry", ""+cal.getTime().getTime());
+        user.setMetadata(meta);
+        getUsers().update(user.getId(), user);
+        
+        
+        // ACT
+        getUsers().resetPassword("TestTest123--", token);
+        getSecurity().logout();
+        
+        // ASSERT
+        assertTrue(
+            getSecurity().login(user.getUsername().toString(), "TestTest123--")
+            .booleanValue());
+        assertFalse(
+            getSecurity().login(user.getUsername().toString(), "Testtest00-")
+            .booleanValue());
+        
     }
 }

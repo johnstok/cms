@@ -77,6 +77,10 @@ public enum CommandType {
     USER_UPDATE,
     /** USER_CHANGE_PASSWORD : CommandType. */
     USER_CHANGE_PASSWORD,
+    /** USER_RESET_PASSWORD : CommandType. */
+    USER_RESET_PASSWORD,
+    /** USER_SET_TOKEN : CommandType. */
+    USER_SET_TOKEN,
 
     // Page
     /** PAGE_UPDATE : CommandType. */
