@@ -37,6 +37,7 @@ import java.util.UUID;
 import javax.mail.Session;
 
 import ccc.api.core.UserCriteria;
+import ccc.api.exceptions.UsernameNotFoundException;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.SortOrder;
@@ -83,7 +84,7 @@ public class SendTokenCommand  extends
         userList.addAll(getUsers().listUsers(uc, "name", SortOrder.ASC, 1, 10));
         
         if (userList == null || userList.isEmpty() || userList.size() > 1) {
-            throw new RuntimeException("problem with user search");
+            throw new UsernameNotFoundException(_username);
         }
         
         UserEntity ue = userList.get(0);
