@@ -89,10 +89,10 @@ public class SendTokenCommand  extends
         UserEntity ue = userList.get(0);
         Map<String, String> meta = ue.getMetadata();
         String token = UUID.randomUUID().toString();
-        meta.put("token", token);
+        meta.put(UserEntity.TOKEN_KEY, token);
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, 1);
-        meta.put("tokenExpiry", ""+cal.getTime().getTime());
+        meta.put(UserEntity.TOKEN_EXPIRY_KEY, ""+cal.getTime().getTime());
         ue.addMetadata(meta);
         
         

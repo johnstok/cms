@@ -419,7 +419,7 @@ public class UserManagementAcceptanceTest
     /**
      * Test.
      */
-    public void testSetToken() {
+    public void testSetTokenAndVerifyDTO() {
         
         // ARRANGE
         final User us = tempUser();

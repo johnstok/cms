@@ -72,7 +72,7 @@ public class ResetPasswordCommand  extends
                           final Date happenedOn) {
 
         UserCriteria uc = new UserCriteria();
-        uc.setMetadataKey("token");
+        uc.setMetadataKey(UserEntity.TOKEN_KEY);
         uc.setMetadataValue(_token);
         
         final List<UserEntity> userList = new ArrayList<UserEntity>();
@@ -87,16 +87,18 @@ public class ResetPasswordCommand  extends
         UserEntity ue = userList.get(0);
         
         Map<String, String> meta = ue.getMetadata();
-        if(meta.get("tokenExpiry") == null) {
+        if(meta.get(UserEntity.TOKEN_EXPIRY_KEY) == null) {
             throw new RuntimeException("User doesn't have expiry set for the token.");
         }
         Date now = new Date();
-        if (now.after(new Date(Long.parseLong(meta.get("tokenExpiry"))))) {
+        Date expiry = 
+            new Date(Long.parseLong(meta.get(UserEntity.TOKEN_EXPIRY_KEY)));
+        if (now.after(expiry)) {
             throw new RuntimeException("Token has expired.");
         }
             
-        meta.remove("token");
-        meta.remove("tokenExpiry");
+        meta.remove(UserEntity.TOKEN_KEY);
+        meta.remove(UserEntity.TOKEN_EXPIRY_KEY);
         ue.addMetadata(meta);
         ue.setPassword(_password);
         

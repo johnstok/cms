@@ -66,6 +66,9 @@ public class UserEntity
     /** SYSTEM_USER : User. */
     public static final UserEntity SYSTEM_USER =
         new UserEntity(new Username("SYSTEM"), "SYSTEM", "SYSTEM");
+    public static final String TOKEN_KEY = "token";
+    public static final String TOKEN_EXPIRY_KEY = "tokenExpiry";
+
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
     private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
 
