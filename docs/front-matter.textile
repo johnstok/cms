@@ -1,5 +1,32 @@
 h1. Content Control Manual
 
+h5. Summary
+
+Content Control is a Java, J2EE open source content management system (CMS) which is platform and database independent.
+
+Content Control is licenced under the General Public Licence version 3 (GPL3) to allow developers to expand, share, modify and publish new variations. Platform independence allows Content Control to be utilised across various browsers (IE, Firefox & Safari) and systems (Windows, Solaris, Linux, OSX) allowing users and developers complete freedom to create and utilise the CMS with ease and variation.
+
+Features:
+* Create & update resources (folders / pages / templates / aliases & text files)
+* Upload any file
+* Preview resources
+* Rename / move resources
+* Delete resources
+* Resource history with version control
+* Working copy support for files and pages
+* Resource metadata management
+* Resource cache control
+* Scheduled actions
+* Flexible templating
+* Resource lock / unlock
+* Resource publish / unpublish
+* Access control for resources
+* Friendly URLs
+* Lucene based site search
+* User management
+* Zero install, browser-based management interface.
+* Command line management tools
+
 h5. Authors
 
 * "Civic Computing Ltd.":http://www.civicuk.com
