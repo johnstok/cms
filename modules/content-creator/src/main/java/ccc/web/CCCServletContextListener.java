@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2010 Civic Computing Ltd.
+ * Copyright © 2011 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,51 +24,44 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.security.jboss;
+package ccc.web;
 
-import org.jboss.security.RunAsIdentity;
-import org.jboss.web.tomcat.security.login.WebAuthentication;
+import javax.ejb.EJB;
+import javax.servlet.ServletContextEvent;
 
-import ccc.commons.Reflection;
-import ccc.plugins.security.Sessions;
+import org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap;
+
+import ccc.api.core.Actions;
+import ccc.api.core.Actions2;
+import ccc.plugins.PluginFactory;
+import ccc.web.scheduling.ActionScheduler;
+import ccc.web.scheduling.Schedulers;
 
 
 /**
- * JBoss implementation of the sessions API.
+ * Configure the servlet context for CC.
  *
  * @author Civic Computing Ltd.
  */
-public class JbossSession
-    implements
-        Sessions {
+public class CCCServletContextListener
+    extends
+        ResteasyBootstrap {
 
+    @EJB(name = Actions.NAME) private Actions2 _actions;
 
     /** {@inheritDoc} */
     @Override
-    public boolean login(final String username, final String password) {
-        final WebAuthentication pwl = new WebAuthentication();
-        return pwl.login(username, password);
+    public void contextInitialized(final ServletContextEvent event) {
+        Schedulers.setInstance(
+            new ActionScheduler(
+                _actions, new PluginFactory().createSessions()));
+        super.contextInitialized(event);
     }
 
-
     /** {@inheritDoc} */
     @Override
-    public void pushRunAsRole(final String roleName) {
-        Reflection.invoke(
-            "org.jboss.ejb3.SecurityActions",
-            "pushRunAs",
-            null,
-            new Object[] {new RunAsIdentity(roleName, null)});
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void popRunAsRole() {
-        Reflection.invoke(
-            "org.jboss.ejb3.SecurityActions",
-            "popRunAs",
-            null,
-            new Object[] {});
+    public void contextDestroyed(final ServletContextEvent event) {
+        super.contextDestroyed(event);
+        Schedulers.clearInstance();
     }
 }

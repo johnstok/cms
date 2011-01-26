@@ -25,6 +25,13 @@
             <version>${lib.version.jboss-legacy}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jboss.ejb3</groupId>
+            <artifactId>jboss-ejb3-core</artifactId>
+            <version>1.1.5</version>
+            <scope>provided</scope>
+        </dependency>
+        
     </dependencies>
     
 </project>

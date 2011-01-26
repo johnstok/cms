@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.Actions;
+import ccc.api.core.Actions2;
 import ccc.api.core.Aliases;
 import ccc.api.core.Comments;
 import ccc.api.core.Files;
@@ -51,7 +52,7 @@ import ccc.api.core.Security;
 import ccc.api.core.ServiceLocator;
 import ccc.api.core.Templates;
 import ccc.api.core.Users;
-import ccc.api.jaxrs.ActionsImpl;
+import ccc.api.jaxrs.Actions2Impl;
 import ccc.api.jaxrs.CommentsImpl;
 import ccc.api.jaxrs.FilesImpl;
 import ccc.api.jaxrs.FoldersImpl;
@@ -64,6 +65,7 @@ import ccc.api.jaxrs.UsersImpl;
 import ccc.plugins.mail.Mailer;
 import ccc.plugins.mail.javamail.JavaMailMailer;
 import ccc.plugins.mail.javamail.PropertiesAuthenticator;
+import ccc.web.scheduling.Schedulers;
 
 
 
@@ -87,14 +89,11 @@ public abstract class AbstractCCCServlet
     @EJB(name = Folders.NAME)      private transient Folders      _folders;
     @EJB(name = Files.NAME)        private transient Files        _files;
     @EJB(name = Resources.NAME)    private transient Resources    _resources;
-    @EJB(name = Actions.NAME)      private transient Actions      _actions;
+    @EJB(name = Actions.NAME)      private transient Actions2     _actions;
     @EJB(name = Templates.NAME)    private transient Templates    _templates;
     @EJB(name = Comments.NAME)     private transient Comments     _comments;
     @EJB(name = Groups.NAME)       private transient Groups       _groups;
     private transient Session _mail;
-
-
-
 
 
     /**
@@ -212,7 +211,7 @@ public abstract class AbstractCCCServlet
     /** {@inheritDoc} */
     @Override
     public Actions getActions() {
-        return new ActionsImpl(_actions);
+        return new Actions2Impl(_actions, Schedulers.getInstance());
     }
 
 

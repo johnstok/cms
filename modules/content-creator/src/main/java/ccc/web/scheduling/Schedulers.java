@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2010 Civic Computing Ltd.
+ * Copyright © 2011 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,37 +24,52 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.security;
+package ccc.web.scheduling;
+
+import ccc.api.core.Scheduler;
 
 
 /**
- * API for managing server sessions.
+ * Holder class for singleton schedulers.
  *
  * @author Civic Computing Ltd.
  */
-public interface Sessions {
+public final class Schedulers {
 
-    /**
-     * Log the specified user into the system.
-     *
-     * @param username The user's username.
-     * @param password The user's password.
-     *
-     * @return True if the user was logged in, false otherwise.
-     */
-    boolean login(String username, String password);
+    private static ActionScheduler actionScheduler;
+
+    private Schedulers() { super(); }
 
 
     /**
-     * Set the 'run as' role for the current thread.
+     * Get the current action scheduler.
      *
-     * @param roleName The name of the role to set.
+     * @return The current scheduler or null if none exists.
      */
-    void pushRunAsRole(String roleName);
+    public static synchronized Scheduler getInstance() {
+        return actionScheduler;
+    }
 
 
     /**
-     * Clear the 'run as' role for the current thread.
+     * Set the action action scheduler.
+     * <br>If a scheduler is already set this method does nothing.
+     *
+     * @param scheduler The action scheduler to set.
      */
-    void popRunAsRole();
+    public static synchronized void setInstance(
+                                              final ActionScheduler scheduler) {
+        if (null==actionScheduler) { actionScheduler = scheduler; }
+    }
+
+
+    /**
+     * Clear the action scheduler.
+     */
+    public static synchronized void clearInstance() {
+        if (null!=actionScheduler) {
+            actionScheduler.cancel();
+            actionScheduler = null;
+        }
+    }
 }

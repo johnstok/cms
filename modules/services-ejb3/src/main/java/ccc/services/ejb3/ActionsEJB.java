@@ -29,7 +29,6 @@ package ccc.services.ejb3;
 import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -37,12 +36,9 @@ import java.util.UUID;
 import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
-import javax.ejb.EJBContext;
 import javax.ejb.EJBException;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.ejb.Timeout;
-import javax.ejb.Timer;
 import javax.ejb.TransactionAttribute;
 
 import org.apache.log4j.Logger;
@@ -50,6 +46,7 @@ import org.apache.log4j.Logger;
 import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Actions;
+import ccc.api.core.Actions2;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Resources;
 import ccc.api.exceptions.CCException;
@@ -69,22 +66,18 @@ import ccc.rest.extensions.ResourcesExt;
  */
 @Stateless(name=Actions.NAME)
 @TransactionAttribute(REQUIRED)
-@Local(Actions.class)
+@Local(Actions2.class)
 @RolesAllowed({})
 @RunAs(ACTION_EXECUTE)
 public class ActionsEJB
     extends
         AbstractEJB
     implements
-        Actions {
+        Actions2 {
 
-    private static final int TIMEOUT_DELAY_SECS = 60*1000;
-    private static final int INITIAL_DELAY_SECS = 30*1000;
-    private static final String TIMER_NAME = "action_scheduler";
     private static final Logger LOG =
         Logger.getLogger(ActionsEJB.class.getName());
 
-    @javax.annotation.Resource private EJBContext  _context;
     @EJB(name=Resources.NAME) private ResourcesExt _resourcesExt;
 
 
@@ -207,64 +200,6 @@ public class ActionsEJB
             getRepoFactory()
                 .createActionRepository()
                 .find(actionId).mapAction();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({ACTION_SCHEDULE})
-    public void start() {
-        LOG.debug("Starting scheduler.");
-
-        if (isRunning()) {
-            LOG.debug("Scheduler already running.");
-        } else {
-            _context.getTimerService().createTimer(
-                INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
-            LOG.debug("Started scheduler.");
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @SuppressWarnings("unchecked")
-    @RolesAllowed({ACTION_SCHEDULE})
-    public void stop() {
-        LOG.debug("Stopping scheduler.");
-        final Collection<Timer> c = _context.getTimerService().getTimers();
-        for (final Timer t : c) {
-            if (TIMER_NAME.equals(t.getInfo())) {
-                t.cancel();
-            }
-        }
-        LOG.debug("Stopped scheduler.");
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @SuppressWarnings("unchecked")
-    @RolesAllowed({ACTION_SCHEDULE})
-    public boolean isRunning() {
-        final Collection<Timer> c = _context.getTimerService().getTimers();
-        for (final Timer t : c) {
-            if (TIMER_NAME.equals(t.getInfo())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    /**
-     * Run the scheduled action.
-     *
-     * @param timer The timer that called this method.
-     */
-    @Timeout
-    public void run(@SuppressWarnings("unused") final Timer timer) {
-        executeAll();
     }
 
 

@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import ccc.api.core.Scheduler;
 import ccc.api.core.ServiceLocator;
 import ccc.api.jaxrs.ActionsImpl;
 import ccc.api.jaxrs.AliasesImpl;
@@ -53,6 +54,7 @@ import ccc.api.jaxrs.providers.StringCollectionWriter;
 import ccc.api.jaxrs.providers.UUIDProvider;
 import ccc.api.jaxrs.providers.UuidCollectionWriter;
 import ccc.commons.JNDI;
+import ccc.web.scheduling.Schedulers;
 
 
 /**
@@ -72,8 +74,12 @@ public class JaxrsConfiguration
      */
     public JaxrsConfiguration() {
         final Set<Object> resources = new HashSet<Object>();
+        final Scheduler s = Schedulers.getInstance();
         final ServiceLocator sl =
-            new RegistryServiceLocator(CCCProperties.getAppName(), new JNDI());
+            new RegistryServiceLocator(
+                CCCProperties.getAppName(),
+                new JNDI(),
+                s);
 
         resources.add(new FoldersImpl(sl.getFolders()));
         resources.add(new AliasesImpl(sl.getAliases()));

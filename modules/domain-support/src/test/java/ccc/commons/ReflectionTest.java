@@ -145,4 +145,61 @@ public class ReflectionTest
         // ASSERT
         assertTrue(s instanceof ActionSerializer);
     }
+
+
+    /**
+     * Test.
+     */
+    public void testInvoke() {
+
+        // ARRANGE
+        final Object o = new Object();
+
+        // ACT
+        final Object result =
+            Reflection.invoke(
+                String.class.getName(),
+                "valueOf",
+                null,
+                new Object[] {o});
+
+        // ASSERT
+        assertEquals(o.toString(), result);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testInvokeWithClass() {
+
+        // ARRANGE
+
+        // ACT
+        final Object result =
+            Reflection.invoke(
+                String.class.getName(),
+                "valueOf",
+                null,
+                new Object[] {Integer.valueOf(0)},
+                new Class<?>[] {int.class});
+
+        // ASSERT
+        assertEquals("0", result);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testPrivateConstructor() {
+
+        // ARRANGE
+
+        // ACT
+        Testing.construct(Reflection.class);
+
+        // ASSERT
+
+    }
 }

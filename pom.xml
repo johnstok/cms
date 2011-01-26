@@ -13,6 +13,7 @@
         <!-- Libraries versions should be 'lib.version.{artifactId}' -->
         <lib.version.junit>3.8.1</lib.version.junit>
         <lib.version.easymock>2.4</lib.version.easymock>
+        <lib.version.mockito>1.8.5</lib.version.mockito>
         <lib.version.log4j>1.2.14</lib.version.log4j>
         <lib.version.oracle>10.2.0.4.0</lib.version.oracle>
         <lib.version.mysql>5.1.13</lib.version.mysql>
@@ -79,6 +80,12 @@
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
             <version>${lib.version.easymock}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+        <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>  
+            <version>${lib.version.mockito}</version> 
             <scope>test</scope>
         </dependency>
 

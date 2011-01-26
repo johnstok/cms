@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2010 Civic Computing Ltd.
+ * Copyright © 2011 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,51 +24,58 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.security.jboss;
+package ccc.web.scheduling;
 
-import org.jboss.security.RunAsIdentity;
-import org.jboss.web.tomcat.security.login.WebAuthentication;
-
-import ccc.commons.Reflection;
+import static org.mockito.Mockito.*;
+import junit.framework.TestCase;
+import ccc.api.core.Actions2;
+import ccc.commons.Testing;
 import ccc.plugins.security.Sessions;
 
 
 /**
- * JBoss implementation of the sessions API.
+ * Tests for the {@link ExecuteActionsTask} class.
  *
  * @author Civic Computing Ltd.
  */
-public class JbossSession
-    implements
-        Sessions {
+public class ExecuteActionsTaskTest
+    extends
+        TestCase {
 
+    /**
+     * Test.
+     */
+    public void testRun() {
 
-    /** {@inheritDoc} */
-    @Override
-    public boolean login(final String username, final String password) {
-        final WebAuthentication pwl = new WebAuthentication();
-        return pwl.login(username, password);
+        // ARRANGE
+        final Actions2 actions = mock(Actions2.class);
+        final ExecuteActionsTask task =
+            new ExecuteActionsTask(actions, Testing.stub(Sessions.class));
+
+        // ACT
+        task.run();
+
+        // ASSERT
+        verify(actions).executeAll();
     }
 
+    /**
+     * Test.
+     */
+    public void testRunHandlesExceptions() {
 
-    /** {@inheritDoc} */
-    @Override
-    public void pushRunAsRole(final String roleName) {
-        Reflection.invoke(
-            "org.jboss.ejb3.SecurityActions",
-            "pushRunAs",
-            null,
-            new Object[] {new RunAsIdentity(roleName, null)});
-    }
+        // EXPECT
+        final Actions2 actions = mock(Actions2.class);
+        doThrow(new RuntimeException()).when(actions).executeAll();
 
+        // ARRANGE
+        final ExecuteActionsTask task =
+            new ExecuteActionsTask(actions, Testing.stub(Sessions.class));
 
-    /** {@inheritDoc} */
-    @Override
-    public void popRunAsRole() {
-        Reflection.invoke(
-            "org.jboss.ejb3.SecurityActions",
-            "popRunAs",
-            null,
-            new Object[] {});
+        // ACT
+        task.run();
+
+        // ASSERT
+        verify(actions).executeAll();
     }
 }

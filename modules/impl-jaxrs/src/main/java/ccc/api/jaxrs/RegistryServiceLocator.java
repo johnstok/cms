@@ -27,6 +27,7 @@
 package ccc.api.jaxrs;
 
 import ccc.api.core.Actions;
+import ccc.api.core.Actions2;
 import ccc.api.core.Aliases;
 import ccc.api.core.Comments;
 import ccc.api.core.Files;
@@ -34,6 +35,7 @@ import ccc.api.core.Folders;
 import ccc.api.core.Groups;
 import ccc.api.core.Pages;
 import ccc.api.core.Resources;
+import ccc.api.core.Scheduler;
 import ccc.api.core.SearchEngine;
 import ccc.api.core.Security;
 import ccc.api.core.ServiceLocator;
@@ -50,8 +52,9 @@ import ccc.commons.Registry;
  */
 public class RegistryServiceLocator implements ServiceLocator {
 
-    private final Registry _registry;
-    private final String _appName;
+    private final Registry  _registry;
+    private final String    _appName;
+    private final Scheduler _actionScheduler;
 
 
     /**
@@ -59,11 +62,14 @@ public class RegistryServiceLocator implements ServiceLocator {
      *
      * @param appName The name of the application.
      * @param registry The registry to use for look up.
+     * @param actionScheduler The scheduler that drives the Actions API.
      */
     public RegistryServiceLocator(final String appName,
-                                  final Registry registry) {
+                                  final Registry registry,
+                                  final Scheduler actionScheduler) {
         _appName =  DBC.require().notEmpty(appName);
         _registry = DBC.require().notNull(registry);
+        _actionScheduler = DBC.require().notNull(actionScheduler);
     }
 
 
@@ -111,7 +117,10 @@ public class RegistryServiceLocator implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public Actions getActions() {
-        return _registry.<Actions>get(localPath(Actions.NAME));
+        return
+            new Actions2Impl(
+                _registry.<Actions2>get(localPath(Actions.NAME)),
+                _actionScheduler);
     }
 
 
@@ -152,11 +161,6 @@ public class RegistryServiceLocator implements ServiceLocator {
 
     protected Registry getRegistry() {
         return _registry;
-    }
-
-
-    protected String remotePath(final String serviceName) {
-        return _appName+"/"+serviceName+"/remote";
     }
 
 

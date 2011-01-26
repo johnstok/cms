@@ -27,6 +27,7 @@
 package ccc.commons;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,16 +66,13 @@ public final class Reflection {
                                   final String className,
                                   final Object[] theArguments) {
 
-        final List<Class<?>> types = new ArrayList<Class<?>>();
-        for (final Object o : theArguments) {
-            types.add(o.getClass());
-        }
+        final Class<?>[] types = classesForObjects(theArguments);
 
         return
             construct(
                 expectedClass,
                 className,
-                types.toArray(new Class[] {}),
+                types,
                 theArguments);
     }
 
@@ -116,6 +114,68 @@ public final class Reflection {
     }
 
 
+
+    /**
+     * Invoke a method on the specified object.
+     *
+     * @param className The class of the object.
+     * @param methodName The name of the method.
+     * @param obj The object on which the method will be invoked
+     * @param params The parameters for the invocation.
+     *
+     * @return The return value of the method, as an object.
+     */
+    public static Object invoke(final String className,
+                                final String methodName,
+                                final Object obj,
+                                final Object[] params) {
+        return
+            invoke(
+                className, methodName, obj, params, classesForObjects(params));
+    }
+
+
+    /**
+     * Invoke a method on the specified object.
+     *
+     * @param className The class of the object.
+     * @param methodName The name of the method.
+     * @param obj The object on which the method will be invoked
+     * @param params The parameters for the invocation.
+     * @param classes The classes of the method's parameters.
+     *
+     * @return The return value of the method, as an object.
+     */
+    public static Object invoke(final String className,
+                              final String methodName,
+                              final Object obj,
+                              final Object[] params,
+                              final Class<?>[] classes) {
+        final String errorMessage = "Unable to invoke method.";
+
+        try {
+            final Class<?> c = Class.forName(className);
+            final Method selectedMethod =
+                c.getDeclaredMethod(methodName, classes);
+            selectedMethod.setAccessible(true);
+            return selectedMethod.invoke(obj, params);
+
+        } catch (final SecurityException e) {
+            throw new RuntimeException(errorMessage, e);
+        } catch (final ClassNotFoundException e) {
+            throw new RuntimeException(errorMessage, e);
+        } catch (final IllegalArgumentException e) {
+            throw new RuntimeException(errorMessage, e);
+        } catch (final IllegalAccessException e) {
+            throw new RuntimeException(errorMessage, e);
+        } catch (final InvocationTargetException e) {
+            throw new RuntimeException(errorMessage, e);
+        } catch (final NoSuchMethodException e) {
+            throw new RuntimeException(errorMessage, e);
+        }
+    }
+
+
     /**
      * Test if the specified object is an instance of the specified class.
      *
@@ -131,5 +191,14 @@ public final class Reflection {
         } catch (final ClassNotFoundException e) {
             return false;
         }
+    }
+
+
+    private static Class<?>[] classesForObjects(final Object[] theArguments) {
+        final List<Class<?>> types = new ArrayList<Class<?>>();
+        for (final Object o : theArguments) {
+            types.add(o.getClass());
+        }
+        return types.toArray(new Class[] {});
     }
 }

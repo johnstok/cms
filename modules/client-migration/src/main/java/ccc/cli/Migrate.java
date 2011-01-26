@@ -36,6 +36,7 @@ import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
 import ccc.api.http.ProxyServiceLocator;
+import ccc.commons.JNDI;
 import ccc.migration.DbUtilsDB;
 import ccc.migration.FileUploader;
 import ccc.migration.LegacyDBQueries;
@@ -67,7 +68,7 @@ public final class Migrate extends LegacyApp {
 
         services =
             new MigrationServiceLocator(
-                options.getApp(), options.getProviderURL());
+                options.getApp(), new JNDI(options.getProviderURL()));
         sl = new ProxyServiceLocator(options._ccURL);
 
         login(options.getUsername(), options.getPassword());
