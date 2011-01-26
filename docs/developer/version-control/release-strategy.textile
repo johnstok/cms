@@ -1,0 +1,47 @@
+h1. Release Strategy
+
+_This page describes the steps required to make a CCC7 release_.
+
+h2. Outstanding decisions
+
+* What artifacts do we build?
+* Are they assembled into a zip?
+* How is the zip moved to the production machine?
+* How is the app installed?
+* How is the database upgraded? 
+
+h2. Completing an iteration
+
+# Tag the iteration via maven: <br>@mvn -Dtag="iteration-*" scm:tag@
+# Checkout the tag from svn.
+# Run a build and create an assembly: <br>@mvn clean install -P assemble@
+# Deploy binary.
+# Run acceptance.
+# Send out an email to advertise the new release.
+
+h2. Making a major or minor release
+
+N.B. major and minor releases are always made from the trunk.
+
+# Perform an svn 'status' to confirm there are no outstanding changes.
+# Perform an svn 'update' to ensure the local copy is up to date.
+# Run a build with the 'acceptance' profile ''for each supported database'' to ensure all acceptance tests pass.
+# Prepare release with maven: <br>@mvn release:clean@<br>@mvn release:prepare@
+# Check out the tag.
+# Add your Nexus username and password to settings-release.xml. Build the tag: <br>@build_release.sh@
+
+TODO: Decide if we should use 'mvn release:release'...
+
+h2. Making a bugfix release
+
+N.B. bugfix releases are always made from a branch.
+
+# Prepare release with maven: <br>@mvn -DtagBase=http://svn.contentcontrol.com/ContentControl/tags release:prepare@
+# Checkout the tag.
+# Build the tag: <br>@mvn clean install@
+
+h2. Merging
+
+* Rule: always merge branches into trunk.
+* Always add an appropriate comment. For example, ''Merge from maintenance-7.0 into trunk, up to rev 2310''.
+* When merging in "SmartSvn":http://www.syntevo.com/smartsvn/ you must select the target folder.

@@ -1,5 +1,7 @@
 h1. Configuration Management Strategy
 
+_This page describes how CC files are organised under configuration management_.
+
 h2. The basics
 
 # All new features will be added on the trunk.
