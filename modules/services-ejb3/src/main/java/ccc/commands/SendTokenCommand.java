@@ -31,23 +31,30 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.UUID;
 
-import javax.mail.Session;
-
+import ccc.api.core.File;
+import ccc.api.core.MemoryServiceLocator;
 import ccc.api.core.UserCriteria;
+import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UsernameNotFoundException;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
+import ccc.api.types.ResourcePath;
+import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
+import ccc.domain.FileEntity;
 import ccc.domain.LogEntry;
+import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.mail.Mailer;
-import ccc.plugins.mail.javamail.JavaMailMailer;
-import ccc.plugins.mail.javamail.PropertiesAuthenticator;
 import ccc.plugins.s11n.json.JsonImpl;
+import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.ProcessingException;
+import ccc.plugins.scripting.Script;
+import ccc.plugins.scripting.TextProcessor;
 
 
 /**
@@ -68,7 +75,7 @@ public class SendTokenCommand  extends
      * @param userId The id of the user to update.
      */
     public SendTokenCommand(final IRepositoryFactory repoFactory,
-                             final String username) {
+                            final String username) {
         super(repoFactory);
         _username = username;
     }
@@ -77,6 +84,53 @@ public class SendTokenCommand  extends
     @Override
     public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
+
+        String token = UUID.randomUUID().toString();
+        UserEntity ue = setTokenForUser(token);
+        
+        //  send email to user's email address
+        Mailer m = new PluginFactory().createMailer();
+        String domain = "civicuk.com"; // CCCProperties.domain();
+        
+        String mailTemplate = "token: "+token;
+        ResourceEntity resource = 
+            getRepository().lookup(new ResourcePath("/assets/reset_email.txt"));
+        
+        // Get content from CMS.
+        if (resource != null && resource.getType() == ResourceType.FILE) {
+            domain = resource.getMetadatum("domain");
+            FileEntity file = getRepository().find(FileEntity.class, resource.getId());
+            File f = file.mapTextFile(getData());
+            mailTemplate = f.getContent(); 
+        }
+        Script s = new Script(mailTemplate, "Mail template");
+        TextProcessor velocityProcessor = new PluginFactory().createTemplating();
+        Context context = new Context();
+        context.add("services", new MemoryServiceLocator());
+        context.add("token", token);
+        
+        String content;
+        try {
+            content = velocityProcessor.render(s, context);
+        } catch (ProcessingException e) {
+            throw new CCException("Token sending failed", e);
+        }
+        m.send(ue.getEmail(),
+            new EmailAddress("noreply@"+domain ), 
+            "Password reset",
+            content);
+
+        getAudit().record(
+            new LogEntry(
+                actor,
+                getType(),
+                happenedOn,
+                ue.getId(),
+                new JsonImpl(ue).getDetail()));
+        return null;
+    }
+
+    private UserEntity setTokenForUser(String token) {
 
         UserCriteria uc = new UserCriteria();
         uc.setUsername(_username);
@@ -89,32 +143,12 @@ public class SendTokenCommand  extends
         
         UserEntity ue = userList.get(0);
         Map<String, String> meta = ue.getMetadata();
-        String token = UUID.randomUUID().toString();
         meta.put(UserEntity.TOKEN_KEY, token);
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, 1);
         meta.put(UserEntity.TOKEN_EXPIRY_KEY, ""+cal.getTime().getTime());
         ue.addMetadata(meta);
-        
-        
-        //  send email to user's email address
-
-        final Properties config =
-            ccc.commons.Resources.readIntoProps("mail.properties");
-        Session s = 
-            Session.getInstance(config, new PropertiesAuthenticator(config));
-        Mailer m = new JavaMailMailer(s);
-        // FIXME configure from address, subject and message
-        m.send(ue.getEmail(), new EmailAddress("cc7@civicuk.com"), "pw", token);
-
-        getAudit().record(
-            new LogEntry(
-                actor,
-                getType(),
-                happenedOn,
-                ue.getId(),
-                new JsonImpl(ue).getDetail()));
-        return null;
+        return ue;
     }
 
 
