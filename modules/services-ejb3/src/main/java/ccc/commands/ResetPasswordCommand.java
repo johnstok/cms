@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.api.core.UserCriteria;
+import ccc.api.exceptions.CCException;
 import ccc.api.types.CommandType;
 import ccc.api.types.SortOrder;
 import ccc.domain.LogEntry;
@@ -79,22 +80,22 @@ public class ResetPasswordCommand  extends
         userList.addAll(getUsers().listUsers(uc, "name", SortOrder.ASC, 1, 10));
         
         if (userList == null || userList.isEmpty()) {
-            throw new RuntimeException("No user found with the token.");
+            throw new CCException("No user found with the token.");
         } else if (userList.size() > 1) {
-            throw new RuntimeException("Too many users found with the token.");
+            throw new CCException("Too many users found with the token.");
         }
         
         UserEntity ue = userList.get(0);
         
         Map<String, String> meta = ue.getMetadata();
         if(meta.get(UserEntity.TOKEN_EXPIRY_KEY) == null) {
-            throw new RuntimeException("User doesn't have expiry set for the token.");
+            throw new CCException("User doesn't have expiry set for the token.");
         }
         Date now = new Date();
         Date expiry = 
             new Date(Long.parseLong(meta.get(UserEntity.TOKEN_EXPIRY_KEY)));
         if (now.after(expiry)) {
-            throw new RuntimeException("Token has expired.");
+            throw new CCException("Token has expired.");
         }
             
         meta.remove(UserEntity.TOKEN_KEY);

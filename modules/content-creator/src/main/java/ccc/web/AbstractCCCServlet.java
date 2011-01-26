@@ -27,10 +27,8 @@
 package ccc.web;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import javax.ejb.EJB;
-import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -62,9 +60,8 @@ import ccc.api.jaxrs.ResourcesImpl;
 import ccc.api.jaxrs.SearchImpl;
 import ccc.api.jaxrs.TemplatesImpl;
 import ccc.api.jaxrs.UsersImpl;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.mail.Mailer;
-import ccc.plugins.mail.javamail.JavaMailMailer;
-import ccc.plugins.mail.javamail.PropertiesAuthenticator;
 import ccc.web.scheduling.Schedulers;
 
 
@@ -93,21 +90,7 @@ public abstract class AbstractCCCServlet
     @EJB(name = Templates.NAME)    private transient Templates    _templates;
     @EJB(name = Comments.NAME)     private transient Comments     _comments;
     @EJB(name = Groups.NAME)       private transient Groups       _groups;
-    private transient Session _mail;
 
-
-    /**
-     * Constructor.
-     *
-     */
-    public AbstractCCCServlet() {
-        final Properties config =
-            ccc.commons.Resources.readIntoProps("mail.properties");
-        LOG.debug("Mail configuration: "+config);
-
-        _mail =
-            Session.getInstance(config, new PropertiesAuthenticator(config));
-    }
 
 
     /**
@@ -204,7 +187,7 @@ public abstract class AbstractCCCServlet
      * @return The mail implementation for this servlet.
      */
     protected Mailer getMailer() {
-        return new JavaMailMailer(_mail);
+        return new PluginFactory().createMailer();
     }
 
 

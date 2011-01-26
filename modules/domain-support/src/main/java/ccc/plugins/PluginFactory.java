@@ -26,10 +26,16 @@
  */
 package ccc.plugins;
 
-import static ccc.commons.Reflection.*;
+import static ccc.commons.Reflection.construct;
 
 import java.io.InputStream;
+import java.util.Properties;
 
+import javax.mail.Session;
+
+import ccc.plugins.mail.Mailer;
+import ccc.plugins.mail.javamail.JavaMailMailer;
+import ccc.plugins.mail.javamail.PropertiesAuthenticator;
 import ccc.plugins.multipart.MultipartFormData;
 import ccc.plugins.scripting.TextProcessor;
 import ccc.plugins.search.Index;
@@ -43,6 +49,18 @@ import ccc.plugins.security.Sessions;
  * @author Civic Computing Ltd.
  */
 public class PluginFactory {
+    
+    public Mailer createMailer() {
+        Session mail;
+        final Properties config =
+            ccc.commons.Resources.readIntoProps("mail.properties");
+//        LOG.debug("Mail configuration: "+config);
+
+        mail =
+            Session.getInstance(config, new PropertiesAuthenticator(config));
+        
+        return new JavaMailMailer(mail);
+    }
 
 
     public TextProcessor createTemplating() {

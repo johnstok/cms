@@ -453,7 +453,7 @@ public class UserManagementAcceptanceTest
         } catch (CCException e) {
             // ASSERT
             assertEquals(
-            		"java.lang.RuntimeException: No user found with the token.",
+                "No user found with the token.",
                 e.getMessage());
         }
     }
@@ -479,7 +479,7 @@ public class UserManagementAcceptanceTest
         } catch (CCException e) {
             // ASSERT
             assertEquals(
-                    "java.lang.RuntimeException: Token has expired.",
+                    "Token has expired.",
                 e.getMessage());
         }
     }
