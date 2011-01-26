@@ -31,6 +31,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.UUID;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -76,8 +77,9 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({COMMENT_READ})
+    @PermitAll
     public Comment retrieve(final UUID commentId) {
+        checkPermission(COMMENT_READ);
         return
             getRepoFactory()
                 .createCommentRepo()
@@ -106,13 +108,14 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({COMMENT_READ})
+    @PermitAll
     public PagedCollection<Comment> query(final UUID resourceId,
                                           final CommentStatus status,
                                           final String sort,
                                           final SortOrder sortOrder,
                                           final int pageNo,
                                           final int pageSize) {
+        checkPermission(COMMENT_READ);
         final ResourceEntity r =
             (null==resourceId)
                 ? null
