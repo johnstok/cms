@@ -34,3 +34,4 @@ ccc.persistence.LogEntryRepositoryImpl
 ccc.api.jaxrs.ResourcesImpl
 ccc.api.jaxrs.UsersImpl
 ccc.api.jaxrs.CommentsImpl
+ccc.api.exceptions.CCException
