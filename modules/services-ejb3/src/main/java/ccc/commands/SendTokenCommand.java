@@ -58,7 +58,7 @@ import ccc.plugins.scripting.TextProcessor;
 
 
 /**
- * Assigns token to an user for password reseting.
+ * Assigns token to an user and sends an email for password reseting.
  *
  * @author Civic Computing Ltd.
  */
@@ -88,17 +88,38 @@ public class SendTokenCommand  extends
         String token = UUID.randomUUID().toString();
         UserEntity ue = setTokenForUser(token);
         
+        sendResetTokenEmail(token, ue.getEmail());
+
+        getAudit().record(
+            new LogEntry(
+                actor,
+                getType(),
+                happenedOn,
+                ue.getId(),
+                new JsonImpl(ue).getDetail()));
+        return null;
+    }
+
+    private void sendResetTokenEmail(String token, EmailAddress email) {
+
         //  send email to user's email address
-        Mailer m = new PluginFactory().createMailer();
-        String domain = "civicuk.com"; // CCCProperties.domain();
-        
+        String fromAddress = "noreply@civicuk.com"; 
+        String subject = "Password reset"; 
         String mailTemplate = "token: "+token;
-        ResourceEntity resource = 
-            getRepository().lookup(new ResourcePath("/assets/reset_email.txt"));
         
+        ResourceEntity resource = getRepository().lookup(
+            new ResourcePath("/assets/scripts/reset_email.txt"));
+        
+        Mailer m = new PluginFactory().createMailer();
         // Get content from CMS.
         if (resource != null && resource.getType() == ResourceType.FILE) {
-            domain = resource.getMetadatum("domain");
+            Map<String, String> meta = resource.getMetadata();
+            if (meta.containsKey("fromAddress")) {
+                fromAddress = meta.get("fromAddress");
+            }
+            if (meta.containsKey("subject")) {
+                subject = meta.get("subject");
+            }
             FileEntity file = getRepository().find(FileEntity.class, resource.getId());
             File f = file.mapTextFile(getData());
             mailTemplate = f.getContent(); 
@@ -115,19 +136,10 @@ public class SendTokenCommand  extends
         } catch (ProcessingException e) {
             throw new CCException("Token sending failed", e);
         }
-        m.send(ue.getEmail(),
-            new EmailAddress("noreply@"+domain ), 
-            "Password reset",
+        m.send(email,
+            new EmailAddress(fromAddress), 
+            subject,
             content);
-
-        getAudit().record(
-            new LogEntry(
-                actor,
-                getType(),
-                happenedOn,
-                ue.getId(),
-                new JsonImpl(ue).getDetail()));
-        return null;
     }
 
     private UserEntity setTokenForUser(String token) {
