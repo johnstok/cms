@@ -37,6 +37,7 @@ import ccc.api.core.Pages;
 import ccc.api.core.Resources;
 import ccc.api.core.Scheduler;
 import ccc.api.core.SearchEngine;
+import ccc.api.core.SearchEngine2;
 import ccc.api.core.Security;
 import ccc.api.core.ServiceLocator;
 import ccc.api.core.Templates;
@@ -55,6 +56,7 @@ public class RegistryServiceLocator implements ServiceLocator {
     private final Registry  _registry;
     private final String    _appName;
     private final Scheduler _actionScheduler;
+    private final Scheduler _searchScheduler;
 
 
     /**
@@ -63,13 +65,16 @@ public class RegistryServiceLocator implements ServiceLocator {
      * @param appName The name of the application.
      * @param registry The registry to use for look up.
      * @param actionScheduler The scheduler that drives the Actions API.
+     * @param searchScheduler The scheduler that drives the Search API.
      */
     public RegistryServiceLocator(final String appName,
                                   final Registry registry,
-                                  final Scheduler actionScheduler) {
+                                  final Scheduler actionScheduler,
+                                  final Scheduler searchScheduler) {
         _appName =  DBC.require().notEmpty(appName);
         _registry = DBC.require().notNull(registry);
         _actionScheduler = DBC.require().notNull(actionScheduler);
+        _searchScheduler = DBC.require().notNull(searchScheduler);
     }
 
 
@@ -103,7 +108,10 @@ public class RegistryServiceLocator implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public SearchEngine getSearch() {
-        return _registry.<SearchEngine>get(localPath(SearchEngine.NAME));
+        return
+            new Search2Impl(
+                _registry.<SearchEngine2>get(localPath(SearchEngine.NAME)),
+                _searchScheduler);
     }
 
 

@@ -27,18 +27,18 @@
 package ccc.web.scheduling;
 
 import junit.framework.TestCase;
-import ccc.api.core.Actions2;
 import ccc.api.core.Scheduler;
+import ccc.api.core.SearchEngine2;
 import ccc.commons.Testing;
 import ccc.plugins.security.Sessions;
 
 
 /**
- * Tests for the {@link ActionScheduler} class.
+ * Tests for the {@link SearchScheduler} class.
  *
  * @author Civic Computing Ltd.
  */
-public class ActionSchedulerTest
+public class SearchSchedulerTest
     extends
         TestCase {
 
@@ -50,8 +50,9 @@ public class ActionSchedulerTest
 
         // ARRANGE
         final Scheduler s =
-            new ActionScheduler(
-                Testing.dummy(Actions2.class), Testing.dummy(Sessions.class));
+            new SearchScheduler(
+                Testing.dummy(SearchEngine2.class),
+                Testing.dummy(Sessions.class));
 
         // ACT
         final boolean startedOnInit = s.isRunning();
@@ -68,8 +69,9 @@ public class ActionSchedulerTest
 
         // ARRANGE
         final Scheduler s =
-            new ActionScheduler(
-                Testing.dummy(Actions2.class), Testing.dummy(Sessions.class));
+            new SearchScheduler(
+                Testing.dummy(SearchEngine2.class),
+                Testing.dummy(Sessions.class));
 
         // ACT
         s.start();
@@ -90,9 +92,10 @@ public class ActionSchedulerTest
     public void testCancelledSchedulersCantBeStarted() {
 
         // ARRANGE
-        final ActionScheduler s =
-            new ActionScheduler(
-                Testing.dummy(Actions2.class), Testing.dummy(Sessions.class));
+        final SearchScheduler s =
+            new SearchScheduler(
+                Testing.dummy(SearchEngine2.class),
+                Testing.dummy(Sessions.class));
         s.cancel();
 
         // ACT
@@ -113,8 +116,9 @@ public class ActionSchedulerTest
 
         // ARRANGE
         final Scheduler s =
-            new ActionScheduler(
-                Testing.dummy(Actions2.class), Testing.dummy(Sessions.class));
+            new SearchScheduler(
+                Testing.dummy(SearchEngine2.class),
+                Testing.dummy(Sessions.class));
 
         // ACT
         s.stop();
@@ -132,8 +136,9 @@ public class ActionSchedulerTest
 
         // ARRANGE
         final Scheduler s =
-            new ActionScheduler(
-                Testing.dummy(Actions2.class), Testing.dummy(Sessions.class));
+            new SearchScheduler(
+                Testing.dummy(SearchEngine2.class),
+                Testing.dummy(Sessions.class));
 
         // ACT
         s.start();

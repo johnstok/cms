@@ -30,44 +30,44 @@ import java.util.Timer;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.Actions2;
 import ccc.api.core.Scheduler;
+import ccc.api.core.SearchEngine2;
 import ccc.api.types.DBC;
 import ccc.plugins.security.Sessions;
 import ccc.web.jaxrs.CCCProperties;
 
 
 /**
- * Action scheduler implementation that uses the JRE {@link Timer} class.
+ * Search scheduler implementation that uses the JRE {@link Timer} class.
  *
  * @author Civic Computing Ltd.
  */
-public class ActionScheduler
+public class SearchScheduler
     implements
         Scheduler {
 
-    private static final Logger LOG = Logger.getLogger(ActionScheduler.class);
+    private static final Logger LOG = Logger.getLogger(SearchScheduler.class);
 
-    private static final int TIMEOUT_DELAY_SECS = 60*1000;
+    private static final int TIMEOUT_DELAY_SECS = 60*60*1000;
     private static final int INITIAL_DELAY_SECS = 30*1000;
 
-    private final Timer        _actionTimer =
-        new Timer("CC-actions-"+CCCProperties.getAppName(), true);
-    private final Actions2     _actions;
-    private final Sessions     _sessions;
+    private final Timer         _actionTimer =
+        new Timer("CC-search-"+CCCProperties.getAppName(), true);
+    private final SearchEngine2 _search;
+    private final Sessions      _sessions;
 
-    private ExecuteActionsTask _task;
+    private SearchTask _task;
 
 
     /**
      * Constructor.
      *
-     * @param actions The actions implementation to call.
+     * @param search  The search implementation to call.
      * @param session The session under which tasks will run.
      *
      */
-    public ActionScheduler(final Actions2 actions, final Sessions session) {
-        _actions = DBC.require().notNull(actions);
+    public SearchScheduler(final SearchEngine2 search, final Sessions session) {
+        _search = DBC.require().notNull(search);
         _sessions = DBC.require().notNull(session);
     }
 
@@ -88,7 +88,7 @@ public class ActionScheduler
         if (isRunning()) {
             LOG.debug("Scheduler already running.");
         } else {
-            _task = new ExecuteActionsTask(_actions, _sessions);
+            _task = new SearchTask(_search, _sessions);
             _actionTimer.schedule(
                 _task, INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS);
             LOG.debug("Started scheduler.");

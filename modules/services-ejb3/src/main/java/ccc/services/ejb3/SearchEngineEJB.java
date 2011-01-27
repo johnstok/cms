@@ -29,17 +29,13 @@ package ccc.services.ejb3;
 import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.ejb.Timeout;
-import javax.ejb.Timer;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -48,6 +44,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.core.File;
 import ccc.api.core.SearchEngine;
+import ccc.api.core.SearchEngine2;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
@@ -76,24 +73,21 @@ import ccc.plugins.search.TextExtractor;
  */
 @Stateless(name=SearchEngine.NAME)
 @TransactionAttribute(REQUIRED)
-@Local(SearchEngine.class)
+@Local(SearchEngine2.class)
 @RolesAllowed({})
 public class SearchEngineEJB
     extends
         AbstractEJB
     implements
-        SearchEngine {
+        SearchEngine2 {
 
-    private static final int TIMEOUT_DELAY_SECS = 60*60*1000;
-    private static final int INITIAL_DELAY_SECS = 1;
-    private static final String TIMER_NAME = "index_scheduler";
     private static final Logger LOG =
         Logger.getLogger(SearchEngineEJB.class.getName());
 
-    @javax.annotation.Resource private EJBContext _context;
     @PersistenceContext private EntityManager _em;
 
     private ResourceRepository _resources;
+
 
     /** Constructor. */
     public SearchEngineEJB() { super(); }
@@ -165,64 +159,6 @@ public class SearchEngineEJB
             LOG.error("Error indexing resources.", e);
             lucene.rollbackUpdate();
         }
-    }
-
-
-    /**
-     * Run the scheduled action.
-     *
-     * @param timer The timer that called this method.
-     */
-    @Timeout
-    public void run(@SuppressWarnings("unused") final Timer timer) {
-        index();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({SEARCH_SCHEDULE})
-    public void start() {
-        LOG.debug("Starting indexer.");
-
-        if (isRunning()) {
-            LOG.debug("Indexer already running.");
-        } else {
-            _context.getTimerService().createTimer(
-                INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
-            LOG.debug("Started indexer.");
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({SEARCH_SCHEDULE})
-    @SuppressWarnings("unchecked")
-    public void stop() {
-        LOG.debug("Stopping indexer.");
-        final Collection<Timer> c = _context.getTimerService().getTimers();
-        for (final Timer t : c) {
-            if (TIMER_NAME.equals(t.getInfo())) {
-                t.cancel();
-            }
-        }
-        LOG.debug("Stopped indexer.");
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({SEARCH_SCHEDULE})
-    @SuppressWarnings("unchecked")
-    public boolean isRunning() {
-        final Collection<Timer> c = _context.getTimerService().getTimers();
-        for (final Timer t : c) {
-            if (TIMER_NAME.equals(t.getInfo())) {
-                return true;
-            }
-        }
-        return false;
     }
 
 

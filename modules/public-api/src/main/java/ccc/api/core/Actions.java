@@ -39,7 +39,8 @@ import javax.ws.rs.Produces;
 @Produces("application/json")
 public interface Actions
     extends
-        Scheduler, Actions2 {
+        Scheduler,
+        Actions2 {
 
     /** NAME : String. */
     String NAME = "ActionDao";

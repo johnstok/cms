@@ -32,7 +32,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import junit.framework.TestCase;
-import ccc.api.core.SearchEngine;
+import ccc.api.core.SearchEngine2;
 import ccc.api.types.StreamAction;
 import ccc.domain.Data;
 import ccc.persistence.streams.CoreData;
@@ -49,14 +49,14 @@ public class DataRepositoryImplTest extends TestCase {
         new ByteArrayInputStream(new byte[]{1});
 
     private DataRepositoryImpl _dm;
-    private SearchEngine _se;
+    private SearchEngine2 _se;
     private CoreData _cd;
 
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-         _se = createStrictMock(SearchEngine.class);
+         _se = createStrictMock(SearchEngine2.class);
          _cd = createStrictMock(CoreData.class);
          _dm = new DataRepositoryImpl(_cd);
     }

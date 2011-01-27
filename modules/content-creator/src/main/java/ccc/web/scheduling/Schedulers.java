@@ -37,6 +37,7 @@ import ccc.api.core.Scheduler;
 public final class Schedulers {
 
     private static ActionScheduler actionScheduler;
+    private static SearchScheduler searchScheduler;
 
     private Schedulers() { super(); }
 
@@ -70,6 +71,39 @@ public final class Schedulers {
         if (null!=actionScheduler) {
             actionScheduler.cancel();
             actionScheduler = null;
+        }
+    }
+
+
+    /**
+     * Get the current action scheduler.
+     *
+     * @return The current scheduler or null if none exists.
+     */
+    public static synchronized Scheduler getSearchInstance() {
+        return searchScheduler;
+    }
+
+
+    /**
+     * Set the action action scheduler.
+     * <br>If a scheduler is already set this method does nothing.
+     *
+     * @param scheduler The action scheduler to set.
+     */
+    public static synchronized void setSearchInstance(
+                                              final SearchScheduler scheduler) {
+        if (null==searchScheduler) { searchScheduler = scheduler; }
+    }
+
+
+    /**
+     * Clear the action scheduler.
+     */
+    public static synchronized void clearSearchInstance() {
+        if (null!=searchScheduler) {
+            searchScheduler.cancel();
+            searchScheduler = null;
         }
     }
 }

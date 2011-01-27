@@ -28,6 +28,7 @@ package ccc.web.scheduling;
 
 import junit.framework.TestCase;
 import ccc.api.core.Actions2;
+import ccc.api.core.SearchEngine2;
 import ccc.commons.Testing;
 import ccc.plugins.security.Sessions;
 
@@ -111,11 +112,78 @@ public class SchedulersTest
         assertNull(Schedulers.getInstance());
     }
 
-    /** {@inheritDoc} */
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        Schedulers.clearInstance();
+    /**
+     * Test.
+     */
+    public void testSetGetSearchScheduler() {
+
+        // ARRANGE
+        final SearchScheduler s =
+            new SearchScheduler(
+                Testing.dummy(SearchEngine2.class),
+                Testing.dummy(Sessions.class));
+
+        // ACT
+        Schedulers.setSearchInstance(s);
+
+        // ASSERT
+        assertSame(s, Schedulers.getSearchInstance());
+    }
+
+    /**
+     * Test.
+     */
+    public void testSetSearchSchedulerIgnoredIfAlreadySet() {
+
+        // ARRANGE
+        final SearchScheduler s =
+            new SearchScheduler(
+                Testing.dummy(SearchEngine2.class),
+                Testing.dummy(Sessions.class));
+        final SearchScheduler t =
+            new SearchScheduler(
+                Testing.dummy(SearchEngine2.class),
+                Testing.dummy(Sessions.class));
+
+        // ACT
+        Schedulers.setSearchInstance(s);
+        Schedulers.setSearchInstance(t);
+
+        // ASSERT
+        assertSame(s, Schedulers.getSearchInstance());
+    }
+
+    /**
+     * Test.
+     */
+    public void testClearSearchScheduler() {
+
+        // ARRANGE
+        final SearchScheduler s =
+            new SearchScheduler(
+                Testing.dummy(SearchEngine2.class),
+                Testing.dummy(Sessions.class));
+        Schedulers.setSearchInstance(s);
+
+        // ACT
+        Schedulers.clearSearchInstance();
+
+        // ASSERT
+        assertNull(Schedulers.getSearchInstance());
+    }
+
+    /**
+     * Test.
+     */
+    public void testClearSearchSchedulerHandlesUnset() {
+
+        // ARRANGE
+
+        // ACT
+        Schedulers.clearSearchInstance();
+
+        // ASSERT
+        assertNull(Schedulers.getSearchInstance());
     }
 
 
@@ -131,5 +199,14 @@ public class SchedulersTest
 
         // ASSERT
 
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        Schedulers.clearInstance();
+        Schedulers.clearSearchInstance();
     }
 }

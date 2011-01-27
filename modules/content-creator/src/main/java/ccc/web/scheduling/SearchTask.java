@@ -26,59 +26,55 @@
  */
 package ccc.web.scheduling;
 
-import static org.mockito.Mockito.*;
-
 import java.util.TimerTask;
 
-import junit.framework.TestCase;
-import ccc.api.core.Actions2;
-import ccc.commons.Testing;
+import org.apache.log4j.Logger;
+
+import ccc.api.core.SearchEngine2;
+import ccc.api.types.DBC;
+import ccc.api.types.Permission;
 import ccc.plugins.security.Sessions;
 
 
 /**
- * Tests for the {@link ExecuteActionsTask} class.
+ * A timer task that performs a full search re-index.
  *
  * @author Civic Computing Ltd.
  */
-public class ExecuteActionsTaskTest
+public class SearchTask
     extends
-        TestCase {
+        TimerTask {
+
+    private static final Logger LOG = Logger.getLogger(SearchTask.class);
+
+    private final SearchEngine2 _search;
+    private final Sessions      _sessions;
+
 
     /**
-     * Test.
+     * Constructor.
+     *
+     * @param search  The search service to invoke.
+     * @param session The session under which this task will run.
      */
-    public void testRun() {
-
-        // ARRANGE
-        final Actions2 actions = mock(Actions2.class);
-        final TimerTask task =
-            new ExecuteActionsTask(actions, Testing.stub(Sessions.class));
-
-        // ACT
-        task.run();
-
-        // ASSERT
-        verify(actions).executeAll();
+    public SearchTask(final SearchEngine2 search, final Sessions session) {
+        _search = DBC.require().notNull(search);
+        _sessions = DBC.require().notNull(session);
     }
 
-    /**
-     * Test.
-     */
-    public void testRunHandlesExceptions() {
 
-        // EXPECT
-        final Actions2 actions = mock(Actions2.class);
-        doThrow(new RuntimeException()).when(actions).executeAll();
-
-        // ARRANGE
-        final TimerTask task =
-            new ExecuteActionsTask(actions, Testing.stub(Sessions.class));
-
-        // ACT
-        task.run();
-
-        // ASSERT
-        verify(actions).executeAll();
+    /** {@inheritDoc} */
+    @Override
+    public void run() {
+        try {
+            _sessions.pushRunAsRole(Permission.SEARCH_REINDEX);
+            try {
+                _search.index();
+            } finally {
+                _sessions.popRunAsRole();
+            }
+        } catch (final RuntimeException e) {
+            LOG.error("Error running search re-index.", e);
+        }
     }
 }

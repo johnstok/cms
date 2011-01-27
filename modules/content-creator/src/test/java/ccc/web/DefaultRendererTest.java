@@ -27,7 +27,7 @@
 package ccc.web;
 
 import junit.framework.TestCase;
-import ccc.api.core.SearchEngine;
+import ccc.api.core.SearchEngine2;
 import ccc.commons.Testing;
 
 
@@ -458,5 +458,5 @@ public class DefaultRendererTest
 
 
 //    private DefaultRenderer _renderer;
-    private final SearchEngine _se = Testing.dummy(SearchEngine.class);
+    private final SearchEngine2 _se = Testing.dummy(SearchEngine2.class);
 }

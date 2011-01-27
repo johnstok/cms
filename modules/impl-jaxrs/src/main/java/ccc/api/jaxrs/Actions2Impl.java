@@ -40,7 +40,6 @@ import ccc.api.types.SortOrder;
 
 /**
  * Converts an {@link Actions2} object to the {@link Actions} API.
- * <br>Methods of the {@link Scheduler} API aren't supported.
  *
  * @author Civic Computing Ltd.
  */
@@ -70,11 +69,13 @@ public class Actions2Impl
         return _scheduler.isRunning();
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void start() {
         _scheduler.start();
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -114,6 +115,7 @@ public class Actions2Impl
         return _actions.listCompletedActions(sort, sortOrder, pageNo, pageSize);
     }
 
+
     /** {@inheritDoc} */
     @Override
     public PagedCollection<ActionSummary> listPendingActions(
@@ -124,10 +126,10 @@ public class Actions2Impl
         return _actions.listPendingActions(sort, sortOrder, pageNo, pageSize);
     }
 
+
     /** {@inheritDoc} */
     @Override
     public ActionSummary retrieve(final UUID actionId) {
         return _actions.retrieve(actionId);
     }
-
 }

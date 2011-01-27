@@ -46,6 +46,7 @@ import ccc.api.core.Groups;
 import ccc.api.core.Pages;
 import ccc.api.core.Resources;
 import ccc.api.core.SearchEngine;
+import ccc.api.core.SearchEngine2;
 import ccc.api.core.Security;
 import ccc.api.core.ServiceLocator;
 import ccc.api.core.Templates;
@@ -57,7 +58,7 @@ import ccc.api.jaxrs.FoldersImpl;
 import ccc.api.jaxrs.GroupsImpl;
 import ccc.api.jaxrs.PagesImpl;
 import ccc.api.jaxrs.ResourcesImpl;
-import ccc.api.jaxrs.SearchImpl;
+import ccc.api.jaxrs.Search2Impl;
 import ccc.api.jaxrs.TemplatesImpl;
 import ccc.api.jaxrs.UsersImpl;
 import ccc.plugins.PluginFactory;
@@ -80,16 +81,16 @@ public abstract class AbstractCCCServlet
     private static final Logger LOG =
         Logger.getLogger(AbstractCCCServlet.class);
 
-    @EJB(name = SearchEngine.NAME) private transient SearchEngine _search;
-    @EJB(name = Users.NAME)        private transient Users        _users;
-    @EJB(name = Pages.NAME)        private transient Pages        _pages;
-    @EJB(name = Folders.NAME)      private transient Folders      _folders;
-    @EJB(name = Files.NAME)        private transient Files        _files;
-    @EJB(name = Resources.NAME)    private transient Resources    _resources;
-    @EJB(name = Actions.NAME)      private transient Actions2     _actions;
-    @EJB(name = Templates.NAME)    private transient Templates    _templates;
-    @EJB(name = Comments.NAME)     private transient Comments     _comments;
-    @EJB(name = Groups.NAME)       private transient Groups       _groups;
+    @EJB(name = SearchEngine.NAME) private transient SearchEngine2 _search;
+    @EJB(name = Users.NAME)        private transient Users         _users;
+    @EJB(name = Pages.NAME)        private transient Pages         _pages;
+    @EJB(name = Folders.NAME)      private transient Folders       _folders;
+    @EJB(name = Files.NAME)        private transient Files         _files;
+    @EJB(name = Resources.NAME)    private transient Resources     _resources;
+    @EJB(name = Actions.NAME)      private transient Actions2      _actions;
+    @EJB(name = Templates.NAME)    private transient Templates     _templates;
+    @EJB(name = Comments.NAME)     private transient Comments      _comments;
+    @EJB(name = Groups.NAME)       private transient Groups        _groups;
 
 
 
@@ -250,7 +251,7 @@ public abstract class AbstractCCCServlet
     /** {@inheritDoc} */
     @Override
     public SearchEngine getSearch() {
-        return new SearchImpl(_search);
+        return new Search2Impl(_search, Schedulers.getSearchInstance());
     }
 
 

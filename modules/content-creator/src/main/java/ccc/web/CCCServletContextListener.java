@@ -33,9 +33,12 @@ import org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap;
 
 import ccc.api.core.Actions;
 import ccc.api.core.Actions2;
+import ccc.api.core.SearchEngine;
+import ccc.api.core.SearchEngine2;
 import ccc.plugins.PluginFactory;
 import ccc.web.scheduling.ActionScheduler;
 import ccc.web.scheduling.Schedulers;
+import ccc.web.scheduling.SearchScheduler;
 
 
 /**
@@ -47,11 +50,15 @@ public class CCCServletContextListener
     extends
         ResteasyBootstrap {
 
-    @EJB(name = Actions.NAME) private Actions2 _actions;
+    @EJB(name = Actions.NAME)      private Actions2      _actions;
+    @EJB(name = SearchEngine.NAME) private SearchEngine2 _search;
 
     /** {@inheritDoc} */
     @Override
     public void contextInitialized(final ServletContextEvent event) {
+        Schedulers.setSearchInstance(
+            new SearchScheduler(
+                _search, new PluginFactory().createSessions()));
         Schedulers.setInstance(
             new ActionScheduler(
                 _actions, new PluginFactory().createSessions()));
@@ -63,5 +70,6 @@ public class CCCServletContextListener
     public void contextDestroyed(final ServletContextEvent event) {
         super.contextDestroyed(event);
         Schedulers.clearInstance();
+        Schedulers.clearSearchInstance();
     }
 }

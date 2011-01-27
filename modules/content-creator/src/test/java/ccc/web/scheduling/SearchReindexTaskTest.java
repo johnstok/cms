@@ -31,17 +31,17 @@ import static org.mockito.Mockito.*;
 import java.util.TimerTask;
 
 import junit.framework.TestCase;
-import ccc.api.core.Actions2;
+import ccc.api.core.SearchEngine2;
 import ccc.commons.Testing;
 import ccc.plugins.security.Sessions;
 
 
 /**
- * Tests for the {@link ExecuteActionsTask} class.
+ * Tests for the {@link SearchTask} class.
  *
  * @author Civic Computing Ltd.
  */
-public class ExecuteActionsTaskTest
+public class SearchReindexTaskTest
     extends
         TestCase {
 
@@ -51,15 +51,15 @@ public class ExecuteActionsTaskTest
     public void testRun() {
 
         // ARRANGE
-        final Actions2 actions = mock(Actions2.class);
+        final SearchEngine2 search = mock(SearchEngine2.class);
         final TimerTask task =
-            new ExecuteActionsTask(actions, Testing.stub(Sessions.class));
+            new SearchTask(search, Testing.stub(Sessions.class));
 
         // ACT
         task.run();
 
         // ASSERT
-        verify(actions).executeAll();
+        verify(search).index();
     }
 
     /**
@@ -68,17 +68,17 @@ public class ExecuteActionsTaskTest
     public void testRunHandlesExceptions() {
 
         // EXPECT
-        final Actions2 actions = mock(Actions2.class);
-        doThrow(new RuntimeException()).when(actions).executeAll();
+        final SearchEngine2 search = mock(SearchEngine2.class);
+        doThrow(new RuntimeException()).when(search).index();
 
         // ARRANGE
         final TimerTask task =
-            new ExecuteActionsTask(actions, Testing.stub(Sessions.class));
+            new SearchTask(search, Testing.stub(Sessions.class));
 
         // ACT
         task.run();
 
         // ASSERT
-        verify(actions).executeAll();
+        verify(search).index();
     }
 }
