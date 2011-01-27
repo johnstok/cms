@@ -74,9 +74,9 @@ public interface ResourceRepository {
      * Look up a resource.
      *
      * @param contentPath ResourcePath The path to the resource.
+     * Throws EntityNotFoundException if the resource doesn't exist.
      *
-     * @return Resource The resource at the specified path, or NULL if it
-     *  doesn't exist.
+     * @return Resource The resource at the specified path.
      */
     ResourceEntity lookup(ResourcePath contentPath);
 

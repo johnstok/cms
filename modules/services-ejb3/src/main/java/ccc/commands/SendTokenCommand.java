@@ -37,6 +37,7 @@ import ccc.api.core.File;
 import ccc.api.core.MemoryServiceLocator;
 import ccc.api.core.UserCriteria;
 import ccc.api.exceptions.CCException;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.UsernameNotFoundException;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
@@ -106,9 +107,13 @@ public class SendTokenCommand  extends
         String fromAddress = "noreply@civicuk.com"; 
         String subject = "Password reset"; 
         String mailTemplate = "token: "+token;
-        
-        ResourceEntity resource = getRepository().lookup(
-            new ResourcePath("/assets/scripts/reset_email.txt"));
+        ResourceEntity resource = null;
+        try {
+            resource = getRepository().lookup(
+                new ResourcePath("/assets/scripts/reset_email.txt"));
+        } catch (EntityNotFoundException e) {
+            // no-op
+        }
         
         Mailer m = new PluginFactory().createMailer();
         // Get content from CMS.
