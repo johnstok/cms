@@ -32,8 +32,8 @@ import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.EditTemplateDialog;
-import ccc.client.gwt.widgets.ResourceTable;
 import ccc.plugins.s11n.json.TemplateSerializer;
 
 import com.google.gwt.json.client.JSONObject;
@@ -50,7 +50,7 @@ public class OpenUpdateTemplateAction
         RemotingAction {
 
     private final ResourceSummary _template;
-    private final ResourceTable _table;
+    private final SingleSelectionModel _table;
 
     /**
      * Constructor.
@@ -58,7 +58,7 @@ public class OpenUpdateTemplateAction
      * @param template The template to update.
      */
     public OpenUpdateTemplateAction(final ResourceSummary template,
-                                final ResourceTable resourceTable) {
+                                final SingleSelectionModel resourceTable) {
         super(UI_CONSTANTS.editTemplate());
         _table = resourceTable;
         _template = template;

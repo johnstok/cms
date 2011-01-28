@@ -27,6 +27,7 @@
 
 package ccc.client.gwt.widgets;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -36,6 +37,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.remoting.GetResourcesPagedAction;
 
@@ -81,9 +83,15 @@ public class ResourceTree extends AbstractResourceTree {
                                 final AsyncCallback<List<BeanModel>> callback) {
 
                 if (null==loadConfig || !(loadConfig instanceof BeanModel)) {
+                    List<ResourceSummary> list = new ArrayList<ResourceSummary>();
+                    list.add(getRoot());
+                    ResourceSummary search = new ResourceSummary();
+                    search.setName(I18n.UI_CONSTANTS.search()); 
+                    search.setTitle(I18n.UI_CONSTANTS.search());
+                    search.setType(ResourceType.SEARCH);
+                    list.add(search);
                     callback.onSuccess(
-                        DataBinding.bindResourceSummary(
-                            Collections.singletonList(getRoot())));
+                        DataBinding.bindResourceSummary( Collections.unmodifiableList(list)));
                 } else {
                     final ResourceSummary parent =
                         ((BeanModel) loadConfig).<ResourceSummary>getBean();

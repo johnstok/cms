@@ -35,7 +35,6 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.EditTextFileDialog;
-import ccc.client.gwt.widgets.ResourceTable;
 import ccc.client.presenters.EditTextFilePresenter;
 import ccc.plugins.s11n.json.FileSerializer;
 
@@ -60,7 +59,7 @@ extends
      *
      * @param selectionModel The selection model.
      */
-    public OpenEditTextFileAction(final ResourceTable selectionModel) {
+    public OpenEditTextFileAction(final SingleSelectionModel selectionModel) {
         super(UI_CONSTANTS.updateTextFile());
         _selectionModel = selectionModel;
     }

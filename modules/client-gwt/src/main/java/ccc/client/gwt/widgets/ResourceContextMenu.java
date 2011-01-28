@@ -47,6 +47,7 @@ import ccc.client.gwt.actions.OpenRenameAction;
 import ccc.client.gwt.actions.OpenUpdateFolderAction;
 import ccc.client.gwt.actions.PreviewAction;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.ApplyWorkingCopyAction;
 import ccc.client.gwt.remoting.ClearWorkingCopyAction;
 import ccc.client.gwt.remoting.ComputeTemplateAction;
@@ -86,7 +87,7 @@ public class ResourceContextMenu
     extends
         AbstractContextMenu {
 
-    private final ResourceTable _table;
+    private final SingleSelectionModel _table;
     private final Globals _globals = new GlobalsImpl();
 
     // Actions
@@ -112,6 +113,7 @@ public class ResourceContextMenu
     private final Action _editCacheAction;
     private final Action _deleteResourceAction;
     private final Action _editTextFileAction;
+    private final ResourceSummary _root;
 
     /**
      * Constructor.
@@ -119,8 +121,10 @@ public class ResourceContextMenu
      * @param tbl The table this menu will work for.
      * @param user The UserSummary of the currently logged in user.
      */
-    ResourceContextMenu(final ResourceTable tbl) {
+    ResourceContextMenu(final SingleSelectionModel tbl,
+                              ResourceSummary root) {
         _table = tbl;
+        _root = root;
 
         _publishAction = new PublishAction(_table);
         _includeMainMenu = new IncludeInMainMenuAction(_table);
@@ -130,7 +134,7 @@ public class ResourceContextMenu
         _updateMetadataAction = new OpenUpdateMetadataAction(_table);
         _viewHistory = new ViewHistoryAction(_table);
         _renameAction = new OpenRenameAction(_table);
-        _moveAction = new OpenMoveAction(_table, _table.root());
+        _moveAction = new OpenMoveAction(_table, _root);
         _unlockAction = new UnlockAction(_table);
         _lockAction = new LockAction(_table);
         _previewAction = new PreviewAction(_table, false);
@@ -454,7 +458,7 @@ public class ResourceContextMenu
 
     // TODO: Factor these methods to actions
     private void updateAlias(final ResourceSummary item) {
-        new OpenUpdateAliasAction(item, _table.root()).execute();
+        new OpenUpdateAliasAction(item, _root).execute();
     }
 
     private void updatePage(final ResourceSummary item) {

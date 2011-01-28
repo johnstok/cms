@@ -40,10 +40,10 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.UpdateWorkingCopyAction;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.PageElement;
-import ccc.client.gwt.widgets.ResourceTable;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -62,7 +62,7 @@ public class UpdatePageDialog
 
     private final Set<Paragraph> _paras;
     private final Template _template;
-    private final ResourceTable _rt;
+    private final SingleSelectionModel _rt;
     private final EditPagePanel _panel;
 
     private Button _saveDraftButton;
@@ -79,7 +79,7 @@ public class UpdatePageDialog
      */
     public UpdatePageDialog(final Page page,
                             final Template template,
-                            final ResourceTable rt) {
+                            final SingleSelectionModel rt) {
         super(I18n.UI_CONSTANTS.updateContent(),
               new GlobalsImpl());
         _rt = rt;
@@ -190,7 +190,7 @@ public class UpdatePageDialog
      *
      * @return Returns the _rt.
      */
-    public ResourceTable rt() {
+    public SingleSelectionModel rt() {
         return _rt;
     }
 

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd.
+ * Copyright (c) 2011 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -27,31 +27,39 @@
 package ccc.client.gwt.widgets;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourcePath;
-import ccc.api.types.ResourceType;
+import ccc.api.types.SortOrder;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.gwt.remoting.GetResourcesPagedAction;
 
+import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
-import com.extjs.gxt.ui.client.data.BaseFilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
+import com.extjs.gxt.ui.client.data.RpcProxy;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.form.CheckBox;
+import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
@@ -59,20 +67,20 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.GridView;
 import com.extjs.gxt.ui.client.widget.grid.GridViewConfig;
-import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
-import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
+import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * A panel that displays resources using {@link Grid}.
+ * A search panel that displays resources using {@link Grid}.
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceTable
+public class SearchTable
     extends
         TablePanel
     implements
@@ -80,22 +88,18 @@ public class ResourceTable
         SingleSelectionModel,
         ColumnConfigSupport {
 
-    private static final int FILTER_MENU_WIDTH = 190;
-
     private ListStore<BeanModel> _detailsStore =
         new ListStore<BeanModel>();
-
-    private final PagingLoader<PagingLoadResult<BeanModel>> _loader;
 
     private final ResourceSummary _root;
     private final ResourceTree _tree;
     private final Grid<BeanModel> _grid;
     private final PagingToolBar _pagerBar;
-    private final FolderToolBar _toolBar;
-
-    private final GridFilters _filters;
-
-    private final ResourceProxy _proxy;
+    private final ToolBar _toolBar;
+    
+    private final Button _searchButton;
+    private final CheckBox _locked;
+    private final TextField<String> _searchString;
     
     private final String _preferences;
 
@@ -106,7 +110,7 @@ public class ResourceTable
      * @param root ResourceSummary
      * @param tree FolderResourceTree
      */
-    ResourceTable(final ResourceSummary root,
+    SearchTable(final ResourceSummary root,
                   final ResourceTree tree,
                   final String preferences) {
 
@@ -114,7 +118,24 @@ public class ResourceTable
         _preferences = preferences;
         _root = root;
         _tree = tree;
-        _toolBar = new FolderToolBar(this);
+        _toolBar = new ToolBar();
+        
+
+        _searchString = new TextField<String>();
+        _searchString.setToolTip(UI_CONSTANTS.searchToolTip());
+        
+        _locked = new CheckBox();
+        _locked.setBoxLabel(UI_CONSTANTS.locked());
+        _locked.setFieldLabel(UI_CONSTANTS.locked());
+        _locked.setValue(Boolean.FALSE);
+        
+        _searchButton = new Button(UI_CONSTANTS.search());
+        _searchButton.addListener(Events.Select, new SearchListener());
+        
+        _toolBar.add(_searchString);
+        _toolBar.add(_locked);
+        _toolBar.add(_searchButton);
+        
         setTopComponent(_toolBar);
         setHeading(UI_CONSTANTS.resourceDetails());
         setLayout(new FitLayout());
@@ -128,48 +149,15 @@ public class ResourceTable
         createColumnConfigs(configs);
         applyPreferences(configs);
         
-        _proxy = new ResourceProxy(null, null);
-
-        _loader = new BasePagingLoader<PagingLoadResult<BeanModel>>(_proxy) {
-            @Override
-            protected Object newLoadConfig() {
-                     final BasePagingLoadConfig config =
-                         new BaseFilterPagingLoadConfig();
-                     return config;
-            }
-        };
-        _loader.setRemoteSort(true);
-        _detailsStore = new ListStore<BeanModel>(_loader);
 
         final ColumnModel cm = new ColumnModel(configs);
         _grid = new Grid<BeanModel>(_detailsStore, cm);
         setUpGrid();
         _grid.setContextMenu(contextMenu);
         _grid.addPlugin(gp);
-        _grid.addListener(
-            Events.CellDoubleClick,
-            new Listener<GridEvent<BeanModel>>(){
-                public void handleEvent(final GridEvent<BeanModel> ge) {
-                    final ResourceSummary rs = ge.getModel().getBean();
-                    if (ResourceType.FOLDER==rs.getType()) {
-                        _tree.clearSelection();
-                        displayResourcesFor(rs);
-                    }
-                }
-            });
 
         _pagerBar = new PagingToolBar(PAGING_ROW_COUNT);
         setBottomComponent(_pagerBar);
-        _pagerBar.bind(_loader);
-
-        _filters = new GridFilters();
-        final StringFilter nameFilter = new StringFilter("name");
-        nameFilter.getMenu().setAutoWidth(false);
-        nameFilter.getMenu().setWidth(FILTER_MENU_WIDTH);
-        _filters.addFilter(nameFilter);
-        _filters.setLocal(false);
-        _grid.addPlugin(_filters);
-
         add(_grid);
     }
 
@@ -195,24 +183,6 @@ public class ResourceTable
      */
     public ResourceSummary root() {
         return _root;
-    }
-
-
-    /**
-     * Updated this table to render the children of the specified TreeItem.
-     *
-     * @param folder The parent folder for the records to display in the table.
-     */
-    public void displayResourcesFor(final ResourceSummary folder) {
-        if (null==folder) { return; }
-        if (_proxy.isDisplaying(folder.getId())) {
-            return; // Same folder.
-        }
-        _proxy.setFolder(folder);
-        final ColumnModel cm = _grid.getColumnModel();
-        _filters.clearFilters();
-        _grid.reconfigure(_detailsStore, cm);
-        _loader.load(0, PAGING_ROW_COUNT);
     }
 
 
@@ -415,10 +385,10 @@ public class ResourceTable
 
 
     private void addResource(final ResourceSummary model) {
-        if (_proxy.isDisplaying(model.getParent())) {
-            final BeanModel tBean = DataBinding.bindResourceSummary(model);
-            _detailsStore.add(tBean);
-        }
+//        if (_proxy.isDisplaying(model.getParent())) {
+//            final BeanModel tBean = DataBinding.bindResourceSummary(model);
+//            _detailsStore.add(tBean);
+//        }
     }
 
 
@@ -508,7 +478,7 @@ public class ResourceTable
     /** {@inheritDoc} */
     @Override
     public ResourceSummary currentFolder() {
-        return _proxy.getFolder();
+        throw new UnsupportedOperationException("Method not implemented.");
     }
     
     public String visibleColumns() {
@@ -530,5 +500,89 @@ public class ResourceTable
     @Override
     public String preferenceName() {
         return RESOURCE_COLUMNS;
+    }
+    
+    /**
+     * Listener for user search.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private final class SearchListener implements Listener<ComponentEvent> {
+
+        public void handleEvent(final ComponentEvent be) {
+            if (_searchString.getValue() == null) {
+                return;
+            }
+            _detailsStore.removeAll();
+            updatePager();
+        }
+    }
+    
+
+    private void updatePager(){
+
+        final RpcProxy<PagingLoadResult<BeanModel>> proxy =
+            new RpcProxy<PagingLoadResult<BeanModel>>() {
+
+            @Override
+            protected void load(final Object loadConfig,
+                                final AsyncCallback<PagingLoadResult
+                                <BeanModel>> callback) {
+                if (null==loadConfig
+                    || !(loadConfig instanceof BasePagingLoadConfig)) {
+                    final PagingLoadResult<BeanModel> plr =
+                       new BasePagingLoadResult<BeanModel>(null);
+                    callback.onSuccess(plr);
+                } else {
+                    final BasePagingLoadConfig config =
+                        (BasePagingLoadConfig) loadConfig;
+
+                    final int page =  config.getOffset()/config.getLimit()+1;
+                    final SortOrder order = (
+                        config.getSortDir() == Style.SortDir.ASC
+                        ? SortOrder.ASC : SortOrder.DESC);
+
+                    final ResourceCriteria criteria = new ResourceCriteria();
+                    criteria.setName(_searchString.getValue().replace('*', '%')+"%");
+                    criteria.setSortField(config.getSortField());
+                    criteria.setSortOrder(order);
+                    if (_locked.getValue().booleanValue()) {
+                        criteria.setLocked(true);
+                    }
+
+                    new GetResourcesPagedAction(criteria,
+                        page,
+                        config.getLimit()) {
+
+                        /** {@inheritDoc} */
+                        @Override protected void onFailure(final Throwable t) {
+                            callback.onFailure(t);
+                        }
+
+                        /** {@inheritDoc} */
+                        @Override protected void execute(
+                                 final Collection<ResourceSummary> children,
+                                 final int totalCount) {
+                            final List<BeanModel> results =
+                                DataBinding.bindResourceSummary(children);
+
+                            final PagingLoadResult<BeanModel> plr =
+                                new BasePagingLoadResult<BeanModel>(
+                            results, config.getOffset(), totalCount);
+                            callback.onSuccess(plr);
+                        }
+                    }.execute();
+                }
+            }
+        };
+
+
+        final PagingLoader loader = new BasePagingLoader(proxy);
+        loader.setRemoteSort(true);
+        _detailsStore = new ListStore<BeanModel>(loader);
+        _pagerBar.bind(loader);
+        loader.load(0, PAGING_ROW_COUNT);
+        final ColumnModel cm = _grid.getColumnModel();
+        _grid.reconfigure(_detailsStore, cm);
     }
 }
