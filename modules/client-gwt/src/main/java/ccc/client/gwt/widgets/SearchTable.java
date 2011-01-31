@@ -58,6 +58,7 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
+import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -110,7 +111,9 @@ public class SearchTable
         _searchButton.addListener(Events.Select, new SearchListener());
         
         _toolBar.add(_searchString);
+        _toolBar.add(new SeparatorToolItem());
         _toolBar.add(_locked);
+        _toolBar.add(new SeparatorToolItem());
         _toolBar.add(_searchButton);
         
         setTopComponent(_toolBar);
@@ -184,9 +187,6 @@ public class SearchTable
     private final class SearchListener implements Listener<ComponentEvent> {
 
         public void handleEvent(final ComponentEvent be) {
-            if (_searchString.getValue() == null) {
-                return;
-            }
             _detailsStore.removeAll();
             updatePager();
         }
@@ -217,7 +217,11 @@ public class SearchTable
                         ? SortOrder.ASC : SortOrder.DESC);
 
                     final ResourceCriteria criteria = new ResourceCriteria();
-                    criteria.setName(_searchString.getValue().replace('*', '%')+"%");
+                    String term = "%";
+                    if (_searchString.getValue() != null) {
+                        term = _searchString.getValue().replace('*', '%')+"%";
+                    }
+                    criteria.setName(term);
                     criteria.setSortField(config.getSortField());
                     criteria.setSortOrder(order);
                     if (_locked.getValue().booleanValue()) {
