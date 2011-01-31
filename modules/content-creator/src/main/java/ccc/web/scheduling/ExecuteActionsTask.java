@@ -26,56 +26,33 @@
  */
 package ccc.web.scheduling;
 
-import java.util.TimerTask;
-
-import org.apache.log4j.Logger;
-
 import ccc.api.core.Actions2;
 import ccc.api.types.DBC;
-import ccc.api.types.Permission;
-import ccc.plugins.security.Sessions;
 
 
 /**
- * A timer task that executes all outstanding actions.
+ * A runnable that executes all outstanding actions.
  *
  * @author Civic Computing Ltd.
  */
 public class ExecuteActionsTask
-    extends
-        TimerTask {
-
-    private static final Logger LOG =
-        Logger.getLogger(ExecuteActionsTask.class);
+    implements
+        Runnable {
 
     private final Actions2 _actions;
-    private final Sessions _sessions;
 
 
     /**
      * Constructor.
      *
      * @param actions The actions service to invoke.
-     * @param session The session under which this task will run.
      */
-    public ExecuteActionsTask(final Actions2 actions, final Sessions session) {
+    public ExecuteActionsTask(final Actions2 actions) {
         _actions = DBC.require().notNull(actions);
-        _sessions = DBC.require().notNull(session);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void run() {
-        try {
-            _sessions.pushRunAsRole(Permission.ACTION_EXECUTE);
-            try {
-                _actions.executeAll();
-            } finally {
-                _sessions.popRunAsRole();
-            }
-        } catch (final RuntimeException e) {
-            LOG.error("Error executing actions.", e);
-        }
-    }
+    public void run() { _actions.executeAll(); }
 }

@@ -28,33 +28,64 @@ package ccc.web.scheduling;
 
 import static org.mockito.Mockito.*;
 import junit.framework.TestCase;
-import ccc.api.core.SearchEngine2;
+import ccc.commons.Exceptions;
+import ccc.plugins.security.Sessions;
 
 
 /**
- * Tests for the {@link SearchTask} class.
+ * Tests for the {@link RunAsRunnable} class.
  *
  * @author Civic Computing Ltd.
  */
-public class SearchReindexTaskTest
+public class RunAsRunnableTest
     extends
         TestCase {
 
     /**
      * Test.
      */
-    public void testRun() {
+    public void testRolePushedAndPoppedWhenDelegateSucceeds() {
 
         // EXPECT
-        final SearchEngine2 search = mock(SearchEngine2.class);
+        final Runnable delegate = mock(Runnable.class);
+        final Sessions session = mock(Sessions.class);
 
         // ARRANGE
-        final Runnable task = new SearchTask(search);
+        final Runnable runAs = new RunAsRunnable(session, "foo", delegate);
 
         // ACT
-        task.run();
+        runAs.run();
 
         // ASSERT
-        verify(search).index();
+        verify(session).pushRunAsRole("foo");
+        verify(session).popRunAsRole();
+
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testRolePushedAndPoppedWhenDelegateFails() {
+
+        // EXPECT
+        final Runnable delegate = mock(Runnable.class);
+        doThrow(new RuntimeException()).when(delegate).run();
+        final Sessions session = mock(Sessions.class);
+
+        // ARRANGE
+        final Runnable runAs = new RunAsRunnable(session, "foo", delegate);
+
+        // ACT
+        try {
+            runAs.run();
+        } catch (final RuntimeException e) {
+            Exceptions.swallow(e);
+        }
+
+        // ASSERT
+        verify(session).pushRunAsRole("foo");
+        verify(session).popRunAsRole();
+
     }
 }

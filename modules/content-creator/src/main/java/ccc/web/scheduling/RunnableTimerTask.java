@@ -26,33 +26,43 @@
  */
 package ccc.web.scheduling;
 
-import ccc.api.core.SearchEngine2;
+import java.util.TimerTask;
+
+import org.apache.log4j.Logger;
+
 import ccc.api.types.DBC;
 
 
 /**
- * A runnable that performs a full search re-index.
+ * Timer task that invokes a {@link Runnable} object.
  *
  * @author Civic Computing Ltd.
  */
-public class SearchTask
-    implements
-        Runnable {
+public class RunnableTimerTask
+    extends
+        TimerTask {
 
-    private final SearchEngine2 _search;
+    private static final Logger LOG = Logger.getLogger(RunnableTimerTask.class);
+
+    private final Runnable _runnable;
 
 
     /**
      * Constructor.
      *
-     * @param search  The search service to invoke.
+     * @param runnable The runnable object the task will invoke.
      */
-    public SearchTask(final SearchEngine2 search) {
-        _search = DBC.require().notNull(search);
+    public RunnableTimerTask(final Runnable runnable) {
+        _runnable = DBC.require().notNull(runnable);
     }
-
 
     /** {@inheritDoc} */
     @Override
-    public void run() { _search.index(); }
+    public void run() {
+        try {
+            _runnable.run();
+        } catch (final RuntimeException e) {
+            LOG.error("Error executing task.", e);
+        }
+    }
 }

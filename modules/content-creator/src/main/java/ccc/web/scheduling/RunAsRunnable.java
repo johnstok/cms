@@ -26,33 +26,49 @@
  */
 package ccc.web.scheduling;
 
-import ccc.api.core.SearchEngine2;
 import ccc.api.types.DBC;
+import ccc.plugins.security.Sessions;
 
 
 /**
- * A runnable that performs a full search re-index.
+ * Runs a specified runnable under a specified role.
  *
  * @author Civic Computing Ltd.
  */
-public class SearchTask
+public class RunAsRunnable
     implements
         Runnable {
 
-    private final SearchEngine2 _search;
+    private final String   _role;
+    private final Sessions _sessions;
+    private final Runnable _delegate;
 
 
     /**
      * Constructor.
      *
-     * @param search  The search service to invoke.
+     * @param role     The role this runnable will run under.
+     * @param delegate The runnable to be invoked.
+     * @param session  The session under which this task will run.
      */
-    public SearchTask(final SearchEngine2 search) {
-        _search = DBC.require().notNull(search);
+    public RunAsRunnable(final Sessions session,
+                         final String role,
+                         final Runnable delegate) {
+        _role     = DBC.require().notEmpty(role);
+        _delegate = DBC.require().notNull(delegate);
+        _sessions = DBC.require().notNull(session);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void run() { _search.index(); }
+    public void run() {
+        _sessions.pushRunAsRole(_role);
+        try {
+            _delegate.run();
+        } finally {
+            _sessions.popRunAsRole();
+        }
+    }
+
 }

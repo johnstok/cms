@@ -26,37 +26,24 @@
  */
 package ccc.web.scheduling;
 
-import java.util.Timer;
-
-import org.apache.log4j.Logger;
-
-import ccc.api.core.Scheduler;
 import ccc.api.core.SearchEngine2;
 import ccc.api.types.DBC;
+import ccc.api.types.Permission;
 import ccc.plugins.security.Sessions;
 import ccc.web.jaxrs.CCCProperties;
 
 
 /**
- * Search scheduler implementation that uses the JRE {@link Timer} class.
+ * Scheduler for search re-indexing.
  *
  * @author Civic Computing Ltd.
  */
 public class SearchScheduler
-    implements
-        Scheduler {
+    extends
+        AbstractScheduler {
 
-    private static final Logger LOG = Logger.getLogger(SearchScheduler.class);
-
-    private static final int TIMEOUT_DELAY_SECS = 60*60*1000;
-    private static final int INITIAL_DELAY_SECS = 30*1000;
-
-    private final Timer         _actionTimer =
-        new Timer("CC-search-"+CCCProperties.getAppName(), true);
     private final SearchEngine2 _search;
     private final Sessions      _sessions;
-
-    private SearchTask _task;
 
 
     /**
@@ -67,6 +54,7 @@ public class SearchScheduler
      *
      */
     public SearchScheduler(final SearchEngine2 search, final Sessions session) {
+        super("CC-search-"+CCCProperties.getAppName());
         _search = DBC.require().notNull(search);
         _sessions = DBC.require().notNull(session);
     }
@@ -74,51 +62,16 @@ public class SearchScheduler
 
     /** {@inheritDoc} */
     @Override
-    public synchronized boolean isRunning() {
-        return null!=_task;
-    }
+    void schedule() {
+        final int delay = 30*1000;
+        final int period = 60*60*1000;
 
+        final Runnable r =
+            new RunAsRunnable(
+                _sessions,
+                Permission.SEARCH_REINDEX,
+                new SearchTask(_search));
 
-    /** {@inheritDoc} */
-    @Override
-    public synchronized void start() {
-        LOG.debug("Starting scheduler.");
-
-        // TODO: Check for termination?
-        if (isRunning()) {
-            LOG.debug("Scheduler already running.");
-        } else {
-            _task = new SearchTask(_search, _sessions);
-            _actionTimer.schedule(
-                _task, INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS);
-            LOG.debug("Started scheduler.");
-            // Handle IllegalStateException for stopped timer thread?
-        }
-
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public synchronized void stop() {
-        LOG.debug("Stopping scheduler.");
-
-        // TODO: Check for termination?
-        if (!isRunning()) {
-            LOG.debug("Scheduler already stopped.");
-        } else {
-            _task.cancel();
-            _task = null;
-            LOG.debug("Stopped scheduler.");
-        }
-    }
-
-
-    /**
-     * Terminates this scheduler - it may not be used again.
-     */
-    public synchronized void cancel() {
-        stop();
-        _actionTimer.cancel();
+        schedule(r, period, delay);
     }
 }

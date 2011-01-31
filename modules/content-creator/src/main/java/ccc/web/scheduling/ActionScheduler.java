@@ -26,37 +26,24 @@
  */
 package ccc.web.scheduling;
 
-import java.util.Timer;
-
-import org.apache.log4j.Logger;
-
 import ccc.api.core.Actions2;
-import ccc.api.core.Scheduler;
 import ccc.api.types.DBC;
+import ccc.api.types.Permission;
 import ccc.plugins.security.Sessions;
 import ccc.web.jaxrs.CCCProperties;
 
 
 /**
- * Action scheduler implementation that uses the JRE {@link Timer} class.
+ * Scheduler for action execution.
  *
  * @author Civic Computing Ltd.
  */
 public class ActionScheduler
-    implements
-        Scheduler {
+    extends
+        AbstractScheduler {
 
-    private static final Logger LOG = Logger.getLogger(ActionScheduler.class);
-
-    private static final int TIMEOUT_DELAY_SECS = 60*1000;
-    private static final int INITIAL_DELAY_SECS = 30*1000;
-
-    private final Timer        _actionTimer =
-        new Timer("CC-actions-"+CCCProperties.getAppName(), true);
-    private final Actions2     _actions;
-    private final Sessions     _sessions;
-
-    private ExecuteActionsTask _task;
+    private final Actions2 _actions;
+    private final Sessions _sessions;
 
 
     /**
@@ -67,6 +54,7 @@ public class ActionScheduler
      *
      */
     public ActionScheduler(final Actions2 actions, final Sessions session) {
+        super("CC-actions-"+CCCProperties.getAppName());
         _actions = DBC.require().notNull(actions);
         _sessions = DBC.require().notNull(session);
     }
@@ -74,51 +62,16 @@ public class ActionScheduler
 
     /** {@inheritDoc} */
     @Override
-    public synchronized boolean isRunning() {
-        return null!=_task;
-    }
+    void schedule() {
+        final int delay = 30*1000;
+        final int period = 60*1000;
 
+        final Runnable r =
+            new RunAsRunnable(
+                _sessions,
+                Permission.ACTION_EXECUTE,
+                new ExecuteActionsTask(_actions));
 
-    /** {@inheritDoc} */
-    @Override
-    public synchronized void start() {
-        LOG.debug("Starting scheduler.");
-
-        // TODO: Check for termination?
-        if (isRunning()) {
-            LOG.debug("Scheduler already running.");
-        } else {
-            _task = new ExecuteActionsTask(_actions, _sessions);
-            _actionTimer.schedule(
-                _task, INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS);
-            LOG.debug("Started scheduler.");
-            // Handle IllegalStateException for stopped timer thread?
-        }
-
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public synchronized void stop() {
-        LOG.debug("Stopping scheduler.");
-
-        // TODO: Check for termination?
-        if (!isRunning()) {
-            LOG.debug("Scheduler already stopped.");
-        } else {
-            _task.cancel();
-            _task = null;
-            LOG.debug("Stopped scheduler.");
-        }
-    }
-
-
-    /**
-     * Terminates this scheduler - it may not be used again.
-     */
-    public synchronized void cancel() {
-        stop();
-        _actionTimer.cancel();
+        schedule(r, period, delay);
     }
 }

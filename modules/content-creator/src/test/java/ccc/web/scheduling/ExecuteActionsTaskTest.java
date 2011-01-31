@@ -27,13 +27,8 @@
 package ccc.web.scheduling;
 
 import static org.mockito.Mockito.*;
-
-import java.util.TimerTask;
-
 import junit.framework.TestCase;
 import ccc.api.core.Actions2;
-import ccc.commons.Testing;
-import ccc.plugins.security.Sessions;
 
 
 /**
@@ -50,30 +45,11 @@ public class ExecuteActionsTaskTest
      */
     public void testRun() {
 
-        // ARRANGE
-        final Actions2 actions = mock(Actions2.class);
-        final TimerTask task =
-            new ExecuteActionsTask(actions, Testing.stub(Sessions.class));
-
-        // ACT
-        task.run();
-
-        // ASSERT
-        verify(actions).executeAll();
-    }
-
-    /**
-     * Test.
-     */
-    public void testRunHandlesExceptions() {
-
         // EXPECT
         final Actions2 actions = mock(Actions2.class);
-        doThrow(new RuntimeException()).when(actions).executeAll();
 
         // ARRANGE
-        final TimerTask task =
-            new ExecuteActionsTask(actions, Testing.stub(Sessions.class));
+        final Runnable task = new ExecuteActionsTask(actions);
 
         // ACT
         task.run();

@@ -26,33 +26,58 @@
  */
 package ccc.web.scheduling;
 
-import ccc.api.core.SearchEngine2;
-import ccc.api.types.DBC;
+import static org.mockito.Mockito.*;
+
+import java.util.TimerTask;
+
+import junit.framework.TestCase;
 
 
 /**
- * A runnable that performs a full search re-index.
+ * Tests for the {@link RunnableTimerTask} class.
  *
  * @author Civic Computing Ltd.
  */
-public class SearchTask
-    implements
-        Runnable {
-
-    private final SearchEngine2 _search;
+public class RunnableTimerTaskTest
+    extends
+        TestCase {
 
 
     /**
-     * Constructor.
-     *
-     * @param search  The search service to invoke.
+     * Test.
      */
-    public SearchTask(final SearchEngine2 search) {
-        _search = DBC.require().notNull(search);
+    public void testRunInvokesDelegate() {
+
+        // EXPECT
+        final Runnable delegate = mock(Runnable.class);
+
+        // ARRANGE
+        final TimerTask task = new RunnableTimerTask(delegate);
+
+        // ACT
+        task.run();
+
+        // ASSERT
+        verify(delegate).run();
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void run() { _search.index(); }
+    /**
+     * Test.
+     */
+    public void testRunHandlesExceptions() {
+
+        // EXPECT
+        final Runnable delegate = mock(Runnable.class);
+        doThrow(new RuntimeException()).when(delegate).run();
+
+        // ARRANGE
+        final TimerTask task = new RunnableTimerTask(delegate);
+
+        // ACT
+        task.run();
+
+        // ASSERT
+        verify(delegate).run();
+    }
 }
