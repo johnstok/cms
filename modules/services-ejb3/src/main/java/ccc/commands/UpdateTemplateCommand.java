@@ -30,9 +30,11 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.core.Template;
+import ccc.api.exceptions.InvalidException;
 import ccc.api.types.CommandType;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.TemplateEntity;
+import ccc.domain.TemplateValidator;
 import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 
@@ -85,6 +87,17 @@ public class UpdateTemplateCommand
         return null;
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    protected void validate() {
+        final TemplateValidator templateValidator = new TemplateValidator();
+        final String result =
+            templateValidator.validate(_delta.getDefinition());
+        if(null != result) {
+            throw new InvalidException("Invalid template definition: "+result);
+        }
+    }
 
     /** {@inheritDoc} */
     @Override
