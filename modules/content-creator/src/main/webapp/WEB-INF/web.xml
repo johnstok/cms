@@ -46,6 +46,10 @@
         <param-name>ccc.web.domain</param-name>
         <param-value></param-value>
     </context-param>
+    <context-param>
+        <param-name>ccc.web.debug</param-name>
+        <param-value></param-value>
+    </context-param>
 
     <listener>
         <listener-class>ccc.web.CCCServletContextListener</listener-class>
