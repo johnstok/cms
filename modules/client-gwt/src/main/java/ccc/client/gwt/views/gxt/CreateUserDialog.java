@@ -27,7 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.VALIDATOR;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,14 +35,12 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.Group;
-import ccc.api.types.Username;
 import ccc.client.core.Editable;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.remoting.UniqueUsernameAction;
 import ccc.client.gwt.widgets.GroupListField;
 import ccc.client.views.CreateUser;
 
@@ -131,22 +129,27 @@ public class CreateUserDialog
 
 
     /** {@inheritDoc} */
+    @Override
     public final String getUsername() { return _username.getValue(); }
 
 
     /** {@inheritDoc} */
+    @Override
     public final String getName() { return _name.getValue(); }
 
 
     /** {@inheritDoc} */
+    @Override
     public final String getPassword1() { return _password1.getValue(); }
 
 
     /** {@inheritDoc} */
+    @Override
     public final String getPassword2() { return _password2.getValue(); }
 
 
     /** {@inheritDoc} */
+    @Override
     public final String getEmail() { return _email.getValue(); }
 
 
@@ -220,25 +223,10 @@ public class CreateUserDialog
         if (!result.getErrors().isEmpty()) {
             return result;
         }
-        // FIXME: Async validation.
-        uniqueUsername(new Username(getUsername()), result);
 
         return result;
     }
 
-
-    private void uniqueUsername(final Username username,
-                                final ValidationResult result) {
-        new UniqueUsernameAction(username){
-            @Override
-            protected void execute(final boolean usernameExists) {
-                if (usernameExists) {
-                    result.addError(
-                        getMessages().userWithUsernameAlreadyExists(username));
-                }
-            }
-        }.execute();
-    }
 
 
     /** {@inheritDoc} */
