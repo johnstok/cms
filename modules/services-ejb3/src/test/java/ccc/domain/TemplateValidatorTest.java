@@ -71,6 +71,21 @@ public class TemplateValidatorTest extends TestCase {
         assertEquals(expected, result);
     }
 
+    /**
+     * Test.
+     */
+    public void testMoreThan32Fields() {
+     // ARRANGE
+        final TemplateValidator tv = new TemplateValidator();
+
+        // ACT
+        final String result = tv.validate(MORE_THAN_32_FIELDS);
+
+        // ASSERT
+        System.out.println(result);
+        assertNotNull(result);
+    }
+
     private static final String VALID_XML_VALID_SCHEMA =
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
         +"<fields>"
@@ -125,4 +140,25 @@ public class TemplateValidatorTest extends TestCase {
         +"\n   <field name= type=\"text_field\" "
                 + "regexp=\"\\d{1,3}\">invalid text</field>";
 
+    private static final String MORE_THAN_32_FIELDS =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+        +"<fields>"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" /><field name=\"f\" type=\"html\" />"
+        +"<field name=\"f\" type=\"html\" />"
+        +"</fields>";
 }
