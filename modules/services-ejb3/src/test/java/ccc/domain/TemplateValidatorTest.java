@@ -82,7 +82,6 @@ public class TemplateValidatorTest extends TestCase {
         final String result = tv.validate(MORE_THAN_32_FIELDS);
 
         // ASSERT
-        System.out.println(result);
         assertNotNull(result);
     }
 
