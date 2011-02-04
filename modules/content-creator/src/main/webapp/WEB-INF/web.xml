@@ -212,6 +212,11 @@
         <location>/ccc/error</location>
     </error-page>
     
+    <error-page>
+        <error-code>403</error-code>
+        <location>/forbidden</location>
+    </error-page>
+    
 
     <security-constraint>
         <web-resource-collection>
