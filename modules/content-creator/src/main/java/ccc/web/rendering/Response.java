@@ -196,7 +196,7 @@ public class Response {
                       final Context context,
                       final TextProcessor processor) throws IOException {
 
-        httpResponse.reset();
+        httpResponse.resetBuffer();
 
             final HttpServletRequest r =
                  context.get("request", HttpServletRequest.class);
