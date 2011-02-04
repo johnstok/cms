@@ -76,7 +76,7 @@ public class LoginServlet
                 req.getHeader("X-Forwarded-For"));
             dispatchRedirect(req, resp, target);
         } else {
-            dispatchRedirect(req, resp, _loginPage+"?tg="+target);
+            dispatchRedirect(req, resp, _loginPage+"?failed&tg="+target);
         }
     }
 

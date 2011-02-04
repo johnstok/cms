@@ -25,10 +25,11 @@ public final class ServletRequestStub
     implements
         HttpServletRequest {
 
-    private String _contextPath;
-    private String _servletPath;
-    private String _pathInfo;
-    private Map<String, String> _queryParams;
+    private final String _contextPath;
+    private final String _servletPath;
+    private final String _pathInfo;
+    private final Principal _principal;
+    private final Map<String, String> _queryParams;
     private final Map<String, Object> _attributes =
         new HashMap<String, Object>();
 
@@ -48,6 +49,28 @@ public final class ServletRequestStub
         _servletPath = servletPath;
         _pathInfo = pathInfo;
         _queryParams = queryParams;
+        _principal = null;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param contextPath The request's context path.
+     * @param servletPath The request's servlet path.
+     * @param pathInfo The request's path info.
+     * @param queryParams Query parameter for the the request.
+     * @param principal The security principal for this request
+     */
+    public ServletRequestStub(final String contextPath,
+                              final String servletPath,
+                              final String pathInfo,
+                              final Map<String, String> queryParams,
+                              final Principal principal) {
+        _contextPath = contextPath;
+        _servletPath = servletPath;
+        _pathInfo = pathInfo;
+        _queryParams = queryParams;
+        _principal = principal;
     }
 
     @Override
@@ -147,7 +170,7 @@ public final class ServletRequestStub
 
     @Override
     public Principal getUserPrincipal() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return _principal;
     }
 
     @Override
@@ -316,7 +339,8 @@ public final class ServletRequestStub
     }
 
     @Override
-    public void setCharacterEncoding(final String env) throws UnsupportedEncodingException {
+    public void setCharacterEncoding(final String env)
+    throws UnsupportedEncodingException {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 }

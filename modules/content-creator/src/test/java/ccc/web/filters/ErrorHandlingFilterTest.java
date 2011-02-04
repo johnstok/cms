@@ -26,8 +26,12 @@
  */
 package ccc.web.filters;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
+import java.security.Principal;
 import java.util.HashMap;
 
 import javax.servlet.Filter;
@@ -110,6 +114,42 @@ public class ErrorHandlingFilterTest
                 public void doFilter(final ServletRequest request,
                                      final ServletResponse response) {
                     throw new RedirectRequiredException("/foo");
+                }
+            });
+
+        // ASSERT
+        verifyAll();
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testAuthRequiredExceptionReturnsForbidden() throws Exception {
+
+        // EXPECT
+        _response.sendError(HttpServletResponse.SC_FORBIDDEN,
+            "Permission required");
+        replayAll();
+
+        // ARRANGE
+        final Filter f = new ErrorHandlingFilter();
+        final Principal principal =
+            createStrictMock(java.security.Principal.class);
+
+        // ACT
+        f.doFilter(
+            new ServletRequestStub(
+                "/context", "/servlet", "/path",
+                    new HashMap<String, String>(), principal),
+                _response,
+                new FilterChain() {
+                @Override
+                public void doFilter(final ServletRequest request,
+                                     final ServletResponse response) {
+                    throw new AuthenticationRequiredException("/foo");
                 }
             });
 
