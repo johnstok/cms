@@ -122,7 +122,7 @@ public class ResourceContextMenu
      * @param user The UserSummary of the currently logged in user.
      */
     ResourceContextMenu(final SingleSelectionModel tbl,
-                              ResourceSummary root) {
+                              final ResourceSummary root) {
         _table = tbl;
         _root = root;
 
@@ -162,11 +162,13 @@ public class ResourceContextMenu
         addListener(
             Events.BeforeShow,
             new Listener<MenuEvent>(){
+                @Override
                 public void handleEvent(final MenuEvent be) {
                     refreshMenuItems(be);
                 }
             }
         );
+        setEnableScrolling(false);
     }
 
 
