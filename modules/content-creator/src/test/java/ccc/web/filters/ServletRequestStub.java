@@ -45,11 +45,7 @@ public final class ServletRequestStub
                               final String servletPath,
                               final String pathInfo,
                               final Map<String, String> queryParams) {
-        _contextPath = contextPath;
-        _servletPath = servletPath;
-        _pathInfo = pathInfo;
-        _queryParams = queryParams;
-        _principal = null;
+        this(contextPath, servletPath, pathInfo, queryParams, null);
     }
 
     /**

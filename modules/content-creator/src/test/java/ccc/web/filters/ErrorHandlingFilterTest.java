@@ -43,6 +43,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.api.types.HttpStatusCode;
+import ccc.commons.Testing;
 import ccc.web.exceptions.RequestFailedException;
 import ccc.web.rendering.AuthenticationRequiredException;
 import ccc.web.rendering.NotFoundException;
@@ -136,8 +137,7 @@ public class ErrorHandlingFilterTest
 
         // ARRANGE
         final Filter f = new ErrorHandlingFilter();
-        final Principal principal =
-            createStrictMock(java.security.Principal.class);
+        final Principal principal = Testing.dummy(Principal.class);
 
         // ACT
         f.doFilter(

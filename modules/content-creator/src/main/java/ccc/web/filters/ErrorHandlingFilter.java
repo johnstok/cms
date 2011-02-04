@@ -84,9 +84,9 @@ public class ErrorHandlingFilter
             dispatchRedirect(req, resp, relUri);
 
         } catch (final AuthenticationRequiredException e) {
-            if(req.getUserPrincipal() != null) {
-                resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                    "Permission required");
+            if(null != req.getUserPrincipal()) {
+                resp.sendError(
+                    HttpServletResponse.SC_FORBIDDEN, "Permission required");
             } else {
                 final String relUri = _loginUri + "?tg=" + e.getTarget();
                 dispatchRedirect(req, resp, relUri);
