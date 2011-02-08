@@ -49,10 +49,11 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>unpack</id>
+                        <id>unpack-javascript</id>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
+                        <phase>prepare-package</phase>
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
@@ -65,6 +66,74 @@
                             </artifactItems>
                             <includes>**/*</includes>
                             <outputDirectory>${basedir}/target/client-gwt</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-source</id>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>api-core</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>api-types</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>api-plugins</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                            <includes>**/*</includes>
+                            <outputDirectory>${basedir}/target/api-source</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration></configuration>
+                <executions>
+                    <execution>
+                        <id>javadoc</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <detectJavaApiLink>true</detectJavaApiLink>
+                            <javaApiLinks>
+                                <property>
+                                  <name>api_1.5</name>
+                                  <value>http://download.oracle.com/javase/1.5.0/docs/api/</value>
+                                </property>
+                                <property>
+                                  <name>api_1.6</name>
+                                  <value>http://download.oracle.com/javase/6/docs/api/</value>
+                                </property>
+                            </javaApiLinks>
+                            <attach>false</attach>
+                            <detectOfflineLinks>false</detectOfflineLinks>
+                           <outputDirectory>${basedir}/target/client-gwt/ccc.client.gwt.ContentCreator/manual/api</outputDirectory>
+                           <sourcepath>${basedir}/target/api-source</sourcepath>
                         </configuration>
                     </execution>
                 </executions>
