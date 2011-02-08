@@ -451,6 +451,7 @@ public abstract class AbstractAcceptanceTest
         getSecurity().login("migration", "migration");
         InternalServices.ACTIONS = createActions();
         InternalServices.GROUPS = createGroups();
+        InternalServices.USERS = createUsers();
     }
 
 
@@ -461,6 +462,10 @@ public abstract class AbstractAcceptanceTest
 
     private PagedCollection<ActionSummary> createActions() {
         return getActions().listPendingActions(null, SortOrder.ASC, 1, 1);
+    }
+    
+    private PagedCollection<User> createUsers() {
+        return getUsers().query("", null, null, null, null, null, SortOrder.ASC, 1, 1);
     }
 
 

@@ -110,7 +110,7 @@ public class ContentServletAcceptanceTest
 
             // ASSERT
         } catch (final RuntimeException e) {
-            assertTrue(is302(e));
+            assertTrue(is403(e));
         }
     }
 
@@ -479,6 +479,10 @@ public class ContentServletAcceptanceTest
 
     private boolean is302(final RuntimeException e) {
         return e.getMessage().startsWith("302: ");
+    }
+    
+    private boolean is403(final RuntimeException e) {
+        return e.getMessage().startsWith("403: ");
     }
 
 
