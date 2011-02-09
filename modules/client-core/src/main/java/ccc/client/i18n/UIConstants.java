@@ -1548,14 +1548,14 @@ public interface UIConstants {
      * @return The constant, in the appropriate locale.
      */
     String titlesMustNotContainBrackets();
-    
+
     /**
      * "The description field may not contain brackets.".
      *
      * @return The constant, in the appropriate locale.
      */
     String descriptionMustNotContainBrackets();
-    
+
     /**
      * "The tags field may not contain brackets.".
      *
@@ -1604,7 +1604,7 @@ public interface UIConstants {
      * @return The constant, in the appropriate locale.
      */
     String dateCannotBeInPast();
-    
+
     /**
     * "Changed by".
     *
@@ -1618,12 +1618,19 @@ public interface UIConstants {
      * @return The constant, in the appropriate locale.
      */
     String columnsSaved();
-    
+
     /**
-     * "Locked.".
+     * "Locked".
      *
      * @return The constant, in the appropriate locale.
      */
     String locked();
-     
+
+    /**
+     * "Build".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String build();
+
 }

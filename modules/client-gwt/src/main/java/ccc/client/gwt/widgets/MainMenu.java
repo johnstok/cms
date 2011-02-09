@@ -38,6 +38,7 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.actions.ChooseTemplateAction;
 import ccc.client.gwt.actions.OpenAboutAction;
+import ccc.client.gwt.actions.OpenBuildDocsAction;
 import ccc.client.gwt.actions.OpenCreateUserAction;
 import ccc.client.gwt.actions.OpenHelpAction;
 import ccc.client.gwt.actions.OpenUpdateCurrentUserAction;
@@ -108,6 +109,10 @@ public class MainMenu
                 "about-dialog",
                 _constants.about(),
                 new OpenAboutAction()),
+            createMenuItem(
+                "open-build-docs",
+                _constants.build(),
+                new OpenBuildDocsAction()),
             createMenuItem(
                 "open-manual",
                 _constants.manual(),
