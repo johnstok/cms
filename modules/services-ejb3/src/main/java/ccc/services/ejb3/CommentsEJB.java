@@ -66,8 +66,9 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({COMMENT_CREATE})
+    @PermitAll
     public Comment create(final Comment comment) {
+    	checkPermission(COMMENT_CREATE);
         return
             execute(
                 new CreateCommentCommand(getRepoFactory(), comment))
