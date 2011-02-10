@@ -32,8 +32,11 @@ import java.util.Map;
 import ccc.api.core.User;
 import ccc.client.core.ImagePaths;
 import ccc.client.core.InternalServices;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.remoting.UpdateCurrentUserAction;
 import ccc.client.gwt.remoting.UpdateUserAction;
+import ccc.client.gwt.views.gxt.UpdateCurrentUserDialog;
 
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -89,13 +92,14 @@ public class ContextActionGridPlugin
                     User user = new GlobalsImpl().currentUser();
                     Map<String, String> meta = user.getMetadata();
                     meta.put(ccs.preferenceName(), ccs.visibleColumns());
-                    new UpdateUserAction(user){
-                        /** {@inheritDoc} */
-                        @Override protected void done() {
-                            InternalServices.WINDOW.alert(
-                                UI_CONSTANTS.columnsSaved());
-                        }
-                    }.execute();
+                    
+                    new UpdateCurrentUserAction(user) {
+                    	 @Override protected void onNoContent(
+                                 final Response response) {
+                    		InternalServices.WINDOW.alert(
+                    				UI_CONSTANTS.columnsSaved());
+                    	}
+					}.execute();
                 }
             }
         });
