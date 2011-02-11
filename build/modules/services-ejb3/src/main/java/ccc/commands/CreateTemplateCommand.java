@@ -29,9 +29,11 @@ package ccc.commands;
 import java.util.Date;
 
 import ccc.api.core.Template;
+import ccc.api.exceptions.InvalidException;
 import ccc.api.types.CommandType;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.TemplateEntity;
+import ccc.domain.TemplateValidator;
 import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
@@ -83,6 +85,15 @@ class CreateTemplateCommand extends CreateResourceCommand<TemplateEntity> {
         return t;
     }
 
+    @Override
+    protected void validate() {
+        final TemplateValidator templateValidator = new TemplateValidator();
+        final String result =
+            templateValidator.validate(_template.getDefinition());
+        if(null != result) {
+            throw new InvalidException("Invalid template definition: "+result);
+        }
+    }
 
     /** {@inheritDoc} */
     @Override

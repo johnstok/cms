@@ -26,14 +26,12 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.COMMENT_CREATE;
-import static ccc.api.types.Permission.COMMENT_DELETE;
-import static ccc.api.types.Permission.COMMENT_READ;
-import static ccc.api.types.Permission.COMMENT_UPDATE;
-import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static ccc.api.types.Permission.*;
+import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.UUID;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -78,6 +76,7 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
+    @PermitAll
     public Comment retrieve(final UUID commentId) {
         checkPermission(COMMENT_READ);
 
@@ -114,6 +113,7 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
+    @PermitAll
     public PagedCollection<Comment> query(final UUID resourceId,
                                           final CommentStatus status,
                                           final String sort,

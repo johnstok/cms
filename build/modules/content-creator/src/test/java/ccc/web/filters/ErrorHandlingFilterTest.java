@@ -28,6 +28,9 @@ package ccc.web.filters;
 
 import static org.easymock.EasyMock.*;
 
+import java.security.Principal;
+import java.util.HashMap;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletOutputStream;
@@ -37,6 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.api.types.HttpStatusCode;
+import ccc.commons.Testing;
 import ccc.web.exceptions.RequestFailedException;
 import ccc.web.rendering.AuthenticationRequiredException;
 import ccc.web.rendering.NotFoundException;
@@ -108,6 +112,41 @@ public class ErrorHandlingFilterTest
                         throw new RedirectRequiredException("/foo");
                     }
                 });
+
+        // ASSERT
+        verifyAll();
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testAuthRequiredExceptionReturnsForbidden() throws Exception {
+
+        // EXPECT
+        _response.sendError(HttpServletResponse.SC_FORBIDDEN,
+            "Permission required");
+        replayAll();
+
+        // ARRANGE
+        final Filter f = new ErrorHandlingFilter();
+        final Principal principal = Testing.dummy(Principal.class);
+
+        // ACT
+        f.doFilter(
+            new ServletRequestStub(
+                "/context", "/servlet", "/path",
+                    new HashMap<String, String[]>(), principal),
+                _response,
+                new FilterChain() {
+                @Override
+                public void doFilter(final ServletRequest request,
+                                     final ServletResponse response) {
+                    throw new AuthenticationRequiredException("/foo");
+                }
+            });
 
         // ASSERT
         verifyAll();

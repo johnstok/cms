@@ -27,6 +27,7 @@
 package ccc.api.jaxrs;
 
 import ccc.api.synchronous.Actions;
+import ccc.api.synchronous.Actions2;
 import ccc.api.synchronous.Aliases;
 import ccc.api.synchronous.Comments;
 import ccc.api.synchronous.Files;
@@ -34,7 +35,9 @@ import ccc.api.synchronous.Folders;
 import ccc.api.synchronous.Groups;
 import ccc.api.synchronous.Pages;
 import ccc.api.synchronous.Resources;
+import ccc.api.synchronous.Scheduler;
 import ccc.api.synchronous.SearchEngine;
+import ccc.api.synchronous.SearchEngine2;
 import ccc.api.synchronous.Security;
 import ccc.api.synchronous.ServiceLocator;
 import ccc.api.synchronous.Templates;
@@ -50,8 +53,10 @@ import ccc.commons.Registry;
  */
 public class RegistryServiceLocator implements ServiceLocator {
 
-    private final Registry _registry;
-    private final String _appName;
+    private final Registry  _registry;
+    private final String    _appName;
+    private final Scheduler _actionScheduler;
+    private final Scheduler _searchScheduler;
 
 
     /**
@@ -59,11 +64,17 @@ public class RegistryServiceLocator implements ServiceLocator {
      *
      * @param appName The name of the application.
      * @param registry The registry to use for look up.
+     * @param actionScheduler The scheduler that drives the Actions API.
+     * @param searchScheduler The scheduler that drives the Search API.
      */
     public RegistryServiceLocator(final String appName,
-                                  final Registry registry) {
+                                  final Registry registry,
+                                  final Scheduler actionScheduler,
+                                  final Scheduler searchScheduler) {
         _appName =  DBC.require().notEmpty(appName);
         _registry = DBC.require().notNull(registry);
+        _actionScheduler = DBC.require().notNull(actionScheduler);
+        _searchScheduler = DBC.require().notNull(searchScheduler);
     }
 
 
@@ -97,7 +108,11 @@ public class RegistryServiceLocator implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public SearchEngine getSearch() {
-        return _registry.<SearchEngine>get(localPath(SearchEngine.NAME));
+        return
+        new Search2Impl(
+            _registry.<SearchEngine2>get(localPath(SearchEngine.NAME)),
+            _searchScheduler);
+
     }
 
 
@@ -107,11 +122,13 @@ public class RegistryServiceLocator implements ServiceLocator {
         return _registry.<Templates>get(localPath(Templates.NAME));
     }
 
-
     /** {@inheritDoc} */
     @Override
     public Actions getActions() {
-        return _registry.<Actions>get(localPath(Actions.NAME));
+        return
+            new Actions2Impl(
+                _registry.<Actions2>get(localPath(Actions.NAME)),
+                _actionScheduler);
     }
 
 
@@ -152,11 +169,6 @@ public class RegistryServiceLocator implements ServiceLocator {
 
     protected Registry getRegistry() {
         return _registry;
-    }
-
-
-    protected String remotePath(final String serviceName) {
-        return _appName+"/"+serviceName+"/remote";
     }
 
 

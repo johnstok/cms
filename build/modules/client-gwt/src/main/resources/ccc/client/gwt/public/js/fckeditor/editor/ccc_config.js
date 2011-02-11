@@ -25,5 +25,5 @@ FCKConfig.ImageUpload = false ;
 FCKConfig.LinkUpload = false ;
 FCKConfig.FlashBrowser = false ;
 
-FCKConfig.BrowserContextMenuOnCtrl = true ;
-FCKConfig.BrowserContextMenu = true ;
+FCKConfig.BrowserContextMenuOnCtrl = false ;
+FCKConfig.BrowserContextMenu = false ;

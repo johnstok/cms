@@ -40,6 +40,7 @@ import java.util.UUID;
 import ccc.api.core.Comment;
 import ccc.api.core.Folder;
 import ccc.api.core.Page;
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.MimeType;
@@ -55,6 +56,34 @@ import ccc.api.types.ResourceName;
 public class VelocityAcceptanceTest
     extends
         AbstractAcceptanceTest {
+
+
+    /**
+     * Test.
+     */
+    public void testDomainProperty() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+
+        final Template t = new Template();
+        t.setName(new ResourceName("template"));
+        t.setParent(folder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody("$domain");
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
+        final ResourceSummary template = getTemplates().create(t);
+
+        final ResourceSummary page = tempPage(folder.getId(), template.getId());
+
+        // ACT
+        final String pContent = getBrowser().previewContent(page, false);
+
+        // ASSERT
+        assertEquals("localhost", pContent);
+    }
 
 
     /**

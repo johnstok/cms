@@ -27,6 +27,7 @@
 package ccc.acceptance.client.views;
 
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
@@ -45,11 +46,13 @@ public class CreatePageFake implements CreatePage {
     private final String _comment;
     private final String _resourceTitle;
     private final boolean _majorEdit;
+    private final boolean _publish;
     private final String _name;
     private final Set<Paragraph> _paragraphs;
     private final Template _template;
     private Object _presenter;
     private boolean _showing;
+    private final UUID _userID;
     private final ValidationResult _validationResult = new ValidationResult();
 
 
@@ -59,6 +62,7 @@ public class CreatePageFake implements CreatePage {
      * @param name The name
      * @param resourceTitle The resourceTitle
      * @param majorEdit Major edit.
+     * @param publish Publish.
      * @param comment Comment.
      * @param paragraphs Paragraph of the page.
      * @param template Template.
@@ -66,15 +70,19 @@ public class CreatePageFake implements CreatePage {
     public CreatePageFake(final String name,
                           final String resourceTitle,
                           final boolean majorEdit,
+                          final boolean publish,
                           final String comment,
                           final Set<Paragraph> paragraphs,
-                          final Template template) {
+                          final Template template,
+                          final UUID userID) {
         _comment = comment;
         _name = name;
         _majorEdit = majorEdit;
+        _publish = publish;
         _paragraphs = paragraphs;
         _template = template;
         _resourceTitle = resourceTitle;
+        _userID = userID;
     }
 
 
@@ -96,6 +104,11 @@ public class CreatePageFake implements CreatePage {
     @Override
     public boolean getMajorEdit() {
         return _majorEdit;
+    }
+
+    @Override
+    public boolean getPublish() {
+        return _publish;
     }
 
 
@@ -146,4 +159,11 @@ public class CreatePageFake implements CreatePage {
     public String getResourceTitle() {
         return _resourceTitle;
     }
+
+
+    @Override
+    public UUID getUserID() {
+        return _userID;
+    }
+
 }

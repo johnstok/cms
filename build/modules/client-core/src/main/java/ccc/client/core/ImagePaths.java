@@ -91,4 +91,8 @@ public final class ImagePaths {
     /** CANCEL : String. */
     public static final String CANCEL =
         "static/images/icons/cancel.gif";
+
+    /** BULLET_DISK : String. */
+    public static final String BULLET_DISK =
+        "static/images/icons/bullet_disk_10x10.gif";
 }

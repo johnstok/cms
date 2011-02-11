@@ -147,6 +147,8 @@ public class ErrorDialog extends AbstractEditDialog {
             return I18n.errorResolutions.lockMismatch();
         } else if ("ccc.api.exceptions.CycleDetectedException".equals(code)) {
             return I18n.errorResolutions.cycle();
+        } else if ("ccc.api.exceptions.UsernameNotFoundException".equals(code)) {
+            return I18n.errorResolutions.usernameNotFound();
         } else if ("ccc.api.exceptions.InvalidException".equals(code)) {
             final String resolution = e.getParam(InvalidException.RESOLUTION);
             return
@@ -171,6 +173,8 @@ public class ErrorDialog extends AbstractEditDialog {
             return I18n.errorDescriptions.lockMismatch();
         } else if ("ccc.api.exceptions.CycleDetectedException".equals(code)) {
             return I18n.errorDescriptions.cycle();
+        } else if ("ccc.api.exceptions.UsernameNotFoundException".equals(code)) {
+            return I18n.errorDescriptions.usernameNotFound();
         } else if ("ccc.api.exceptions.InvalidException".equals(code)) {
             final String description = e.getParam(CCException.MESSAGE);
             return

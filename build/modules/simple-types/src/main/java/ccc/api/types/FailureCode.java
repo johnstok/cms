@@ -51,5 +51,7 @@ public enum  FailureCode {
     /** NOT_FOUND : FailureCode. */
     NOT_FOUND,
     /** INVALID : FailureCode. */
-    INVALID;
+    INVALID,
+    /** USER_NOT_FOUND : FailureCode. */
+    USER_NOT_FOUND;
 }

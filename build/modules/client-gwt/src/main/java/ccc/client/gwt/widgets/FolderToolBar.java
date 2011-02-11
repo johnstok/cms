@@ -54,7 +54,7 @@ public class FolderToolBar
      *
      * @param ssm The selection model to use.
      */
-    FolderToolBar(final ResourceTable ssm) {
+    FolderToolBar(final SingleSelectionModel ssm) {
 
         addSeparator(null);
         addButton(Permission.FILE_CREATE,

@@ -30,8 +30,11 @@ import ccc.api.core.User;
 import ccc.api.types.CommandType;
 import ccc.api.types.Username;
 import ccc.client.actions.CreateUserAction;
+import ccc.client.actions.UniqueUsernameAction;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
+import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.events.Event;
 import ccc.client.views.CreateUser;
@@ -91,9 +94,21 @@ public class CreateUserPresenter
     @Override
     public void save() {
         if (valid()) {
-            final User user = new User();
-            unbind(user);
-            new CreateUserAction(user).execute();
+            final Username username = new Username(getView().getUsername());
+            new UniqueUsernameAction(username){
+                @Override
+                protected void onSuccess(final Boolean response) {
+                    if (response) {
+                        InternalServices.window.alert(
+                            I18n.uiMessages
+                            .userWithUsernameAlreadyExists(username));
+                    } else {
+                        final User user = new User();
+                        unbind(user);
+                        new CreateUserAction(user).execute();
+                    }
+                }
+            }.execute();
         }
     }
 

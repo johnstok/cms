@@ -19,6 +19,9 @@ Returns the absolute path  of the image selected for the specified paragraph. Do
 #createIndex($folderId)
 Displays published resources under specified folder sorted by date created.
 
+#tags
+Displays comma separated list of tags assigned to the resource.
+
 h3. breadCrumb.vm
 
 #breadcrumb

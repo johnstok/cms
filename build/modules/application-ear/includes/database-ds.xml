@@ -39,5 +39,7 @@
     <max-pool-size>100</max-pool-size>
     <exception-sorter-class-name>${ccc.db.exc-sorter}</exception-sorter-class-name>
     
+    <!-- DB specific properties -->
+    
   </xa-datasource>
 </datasources>

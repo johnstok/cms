@@ -43,4 +43,18 @@ public interface Sessions {
      * @return True if the user was logged in, false otherwise.
      */
     boolean login(String username, String password);
+
+
+    /**
+     * Set the 'run as' role for the current thread.
+     *
+     * @param roleName The name of the role to set.
+     */
+    void pushRunAsRole(String roleName);
+
+
+    /**
+     * Clear the 'run as' role for the current thread.
+     */
+    void popRunAsRole();
 }

@@ -26,9 +26,8 @@
  */
 package ccc.migration;
 
-import ccc.api.jaxrs.RegistryServiceLocator;
 import ccc.api.synchronous.Resources;
-import ccc.commons.JNDI;
+import ccc.api.types.DBC;
 import ccc.commons.Registry;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;
@@ -41,9 +40,10 @@ import ccc.services.Migration;
  *
  * @author Civic Computing Ltd.
  */
-public class MigrationServiceLocator
-    extends
-        RegistryServiceLocator {
+public class MigrationServiceLocator {
+
+    private final Registry  _registry;
+    private final String    _appName;
 
 
     /**
@@ -54,29 +54,18 @@ public class MigrationServiceLocator
      */
     public MigrationServiceLocator(final String appName,
                                    final Registry registry) {
-        super(appName, registry);
+        _appName =  DBC.require().notEmpty(appName);
+        _registry = DBC.require().notNull(registry);
     }
 
 
-    /**
-     * Constructor.
-     *
-     * @param appName The name of the application.
-     * @param providerUrl The java naming provider URL
-     */
-    public MigrationServiceLocator(final String appName,
-                                   final String providerUrl) {
-        super(appName, new JNDI(providerUrl));
+    private Registry getRegistry() {
+        return _registry;
     }
 
 
-    /**
-     * Constructor.
-     *
-     * @param appName The name of the application.
-     */
-    public MigrationServiceLocator(final String appName) {
-        super(appName, new JNDI());
+    private String remotePath(final String serviceName) {
+        return _appName+"/"+serviceName+"/remote";
     }
 
 

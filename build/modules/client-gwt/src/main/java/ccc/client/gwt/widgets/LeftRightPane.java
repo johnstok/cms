@@ -67,6 +67,10 @@ public class LeftRightPane extends LayoutContainer {
      * @param pane The component to be set for the right hand pane.
      */
     public void setRightHandPane(final LayoutContainer pane) {
+        if(_right == pane) {
+            return;
+        }
+        
         if (null!=_right) {
             remove(_right);
         }

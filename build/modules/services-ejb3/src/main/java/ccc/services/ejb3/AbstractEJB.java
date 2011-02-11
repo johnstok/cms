@@ -46,6 +46,7 @@ import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 
 import ccc.api.exceptions.UnauthorizedException;
+import ccc.api.exceptions.UsernameNotFoundException;
 import ccc.api.types.DBC;
 import ccc.commands.Command;
 import ccc.commands.CommandFactory;
@@ -262,7 +263,7 @@ abstract class AbstractEJB {
             throw new RuntimeException("Caller unauthorized.");
 
         } catch (final EntityNotFoundException e) {
-            throw new RuntimeException("No user available.", e);
+            throw new UsernameNotFoundException();
         }
     }
 

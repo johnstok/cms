@@ -182,7 +182,7 @@ public final class DBC {
      * @param stringToTest The string to test.
      */
     public void containsNoBrackets(final String stringToTest) {
-        if (stringToTest != null && !stringToTest.matches("[^<^>]*")) {
+        if (stringToTest != null && !stringToTest.matches("[^<>]*")) {
             throw new IllegalArgumentException(
             "String must not contain brackets: "+stringToTest);
         }

@@ -44,6 +44,7 @@ import ccc.plugins.security.Sessions;
  */
 public class PluginFactory {
 
+
     /**
      * Create a new XHTML plugin.
      *

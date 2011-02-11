@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.validator;
+import static ccc.client.core.InternalServices.*;
 
 import java.util.Collection;
 import java.util.Map;
@@ -121,14 +121,24 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-
                 final ValidationResult vr = new ValidationResult();
-                if (!_title.getValue().matches("[^<^>]*")) {
-                    vr.addError(constants().titlesMustNotContainBrackets());
-                }
+
                 vr.addError(
                     validator.notEmpty(
                         _title.getValue(), _title.getFieldLabel()));
+
+                vr.addError(
+                    validator.noBrackets(
+                        _title.getValue(), _title.getFieldLabel()));
+
+                vr.addError(
+                    validator.noBrackets(
+                        _description.getValue(), _description.getFieldLabel()));
+
+                vr.addError(
+                    validator.noBrackets(
+                        _tags.getValue(), _tags.getFieldLabel()));
+
                 vr.addError(
                     validator.validateMetadataValues(
                         _metadataPanel.currentMetadata()));

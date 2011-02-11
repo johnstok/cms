@@ -794,6 +794,25 @@ public final class ResourceTest extends TestCase {
         assertTrue(r.getDateChanged().after(r.getDateCreated()));
     }
 
+    
+    /**
+     * Test.
+     * @throws InterruptedException If interrupted from sleep.
+     */
+    public void testChangedByCanBeSet() throws InterruptedException {
+
+        // ARRANGE
+        final ResourceEntity r = new PageEntity();
+        final UserEntity u = new UserEntity();
+        u.setUsername(new Username("abcd"));
+
+        // ACT
+        r.setDateChanged(new Date(), u);
+
+        // ASSERT
+        assertEquals(u, r.getChangedBy());
+    }
+    
     /**
      * Test.
      */

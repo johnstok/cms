@@ -52,7 +52,7 @@ import com.extjs.gxt.ui.client.widget.Text;
  */
 public class UserMetadataDialog extends AbstractEditDialog {
 
-    private User _user;
+    private final User _user;
     private final MetadataGrid _metadataPanel;
     private static final int HEIGHT = 420;
 

@@ -10,10 +10,26 @@
                 Order deny,allow
                 Allow from all
         </Proxy>
+    
+        # left as reference
+        # ProxyPass / http://localhost:8080/cc7/
+        # ProxyPassReverse / http://localhost:8080/cc7/
+        # ProxyPassReverseCookiePath /cc7 /
+        
+        <IfModule proxy_balancer_module>
 
-        ProxyPass / http://localhost:8080/cc7/
-        ProxyPassReverse / http://localhost:8080/cc7/
-        ProxyPassReverseCookiePath /cc7 /
+               ProxyStatus full
+               ProxyPass / balancer://appservers/cc7/ stickysession=JSESSIONID|jsessionid
+               ProxyPassReverse / balancer://appservers/cc7/
+               ProxyPassReverseCookiePath /cc7 /
+               <Proxy balancer://appservers>
+                       BalancerMember http://appserver1:9080 loadfactor=50 route=231
+                       BalancerMember http://appserver2:9080 loadfactor=50 route=230
+                       ProxySet nofailover=On
+                       ProxySet scolonpathdelim=On
+                       ProxySet stickysession=JSESSIONID|jsessionid
+               </Proxy>
+        </IfModule>
 
     # Security checks
         include /net/titan/disk/fs/1a/export/GLOBAL/apache/conf/alexios-security-v7.conf

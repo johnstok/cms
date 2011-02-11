@@ -33,9 +33,11 @@ import java.util.UUID;
 import ccc.api.core.ACL;
 import ccc.api.core.Folder;
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
+import ccc.api.exceptions.InvalidException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -78,6 +80,135 @@ public class TemplateAcceptanceTest extends
         assertEquals("t-title", ts.getTitle());
     }
 
+
+    /**
+     * Test.
+     */
+    public void testCreateTemplateWithValidSchema() {
+
+        // ARRANGE
+        final Resource templateFolder =
+            getCommands().resourceForPath("/assets/templates");
+        final String name = UUID.randomUUID().toString();
+
+        final Template t = new Template();
+        t.setName(new ResourceName(name));
+        t.setParent(templateFolder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody("body");
+        t.setDefinition(VALID_SCHEMA_EXAMPLE);
+        t.setMimeType(MimeType.HTML);
+
+        // ACT
+        ResourceSummary ts;
+        try {
+            ts = getTemplates().create(t);
+            final Template newTemplate = getTemplates().retrieve(ts.getId());
+
+            // ASSERT
+            assertEquals(VALID_SCHEMA_EXAMPLE, newTemplate.getDefinition());
+        } catch (final InvalidException e) {
+            fail();
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testCreateTemplateWithInvalidXML() {
+
+        // ARRANGE
+        final ResourceSummary templateFolder =
+            getCommands().resourceForPath("/assets/templates");
+        final String name = UUID.randomUUID().toString();
+
+        final Template t = new Template();
+        t.setName(new ResourceName(name));
+        t.setParent(templateFolder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody("body");
+        t.setDefinition("<fields><notclosed<previoustag />"); //invalid XML
+        t.setMimeType(MimeType.HTML);
+
+        // ACT
+        try {
+            getTemplates().create(t);
+            fail();
+        } catch (final InvalidException e) {
+
+            // ASSERT
+            assertTrue(e.getMessage()
+                .startsWith("Invalid template definition"));
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testCreateTemplateWithInvalidSchema() {
+
+        // ARRANGE
+        final ResourceSummary templateFolder =
+            getCommands().resourceForPath("/assets/templates");
+        final String name = UUID.randomUUID().toString();
+
+        final Template t = new Template();
+        t.setName(new ResourceName(name));
+        t.setParent(templateFolder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody("body");
+        t.setDefinition("<fields><garbage /></fields>"); //invalid Schema
+        t.setMimeType(MimeType.HTML);
+
+        // ACT
+        try {
+            getTemplates().create(t);
+            fail();
+        } catch (final InvalidException e) {
+
+            // ASSERT
+            assertTrue(e.getMessage()
+                .startsWith("Invalid template definition"));
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testCreateTemplateWithEmptyDefinition() {
+
+        // ARRANGE
+        final ResourceSummary templateFolder =
+            getCommands().resourceForPath("/assets/templates");
+        final String name = UUID.randomUUID().toString();
+
+        final Template t = new Template();
+        t.setName(new ResourceName(name));
+        t.setParent(templateFolder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody("body");
+        t.setDefinition("");
+        t.setMimeType(MimeType.HTML);
+
+        // ACT
+        try {
+            getTemplates().create(t);
+            fail();
+        } catch (final InvalidException e) {
+
+            // ASSERT
+            assertTrue(
+                e.getMessage().startsWith("Invalid template definition"));
+        }
+    }
+
+
     /**
      * Test.
      */
@@ -108,6 +239,7 @@ public class TemplateAcceptanceTest extends
         assertEquals(MimeType.HTML, fetched.getMimeType());
     }
 
+
     /**
      * Test.
      */
@@ -126,6 +258,7 @@ public class TemplateAcceptanceTest extends
         assertFalse("Template should not exists",
             getTemplates().templateNameExists("foo").booleanValue());
     }
+
 
     /**
      * Test.
@@ -152,6 +285,107 @@ public class TemplateAcceptanceTest extends
         assertEquals(delta.getDefinition(), updated.getDefinition());
         assertEquals(MimeType.BINARY_DATA, updated.getMimeType());
 
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUpdateTemplateWithValidSchema() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        final ResourceSummary dte = dummyTemplate(folder);
+
+        final Template delta = getTemplates().retrieve(dte.getId());
+        delta.setDefinition(VALID_SCHEMA_EXAMPLE);
+
+        // ACT
+        try {
+            getCommands().lock(dte.getId());
+            getTemplates().update(dte.getId(), delta);
+            final Template updated = getTemplates().retrieve(dte.getId());
+
+            // ASSERT
+            assertEquals(delta.getDefinition(), updated.getDefinition());
+        } catch (final InvalidException e) {
+            fail("Exception thrown during the template update");
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUpdateTemplateWithInvalidXML() {
+
+        // ARRANGE
+        final Folder folder = tempFolder();
+        final Template dte = dummyTemplate(folder);
+
+        final Template delta = getTemplates().retrieve(dte.getId());
+        delta.setDefinition("<fields><notclosed<previoustag />"); //invalid XML
+
+        // ACT
+        try {
+            getCommands().lock(dte.getId());
+            getTemplates().update(dte.getId(), delta);
+            fail();
+        } catch (final InvalidException e) {
+
+            // ASSERT
+            assertTrue(e.getMessage()
+                .startsWith("Invalid template definition"));
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUpdateTemplateWithInvalidSchema() {
+        // ARRANGE
+        final Folder folder = tempFolder();
+        final ResourceSummary dte = dummyTemplate(folder);
+
+        final Template delta = getTemplates().retrieve(dte.getId());
+        delta.setDefinition("<fields><garbage /></fields>"); //invalid Schema
+
+        // ACT
+        try {
+            getCommands().lock(dte.getId());
+            getTemplates().update(dte.getId(), delta);
+            fail();
+        } catch (final InvalidException e) {
+
+            // ASSERT
+            assertTrue(e.getMessage()
+                .startsWith("Invalid template definition"));
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUpdateTemplateWithEmptyDefinition() {
+     // ARRANGE
+        final Folder folder = tempFolder();
+        final ResourceSummary dte = dummyTemplate(folder);
+
+        final Template delta = getTemplates().retrieve(dte.getId());
+        delta.setDefinition("");
+        // ACT
+        try {
+            getCommands().lock(dte.getId());
+            getTemplates().update(dte.getId(), delta);
+            fail();
+        } catch (final InvalidException e) {
+
+            // ASSERT
+            assertTrue(
+                e.getMessage().startsWith("Invalid template definition"));
+        }
     }
 
 
@@ -186,8 +420,8 @@ public class TemplateAcceptanceTest extends
         assertEquals("body", original.getBody());
         assertEquals("<fields/>", original.getDefinition());
         assertEquals(MimeType.HTML, original.getMimeType());
-
     }
+
 
 
     /**
@@ -223,4 +457,41 @@ public class TemplateAcceptanceTest extends
             assertEquals(u.getId(), ex.getUser());
         }
     }
+
+    // taken from field-definition.textile
+    private static final String VALID_SCHEMA_EXAMPLE =
+        "<fields>"
+        +"    <field name=\"dateField\" type=\"date\" "
+        +               "description=\"birthday\"/>"
+        +"    <field name=\"oneLine\" type=\"text_field\" />"
+        +"    <field name=\"oneLineWithValidation\" type=\"text_field\" "
+                +"regexp=\"\\d{1,3}\"/>"
+        +"    <field name=\"manyLines\" type=\"text_area\" "
+                +"title=\"Longer text\" />"
+        +"    <field name=\"richText\" type=\"html\" />"
+        +"    <field name=\"checkBoxes\" type=\"checkbox\">"
+        +"        <option default=\"true\" title=\"My Value\" "
+                +"value=\"my_value\"/>"
+        +"        <option title=\"Other Value\" value=\"other_value\"/>"
+        +"    </field>"
+        +"    <field name=\"radio\" type=\"radio\">"
+        +"        <option default=\"true\" title=\"My Value\" "
+                +"value=\"my_value\"/>"
+        +"        <option title=\"Other Value\" value=\"other_value\"/>"
+        +"    </field>"
+        +"    <field name=\"combos\" type=\"combobox\">"
+        +"        <option default=\"true\" title=\"My Value\" "
+                +"value=\"my_value\"/>"
+        +"        <option title=\"Other Value\" value=\"other_value\"/>"
+        +"    </field>"
+        +"    <field name=\"list\" type=\"list\">"
+        +"        <option default=\"true\" title=\"My Value\" "
+                +"value=\"my_value\"/>"
+        +"        <option title=\"Other Value\" value=\"other_value\"/>"
+        +"    </field>"
+        +"    <field name=\"photo\" type=\"image\"/>"
+        +"    <field name=\"number\" type=\"number\"/>"
+        +"</fields>";
+
+
 }

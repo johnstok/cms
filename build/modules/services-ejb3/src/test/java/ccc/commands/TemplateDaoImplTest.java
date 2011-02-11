@@ -26,7 +26,8 @@
  */
 package ccc.commands;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 
 import java.util.Date;
 
@@ -67,7 +68,7 @@ public class TemplateDaoImplTest
         foo.lock(getUser());
         final Template td = new Template();
         td.setBody("newBody");
-        td.setDefinition("newDefn");
+        td.setDefinition("<fields />");
         td.setMimeType(MimeType.BINARY_DATA);
 
         expect(
@@ -87,7 +88,7 @@ public class TemplateDaoImplTest
         // ASSERT
         verifyAll();
         assertEquals("newBody", foo.getBody());
-        assertEquals("newDefn", foo.getDefinition());
+        assertEquals("<fields />", foo.getDefinition());
         assertEquals(MimeType.BINARY_DATA, foo.getMimeType());
     }
 }

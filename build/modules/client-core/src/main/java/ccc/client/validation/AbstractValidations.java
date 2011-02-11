@@ -54,7 +54,7 @@ public abstract class AbstractValidations {
     /** VALID_PASSWORD_CHARACTERS : String. */
     public static final String VALID_PASSWORD_CHARACTERS = "[\\S]+";
     /** NO_BRACKETS : String. */
-    public static final String NO_BRACKETS = "[^<^>]*";
+    public static final String NO_BRACKETS = "[^<>]*";
     /** VALID_URL : String. */
     public static final String VALID_URL = "(http://|https://)([a-zA-Z0-9]+\\."
             + "[a-zA-Z0-9\\-]+|[a-zA-Z0-9\\-]+)\\.[a-zA-Z0-9\\.]{2,9}(/"
@@ -285,17 +285,21 @@ public abstract class AbstractValidations {
                 || datum.getValue().trim().length() < 1) {
                 sb.append(UI_CONSTANTS.noEmptyValuesAllowed());
             }
-            if (!datum.getKey().matches("[^<^>]*")) {
+            if (!datum.getKey().matches(NO_BRACKETS)) {
                 sb.append(
                     UI_CONSTANTS.keysMustNotContainBrackets());
             }
-            if (!datum.getValue().matches("[^<^>]*")) {
+            if (!datum.getValue().matches(NO_BRACKETS)) {
                 sb.append(
                     UI_CONSTANTS.valuesMustNotContainBrackets());
             }
         }
         if (sb.length() > 0) {
-            return sb.toString();
+            String sbstr = sb.toString();
+            if(sbstr.endsWith("\n"))
+                return sbstr.substring(0, sbstr.length()-1);
+            else
+                return sbstr;
         }
         return null;
     }

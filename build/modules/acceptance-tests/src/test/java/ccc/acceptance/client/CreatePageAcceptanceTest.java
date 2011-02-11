@@ -34,6 +34,7 @@ import ccc.acceptance.client.views.CreatePageFake;
 import ccc.api.core.Folder;
 import ccc.api.core.Page;
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
 import ccc.client.presenters.CreatePagePresenter;
@@ -58,6 +59,8 @@ public class CreatePageAcceptanceTest extends AbstractAcceptanceTest {
 
         final Folder model = tempFolder();
         final Template testTemplate = dummyTemplate(model);
+        final UUID userID = findUser("migration").getId();
+
 
         final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
         paragraphs.add(Paragraph.fromText("content", "sample text"));
@@ -66,9 +69,11 @@ public class CreatePageAcceptanceTest extends AbstractAcceptanceTest {
             "testname"+UUID.randomUUID().toString(),
             "a title",
             true,
+            false,
             "testComment",
             paragraphs,
-            getTemplates().retrieve(testTemplate.getId()));
+            getTemplates().retrieve(testTemplate.getId()),
+            null);
 
         final CreatePagePresenter p = new CreatePagePresenter(view, model);
 
@@ -84,7 +89,48 @@ public class CreatePageAcceptanceTest extends AbstractAcceptanceTest {
         assertEquals(view.getName(), pr.getName().toString());
         assertEquals(view.getResourceTitle(), pr.getTitle());
         assertEquals("sample text", page.getParagraph("content").getText());
+        assertEquals(false, page.isPublished());
+    }
 
+    /**
+     * Test.
+     *
+     */
+    public void testCreatePublishedPageSuccess() {
+
+        // ARRANGE
+
+        final Folder model = tempFolder();
+        final Template testTemplate = dummyTemplate(model);
+        final UUID userID = tempUser().getId();
+
+        final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
+        paragraphs.add(Paragraph.fromText("content", "sample text"));
+
+        final CreatePage view = new CreatePageFake(
+            "testname"+UUID.randomUUID().toString(),
+            "testTitle",
+            true,
+            true,
+            "testComment",
+            paragraphs,
+            getTemplates().retrieve(testTemplate.getId()),
+            userID);
+
+        final CreatePagePresenter p = new CreatePagePresenter(view, model);
+
+        // ACT
+        p.save();
+
+        // ASSERT
+        final ResourceSummary pr = getCommands().resourceForPath(
+            model.getAbsolutePath()+"/"+view.getName());
+
+        final Page page = getPages().retrieve(pr.getId());
+
+        assertEquals(view.getName(), pr.getName().toString());
+        assertEquals("sample text", page.getParagraph("content").getText());
+        assertEquals(true, page.isPublished());
     }
 
 }

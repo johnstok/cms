@@ -142,8 +142,12 @@ public class SearchEngineAcceptanceTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
+
     public void testFindChinese() {
+
 
         // ARRANGE
         final String searchTerm = "案例学习"+uid();
@@ -189,7 +193,12 @@ public class SearchEngineAcceptanceTest
         // ACT
         final SearchResult result =
             getSearch().find(
-                "date_created:["+(page.getDateCreated().getTime()-1000)+" TO "+(page.getDateCreated().getTime()+1000)+"]", 10, 1);
+                "date_created:["
+                    + (page.getDateCreated().getTime()-1000)
+                    + " TO "
+                    + (page.getDateCreated().getTime()+1000)+"]",
+                10,
+                1);
 
         // ASSERT
         assertEquals(1, result.totalResults());

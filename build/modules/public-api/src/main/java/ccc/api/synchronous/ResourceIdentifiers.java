@@ -282,6 +282,13 @@ public interface ResourceIdentifiers {
         /** PASSWORD : String. */
         public static final String  PASSWORD   =
             ELEMENT + "/password";
+        /** TOKEN : String. */
+        public static final String  TOKEN   =
+            COLLECTION + "/token";
+        /** TOKEN : String. */
+        public static final String  RESET_PASSWORD   =
+            COLLECTION + "/resetpassword";
+
     }
 
 

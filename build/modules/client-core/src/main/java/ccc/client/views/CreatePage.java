@@ -28,6 +28,7 @@
 package ccc.client.views;
 
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
@@ -80,6 +81,13 @@ public interface CreatePage extends View<CreatePagePresenter>, Validatable {
     /**
      * Accessor.
      *
+     * @return The publish.
+     */
+    boolean getPublish();
+
+    /**
+     * Accessor.
+     *
      * @return The paragraphs.
      */
     Set<Paragraph> getParagraphs();
@@ -91,4 +99,10 @@ public interface CreatePage extends View<CreatePagePresenter>, Validatable {
      */
     String getResourceTitle();
 
+    /**
+     * Accessor.
+     *
+     * @return The UUID.
+     */
+    UUID getUserID();
 }

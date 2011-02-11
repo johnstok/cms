@@ -27,6 +27,15 @@
 package ccc.client.gwt.widgets;
 
 
+import java.util.Map;
+
+import ccc.api.core.User;
+import ccc.client.actions.UpdateUserAction;
+import ccc.client.core.DefaultCallback;
+import ccc.client.core.I18n;
+import ccc.client.core.ImagePaths;
+import ccc.client.core.InternalServices;
+
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.Events;
@@ -37,6 +46,9 @@ import com.extjs.gxt.ui.client.widget.ComponentPlugin;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Image;
 
 
 /**
@@ -56,16 +68,39 @@ public class ContextActionGridPlugin
      * Constructor.
      *
      * @param contextMenu Context menu
+     * @param resourceTable
      */
-    public ContextActionGridPlugin(final Menu contextMenu) {
+    public ContextActionGridPlugin(final Menu contextMenu,
+    							   final ColumnConfigSupport ccs) {
         _contextMenu = contextMenu;
-        setHeader("");
         setWidth(COLUMN_WIDTH);
         setSortable(false);
         setResizable(false);
         setFixed(true);
         setMenuDisabled(true);
         setDataIndex("");
+        // This is GWT image with GWT click handler.
+        // Replace with GXT classes if possible.
+        final Image btn = new Image(ImagePaths.BULLET_DISK);
+        btn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent arg0) {
+                if (ccs.visibleColumns() != null) {
+                    final User user = InternalServices.globals.currentUser();
+                    final Map<String, String> meta = user.getMetadata();
+                    meta.put(ccs.preferenceName(), ccs.visibleColumns());
+
+                    new UpdateUserAction(user).execute(
+                        new DefaultCallback<User>(I18n.uiConstants.editUser()) {
+                        @Override public void onSuccess(final User result) {
+                            InternalServices.window.alert(
+                                I18n.uiConstants.columnsSaved());
+                        }
+                    });
+                }
+            }
+        });
+        setWidget(btn, "");
     }
 
     /** {@inheritDoc} */

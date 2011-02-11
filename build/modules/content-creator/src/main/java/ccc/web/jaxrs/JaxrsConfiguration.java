@@ -51,6 +51,7 @@ import ccc.api.jaxrs.providers.UUIDProvider;
 import ccc.api.jaxrs.providers.UuidCollectionProvider;
 import ccc.api.synchronous.ServiceLocator;
 import ccc.commons.JNDI;
+import ccc.web.scheduling.Schedulers;
 
 
 /**
@@ -71,7 +72,11 @@ public class JaxrsConfiguration
     public JaxrsConfiguration() {
         final Set<Object> resources = new HashSet<Object>();
         final ServiceLocator sl =
-            new RegistryServiceLocator(CCCProperties.getAppName(), new JNDI());
+            new RegistryServiceLocator(
+                CCCProperties.getAppName(),
+                new JNDI(),
+                Schedulers.getInstance(),
+                Schedulers.getSearchInstance());
 
         resources.add(new FoldersImpl(sl.getFolders()));
         resources.add(new AliasesImpl(sl.getAliases()));

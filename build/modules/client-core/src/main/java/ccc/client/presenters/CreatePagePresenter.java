@@ -26,7 +26,8 @@
  */
 package ccc.client.presenters;
 
-import static ccc.client.core.InternalServices.validator;
+
+import static ccc.client.core.InternalServices.*;
 
 import java.util.Set;
 import java.util.UUID;
@@ -120,6 +121,10 @@ public class CreatePagePresenter
         page.setParent(getModel().getId());
         page.setComment(getView().getComment());
         page.setMajorChange(getView().getMajorEdit());
+
+        page.setTitle(getView().getResourceTitle());
+
+        page.setPublishedBy(getView().getUserID());
         page.setTitle(getView().getResourceTitle());
         page.setTemplate(template);
         page.setName(new ResourceName(getView().getName()));

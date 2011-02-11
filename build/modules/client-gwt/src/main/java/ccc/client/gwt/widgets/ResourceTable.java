@@ -37,17 +37,13 @@ import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.client.core.InternalServices;
-import ccc.client.core.SingleSelectionModel;
 import ccc.client.events.Event;
-import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
 
-import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BaseFilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.BeanModel;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.event.Events;
@@ -58,9 +54,6 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
-import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
-import com.extjs.gxt.ui.client.widget.grid.GridView;
-import com.extjs.gxt.ui.client.widget.grid.GridViewConfig;
 import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
 import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -76,21 +69,14 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  */
 public class ResourceTable
     extends
-        TablePanel
-    implements
-        EventHandler<CommandType>,
-        SingleSelectionModel {
+    AbstractResourceTable {
 
     private static final int FILTER_MENU_WIDTH = 190;
-
-    private ListStore<BeanModel> _detailsStore =
-        new ListStore<BeanModel>();
 
     private final PagingLoader<PagingLoadResult<BeanModel>> _loader;
 
     private final ResourceSummary _root;
-    private final ResourceTree _tree;
-    private final Grid<BeanModel> _grid;
+
     private final PagingToolBar _pagerBar;
     private final FolderToolBar _toolBar;
 
@@ -98,17 +84,22 @@ public class ResourceTable
 
     private final ResourceProxy _proxy;
 
+    private final String _preferences;
+
 
     /**
      * Constructor.
      *
      * @param root ResourceSummary
      * @param tree FolderResourceTree
+     * @param preferences Preferences
      */
     ResourceTable(final ResourceSummary root,
-                  final ResourceTree tree) {
+                  final ResourceTree tree,
+                  final String preferences) {
 
         InternalServices.remotingBus.registerHandler(this);
+        _preferences = preferences;
         _root = root;
         _tree = tree;
         _toolBar = new FolderToolBar(this);
@@ -116,13 +107,14 @@ public class ResourceTable
         setHeading(UI_CONSTANTS.resourceDetails());
         setLayout(new FitLayout());
 
-        final Menu contextMenu = new ResourceContextMenu(this);
+        final Menu contextMenu = new ResourceContextMenu(this, root);
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         final ContextActionGridPlugin gp =
-            new ContextActionGridPlugin(contextMenu);
+            new ContextActionGridPlugin(contextMenu, this);
         gp.setRenderer(new ResourceContextRenderer());
         configs.add(gp);
         createColumnConfigs(configs);
+        applyPreferences(configs);
 
         _proxy = new ResourceProxy(null, null);
 
@@ -170,6 +162,20 @@ public class ResourceTable
     }
 
 
+    private void applyPreferences(final List<ColumnConfig> configs) {
+        if (_preferences != null) {
+            for (final ColumnConfig config : configs) {
+                if (_preferences.indexOf(config.getId()) == -1
+                        && !config.getHeader().equals("")) {
+                    config.setHidden(true);
+                    } else {
+                    config.setHidden(false);
+                }
+            }
+        }
+    }
+
+
     /**
      * Accessor for this table's root.
      *
@@ -214,6 +220,7 @@ public class ResourceTable
      *
      * @param configs list of configurations.
      */
+    @Override
     public void createColumnConfigs(final List<ColumnConfig> configs) {
 
         final GridCellRenderer<BeanModel> rsRenderer =
@@ -311,36 +318,8 @@ public class ResourceTable
     }
 
 
-    private void setUpGrid() {
-        _grid.setLoadMask(true);
-        _grid.setBorders(false);
-
-        // Assign a CSS style for each row with GridViewConfig
-        final GridViewConfig vc = new GridViewConfig() {
-            /** {@inheritDoc} */
-            @Override
-            public String getRowStyle(final ModelData model,
-                                      final int rowIndex,
-                                      final ListStore<ModelData> ds) {
-                final ResourceSummary rs =
-                    ((BeanModel) model).<ResourceSummary>getBean();
-                return rs.getName()+"_row";
-            }
-        };
-        final GridView view = _grid.getView();
-        view.setViewConfig(vc);
-        _grid.setView(view);
-
-        final GridSelectionModel<BeanModel> gsm =
-            new GridSelectionModel<BeanModel>();
-        gsm.setSelectionMode(SelectionMode.SINGLE);
-        _grid.setSelectionModel(gsm);
-        _grid.setAutoExpandColumn(
-            ResourceSummary.Properties.TITLE);
-    }
-
-
     /** {@inheritDoc} */
+    @Override
     public ResourceSummary tableSelection() {
         if (_grid.getSelectionModel() == null) {
             return null;
@@ -351,6 +330,7 @@ public class ResourceTable
 
 
     /** {@inheritDoc} */
+    @Override
     public void update(final ResourceSummary model) {
         updateResource(model.getId());
         _tree.updateResource(model);
@@ -362,6 +342,7 @@ public class ResourceTable
      *
      * @param item The model to remove.
      */
+    @Override
     public void delete(final UUID item) {
         removeResource(item);
         _tree.removeResource(item);
@@ -403,6 +384,7 @@ public class ResourceTable
 
 
     /** {@inheritDoc} */
+    @Override
     public void move(final ResourceSummary model,
                      final ResourceSummary newParent,
                      final ResourceSummary oldParent) {

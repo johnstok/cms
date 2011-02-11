@@ -26,20 +26,18 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
-
-import java.util.Collection;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.ejb.Timeout;
-import javax.ejb.Timer;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
 import ccc.api.synchronous.SearchEngine;
+import ccc.api.synchronous.SearchEngine2;
 import ccc.api.types.SearchResult;
 import ccc.api.types.SortOrder;
 import ccc.commands.SearchReindexCommand;
@@ -53,19 +51,18 @@ import ccc.search.SearchHelper;
  */
 @Stateless(name=SearchEngine.NAME)
 @TransactionAttribute(REQUIRED)
-@Local(SearchEngine.class)
+@Local(SearchEngine2.class)
 public class SearchEngineEJB
     extends
         AbstractEJB
     implements
-        SearchEngine {
+        SearchEngine2 {
 
     private static final Logger LOG =
         Logger.getLogger(SearchEngineEJB.class.getName());
 
-    private static final int TIMEOUT_DELAY_SECS = 60*60*1000;
-    private static final int INITIAL_DELAY_SECS = 1;
-    private static final String TIMER_NAME = "index_scheduler";
+    @PersistenceContext private EntityManager _em;
+
 
 
     /** Constructor. */
@@ -125,69 +122,4 @@ public class SearchEngineEJB
         execute(new SearchReindexCommand(getRepoFactory(), getProducer()));
     }
 
-
-
-    /* ====================================================================
-     * Scheduler implementation.
-     * ================================================================== */
-
-    /** {@inheritDoc} */
-    @Override
-    public void start() {
-        checkPermission(SEARCH_SCHEDULE);
-
-        LOG.debug("Starting indexer.");
-
-        if (isRunning()) {
-            LOG.debug("Indexer already running.");
-        } else {
-            getTimerService().createTimer(
-                INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
-            LOG.debug("Started indexer.");
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @SuppressWarnings("unchecked") // JEE API.
-    public void stop() {
-        checkPermission(SEARCH_SCHEDULE);
-
-        LOG.debug("Stopping indexer.");
-        final Collection<Timer> c = getTimerService().getTimers();
-        for (final Timer t : c) {
-            if (TIMER_NAME.equals(t.getInfo())) {
-                t.cancel();
-            }
-        }
-        LOG.debug("Stopped indexer.");
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @SuppressWarnings("unchecked") // JEE API.
-    public boolean isRunning() {
-        checkPermission(SEARCH_SCHEDULE);
-
-        final Collection<Timer> c = getTimerService().getTimers();
-        for (final Timer t : c) {
-            if (TIMER_NAME.equals(t.getInfo())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    /**
-     * Run the scheduled action.
-     *
-     * @param timer The timer that called this method.
-     */
-    @Timeout
-    public void run(@SuppressWarnings("unused") final Timer timer) {
-        index();
-    }
 }

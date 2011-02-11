@@ -75,7 +75,8 @@ public class CommentTable
     extends
         TablePanel
     implements
-        EventHandler<CommandType> {
+        EventHandler<CommandType>,
+        ColumnConfigSupport {
 
     private ListStore<BeanModel> _detailsStore =
         new ListStore<BeanModel>();
@@ -98,7 +99,7 @@ public class CommentTable
 
         final Menu contextMenu = new Menu();
         final ContextActionGridPlugin gp =
-            new ContextActionGridPlugin(contextMenu);
+            new ContextActionGridPlugin(contextMenu, this);
         gp.setRenderer(new ContextMenuRenderer());
         final List<ColumnConfig> configs = createColumnConfigs(gp);
 
@@ -275,5 +276,18 @@ public class CommentTable
         final BeanModel bm = DataBinding.bindCommentSummary(comment);
         commentBinding.setProperties(bm.getProperties());
         _detailsStore.update(commentBinding);
+    }
+
+
+	@Override
+	public String visibleColumns() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+    @Override
+    public String preferenceName() {
+        return COMMENT_COLUMNS;
     }
 }

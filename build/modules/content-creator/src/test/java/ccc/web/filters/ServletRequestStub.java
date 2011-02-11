@@ -23,14 +23,17 @@ public final class ServletRequestStub
     implements
         HttpServletRequest {
 
-    private String _contextPath;
-    private String _servletPath;
-    private String _pathInfo;
+
+    private final String _contextPath;
+    private final String _servletPath;
+    private final String _pathInfo;
     private String _queryString;
     private String _contentType;
     private byte[] _entity;
     private String _charset;
-    private Map<String, String[]> _queryParams;
+    private final Map<String, String[]> _queryParams;
+    private final Principal _principal;
+
     private final Map<String, Object> _attributes =
         new HashMap<String, Object>();
 
@@ -47,10 +50,28 @@ public final class ServletRequestStub
                               final String servletPath,
                               final String pathInfo,
                               final Map<String, String[]> queryParams) {
+        this(contextPath, servletPath, pathInfo, queryParams, null);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param contextPath The request's context path.
+     * @param servletPath The request's servlet path.
+     * @param pathInfo The request's path info.
+     * @param queryParams Query parameter for the the request.
+     * @param principal The security principal for this request
+     */
+    public ServletRequestStub(final String contextPath,
+                              final String servletPath,
+                              final String pathInfo,
+                              final Map<String, String[]> queryParams,
+                              final Principal principal) {
         _contextPath = contextPath;
         _servletPath = servletPath;
         _pathInfo = pathInfo;
         _queryParams = queryParams;
+        _principal = principal;
     }
 
 
@@ -188,7 +209,7 @@ public final class ServletRequestStub
     /** {@inheritDoc} */
     @Override
     public Principal getUserPrincipal() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return _principal;
     }
 
     /** {@inheritDoc} */
@@ -256,7 +277,7 @@ public final class ServletRequestStub
     public ServletInputStream getInputStream() {
         return (null==_entity) ? null : new ServletInputStream() {
 
-            private ByteArrayInputStream _delegate =
+            private final ByteArrayInputStream _delegate =
                 new ByteArrayInputStream(_entity);
 
             @Override

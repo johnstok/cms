@@ -74,6 +74,7 @@ public class ContentServlet
     private final Random _random = new Random();
 
     private boolean _respectVisibility = true;
+    private String _domain = "localhost";
 
 
     /** {@inheritDoc} */
@@ -85,6 +86,9 @@ public class ContentServlet
         } else {
             _respectVisibility = true;
         }
+        final String domain =
+            getServletContext().getInitParameter("ccc.web.domain");
+        if (null!=domain && domain.trim().length()>0) { _domain = domain; }
     }
 
 
@@ -227,6 +231,7 @@ public class ContentServlet
         context.add("uuid",        UUID.class);
         context.add("enums",       new EnumTools());
         context.add("hostname",    Environment.getHostname());
+        context.add("domain",      _domain);
         context.add("apiTypes",    ObjectFactory.class);
         context.add("taxonomy",    new TaxonomyTools());
         context.add("multipart",   new PluginFactory().createMultipart());

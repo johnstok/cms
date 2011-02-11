@@ -26,8 +26,8 @@
  */
 package ccc.domain;
 
-import static ccc.api.types.DBC.*;
-import static ccc.commons.Encryption.*;
+import static ccc.api.types.DBC.require;
+import static ccc.commons.Encryption.hash;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,6 +64,9 @@ public class UserEntity
     /** SYSTEM_USER : User. */
     public static final UserEntity SYSTEM_USER =
         new UserEntity(new Username("SYSTEM"), "SYSTEM", "SYSTEM");
+    public static final String TOKEN_KEY = "token";
+    public static final String TOKEN_EXPIRY_KEY = "tokenExpiry";
+
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
     private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
 
@@ -345,7 +348,13 @@ public class UserEntity
         dto.setUsername(getUsername());
         dto.setName(getName());
         dto.setGroups(getGroupIds());
-        dto.setMetadata(getMetadata());
+        
+        // Prevent token and tokenExpiry to be seen.
+        Map<String, String> meta = getMetadata();
+        meta.remove("token");
+        meta.remove("tokenExpiry");
+        
+        dto.setMetadata(meta);
         dto.setPermissions(getPermissions());
 
         dto.addLink(

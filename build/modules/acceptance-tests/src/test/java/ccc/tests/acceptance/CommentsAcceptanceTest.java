@@ -27,10 +27,15 @@
 package ccc.tests.acceptance;
 
 import java.util.Date;
+import java.util.UUID;
 
 import ccc.api.core.Comment;
 import ccc.api.core.Folder;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.Template;
 import ccc.api.types.CommentStatus;
+import ccc.api.types.MimeType;
+import ccc.api.types.ResourceName;
 
 
 /**
@@ -130,5 +135,105 @@ public class CommentsAcceptanceTest
         assertEquals("Updated world!", actual.getBody());
         assertEquals(CommentStatus.APPROVED, actual.getStatus());
         assertEquals("new@example.com", actual.getEmail());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testAnonymousRetrieve() {
+
+        // ARRANGE
+        final ResourceSummary folder = tempFolder();
+
+        final String templateName = UUID.randomUUID().toString();
+
+        final Comment c =
+            new Comment(
+                "keith",
+                "Hello world",
+                folder.getId(),
+                new Date(),
+                "http://www.google.com");
+        c.setEmail("test@example.com");
+        c.setStatus(CommentStatus.APPROVED);
+        final Comment comment = getComments().create(c);
+
+        final Template t = new Template();
+        t.setName(new ResourceName(templateName));
+        t.setParent(folder.getId());
+        t.setDescription(templateName);
+        t.setTitle(templateName);
+        t.setBody("$services.getComments().retrieve($uuid.fromString('"
+            +comment.getId()+"')).getBody()");
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
+
+        final ResourceSummary template = getTemplates().create(t);
+
+        final ResourceSummary page = tempPage(folder.getId(), template.getId());
+        getCommands().lock(folder.getId());
+        getCommands().publish(folder.getId());
+        getCommands().lock(page.getId());
+        getCommands().publish(page.getId());
+
+        // ACT
+        getSecurity().logout();
+        final String pContent = getBrowser().get(page.getAbsolutePath());
+
+        // ASSERT
+        assertEquals("Hello world", pContent);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testAnonymousQuery() {
+
+        // ARRANGE
+        final ResourceSummary folder = tempFolder();
+
+        final String templateName = UUID.randomUUID().toString();
+        final Comment c =
+            new Comment(
+                "keith",
+                "Hello world",
+                folder.getId(),
+                new Date(),
+                "http://www.google.com");
+        c.setEmail("test@example.com");
+        c.setStatus(CommentStatus.APPROVED);
+        getComments().create(c);
+
+        final Template t = new Template();
+        t.setName(new ResourceName(templateName));
+        t.setParent(folder.getId());
+        t.setDescription(templateName);
+        t.setTitle(templateName);
+        final StringBuilder sb = new StringBuilder();
+        sb.append("$services.getComments().query($uuid.fromString('");
+        sb.append(folder.getId().toString());
+        sb.append("'),$enums.of('ccc.api.types.CommentStatus', 'APPROVED'),");
+        sb.append("'author',$enums.of('ccc.api.types.SortOrder', 'ASC'),");
+        sb.append("1, 20).getTotalCount()");
+        t.setBody(sb.toString());
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
+
+        final ResourceSummary template = getTemplates().create(t);
+        final ResourceSummary page = tempPage(folder.getId(), template.getId());
+        getCommands().lock(folder.getId());
+        getCommands().publish(folder.getId());
+        getCommands().lock(page.getId());
+        getCommands().publish(page.getId());
+
+
+        // ACT
+        getSecurity().logout();
+        final String pContent = getBrowser().get(page.getAbsolutePath());
+
+        // ASSERT
+        assertEquals("1", pContent);
     }
 }

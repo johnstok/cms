@@ -26,8 +26,10 @@
  */
 package ccc.plugins.security.jboss;
 
+import org.jboss.security.RunAsIdentity;
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
+import ccc.commons.Reflection;
 import ccc.plugins.security.Sessions;
 
 
@@ -40,10 +42,33 @@ public class JbossSession
     implements
         Sessions {
 
+
     /** {@inheritDoc} */
     @Override
     public boolean login(final String username, final String password) {
         final WebAuthentication pwl = new WebAuthentication();
         return pwl.login(username, password);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void pushRunAsRole(final String roleName) {
+        Reflection.invoke(
+            "org.jboss.ejb3.SecurityActions",
+            "pushRunAs",
+            null,
+            new Object[] {new RunAsIdentity(roleName, null)});
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void popRunAsRole() {
+        Reflection.invoke(
+            "org.jboss.ejb3.SecurityActions",
+            "popRunAs",
+            null,
+            new Object[] {});
     }
 }

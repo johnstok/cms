@@ -451,7 +451,7 @@ public class BaseMigrations {
 
 
     private boolean isValidMetadatum(final String value) {
-        return value.matches("[^<^>]*");
+        return value.matches("[^<>]*");
     }
 
 

@@ -89,7 +89,7 @@ public class UserTable
     extends
         TablePanel
     implements
-        EventHandler<CommandType> {
+        EventHandler<CommandType>, ColumnConfigSupport{
 
     private ListStore<BeanModel> _detailsStore =
         new ListStore<BeanModel>();
@@ -131,7 +131,7 @@ public class UserTable
 
         final Menu contextMenu = new Menu();
         final ContextActionGridPlugin gp =
-            new ContextActionGridPlugin(contextMenu);
+            new ContextActionGridPlugin(contextMenu, this);
         gp.setRenderer(new ContextMenuRenderer());
         final List<ColumnConfig> configs = createColumnConfigs(gp);
 
@@ -288,20 +288,20 @@ public class UserTable
                 return;
             }
             _detailsStore.removeAll();
+            final UserCriteria uc = new UserCriteria();
+            if (null != _lastSelected
+                    && !UserTree.USERS.equals(_lastSelected.get("id"))) {
+                uc.setGroups((String) _lastSelected.get("id"));
+            }
+
             if (_radioGroup.getValue() == _usernameRadio) {
-                final UserCriteria uc = new UserCriteria();
-                if (!UserTree.USERS.equals(_lastSelected.get("id"))) {
-                    uc.setGroups((String) _lastSelected.get("id"));
-                }
                 uc.setUsername(
                     "%"+_searchString.getValue().replace('*', '%')+"%");
-                updatePager(uc);
-            } else if (_radioGroup.getValue() == _emailRadio) {
-                final UserCriteria uc = new UserCriteria();
+            } else  {
                 uc.setEmail(
                     "%"+_searchString.getValue().replace('*', '%')+"%");
-                updatePager(uc);
             }
+            updatePager(uc);
         }
     }
 
@@ -366,6 +366,7 @@ public class UserTable
         _grid.reconfigure(_detailsStore, cm);
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void handle(final Event<CommandType> event) {
@@ -378,5 +379,15 @@ public class UserTable
             default:
                 break;
         }
+    }
+
+	@Override
+	public String visibleColumns() {
+		return null;
+	}
+
+    @Override
+    public String preferenceName() {
+        return USER_COLUMNS;
     }
 }

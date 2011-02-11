@@ -1,0 +1,39 @@
+h1. Testing Strategy
+
+This page describes the approach to testing used for ContentControl.
+
+h2. Forms of testing
+
+There will be two types of automated tests written for ContentControl:
+# Unit tests
+# Acceptance tests
+
+We acknowledge that not all tests can be automated and also that sometimes the cost of automating tests outweighs the benefit. As such, we will also perform exploratory testing as and when required.
+
+h2. Unit testing
+
+* For the purposes of ContentControl a unit means a class.
+* Unit tests should a test a single class, in isolation.
+* A unit test should depend on no external resources (e.g. a database, a network resource, absolute time, etc.)
+* Test classes should be named with the suffix 'Test'. For example, the test for class FooBar would be called FooBarTest.
+* Tests should cover the functionality of the class but simple getters/setters can be left out.
+
+h2. Acceptance testing
+
+* Acceptance tests test an application end-to-end.
+* The app should be deployed in the appropriate container.
+* The app should be pointing at real world data (snapshot of the DB contents for example).
+* Application tests should be named with the suffix 'AcceptanceTest'.
+* As far as possible acceptance tests should be named based on the feature that they test.
+
+h2. Other testing
+
+We should also be doing:
+* Security testing
+* Load testing
+* Performance testing
+* Cluster testing
+
+h2. Useful links
+
+"http://www.assertinteresting.com/2009/05/unit-testing-gwt/":http://www.assertinteresting.com/2009/05/unit-testing-gwt/

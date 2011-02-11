@@ -1,0 +1,109 @@
+h2. Auto suggest / auto complete  / quick search with jQuery
+
+This feature provides site visitors to search and navigate quickly using keywords. 
+
+Adding this to a CC7 site requires a new template for the search, jQuery UI and a form for the search.
+
+h3. Template
+
+The template does Lucene query with given parameter ('q') and creates a JSON output. 
+
+bc. #set($query=$request.getParameter("q"))
+#set($search=$services.getSearch())
+#set($resources = $services.getResources())
+#set($query = $query.toLowerCase().trim())
+
+bc. #if ($query.indexOf(" ") == -1) 
+  #set($path = "path:/content/secure/*"+$query+"*")
+#else
+  #set($path = "")
+  #set($elements = $query.split(" "))
+  #foreach($item in $elements)
+    #set($path = $path + "path:/content/secure/*"+$item+"*")
+    #if( $velocityHasNext )
+      #set($path = $path +" AND ")
+    #end
+  #end
+#end
+
+bc. #set($term = $path+")
+#set($result=$search.find($term,30,0))
+[#foreach($hit in $result.hits())
+#if($resources.exists($hit))
+#set($hitresource = $resources.retrieve($hit))
+{"title": "$hitresource.getTitle()",
+"url": "$hitresource.getAbsolutePath()"}#if($velocityHasNext),#end
+#end
+#end]
+​
+
+h3. Page
+
+Simply a page using that template.
+
+h3. jQuery
+
+
+This JSON is then handled by jQuery UI autocomplete:
+ http://jqueryui.com/demos/autocomplete/
+ 
+bc. 
+  jQuery(function() {
+    jQuery( "#inputString" ).autocomplete({
+      source: function( request, response ) {
+        jQuery.ajax({
+          url: "/autosuggestReply",
+          dataType: "json",
+          data: {
+            q: request.term
+          },
+          success: function( data ) {
+            response( jQuery.map( data, function( item ) {
+              return {
+                title: item.title,
+                url: item.url
+              }
+            }));
+          $("ul.ui-autocomplete li:even a").addClass("alt");
+          }
+        });
+      },
+      minLength: 3,
+      focus: function( event, ui ) {
+            $( "#inputString" ).val( ui.item.title );
+            return false;
+      },
+      select: function( event, ui ) {
+        document.getElementById("loading").style.display = 'block';
+        window.location.href = ui.item.url;
+        return false;
+      }
+    }).data( "autocomplete" )._renderItem = function( ul, item ) {
+     var re = new RegExp("^(" + this.term + ")", 'i') ; 
+     var output = item.title;
+     var t = output.replace(re,"<strong>$1</strong>");
+     
+bc.     
+     return jQuery( " <li></li>" )
+        .data( "item.autocomplete", item ).append( "<a>" + t + "</a>" ) .appendTo( ul );
+    };
+  });
+ 
+ 
+h3. Form
+
+The HTML form must have a field with name 'q' for the search criteria.
+
+bc. 
+<form id="qualSearchLeft" name="qualSearchLeft" action="#">
+  <label for="inputString">Quick finder - <span>enter a term</span></label>
+  <input size="25" value="example" onblur="if (this.value == '') this.value = 'example';" onfocus="if (this.value == 'example') this.value = '';" id="inputString" type="text" />
+  <div style="display: none;" class="loading" id="loading">
+    <img class="spinner" src="/assets/images/busy-spinner.gif" alt="Loading..." title="Loading..."/>
+  </div>
+</form>
+
+ 
+ 
+ 
+

@@ -26,15 +26,13 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.SELF_UPDATE;
-import static ccc.api.types.Permission.USER_CREATE;
-import static ccc.api.types.Permission.USER_READ;
-import static ccc.api.types.Permission.USER_UPDATE;
-import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static ccc.api.types.Permission.*;
+import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
 import java.util.UUID;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -46,6 +44,8 @@ import ccc.api.synchronous.Users;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 import ccc.commands.CreateUserCommand;
+import ccc.commands.ResetPasswordCommand;
+import ccc.commands.SendTokenCommand;
 import ccc.commands.UpdateCurrentUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
@@ -214,6 +214,27 @@ public class UsersEJB
             return null;
         }
         return current.toDto();
+    }
+
+
+    @Override
+    @PermitAll
+    public void resetPassword(final String password, final String token) {
+        execute(
+            new ResetPasswordCommand(
+                getRepoFactory(),
+                password,
+                token));
+    }
+
+
+    @Override
+    @PermitAll
+    public void sendToken(final String username) {
+        execute(
+            new SendTokenCommand(
+                getRepoFactory(),
+                username));
     }
 
 }

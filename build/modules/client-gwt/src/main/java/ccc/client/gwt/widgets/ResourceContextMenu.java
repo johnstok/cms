@@ -66,6 +66,7 @@ import ccc.client.core.Action;
 import ccc.client.core.DefaultCallback;
 import ccc.client.core.Globals;
 import ccc.client.core.InternalServices;
+import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.UpdateFileDialog;
 import ccc.client.gwt.views.gxt.UpdatePageDialog;
 
@@ -86,7 +87,7 @@ public class ResourceContextMenu
     extends
         AbstractContextMenu {
 
-    private final ResourceTable _table;
+    private final SingleSelectionModel _table;
     private final Globals _globals = InternalServices.globals;
 
     // Actions
@@ -112,14 +113,17 @@ public class ResourceContextMenu
     private final Action _editCacheAction;
     private final Action _deleteResourceAction;
     private final Action _editTextFileAction;
+    private final ResourceSummary _root;
 
     /**
      * Constructor.
      *
      * @param tbl The table this menu will work for.
      */
-    ResourceContextMenu(final ResourceTable tbl) {
+    ResourceContextMenu(final SingleSelectionModel tbl,
+                              final ResourceSummary root) {
         _table = tbl;
+        _root = root;
 
         _publishAction = new PublishAction(_table);
         _includeMainMenu = new IncludeInMainMenuAction(_table);
@@ -129,7 +133,7 @@ public class ResourceContextMenu
         _updateMetadataAction = new OpenUpdateMetadataAction(_table);
         _viewHistory = new ViewHistoryAction(_table);
         _renameAction = new OpenRenameAction(_table);
-        _moveAction = new OpenMoveAction(_table, _table.root());
+        _moveAction = new OpenMoveAction(_table, _root);
         _unlockAction = new UnlockAction(_table);
         _lockAction = new LockAction(_table);
         _previewAction = new PreviewAction(_table, false);
@@ -161,11 +165,13 @@ public class ResourceContextMenu
         addListener(
             Events.BeforeShow,
             new Listener<MenuEvent>(){
+                @Override
                 public void handleEvent(final MenuEvent be) {
                     refreshMenuItems(be);
                 }
             }
         );
+        setEnableScrolling(false);
     }
 
 
@@ -181,6 +187,9 @@ public class ResourceContextMenu
         addViewHistory();
         if (null==item.getLockedBy()
             || "".equals(item.getLockedBy().toString())) {
+            if (item.isHasWorkingCopy()) {
+                addPreviewWorkingCopy();
+            }
             addLockResource();
         } else {
             if (item.getLockedBy().equals(_globals.currentUser().getUsername())
@@ -450,7 +459,7 @@ public class ResourceContextMenu
 
     // TODO: Factor these methods to actions
     private void updateAlias(final ResourceSummary item) {
-        new OpenUpdateAliasAction(item, _table.root()).execute();
+        new OpenUpdateAliasAction(item, _root).execute();
     }
 
     private void updatePage(final ResourceSummary item) {

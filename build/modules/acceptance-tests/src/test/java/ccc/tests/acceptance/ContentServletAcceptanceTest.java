@@ -110,7 +110,7 @@ public class ContentServletAcceptanceTest
 
             // ASSERT
         } catch (final RuntimeException e) {
-            assertTrue(is302(e));
+            assertTrue(is403(e));
         }
     }
 
@@ -147,11 +147,14 @@ public class ContentServletAcceptanceTest
         // ARRANGE
 
         // ACT
-        final String content = getBrowser().get("/4444.html");
+        try {
+            getBrowser().get("/4444.html");
+            fail();
 
-
-        // ASSERT
-        assertTrue(content.contains("404"));
+            // ASSERT
+        } catch (final RuntimeException e) {
+            assertTrue(is404(e));
+        }
     }
 
 
@@ -218,10 +221,14 @@ public class ContentServletAcceptanceTest
         getCommands().lock(p.getId());
 
         // ACT
-        final String content = getBrowser().get(p.getAbsolutePath());
+        try {
+            getBrowser().get(p.getAbsolutePath());
+            fail();
 
-        // ASSERT
-        assertTrue(content.contains("404"));
+            // ASSERT
+        } catch (final RuntimeException e) {
+            assertTrue(is404(e));
+        }
     }
 
 
@@ -576,6 +583,10 @@ public class ContentServletAcceptanceTest
 
     private boolean is302(final RuntimeException e) {
         return e.getMessage().startsWith("302: ");
+    }
+
+    private boolean is403(final RuntimeException e) {
+        return e.getMessage().startsWith("403: ");
     }
 
 

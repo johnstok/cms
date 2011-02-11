@@ -1,31 +1,40 @@
-<h1 id="ConfigurationManagementStrategy">Configuration Management Strategy</h1>
-<h2 id="Thebasics">The basics</h2>
-<ol>
-    <li>All new features will be added on the trunk.</li>
-    <li>A branch will created for each minor release.</li>
-    <li>All bugfixes will be made on the relevant branch.</li>
-</ol>
-<h2 id="Tagging">Tagging</h2>
-<ol>
-    <li>A tag will be created:
-    <ol>
-        <li>at the end of each iteration (tags will be named 'iteration-n' where n is the iteration number)</li>
-        <li>for each release (tags will be named 'release-version' where version is the version number in major.minor.bugfix format).</li>
-    </ol>
-    </li>
-</ol>
-<h2 id="Branches">Branches</h2>
-<ol>
-    <li>A branch will be created for each minor  release (7.0, 7.1, 7.2, etc.)</li>
-    <li>Branches will be named 'maintenance-major.minor'.</li>
-</ol>
-<h2 id="Makingabugfix">Making a bugfix</h2>
-<ol>
-    <li>Should always happen in a branch.</li>
-    <li>What is our strategy for disseminating the fix to
-    <ol>
-        <li>Other branches (i.e. other versions)?</li>
-        <li>The trunk?</li>
-    </ol>
-    </li>
-</ol>
+h1. Configuration Management Strategy
+
+_This page describes how CC files are organised under configuration management_.
+
+h2. The basics
+
+# All new features will be added on the trunk.
+# A branch will created for each minor release.
+# Breaking changes may not be committed to a branch (API, DB schema, etc).
+
+h2. Tagging
+
+A tag will be created:
+# at the end of each iteration (tags will be named 'iteration-n' where n is the iteration number).
+# for each release (tags will be named 'release-version' where version is the version number in major.minor.bugfix format).
+
+h2. Branches
+
+* A branch will be created for each minor release (7.0, 7.1, 7.2, etc.).
+* Branches will be named 'maintenance-major.minor'.
+
+h2. Fixing bugs
+
+* Bug fixes should always happen in the branch of the earliest, active, affected minor revision.
+* The bug fix should then be merged forward into the branches of each subsequent revision, as necessary.
+* The bug fix should also be merged forward into the trunk, if necessary.
+
+h2. Making a hot-fix
+
+* Hot-fixes are binaries built to resolve a specific issue in a specific release.
+* A tag should be created for each hot-fix.
+* Hot-fix tags should have the following naming convention: 'hotfix-major.minor-svn_revision'.
+
+h2. References
+
+* http://www.targetprocess.com/blog/2008/04/should-we-have-parallel-releases-and.html
+* http://www.cmcrossroads.com/bradapp/acme/branching/
+* http://tech.puredanger.com/2008/06/03/release-and-branching-strategies/
+* http://csdl.computer.org/comp/mags/co/2003/01/r1011.pdf
+* http://nvie.com/posts/a-successful-git-branching-model/

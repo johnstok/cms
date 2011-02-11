@@ -196,4 +196,24 @@ public class UsersImpl
             throw convertException(cfe);
         }
     }
+
+
+    @Override
+    public void resetPassword(String password, String token) {
+        try {
+            _delegate.resetPassword(password, token);
+        } catch (final RuntimeException cfe) {
+            throw convertException(cfe);
+        }
+    }
+
+
+    @Override
+    public void sendToken(String username) {
+        try {
+            _delegate.sendToken(username);
+        } catch (final RuntimeException cfe) {
+            throw convertException(cfe);
+        }
+    }
 }

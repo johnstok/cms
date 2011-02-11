@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.widgets;
 
+import java.util.Map;
+
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Globals;
@@ -48,7 +50,7 @@ public class EnhancedResourceTree
     private final Menu _contextMenu;
     private final LeftRightPane _view;
     private final ResourceTable _rt;
-
+    private final SearchTable _st;
 
     /**
      * Constructor.
@@ -62,8 +64,10 @@ public class EnhancedResourceTree
                          final Globals globals) {
 
         super(root, ResourceType.FOLDER);
-
-        _rt = new ResourceTable(root, this);
+        final Map<String, String> usermeta = globals.currentUser().getMetadata();
+        final String columnPref = usermeta.get(ColumnConfigSupport.RESOURCE_COLUMNS);
+        _rt = new ResourceTable(root, this, columnPref);
+        _st = new SearchTable(root, EnhancedResourceTree.this, columnPref);
         _view = view;
         _contextMenu = new FolderContextMenu(_rt);
 
@@ -73,8 +77,13 @@ public class EnhancedResourceTree
                      final SelectionChangedEvent<BeanModel> se) {
                     final BeanModel item = se.getSelectedItem();
                     if (item != null) {
-                        _rt.displayResourcesFor(
-                            item.<ResourceSummary>getBean());
+                        if (item.<ResourceSummary>getBean().getType() == ResourceType.SEARCH ) {
+                            _view.setRightHandPane(_st);
+                        } else {
+                            _view.setRightHandPane(_rt);
+                            _rt.displayResourcesFor(
+                                item.<ResourceSummary>getBean());
+                        }
                     }
                 }
             }

@@ -113,6 +113,7 @@ public class CreatePageDialog
 
     private final Text _description = new Text("");
     private final CheckBox _majorEdit = new CheckBox();
+    private final CheckBox _publish = new CheckBox();
     private final TextArea _comment = new TextArea();
     private final ResourceSummary _targetRoot;
 
@@ -203,10 +204,16 @@ public class CreatePageDialog
         _majorEdit.setBoxLabel(getUiConstants().yes());
         _majorEdit.setFieldLabel(getUiConstants().majorEdit());
 
+        _publish.setName("majorEdit");
+        _publish.setValue(Boolean.FALSE);
+        _publish.setBoxLabel(getUiConstants().yes());
+        _publish.setFieldLabel(getUiConstants().publish());
+
         _comment.setFieldLabel(getUiConstants().comment());
         _comment.setName("comment");
 
         _thirdWizardPage.add(_majorEdit);
+        _thirdWizardPage.add(_publish);
         _thirdWizardPage.add(_comment);
         addCard(_thirdWizardPage);
 
@@ -340,6 +347,12 @@ public class CreatePageDialog
 
     /** {@inheritDoc} */
     @Override
+    public boolean getPublish() {
+        return _publish.getValue().booleanValue();
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Set<Paragraph> getParagraphs() {
         return _secondWizardPage.getValues();
     }
@@ -347,6 +360,11 @@ public class CreatePageDialog
     @Override
     public String getResourceTitle() {
         return _secondWizardPage.getResourceTitle().getValue();
+    }
+
+    @Override
+    public UUID getUserID() {
+        return InternalServices.globals.currentUser().getId();
     }
 
 }

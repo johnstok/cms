@@ -45,7 +45,7 @@ import ccc.client.core.S11nHelper;
  *
  * @author Civic Computing Ltd.
  */
-public class UniqueUsernameAction
+public abstract class UniqueUsernameAction
     extends
         RemotingAction<Boolean> {
 
@@ -90,4 +90,5 @@ public class UniqueUsernameAction
                     }}));
 
     }
+
 }
