@@ -55,8 +55,11 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Text;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
+import com.extjs.gxt.ui.client.widget.form.HiddenField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.form.FormPanel.Method;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 
@@ -81,7 +84,10 @@ public class EditTemplateDialog
 
     private final FormPanel _first = new FormPanel();
     private final FormPanel _second = new FormPanel();
-    private final FormPanel _third = new FormPanel();
+    private final PreviewFormPanel _third = new PreviewFormPanel();
+    private HiddenField<String> _postBody = new HiddenField<String>();
+    private final TextField<String> _targetName = new TextField<String>();
+    
 
     private final TextField<String> _name = new TextField<String>();
     private final TextField<String> _mimePrimary = new TextField<String>();
@@ -226,6 +232,27 @@ public class EditTemplateDialog
     }
 
     private void populateThirdScreen() {
+    	
+    	_third.setMethod(Method.POST);
+    	_third.setTarget("_blank");
+        _postBody.setName("hiddenbody");
+        _third.add(_postBody);
+        
+        _targetName.setFieldLabel(constants().path());
+        _targetName.setValue("");
+        _third.add(_targetName);
+        
+        Button previewButton = 
+            new Button("preview", new SelectionListener<ButtonEvent>() {
+			@Override
+			public void componentSelected(ButtonEvent ce) {
+				_third.setAction("/ccc/previewtemplate"+_targetName.getValue());
+				_postBody.setValue(_body.getEditorCode());
+				_third.submit();
+			}
+		});
+        _third.add(previewButton);
+		
         _third.setWidth("100%");
         _third.setBorders(false);
         _third.setBodyBorder(false);
@@ -341,4 +368,16 @@ public class EditTemplateDialog
         }
     }
 
+    
+    /**
+     * Class required to override private 'setTarget' method in FormPanel. 
+     * 
+     * @author petteri
+     *
+     */
+    public class PreviewFormPanel extends FormPanel {
+    	public native void setTarget(String target)/*-{
+		this.@com.extjs.gxt.ui.client.widget.form.FormPanel::setTarget(Ljava/lang/String;)(target);
+	}-*/;
+    };
 }

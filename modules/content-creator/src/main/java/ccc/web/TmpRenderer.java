@@ -63,7 +63,7 @@ public class TmpRenderer {
     private final Templates _templates;
     private final Resources _resources;
     private final Files     _files;
-
+    private String	_template = null;
 
     /**
      * Constructor.
@@ -156,7 +156,7 @@ public class TmpRenderer {
             final Response r =
                 new Response(
                     new PageBody(
-                        new Script(t.getBody(), tId.toString())));
+                        new Script((_template == null) ? t.getBody() : _template, tId.toString())));
             r.setCharSet(DEFAULT_CHARSET);
             r.setMimeType(t.getMimeType());
             r.setExpiry(s.getCacheDuration());
@@ -225,5 +225,9 @@ public class TmpRenderer {
     private Response render(final Alias s) {
         if (null==s.getTargetPath()) { throw new NotFoundException(); }
         throw new RedirectRequiredException(s.getTargetPath());
+    }
+    
+    public void setTemplate(String template) {
+    	_template = template;
     }
 }

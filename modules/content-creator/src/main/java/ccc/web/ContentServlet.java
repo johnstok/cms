@@ -76,6 +76,7 @@ public class ContentServlet
     private final Random _random = new Random();
 
     private boolean _respectVisibility = true;
+    private boolean _usePreviewTemplate = false;
     private String _domain = "localhost";
 
 
@@ -88,11 +89,15 @@ public class ContentServlet
         } else {
             _respectVisibility = true;
         }
+        if ("true".equals(cf.getInitParameter("preview_template"))) {
+        	_usePreviewTemplate = true;
+        } else {
+        	_usePreviewTemplate = false;
+        }
         final String domain =
             getServletContext().getInitParameter("ccc.web.domain");
         if (null!=domain && domain.trim().length()>0) { _domain = domain; }
     }
-
 
     /**
      * Get the content for the specified relative URI. This method reads the
@@ -104,7 +109,6 @@ public class ContentServlet
     @Override
     protected void doGet(final HttpServletRequest req,
                          final HttpServletResponse resp) throws IOException {
-
         LOG.info(
             "Serving content for: "
             + req.getContextPath()
@@ -126,10 +130,13 @@ public class ContentServlet
             LOG.warn("Resource at path "+contentPath+" isn't published.");
             throw new NotFoundException();
         }
-
-        final Response r =
-            new TmpRenderer(getFiles(), getTemplates(), getResources())
-            .render(resource);
+        TmpRenderer tr =
+        	new TmpRenderer(getFiles(), getTemplates(), getResources());
+        
+        if (_usePreviewTemplate) {
+            tr.setTemplate(req.getParameter("hiddenbody"));
+        }
+        Response r = tr.render(resource);
 
         if (resource.isSecure()       // Don't cache secure pages.
             || !_respectVisibility) { // Don't cache previews or working copies.
