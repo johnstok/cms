@@ -406,7 +406,7 @@ public class SimpleLuceneFS
         try {
             _writer = createWriter();
             clearIndex();
-            LOG.info("Staring index update.");
+            LOG.info("Starting index update.");
         } catch (final IOException e) {
             throw new CCException("Failed to start index update.", e);
         } catch (final ParseException e) {
