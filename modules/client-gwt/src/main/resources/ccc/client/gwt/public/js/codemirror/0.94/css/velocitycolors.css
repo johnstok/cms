@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.vel-attribute {color:green;}
+.vel-comment {color:#a70;}
+.vel-method {color:steelblue}
+.vel-keyword {color:blue;}
+.vel-null {color:dimgrey;}
+.vel-number {color:purple;}
+.vel-object {color:black;}
+.vel-directive {color:darkred;font-weight:bold;}
+.vel-parens{color:orange}
+.vel-punctuation {color:black;}
+.vel-word {color:black;}

@@ -7,7 +7,7 @@
     
     <link rel="stylesheet" type="text/css" href="static/gxt/2.2.0/resources/css/gxt-all.css" />
     <link rel="stylesheet" type="text/css" href="static/listview.css" />
-    <link rel="stylesheet" type="text/css" href="static/js/codemirror/0.92/css/editor.css" />
+    <link rel="stylesheet" type="text/css" href="static/js/codemirror/0.94/css/editor.css" />
     <!--                                           -->
     <!-- Any title is fine                         -->
     <!--                                           -->
@@ -18,7 +18,7 @@
     <!-- If you add any GWT meta tags, they must   -->
     <!-- be added before this line.                -->
     <!--                                           -->
-    <script type="text/javascript" language="javascript" src="static/js/codemirror/0.92/js/codemirror.js"></script>
+    <script type="text/javascript" language="javascript" src="static/js/codemirror/0.94/js/codemirror.js"></script>
     <script type="text/javascript" language="javascript" src="static/ccc.client.gwt.ContentCreator.nocache.js"></script>
   </head>
 
