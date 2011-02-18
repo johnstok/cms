@@ -97,7 +97,7 @@ public class EditTemplateDialog
     private final FormPanel _second = new FormPanel();
     private final PreviewFormPanel _third = new PreviewFormPanel();
     private HiddenField<String> _postBody = new HiddenField<String>();
-    private final TriggerField<String> _targetName = new TriggerField<String>();
+    private final TriggerField<String> _targetPath = new TriggerField<String>();
 
     private final TextField<String> _name = new TextField<String>();
     private final TextField<String> _mimePrimary = new TextField<String>();
@@ -251,9 +251,9 @@ public class EditTemplateDialog
     	_postBody.setName("hiddenbody");
         _third.add(_postBody);
         
-        _targetName.setFieldLabel(constants().path());
-        _targetName.setValue("");
-        _targetName.addListener(Events.TriggerClick, new TargetListener());
+        _targetPath.setFieldLabel(constants().path());
+        _targetPath.setValue("");
+        _targetPath.addListener(Events.TriggerClick, new TargetListener());
 
         Button previewButton = 
             new Button("preview", new SelectionListener<ButtonEvent>() {
@@ -261,7 +261,7 @@ public class EditTemplateDialog
                 public void componentSelected(ButtonEvent ce) {
                     Window.open("", "_templatePreview","");
                     _third.setAction(new GlobalsImpl().appURL()
-                        +"previewtemplate"+_targetName.getValue());
+                        +"previewtemplate"+_targetPath.getValue());
                     _postBody.setValue(_body.getEditorCode());
                     _third.submit();
                 }
@@ -270,7 +270,7 @@ public class EditTemplateDialog
         HorizontalPanel previewPanel = new HorizontalPanel();
         FormLayout layout = new FormLayout();
         LayoutContainer lc = new LayoutContainer(layout);
-        lc.add(_targetName);
+        lc.add(_targetPath);
         
         previewPanel.setWidth("95%");
         previewPanel.setTableWidth("100%");
@@ -421,7 +421,7 @@ public class EditTemplateDialog
                                 resourceSelect.selectedResource();
                             if (target != null
                                     && target.getType() != ResourceType.RANGE_FOLDER) {
-                                _targetName.setValue(target.getAbsolutePath());
+                                _targetPath.setValue(target.getAbsolutePath());
                             }
                         }});
                     resourceSelect.show();
