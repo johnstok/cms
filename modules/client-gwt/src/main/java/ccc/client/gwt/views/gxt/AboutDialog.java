@@ -90,7 +90,7 @@ public class AboutDialog extends AbstractBaseDialog{
         sb.append(_build);
         sb.append("<br/>");
         sb.append("<br/>");
-        sb.append("(c) Civic Computing Limited 2008-2010.<br/>");
+        sb.append("(c) Civic Computing Limited 2008-2011.<br/>");
         sb.append("All rights reserved.");
 
         addText(sb.toString());
