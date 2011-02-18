@@ -41,6 +41,7 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
+import ccc.api.core.Template;
 import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
 import ccc.api.exceptions.EntityNotFoundException;
@@ -546,6 +547,66 @@ public class ResourceAcceptanceTest
         } catch (final EntityNotFoundException e) {
             assertEquals(f.getId(), e.getId());
         }
+    }
+    
+
+    /**
+     * Test.
+     */
+    public void testSearchReturnsOnlyPublishedResourcesByDefault() {
+
+        // ARRANGE.
+        final ResourceSummary folder = tempFolder();
+        getCommands().lock(folder.getId());
+        getCommands().publish(folder.getId());
+
+        ResourceSummary t = dummyTemplate(folder);
+        
+        
+        final ResourceSummary unpublished = tempPage(folder.getId(), t.getId());
+        final ResourceSummary published = tempPage(folder.getId(), t.getId());
+        getCommands().lock(published.getId());
+        getCommands().publish(published.getId());
+
+        final ResourceCriteria rc = new ResourceCriteria();
+        rc.setParent(folder.getId());
+
+        // ACT
+        final PagedCollection<ResourceSummary> resultWithCriteria =
+            getCommands().list(rc, 1, 10);
+
+        final PagedCollection<ResourceSummary> result =
+            getCommands().list(folder.getId(),
+                null, 
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                "name",
+                SortOrder.ASC,
+                1,
+                10);
+        
+        boolean foundUnPublishedWithCriteria = false;
+        for (ResourceSummary rs : resultWithCriteria.getElements()) {
+            if (rs.getPublishedBy() == null) {
+                foundUnPublishedWithCriteria = true;
+            }
+        }
+
+        boolean foundUnPublishedWithList = false;
+        for (ResourceSummary rs : result.getElements()) {
+            if (rs.getPublishedBy() == null) {
+                foundUnPublishedWithList = true;
+            }
+        }
+
+        // ASSERT
+        // No unpublished resources should be found.
+        assertFalse(foundUnPublishedWithCriteria);
+        assertFalse(foundUnPublishedWithList);
     }
 
 
