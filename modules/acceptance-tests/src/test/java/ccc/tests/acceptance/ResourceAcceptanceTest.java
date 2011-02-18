@@ -41,7 +41,6 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.Template;
 import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
 import ccc.api.exceptions.EntityNotFoundException;
@@ -252,6 +251,47 @@ public class ResourceAcceptanceTest
         assertEquals(newTitle, newData.get("uuid"));
     }
 
+
+    /**
+     * Test.
+     */
+    public void testSearchResourceMetadata() {
+
+        // ARRANGE
+        final ResourceSummary folder1 = tempFolder();
+        final ResourceSummary folder2 = tempFolder();
+
+        final String newTitle = UUID.randomUUID().toString();
+        final Resource md = new Resource();
+        String key = newTitle.replace("-", "");
+        md.setTitle(newTitle);
+        md.setDescription(newTitle);
+        md.setTags(Collections.singleton(newTitle));
+        md.setMetadata(Collections.singletonMap(key, newTitle));
+        
+        // ACT
+        getCommands().lock(folder1.getId());
+        getCommands().updateMetadata(folder1.getId(), md);
+
+        getCommands().lock(folder2.getId());
+        getCommands().publish(folder2.getId());
+        getCommands().updateMetadata(folder2.getId(), md);
+
+        ResourceCriteria criteria = new ResourceCriteria();
+        criteria.matchMetadatum(key, "%");
+        
+        PagedCollection<ResourceSummary> depricated =
+            getCommands().resourceForMetadataKey(key);
+        
+        PagedCollection<ResourceSummary> result = 
+            getCommands().list(criteria , 1, 20);
+        
+        // ASSERT
+        assertEquals(1, result.getElements().size());
+        assertFalse(checkForUnpublished(result.getElements()));
+        assertEquals(1, depricated.getElements().size());
+        assertFalse(checkForUnpublished(depricated.getElements()));
+    }
 
     /**
      * Test.
@@ -563,7 +603,7 @@ public class ResourceAcceptanceTest
         ResourceSummary t = dummyTemplate(folder);
         
         
-        final ResourceSummary unpublished = tempPage(folder.getId(), t.getId());
+        tempPage(folder.getId(), t.getId());
         final ResourceSummary published = tempPage(folder.getId(), t.getId());
         getCommands().lock(published.getId());
         getCommands().publish(published.getId());
@@ -589,26 +629,21 @@ public class ResourceAcceptanceTest
                 1,
                 10);
         
-        boolean foundUnPublishedWithCriteria = false;
-        for (ResourceSummary rs : resultWithCriteria.getElements()) {
-            if (rs.getPublishedBy() == null) {
-                foundUnPublishedWithCriteria = true;
-            }
-        }
-
-        boolean foundUnPublishedWithList = false;
-        for (ResourceSummary rs : result.getElements()) {
-            if (rs.getPublishedBy() == null) {
-                foundUnPublishedWithList = true;
-            }
-        }
-
         // ASSERT
         // No unpublished resources should be found.
-        assertFalse(foundUnPublishedWithCriteria);
-        assertFalse(foundUnPublishedWithList);
+        assertFalse(checkForUnpublished(resultWithCriteria.getElements()));
+        assertFalse(checkForUnpublished(result.getElements()));
     }
 
+    private boolean checkForUnpublished(List<ResourceSummary> list) {
+        boolean foundUnPublished = false;
+        for (ResourceSummary rs : list) {
+            if (rs.getPublishedBy() == null) {
+                foundUnPublished = true;
+            }
+        }
+        return foundUnPublished;
+    }
 
 //    /**
 //     * Test.

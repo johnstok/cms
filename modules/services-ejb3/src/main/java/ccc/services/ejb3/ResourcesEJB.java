@@ -30,6 +30,7 @@ import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -511,11 +512,9 @@ public class ResourcesEJB
     public PagedCollection<ResourceSummary> resourceForMetadataKey(
         final String key) {
         checkPermission(RESOURCE_READ);
-        final List<ResourceSummary> list =
-         ResourceEntity.mapResources(getResources().lookupWithMetadataKey(key));
-        return
-            new PagedCollection<ResourceSummary>(
-                list.size(), ResourceSummary.class, list);
+        ResourceCriteria rc = new ResourceCriteria();
+        rc.matchMetadatum(key, "%");
+        return list(rc, 1, 2000);
     }
 
     /** {@inheritDoc} */

@@ -232,7 +232,8 @@ public interface Resources {
     ResourceSummary resourceForLegacyId(@PathParam("id") String legacyId);
 
     /**
-     * Look up the resources for a specified metadata key.
+     * Look up the resources for a specified metadata key. Returns up to 2000 
+     * published resources.
      *
      * @param key The legacy id of the resource.
      *
