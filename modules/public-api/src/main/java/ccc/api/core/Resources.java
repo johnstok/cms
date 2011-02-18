@@ -58,7 +58,8 @@ public interface Resources {
 
 
     /**
-     * List existing resources. Leave field to null if not applicable.
+     * List existing resources. Leave field to null if not applicable. 
+     * Unless explicitly set, only published resources are returned.
      *
      * @param parent Filter resources by parent.
      * @param tag Filter resources by tag.
@@ -93,7 +94,8 @@ public interface Resources {
 
 
     /**
-     * List existing resources.
+     * List existing resources. Unless explicitly set, only published 
+     * resources are returned.
      *
      * @param criteria The criteria by which to filter resources.
      * @param pageNo The page of results to return.
