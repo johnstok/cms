@@ -52,6 +52,7 @@ public class SiteBrowserImpl
     private final HttpClient _httpClient;
     private final String _hostUrl;
     private final String _previewUrl;
+    private final String _previewTemplateUrl;
 
 
     /**
@@ -64,7 +65,7 @@ public class SiteBrowserImpl
         _httpClient = DBC.require().notNull(httpClient);
         _hostUrl = DBC.require().notEmpty(hostUrl);
         _previewUrl = _hostUrl+"/ccc/preview";
-
+        _previewTemplateUrl = _hostUrl+"/ccc/previewtemplate";
     }
 
 
@@ -91,6 +92,15 @@ public class SiteBrowserImpl
     @Override
     public String get(final String absolutePath) {
         return invoke(new GetMethod(_hostUrl+absolutePath));
+    }
+    
+    
+    @Override
+    public String previewTemplate(ResourceSummary rs, String body) {
+        final PostMethod post =
+            new PostMethod(_previewTemplateUrl+ rs.getAbsolutePath());
+        post.addParameter("hiddenbody", body);
+        return invoke(post);
     }
 
 

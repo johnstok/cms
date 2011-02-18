@@ -45,6 +45,16 @@ public interface SiteBrowser {
      * @return The rendered resource as a String.
      */
     String previewContent(final ResourceSummary rs, final boolean wc);
+    
+    /**
+     * Preview how the specified resource will be rendered with a template.
+     *
+     * @param rs The resource to render.
+     * @param body Template body as a String.
+     *
+     * @return The rendered resource as a String.
+     */
+    String previewTemplate(final ResourceSummary rs, final String body);
 
     /**
      * Send an HTTP post to a resource.
