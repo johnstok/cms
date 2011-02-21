@@ -558,6 +558,7 @@ public class ResourceAcceptanceTest
 
         // ACT
         getCommands().lock(f.getId());
+        getCommands().publish(f.getId());
         getCommands().updateMetadata(f.getId(), md);
 
         final ResourceSummary legacy = getCommands().resourceForLegacyId(id);
@@ -565,6 +566,36 @@ public class ResourceAcceptanceTest
         // ASSERT
         assertEquals(f.getName(), legacy.getName());
         assertEquals(f.getId(), legacy.getId());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testResourceUnpublishedForLegacyId() {
+        
+        // ARRANGE
+        final ResourceSummary f = tempFolder();
+        
+        final String id = ""+new Random().nextInt(MAX_RANDOM_VALUE);
+        
+        final Resource md = new Resource();
+        md.setTitle(f.getTitle());
+        md.setDescription(f.getDescription());
+        md.setTags(f.getTags());
+        md.setMetadata(Collections.singletonMap("legacyId", id));
+        
+        // ACT
+        getCommands().lock(f.getId());
+        getCommands().updateMetadata(f.getId(), md);
+        
+        // ASSERT
+        try {
+            getCommands().resourceForLegacyId(id);
+            fail();
+        } catch (final EntityNotFoundException e) {
+            assertEquals(null, e.getId());
+        }
     }
 
 

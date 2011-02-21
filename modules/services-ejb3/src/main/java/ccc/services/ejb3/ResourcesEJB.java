@@ -30,7 +30,6 @@ import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -522,7 +521,14 @@ public class ResourcesEJB
     @PermitAll
     public ResourceSummary resourceForLegacyId(final String legacyId) {
         checkPermission(RESOURCE_READ);
-        return getResources().lookupWithLegacyId(legacyId).mapResource();
+        ResourceCriteria rc = new ResourceCriteria();
+        rc.matchMetadatum("legacyId", legacyId);
+        List<ResourceSummary> result = list(rc, 1, 1).getElements();
+        if (result == null || result.size() == 0) {
+            throw new EntityNotFoundException((UUID) null);
+        } else {
+            return result.get(0);
+        }
     }
 
 
