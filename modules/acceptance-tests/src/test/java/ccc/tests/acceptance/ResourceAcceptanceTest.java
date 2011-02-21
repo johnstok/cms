@@ -547,6 +547,7 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
         final ResourceSummary f = tempFolder();
+        final ResourceSummary f2 = tempFolder();
 
         final String id = ""+new Random().nextInt(MAX_RANDOM_VALUE);
 
@@ -560,12 +561,18 @@ public class ResourceAcceptanceTest
         getCommands().lock(f.getId());
         getCommands().publish(f.getId());
         getCommands().updateMetadata(f.getId(), md);
+        getCommands().delete(f.getId());
 
+        getCommands().lock(f2.getId());
+        getCommands().publish(f2.getId());
+        getCommands().updateMetadata(f2.getId(), md);
+        
+        
         final ResourceSummary legacy = getCommands().resourceForLegacyId(id);
 
         // ASSERT
-        assertEquals(f.getName(), legacy.getName());
-        assertEquals(f.getId(), legacy.getId());
+        assertEquals(f2.getName(), legacy.getName());
+        assertEquals(f2.getId(), legacy.getId());
     }
 
 
