@@ -221,7 +221,7 @@ public interface Resources {
 
 
     /**
-     * Look up the resource for a specified legacy id.
+     * Look up the resource for a specified legacy id. Returns published only.
      *
      * @param legacyId The legacy id of the resource.
      *
