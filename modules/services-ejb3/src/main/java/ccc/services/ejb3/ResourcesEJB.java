@@ -708,8 +708,9 @@ public class ResourcesEJB
                 ? null
                 : ResourceType.valueOf(type.toUpperCase(Locale.US));
         criteria.setType(t);
-        criteria.setPublished(
-            (null==published) ? null : Boolean.valueOf(published));
+        if (null != published) {
+            criteria.setPublished(Boolean.valueOf(published));
+        }
         criteria.setLocked(
             (null==locked) ? null : Boolean.valueOf(locked));
         criteria.setSortField(sort);
