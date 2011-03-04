@@ -193,11 +193,7 @@ public class ResourceCriteria implements Serializable {
      * @param published The published to set.
      */
     public final void setPublished(final Boolean published) {
-        if (published == null) {
-            _published = true;
-        } else {
-            _published = published;
-        }
+        _published = published;
     }
 
 

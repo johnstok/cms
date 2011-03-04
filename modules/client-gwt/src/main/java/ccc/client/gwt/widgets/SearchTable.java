@@ -222,6 +222,7 @@ public class SearchTable
                         term = _searchString.getValue().replace('*', '%')+"%";
                     }
                     criteria.setName(term);
+                    criteria.setPublished(null);
                     criteria.setSortField(config.getSortField());
                     criteria.setSortOrder(order);
                     if (_locked.getValue().booleanValue()) {
