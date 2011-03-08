@@ -165,10 +165,10 @@ public class CommentView
             if (!url.startsWith("http://") && !url.startsWith("https://")) {
                 _url.setValue("http://"+url);
             }
+            result.addError(
+                VALIDATOR.notValidURL(_url.getValue()));
         }
 
-        result.addError(
-            VALIDATOR.notValidURL(_url.getValue()));
         result.addError(
             VALIDATOR.notEmpty(
                 _author.getValue(), _author.getFieldLabel()));
