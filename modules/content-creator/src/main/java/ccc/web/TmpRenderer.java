@@ -156,7 +156,7 @@ public class TmpRenderer {
             final Response r =
                 new Response(
                     new PageBody(
-                        new Script((_template == null) ? t.getBody() : _template, tId.toString())));
+                        new Script((_template == null) ? t.getBody() : _template, t.getAbsolutePath())));
             r.setCharSet(DEFAULT_CHARSET);
             r.setMimeType(t.getMimeType());
             r.setExpiry(s.getCacheDuration());
