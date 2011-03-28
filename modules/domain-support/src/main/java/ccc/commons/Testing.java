@@ -42,6 +42,21 @@ public final class Testing {
 
     private Testing() { /* NO-OP */ }
 
+
+    /**
+     * Sleep for the specified number of milliseconds.
+     *
+     * @param duration Number of milliseconds to sleep for.
+     */
+    public static void sleep(final int duration) {
+        try {
+            Thread.sleep(duration);
+        } catch (final InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     /**
      * Create a test dummy.
      *
