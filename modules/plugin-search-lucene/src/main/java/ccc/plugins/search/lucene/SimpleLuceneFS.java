@@ -54,7 +54,9 @@ import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.similar.MoreLikeThis;
+import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.NativeFSLockFactory;
 import org.apache.lucene.util.NumericUtils;
 import org.apache.lucene.util.Version;
 
@@ -249,9 +251,7 @@ public class SimpleLuceneFS
                       final CapturingHandler sh) {
         IndexSearcher searcher = null;
         try {
-            searcher =
-                new IndexSearcher(
-                    FSDirectory.open(new java.io.File(_indexPath)));
+            searcher = new IndexSearcher(createDirectory());
 
             TopDocs docs;
             if (null==sorter) {
@@ -297,8 +297,7 @@ public class SimpleLuceneFS
         IndexReader ir = null;
         IndexSearcher searcher = null;
         try {
-            ir = IndexReader.open(
-                FSDirectory.open(new java.io.File(_indexPath)));
+            ir = IndexReader.open(createDirectory());
             searcher = new IndexSearcher(ir);
             final int docNum = docNumber(uuid, searcher);
 
@@ -759,10 +758,17 @@ public class SimpleLuceneFS
     private IndexWriter createWriter() throws IOException {
         final IndexWriter writer =
             new IndexWriter(
-                FSDirectory.open(new java.io.File(_indexPath)),
+                createDirectory(),
                 new StandardAnalyzer(LUCENE_VERSION),
                 IndexWriter.MaxFieldLength.UNLIMITED);
         return writer;
+    }
+
+
+    private Directory createDirectory() throws IOException {
+        return
+            FSDirectory.open(
+                new java.io.File(_indexPath), new NativeFSLockFactory());
     }
 
 
