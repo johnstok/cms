@@ -56,7 +56,7 @@ public class PdfLoader
             extractText(doc);
 
         } catch (final Throwable e) {
-            LOG.warn("PDF file extraction failed: "+e.getMessage());
+            LOG.warn("PDF file extraction failed.", e);
         }
     }
 

@@ -53,7 +53,7 @@ public class TxtExtractor
             _text = IO.toString(is, Charset.forName("UTF-8"));
 
         } catch (final Throwable e) {
-            LOG.warn("Text file extraction failed: "+e.getMessage());
+            LOG.warn("Text file extraction failed.", e);
         }
     }
 
