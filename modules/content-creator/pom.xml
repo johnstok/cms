@@ -4,7 +4,7 @@
     <parent>
         <artifactId>build</artifactId>
         <groupId>com.civicuk.cc</groupId>
-        <version>7.2.19-SNAPSHOT</version>
+        <version>7.2.19</version>
     </parent>
     <properties>
         <parent_basedir>${basedir}/../..</parent_basedir>
@@ -110,7 +110,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration></configuration>
+                <configuration />
                 <executions>
                     <execution>
                         <id>javadoc</id>
