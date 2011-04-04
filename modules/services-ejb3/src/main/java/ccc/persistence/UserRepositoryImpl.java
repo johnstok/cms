@@ -154,6 +154,10 @@ class UserRepositoryImpl implements UserRepository {
             params.put("metadataKey", uc.getMetadataKey());
             params.put("metadataValue", uc.getMetadataValue());
         }
+        
+        // delete check
+        query.append((params.size()>0) ? " and" : " where");
+        query.append(" 'deleted' not in indices(u._metadata) ");
     }
 
 

@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -190,5 +191,13 @@ public interface Users {
     @POST @Path(ccc.api.core.ResourceIdentifiers.User.RESET_PASSWORD)
     void resetPassword(@QueryParam("password") String password,
                        @QueryParam("token") String token);
+    
+    /**
+     * Delete the user with the specified id.
+     *
+     * @param resourceId The id of the existing resource.
+     */
+    @DELETE @Path(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
+    void delete(@PathParam("id") UUID resourceId);
     
 }

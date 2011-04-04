@@ -101,7 +101,8 @@ public class UserManagerImplTest extends TestCase {
         final Map<String, Object> params = new HashMap<String, Object>();
         expect(_repository.listDyn(
             "select u "
-            + "from ccc.domain.UserEntity as u",
+            + "from ccc.domain.UserEntity as "
+            + "u where 'deleted' not in indices(u._metadata) ",
             UserEntity.class,
             1,
             1,
@@ -131,7 +132,7 @@ public class UserManagerImplTest extends TestCase {
             "select u from ccc.domain.UserEntity as u where :groups in ("
             + "select r._name "
             + "from ccc.domain.UserEntity as u2 left join u2._groups as r "
-            + "where u=u2) ",
+            + "where u=u2)  and 'deleted' not in indices(u._metadata) ",
             UserEntity.class,
             1,
             1,
@@ -160,7 +161,8 @@ public class UserManagerImplTest extends TestCase {
         expect(_repository.listDyn(
             "select u"
             +" from ccc.domain.UserEntity as u"
-            + " where lower(u._username._value) like lower(:username)",
+            + " where lower(u._username._value) like lower(:username) and" 
+            + " 'deleted' not in indices(u._metadata) ",
             UserEntity.class,
             1,
             1,
@@ -189,7 +191,8 @@ public class UserManagerImplTest extends TestCase {
         expect(_repository.listDyn(
             "select u"
             + " from ccc.domain.UserEntity as u"
-            + " where lower(u._email._text) like lower(:email)",
+            + " where lower(u._email._text) like lower(:email) and " 
+            + "'deleted' not in indices(u._metadata) ",
             UserEntity.class,
             1,
             1,

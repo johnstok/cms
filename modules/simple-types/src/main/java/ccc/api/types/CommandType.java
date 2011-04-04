@@ -81,6 +81,8 @@ public enum CommandType {
     USER_RESET_PASSWORD,
     /** USER_SET_TOKEN : CommandType. */
     USER_SET_TOKEN,
+    /** USER_DELETE : CommandType. */
+    USER_DELETE,
 
     // Page
     /** PAGE_UPDATE : CommandType. */

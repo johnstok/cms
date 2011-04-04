@@ -69,6 +69,7 @@ INSERT INTO group_permissions (permission, group_id) VALUES ('GROUP_CREATE',    
 INSERT INTO group_permissions (permission, group_id) VALUES ('GROUP_UPDATE',          (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('USER_CREATE',           (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('USER_UPDATE',           (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
+INSERT INTO group_permissions (permission, group_id) VALUES ('USER_DELETE',           (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('SEARCH_CREATE',         (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('RESOURCE_ACL_UPDATE',   (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('SEARCH_SCHEDULE',       (SELECT id FROM groups WHERE name='ADMINISTRATOR'));

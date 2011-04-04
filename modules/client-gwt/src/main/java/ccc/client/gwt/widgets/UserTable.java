@@ -33,10 +33,16 @@ import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
+import ccc.api.types.CommandType;
 import ccc.api.types.Permission;
 import ccc.api.types.SortOrder;
+import ccc.client.core.Action;
 import ccc.client.core.Globals;
+import ccc.client.core.InternalServices;
+import ccc.client.events.Event;
+import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
+import ccc.client.gwt.remoting.DeleteUserAction;
 import ccc.client.gwt.remoting.GetUserAction;
 import ccc.client.gwt.remoting.ListGroups;
 import ccc.client.gwt.remoting.ListUsersAction;
@@ -80,7 +86,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Civic Computing Ltd.
  */
-public class UserTable extends TablePanel implements ColumnConfigSupport{
+public class UserTable 
+    extends TablePanel 
+    implements EventHandler<CommandType>, ColumnConfigSupport{
 
     private ListStore<BeanModel> _detailsStore =
         new ListStore<BeanModel>();
@@ -105,7 +113,7 @@ public class UserTable extends TablePanel implements ColumnConfigSupport{
      * Constructor.
      */
     UserTable() {
-
+        InternalServices.REMOTING_BUS.registerHandler(this);
         setId("UserDetails");
         setHeading(UI_CONSTANTS.userDetails());
         setLayout(new FitLayout());
@@ -137,6 +145,9 @@ public class UserTable extends TablePanel implements ColumnConfigSupport{
             contextMenu.add(createEditUserMenu(_grid));
             contextMenu.add(createEditPwMenu(_grid));
             contextMenu.add(createEditMetadataMenu(_grid));
+        }
+        if (GLOBALS.currentUser().hasPermission(Permission.USER_DELETE)) {
+            contextMenu.add(createDeleteUserMenu(_grid));
         }
 
         _grid.setContextMenu(contextMenu);
@@ -188,6 +199,13 @@ public class UserTable extends TablePanel implements ColumnConfigSupport{
         });
         return editUserPw;
     }
+    
+     private MenuItem createDeleteUserMenu(final Grid<BeanModel> grid) {
+        final MenuItem deleteUser = new MenuItem(UI_CONSTANTS.delete());
+        Action action = new DeleteUserAction(grid.getSelectionModel());
+        deleteUser.addSelectionListener(new MenuSelectionListenerAction(action));
+        return deleteUser;
+     }
 
     private MenuItem createEditMetadataMenu(
                          final Grid<BeanModel> grid) {
@@ -373,5 +391,10 @@ public class UserTable extends TablePanel implements ColumnConfigSupport{
     @Override
     public String preferenceName() {
         return USER_COLUMNS;
+    }
+
+    @Override
+    public void handle(Event<CommandType> event) {
+        refreshUsers();
     }
 }

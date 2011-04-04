@@ -216,4 +216,14 @@ public class UsersImpl
             throw convertException(cfe);
         }
     }
+
+
+    @Override
+    public void delete(UUID userId) {
+        try {
+            _delegate.delete(userId);
+        } catch (final RuntimeException cfe) {
+            throw convertException(cfe);
+        }
+    }
 }

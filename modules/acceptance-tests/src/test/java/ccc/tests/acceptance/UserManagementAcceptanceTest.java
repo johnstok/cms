@@ -31,11 +31,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.exceptions.CCException;
+import ccc.api.types.Permission;
 import ccc.api.types.Username;
 
 
@@ -338,7 +340,7 @@ public class UserManagementAcceptanceTest
         final Boolean exists = getUsers().usernameExists(username);
 
         // ASSERT
-        assertTrue("Username should exists", exists.booleanValue());
+        assertTrue("Username should exist", exists.booleanValue());
     }
 
     /**
@@ -518,5 +520,102 @@ public class UserManagementAcceptanceTest
             getSecurity().login(user.getUsername().toString(), "Testtest00-")
             .booleanValue());
         
+    }
+    
+    
+    /**
+     * Test.
+     */
+    public void testQueryAndDeletedUsers() {
+        // ARRANGE
+        final User us = tempUser();
+        getUsers().delete(us.getId());
+        
+        // ACT
+        final List<User> ul =
+            getUsers()
+                .query(
+                    us.getUsername().toString(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    1,
+                    PAGE_SIZE)
+                .getElements();
+
+        // ASSERT
+        assertEquals(0, ul.size());
+    }
+    
+    
+    /**
+     * Test.
+     */
+    public void testUsernameExistsDeletedUsers() {
+
+        // ARRANGE
+        final Username username = dummyUsername();
+        final String email = username+"@abc.def";
+        final String name = "testuser";
+
+        // Create the user
+        final User u =
+            new User()
+                .setEmail(email)
+                .setUsername(username)
+                .setName(name)
+                .setMetadata(Collections.singletonMap("key", "value"))
+                .setPassword("Testtest00-");
+
+        User user = getUsers().create(u);
+        getUsers().delete(user.getId());
+
+        // ACT
+        final Boolean exists = getUsers().usernameExists(username);
+
+        // ASSERT
+        assertTrue("Username should exists", exists.booleanValue());
+    }
+    
+    
+    /**
+     * Test.
+     */
+    public void testRetrieveDeletedUsers() {
+        // ARRANGE
+        final User us = tempUser();
+        getUsers().delete(us.getId());
+        
+        // ACT
+        final User ul = getUsers().retrieve(us.getId());
+
+        // ASSERT
+        assertEquals(null, ul);
+    }
+    
+    
+    /**
+     * Test.
+     */
+    public void testUserByLegacyIdDeletedUsers() {
+        // ARRANGE
+        final User us = tempUser();
+
+        final int legacyId = new Random().nextInt(100000);
+
+        Map<String, String> metadata = us.getMetadata();
+        metadata.put("legacyId", ""+legacyId);
+        us.setMetadata(metadata);
+        getUsers().update(us.getId(), us);
+        getUsers().delete(us.getId());
+
+        // ACT
+        final User ul = getUsers().userByLegacyId(""+legacyId);
+
+        // ASSERT
+        assertNull(ul);
     }
 }

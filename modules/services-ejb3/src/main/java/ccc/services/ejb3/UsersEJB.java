@@ -26,11 +26,16 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.*;
-import static javax.ejb.TransactionAttributeType.*;
+import static ccc.api.types.Permission.SELF_UPDATE;
+import static ccc.api.types.Permission.USER_CREATE;
+import static ccc.api.types.Permission.USER_READ;
+import static ccc.api.types.Permission.USER_DELETE;
+import static ccc.api.types.Permission.USER_UPDATE;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
@@ -47,6 +52,7 @@ import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 import ccc.commands.CreateUserCommand;
+import ccc.commands.DeleteUserCommand;
 import ccc.commands.ResetPasswordCommand;
 import ccc.commands.SendTokenCommand;
 import ccc.commands.UpdateCurrentUserCommand;
@@ -177,11 +183,15 @@ public class UsersEJB
     @Override
     @RolesAllowed(USER_READ)
     public User retrieve(final UUID userId) {
-        return
-            getRepoFactory()
+        User user = getRepoFactory()
                 .createUserRepo()
                 .find(userId)
                 .toDto();
+        
+        if (user.getMetadata().get("deleted") != null) {
+            return null;
+        }
+        return user;
     }
 
 
@@ -189,12 +199,14 @@ public class UsersEJB
     @Override
     @RolesAllowed(USER_READ)
     public User userByLegacyId(final String legacyId) {
-        return
-            getRepoFactory()
-                .createUserRepo()
-                .userByLegacyId(legacyId).toDto();
+        User user = getRepoFactory()
+        .createUserRepo()
+        .userByLegacyId(legacyId).toDto();
+        if (user.getMetadata().get("deleted") != null) {
+            return null;
+        }
+        return user;
     }
-
 
     /** {@inheritDoc} */
     @Override
@@ -237,6 +249,18 @@ public class UsersEJB
             new SendTokenCommand(
                 getRepoFactory(),
                 username));
+    }
+
+
+    @Override
+    @RolesAllowed(USER_DELETE)
+    public void delete(UUID userId) {
+        new DeleteUserCommand(
+                       getRepoFactory(),
+                       userId)
+                   .execute(
+                       currentUser(),
+                       new Date());
     }
 
 }
