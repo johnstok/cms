@@ -165,8 +165,8 @@ public class ResourceTable
     private void applyPreferences(final List<ColumnConfig> configs) {
         if (_preferences != null) {
             for (final ColumnConfig config : configs) {
-                if (_preferences.indexOf(config.getId()) == -1
-                        && !config.getHeader().equals("")) {
+                if (config.getId() == null || (_preferences.indexOf(config.getId()) == -1
+                        && !config.getHeader().equals(""))) {
                     config.setHidden(true);
                     } else {
                     config.setHidden(false);

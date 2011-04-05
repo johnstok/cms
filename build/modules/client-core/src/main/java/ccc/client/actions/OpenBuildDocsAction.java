@@ -17,48 +17,34 @@
  * You should have received a copy of the GNU General Public License
  * along with Content Control.  If not, see http://www.gnu.org/licenses/.
  *
- * Revision      $Rev$
- * Modified by   $Author$
- * Modified on   $Date$
+ * Revision      $Rev: 3439 $
+ * Modified by   $Author: keith $
+ * Modified on   $Date: 2011-02-09 09:54:36 +0000 (Wed, 09 Feb 2011) $
  *
- * Changes: see subversion log.
+ * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.search.lucene;
+package ccc.client.actions;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
+import ccc.client.core.Action;
+import ccc.client.core.InternalServices;
 
-import org.apache.log4j.Logger;
-
-import ccc.commons.IO;
-import ccc.plugins.search.TextExtractor;
 
 /**
- * A text extractor for plain text files.
+ * Display build documentation window.
  *
  * @author Civic Computing Ltd.
  */
-public class TxtExtractor
+public final class OpenBuildDocsAction
     implements
-        TextExtractor {
-    private static final Logger LOG = Logger.getLogger(TxtExtractor.class);
-
-    private String _text = "";
-
+        Action {
 
     /** {@inheritDoc} */
-    @Override public void execute(final InputStream is) {
-        try {
-            _text = IO.toString(is, Charset.forName("UTF-8"));
-
-        } catch (final Exception e) {
-            LOG.warn("Text file extraction failed.", e);
-        }
+    public void execute() {
+    	InternalServices.window.openUrl(InternalServices.globals.appURL()+"static/manual/api/index.html",
+          "_blank",
+          "height=480,width=640,"
+          + "menubar=no,toolbar=no,location=no,"
+          + "resizable=yes,scrollbars=yes,status=no");
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String getText() { return _text; }
 }

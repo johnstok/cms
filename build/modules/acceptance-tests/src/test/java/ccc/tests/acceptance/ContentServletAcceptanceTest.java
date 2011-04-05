@@ -575,6 +575,27 @@ public class ContentServletAcceptanceTest
         assertEquals(" ok$resources.retrieve($id)", content);
 
     }
+    
+
+    /**
+     * Test.
+     */
+    public void testTemplatesCanBePreviewed() {
+
+        // ARRANGE
+        final ResourceSummary simple =
+            getCommands().resourceForPath("/assets/templates/simple");
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary p = tempPage(parent.getId(), simple.getId());
+        getCommands().lock(p.getId());
+
+        // ACT
+        final String content = getBrowser().previewTemplate(p, "TestSuccess");
+
+        // ASSERT
+        assertTrue(content.contains("TestSuccess"));
+    }
+    
 
     private boolean is500(final RuntimeException e) {
         return e.getMessage().startsWith("500: <!-- An error occurred: ");

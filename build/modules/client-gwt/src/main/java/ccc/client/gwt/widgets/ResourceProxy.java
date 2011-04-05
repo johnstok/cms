@@ -101,6 +101,7 @@ final class ResourceProxy extends RpcProxy<PagingLoadResult<BeanModel>> {
             final ResourceCriteria criteria = new ResourceCriteria();
             criteria.setParent((_folder == null) ? null :_folder.getId());
             criteria.setName(name);
+            criteria.setPublished(null);
             criteria.setSortField(config.getSortField());
             criteria.setSortOrder(order);
             criteria.setType(_type);

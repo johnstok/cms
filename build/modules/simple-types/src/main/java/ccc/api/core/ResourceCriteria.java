@@ -50,7 +50,7 @@ public class ResourceCriteria implements Serializable {
     private Date _changedBefore = null;
     private Boolean _mainmenu = null;
     private ResourceType _type = null;
-    private Boolean _published = null;
+    private Boolean _published = true;
     private Boolean _locked = null;
 
     private String _sortField;
@@ -186,16 +186,14 @@ public class ResourceCriteria implements Serializable {
     }
 
 
-
     /**
      * Mutator.
      *
      * @param published The published to set.
      */
     public final void setPublished(final Boolean published) {
-        _published = published;
+    	_published = published;
     }
-
 
 
     /**
@@ -206,7 +204,6 @@ public class ResourceCriteria implements Serializable {
     public final Boolean getLocked() {
         return _locked;
     }
-
 
 
     /**

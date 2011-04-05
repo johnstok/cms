@@ -258,6 +258,47 @@ public class ResourceAcceptanceTest
     /**
      * Test.
      */
+    public void testSearchResourceMetadata() {
+
+        // ARRANGE
+        final ResourceSummary folder1 = tempFolder();
+        final ResourceSummary folder2 = tempFolder();
+
+        final String newTitle = UUID.randomUUID().toString();
+        final Resource md = new Resource();
+        String key = newTitle.replace("-", "");
+        md.setTitle(newTitle);
+        md.setDescription(newTitle);
+        md.setTags(Collections.singleton(newTitle));
+        md.setMetadata(Collections.singletonMap(key, newTitle));
+        
+        // ACT
+        getCommands().lock(folder1.getId());
+        getCommands().updateMetadata(folder1.getId(), md);
+
+        getCommands().lock(folder2.getId());
+        getCommands().publish(folder2.getId());
+        getCommands().updateMetadata(folder2.getId(), md);
+
+        ResourceCriteria criteria = new ResourceCriteria();
+        criteria.matchMetadatum(key, "%");
+        
+        PagedCollection<ResourceSummary> depricated =
+            getCommands().resourceForMetadataKey(key);
+        
+        PagedCollection<ResourceSummary> result = 
+            getCommands().list(criteria , 1, 20);
+        
+        // ASSERT
+        assertEquals(1, result.getElements().size());
+        assertFalse(checkForUnpublished(result.getElements()));
+        assertEquals(1, depricated.getElements().size());
+        assertFalse(checkForUnpublished(depricated.getElements()));
+    }
+
+    /**
+     * Test.
+     */
     public void testUpdateAclUsers() {
 
         // ARRANGE
@@ -499,6 +540,7 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
         final Folder f = tempFolder();
+        final ResourceSummary f2 = tempFolder();
 
         final String id = ""+new Random().nextInt(MAX_RANDOM_VALUE);
 
@@ -510,13 +552,47 @@ public class ResourceAcceptanceTest
 
         // ACT
         getCommands().lock(f.getId());
+        getCommands().publish(f.getId());
         getCommands().updateMetadata(f.getId(), md);
+        getCommands().delete(f.getId());
 
+        getCommands().lock(f2.getId());
+        getCommands().publish(f2.getId());
+        getCommands().updateMetadata(f2.getId(), md);
+        
+        
         final ResourceSummary legacy = getCommands().resourceForLegacyId(id);
 
         // ASSERT
-        assertEquals(f.getName(), legacy.getName());
-        assertEquals(f.getId(), legacy.getId());
+        assertEquals(f2.getName(), legacy.getName());
+        assertEquals(f2.getId(), legacy.getId());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testResourceUnpublishedForLegacyId() {
+        
+        // ARRANGE
+        final ResourceSummary f = tempFolder();
+        
+        final String id = ""+new Random().nextInt(MAX_RANDOM_VALUE);
+        
+        final Resource md = new Resource();
+        md.setTitle(f.getTitle());
+        md.setDescription(f.getDescription());
+        md.setTags(f.getTags());
+        md.setMetadata(Collections.singletonMap("legacyId", id));
+        
+        // ACT
+        getCommands().lock(f.getId());
+        getCommands().updateMetadata(f.getId(), md);
+        
+        // ASSERT
+        ResourceSummary r = getCommands().resourceForLegacyId(id);
+        assertNull("Resource should be null", r);
+        
     }
 
 
@@ -536,7 +612,62 @@ public class ResourceAcceptanceTest
         final Resource resource = getCommands().retrieve(f.getId());
         assertNull("Resource should be null", resource);
     }
+    
 
+    /**
+     * Test.
+     */
+    public void testSearchReturnsOnlyPublishedResourcesByDefault() {
+
+        // ARRANGE.
+        final Folder folder = tempFolder();
+        getCommands().lock(folder.getId());
+        getCommands().publish(folder.getId());
+
+        ResourceSummary t = dummyTemplate(folder);
+        
+        
+        tempPage(folder.getId(), t.getId());
+        final ResourceSummary published = tempPage(folder.getId(), t.getId());
+        getCommands().lock(published.getId());
+        getCommands().publish(published.getId());
+
+        final ResourceCriteria rc = new ResourceCriteria();
+        rc.setParent(folder.getId());
+
+        // ACT
+        final PagedCollection<ResourceSummary> resultWithCriteria =
+            getCommands().list(rc, 1, 10);
+
+        final PagedCollection<ResourceSummary> result =
+            getCommands().list(folder.getId(),
+                null, 
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                "name",
+                SortOrder.ASC,
+                1,
+                10);
+        
+        // ASSERT
+        // No unpublished resources should be found.
+        assertFalse(checkForUnpublished(resultWithCriteria.getElements()));
+        assertFalse(checkForUnpublished(result.getElements()));
+    }
+
+    private boolean checkForUnpublished(List<ResourceSummary> list) {
+        boolean foundUnPublished = false;
+        for (ResourceSummary rs : list) {
+            if (rs.getPublishedBy() == null) {
+                foundUnPublished = true;
+            }
+        }
+        return foundUnPublished;
+    }
 
 //    /**
 //     * Test.

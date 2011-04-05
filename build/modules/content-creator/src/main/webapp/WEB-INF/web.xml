@@ -93,6 +93,18 @@
         </init-param>
     </servlet>
     <servlet>
+        <servlet-name>preview-template</servlet-name>
+        <servlet-class>ccc.web.ContentServlet</servlet-class>
+        <init-param>
+            <param-name>respect_visibility</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <init-param>
+            <param-name>preview_template</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
         <servlet-name>content</servlet-name>
         <servlet-class>ccc.web.ContentServlet</servlet-class>
     </servlet>
@@ -139,6 +151,7 @@
         <filter-name>err-filter</filter-name>
         <servlet-name>content</servlet-name>
         <servlet-name>preview-content</servlet-name>
+        <servlet-name>preview-template</servlet-name>
         <servlet-name>login</servlet-name>
         <servlet-name>logout</servlet-name>
     </filter-mapping>  
@@ -165,6 +178,10 @@
     <servlet-mapping>
         <servlet-name>preview-content</servlet-name>
         <url-pattern>/ccc/preview/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>preview-template</servlet-name>
+        <url-pattern>/ccc/previewtemplate/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>login</servlet-name>

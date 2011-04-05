@@ -117,6 +117,15 @@ public class FolderAcceptanceTest
                 new Folder(testFolder.getId(), new ResourceName(cn2)));
 
         // ACT
+        getCommands().lock(testFolder.getId());
+        getCommands().lock(child1.getId());
+        getCommands().lock(child2.getId());
+
+        getCommands().publish(testFolder.getId());
+        getCommands().publish(child1.getId());
+        getCommands().publish(child2.getId());
+        
+        
         final List<ResourceSummary> folders =
             getCommands().list(testFolder.getId(),
                 null,
@@ -175,6 +184,15 @@ public class FolderAcceptanceTest
 
         // ACT
         getCommands().lock(folder.getId());
+        getCommands().lock(page1.getId());
+        getCommands().lock(page2.getId());
+        getCommands().lock(page3.getId());
+
+        getCommands().publish(folder.getId());
+        getCommands().publish(page1.getId());
+        getCommands().publish(page2.getId());
+        getCommands().publish(page3.getId());
+        
         final List<String> sl  = new ArrayList<String>();
         sl.add(page2.getId().toString());
         sl.add(page1.getId().toString());

@@ -1683,12 +1683,20 @@ public interface UIConstants {
      * @return The constant, in the appropriate locale.
      */
     String columnsSaved();
-    
+
     /**
-     * "Locked.".
+     * "Locked".
      *
      * @return The constant, in the appropriate locale.
      */
     String locked();
+
+
+    /**
+     * "Build".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String build();
 
 }

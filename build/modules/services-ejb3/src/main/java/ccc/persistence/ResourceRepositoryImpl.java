@@ -107,26 +107,6 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public ResourceEntity lookupWithLegacyId(final String legacyId) {
-        return
-            find(QueryNames.RESOURCE_BY_LEGACY_ID,
-                 ResourceEntity.class,
-                 legacyId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public List<ResourceEntity> lookupWithMetadataKey(final String key) {
-        return
-            list(QueryNames.RESOURCE_BY_METADATA_KEY,
-                 ResourceEntity.class,
-                 key);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public FolderEntity root(final String name) {
         return
             find(

@@ -81,23 +81,6 @@ public interface ResourceRepository {
      */
     ResourceEntity lookup(ResourcePath contentPath);
 
-    /**
-     * Look up a resource, given its CCC6 id.
-     *
-     * @param legacyId The CCC6 id.
-     *
-     * @return The corresponding resource in CCC7.
-     */
-    ResourceEntity lookupWithLegacyId(String legacyId);
-
-    /**
-     * Look up a resource, given its metadata key.
-     *
-     * @param key The metadata key.
-     *
-     * @return The corresponding resources in CCC7.
-     */
-    List<ResourceEntity> lookupWithMetadataKey(String key);
 
     /**
      * Lookup a root folder by name.

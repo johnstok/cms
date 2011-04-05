@@ -30,11 +30,13 @@ package ccc.client.gwt.widgets;
 import java.util.Map;
 
 import ccc.api.core.User;
+import ccc.client.actions.UpdateCurrentUserAction;
 import ccc.client.actions.UpdateUserAction;
 import ccc.client.core.DefaultCallback;
 import ccc.client.core.I18n;
 import ccc.client.core.ImagePaths;
 import ccc.client.core.InternalServices;
+import ccc.client.gwt.views.gxt.UpdateCurrentUserDialog;
 
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -90,13 +92,14 @@ public class ContextActionGridPlugin
                     final Map<String, String> meta = user.getMetadata();
                     meta.put(ccs.preferenceName(), ccs.visibleColumns());
 
-                    new UpdateUserAction(user).execute(
-                        new DefaultCallback<User>(I18n.uiConstants.editUser()) {
-                        @Override public void onSuccess(final User result) {
-                            InternalServices.window.alert(
-                                I18n.uiConstants.columnsSaved());
-                        }
-                    });
+                    new UpdateCurrentUserAction(user) {
+
+                    	/** {@inheritDoc} */
+                    	@Override protected void onSuccess(final User newUser) {
+                    		InternalServices.window.alert(
+                    				UI_CONSTANTS.columnsSaved());
+                    	}
+                    }.execute();
                 }
             }
         });

@@ -168,7 +168,7 @@ public class CodeMirrorEditor extends Composite {
     protected void onLoad() {
         _editor = initCodeMirror(this,
             _id,
-            GWT.getModuleBaseURL()+"js/codemirror/0.92/",
+            GWT.getModuleBaseURL()+"js/codemirror/0.94/",
             _readOnly);
     }
 

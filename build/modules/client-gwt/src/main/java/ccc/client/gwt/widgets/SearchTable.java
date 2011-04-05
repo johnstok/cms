@@ -145,8 +145,8 @@ public class SearchTable
     private void applyPreferences(final List<ColumnConfig> configs) {
     	if (_preferences != null) {
     		for (final ColumnConfig config : configs) {
-    			if (_preferences.indexOf(config.getId()) == -1
-    					&& !config.getHeader().equals("")) {
+    			if (config.getId() == null || (_preferences.indexOf(config.getId()) == -1
+    					&& !config.getHeader().equals(""))) {
     				config.setHidden(true);
     			} else {
     				config.setHidden(false);
@@ -216,6 +216,7 @@ public class SearchTable
                         term = _searchString.getValue().replace('*', '%')+"%";
                     }
                     criteria.setName(term);
+                    criteria.setPublished(null);
                     criteria.setSortField(config.getSortField());
                     criteria.setSortOrder(order);
                     if (_locked.getValue().booleanValue()) {

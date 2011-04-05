@@ -513,22 +513,23 @@ public class ResourcesEJB
     public PagedCollection<ResourceSummary> resourceForMetadataKey(
         final String key) {
         checkPermission(RESOURCE_READ);
-        final List<ResourceSummary> list =
-         ResourceEntity.mapResources(getResources().lookupWithMetadataKey(key));
-        return
-            new PagedCollection<ResourceSummary>(
-                list.size(), ResourceSummary.class, list);
+        ResourceCriteria rc = new ResourceCriteria();
+        rc.matchMetadatum(key, "%");
+        return list(rc, 1, 2000);
     }
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary resourceForLegacyId(final String legacyId) {
         checkPermission(RESOURCE_READ);
-        final ResourceEntity r = getResources().lookupWithLegacyId(legacyId);
-        if (r == null) {
+        ResourceCriteria rc = new ResourceCriteria();
+        rc.matchMetadatum("legacyId", legacyId);
+        List<ResourceSummary> result = list(rc, 1, 1).getElements();
+        if (result == null || result.size() == 0) {
             return null;
+        } else {
+            return result.get(0);
         }
-        return r.mapResource();
     }
 
 
@@ -693,8 +694,9 @@ public class ResourcesEJB
                 ? null
                 : ResourceType.valueOf(type.toUpperCase(Locale.US));
         criteria.setType(t);
-        criteria.setPublished(
-            (null==published) ? null : Boolean.valueOf(published));
+        if (null != published) {
+            criteria.setPublished(Boolean.valueOf(published));
+        }
         criteria.setLocked(
             (null==locked) ? null : Boolean.valueOf(locked));
         criteria.setSortField(sort);

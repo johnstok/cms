@@ -106,25 +106,36 @@
                 </executions>
             </plugin>
             <plugin>
-	            <groupId>org.apache.maven.plugins</groupId>
-	            <artifactId>maven-javadoc-plugin</artifactId>
-	            <configuration></configuration>
-	            <executions>
-	                <execution>
-	                    <id>javadoc</id>
-	                    <goals>
-	                        <goal>jar</goal>
-	                    </goals>
-	                    <phase>prepare-package</phase>
-	                    <configuration>
-	                    <attach>false</attach>
-	                    <detectOfflineLinks>false</detectOfflineLinks>
-	                       <outputDirectory>${basedir}/target/client-gwt/ccc.client.gwt.ContentCreator/manual/api</outputDirectory>
-	                       <sourcepath>${basedir}/target/api-source</sourcepath>
-	                    </configuration>
-	                </execution>
-	            </executions>
-	        </plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration />
+                <executions>
+                    <execution>
+                        <id>javadoc</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <detectJavaApiLink>true</detectJavaApiLink>
+                            <javaApiLinks>
+                                <property>
+                                  <name>api_1.5</name>
+                                  <value>http://download.oracle.com/javase/1.5.0/docs/api/</value>
+                                </property>
+                                <property>
+                                  <name>api_1.6</name>
+                                  <value>http://download.oracle.com/javase/6/docs/api/</value>
+                                </property>
+                            </javaApiLinks>
+                            <attach>false</attach>
+                            <detectOfflineLinks>false</detectOfflineLinks>
+                           <outputDirectory>${basedir}/target/client-gwt/ccc.client.gwt.ContentCreator/manual/api</outputDirectory>
+                           <sourcepath>${basedir}/target/api-source</sourcepath>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     

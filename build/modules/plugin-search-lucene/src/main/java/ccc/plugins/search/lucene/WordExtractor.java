@@ -56,7 +56,7 @@ public class WordExtractor
             _text = extractor.getText();
 
         } catch (final Exception e) {
-            LOG.warn("Word document extraction failed: "+e.getMessage());
+            LOG.warn("Word document extraction failed.", e);
         }
     }
 

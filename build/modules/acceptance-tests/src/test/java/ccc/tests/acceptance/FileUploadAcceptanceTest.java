@@ -468,6 +468,8 @@ public class FileUploadAcceptanceTest
         f.setInputStream(new ByteArrayInputStream(new byte[] {0, 1, 2, 3, 4}));
         f.setSize(5);
         final File rs = getFiles().create(f);
+        getCommands().lock(rs.getId());
+        getCommands().publish(rs.getId());
 
         final ResourceCriteria criteria = new ResourceCriteria();
         criteria.setParent(filesFolder.getId());

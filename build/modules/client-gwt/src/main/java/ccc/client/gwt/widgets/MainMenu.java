@@ -46,6 +46,7 @@ import ccc.client.actions.OpenUpdateCurrentUserAction;
 import ccc.client.actions.OpenUpdateFolderAction;
 import ccc.client.actions.OpenUpdateMetadataAction;
 import ccc.client.actions.OpenUpdateResourceAclAction;
+import ccc.client.actions.OpenBuildDocsAction;
 import ccc.client.actions.PublishAction;
 import ccc.client.actions.UnlockAction;
 import ccc.client.actions.UnpublishAction;
@@ -109,6 +110,10 @@ public class MainMenu
                 "about-dialog",
                 _constants.about(),
                 new OpenAboutAction()),
+            createMenuItem(
+                "open-build-docs",
+                _constants.build(),
+                new OpenBuildDocsAction()),
             createMenuItem(
                 "open-manual",
                 _constants.manual(),

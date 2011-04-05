@@ -36,6 +36,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
+import ccc.api.types.ResourceType;
 import ccc.client.actions.CreateTemplateAction;
 import ccc.client.actions.UpdateTemplateAction;
 import ccc.client.core.DialogMode;
@@ -47,15 +48,26 @@ import ccc.client.gwt.widgets.CodeMirrorEditor;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;
 import ccc.client.gwt.widgets.CodeMirrorEditor.Type;
 
+import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.HorizontalPanel;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Text;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
+import com.extjs.gxt.ui.client.widget.form.HiddenField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.form.TriggerField;
+import com.extjs.gxt.ui.client.widget.form.FormPanel.Method;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
+import com.extjs.gxt.ui.client.widget.layout.FormLayout;
+import com.extjs.gxt.ui.client.widget.layout.TableData;
+import com.google.gwt.user.client.Window;
 
 
 /**
@@ -69,6 +81,7 @@ public class EditTemplateDialog
     implements
         EditorListener {
 
+
     /** DEFAULT_WIDTH : int. */
     protected static final int DEFAULT_WIDTH = 640;
     /** DEFAULT_HEIGHT : int. */
@@ -79,7 +92,9 @@ public class EditTemplateDialog
 
     private final FormPanel _first = new FormPanel();
     private final FormPanel _second = new FormPanel();
-    private final FormPanel _third = new FormPanel();
+    private final PreviewFormPanel _third = new PreviewFormPanel();
+    private HiddenField<String> _postBody = new HiddenField<String>();
+    private final TriggerField<String> _targetPath = new TriggerField<String>();
 
     private final TextField<String> _name = new TextField<String>();
     private final TextField<String> _mimePrimary = new TextField<String>();
@@ -88,13 +103,13 @@ public class EditTemplateDialog
     private CodeMirrorEditor _definition;
 
     private Template _model;
-    private UUID _id;
     private UUID _parentFolderId = null;
     private final DialogMode _mode;
     private final SingleSelectionModel _ssm;
     private ResourceSummary _proxy;
     private final String _definitionString;
     private final String _bodyString;
+    
 
     /**
      * Constructor.
@@ -144,7 +159,6 @@ public class EditTemplateDialog
         _mode = DialogMode.UPDATE;
 
         _proxy = proxy;
-        _id = proxy.getId();
         _ssm = ssm;
 
         _model = model;
@@ -222,10 +236,47 @@ public class EditTemplateDialog
     }
 
     private void populateThirdScreen() {
-        _third.setWidth("100%");
-        _third.setBorders(false);
-        _third.setBodyBorder(false);
-        _third.setHeaderVisible(false);
+    	_third.setMethod(Method.POST);
+    	_third.setTarget("_templatePreview");
+    	_third.setWidth("100%");
+    	_third.setBorders(false);
+    	_third.setBodyBorder(false);
+    	_third.setHeaderVisible(false);
+
+    	_postBody.setName("hiddenbody");
+        _third.add(_postBody);
+        
+        _targetPath.setFieldLabel(constants().path());
+        _targetPath.setValue("");
+        _targetPath.addListener(Events.TriggerClick, new TargetListener());
+
+        Button previewButton = 
+            new Button("preview", new SelectionListener<ButtonEvent>() {
+                @Override
+                public void componentSelected(ButtonEvent ce) {
+                    Window.open("", "_templatePreview","");
+                    _third.setAction(InternalServices.globals.appURL()
+                        +"previewtemplate"+_targetPath.getValue());
+                    _postBody.setValue(_body.getEditorCode());
+                    _third.submit();
+                }
+            });
+
+        HorizontalPanel previewPanel = new HorizontalPanel();
+        FormLayout layout = new FormLayout();
+        LayoutContainer lc = new LayoutContainer(layout);
+        lc.add(_targetPath);
+        
+        previewPanel.setWidth("95%");
+        previewPanel.setTableWidth("100%");
+        TableData tdr = new TableData();
+        TableData tdl = new TableData();
+        tdr.setHorizontalAlign(HorizontalAlignment.RIGHT);
+        tdl.setHorizontalAlign(HorizontalAlignment.LEFT);
+
+        previewPanel.add(lc, tdl);
+        previewPanel.add(previewButton, tdr);
+        _third.add(previewPanel);
 
         final Text fieldName = new Text(getUiConstants().body());
         fieldName.setStyleName("x-form-item");
@@ -307,7 +358,7 @@ public class EditTemplateDialog
                 break;
             case UPDATE:
 
-                delta.setId(_id);
+                delta.setId(_proxy.getId());
                 delta.addLink(
                     Resource.Links.SELF, _model.getLink(Resource.Links.SELF));
 
@@ -337,4 +388,44 @@ public class EditTemplateDialog
         }
     }
 
+    
+    /**
+     * Class required to override private 'setTarget' method in FormPanel. 
+     * 
+     * @author petteri
+     *
+     */
+    public class PreviewFormPanel extends FormPanel {
+    	public native void setTarget(String target)/*-{
+		this.@com.extjs.gxt.ui.client.widget.form.FormPanel::setTarget(Ljava/lang/String;)(target);
+	}-*/;
+    };
+    
+    
+    public class TargetListener implements Listener<ComponentEvent> {
+        public void handleEvent(final ComponentEvent be) {
+        	
+            ResourceSummary root = null;
+
+            for (final ResourceSummary item : InternalServices.roots.getElements()) {
+                if (item.getName().toString().equals("content")) {
+                    root = item;
+                }
+            }
+        	
+            final ResourceSelectionDialog resourceSelect =
+            	new ResourceSelectionDialog(root, null);
+            resourceSelect.addListener(Events.Hide,
+            		new Listener<ComponentEvent>() {
+            	public void handleEvent(final ComponentEvent be2) {
+            		final ResourceSummary target =
+            			resourceSelect.selectedResource();
+            		if (target != null
+            				&& target.getType() != ResourceType.RANGE_FOLDER) {
+            			_targetPath.setValue(target.getAbsolutePath());
+            		}
+            	}});
+            resourceSelect.show();
+        }
+    }
 }

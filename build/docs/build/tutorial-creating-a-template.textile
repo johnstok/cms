@@ -49,6 +49,8 @@ bc. <html>
 
 The standard fields of a resource are also available. A number of other useful objects are available in the body context - see the "next steps" section below to learn more.
 
+You can preview the template by selecting a suitable page and clicking "preview" button. The preview opens in a new window.
+
 Finally click "save".
 
 h3. Create a page

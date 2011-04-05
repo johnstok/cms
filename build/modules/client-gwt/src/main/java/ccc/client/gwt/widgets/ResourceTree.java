@@ -113,6 +113,7 @@ public class ResourceTree extends AbstractResourceTree {
                         criteria.setSortField("name");
                         criteria.setSortOrder(SortOrder.ASC);
                         criteria.setType(_type);
+                        criteria.setPublished(null);
 
                         new GetResourcesPagedAction(criteria,
                                                    page,

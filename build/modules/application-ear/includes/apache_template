@@ -37,14 +37,13 @@
     # Reverse proxy caching
         CacheEnable disk /
 
-    # Compression with browser specific settings. 
-        SetOutputFilter DEFLATE
-        BrowserMatch ^Mozilla/4 gzip-only-text/html
-        BrowserMatch ^Mozilla/4\.0[678] no-gzip
-        BrowserMatch \bMSIE\s(7|8) !no-gzip !gzip-only-text/html
-        DeflateCompressionLevel 9
-        Header append Vary User-Agent env=!dont-vary
-
+	# Static CC7 file caching
+        <Location ~ /ccc/static/.*>
+        	Header unset Pragma
+        	Header unset Expires
+         	Header set Cache-Control max-age=3600
+        </Location>
+        
     # Logging
         ErrorLog /var/log/apache2/error.log
         LogLevel warn

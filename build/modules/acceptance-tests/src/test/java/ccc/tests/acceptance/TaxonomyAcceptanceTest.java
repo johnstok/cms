@@ -77,6 +77,8 @@ public class TaxonomyAcceptanceTest extends AbstractAcceptanceTest {
         }});
 
         final Page ps = getPages().create(page);
+        getCommands().lock(ps.getId());
+        getCommands().publish(ps.getId());
 
         final PageCriteria criteria = new PageCriteria();
         criteria.matchParagraph("category",
