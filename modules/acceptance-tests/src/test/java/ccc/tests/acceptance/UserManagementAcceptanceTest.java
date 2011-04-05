@@ -31,13 +31,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.exceptions.CCException;
-import ccc.api.types.Permission;
 import ccc.api.types.Username;
 
 
@@ -494,7 +492,6 @@ public class UserManagementAcceptanceTest
         
         // ARRANGE
         User user = tempUser();
-
         
         String token = user.getId().toString();
         Map<String, String> meta = user.getMetadata();
@@ -593,7 +590,7 @@ public class UserManagementAcceptanceTest
         final User ul = getUsers().retrieve(us.getId());
 
         // ASSERT
-        assertEquals(null, ul);
+        assertNull("User should not be found", ul);
     }
     
     
@@ -616,6 +613,6 @@ public class UserManagementAcceptanceTest
         final User ul = getUsers().userByLegacyId(""+legacyId);
 
         // ASSERT
-        assertNull(ul);
+        assertNull("User should not be found", ul);
     }
 }

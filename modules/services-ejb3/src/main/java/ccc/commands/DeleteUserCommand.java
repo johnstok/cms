@@ -30,9 +30,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.core.User;
 import ccc.api.types.CommandType;
-import ccc.api.types.EmailAddress;
 import ccc.domain.LogEntry;
 import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
@@ -73,7 +71,9 @@ public class DeleteUserCommand
         Map<String, String> meta = current.getMetadata();
         meta.put("deleted", "true");
         current.addMetadata(meta);
-
+        current.setPassword("\u0000");
+        current.clearGroups();
+        
         getAudit().record(
             new LogEntry(
                 actor,
