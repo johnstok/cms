@@ -288,6 +288,4 @@ public class User
     public static final String PASSWORD = "password";
     /** SELF : String. */
     public static final String SELF = "self";
-    /** DELETE : String. */
-    public static final String DELETE = "delete";
 }
