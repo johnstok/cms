@@ -1,0 +1,45 @@
+h1. Build
+
+h2. Introduction
+
+Content Control template engine is based on Apache Velocity. In order to render a page a template is required. Each template consists of two parts - definition and body.
+
+The data structure of the page is described in the simple XML definition. It describes the fields of a page and their type. It is possible to have page without any fields if necessary.
+
+The visual layout and data manipulation is done in the body part. The body is a Velocity template for the page, in practice this is just normal HTML with some Velocity markup. Content Control provides additional objects to Velocity context to extend its basic set of commands.
+
+* "Tutorial: creating a template":tutorial-creating-a-template.textile
+* "Upgrading from 7.1 to 7.2":upgrade-from-7.1-to-7.2.textile
+
+h2. API
+
+Documentation of the public APIs for CC 7.
+
+* "Context objects":context-objects.textile 
+* Event hooks.
+* "Template definition":field-definition.textile
+* Link names.
+* "API":../../manual/api/index.html
+* "Macros":macros.textile
+* ReservedMetadataKeys
+* ReservedLuceneFieldNames
+
+h2. Velocity
+
+Documentation on the Velocity templating language.
+
+* "Introduction to Velocity":intro-to-velocity.textile
+* "Velocity user guide":http://velocity.apache.org/engine/releases/velocity-1.6/user-guide.html
+* "Velocity best practices":velocity-bestpractice.textile
+* "Examples: basic":body-templating.textile
+* "Examples: auto-suggest":autosuggest.textile
+* "Examples: full text search":full-text-search.textile
+* "Examples: password reset":password-reset.textile
+* "Examples: querying for resources":querying-for-resources.textile
+* "Examples: search with paging":search-with-paging.textile
+
+h2. HTTP
+
+Documentation on CC's HTTP support.
+
+* "Character encoding":character-encoding.textile
