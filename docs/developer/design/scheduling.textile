@@ -1,0 +1,11 @@
+h1. Scheduled behaviour in CC
+
+There are a number of tasks that must be repeated on a schedule for CC. All scheduling is performed 'in process', as opposed to using an external scheduler (e.g. Cron) to initiate tasks. In CC 7.1 and early versions of CC 7.2 scheduling was implemented using EJB timer beans. EJB timers are durable and continue to execute following server restarts. However, this caused problems for jBoss which would spuriously identify class changes and fail to run exceptions. Since CC version 7.2.18 (see CC-960) scheduling is instead implemented using the standard @java.util.Timer@ class. The new scheduler implementation can be found in the @ccc.web.scheduling@ package.
+
+h2. Search re-indexing
+
+CC provides a full text search feature (the existing implementation uses Lucene). To allow cluster support we employ a 'naive' approach to search indexing - i.e. we perform a full re-index every hour. The scheduler infrastructure is used to invoke the re-index operations. See the @ccc.web.scheduling.SearchTask@ class for details.
+
+h2. Action execution
+
+CC allows users to schedule actions (e.g. 'publish resource', 'un-publish resource', etc.). An action is executed exactly once at some fixed point in time. Actions are durable and are stored in the 'actions' database table. A method is available on the 'Actions' EJB that will invoke all incomplete actions whose 'execution time' is in the past. The scheduler infrastructure is used to invoke any available actions every 5 minutes. See the @ccc.web.scheduling.ExecuteActionsTask@ class for details.
