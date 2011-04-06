@@ -2,37 +2,35 @@ h1. Configuring MS SQL Server 2008 for Content Control
 
 h2. Create a login for CC
 
-# Select the /Security/Logins node.
-# Right click and select "New Login...".
+# Select the @/Security/Logins@ node.
+# Right click and select @New Login...@.
 # Provide the required details.
 
 h2. Create a schema for CC
 
-# Select the /Databases/<my-instance>/Security/Schemas node.
-# Right click and select  "New Schema...". 
+# Select the @/Databases/<my-instance>/Security/Schemas@ node.
+# Right click and select  @New Schema...@. 
 # Provide the required details.
 
 h2. Create a user for CC
 
-# Select the /Databases/<my-instance>/Security/Users node.
-# Right click and select  "New User...".
+# Select the @/Databases/<my-instance>/Security/Users@ node.
+# Right click and select  @New User...@.
 # Provide the required details:
 ## Grant the user the following DB role membership:
-##* db_datareader
-##* db_datawriter
-##* db_ddladmin
+##* @db_datareader@
+##* @db_datawriter@
+##* @db_ddladmin@
 ## Set the user's default schema to be the schema created above.
 
 h2. Configure XA transaction support for the user
 
 Execute the following script: 
 
-<pre>
-USE master
+bc. USE master
 GO
 EXEC sp_grantdbaccess 'shelby', 'shelby'
 GO
 EXEC sp_addrolemember [SqlJDBCXAUser], 'shelby'
-</pre>
 
 See the "SQL Server documentation":http://msdn.microsoft.com/en-us/library/aa342335.aspx for more details.

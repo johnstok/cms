@@ -1,193 +1,96 @@
-<h2 id="Users">Users</h2>
-<p>Creates a new admin user with the specified name, password and email. Used to create the first user of the site.</p>
-<p><tt>ccc.cli.Users</tt></p>
-<table class="wiki">
-    <tbody>
-        <tr>
-            <td><strong>option</strong></td>
-            <td><strong>usage</strong></td>
-        </tr>
-        <tr>
-            <td>-u</td>
-            <td>Username for connecting to CCC DB.</td>
-        </tr>
-        <tr>
-            <td>-p</td>
-            <td>Password for connecting to CCC DB.</td>
-        </tr>
-        <tr>
-            <td>-c</td>
-            <td>Connection string for the DB.</td>
-        </tr>
-        <tr>
-            <td>-nu</td>
-            <td>Username of the user to create.</td>
-        </tr>
-        <tr>
-            <td>-np</td>
-            <td>Password of the user to create.</td>
-        </tr>
-        <tr>
-            <td>-ne</td>
-            <td>Email of the user to create.</td>
-        </tr>
-    </tbody>
-</table>
-<p><tt> java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Users -c jdbc:mysql://localhost:3306/cc7 -ne admin@example.com -np </tt><tt>admin</tt><tt> -nu </tt><tt>admin</tt><tt> -p cc7 -u cc7 </tt></p>
-<h2 id="Create">Create</h2>
-<p>Sets up default folder structure for the site.</p>
-<p><tt>ccc.cli.Create</tt></p>
-<table class="wiki">
-    <tbody>
-        <tr>
-            <td><strong>option</strong></td>
-            <td><strong>usage</strong></td>
-        </tr>
-        <tr>
-            <td>-u</td>
-            <td>Username for connecting to CC.</td>
-        </tr>
-        <tr>
-            <td>-p</td>
-            <td>Password for connecting to CC.</td>
-        </tr>
-        <tr>
-            <td>-a</td>
-            <td>The JNDI application name. Corresponds to the name of the ear file (cc7.ear). Normally this value is 'cc7'.</td>
-        </tr>
-        <tr>
-            <td>-jn</td>
-            <td>optional JNDI provider IP address, defaults to localhost</td>
-        </tr>
-    </tbody>
-</table>
-<p><tt>java -cp shell-tools-7</tt><tt>.1.7</tt><tt>-jar-with-dependencies.jar ccc.cli.Create -a cc7 -p </tt><tt>admin</tt><tt> -u </tt><tt>admin</tt><tt> -jn 127.0.0.1:1099</tt></p>
-<h2 id="Settings">Settings</h2>
-<p>Updates file store and lucene path settings.</p>
-<p><tt>ccc.cli.Settings</tt></p>
-<table class="wiki">
-    <tbody>
-        <tr>
-            <td><strong>option</strong></td>
-            <td><strong>usage</strong></td>
-        </tr>
-        <tr>
-            <td>-u</td>
-            <td>Username for connecting to CC DB.</td>
-        </tr>
-        <tr>
-            <td>-p</td>
-            <td>Password for connecting to CC DB.</td>
-        </tr>
-        <tr>
-            <td>-c</td>
-            <td>Connection string for the DB.</td>
-        </tr>
-        <tr>
-            <td>-path</td>
-            <td>Path for the file store and lucene index directories.</td>
-        </tr>
-    </tbody>
-</table>
-<p><tt> java -cp shell-tools-</tt><tt>7</tt><tt>.1.7</tt><tt>-jar-with-dependencies.jar ccc.cli.Settings -c </tt><tt>jdbc:mysql://localhost:3306/cc7</tt><tt> -p </tt><tt>admin</tt><tt> -u </tt><tt>admin</tt><tt> -path /var/cc7/</tt></p>
-<h2 id="Search">Search</h2>
-<p>Controls Lucene search indexing scheduler.</p>
-<p><tt>ccc.cli.Search</tt></p>
-<table class="wiki">
-    <tbody>
-        <tr>
-            <td><strong>option</strong></td>
-            <td><strong>usage</strong></td>
-        </tr>
-        <tr>
-            <td>-u</td>
-            <td>Username for connecting to CC.</td>
-        </tr>
-        <tr>
-            <td>-p</td>
-            <td>Password for connecting to CC.</td>
-        </tr>
-        <tr>
-            <td>-b</td>
-            <td>Base URL for the application.</td>
-        </tr>
-        <tr>
-            <td>-c</td>
-            <td>Action.</td>
-        </tr>
-    </tbody>
-</table>
-<p>Possible actions:</p>
-<ul>
-    <li>start - Start the search indexing scheduler</li>
-    <li>stop - Stop the search indexing scheduler</li>
-    <li>running - Status of the search indexing scheduler</li>
-</ul>
-<p><tt>java -cp shell-tools-</tt><tt>7</tt><tt>.1.7</tt><tt>-jar-with-dependencies.jar ccc.cli.Search -b http://localhost/cc7 -p </tt><tt>admin</tt><tt> -u </tt><tt>admin</tt><tt> -c start </tt></p>
-<h2 id="Scheduling">Scheduling</h2>
-<p>Controls action scheduler.</p>
-<p><tt>ccc.cli.Scheduling</tt></p>
-<table class="wiki">
-    <tbody>
-        <tr>
-            <td><strong>option</strong></td>
-            <td><strong>usage</strong></td>
-        </tr>
-        <tr>
-            <td>-u</td>
-            <td>Username for connecting to CC.</td>
-        </tr>
-        <tr>
-            <td>-p</td>
-            <td>Password for connecting to CC.</td>
-        </tr>
-        <tr>
-            <td>-b</td>
-            <td>Base URL for the application.</td>
-        </tr>
-        <tr>
-            <td>-c</td>
-            <td>Action.</td>
-        </tr>
-    </tbody>
-</table>
-<p>Possible actions:</p>
-<ul>
-    <li>start - Start the action scheduler</li>
-    <li>stop - Stop the action scheduler</li>
-    <li>running - Status of the action scheduler</li>
-</ul>
-<p><tt>java -cp shell-tools-</tt><tt>7</tt><tt>.1.7</tt><tt>-jar-with-dependencies.jar ccc.cli.Scheduling  -b http://localhost/cc7 -p </tt><tt>admin</tt><tt> -u </tt><tt>admin</tt><tt> -c start </tt></p>
-<h2 id="Schema">Schema</h2>
-<p>Build the CCC database schema.</p>
-<p><tt>ccc.cli.Schema</tt></p>
-<table class="wiki">
-    <tbody>
-        <tr>
-            <td><strong>option</strong></td>
-            <td><strong>usage</strong></td>
-        </tr>
-        <tr>
-            <td>-u</td>
-            <td>Username for connecting to the DB schema.</td>
-        </tr>
-        <tr>
-            <td>-p</td>
-            <td>Password for connecting to the DB schema.</td>
-        </tr>
-        <tr>
-            <td>-c</td>
-            <td>Connection string for the DB.</td>
-        </tr>
-        <tr>
-            <td>-v</td>
-            <td>Version of the database to build. <i>Set the version to '1'.</i></td>
-        </tr>
-        <tr>
-            <td>-d</td>
-            <td>Drop existing tables first.</td>
-        </tr>
-    </tbody>
-</table>
-<p><tt>java -cp shell-tools-</tt><tt>7</tt><tt>.1.7</tt><tt>-jar-with-dependencies.jar ccc.cli.Schema -c </tt><tt>jdbc:mysql://localhost:3306/cc7</tt><tt> -p </tt><tt>admin</tt><tt> -u </tt><tt>admin</tt><tt> -v 1<br />
-</tt></p>
+h2. Users
+
+Creates a new admin user with the specified name, password and email. Used to create the first user of the site.
+
+@ccc.cli.Users@
+
+|*option*|*usage*|
+|-u|Username for connecting to CCC DB.|
+|-p|Password for connecting to CCC DB.|
+|-c|Connection string for the DB.|
+|-nu|Username of the user to create.|
+|-np|Password of the user to create.|
+|-ne|Email of the user to create.|
+
+bc. java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Users -c jdbc:mysql://localhost:3306/cc7 -ne admin@example.com -np admin -nu admin -p cc7 -u cc7
+
+h2. Create
+
+Sets up default folder structure for the site.
+
+@ccc.cli.Create@
+
+|*option*|*usage*|
+|-u|Username for connecting to CC.|
+|-p|Password for connecting to CC.|
+|-a|The JNDI application name. Corresponds to the name of the ear file (cc7.ear). Normally this value is 'cc7'.|
+|-jn|optional JNDI provider IP address, defaults to localhost|
+
+bc. java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Create -a cc7 -p admin -u admin -jn 127.0.0.1:1099
+
+h2. Settings
+
+Updates file store and lucene path settings.
+
+@ccc.cli.Settings@
+
+|*option*|*usage*|
+|-u|Username for connecting to CC DB.|
+|-p|Password for connecting to CC DB.|
+|-c|Connection string for the DB.|
+|-path|Path for the file store and lucene index directories.|
+
+bc. java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Settings -c jdbc:mysql://localhost:3306/cc7 -p admin -u admin -path /var/cc7/
+
+h2. Search
+
+Controls Lucene search indexing scheduler.
+
+@ccc.cli.Search@
+
+|*option*|*usage*|
+|-u|Username for connecting to CC.|
+|-p|Password for connecting to CC.|
+|-b|Base URL for the application.|
+|-c|Action.|
+
+Possible actions:
+* start - Start the search indexing scheduler
+* stop - Stop the search indexing scheduler
+* running - Status of the search indexing scheduler
+
+bc. java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Search -b http://localhost/cc7 -p admin -u admin -c start
+
+h2. Scheduling
+
+Controls action scheduler.
+
+@ccc.cli.Scheduling@
+
+|*option*|*usage*|
+|-u|Username for connecting to CC.|
+|-p|Password for connecting to CC.|
+|-b|Base URL for the application.|
+|-c|Action.|
+
+Possible actions:
+* start - Start the action scheduler
+* stop - Stop the action scheduler
+* running - Status of the action scheduler
+
+bc. java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Scheduling  -b http://localhost/cc7 -p admin -u admin -c start
+
+h2. Schema
+
+Build the CCC database schema.
+
+@ccc.cli.Schema@
+
+|*option*|*usage</strong>*|
+|-u|Username for connecting to the DB schema.|
+|-p|Password for connecting to the DB schema.|
+|-c|Connection string for the DB.|
+|-v|Version of the database to build.</i>|
+|-d|Drop existing tables first.|
+
+bc. java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Schema -c jdbc:mysql://localhost:3306/cc7 -p admin -u admin -v 1
