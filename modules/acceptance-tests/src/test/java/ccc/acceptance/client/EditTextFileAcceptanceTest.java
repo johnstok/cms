@@ -52,21 +52,25 @@ public class EditTextFileAcceptanceTest extends AbstractAcceptanceTest {
     public void testEditTextFileSuccess() {
 
         // ARRANGE
-        ResourceSummary parent = tempFolder();
-        EditTextFile view = new EditTextFileFake("",
-            "",
-            "",
-            "",
-            false);
+        final ResourceSummary parent = tempFolder();
+        final EditTextFile view =
+            new EditTextFileFake("", "", "", "", false);
 
-        File textFile = new File(parent.getId(),
-            "content", new MimeType("text", "html"), true, "none", "nocontent");
+        final File textFile =
+            new File(
+                parent.getId(),
+                "content",
+                new MimeType("text", "html"),
+                true,
+                "none",
+                "nocontent");
         textFile.setName(
             new ResourceName("testFile"+UUID.randomUUID().toString()));
-        ResourceSummary fileRs = getFiles().createTextFile(textFile);
+        final ResourceSummary fileRs = getFiles().createTextFile(textFile);
         getCommands().lock(fileRs.getId());
-        EditTextFilePresenter p = new EditTextFilePresenter(view,
-            getFiles().retrieve(fileRs.getId()));
+        final EditTextFilePresenter p =
+            new EditTextFilePresenter(
+                view, getFiles().retrieve(fileRs.getId()));
 
         view.setText("another text");
         view.setSubMime("plain");
@@ -76,7 +80,7 @@ public class EditTextFileAcceptanceTest extends AbstractAcceptanceTest {
         p.save();
 
         // ASSERT
-        File file = getFiles().retrieve(fileRs.getId());
+        final File file = getFiles().retrieve(fileRs.getId());
         assertEquals("plain", file.getMimeType().getSubType());
         assertEquals("application", file.getMimeType().getPrimaryType());
         assertEquals("another text", file.getContent());

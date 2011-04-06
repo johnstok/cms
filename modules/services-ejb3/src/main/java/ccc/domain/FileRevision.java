@@ -121,25 +121,13 @@ public class FileRevision
      * @return True if the file is an image; false otherwise.
      */
     public boolean isImage() {
-        return "image".equalsIgnoreCase(getMimeType().getPrimaryType());
+        return getMimeType().isImage();
     }
 
 
     /** {@inheritDoc} */
     public boolean isText() {
-        final String primary = getMimeType().getPrimaryType();
-        final String sub = getMimeType().getSubType();
-        if ("text".equalsIgnoreCase(primary)) {
-            return true;
-        } else if ("application".equalsIgnoreCase(primary)) {
-            if ("xml".equalsIgnoreCase(sub)
-                || "plain".equalsIgnoreCase(sub)
-                || "javascript".equalsIgnoreCase(sub)
-                || "x-javascript".equalsIgnoreCase(sub)) {
-                return true;
-            }
-        }
-        return false;
+        return getMimeType().isText();
     }
 
 

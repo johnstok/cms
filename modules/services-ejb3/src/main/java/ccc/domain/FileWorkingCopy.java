@@ -121,8 +121,7 @@ public class FileWorkingCopy
      * @return True if the working copy is an image; false otherwise.
      */
     public boolean isImage() {
-        // TODO: Factor into superclass.
-        return "image".equalsIgnoreCase(getMimeType().getPrimaryType());
+        return getMimeType().isImage();
     }
 
 
@@ -138,20 +137,7 @@ public class FileWorkingCopy
 
     /** {@inheritDoc} */
     public boolean isText() {
-        // TODO: Factor into superclass.
-        final String primary = getMimeType().getPrimaryType();
-        final String sub = getMimeType().getSubType();
-        if ("text".equalsIgnoreCase(primary)) {
-            return true;
-        } else if ("application".equalsIgnoreCase(primary)) {
-            if ("xml".equalsIgnoreCase(sub)
-                || "plain".equalsIgnoreCase(sub)
-                || "javascript".equalsIgnoreCase(sub)
-                || "x-javascript".equalsIgnoreCase(sub)) {
-                return true;
-            }
-        }
-        return false;
+        return getMimeType().isText();
     }
 
 
