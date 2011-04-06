@@ -35,7 +35,6 @@ import static javax.ejb.TransactionAttributeType.REQUIRED;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
@@ -183,15 +182,14 @@ public class UsersEJB
     @Override
     @RolesAllowed(USER_READ)
     public User retrieve(final UUID userId) {
-        User user = getRepoFactory()
-                .createUserRepo()
-                .find(userId)
-                .toDto();
-        
-        if (user.getMetadata().get("deleted") != null) {
+        try {
+            return getRepoFactory()
+            .createUserRepo()
+            .find(userId)
+            .toDto();
+        } catch (final EntityNotFoundException e) {
             return null;
         }
-        return user;
     }
 
 
@@ -199,13 +197,13 @@ public class UsersEJB
     @Override
     @RolesAllowed(USER_READ)
     public User userByLegacyId(final String legacyId) {
-        User user = getRepoFactory()
-        .createUserRepo()
-        .userByLegacyId(legacyId).toDto();
-        if (user.getMetadata().get("deleted") != null) {
+        try {
+            return getRepoFactory()
+            .createUserRepo()
+            .userByLegacyId(legacyId).toDto();
+        } catch (final EntityNotFoundException e) {
             return null;
         }
-        return user;
     }
 
     /** {@inheritDoc} */

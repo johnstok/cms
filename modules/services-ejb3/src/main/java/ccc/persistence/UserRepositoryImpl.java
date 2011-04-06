@@ -39,6 +39,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import ccc.api.core.UserCriteria;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.SortOrder;
 import ccc.domain.UserEntity;
 
@@ -173,7 +174,11 @@ class UserRepositoryImpl implements UserRepository {
     /** {@inheritDoc} */
     @Override
     public UserEntity find(final UUID userId) {
-        return _repository.find(UserEntity.class, userId);
+        UserEntity user = _repository.find(UserEntity.class, userId);
+        if (user.getMetadata().get("deleted") != null) {
+            throw new EntityNotFoundException((UUID) null);
+        }
+        return user;
     }
 
     /** {@inheritDoc} */
@@ -203,8 +208,12 @@ class UserRepositoryImpl implements UserRepository {
     /** {@inheritDoc} */
     @Override
     public UserEntity userByLegacyId(final String legacyId) {
-        return _repository.find(
+        UserEntity user = _repository.find(
             USERS_WITH_LEGACY_ID, UserEntity.class, legacyId);
+        if (user.getMetadata().get("deleted") != null) {
+            throw new EntityNotFoundException((UUID) null);
+        }
+        return user;
     }
 
     /** {@inheritDoc} */
