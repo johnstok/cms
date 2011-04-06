@@ -4,7 +4,7 @@
 <p><a href="/ccc7/wiki/CodeStyle" class="wiki">CodeStyle</a></p>
 <p><a href="/ccc7/wiki/LanguageFeatures" class="wiki">LanguageFeatures</a></p>
 <h2 id="Necessarytools">Necessary tools</h2>
-<p>Maven <a href="http://maven.apache.org/" class="ext-link"><span class="icon">http://maven.apache.org/</span></a> (Or install through package manager if using linux) <br />
+<p>Maven 2.2.x <a href="http://maven.apache.org/" class="ext-link"><span class="icon">http://maven.apache.org/</span></a> (Or install through package manager if using linux) <br />
 SVN (SmartSVN preferred <a href="http://www.syntevo.com/" class="ext-link"><span class="icon">http://www.syntevo.com/</span></a>)  <br />
 Eclipse <a href="http://www.eclipse.org" class="ext-link"><span class="icon">http://www.eclipse.org</span></a></p>
 <h2 id="Dependencies">Dependencies</h2>
@@ -62,7 +62,7 @@ h2.cmd
 <p>Then start Jboss from Eclipse, there should be a run target if Jboss project is imported correctly.</p>
 <p>After Jboss is up and running,  on the command line execute:</p>
 <pre class="wiki">
-mvn clean install -P deploy,migrate
+mvn clean install -P deploy,configure,migrate
 </pre>
 <p><a href="http://localhost:8080{application.name" class="ext-link"><span class="icon">http://localhost:8080{application.name</span></a>}</p>
 <h3 id="Remotedeployment">Remote deployment</h3>
@@ -74,18 +74,10 @@ mvn clean install -P deploy,migrate
 <h2 id="ApacheHTTPserver">Apache HTTP server</h2>
 <p>Read separate page about configuration: <a href="/ccc7/wiki/HowToConfigApacheHTTPServer" class="wiki">HowToConfigApacheHTTPServer</a></p>
 <h2 id="Acceptancetesting">Acceptance testing</h2>
-<p>Check instructions and best practices from <a href="/ccc7/wiki/Selenium" class="wiki">Selenium</a> and <a href="/ccc7/wiki/SeleniumRC" class="wiki">SeleniumRC</a></p>
+<p>Check <a href="../testing/testing-strategy.textile">testing strategy document</a>.</p>
 <h2 id="Databaseschema">Database schema</h2>
-<p>During development the DB schema is recreated every time the application is deployed. This set in ~/.m2/settings.xml:</p>
-<pre class="wiki">
-&lt;ccc.hibernate.hbm2ddl.auto&gt;create&lt;/ccc.hibernate.hbm2ddl.auto&gt;
-</pre>
-<p>alternative options to create are:</p>
-<ul>
-    <li>validate</li>
-    <li>update</li>
-    <li>create-drop</li>
-</ul>
+<p>During development the DB schema can be recreated using 'configure' mvn profile.</p>
+
 <p>The latest schema definitions can be exported using 'schema' profile under services-ejb3.</p>
 <pre class="wiki">
 mvn clean install -P schema
