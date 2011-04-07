@@ -1,0 +1,15 @@
+h1. Debugging Content Control
+
+A Content Control release includes a suite of applications. The method of debugging varies depending on the nature of the application. 
+
+h2. Debugging the CC Server
+
+*TO DO*: describe how to debug app's running in jBoss.
+
+h2. Debugging the CC GWT Client
+
+*TO DO*: describe how to debug a GWT application.
+
+h2. Debugging synchronous CC Clients
+
+*TO DO*: describe how to debug a regular Java app.
