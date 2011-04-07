@@ -182,14 +182,10 @@ public class UsersEJB
     @Override
     @RolesAllowed(USER_READ)
     public User retrieve(final UUID userId) {
-        try {
-            return getRepoFactory()
-            .createUserRepo()
-            .find(userId)
-            .toDto();
-        } catch (final EntityNotFoundException e) {
-            return null;
-        }
+        return getRepoFactory()
+        .createUserRepo()
+        .find(userId)
+        .toDto();
     }
 
 
@@ -197,13 +193,9 @@ public class UsersEJB
     @Override
     @RolesAllowed(USER_READ)
     public User userByLegacyId(final String legacyId) {
-        try {
-            return getRepoFactory()
-            .createUserRepo()
-            .userByLegacyId(legacyId).toDto();
-        } catch (final EntityNotFoundException e) {
-            return null;
-        }
+        return getRepoFactory()
+        .createUserRepo()
+        .userByLegacyId(legacyId).toDto();
     }
 
     /** {@inheritDoc} */

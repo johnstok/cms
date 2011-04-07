@@ -36,6 +36,7 @@ import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.exceptions.CCException;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Username;
 
 
@@ -587,10 +588,13 @@ public class UserManagementAcceptanceTest
         getUsers().delete(us.getId());
         
         // ACT
-        final User ul = getUsers().retrieve(us.getId());
-
         // ASSERT
-        assertNull("User should not be found", ul);
+        try {
+            getUsers().retrieve(us.getId());
+            fail("User should not be found");
+        } catch (final EntityNotFoundException e) {
+            assertEquals(null, e.getId());
+        }
     }
     
     
@@ -610,9 +614,12 @@ public class UserManagementAcceptanceTest
         getUsers().delete(us.getId());
 
         // ACT
-        final User ul = getUsers().userByLegacyId(""+legacyId);
-
         // ASSERT
-        assertNull("User should not be found", ul);
+        try {
+            getUsers().userByLegacyId(""+legacyId);
+            fail("User should not be found");
+        } catch (final EntityNotFoundException e) {
+            assertEquals(null, e.getId());
+        }
     }
 }
