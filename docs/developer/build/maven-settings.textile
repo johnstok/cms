@@ -1,128 +1,66 @@
-<h1 id="MavenSettings">Maven Settings</h1>
-<p><strong>This page documents options for the CCC7 build.</strong></p>
-<p>The CCC7 build process is configured using the maven settings file. The settings file is stored at ~/.m2/settings.xml by default. In case of Windows setup, make sure you have M2, M2_HOME and MAVEN_OPTS set in your environment variables. Set MAVEN_OPTS with value -Dmaven.test.failure.ignore=false -Xmx256M</p>
-<h2 id="Availableoptions">Available options</h2>
-<table class="wiki">
-    <tbody>
-        <tr>
-            <td>application.base-href</td>
-            <td>The base href of the application.</td>
-        </tr>
-        <tr>
-            <td>application.prefix</td>
-            <td>The prefix is used to uniquify application resources. This should be unique for each application deployed into a jBoss server.</td>
-        </tr>
-        <tr>
-            <td>application.name</td>
-            <td>The name of the application. This should be unique for each application deployed into a jBoss server.</td>
-        </tr>
-        <tr>
-            <td>filestore.path</td>
-            <td>The file system path to which file uploads should be stored. This would typically be on an nfs mount, so that it can be shared by all jBoss servers in a cluster.</td>
-        </tr>
-        <tr>
-            <td>ccc.db.connection.url</td>
-            <td>The jdbc connection string for the database</td>
-        </tr>
-        <tr>
-            <td>application.db-dialect</td>
-            <td>The hibernate dialect used for persistence. Must match the datasource chosen below.</td>
-        </tr>
-        <tr>
-            <td>application.db-datasource</td>
-            <td>The datasource used to connect to the database. Can be one of [**TODO**].</td>
-        </tr>
-        <tr>
-            <td>application.db-username</td>
-            <td>The username for the database schema used to store CCC7 data.</td>
-        </tr>
-        <tr>
-            <td>application.db-password</td>
-            <td>The password for the database schema used to store CCC7 data.</td>
-        </tr>
-        <tr>
-            <td>application.lucene-index-path</td>
-            <td>The path on the file system at which lucene search indexes should be stored. This should not be on an nfs mount, each jBoss instance in a cluster maintains a private lucene index.</td>
-        </tr>
-        <tr>
-            <td>application.mail.username</td>
-            <td>The username for the outgoing mail server.</td>
-        </tr>
-        <tr>
-            <td>application.mail.password</td>
-            <td>The password for the outgoing mail server.</td>
-        </tr>
-        <tr>
-            <td>application.mail.host</td>
-            <td>The host of mail server.</td>
-        </tr>
-        <tr>
-            <td>application.mail.debug</td>
-            <td>Debug option for mail server.</td>
-        </tr>
-        <tr>
-            <td>ccc.hibernate.hbm2ddl.auto</td>
-            <td><strong>For development only</strong> - leave blank.</td>
-        </tr>
-    </tbody>
-</table>
-<h2 id="Anexamplesettingsfile">An example settings file</h2>
-<pre class="wiki">
-&lt;settings
-    xmlns=&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;
-    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xsi:schemaLocation=&quot;http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd&quot;&gt;
-    &lt;mirrors&gt;
-        &lt;mirror&gt;
-            &lt;id&gt;apollo&lt;/id&gt;
-            &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
-            &lt;url&gt;http://apollo-vm226:8081/nexus/content/groups/public&lt;/url&gt;
-        &lt;/mirror&gt;
-    &lt;/mirrors&gt;
-    &lt;servers&gt;
-        &lt;server&gt;
-            &lt;id&gt;jBoss&lt;/id&gt;
-            &lt;username&gt;******&lt;/username&gt;
-            &lt;password&gt;******&lt;/password&gt;
-        &lt;/server&gt;
-    &lt;/servers&gt;
-    &lt;profiles&gt;
-        &lt;profile&gt;
-            &lt;activation&gt;&lt;activeByDefault&gt;true&lt;/activeByDefault&gt;&lt;/activation&gt;
-            
-            &lt;properties&gt;
-                &lt;application.base-href&gt;http://localhost:8080/${application.prefix}/&lt;/application.base-href&gt;
-                &lt;application.prefix&gt;ash&lt;/application.prefix&gt;
-                &lt;application.name&gt;${application.prefix}&lt;/application.name&gt;
-                &lt;filestore.path&gt;/tmp/ccc7/filestore/${application.prefix}&lt;/filestore.path&gt;
-                
-                &lt;ccc.db.connection.url&gt;jdbc:h2:tcp:localhost/mem:${application.prefix};DB_CLOSE_DELAY=-1&lt;/ccc.db.connection.url&gt;
-                &lt;application.db-dialect&gt;org.hibernate.dialect.H2Dialect&lt;/application.db-dialect&gt;
-                &lt;application.db-datasource&gt;h2-ds.xml&lt;/application.db-datasource&gt;
-                &lt;application.db-username&gt;******&lt;/application.db-username&gt;
-                &lt;application.db-password&gt;******&lt;/application.db-password&gt;
-                &lt;application.lucene-index-path&gt;/tmp/ccc7/lucene/${application.prefix}&lt;/application.lucene-index-path&gt;
-                
-                &lt;!-- Alternative dialects:
-                    org.hibernate.dialect.SQLServerDialect
-                    org.hibernate.dialect.Oracle9Dialect
-                    org.hibernate.dialect.MySQL5InnoDBDialect
-                 --&gt;
-                 
-                 &lt;!-- Alternative connection strings:
-                    jdbc:sqlserver://hestia:1260;DatabaseName=${application.prefix}
-                    jdbc:mysql://hestia:3306/${application.prefix}
-                    jdbc:oracle:thin:@poseidon:1521:dev 
-                  --&gt;
- 
-                &lt;!-- Email properties --&gt;
-                &lt;application.mail.username&gt;ccc7&lt;/application.mail.username&gt;
-                &lt;application.mail.password&gt;ccc7&lt;/application.mail.password&gt;
-                &lt;application.mail.host&gt;civiccomputing.com&lt;/application.mail.host&gt;
-                &lt;application.mail.debug&gt;false&lt;/application.mail.debug&gt;
- 
-            &lt;/properties&gt;
-        &lt;/profile&gt;
-    &lt;/profiles&gt;
-&lt;/settings&gt;
-</pre>
+h1. Maven Settings
+
+*This page documents options for the CCC7 build*.
+
+The CCC7 build process is configured using the maven settings file. The settings file is stored at @~/.m2/settings.xml@ by default. In case of Windows setup, make sure you have @M2@, @M2_HOME@ and @MAVEN_OPTS@ set in your environment variables. Set @MAVEN_OPTS@ with value @-Dmaven.test.failure.ignore=false -Xmx256M@
+
+h2. Available options
+
+|application.base-href|The base href of the application.|
+|application.prefix|The prefix is used to uniquify application resources. This should be unique for each application deployed into a jBoss server.|
+|application.name|The name of the application. This should be unique for each application deployed into a jBoss server.|
+|filestore.path|The file system path to which file uploads should be stored. This would typically be on an nfs mount, so that it can be shared by all jBoss servers in a cluster.|
+|ccc.db.connection.url|The jdbc connection string for the database.|
+|application.db-dialect|The hibernate dialect used for persistence. Must match the datasource chosen below.|
+|application.db-datasource|The datasource used to connect to the database.|
+|application.db-username|The username for the database schema used to store CCC7 data.|
+|application.db-password|The password for the database schema used to store CCC7 data.|
+|application.lucene-index-path|The path on the file system at which lucene search indexes should be stored. This should not be on an nfs mount, each jBoss instance in a cluster maintains a private lucene index.|
+|application.mail.username|The username for the outgoing mail server.|
+|application.mail.password|The password for the outgoing mail server.|
+|application.mail.host|The host of mail server.|
+|application.mail.debug|Debug option for mail server.|
+|ccc.hibernate.hbm2ddl.auto|*For development only* - leave blank.|
+
+h2. An example settings file
+
+bc. <settings
+    xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <mirrors>
+        <mirror>
+            <id>apollo</id>
+            <mirrorOf>*</mirrorOf>
+            <url>http://apollo-vm226:8081/nexus/content/groups/public</url>
+        </mirror>
+    </mirrors>
+    <servers>
+        <server>
+            <id>jBoss</id>
+            <username>******</username>
+            <password>******</password>
+        </server>
+    </servers>
+    <profiles>
+        <profile>
+            <activation><activeByDefault>true</activeByDefault></activation>
+            <properties>
+                <application.base-href>http://localhost:8080/${application.prefix}/</application.base-href>
+                <application.prefix>ash</application.prefix>
+                <application.name>${application.prefix}</application.name>
+                <filestore.path>/tmp/ccc7/filestore/${application.prefix}</filestore.path>
+                <ccc.db.connection.url>jdbc:h2:tcp:localhost/mem:${application.prefix};DB_CLOSE_DELAY=-1</ccc.db.connection.url>
+                <application.db-dialect>org.hibernate.dialect.H2Dialect</application.db-dialect>
+                <application.db-datasource>h2-ds.xml</application.db-datasource>
+                <application.db-username>******</application.db-username>
+                <application.db-password>******</application.db-password>
+                <application.lucene-index-path>/tmp/ccc7/lucene/${application.prefix}</application.lucene-index-path>
+                <application.mail.username>ccc7</application.mail.username>
+                <application.mail.password>ccc7</application.mail.password>
+                <application.mail.host>civiccomputing.com</application.mail.host>
+                <application.mail.debug>false</application.mail.debug>
+             </properties>
+        </profile>
+    </profiles>
+</settings>

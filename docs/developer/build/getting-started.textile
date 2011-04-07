@@ -1,85 +1,113 @@
-<p>The project development setup is quite simple but it is preferred to do in this order (for example Eclipse plugins should be present before checkout/import).</p>
-<h2 id="Readthroughsomeguidelines">Read through some guidelines</h2>
-<p><a href="/ccc7/wiki/CamelCase" class="wiki">CamelCase</a></p>
-<p><a href="/ccc7/wiki/CodeStyle" class="wiki">CodeStyle</a></p>
-<p><a href="/ccc7/wiki/LanguageFeatures" class="wiki">LanguageFeatures</a></p>
-<h2 id="Necessarytools">Necessary tools</h2>
-<p>Maven 2.2.x <a href="http://maven.apache.org/" class="ext-link"><span class="icon">http://maven.apache.org/</span></a> (Or install through package manager if using linux) <br />
-SVN (SmartSVN preferred <a href="http://www.syntevo.com/" class="ext-link"><span class="icon">http://www.syntevo.com/</span></a>)  <br />
-Eclipse <a href="http://www.eclipse.org" class="ext-link"><span class="icon">http://www.eclipse.org</span></a></p>
-<h2 id="Dependencies">Dependencies</h2>
-<p>Maven central repository contains most of the dependencies.</p>
-<p>Civic has Sonatype Nexus repository running at <a href="http://apollo-vm226:8081/nexus" class="ext-link"><span class="icon">http://apollo-vm226:8081/nexus</span></a> which contains 3rd party and proprietary dependencies.</p>
-<p>Check <a href="/ccc7/wiki/MavenSettings" class="wiki">MavenSettings</a> for configuration.</p>
-<h2 id="Eclipseconfigurations">Eclipse configurations</h2>
-<p>Install plugins and configuration files as described in <a href="/ccc7/wiki/EclipseSetup" class="wiki">EclipseSetup</a></p>
-<h2 id="CheckoutCCC7">Check out CCC7</h2>
-<h3 id="CheckoutwithEclipse">Checkout with Eclipse</h3>
-<ul>
-    <li>Import the CCC7 project located at <a href="http://svn.civiccomputing.com/CCC7/trunk/" class="ext-link"><span class="icon">http://svn.civiccomputing.com/CCC7/trunk/</span></a> as a new project.</li>
-</ul>
-<ul>
-    <li>Delete the project from eclipse but do no delete the files from disk.</li>
-</ul>
-<ul>
-    <li>import maven projects using <i>import-&gt;Maven Projects</i> and browse to where you checked out CCC7 and then to the <tt>build</tt> folder.</li>
-</ul>
-<p>Eclipse will then import all of the maven projects into eclipse.</p>
-<p>You may have to refresh all the projects for eclipse to pick up the repository location</p>
-<p>A maven build should start once the files have been imported. On finishing the build there should be two files which are not compiling</p>
-<p><tt>InputStream.java</tt>  <br />
-<tt>UUID.java</tt></p>
-<p>These files are required for compiling GWT, you should exclude them from your project (<i>right click -&gt; build path -&gt; exclude</i>)</p>
-<h3 id="CheckoutwithOther">Checkout with Other</h3>
-<p>If check out was done outside Eclipse, you can simply import the maven projects using <i>import-&gt;Maven Projects.</i> from the directory you checked out to.</p>
-<h2 id="ImportJBossProject">Import JBoss Project</h2>
-<p>Import the JBoss project into eclipse located at <tt>../CCC7/deploy/jboss-5.0.1.GA-jdk6/</tt></p>
-<p>You will need to change the location of the <tt>run.jar</tt> for the project to the location of your JBoss installation</p>
-<h2 id="Configuration">Configuration</h2>
-<p>If it doesn't exist create a file in the folder <tt>~/m2</tt> called <tt>settings.xml</tt></p>
-<p>Edit the <tt>settings.xml</tt> file so that it contains the configuration details from <a href="/ccc7/wiki/MavenSettings" class="wiki">MavenSettings</a></p>
-<p>Be sure to change the application name to the name of your application.</p>
-<p>Also the DB connection parameters and paths for filestore and Lucene index are defined in <tt>~/.m2/settings.xml</tt></p>
-<p>Maven profile 'migrate' for migration is configured in <tt>application-ear/pom.xml</tt> and contains parameters for legacy data source etc.</p>
-<h2 id="Building">Building</h2>
-<p>On command line, change to the CCC7 build directory <tt>.../CCC7/build</tt> that you checked out into.</p>
-<p>Execute:</p>
-<pre class="wiki">
-mvn clean install
-</pre>
-<p>If there are errors, check first that all necessary dependencies are installed.</p>
-<p>To speed up the build you can uncomment the line</p>
-<pre class="wiki">
-&lt;set-property name=&quot;user.agent&quot; value=&quot;gecko1_8&quot; /&gt;
-</pre>
-<p>defined in <tt>.../build/modules/client-gwt/src/main/resources/ccc/client/gwt/ContentCreator.gwt.xml</tt></p>
-<h2 id="Deployment">Deployment</h2>
-<h3 id="Local">Local</h3>
-<p>Again in the build directory <tt>.../CCC7/build</tt> on the command line start the H2 memory only database instance by executing .</p>
-<pre class="wiki">
-h2.cmd
-</pre>
-<p>Then start Jboss from Eclipse, there should be a run target if Jboss project is imported correctly.</p>
-<p>After Jboss is up and running,  on the command line execute:</p>
-<pre class="wiki">
-mvn clean install -P deploy,configure,migrate
-</pre>
-<p><a href="http://localhost:8080{application.name" class="ext-link"><span class="icon">http://localhost:8080{application.name</span></a>}</p>
-<h3 id="Remotedeployment">Remote deployment</h3>
-<p>Read <a href="/ccc7/wiki/HowToDeployCC7" class="wiki">HowToDeployCC7</a></p>
-<h3 id="Remotecluster">Remote cluster</h3>
-<p>Read <a href="/ccc7/wiki/HowToConfigApacheHTTPServer" class="wiki">HowToConfigApacheHTTPServer</a> and <a href="/ccc7/wiki/HowToDeployOnCluster" class="wiki">HowToDeployOnCluster</a></p>
-<h2 id="Commandlinetools">Command line tools</h2>
-<p>Tools output possible options when executed without options. Read <a href="/ccc7/wiki/CommanLineTools" class="wiki">CommanLineTools</a> for more information.</p>
-<h2 id="ApacheHTTPserver">Apache HTTP server</h2>
-<p>Read separate page about configuration: <a href="/ccc7/wiki/HowToConfigApacheHTTPServer" class="wiki">HowToConfigApacheHTTPServer</a></p>
-<h2 id="Acceptancetesting">Acceptance testing</h2>
-<p>Check <a href="../testing/testing-strategy.textile">testing strategy document</a>.</p>
-<h2 id="Databaseschema">Database schema</h2>
-<p>During development the DB schema can be recreated using 'configure' mvn profile.</p>
+The project development setup is quite simple but it is preferred to do in this order (for example Eclipse plugins should be present before checkout/import).
 
-<p>The latest schema definitions can be exported using 'schema' profile under services-ejb3.</p>
-<pre class="wiki">
-mvn clean install -P schema
-</pre>
-<p>DB scripts are stored under db-schema module and it produces zip file containing all scripts.</p>
+h2. Read through some guidelines
+
+* "Java code style":../quality/code-style-java.textile
+* "SQL code style":../quality/code-style-sql.textile
+* "Testing strategy":../testing/testing-strategy.textile
+
+h2. Necessary tools
+
+* "Maven 2.2.x":http://maven.apache.org/ (Or install through package manager if using linux).
+* SVN ("SmartSVN":http://www.syntevo.com/ preferred).
+* "Eclipse":http://www.eclipse.org.
+
+h2. Dependencies
+
+Maven central repository contains most of the dependencies.
+
+Civic has Sonatype Nexus repository running at "http://apollo-vm226:8081/nexus":http://apollo-vm226:8081/nexus which contains 3rd party and proprietary dependencies.
+
+Check "MavenSettings":maven-settings.textile for configuration.
+
+h2. Eclipse configurations
+
+Install plugins and configuration files as described in "EclipseSetup":eclipse-setup.tracwiki.
+
+h2. Check out CCC7
+
+h3. Checkout with Eclipse
+
+* Import the CCC7 project located at "http://svn.civiccomputing.com/ContentControl/trunk/":http://svn.civiccomputing.com/ContentControl/trunk/ as a new project.
+* Delete the project from eclipse but do no delete the files from disk.
+* Import maven projects using _import -> Maven Projects_ and browse to where you checked out CCC7 and then to the @build@ folder.
+
+Eclipse will then import all of the maven projects into eclipse.
+
+You may have to refresh all the projects for eclipse to pick up the repository location
+A maven build should start once the files have been imported. On finishing the build there should be two files which are not compiling:
+
+* @InputStream.java@
+* @UUID.java@
+
+These files are required for compiling GWT, you should exclude them from your project (_right click -> build path -> exclude_).
+
+h3. Checkout with Other
+
+If check out was done outside Eclipse, you can simply import the maven projects using _import -> Maven Projects._ from the directory you checked out to.
+
+h2. Import JBoss Project
+
+Import the JBoss project into eclipse located at @../CCC7/deploy/jboss-5.0.1.GA-jdk6/@.
+
+You will need to change the location of the @run.jar@ for the project to the location of your JBoss installation.
+
+h2. Configuration
+
+If it doesn't exist create a file in the folder @~/m2@ called @settings.xml@
+
+Edit the @settings.xml@ file so that it contains the configuration details from "MavenSettings":maven-settings.textile
+
+Be sure to change the application name to the name of your application.
+
+Also the DB connection parameters and paths for file-store and Lucene index are defined in @~/.m2/settings.xml@.
+
+Maven profile @migrate@ for migration is configured in @application-ear/pom.xml@ and contains parameters for legacy data source etc.
+
+h2. Building
+
+On command line, change to the CCC7 build directory @.../CCC7/build@ that you checked out into.
+Execute: @mvn clean install@
+
+If there are errors, check first that all necessary dependencies are installed.
+
+To speed up the build you can un-comment the line @<set-property name="user.agent" value="gecko1_8" />@ defined in @.../build/modules/client-gwt/src/main/resources/ccc/client/gwt/ContentCreator.gwt.xml@.
+
+h2. Deployment
+
+h3. Local
+
+Again in the build directory @.../CCC7/build@ on the command line start the H2 memory only database instance by executing @h2.cmd@.
+
+Then start Jboss from Eclipse, there should be a run target if Jboss project is imported correctly.
+After Jboss is up and running,  on the command line execute: @mvn clean install -P deploy,configure,migrate@.
+
+The app should now be available at "http://localhost:8080{application.name}":http://localhost:8080{application.name}.
+
+h3. Remote deployment
+
+Read "HowToDeployCC7":/ccc7/wiki/HowToDeployCC7
+
+h3. Remote cluster
+
+Read "HowToConfigApacheHTTPServer":/ccc7/wiki/HowToConfigApacheHTTPServer and "HowToDeployOnCluster":/ccc7/wiki/HowToDeployOnCluster
+
+h2. Command line tools
+
+Tools output possible options when executed without options. Read "shell tools":../../administration/shell-tools.textile for more information.
+
+h2. Apache HTTP server
+
+Read separate page about configuration: "HowToConfigApacheHTTPServer":/ccc7/wiki/HowToConfigApacheHTTPServer
+
+h2. Acceptance testing
+
+Check the "testing strategy document":../testing/testing-strategy.textile.
+
+h2. Database schema
+
+During development the DB schema can be recreated using 'configure' mvn profile.
+
+The latest schema definitions can be exported using 'schema' profile under services-ejb3: @mvn clean install -P schema@.
+
+DB scripts are stored under db-schema module and it produces zip file containing all scripts.
