@@ -4,7 +4,7 @@ Content Control is a modular content management platform. A suite of application
 
 * A content management server, accessible via HTTP
 * A content management client that can access CC servers via HTTP
-* A set of server administration tools.
+* A set of server administration tools
 * A set of migration tools for 3rd party systems. 
 
 h2. Modules
@@ -29,3 +29,15 @@ h2. Modules
 |plugins-search-lucene        |Lucene implementation of the search plugin|
 |plugins-security-jboss       |JBoss implementation of the security plugin|
 |tests-acceptance             |Acceptance tests for the CC server|
+
+h2. Server Architecture
+
+*TODO*: include figure 1.
+
+h2. GWT Client Architecture
+
+*TODO*: include figure 2.
+
+h2. Synchronous Client Architecture
+
+*TODO*: include figure 3.

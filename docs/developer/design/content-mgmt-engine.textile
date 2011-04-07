@@ -1,0 +1,3 @@
+h1. Design of the Content Management Engine
+
+*TO DO*: describe the classes in the @impl-ejb3@ module.

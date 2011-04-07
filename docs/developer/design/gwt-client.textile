@@ -1,0 +1,3 @@
+h1. Design of the GWT Client
+
+*TO DO*: describe the classes in the @client-gwt@ and @client-core@ modules.
