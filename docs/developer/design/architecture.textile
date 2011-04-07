@@ -1,0 +1,31 @@
+h1. Content Control System Architecture
+
+Content Control is a modular content management platform. A suite of applications are provided to suit different purposes:
+
+* A content management server, accessible via HTTP
+* A content management client that can access CC servers via HTTP
+* A set of server administration tools.
+* A set of migration tools for 3rd party systems. 
+
+h2. Modules
+
+|*Module*|*Description*|
+|api-core                     |Public CC API for use by internal & external clients|
+|api-plugins                  |Internal private API for 3rd party libraries|
+|api-types                    |Types used by the public API|
+|application-ear              |CC server binary - distributed as a JEE5 EAR file|
+|application-war              |Web app binding of the content management engine, includes page rendering|
+|client-core                  |CC API client core classes|
+|client-gwt                   |CC API client GWT implementation|
+|client-migration             |CC migration binary - contains tooling to migrate from CC6|
+|client-shell                 |CC admin binary - contains all the admin tools|
+|impl-ejb3                    |JEE implementation of the public API - the core content managment engine|
+|impl-http                    |HTTP client binding of the CC public API|
+|impl-jaxrs                   |Web services binding of the CC public API|
+|plugins-multipart-apache     |Apache Commons implementation of the file upload plugin|
+|plugins-persistence-hibernate|Hibernate/JPA implementation of the persistence plugin|
+|plugins-scripting-rhino      |Rhino implementation of the scripting plugin|
+|plugins-scripting-velocity   |Velocity implementation of the scripting plugin|
+|plugins-search-lucene        |Lucene implementation of the search plugin|
+|plugins-security-jboss       |JBoss implementation of the security plugin|
+|tests-acceptance             |Acceptance tests for the CC server|
