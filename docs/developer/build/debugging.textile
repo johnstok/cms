@@ -4,12 +4,24 @@ A Content Control release includes a suite of applications. The method of debugg
 
 h2. Debugging the CC Server
 
-*TO DO*: describe how to debug app's running in jBoss.
+The simplest way to debug application running in JBoss is to launch JBoss using debug launch configuration in Eclipse. This configuration comes with the CC7's JBoss project.
+
+The other option is to use remote debugging. You can do that by defining a new "Remote Java Application" in Eclipse run configuration menu. Check that the port matches the setting in @run.conf@ file.
+
 
 h2. Debugging the CC GWT Client
 
-*TO DO*: describe how to debug a GWT application.
+Even though GWT application is compiled to JavaScript and it is executed on the browser, it is possible to debug the GWT application using its Java source code and Eclipse's debug mode.
+
+The requirement for this is to use GWT hosted mode. http://code.google.com/webtoolkit/doc/latest/DevGuideCompilingAndDebugging.html
+
+CC7 project has a 'ContentCreator Shell' launch configuration for client-gwt module. Starting this in debug will open a 'GWT Development Mode' window. Click the 'Copy to Clipboard' and use that URL in Firefox. In case you have not used this before, it tries to install a plugin on your browser. Accept this and the CC7 client should appear. Check that the URL looks similar to this: http://127.0.1.1:8080/cc7/ccc/client?gwt.codesvr=127.0.1.1:9997
+
+Once you are browsing the CC7 client, the 'GWT Development Mode' window will have a new tab for the browser connection "client (FF)". Under that tab you can see log and error messages.
+
+It is also possible to place breakpoints in the client GWT code in Eclipse. When the code is reached, the application execution is halted and you are able to inspect variables etc using the normal debugging perspective of Eclipse.
+
 
 h2. Debugging synchronous CC Clients
 
-*TO DO*: describe how to debug a regular Java app.
+Various command line applications like ccc.cli.Create have their own launch configurations specified in the CC7 project. They should appear under Eclipse's debug menu.
