@@ -1,9 +1,13 @@
 
 h2. Deployment
 
+This page covers two typical deployment scenarios for CC7 during development.
+
 h3. Local deployment with development version
 
-In case you want to use H2 memory only as your database, start it in the build directory @.../CCC7/build@ by executing @h2.cmd@.
+This is the common case where a developer deploys latest version to the local JBoss to verify code changes and to run acceptance tests before commit or release.
+
+In case you want to use H2 "memory only" as your database, start it in the build directory @.../CCC7/build@ by executing @h2.cmd@.
 Other databases do not need this step and the DB connections parameters are read from the ~/.m2/settings.xml.
 
 Make sure you have running JBoss instance. Start Jboss from Eclipse, there should be a run target if the Jboss project is imported correctly.
@@ -14,6 +18,8 @@ The content control user interface is be available at "http://localhost:8080{app
 
 
 h3. Remote deployment with development version
+
+Remote deployment is necessary when CC7 has to be deployed on a cluster. This can be the case under development for example when load testing is taking place.
 
 h4. 1. Create assembly
 
