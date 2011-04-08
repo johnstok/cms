@@ -9,7 +9,7 @@ h2. Maven profiles
 | deploy | deploys application to local JBoss using main deployer |
 | configure | re-creates database schema and creates the default user, folder structure and an example page |
 | acceptance | Runs acceptance tests. Requires deployed instance with default structure running on local JBoss |
-| migration | Default migration from migration source DB. Requires deployed instance with default structure running on local JBoss |
+| migration | Default migration from migration source DB. Requires deployed instance with default structure running on local JBoss. Data source is configured in @application-ear/pom.xml@ |
 | deploy-remote | Uses FTP to code ear to the remote server file system |
 | index | Runs Lucene indexer |
 | assemble | Creates the assembly containing the ear file and the shell tools |

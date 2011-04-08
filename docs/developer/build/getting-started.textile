@@ -10,7 +10,7 @@ h2. Necessary tools
 
 * "Maven 2.2.x":http://maven.apache.org/ (Or install through package manager if using linux).
 * SVN ("SmartSVN":http://www.syntevo.com/ preferred).
-* "Eclipse":http://www.eclipse.org.
+* "Eclipse (Galileo)":http://www.eclipse.org.
 
 h2. Dependencies
 
@@ -32,10 +32,10 @@ h3. Checkout with Eclipse
 * Delete the project from eclipse but do no delete the files from disk.
 * Import maven projects using _import -> Maven Projects_ and browse to where you checked out CCC7 and then to the @build@ folder.
 
-Eclipse will then import all of the maven projects into eclipse.
+Eclipse will then import all of the Maven projects into eclipse.
 
 You may have to refresh all the projects for eclipse to pick up the repository location
-A maven build should start once the files have been imported. On finishing the build there should be two files which are not compiling:
+A Maven build should start once the files have been imported. On finishing the build there should be two files which are not compiling:
 
 * @InputStream.java@
 * @UUID.java@
@@ -48,9 +48,10 @@ If check out was done outside Eclipse, you can simply import the maven projects 
 
 h2. Import JBoss Project
 
+Even though it is possible to start and control JBoss outside Eclipse, having a launch target for JBoss enables easier debugging etc. 
 Import the JBoss project into eclipse located at @../CCC7/deploy/jboss-5.0.1.GA-jdk6/@.
 
-You will need to change the location of the @run.jar@ for the project to the location of your JBoss installation.
+You will need to change the location of the @run.jar@ for the Eclipse project to the location of your JBoss installation.
 
 h2. Configuration
 
@@ -62,52 +63,12 @@ Be sure to change the application name to the name of your application.
 
 Also the DB connection parameters and paths for file-store and Lucene index are defined in @~/.m2/settings.xml@.
 
-Maven profile @migrate@ for migration is configured in @application-ear/pom.xml@ and contains parameters for legacy data source etc.
-
 h2. Building
 
 On command line, change to the CCC7 build directory @.../CCC7/build@ that you checked out into.
 Execute: @mvn clean install@
 
-If there are errors, check first that all necessary dependencies are installed.
+If there are errors, check first that local Nexus repository is available or that all necessary dependencies are installed locally.
 
-To speed up the build you can un-comment the line @<set-property name="user.agent" value="gecko1_8" />@ defined in @.../build/modules/client-gwt/src/main/resources/ccc/client/gwt/ContentCreator.gwt.xml@.
+To speed up the build during development you can un-comment the line @<set-property name="user.agent" value="gecko1_8" />@ defined in @.../build/modules/client-gwt/src/main/resources/ccc/client/gwt/ContentCreator.gwt.xml@. This will tell GWT compiler to create only a FF compatible version of the JS.
 
-h2. Deployment
-
-h3. Local
-
-Again in the build directory @.../CCC7/build@ on the command line start the H2 memory only database instance by executing @h2.cmd@.
-
-Then start Jboss from Eclipse, there should be a run target if Jboss project is imported correctly.
-After Jboss is up and running,  on the command line execute: @mvn clean install -P deploy,configure,migrate@.
-
-The app should now be available at "http://localhost:8080{application.name}":http://localhost:8080{application.name}.
-
-h3. Remote deployment
-
-Read "HowToDeployCC7":/ccc7/wiki/HowToDeployCC7
-
-h3. Remote cluster
-
-Read "HowToConfigApacheHTTPServer":/ccc7/wiki/HowToConfigApacheHTTPServer and "HowToDeployOnCluster":/ccc7/wiki/HowToDeployOnCluster
-
-h2. Command line tools
-
-Tools output possible options when executed without options. Read "shell tools":../../administration/shell-tools.textile for more information.
-
-h2. Apache HTTP server
-
-Read separate page about configuration: "HowToConfigApacheHTTPServer":/ccc7/wiki/HowToConfigApacheHTTPServer
-
-h2. Acceptance testing
-
-Check the "testing strategy document":../testing/testing-strategy.textile.
-
-h2. Database schema
-
-During development the DB schema can be recreated using 'configure' mvn profile.
-
-The latest schema definitions can be exported using 'schema' profile under services-ejb3: @mvn clean install -P schema@.
-
-DB scripts are stored under db-schema module and it produces zip file containing all scripts.
