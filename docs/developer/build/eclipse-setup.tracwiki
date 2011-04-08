@@ -3,7 +3,7 @@ This page contains information about proper Eclipse setup for CCC7 project.
 == Plugins for Eclipse ==
 
 === Maven Integration for Eclipse  ===
-More or less compulsory.
+Make sure the version is using Maven 2.2.x, version 3.x seems to cause issues.
 
  * http://m2eclipse.sonatype.org/
  * [http://www.theserverside.com/tt/articles/article.tss?l=Introductiontom2eclipse An introduction to m2eclipse].

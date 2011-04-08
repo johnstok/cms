@@ -1,4 +1,6 @@
-The project development setup is quite simple but it is preferred to do in this order (for example Eclipse plugins should be present before checkout/import).
+h1. Getting started
+
+The project's development setup is quite simple but it is preferred to do in this order (for example Eclipse plugins should be present before checkout/import).
 
 h2. Read through some guidelines
 
@@ -24,13 +26,13 @@ h2. Eclipse configurations
 
 Install plugins and configuration files as described in "EclipseSetup":eclipse-setup.tracwiki.
 
-h2. Check out CCC7
+h2. Check out CC7
 
 h3. Checkout with Eclipse
 
-* Import the CCC7 project located at "http://svn.civiccomputing.com/ContentControl/trunk/":http://svn.civiccomputing.com/ContentControl/trunk/ as a new project.
+* Import the CC7 project located at "http://svn.civiccomputing.com/ContentControl/trunk/":http://svn.civiccomputing.com/ContentControl/trunk/ as a new project.
 * Delete the project from eclipse but do no delete the files from disk.
-* Import maven projects using _import -> Maven Projects_ and browse to where you checked out CCC7 and then to the @build@ folder.
+* Import maven projects using _import -> Maven Projects_ and browse to where you checked out CC7 and then to the @build@ folder.
 
 Eclipse will then import all of the Maven projects into eclipse.
 
@@ -49,7 +51,7 @@ If check out was done outside Eclipse, you can simply import the maven projects 
 h2. Import JBoss Project
 
 Even though it is possible to start and control JBoss outside Eclipse, having a launch target for JBoss enables easier debugging etc. 
-Import the JBoss project into eclipse located at @../CCC7/deploy/jboss-5.0.1.GA-jdk6/@.
+Import the JBoss project into eclipse located at @../CC7/deploy/jboss-5.0.1.GA-jdk6/@.
 
 You will need to change the location of the @run.jar@ for the Eclipse project to the location of your JBoss installation.
 
@@ -65,7 +67,7 @@ Also the DB connection parameters and paths for file-store and Lucene index are 
 
 h2. Building
 
-On command line, change to the CCC7 build directory @.../CCC7/build@ that you checked out into.
+On command line, change to the CC7 build directory @.../CC7/build@ that you checked out into.
 Execute: @mvn clean install@
 
 If there are errors, check first that local Nexus repository is available or that all necessary dependencies are installed locally.
