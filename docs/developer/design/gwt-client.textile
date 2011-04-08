@@ -1,3 +1,77 @@
 h1. Design of the GWT Client
 
 *TO DO*: describe the classes in the @client-gwt@ and @client-core@ modules.
+
+h2. client-core
+
+h3. ccc.client.actions
+
+Remoting actions which make a server-side call used by MVP presenters.
+
+h3. ccc.client.concurrent
+
+SimpleLatch class, used to ensure that necessary async calls finish before next action.
+
+h3. ccc.client.core
+
+Helper classes for validation, exception handling etc.
+
+h3. ccc.client.events
+
+Event bus classes.
+
+h3. ccc.client.i18n
+
+Interface for i18n features.
+
+h3. ccc.client.presenters
+
+MVP presenter classes.
+
+h3. ccc.client.remoting
+
+
+h3. ccc.client.validation
+
+
+h3. ccc.client.views
+
+MVP view interfaces.
+
+h2. client-gwt
+
+h3. ccc.client.gwt.actions
+
+GWT GUI actions.
+
+ccc.client.gwt.binding
+
+h3. ccc.client.gwt.core
+
+Interface for use with GWT i18n features
+
+ccc.client.gwt.i18n
+
+h3. ccc.client.gwt.jre.java.io
+
+GWT implementation of java.io.InputStream
+
+h3. ccc.client.gwt.jre.java.util
+
+GWT implementation of java.util.UUID
+
+h3. ccc.client.gwt.remoting
+
+Remoting actions which make a server-side call used by GWT user interface.
+
+h3. ccc.client.gwt.validation
+
+Validations class for XML validation.
+
+h3. ccc.client.gwt.views.gxt
+
+MVP view implementations.
+
+h3. ccc.client.gwt.widgets
+
+GWT user interface components.
