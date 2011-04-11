@@ -32,12 +32,12 @@ h2. Modules
 
 h2. Server Architecture
 
-*TODO*: include figure 1.
+!../../uml/server.png!
 
 h2. GWT Client Architecture
 
-*TODO*: include figure 2.
+!../../uml/client-asynchronous.png!
 
 h2. Synchronous Client Architecture
 
-*TODO*: include figure 3.
+!../../uml/client-synchronous.png!
