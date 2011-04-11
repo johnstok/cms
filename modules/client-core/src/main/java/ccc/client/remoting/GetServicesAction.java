@@ -35,7 +35,7 @@ import ccc.plugins.s11n.json.APISerializer;
 
 
 /**
- * Create a new user.
+ * Action for fetching services API.
  *
  * @author Civic Computing Ltd.
  */

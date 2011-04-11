@@ -40,8 +40,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.core.Template;
 import ccc.api.core.User;
-import ccc.client.core.Globals;
-import ccc.client.gwt.core.GlobalsImpl;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.BeanModel;
@@ -52,7 +50,7 @@ import com.extjs.gxt.ui.client.data.BeanModelMarker.BEAN;
 
 
 /**
- * A {@link ModelData} implementation for binding a {@link FolderSummary}.
+ * GXT model binding for CC7 DTO summaries.
  *
  * @author Civic Computing Ltd.
  */
@@ -62,9 +60,6 @@ public final class DataBinding {
     public static final String VALUE = "value";
     /** KEY : String. */
     public static final String KEY = "key";
-
-    private static final Globals GLOBALS = new GlobalsImpl();
-
 
     private DataBinding() { super(); }
 
