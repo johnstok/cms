@@ -27,13 +27,11 @@
 
 package ccc.client.validation;
 
-import java.util.List;
 import java.util.Map;
 
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Password;
 import ccc.client.core.I18n;
-import ccc.client.core.Window;
 import ccc.client.i18n.UIConstants;
 import ccc.client.i18n.UIMessages;
 
@@ -64,22 +62,6 @@ public abstract class AbstractValidations {
     protected static final UIConstants UI_CONSTANTS = I18n.UI_CONSTANTS;
     /** UI_MESSAGES : UIMessages. */
     protected static final UIMessages UI_MESSAGES = I18n.UI_MESSAGES;
-
-
-    /**
-     * Create a new error reporter.
-     *
-     * @param window The window that will report the error.
-     *
-     * @return The error reporter for the specified window.
-     */
-    public ErrorReporter reportErrors(final Window window) {
-        return new ErrorReporter() {
-            public void report(final List<String> errors) {
-                window.alert(errors.toString());
-            }
-        };
-    }
 
 
     /**

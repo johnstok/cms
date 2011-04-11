@@ -30,13 +30,17 @@ MVP presenter classes.
 
 h3. ccc.client.remoting
 
+Action for HATEOAS CC7 API fetching and API for text parsing.
 
 h3. ccc.client.validation
 
+Base implementation of non platform-specific validations.
 
 h3. ccc.client.views
 
 MVP view interfaces.
+
+
 
 h2. client-gwt
 
@@ -44,13 +48,17 @@ h3. ccc.client.gwt.actions
 
 GWT GUI actions.
 
-ccc.client.gwt.binding
+h3. ccc.client.gwt.binding
+
+Binding between CC7 DTO summaries and GXT models. 
 
 h3. ccc.client.gwt.core
 
-Interface for use with GWT i18n features
+GWT specific implementations for various interfaces.
 
-ccc.client.gwt.i18n
+h3. ccc.client.gwt.i18n
+
+Interface for use with GWT i18n features
 
 h3. ccc.client.gwt.jre.java.io
 
