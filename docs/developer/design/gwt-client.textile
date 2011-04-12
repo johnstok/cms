@@ -1,6 +1,5 @@
 h1. Design of the GWT Client
 
-*TO DO*: describe the classes in the @client-gwt@ and @client-core@ modules.
 
 h2. client-core
 
@@ -14,11 +13,11 @@ SimpleLatch class, used to ensure that necessary async calls finish before next 
 
 h3. ccc.client.core
 
-Helper classes for validation, exception handling etc.
+Classes and interfaces for validation, exception handling etc. 
 
 h3. ccc.client.events
 
-Event bus classes.
+Client event bus classes and interfaces.
 
 h3. ccc.client.i18n
 
