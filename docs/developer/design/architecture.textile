@@ -34,10 +34,24 @@ h2. Server Architecture
 
 !../../uml/server.png!
 
+The CC server provides a default ejb3 implementation of the CC content management API, which writes all content to a supported database using JEE's JPA library. A default implementation of the plugin API is also provided. The content managment engine uses the plugin API for various tasks, including full text search and sending email.
+
+A second implementation of the content management API using JEE6's JAX-RS library is provided to expose the content mangement engine over HTTP. The JAX-RS API implementation delegates to the ejb3 implmentation.
+
+Finally, a rendering engine is provided to map HTTP requests to resources stored by the content management engine and render those resources using a template. The rendering engine also provides the ability to execute text files stored in the CMS as scripts. This scripting capability allows any HTTP request to be handled by CC server.
+
 h2. GWT Client Architecture
 
 !../../uml/client-asynchronous.png!
 
+The GWT client for CC is implemented in Javascript, runs in most modern browsers and talks to a CC server over HTTP. Because Javascript interpretation in browsers is single-threaded, all HTTP calls are made asynchronously, to avoid blocking client execution while waiting for a server response. Consequently, the GWT client doesn't leverage the synchronous interfaces from the api-core module. Instead an asynchronous client implementation is provided via the client-core module. The asynchronous client communicates in a RESTful style over HTTP. In particular, the full power of HTTPs methods and response codes are leveraged, as well as using hyper-media as the engine of application state (HATEOAS).
+
+The client-core module provides further GWT non-specific client code for features such as input validation, event handling, MVP, I18n, etc.
+
+The client-gwt module contains GWT specific code such as MVP views and HTTP requests.
+
 h2. Synchronous Client Architecture
 
 !../../uml/client-synchronous.png!
+
+All remaining CC client applications are written in Java. They leverage a, more typical, synchronous style when communicating with a CC server. A full client-side stack for synchronous CC communication is provided, which communicates with a CC server via HTTP.
