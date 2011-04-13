@@ -32,10 +32,11 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 
 import ccc.api.types.DBC;
+import ccc.api.types.MimeType;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
-import ccc.plugins.scripting.TextProcessor;
 import ccc.web.exceptions.RequestFailedException;
 
 
@@ -67,12 +68,16 @@ public class PageBody
     public void write(final OutputStream os,
                       final Charset charset,
                       final Context context,
-                      final TextProcessor processor) {
+                      final PluginFactory plugins) {
         final Script t = _template;
         final Writer w = new OutputStreamWriter(os, charset);
 
         try {
-            processor.render(t, w, context);
+            if (MimeType.JAVASCRIPT.equals(t.getType())) {
+                plugins.createScripting().render(t, w, context);
+            } else {
+                plugins.createTemplating().render(t, w, context);
+            }
         } catch (final ProcessingException e) {
             throw new RequestFailedException(e);
         }

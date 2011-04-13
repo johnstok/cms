@@ -35,6 +35,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.api.types.MimeType;
 import ccc.commons.Resources;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.scripting.Context;
@@ -73,7 +74,7 @@ public class ScriptBody
     public void write(final OutputStream os,
                       final Charset charset,
                       final Context context,
-                      final TextProcessor processor) {
+                      final PluginFactory plugins) {
 
         final HttpServletResponse resp =
             context.get("response", HttpServletResponse.class);
@@ -86,13 +87,17 @@ public class ScriptBody
                 "/scripting_whitelist.txt",
                 Charset.forName(TmpRenderer.DEFAULT_CHARSET));
 
-        final TextProcessor scriptRunner =
-            new PluginFactory().createScripting();
-        scriptRunner.setWhitelist(whiteList);
-        try {
-            scriptRunner.render(_script, pw, context);
-        } catch (final ProcessingException e) {
-            throw new RequestFailedException(e);
+        if (MimeType.JAVASCRIPT.equals(_script.getType())) {
+            final TextProcessor scriptRunner = plugins.createScripting();
+            scriptRunner.setWhitelist(whiteList);
+            try {
+                scriptRunner.render(_script, pw, context);
+            } catch (final ProcessingException e) {
+                throw new RequestFailedException(e);
+            }
+        } else {
+            throw new RuntimeException(
+                "Unsupported scripting language: "+_script.getType());
         }
     }
 

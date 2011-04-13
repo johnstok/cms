@@ -42,8 +42,8 @@ import org.apache.log4j.Logger;
 import ccc.api.types.DBC;
 import ccc.api.types.Duration;
 import ccc.api.types.MimeType;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.scripting.Context;
-import ccc.plugins.scripting.TextProcessor;
 
 
 /**
@@ -194,7 +194,7 @@ public class Response {
      */
     public void write(final HttpServletResponse httpResponse,
                       final Context context,
-                      final TextProcessor processor) throws IOException {
+                      final PluginFactory plugins) throws IOException {
 
         httpResponse.resetBuffer();
 
@@ -207,7 +207,7 @@ public class Response {
                     baos,
                     httpResponse.getCharacterEncoding(),
                     context,
-                    processor);
+                    plugins);
 
                 final byte[] b = baos.toByteArray();
                 setLength(b.length);
@@ -223,7 +223,7 @@ public class Response {
                 httpResponse.getOutputStream(),
                 httpResponse.getCharacterEncoding(),
                 context,
-                processor);
+                plugins);
         }
 
     }
@@ -235,21 +235,21 @@ public class Response {
      * @param os The output stream.
      * @param charsetName The character set to use.
      * @param context The context for the response.
-     * @param processor The text processor used to render the body.
+     * @param plugins Factory for CC plugins.
      *
      * @throws IOException If the output stream encounters an error.
      */
     void writeBody(final OutputStream os,
                    final String charsetName,
                    final Context context,
-                   final TextProcessor processor) throws IOException {
+                   final PluginFactory plugins) throws IOException {
         Charset charset = Charset.defaultCharset();
         try {
             charset = Charset.forName(charsetName);
         } catch (final RuntimeException e) {
             LOG.warn("Ignoring invalid charset: "+charset);
         }
-        _body.write(os, charset, context, processor);
+        _body.write(os, charset, context, plugins);
     }
 
 

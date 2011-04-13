@@ -30,8 +30,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
+import ccc.plugins.PluginFactory;
 import ccc.plugins.scripting.Context;
-import ccc.plugins.scripting.TextProcessor;
 
 
 
@@ -47,7 +47,7 @@ public interface Body {
      *
      * @param os The stream to which the body will be written.
      * @param charset The character set for the output stream.
-     * @param processor A text processor for generating markup, etc.
+     * @param plugins A factory for plugins.
      * @param context The template context.
      *
      * @throws IOException - if writing to the output stream fails.
@@ -55,5 +55,5 @@ public interface Body {
     void write(OutputStream os,
                Charset charset,
                Context context,
-               TextProcessor processor) throws IOException;
+               PluginFactory plugins) throws IOException;
 }

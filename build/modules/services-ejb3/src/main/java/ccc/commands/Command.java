@@ -36,6 +36,7 @@ import ccc.api.core.Resource;
 import ccc.api.core.User;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
+import ccc.api.types.MimeType;
 import ccc.commons.Resources;
 import ccc.domain.ActionEntity;
 import ccc.domain.CommentEntity;
@@ -173,7 +174,7 @@ public abstract class Command<T> {
 
         try {
             new PluginFactory().createScripting().render(
-                new Script(script, "after_"+getType()),
+                new Script(script, "after_"+getType(), MimeType.JAVASCRIPT),
                 new PrintWriter(System.out),
                 context);
         } catch (final ProcessingException e) {
@@ -203,7 +204,7 @@ public abstract class Command<T> {
 
         try {
             new PluginFactory().createScripting().render(
-                new Script(script, "before_"+getType()),
+                new Script(script, "before_"+getType(), MimeType.JAVASCRIPT),
                 new PrintWriter(System.out),
                 context);
         } catch (final ProcessingException e) {

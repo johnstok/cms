@@ -42,6 +42,7 @@ import ccc.api.exceptions.UsernameNotFoundException;
 import ccc.api.synchronous.MemoryServiceLocator;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
+import ccc.api.types.MimeType;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
@@ -121,7 +122,8 @@ public class SendTokenCommand  extends
             final File f = file.mapTextFile(getData());
             mailTemplate = f.getContent();
         }
-        final Script s = new Script(mailTemplate, "Mail template");
+        final Script s =
+            new Script(mailTemplate, "Mail template", MimeType.VELOCITY);
         final TextProcessor velocityProcessor = new PluginFactory().createTemplating();
         final Context context = new Context();
         context.add("services", new MemoryServiceLocator());

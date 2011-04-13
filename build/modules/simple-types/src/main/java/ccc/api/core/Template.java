@@ -48,6 +48,7 @@ public class Template
     private String   _body;
     private String   _definition;
     private MimeType _mimeType;
+    private MimeType _bodyMimeType = MimeType.VELOCITY; // Backwards compatible.
 
 
     /**
@@ -111,6 +112,26 @@ public class Template
      */
     public void setMimeType(final MimeType mimeType) {
         _mimeType = mimeType;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param mimeType The body mime-type to set.
+     */
+    public void setBodyMimeType(final MimeType mimeType) {
+        _bodyMimeType = mimeType;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the body mime-type.
+     */
+    public MimeType getBodyMimeType() {
+        return _bodyMimeType;
     }
 
 

@@ -27,6 +27,7 @@
 package ccc.plugins.scripting;
 
 import ccc.api.types.DBC;
+import ccc.api.types.MimeType;
 
 
 /**
@@ -36,19 +37,22 @@ import ccc.api.types.DBC;
  */
 public class Script {
 
-    private final String _body;
-    private final String _title;
+    private final String   _body;
+    private final String   _title;
+    private final MimeType _type;
 
 
     /**
      * Constructor.
      *
-     * @param body The script's body.
+     * @param body  The script's body.
      * @param title The script's title.
+     * @param type  The script's mime type.
      */
-    public Script(final String body, final String title) {
+    public Script(final String body, final String title, final MimeType type) {
         _body = DBC.require().notNull(body);
         _title = DBC.require().notEmpty(title);
+        _type = DBC.require().notNull(type);
     }
 
 
@@ -69,5 +73,15 @@ public class Script {
      */
     public final String getTitle() {
         return _title;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the mime type.
+     */
+    public final MimeType getType() {
+        return _type;
     }
 }

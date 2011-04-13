@@ -106,21 +106,4 @@ public class MimeTypeTest
         assertEquals("text", primary);
         assertEquals("html", sub);
     }
-
-    /**
-     * Test.
-     */
-    public void testMutators() {
-
-        // ARRANGE
-        final MimeType type = new MimeType("text", "html");
-
-        // ACT
-        type.setPrimaryType("application");
-        type.setSubType("xml");
-
-        // ASSERT
-        assertEquals("application", type.getPrimaryType());
-        assertEquals("xml", type.getSubType());
-    }
 }

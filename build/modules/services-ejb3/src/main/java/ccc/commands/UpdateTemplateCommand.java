@@ -73,7 +73,7 @@ public class UpdateTemplateCommand
     /** {@inheritDoc} */
     @Override
     public Template doExecute(final UserEntity actor,
-                          final Date happenedOn) {
+                              final Date happenedOn) {
 
         _template.confirmLock(actor);
 

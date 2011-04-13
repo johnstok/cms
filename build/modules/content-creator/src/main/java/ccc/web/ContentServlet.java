@@ -142,7 +142,7 @@ public class ContentServlet
         }
 
         final Context context = createContext(req, resp, resource);
-        r.write(resp, context, new PluginFactory().createTemplating());
+        r.write(resp, context, new PluginFactory());
     }
 
 

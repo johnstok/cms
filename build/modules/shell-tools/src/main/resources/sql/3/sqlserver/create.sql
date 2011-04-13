@@ -134,3 +134,6 @@ DELETE FROM searches;
 
 DROP TABLE searches;
 
+ALTER TABLE template_revisions ADD body_mime_type_primary nvarchar(255);
+
+ALTER TABLE template_revisions ADD body_mime_type_sub nvarchar(255);

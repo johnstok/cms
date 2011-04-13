@@ -29,8 +29,8 @@ package ccc.web.rendering;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
+import ccc.plugins.PluginFactory;
 import ccc.plugins.scripting.Context;
-import ccc.plugins.scripting.TextProcessor;
 
 
 
@@ -49,7 +49,7 @@ public class EmptyBody
     public void write(final OutputStream os,
                       final Charset charset,
                       final Context context,
-                      final TextProcessor processor) {
+                      final PluginFactory plugins) {
         // No Op
     }
 

@@ -26,8 +26,7 @@
  */
 package ccc.commands;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
@@ -60,16 +59,19 @@ public class TemplateDaoImplTest
             "body",
             "<fields/>",
             MimeType.HTML,
+            MimeType.VELOCITY,
             new RevisionMetadata(
                 new Date(),
                 UserEntity.SYSTEM_USER,
                 true,
                 "Created."));
         foo.lock(getUser());
+
         final Template td = new Template();
         td.setBody("newBody");
         td.setDefinition("<fields />");
         td.setMimeType(MimeType.BINARY_DATA);
+        td.setBodyMimeType(MimeType.VELOCITY);
 
         expect(
             getRepository().find(

@@ -184,7 +184,8 @@ public class ResponseTest
                         PageBody.class.getResource(
                         "/ccc/content/server/default-page-template.txt"),
                         Charset.forName(TmpRenderer.DEFAULT_CHARSET)),
-                "test"));
+                    "test",
+                    MimeType.VELOCITY));
         final Response r = new Response(expected);
 
         // ACT

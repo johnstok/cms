@@ -31,6 +31,7 @@ import java.io.StringWriter;
 import java.util.Collections;
 
 import junit.framework.TestCase;
+import ccc.api.types.MimeType;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.ProcessingException;
 import ccc.plugins.scripting.Script;
@@ -58,7 +59,7 @@ public class ScriptRunnerTest
 
         // ACT
         runner.render(
-            new Script("print('foo', 'bar');", "test"),
+            new Script("print('foo', 'bar');", "test", MimeType.JAVASCRIPT),
             out,
             new Context());
 
@@ -79,7 +80,7 @@ public class ScriptRunnerTest
 
         // ACT
         runner.render(
-            new Script("out.write('foo');", "test"),
+            new Script("out.write('foo');", "test", MimeType.JAVASCRIPT),
             new PrintWriter(out),
             new Context().add("out", out));
 
@@ -101,7 +102,8 @@ public class ScriptRunnerTest
             runner.render(
                 new Script(
                     "throw new java.lang.RuntimeException('Error message');",
-                    "test"),
+                    "test",
+                    MimeType.JAVASCRIPT),
                 new PrintWriter(out),
                 new Context());
             fail();
@@ -129,7 +131,10 @@ public class ScriptRunnerTest
         // ACT
         try {
             runner.render(
-                new Script("java.lang.System.exit(1)", "test"),
+                new Script(
+                    "java.lang.System.exit(1)",
+                    "test",
+                    MimeType.JAVASCRIPT),
                 new PrintWriter(System.out),
                 new Context());
 
@@ -158,7 +163,8 @@ public class ScriptRunnerTest
                 new Script(
                     "o.getClass().forName('ccc.commons.MapRegistry')"
                         + ".newInstance()",
-                    "test"),
+                    "test",
+                    MimeType.JAVASCRIPT),
                 new PrintWriter(System.out),
                 new Context().add("o", new Object()));
 
@@ -185,7 +191,9 @@ public class ScriptRunnerTest
         try {
             runner.render(
                 new Script(
-                    "print(new Packages.ccc.commons.MapRegistry());", "test"),
+                    "print(new Packages.ccc.commons.MapRegistry());",
+                    "test",
+                    MimeType.JAVASCRIPT),
                 new PrintWriter(System.out),
                 new Context());
 
@@ -213,7 +221,9 @@ public class ScriptRunnerTest
         // ACT
         runner.render(
             new Script(
-                "print(new Packages.ccc.commons.MapRegistry());", "test"),
+                "print(new Packages.ccc.commons.MapRegistry());",
+                "test",
+                MimeType.JAVASCRIPT),
             out,
             new Context());
 

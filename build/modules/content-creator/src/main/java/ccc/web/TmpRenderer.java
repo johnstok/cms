@@ -114,7 +114,10 @@ public class TmpRenderer {
             return
                 new Response(
                     new ScriptBody(
-                        new Script(tf.getContent(), tf.getId().toString())));
+                        new Script(
+                            tf.getContent(),
+                            tf.getId().toString(),
+                            f.getMimeType())));
         } catch (final CCException e) {
             // TODO Auto-generated catch block
             throw new RuntimeException(e);
@@ -134,7 +137,10 @@ public class TmpRenderer {
             final Response r =
                 new Response(
                     new PageBody(
-                        new Script((_template == null) ? t.getBody() : _template, t.getAbsolutePath())));
+                        new Script(
+                            (_template == null) ? t.getBody() : _template,
+                            t.getAbsolutePath(),
+                            t.getBodyMimeType())));
             r.setCharSet(DEFAULT_CHARSET);
             r.setMimeType(t.getMimeType());
             r.setExpiry(s.getCacheDuration());
@@ -206,8 +212,9 @@ public class TmpRenderer {
         if (null==s.getTargetPath()) { throw new NotFoundException(); }
         throw new RedirectRequiredException(s.getTargetPath());
     }
-    
-    public void setTemplate(String template) {
+
+
+    public void setTemplate(final String template) {
     	_template = template;
     }
 }

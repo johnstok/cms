@@ -41,8 +41,8 @@ import ccc.api.synchronous.ServiceLocator;
 import ccc.api.types.DBC;
 import ccc.commons.streams.CopyAction;
 import ccc.commons.streams.ThumbAction;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.scripting.Context;
-import ccc.plugins.scripting.TextProcessor;
 
 
 /**
@@ -72,7 +72,7 @@ public class FileBody
     public void write(final OutputStream os,
                       final Charset charset,
                       final Context context,
-                      final TextProcessor processor) {
+                      final PluginFactory plugins) {
         final ServiceLocator sl = context.get("services", ServiceLocator.class);
         final Files files = sl.getFiles();
         final HttpServletRequest r =

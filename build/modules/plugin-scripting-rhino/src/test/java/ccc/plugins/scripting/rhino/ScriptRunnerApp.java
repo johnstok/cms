@@ -29,6 +29,7 @@ package ccc.plugins.scripting.rhino;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 
+import ccc.api.types.MimeType;
 import ccc.commons.Resources;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.Script;
@@ -61,7 +62,7 @@ public final class ScriptRunnerApp {
         final ScriptRunner sr = new ScriptRunner();
 
         sr.render(
-            new Script(script, "test"),
+            new Script(script, "test", MimeType.JAVASCRIPT),
             new OutputStreamWriter(System.out, utf8),
             new Context());
     }

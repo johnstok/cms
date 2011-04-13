@@ -31,8 +31,8 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
+import ccc.plugins.PluginFactory;
 import ccc.plugins.scripting.Context;
-import ccc.plugins.scripting.TextProcessor;
 
 
 
@@ -61,7 +61,7 @@ public class ByteArrayBody
     public void write(final OutputStream os,
                       final Charset charset,
                       final Context context,
-                      final TextProcessor processor) throws IOException {
+                      final PluginFactory plugins) throws IOException {
         os.write(_bytes);
     }
 }

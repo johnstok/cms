@@ -68,34 +68,12 @@ public class MimeType implements Serializable {
 
 
     /**
-     * Mutator.
-     *
-     * @param primaryType The primaryType to set.
-     */
-    public void setPrimaryType(final String primaryType) {
-        DBC.require().notEmpty(primaryType);
-        _primaryType = primaryType;
-    }
-
-
-    /**
      * Accessor.
      *
      * @return Returns the sub-type.
      */
     public String getSubType() {
         return _subType;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param subType The sub-type to set.
-     */
-    public void setSubType(final String subType) {
-        DBC.require().notEmpty(subType);
-        _subType = subType;
     }
 
 
@@ -155,4 +133,10 @@ public class MimeType implements Serializable {
     /** JSON : MimeType. */
     public static final MimeType JSON =
         new MimeType("application", "json");
+    /** Javascript : MimeType. */
+    public static final MimeType JAVASCRIPT =
+        new MimeType("application", "javascript");
+    /** Velocity : MimeType. */
+    public static final MimeType VELOCITY =
+        new MimeType("application", "velocity");
 }

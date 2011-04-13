@@ -41,6 +41,7 @@ import ccc.api.core.Page;
 import ccc.api.synchronous.MemoryServiceLocator;
 import ccc.api.synchronous.Resources;
 import ccc.api.synchronous.ServiceLocator;
+import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.commons.Testing;
 import ccc.plugins.scripting.Context;
@@ -73,7 +74,10 @@ public class VelocityProcessorTest extends TestCase {
 
         // ACT
         final String actual =
-            vp.render(new Script("#parse('/a/b/c')\n#foo()", "test"), ctxt);
+            vp.render(
+                new Script(
+                    "#parse('/a/b/c')\n#foo()", "test", MimeType.VELOCITY),
+                ctxt);
 
         // ASSERT
         verify(_reader);
@@ -98,7 +102,10 @@ public class VelocityProcessorTest extends TestCase {
 
         // ACT
         final String actual =
-            vp.render(new Script("#include('/a/b/c')\n#foo()", "test"), ctxt);
+            vp.render(
+                new Script(
+                    "#include('/a/b/c')\n#foo()", "test", MimeType.VELOCITY),
+                ctxt);
 
         // ASSERT
         verify(_reader);
@@ -118,7 +125,8 @@ public class VelocityProcessorTest extends TestCase {
         final Context ctxt = new Context();
         ctxt.add("services", Testing.stub(ServiceLocator.class));
         // ACT
-        _vp.render(new Script("foo", "test"), output, ctxt);
+        _vp.render(
+            new Script("foo", "test", MimeType.VELOCITY), output, ctxt);
 
         // ASSERT
         assertEquals("foo", output.toString());
@@ -136,7 +144,8 @@ public class VelocityProcessorTest extends TestCase {
         final Context ctxt = new Context();
         ctxt.add("services", Testing.stub(ServiceLocator.class));
         // ACT
-        final String output = _vp.render(new Script("foo", "test"), ctxt);
+        final String output =
+            _vp.render(new Script("foo", "test", MimeType.VELOCITY), ctxt);
 
         // ASSERT
         assertEquals("foo", output);
@@ -167,7 +176,8 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        final String html = _vp.render(new Script(template, "test"), ctxt);
+        final String html =
+            _vp.render(new Script(template, "test", MimeType.VELOCITY), ctxt);
 
         // ASSERT
         assertEquals("Hello "+foo.getName(), html);
@@ -201,7 +211,7 @@ public class VelocityProcessorTest extends TestCase {
         // ACT
         try {
             _vp.render(
-                new Script(template, "test"),
+                new Script(template, "test", MimeType.VELOCITY),
                 renderedOutput,
                 ctxt);
             fail();
@@ -240,7 +250,7 @@ public class VelocityProcessorTest extends TestCase {
         // ACT
         try {
             _vp.render(
-                new Script(template, "test"),
+                new Script(template, "test", MimeType.VELOCITY),
                 renderedOutput,
                 ctxt);
 
@@ -272,7 +282,7 @@ public class VelocityProcessorTest extends TestCase {
         // ACT
         final String result =
             _vp.render(
-                new Script(template, "test"),
+                new Script(template, "test", MimeType.VELOCITY),
                 ctxt);
 
         // ASSERT
@@ -297,7 +307,8 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        final String html = _vp.render(new Script(template, "test"), ctxt);
+        final String html =
+            _vp.render(new Script(template, "test", MimeType.VELOCITY), ctxt);
 
         // ASSERT
         assertEquals(expectedMessage, html);
@@ -318,7 +329,8 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        final String html = _vp.render(new Script(template, "test"), ctxt);
+        final String html =
+            _vp.render(new Script(template, "test", MimeType.VELOCITY), ctxt);
 
         // ASSERT
         assertEquals(getClass().getName(), html);
@@ -339,7 +351,8 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        final String html = _vp.render(new Script(template, "test"), ctxt);
+        final String html =
+            _vp.render(new Script(template, "test", MimeType.VELOCITY), ctxt);
 
         // ASSERT
         assertEquals(template, html);
@@ -360,7 +373,8 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        final String html = _vp.render(new Script(template, "test"), ctxt);
+        final String html =
+            _vp.render(new Script(template, "test", MimeType.VELOCITY), ctxt);
 
         // ASSERT
         assertEquals(template, html);
@@ -383,7 +397,8 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        final String html = _vp.render(new Script(template, "test"), ctxt);
+        final String html =
+            _vp.render(new Script(template, "test", MimeType.VELOCITY), ctxt);
 
         // ASSERT
         assertEquals(template, html);
@@ -413,8 +428,6 @@ public class VelocityProcessorTest extends TestCase {
     public void failingMethod() {
         throw new RuntimeException("Fail.");
     }
-
-
 
 
     private TextProcessor _vp;

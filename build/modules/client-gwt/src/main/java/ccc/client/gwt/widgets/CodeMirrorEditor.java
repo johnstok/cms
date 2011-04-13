@@ -56,6 +56,7 @@ public class CodeMirrorEditor extends Composite {
     private final EditorListener _bus;
     private final Type _type;
     private final boolean _readOnly;
+    private final int _height;
 
     /**
      * Constructor.
@@ -74,6 +75,29 @@ public class CodeMirrorEditor extends Composite {
         _bus = bus;
         _type = type;
         _readOnly = readOnly;
+        _height = 300;
+        initWidget();
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param id The ID of the editor.
+     * @param bus The event bus.
+     * @param type The of the editor.
+     * @param readOnly The editor read only value for the config.
+     */
+    public CodeMirrorEditor(final String id,
+                            final EditorListener bus,
+                            final Type type,
+                            final boolean readOnly,
+                            final int height) {
+        super();
+        _id = id;
+        _bus = bus;
+        _type = type;
+        _readOnly = readOnly;
+        _height = height;
         initWidget();
     }
 
@@ -169,6 +193,7 @@ public class CodeMirrorEditor extends Composite {
         _editor = initCodeMirror(this,
             _id,
             GWT.getModuleBaseURL()+"js/codemirror/0.94/",
+            _height+"px",
             _readOnly);
     }
 
@@ -200,16 +225,17 @@ public class CodeMirrorEditor extends Composite {
      * @param readOnly The editor read only value for the config.
      * @return The editor instance.
      */
-    public native JavaScriptObject initCodeMirror(final CodeMirrorEditor obj,
-                                                  final String id,
-                                                  final String baseUrl,
-                                                  final boolean readOnly) /*-{
+    private native JavaScriptObject initCodeMirror(final CodeMirrorEditor obj,
+                                                   final String id,
+                                                   final String baseUrl,
+                                                   final String h,
+                                                   final boolean readOnly) /*-{
         initCMCallback = function() {
            obj.@ccc.client.gwt.widgets.CodeMirrorEditor::onInitialized()();
         }
 
         var editor = $wnd.CodeMirror.fromTextArea(id, {
-            height: "300px",
+            height: h,
             parserfile: ["parsedummy.js",
                          "parsexmlvelocity.js",
                          "parsecss.js",
@@ -260,7 +286,9 @@ public class CodeMirrorEditor extends Composite {
      */
     public native void setParser(final String parser)/*-{
         var txed = this.@ccc.client.gwt.widgets.CodeMirrorEditor::_editor;
-        txed.setParser(parser);
+        if (txed) {
+            txed.setParser(parser);
+        }
     }-*/;
 
     /**

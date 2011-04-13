@@ -86,16 +86,22 @@ public class ResourceMappings {
     public static void writeTemplate(final Json json, final Template instance) {
         final Json mimeJson = json.create();
         MimeTypeSerializer.writeMimeType(mimeJson, instance.getMimeType());
+        final Json bodyMime = json.create();
+        MimeTypeSerializer.writeMimeType(bodyMime, instance.getBodyMimeType());
 
-        json.set(DEFINITION, instance.getDefinition());
-        json.set(BODY,       instance.getBody());
-        json.set(MIME_TYPE, mimeJson);
+        json.set(DEFINITION,     instance.getDefinition());
+        json.set(BODY,           instance.getBody());
+        json.set(MIME_TYPE,      mimeJson);
+        json.set(BODY_MIME_TYPE, bodyMime);
     }
 
     public static void readTemplate(final Json json, final Template t) {
         t.setDefinition(json.getString(DEFINITION));
         t.setBody(json.getString(BODY));
-        t.setMimeType(MimeTypeSerializer.readMimeType(json.getJson(MIME_TYPE)));
+        t.setMimeType(
+            MimeTypeSerializer.readMimeType(json.getJson(MIME_TYPE)));
+        t.setBodyMimeType(
+            MimeTypeSerializer.readMimeType(json.getJson(BODY_MIME_TYPE)));
     }
 
     public static void writeFile(final Json json, final File instance) {

@@ -93,6 +93,8 @@ final class JsonKeys {
     public static final String DESCRIPTION = "description";
     /** DATA : String. */
     public static final String DATA = "data";
+    /** BODY_MIME_TYPE : String. */
+    public static final String BODY_MIME_TYPE = "body-mime-type";
     /** MIME_TYPE : String. */
     public static final String MIME_TYPE = "mime-type";
     /** BODY : String. */

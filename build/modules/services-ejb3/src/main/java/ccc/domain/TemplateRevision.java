@@ -42,12 +42,15 @@ public class TemplateRevision
     extends
         RevisionEntity<Template> {
 
-    private String _body;
-    private String _definition;
+    private String   _body;
+    private String   _definition;
     private MimeType _mimeType;
+    private MimeType _bodyMimeType;
+
 
     /** Constructor: for persistence only. */
     protected TemplateRevision() { super(); }
+
 
     /**
      * Constructor.
@@ -66,20 +69,19 @@ public class TemplateRevision
                      final String comment,
                      final String body,
                      final String definition,
-                     final MimeType mimeType) {
+                     final MimeType mimeType,
+                     final MimeType bodyMimeType) {
         super(timestamp, actor, majorChange, comment);
 
-        DBC.require().notEmpty(body);
-        DBC.require().notEmpty(definition);
-        DBC.require().notNull(mimeType);
         DBC.ensure().maxOccurrences(
             definition.toLowerCase(),
             "<field ",
             Template.MAXIMUM_PARAGRAPHS);
 
-        _body = body;
-        _definition = definition;
-        _mimeType = mimeType;
+        _body         = DBC.require().notEmpty(body);
+        _definition   = DBC.require().notEmpty(definition);
+        _mimeType     = DBC.require().notNull(mimeType);
+        _bodyMimeType = DBC.require().notNull(bodyMimeType);
     }
 
 
@@ -112,14 +114,30 @@ public class TemplateRevision
         return _mimeType;
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the mimeType.
+     */
+    public final MimeType getBodyMimeType() {
+        return _bodyMimeType;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     protected Template delta() {
         final Template t = new Template();
         t.setBody(_body);
         t.setDefinition(_definition);
-        t.setMimeType(new MimeType(_mimeType.getPrimaryType(),
-                                   _mimeType.getSubType()));
+        t.setMimeType(
+            new MimeType(
+                _mimeType.getPrimaryType(), _mimeType.getSubType()));
+        t.setBodyMimeType(
+            new MimeType(
+                _bodyMimeType.getPrimaryType(), _bodyMimeType.getSubType()));
+
         return t;
     }
 }

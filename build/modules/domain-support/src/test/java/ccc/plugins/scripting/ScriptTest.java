@@ -27,6 +27,7 @@
 package ccc.plugins.scripting;
 
 import junit.framework.TestCase;
+import ccc.api.types.MimeType;
 
 
 /**
@@ -46,10 +47,11 @@ public class ScriptTest
         // ARRANGE
 
         // ACT
-        final Script s = new Script("foo", "bar");
+        final Script s = new Script("foo", "bar", MimeType.VELOCITY);
 
         // ASSERT
         assertEquals("foo", s.getBody());
         assertEquals("bar", s.getTitle());
+        assertEquals(MimeType.VELOCITY, s.getType());
     }
 }

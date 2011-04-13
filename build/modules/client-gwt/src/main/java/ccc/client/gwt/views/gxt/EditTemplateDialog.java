@@ -27,7 +27,7 @@
 
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.validator;
+import static ccc.client.core.InternalServices.*;
 
 import java.util.UUID;
 
@@ -44,25 +44,32 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.SingleSelectionModel;
 import ccc.client.core.ValidationResult;
+import ccc.client.gwt.binding.EnumModelData;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;
 import ccc.client.gwt.widgets.CodeMirrorEditor.Type;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.HorizontalPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.HiddenField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
+import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.FormPanel.Method;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
@@ -102,6 +109,15 @@ public class EditTemplateDialog
     private CodeMirrorEditor _body;
     private CodeMirrorEditor _definition;
 
+    private enum TemplateTypes {
+        Velocity,
+        Javascript;
+    }
+    private final ComboBox<EnumModelData<TemplateTypes>> _bodyMime =
+        new ComboBox<EnumModelData<TemplateTypes>>();
+    private final ListStore<EnumModelData<TemplateTypes>> _store =
+        new ListStore<EnumModelData<TemplateTypes>>();
+
     private Template _model;
     private UUID _parentFolderId = null;
     private final DialogMode _mode;
@@ -109,7 +125,25 @@ public class EditTemplateDialog
     private ResourceSummary _proxy;
     private final String _definitionString;
     private final String _bodyString;
-    
+
+
+    private EditTemplateDialog(final DialogMode mode,
+                               final SingleSelectionModel ssm,
+                               final String definitionString,
+                               final String bodyString) {
+        super(I18n.uiConstants.editTemplate(), InternalServices.globals);
+
+        _mode = mode;
+        _ssm = ssm;
+        _definitionString = definitionString;
+        _bodyString = bodyString;
+
+        _store.add(new EnumModelData(TemplateTypes.Javascript));
+        _store.add(new EnumModelData(TemplateTypes.Velocity));
+        _store.sort(ResourceSummary.Properties.NAME, SortDir.ASC);
+        _bodyMime.setStore(_store);
+    }
+
 
     /**
      * Constructor.
@@ -119,17 +153,16 @@ public class EditTemplateDialog
      */
     public EditTemplateDialog(final UUID parentFolderId,
                               final SingleSelectionModel ssm) {
-        super(I18n.uiConstants.editTemplate(),
-            InternalServices.globals);
+        this(DialogMode.CREATE, ssm, "<fields></fields>", "<html/>");
+
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
-        _mode = DialogMode.CREATE;
 
         _parentFolderId = parentFolderId;
-        _ssm = ssm;
 
-        _definitionString = "<fields></fields>";
-        _bodyString = "<html/>";
+        _bodyMime.setValue(
+            new EnumModelData<TemplateTypes>(TemplateTypes.Velocity));
+
         populateFirstScreen();
         populateSecondScreen();
         populateThirdScreen();
@@ -153,17 +186,14 @@ public class EditTemplateDialog
     public EditTemplateDialog(final Template model,
                               final ResourceSummary proxy,
                               final SingleSelectionModel ssm) {
-        super(I18n.uiConstants.editTemplate(), InternalServices.globals);
+        this(DialogMode.UPDATE, ssm, model.getDefinition(), model.getBody());
+
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
-        _mode = DialogMode.UPDATE;
 
         _proxy = proxy;
-        _ssm = ssm;
-
         _model = model;
-        _definitionString = model.getDefinition();
-        _bodyString = model.getBody();
+
         populateFirstScreen();
         populateSecondScreen();
         populateThirdScreen();
@@ -180,6 +210,13 @@ public class EditTemplateDialog
         _name.setValue(proxy.getName().toString());
         _mimePrimary.setValue(model.getMimeType().getPrimaryType());
         _mimeSub.setValue(model.getMimeType().getSubType());
+
+        final TemplateTypes tt =
+            (MimeType.JAVASCRIPT.equals(model.getBodyMimeType()))
+                ? TemplateTypes.Javascript
+                : TemplateTypes.Velocity;
+        _bodyMime.setValue(new EnumModelData<TemplateTypes>(tt));
+
         refresh();
     }
 
@@ -193,7 +230,7 @@ public class EditTemplateDialog
                     be.getHeight()-(DEFAULT_HEIGHT - TEXT_AREA_HEIGHT);
                 if (h > (DEFAULT_HEIGHT - TEXT_AREA_HEIGHT)) {
                     _definition.setEditorHeight(h+"px");
-                    _body.setEditorHeight(h+"px");
+                    _body.setEditorHeight((h-40)+"px");
                 }
             }
         });
@@ -245,15 +282,15 @@ public class EditTemplateDialog
 
     	_postBody.setName("hiddenbody");
         _third.add(_postBody);
-        
+
         _targetPath.setFieldLabel(constants().path());
         _targetPath.setValue("");
         _targetPath.addListener(Events.TriggerClick, new TargetListener());
 
-        Button previewButton = 
+        final Button previewButton =
             new Button("preview", new SelectionListener<ButtonEvent>() {
                 @Override
-                public void componentSelected(ButtonEvent ce) {
+                public void componentSelected(final ButtonEvent ce) {
                     Window.open("", "_templatePreview","");
                     _third.setAction(InternalServices.globals.appURL()
                         +"previewtemplate"+_targetPath.getValue());
@@ -262,21 +299,36 @@ public class EditTemplateDialog
                 }
             });
 
-        HorizontalPanel previewPanel = new HorizontalPanel();
-        FormLayout layout = new FormLayout();
-        LayoutContainer lc = new LayoutContainer(layout);
+        final HorizontalPanel previewPanel = new HorizontalPanel();
+        final FormLayout layout = new FormLayout();
+        final LayoutContainer lc = new LayoutContainer(layout);
         lc.add(_targetPath);
-        
+
         previewPanel.setWidth("95%");
         previewPanel.setTableWidth("100%");
-        TableData tdr = new TableData();
-        TableData tdl = new TableData();
+        final TableData tdr = new TableData();
+        final TableData tdl = new TableData();
         tdr.setHorizontalAlign(HorizontalAlignment.RIGHT);
         tdl.setHorizontalAlign(HorizontalAlignment.LEFT);
 
         previewPanel.add(lc, tdl);
         previewPanel.add(previewButton, tdr);
         _third.add(previewPanel);
+
+        _bodyMime.setFieldLabel(getUiConstants().type());
+        _bodyMime.setDisplayField(ResourceSummary.Properties.NAME);
+        _bodyMime.setEditable(false);
+        _bodyMime.setForceSelection(true);
+        _bodyMime.setTriggerAction(TriggerAction.ALL);
+        _bodyMime.addSelectionChangedListener(new SelectionChangedListener<EnumModelData<TemplateTypes>>() {
+            @Override
+            public void selectionChanged(final SelectionChangedEvent<EnumModelData<TemplateTypes>> se) {
+                final String bodyParser =
+                    parserForMimeType(se.getSelectedItem().getValue());
+                _body.setParser(bodyParser);
+            }
+        });
+        _third.add(_bodyMime, new FormData("95%"));
 
         final Text fieldName = new Text(getUiConstants().body());
         fieldName.setStyleName("x-form-item");
@@ -285,7 +337,8 @@ public class EditTemplateDialog
             "body",
             this,
             CodeMirrorEditor.Type.BODY,
-            false);
+            false,
+            TEXT_AREA_HEIGHT-40);
         _third.add(_body, new FormData("95%"));
     }
 
@@ -295,6 +348,13 @@ public class EditTemplateDialog
         delta.setDefinition(_definition.getEditorCode());
         delta.setMimeType(
             new MimeType(_mimePrimary.getValue(), _mimeSub.getValue()));
+
+        final MimeType tt =
+            (TemplateTypes.Javascript==_bodyMime.getValue().getValue())
+                ? MimeType.JAVASCRIPT
+                : MimeType.VELOCITY;
+        delta.setBodyMimeType(tt);
+
         return delta;
     }
 
@@ -383,28 +443,39 @@ public class EditTemplateDialog
         // FIXME: Dodgy.
         if (CodeMirrorEditor.Type.BODY == type) {
             editor.setEditorCode(_bodyString);
+            final String bodyParser =
+                parserForMimeType(_bodyMime.getValue().getValue());
+            editor.setParser(bodyParser);
         } else if (CodeMirrorEditor.Type.DEFINITION == type) {
             editor.setEditorCode(_definitionString);
         }
     }
 
-    
+
+    private String parserForMimeType(final TemplateTypes tt) {
+        if (TemplateTypes.Javascript==tt) {
+            return "JSParser";
+        }
+        return "HTMLMixedParser";
+    }
+
+
     /**
-     * Class required to override private 'setTarget' method in FormPanel. 
-     * 
+     * Class required to override private 'setTarget' method in FormPanel.
+     *
      * @author petteri
      *
      */
     public class PreviewFormPanel extends FormPanel {
     	public native void setTarget(String target)/*-{
-		this.@com.extjs.gxt.ui.client.widget.form.FormPanel::setTarget(Ljava/lang/String;)(target);
-	}-*/;
+    		this.@com.extjs.gxt.ui.client.widget.form.FormPanel::setTarget(Ljava/lang/String;)(target);
+    	}-*/;
     };
-    
-    
+
+
     public class TargetListener implements Listener<ComponentEvent> {
         public void handleEvent(final ComponentEvent be) {
-        	
+
             ResourceSummary root = null;
 
             for (final ResourceSummary item : InternalServices.roots.getElements()) {
@@ -412,7 +483,7 @@ public class EditTemplateDialog
                     root = item;
                 }
             }
-        	
+
             final ResourceSelectionDialog resourceSelect =
             	new ResourceSelectionDialog(root, null);
             resourceSelect.addListener(Events.Hide,

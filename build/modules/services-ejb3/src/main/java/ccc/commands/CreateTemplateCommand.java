@@ -78,6 +78,7 @@ class CreateTemplateCommand extends CreateResourceCommand<TemplateEntity> {
                 _template.getBody(),
                 _template.getDefinition(),
                 _template.getMimeType(),
+                _template.getBodyMimeType(),
                 rm);
 
         create(actor, happenedOn, _template.getParent(), t);

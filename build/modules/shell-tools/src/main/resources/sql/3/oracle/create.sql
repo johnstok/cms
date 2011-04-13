@@ -6,7 +6,7 @@ UPDATE page_revision_paragraphs SET index_text=dbms_lob.substr(value_text, 1024)
 
 ALTER TABLE folders DROP CONSTRAINT fk_folder_index_page_id;
 
-ALTER TABLE folders ADD  CONSTRAINT fk_folder_index_page_id FOREIGN KEY (index_page) REFERENCES resources;
+ALTER TABLE folders ADD CONSTRAINT fk_folder_index_page_id FOREIGN KEY (index_page) REFERENCES resources;
 
 --CREATE OR REPLACE VIEW resource_metadata_by_relevance AS 
 --SELECT 
@@ -72,3 +72,6 @@ DROP TABLE searches CASCADE CONSTRAINTS;
 
 ALTER TABLE page_revision_paragraphs ADD value_decimal DECIMAL(19,6);
 
+ALTER TABLE template_revisions ADD body_mime_type_primary varchar2(255 char);
+
+ALTER TABLE template_revisions ADD body_mime_type_sub varchar2(255 char);

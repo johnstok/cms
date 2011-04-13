@@ -130,6 +130,7 @@ public class ResourceCommandsTest
                 "baz",
                 "<fields/>",
                 MimeType.HTML,
+                MimeType.VELOCITY,
                 new RevisionMetadata(
                     new Date(),
                     UserEntity.SYSTEM_USER,

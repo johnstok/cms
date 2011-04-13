@@ -56,6 +56,7 @@ public final class TemplateTest extends TestCase {
             "Hello world",
             "<fields/>",
             MimeType.HTML,
+            MimeType.VELOCITY,
             _rm);
 
         // ASSERT
@@ -83,6 +84,7 @@ public final class TemplateTest extends TestCase {
                 "Hello world",
                 "<fields/>",
                 MimeType.HTML,
+                MimeType.VELOCITY,
                 _rm);
 
         // ASSERT
@@ -108,16 +110,17 @@ public final class TemplateTest extends TestCase {
                 "Hello world",
                 "<fields/>",
                 MimeType.HTML,
+                MimeType.VELOCITY,
                 _rm);
-        Template delta = t.forCurrentRevision();
+        final Template delta = t.forCurrentRevision();
         delta.setBody("Modified world");
         delta.setDefinition("<fields></fields>");
         delta.setMimeType(MimeType.TEXT);
         t.update(delta, _rm);
 
         // ACT
-        Template old = t.forSpecificRevision(0);
-        Template current = t.forSpecificRevision(1);
+        final Template old = t.forSpecificRevision(0);
+        final Template current = t.forSpecificRevision(1);
 
         // ASSERT
         assertNotNull("current revision must not be null", current);
@@ -141,7 +144,7 @@ public final class TemplateTest extends TestCase {
 
         // ARRANGE
         try {
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
             sb.append("<fields>");
             for (int a=0;a<33;a++) {
                 sb.append("<field name=\"test"+a+"\" type=\"html\"/>");
@@ -156,6 +159,7 @@ public final class TemplateTest extends TestCase {
                     "Hello world",
                     sb.toString(),
                     MimeType.HTML,
+                    MimeType.VELOCITY,
                     _rm);
             fail("Resources should reject paragraph over 32 fields.");
          // ASSERT
@@ -170,7 +174,7 @@ public final class TemplateTest extends TestCase {
     public void testMax32Fields() {
 
         // ARRANGE
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append("<fields>");
         for (int a=0;a<32;a++) {
             sb.append("<field name=\"test"+a+"\" type=\"html\"/>");
@@ -185,6 +189,7 @@ public final class TemplateTest extends TestCase {
                 "Hello world",
                 sb.toString(),
                 MimeType.HTML,
+                MimeType.VELOCITY,
                 _rm);
 
         // ASSERT

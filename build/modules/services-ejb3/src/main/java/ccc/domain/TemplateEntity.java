@@ -67,6 +67,7 @@ public class TemplateEntity
                     final String body,
                     final String definiton,
                     final MimeType mimeType,
+                    final MimeType bodyMimeType,
                     final RevisionMetadata metadata) {
 
         this(
@@ -76,6 +77,7 @@ public class TemplateEntity
             body,
             definiton,
             mimeType,
+            bodyMimeType,
             metadata);
     }
 
@@ -96,6 +98,7 @@ public class TemplateEntity
                     final String body,
                     final String definiton,
                     final MimeType mimeType,
+                    final MimeType bodyMimeType,
                     final RevisionMetadata metadata) {
 
         super(name, title);
@@ -106,8 +109,12 @@ public class TemplateEntity
         final Template t = new Template();
         t.setBody(body);
         t.setDefinition(definiton);
-        t.setMimeType(new MimeType(mimeType.getPrimaryType(),
-            mimeType.getSubType()));
+        t.setMimeType(
+            new MimeType(
+                mimeType.getPrimaryType(), mimeType.getSubType()));
+        t.setBodyMimeType(
+            new MimeType(
+                bodyMimeType.getPrimaryType(), bodyMimeType.getSubType()));
 
         update(t, metadata);
     }
@@ -147,6 +154,15 @@ public class TemplateEntity
         return currentRevision().getMimeType();
     }
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the body's mimeType.
+     */
+    public MimeType getBodyMimeType() {
+        return currentRevision().getBodyMimeType();
+    }
+
 
     /**
      * Update the contents of this template.
@@ -164,7 +180,8 @@ public class TemplateEntity
                 metadata.getComment(),
                 delta.getBody(),
                 delta.getDefinition(),
-                delta.getMimeType()));
+                delta.getMimeType(),
+                delta.getBodyMimeType()));
     }
 
     /** {@inheritDoc} */
@@ -187,7 +204,6 @@ public class TemplateEntity
     /** {@inheritDoc} */
     @Override
     public Template forWorkingCopy() {
-        // TODO: Return working copy.
         return summarize();
     }
 
@@ -209,6 +225,7 @@ public class TemplateEntity
         setDtoProps(dto);
         dto.setMimeType(getMimeType());
         dto.setRevision(currentRevisionNo());
+        dto.setBodyMimeType(getBodyMimeType());
 
         dto.addLink(
             Resource.Links.SELF,
