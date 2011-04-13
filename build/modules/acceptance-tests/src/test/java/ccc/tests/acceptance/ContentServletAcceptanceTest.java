@@ -290,7 +290,7 @@ public class ContentServletAcceptanceTest
                 new File(
                     filesFolder.getId(),
                     fName,
-                    MimeType.TEXT,
+                    MimeType.JAVASCRIPT,
                     true,
                     "",
                     "response.sendRedirect("
@@ -330,7 +330,7 @@ public class ContentServletAcceptanceTest
                 new File(
                     filesFolder.getId(),
                     fName,
-                    MimeType.TEXT,
+                    MimeType.JAVASCRIPT,
                     true,
                     "",
                     "request.getRequestDispatcher(\"/doesnt/exist\")"
@@ -370,7 +370,7 @@ public class ContentServletAcceptanceTest
                 new File(
                     filesFolder.getId(),
                     fName,
-                    MimeType.TEXT,
+                    MimeType.JAVASCRIPT,
                     true,
                     "",
                     "print('foo\\n'); response.flushBuffer(); throw 'foo';"));
@@ -405,7 +405,7 @@ public class ContentServletAcceptanceTest
                 new File(
                     filesFolder.getId(),
                     fName,
-                    MimeType.TEXT,
+                    MimeType.JAVASCRIPT,
                     true,
                     "",
                     "throw 'foo';"));
@@ -575,7 +575,7 @@ public class ContentServletAcceptanceTest
         assertEquals(" ok$resources.retrieve($id)", content);
 
     }
-    
+
 
     /**
      * Test.
@@ -595,7 +595,7 @@ public class ContentServletAcceptanceTest
         // ASSERT
         assertTrue(content.contains("TestSuccess"));
     }
-    
+
 
     private boolean is500(final RuntimeException e) {
         return e.getMessage().startsWith("500: <!-- An error occurred: ");

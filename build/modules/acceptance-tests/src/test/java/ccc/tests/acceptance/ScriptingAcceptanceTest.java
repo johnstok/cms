@@ -64,7 +64,7 @@ public class ScriptingAcceptanceTest
                 new File(
                     folder.getId(),
                     "fail.js",
-                    MimeType.TEXT,
+                    MimeType.JAVASCRIPT,
                     true,
                     "",
                     "print('foo');"));
@@ -97,7 +97,7 @@ public class ScriptingAcceptanceTest
                 new File(
                     folder.getId(),
                     "fail.js",
-                    MimeType.TEXT,
+                    MimeType.JAVASCRIPT,
                     true,
                     "",
                     "print(random.nextInt(10));"));
