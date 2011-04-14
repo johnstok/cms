@@ -38,6 +38,7 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.actions.ChooseTemplateAction;
 import ccc.client.gwt.actions.OpenAboutAction;
+import ccc.client.gwt.actions.OpenApiDocsAction;
 import ccc.client.gwt.actions.OpenBuildDocsAction;
 import ccc.client.gwt.actions.OpenCreateUserAction;
 import ccc.client.gwt.actions.OpenHelpAction;
@@ -113,6 +114,10 @@ public class MainMenu
                 "open-build-docs",
                 _constants.build(),
                 new OpenBuildDocsAction()),
+            createMenuItem(
+                "open-api-docs",
+                _constants.api(),
+                new OpenApiDocsAction()),
             createMenuItem(
                 "open-manual",
                 _constants.manual(),

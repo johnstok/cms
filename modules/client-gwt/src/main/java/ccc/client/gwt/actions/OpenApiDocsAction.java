@@ -33,18 +33,18 @@ import com.google.gwt.user.client.Window;
 
 
 /**
- * Display build documentation window.
+ * Display API documentation window.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenBuildDocsAction
+public final class OpenApiDocsAction
     implements
         Action {
 
     /** {@inheritDoc} */
     public void execute() {
         Window.open(
-            new GlobalsImpl().appURL()+"static/manual/build/api.html",
+            new GlobalsImpl().appURL()+"static/manual/api/index.html",
             "_blank",
             "height=480,width=640,"
                 + "menubar=no,toolbar=no,location=no,"

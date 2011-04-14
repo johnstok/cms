@@ -1633,4 +1633,11 @@ public interface UIConstants {
      */
     String build();
 
+    /**
+     * "API".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String api();
+
 }
