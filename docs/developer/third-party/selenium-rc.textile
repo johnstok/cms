@@ -1,0 +1,21 @@
+h1. Selenium RC
+
+
+h2. Firefox profile for Selenium
+
+
+# Quit Firefox in case it is running.
+# Execute @firefox -profilemanager -no-remote@
+# The profile manager will pop up. Click ‘Create profile...’ and make a new profile called ‘Selenium’ (mind your spelling and case). Make sure that Firefox asks you every time you start it.
+# Click ‘Exit’.
+# Execute @firefox -P Selenium -no-remote@
+# A new firefox window will pop up
+# Go to Preferences → Advanced → Network → Connection Settings... (based on Firefox 3 for Linux, your mileage may vary).
+# Set the HTTP proxy to be localhost, port 5555.  
+# Make sure the proxy settings in Firefox "no proxy for" is empty.
+# Turn off form auto filling and activate "Always clear my private data when I close Firefox".
+# Change the browser.sessionstore.enabled setting in Firefox.
+## type about:config in your browser URL
+## go to the browser.sessionstore.enabled setting
+## change the setting to false
+# Quit Firefox.

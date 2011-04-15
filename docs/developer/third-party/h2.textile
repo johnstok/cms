@@ -1,0 +1,32 @@
+"http://www.h2database.com/":http://www.h2database.com/
+
+h2. Setup for memory only H2 with running console:
+
+
+* Downloaded H2, started up @java -Xms512m -Xmx768m -cp h2.jar org.h2.tools.Server -tcpAllowOthers@
+
+* In the login screen (localhost:8082) enter connection parameters:
+** *JDBC URL:* jdbc:h2:tcp:localhost/mem:CCC
+** *User Name:* CCC
+** *Password:* CCC
+
+* Click connect with those settings -> DB created
+
+* Modify JBoss h2-ds.xml
+
+bc. <datasources>
+  <xa-datasource>
+    <jndi-name>ccc</jndi-name>
+    <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+    <xa-datasource-property name="URL">jdbc:h2:tcp:localhost/mem:CCC;DB_CLOSE_DELAY=-1</xa-datasource-property>
+    <xa-datasource-property name="User">CCC</xa-datasource-property>
+    <xa-datasource-property name="Password">CCC</xa-datasource-property>
+  </xa-datasource>
+</datasources>
+</pre>
+
+_Note:_
+* Every time you redeploy business the tables are reverted back to original state
+* Start console first
+* In case you do not need web access for the database use: @java -Xms512m -Xmx768m -cp h2.jar org.h2.tools.Server -tcp -tcpAllowOthers@
+* H2 with only TCP service running can be stopped with: @java -cp h2.jar org.h2.tools.Server -tcpShutdown  tcp://localhost:9092@

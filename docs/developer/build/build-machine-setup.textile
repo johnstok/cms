@@ -1,26 +1,29 @@
 The build machine for continuous integration is running as a VM image.
 
-== Installed software: ==
+h2. Installed software:
 
-  * Operating system: Windows 2003 Server.
-  * Windows Server 2003 Resource Kit Tools
-  * Java 1.6.0_11-b03
-  * Python 2.5
-  * Genshi 0.5.1
-  * Maven 2.0.9
-  * Trac 0.11.2.1
-  * Hudson 1.262
-  * Firefox 3.0.5
-  * Safari 3.2.1
-  * IE 6
-  * Opera 9.63
-  * Chrome 1.0.154.43
 
-== Environment setup ==
+* Operating system: Windows 2003 Server.
+* Windows Server 2003 Resource Kit Tools
+* Java 1.6.0_11-b03
+* Python 2.5
+* Genshi 0.5.1
+* Maven 2.0.9
+* Trac 0.11.2.1
+* Hudson 1.262
+* Firefox 3.0.5
+* Safari 3.2.1
+* IE 6
+* Opera 9.63
+* Chrome 1.0.154.43
 
-=== Added user variables ===
+h2. Environment setup
 
-{{{
+
+h3. Added user variables
+
+
+<pre>
 FirefoxPath: C:\Program Files\Mozilla Firefox\
 SafariPath: C:\Program Files\Safari\
 OperaPath: C:\Program Files\Opera\
@@ -30,23 +33,26 @@ M2: %M2_HOME%\bin
 M2_HOME: C:\Program Files\apache-maven-2.0.9
 resourceKit: C:\Program Files\Windows Resource Kits\Tools
 Path: %resourceKit%;%OperaPath%;%SafariPath%;%FirefoxPath%;%JAVA_HOME%\bin;%M2%
-}}}
+</pre>
 
-=== Added system variables ===
+h3. Added system variables
 
-{{{
+
+<pre>
 NOPAUSE: true
 Path: %SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;C:\Python25;C:\Program Files\Subversion\bin
-}}}
+</pre>
 
-=== Firefox settings ===
-
-Check: [wiki:SeleniumRC]
+h3. Firefox settings
 
 
-== Startup commands ==
+Check: "SeleniumRC":SeleniumRC
 
-{{{
+
+h2. Startup commands
+
+
+<pre>
 Hudson home:
 c:\hudson
 
@@ -54,7 +60,7 @@ Hudson war:
 c:\hudson.war
 
 Hudson start:
-java -DHUDSON_HOME=c:\hudson -jar c:\hudson.war --httpPort=9090 --ajp13Port=9009
+java -DHUDSON_HOME=c:\hudson -jar c:\hudson.war --"httpPort=9090":httpPort=9090 --ajp13Port=9009
 
 Tracd:
 c:\Python25\Scripts\
@@ -64,14 +70,16 @@ tracd -p 8000 --auth=ccc7,\ccc7\conf\users.htdigest,ccc7 \ccc7
 
 H2 start: (no longer needed as tests start and stop H2)
 
-}}}
+</pre>
 
-== Hudson jobs ==
+h2. Hudson jobs
 
-=== Acceptance test ===
+
+h3. Acceptance test
+
 
 Execute Windows batch command
-{{{
+<pre>
 Shut down existing JBoss instance:
 start  /B \hudson\jobs\CCC7_acceptance_ie\workspace\trunk\build\deploy\jboss-4.2.2.GA\bin\shutdown.bat -S
 
@@ -80,12 +88,12 @@ sleep 180
 
 Start up new JBoss instance:
 start /B \hudson\jobs\CCC7_acceptance_ie\workspace\trunk\build\deploy\jboss-4.2.2.GA\bin\run.bat -b 0.0.0.0 
-}}}
+</pre>
 
 Maven
-{{{
+<pre>
 clean install -P deploy,migrate,ie-acceptance,migration-acceptance
-}}}
+</pre>
 
 
 

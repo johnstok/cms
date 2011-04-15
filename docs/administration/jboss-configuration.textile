@@ -1,12 +1,14 @@
-= jBoss Cofiguration =
+h1. jBoss Cofiguration
+
 This page documents various aspects of jBoss configuration.
 
-== Logging each deployment separately ==
-''TODO: describe the jars to patch.''
+h2. Logging each deployment separately
+
+_TODO: describe the jars to patch._
 
 You can direct logging output for a specific ear using a log4j filter. See the following example:
-{{{
-   <appender name="cc7" class="org.jboss.logging.appender.DailyRollingFileAppender">
+
+bc. <appender name="cc7" class="org.jboss.logging.appender.DailyRollingFileAppender">
       <errorHandler class="org.jboss.logging.util.OnlyOnceErrorHandler"/>
       <param name="File" value="${jboss.server.log.dir}/cc7.log"/>
       <param name="Append" value="true"/>
@@ -21,4 +23,3 @@ You can direct logging output for a specific ear using a log4j filter. See the f
       </filter>
       <filter class="org.apache.log4j.varia.DenyAllFilter"></filter>
    </appender>
-}}}

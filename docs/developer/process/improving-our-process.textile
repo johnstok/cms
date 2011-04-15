@@ -1,0 +1,62 @@
+h1. Improving CCC7's Software Development Process
+
+The purpose of this page is to track how we develop software and identify how we can improve.
+
+<br>
+
+h2. Introducing
+
+* Daily stand up meetings.
+* Code review at the end of each story.
+
+<br>
+
+h2. Currently doing
+
+|*Practice*|*Summary*|*Impediments / Improvements*|*Further info*|
+|Continuous Integration|Members of the team integrate their work frequently; each integration is verified by an automated build (including test) to detect errors early.| |"Martin Fowler on CI":http://www.martinfowler.com/articles/continuousIntegration.html|
+|Refactoring|Improving source code without changing its external behaviour.| | |
+|Coding standards|Coding standard is an agreed upon set of rules, for consistent style and format of source code, that the entire development team agree to adhere to.| |Checkstyle; Findbugs; implementation guidelines|
+|Collective code ownership|Collective code ownership means that everyone is responsible for all the code; this, in turn, means that everybody is allowed to change any part of the code.| | |
+|Product backlog| |We need to revisit our product backlog regularly -> 10% of scrum master's time|User stories|
+|Sustainable pace|Generate progress with each team member working a 'reasonable' number of hours each week - no extended overtime.| | |
+|Small releases|Release versions of the software early and often.|Releases should be "production quality" (i.e. potentially shippable) working software|Each sprint should deliver business value|
+|Acceptance testing|Acceptance testing involves running a suite of tests on the _completed system_.| | |
+|Automated testing|Test automation is the use of software to control the execution of tests, the comparison of actual outcomes to predicted outcomes, the setting up of test preconditions, and other test control and test reporting functions.| | |
+|Configuration management|Provide tooling to support systematic control of changes to all software artifacts throughout the software development life cycle.| | |
+|Deliver complete features| |i.e. all behaviour present 'end to end'| |
+|Simple design|Programmers should take a "simple is best" approach to software design. Only do 'enough' architecture.| | |
+|User stories| | | |
+|Clear definition of done|Providing a clear definition of done allows a developer to determine that a feature is ready for the next production release.|Define done; Can't mark a story done without acceptance tests; Wireframe tool - investigate|"http://chrissterling.gettingagile.com/2007/10/05/building-a-definition-of-done/":http://chrissterling.gettingagile.com/2007/10/05/building-a-definition-of-done/ "http://www.agile-software-development.com/2007/07/definition-of-done-10-point-checklist.html":http://www.agile-software-development.com/2007/07/definition-of-done-10-point-checklist.html "http://www.infoq.com/news/2008/10/PowerOfDone":http://www.infoq.com/news/2008/10/PowerOfDone|
+
+<br>
+
+h2. Should be doing
+
+|*Practice*|*Summary*|*Impediments / Improvements*|*Further info*|
+|Visible progress| |Invite everyone to the sprint review - encourage them to attend; Add a task board; Track effort remaining for tasks; Make the release available for others to use|"Big Visible Charts":"http://www.xprogramming.com/xpmag/BigVisibleCharts.htm;<br>":http://www.xprogramming.com/xpmag/BigVisibleCharts.htm;<br>
+"Task board":"http://www.mountaingoatsoftware.com/task-boards;<br>":http://www.mountaingoatsoftware.com/task-boards;<br>
+Burndown;<br>
+Latest build deployed;<br>
+CI dashboard;<br>
+Websvn|
+|Ubiquitous language| | | |
+|Retrospectives| | | |
+|Code review| | | |
+|Daily stand-up meetings| | | |
+|Test driven development| | | |
+
+|System metaphor|The system metaphor is a story that everyone - customers, programmers, and managers - can tell about how the system works.|Do we need this? Is it useful?| |
+|Whole team| | | |
+|Planning game| |*Estimate story points in the planning meeting*; Ask "can we commit to this?" at the end of each sprint planning meeting; Add missing stories (brain storming); break down epics; Improve our conversations; Planning poker?| |
+|Pair programming|All production code is written by a pair of developers.| | |
+|Integrate user experience| | | |
+|Integrate documentation writing| | | |
+|On-site customer| |strong customer voice| |
+|Metrics| | |Velocity; XP Applied Ch. 26 & 31|
+|Mission statement| | | |
+|End user value in each iteration| | | |
+|Cross functional teams| |full time team members|Make teams more cross-functional; learn how design, content teams work|
+|Shared Workspaces|???| | |
+|high-bandwidth communication| |socialtext??| |
+|Continuous learning| |Software presentations - haskell, list comprehensions, closures, destructuring (javascript)| |
