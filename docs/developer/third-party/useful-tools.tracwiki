@@ -4,7 +4,8 @@ A list of tools that make development easier...
 
 == !CurrPorts (win) ==
 
-Form the website:
+From the website:
+
 > !CurrPorts displays the list of all currently opened TCP/IP and UDP ports on your local computer. For each port in the list, information about the process that opened the port is also displayed, including the process name, full path of the process, version information of the process (product name, file description, and so on), the time that the process was created, and the user that created it.
 
 !CurrPorts is especially useful for diagnosing problems such as jBoss not starting properly due to required ports being in use...
@@ -41,7 +42,7 @@ http://winscp.net/eng/index.php
 http://www.7-zip.org/
 
 == Rainlender ==
->Rainlendar is a feature rich calendar application that is easy to use and doesn't take much space on your desktop. The application is platform independent so you can run it both on Windows and on Linux.
+> Rainlendar is a feature rich calendar application that is easy to use and doesn't take much space on your desktop. The application is platform independent so you can run it both on Windows and on Linux.
 http://www.rainlendar.net/cms/index.php
 
 == Comparing files ==

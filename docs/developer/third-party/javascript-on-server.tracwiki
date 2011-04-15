@@ -8,7 +8,7 @@ http://www.infoq.com/presentations/javascript-in-the-enterprise
 
 Any text file with "executable=true" set in metadata can be executed on the server side. At the moment only !JavaScript is supported. Scripts will only be executable via a HTTP POST method initially.
 
-== Best practices == 
+== Best practices ==
 Be careful with !JavaScript name space - check CC-672.
 
 Compare java.lang.Boolean using valueOf() method.

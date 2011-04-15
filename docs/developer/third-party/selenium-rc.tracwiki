@@ -13,7 +13,7 @@
  1. Make sure the proxy settings in Firefox "no proxy for" is empty.
  1. Turn off form auto filling and activate "Always clear my private data when I close Firefox".
  1. Change the browser.sessionstore.enabled setting in Firefox.
-   1. type about:config in your browser URL
-   1. go to the browser.sessionstore.enabled setting
-   1. change the setting to false
+  1. type about:config in your browser URL
+  1. go to the browser.sessionstore.enabled setting
+  1. change the setting to false
  1. Quit Firefox.
