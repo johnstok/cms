@@ -4,9 +4,9 @@ The project's development setup is quite simple but it is preferred to do in thi
 
 h2. Read through some guidelines
 
-* "Java code style":../quality/code-style-java.textile
-* "SQL code style":../quality/code-style-sql.textile
-* "Testing strategy":../testing/testing-strategy.textile
+* "Java code style":../quality/code-style-java.html
+* "SQL code style":../quality/code-style-sql.html
+* "Testing strategy":../testing/testing-strategy.html
 
 h2. Necessary tools
 
@@ -20,7 +20,7 @@ Maven central repository contains most of the dependencies.
 
 Civic has Sonatype Nexus repository running at "http://apollo-vm226:8081/nexus":http://apollo-vm226:8081/nexus which contains 3rd party and proprietary dependencies.
 
-Check "MavenSettings":maven-settings.textile for configuration.
+Check "MavenSettings":maven-settings.html for configuration.
 
 h2. Eclipse configurations
 
@@ -59,7 +59,7 @@ h2. Configuration
 
 If it doesn't exist create a file in the folder @~/m2@ called @settings.xml@
 
-Edit the @settings.xml@ file so that it contains the configuration details from "MavenSettings":maven-settings.textile
+Edit the @settings.xml@ file so that it contains the configuration details from "MavenSettings":maven-settings.html
 
 Be sure to change the application name to the name of your application.
 

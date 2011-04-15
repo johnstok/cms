@@ -57,7 +57,7 @@ Configure Apache to provide reverse-proxying etc. depending on the setup.
 
 h2. Command line tools
 
-Tools output possible options when executed without options. Read "shell tools":../../administration/shell-tools.textile for more information.
+Tools output possible options when executed without options. Read "shell tools":../../administration/shell-tools.html for more information.
 
 h2. Apache HTTP server
 
@@ -65,7 +65,7 @@ Read separate page about configuration: "HowToConfigApacheHTTPServer":/ccc7/wiki
 
 h2. Acceptance testing
 
-Check the "testing strategy document":../testing/testing-strategy.textile.
+Check the "testing strategy document":../testing/testing-strategy.html.
 
 h2. Database schema
 

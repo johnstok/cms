@@ -1,6 +1,6 @@
 h1. Design of the GWT Client
 
-The high level GWT client architecture is explained in architecture.textile.
+The high level GWT client architecture is explained in architecture.html.
 
 Almost all the widgets are Sencha GXT widgets as they provide functionality and visuals that were not available in plain GWT. Mixing GWT and GXT widgets should be avoided as much as possible. In order to use certain GXT widgets like grid we had to introduce GXT specific bindings. 
 
