@@ -139,6 +139,34 @@
                 </executions>
             </plugin>
             <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-doc-assets</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/client-gwt/ccc.client.gwt.ContentCreator/manual</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/../../docs</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include> **/*.txt </include>
+                                        <include> **/*.gif </include>
+                                        <include> **/*.png </include>
+                                        <include> **/*.jpg </include>
+                                        <include> **/*.jpeg </include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
