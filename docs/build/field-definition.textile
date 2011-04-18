@@ -2,7 +2,8 @@ The XML definition of the template is a simple list of fields. Each field in the
 
 h3. Example XML for template definition
 
-bc. <fields>
+<pre>
+<fields>
     <field name="dateField" type="date" description="birthday"/>
     <field name="oneLine" type="text_field" />
     <field name="oneLineWithValidation" type="text_field" regexp="\d{1,3}"/>
@@ -27,6 +28,7 @@ bc. <fields>
     <field name="photo" type="image"/>
     <field name="number" type="number"/>
 </fields>
+</pre>
 
 h3. Attributes
 

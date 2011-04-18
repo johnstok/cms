@@ -61,15 +61,17 @@ if (x == "")
 
 _javascript.NativeArray wont work with Velocity #foreach iteration_
 
-bc. var list - new java.util.ArrayList();
+<pre>
+var list - new java.util.ArrayList();
 list.add(foo);
 list.add(bar);
 list.get(1);
 
-bc. var list = [];
+var list = [];
 list.push(foo);
 list.push(bar);
 list[1];
+</pre>
 
 
 h2. Security

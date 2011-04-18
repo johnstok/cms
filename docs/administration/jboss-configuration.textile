@@ -8,7 +8,8 @@ _TODO: describe the jars to patch._
 
 You can direct logging output for a specific ear using a log4j filter. See the following example:
 
-bc. <appender name="cc7" class="org.jboss.logging.appender.DailyRollingFileAppender">
+<pre>
+   <appender name="cc7" class="org.jboss.logging.appender.DailyRollingFileAppender">
       <errorHandler class="org.jboss.logging.util.OnlyOnceErrorHandler"/>
       <param name="File" value="${jboss.server.log.dir}/cc7.log"/>
       <param name="Append" value="true"/>
@@ -23,3 +24,4 @@ bc. <appender name="cc7" class="org.jboss.logging.appender.DailyRollingFileAppen
       </filter>
       <filter class="org.apache.log4j.varia.DenyAllFilter"></filter>
    </appender>
+</pre>

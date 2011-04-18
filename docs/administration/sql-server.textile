@@ -27,10 +27,12 @@ h2. Configure XA transaction support for the user
 
 Execute the following script: 
 
-bc. USE master
+<pre>
+USE master
 GO
 EXEC sp_grantdbaccess 'shelby', 'shelby'
 GO
 EXEC sp_addrolemember [SqlJDBCXAUser], 'shelby'
+</pre>
 
 See the "SQL Server documentation":http://msdn.microsoft.com/en-us/library/aa342335.aspx for more details.

@@ -22,13 +22,15 @@ In the second step of the wizard you should define the fields that the template 
 
 In this case our template has a single field that expects HTML content:
 
-bc. <fields>
+<pre>
+<fields>
   <field
     name="body"
     type="html"
     title="Body"
     description="Body content for the article" />
 </fields>
+</pre>
 
 h3. Provide a body
 
@@ -38,7 +40,8 @@ Click "next".
 
 In the final step of the wizard you provide the template body that outputs HTML content. You can access the fields defined in the previous step and include them in the output:
 
-bc. <html>
+<pre>
+<html>
   <head>
     <title>$resource.getTitle()</title>
   </head>
@@ -46,6 +49,7 @@ bc. <html>
     $resource.getParagraph('body').getText()
   </body>
 </html>
+</pre>
 
 The standard fields of a resource are also available. A number of other useful objects are available in the body context - see the "next steps" section below to learn more.
 

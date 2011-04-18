@@ -4,27 +4,32 @@ A template body can be written in plain HTML or combination of HTML and Velocity
 
 h3. Title of the page
 
-bc. $resource.getTitle()
+@$resource.getTitle()@
 
 h3. Get a service object
 
-bc. #set ($resources = $services.getResources())
+<pre>
+#set ($resources = $services.getResources())
 #set ($folders = $services.getFolders())
+</pre>
 
 h3. Display paragraph
 
-bc. $resource.getParagraph("HEADER").getText()
+@$resource.getParagraph("HEADER").getText()@
 
 h3. Array and random selection
 
 Random access (assuming that an instance of java.util.Random in the Velocity context with name random).
 
-bc. #set( $randomStyles = ["one", "two", "three", "four", "five", "six", "seven", "eight"] )
+<pre>
+#set( $randomStyles = ["one", "two", "three", "four", "five", "six", "seven", "eight"] )
 <body id="home" class="$randomStyles.get($random.nextInt(8))">
+</pre>
 
 h3. Create a content index
 
-bc. #set($folderResource= $resources.resourceForPathSecure("/Events"))
+<pre>
+#set($folderResource= $resources.resourceForPathSecure("/Events"))
 #set($type = $enums.of("ccc.types.ResourceType", "PAGE"))
 #set($criteria = $apiTypes.createResourceCriteria())
 $criteria.setParent($folderResource.getId())
@@ -32,9 +37,9 @@ $criteria.setPublished(true)
 $criteria.setMainmenu(true)
 $criteria.setType($type)
 
-bc. #set($folder = $resources.list($criteria,1,20))
+#set($folder = $resources.list($criteria,1,20))
 
-bc. #foreach ($pageRS in $folder)
+#foreach ($pageRS in $folder)
     #set($page = $pages.retrieve($pageRS.getId()))
     <h2><a href="$pageRS.getAbsolutePath()">$pageRS.getTitle()</a></h2>
     <p>$page.getParagraph("Summary").getText()</p>
@@ -44,10 +49,12 @@ bc. #foreach ($pageRS in $folder)
     <li>Time: $page.getParagraph("Time").getText()</li>
     </ul>
 #end
+</pre>
 
 h3. Display search results (for 'search' resource's template)
 
-bc. #set($resources = $services.getResources())
+<pre>
+#set($resources = $services.getResources())
 #foreach($hit in $result.hits()) 
     #if($resources.exists($hit))
         #set ($hitResource = $resources.retrieve($hit))
@@ -55,14 +62,14 @@ bc. #set($resources = $services.getResources())
     #end
 #end
 
-bc. <form name="search" action="$resource.getName()">
+<form name="search" action="$resource.getName()">
     <input name="q" autocomplete="off" value="$terms"/>
     <input type="submit" value="Search"  name="go"/>
 </form>
  
-bc. Shown Hits: $!result.hits().size() - Total: $!result.totalResults()
+Shown Hits: $!result.hits().size() - Total: $!result.totalResults()
  
-bc. #set ( $pages=($result.totalResults()+9)/10 )
+#set ( $pages=($result.totalResults()+9)/10 )
 #if ( $result.totalResults()>0 ) 
     #foreach( $page in [1..$pages] ) 
         #set ( $linkNumber=($page+-1) )
@@ -73,10 +80,12 @@ bc. #set ( $pages=($result.totalResults()+9)/10 )
         #end
     #end
 #end
+</pre>
 
 h3. Display optional paragraph
 
-bc. #macro( optional $name $startText $endText)
+<pre>
+#macro( optional $name $startText $endText)
     #foreach( $para in $resource.getParagraphs() )
         #if ($para.getName()==$name && $para.getText())
             $startText
@@ -85,6 +94,7 @@ bc. #macro( optional $name $startText $endText)
         #end
     #end
 #end
+</pre>
 
 Normal @$resource.getParagraph("NAME").getText()@ causes an exception in case there is no paragraph with matching name.
 
@@ -92,28 +102,31 @@ Following macro takes three parameters. @$name@ is for the paragraph name, @$sta
 
 Usage:
 
-bc. #optional('PanelOne_Custom' '<div id="panel">' '</div>' )
+@#optional('PanelOne_Custom' '<div id="panel">' '</div>' )@
 
 h3. Display breadcrumb
 
-bc. #macro ( breadcrumb) 
+<pre>
+#macro ( breadcrumb) 
    #foreach ($element in $resource.getAbsolutePath().substring(9).split("/"))
       $element
       <br/>
    #end
 #end
+</pre>
 
 h3. Include another resource
 
-bc. #include("/assets/templates/header.vm")
+@#include("/assets/templates/header.vm")@
 
 h3. Parse another resource
 
-bc. #parse("/assets/templates/header.vm")
+@#parse("/assets/templates/header.vm")@
 
 h3. Read metadata value with default value
 
-bc. #macro(getStyle)
+<pre>
+#macro(getStyle)
     #if(!$resource.getMetadatum("bodyId"))
         default
     #else 
@@ -121,22 +134,26 @@ bc. #macro(getStyle)
     #end
 #end
 
-bc. #getStyle
+#getStyle
+</pre>
 
 h3. Display current year
 
-bc. #macro (currentYear)
+<pre>
+#macro (currentYear)
     #set ($cal = $calendar.getInstance())
     $cal.get(1)
 #end
+</pre>
 
 or
 
-bc. $dateTools.get('yyyy')
+@$dateTools.get('yyyy')@
 
 h3. Display image type paragraph
 
-bc. #macro( optionalImage $name)
+<pre>
+#macro( optionalImage $name)
     #foreach( $para in $resource.getParagraphs() )
         #if ($para.getName() == $name &amp;&amp; $para.getText())
             #set($imageResource = $resources.retrieve($uuid.fromString($para.getText())))
@@ -144,3 +161,4 @@ bc. #macro( optionalImage $name)
         #end
     #end
 #end
+</pre>

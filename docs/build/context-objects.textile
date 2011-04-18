@@ -1,118 +1,24 @@
+h1. Context Objects
+
 These are the objects available in the Velocity context.
 
-h2. $user
+|$user |Currently logged in "user":../api/ccc/api/core/User.html|
+|$request |"javax.servlet.http.HttpServletRequest":http://download.oracle.com/javaee/5/api/javax/servlet/http/HttpServletRequest.html|
+|$response |"javax.servlet.http.HttpServletResponse":http://download.oracle.com/javaee/5/api/javax/servlet/http/HttpServletResponse.html|
+|$services |Locator for Content Creator services. See the "ServiceLocator":../api/ccc/api/core/ServiceLocator.html class|
+|$resource|A read-only snapshot of a "Resource":../api/ccc/api/core/Resource.html (usually the page) that is being rendered using a template.|
+|$random |Instance of the "java.util.Random":http://download.oracle.com/javase/6/docs/api/java/util/Random.html class|
+|$math |The "java.lang.Math":http://download.oracle.com/javase/6/docs/api/java/lang/Math.html class|
+|$collections |The "java.util.Collections":http://download.oracle.com/javase/6/docs/api/java/util/Collections.html class|
+|$calendar |The "java.util.Calendar":http://download.oracle.com/javase/6/docs/api/java/util/Calendar.html class|
+|$html |Helper methods for working with "XHTML":../api/ccc/plugins/markup/XHTML.html.|
+|$uuid |The "java.util.UUID":http://download.oracle.com/javase/6/docs/api/java/util/UUID.html class|
+|$enums |ccc.rendering.velocity.Velocity.EnumTools. Velocity tool for helping with Java5 enum's.|
+|$hostname |Hostname of the machine running CC7, as a string.|
+|$dateTool |Apache VelocityTools "DateTool":http://velocity.apache.org/tools/releases/2.0/javadoc/org/apache/velocity/tools/generic/DateTool.html|
+|$sortTool |Apache VelocityTools "SortTool":http://velocity.apache.org/tools/releases/2.0/javadoc/org/apache/velocity/tools/generic/SortTool.html|
+|$domain |Default domain name for the website, as a string.|
+|$http|Common "HTTP":../api/ccc/commons/HTTP.html utilities.|
+|$mail|Instance of "Mailer":../api/ccc/plugins/mail/Mailer.html, used to send email.|
+|$apiTypes|"Factory":../api/ccc/api/core/ObjectFactory.html for criteria objects.|
 
-Currently logged in user as ccc.rest.dto.UserDto. See UserDTO API
-
-h2. $request
-
-javax.servlet.http.HttpServletRequest
-
-h2. $response
-
-javax.servlet.http.HttpServletResponse
-
-h2. $services
-
-Locator for ContentCreator business services. See&nbsp;ServiceLocator API
-
-h2. $resource
-
-A read-only snapshot of a resource (usually the page) that is being rendered using a template.
-
-h2. $mail
-
-Instance of mailer.
-
-h2. $http
-
-Common HTTP utilities.
-
-h2. $random
-
-Instance of java.util.Random.
-
-h2. $math
-
-java.lang.Math.class
-
-h2. $collections
-
-&nbsp;java.util.Collections.class.
-
-h2. $calendar
-
-java.util.Calendar.class.&nbsp;
-
-h2. $html
-
-ccc.commons.XHTML.class. Helper methods for working with XHTML.
-
-h2. $uuid
-
-java.util.UUID.class
-
-h2. $enums
-
-ccc.rendering.velocity.Velocity.EnumTools. Velocity tool for helping with Java5 enum's.
-
-h2. $hostname
-
-Hostname.
-
-h2. $dateTool
-
-Apache VelocityTools DateTool
-
-h2. $sortTool
-
-Apache VelocityTools SortTool
-
-h2. $apiTypes
-
-Object factory of criteria objects for Velocity context use.
-
-----
-
-= API: Templates =
-'''This page describes the public API for templates.'''
-
-== Objects Available ==
-Added in ccc.remoting.actions.!RenderResourceAction
-||$user || currentUser ||
-||$request || request ||
-||$response || response ||
-||$search || ccc.search.!SearchEngine ||
-||$data || ccc.persistence.!DataRepository ||
-||$services || !RequestScopeServiceLocator ||
-
-Added in ccc.rendering.!DefaultRenderer
-||$resource|| The resource (usually the page) that is being rendered and is using the template.''TODO''
-
-Added in ccc.rendering.velocity.!VelocityProcessor
-||$random || instance of java.util.Random ||
-||$math || java.lang.Math.class ||
-||$collections || java.util.Collections.class ||
-||$calendar ||''TODO - to be removed'' ||
-||$html || ccc.commons.XHTML.class ||
-||$uuid || java.util.UUID.class ||
-||$enums || ccc.rendering.velocity.!VelocityProcessor.!EnumTools ||
-||$hostname || HOSTNAME ||
-||$dateTool || Apache !VelocityTools !DateTool ||
-||$sortTool || Apache !VelocityTools !SortTool ||
-||$domain || String || The default domain name for a website.
-
-== Methods ==
-=== ResourceSnapshot ===
-=== PageSnapshot ===
-
-
-== Definition XML ==
-''We may not want to publish all field types in the first instance.''
-See CCCTemplateXML.
-
-== Ways of resource accessing ==
-
-=== REST API ($services) ===
- - Resources.resource(), Resources.resourceForPath(), Resource.resourceForLegacyId() return !ResourceSummary - no check for published state or roles.
- - Folders.getChildren/getChildrenManualOrder/getFolderChildren return collection of !ResourceSummaries - no check for published state or roles.

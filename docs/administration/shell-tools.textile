@@ -12,7 +12,7 @@ Creates a new admin user with the specified name, password and email. Used to cr
 |-np|Password of the user to create.|
 |-ne|Email of the user to create.|
 
-bc. java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Users -c jdbc:mysql://localhost:3306/cc7 -ne admin@example.com -np admin -nu admin -p cc7 -u cc7
+@java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Users -c jdbc:mysql://localhost:3306/cc7 -ne admin@example.com -np admin -nu admin -p cc7 -u cc7@
 
 h2. Create
 
@@ -26,7 +26,7 @@ Sets up default folder structure for the site.
 |-a|The JNDI application name. Corresponds to the name of the ear file (cc7.ear). Normally this value is 'cc7'.|
 |-jn|optional JNDI provider IP address, defaults to localhost|
 
-bc. java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Create -a cc7 -p admin -u admin -jn 127.0.0.1:1099
+@java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Create -a cc7 -p admin -u admin -jn 127.0.0.1:1099@
 
 h2. Settings
 
@@ -40,7 +40,7 @@ Updates file store and lucene path settings.
 |-c|Connection string for the DB.|
 |-path|Path for the file store and lucene index directories.|
 
-bc. java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Settings -c jdbc:mysql://localhost:3306/cc7 -p admin -u admin -path /var/cc7/
+@java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Settings -c jdbc:mysql://localhost:3306/cc7 -p admin -u admin -path /var/cc7/@
 
 h2. Search
 
@@ -59,7 +59,7 @@ Possible actions:
 * stop - Stop the search indexing scheduler
 * running - Status of the search indexing scheduler
 
-bc. java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Search -b http://localhost/cc7 -p admin -u admin -c start
+@java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Search -b http://localhost/cc7 -p admin -u admin -c start@
 
 h2. Scheduling
 
@@ -78,7 +78,7 @@ Possible actions:
 * stop - Stop the action scheduler
 * running - Status of the action scheduler
 
-bc. java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Scheduling  -b http://localhost/cc7 -p admin -u admin -c start
+@java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Scheduling  -b http://localhost/cc7 -p admin -u admin -c start@
 
 h2. Schema
 
@@ -93,4 +93,4 @@ Build the CCC database schema.
 |-v|Version of the database to build.</i>|
 |-d|Drop existing tables first.|
 
-bc. java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Schema -c jdbc:mysql://localhost:3306/cc7 -p admin -u admin -v 1
+@java -cp shell-tools-7.1.7-jar-with-dependencies.jar ccc.cli.Schema -c jdbc:mysql://localhost:3306/cc7 -p admin -u admin -v 1@

@@ -4,16 +4,17 @@ The Apache webserver provides a wealth of useful modules that can further enhanc
 
 h2. Example Configuration
 
-bc. <VirtualHost *:80>
+<pre>
+<VirtualHost *:80>
  
-bc. # Basic configuration
+    # Basic configuration
     ServerName www.example.com
     ServerAdmin admin@example.com
 
-bc. # Redirect to context
+    # Redirect to context
     Redirect permanent / /cc7/
  
-bc. # Proxying
+    # Proxying
     ProxyRequests Off
     <Proxy *>
         Order deny,allow
@@ -23,10 +24,10 @@ bc. # Proxying
     ProxyPassReverse /cc7 http://localhost:8080/cc7
     ProxyPassReverseCookiePath /cc7 /cc7
  
-bc. # Reverse proxy caching
+    # Reverse proxy caching
     CacheEnable disk /cc7
  
-bc. # Compression
+    # Compression
     SetOutputFilter DEFLATE
     BrowserMatch ^Mozilla/4 gzip-only-text/html
     BrowserMatch ^Mozilla/4\.0[678] no-gzip
@@ -34,13 +35,13 @@ bc. # Compression
     DeflateCompressionLevel 9
     Header append Vary User-Agent env=!dont-vary
  
-bc. # Logging
+    # Logging
     LogLevel warn
     ErrorLog /var/log/apache2/error.log
     CustomLog /var/log/apache2/access.log combined
  
-bc. </VirtualHost>
-
+</VirtualHost>
+</pre>
 
 
 The configuration above proxies a private jBoss server running Content Control on port 8080 to the standard HTTP port 80. It provides disk caching and gzip compression to improve page load times.

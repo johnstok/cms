@@ -5,4 +5,4 @@ h1. Configuring CCC
 * Message queues
 * persistence units
 * EJBs
-* Security: use !DynamicLoginConfig
+* Security: use DynamicLoginConfig
