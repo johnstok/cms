@@ -1627,17 +1627,17 @@ public interface UIConstants {
     String locked();
 
     /**
-     * "Build".
-     *
-     * @return The constant, in the appropriate locale.
-     */
-    String build();
-
-    /**
      * "API".
      *
      * @return The constant, in the appropriate locale.
      */
     String api();
+
+    /**
+     * "Full Documentation".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String fullDocumentation();
 
 }

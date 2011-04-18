@@ -111,17 +111,17 @@ public class MainMenu
                 _constants.about(),
                 new OpenAboutAction()),
             createMenuItem(
-                "open-build-docs",
-                _constants.build(),
+                "open-manual",
+                _constants.manual(),
+                new OpenHelpAction()),
+            createMenuItem(
+                "open-full-docs",
+                _constants.fullDocumentation(),
                 new OpenBuildDocsAction()),
             createMenuItem(
                 "open-api-docs",
                 _constants.api(),
-                new OpenApiDocsAction()),
-            createMenuItem(
-                "open-manual",
-                _constants.manual(),
-                new OpenHelpAction()));
+                new OpenApiDocsAction()));
 
         addButton(
             null, "logout-menu-item", _constants.logout(), new LogoutAction());

@@ -44,7 +44,7 @@ public final class OpenBuildDocsAction
     /** {@inheritDoc} */
     public void execute() {
         Window.open(
-            new GlobalsImpl().appURL()+"static/manual/build/api.html",
+            new GlobalsImpl().appURL()+"static/manual/front-matter.html",
             "_blank",
             "height=480,width=640,"
                 + "menubar=no,toolbar=no,location=no,"
