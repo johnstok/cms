@@ -57,12 +57,6 @@ public final class ResourceUsersSelector
     @Override
     public String getSql() {
         return
-            "select distinct u.user_id "
-            + "from perm_attributes a, users u "
-            + "where a.attribute=to_char(?) "
-            + "and user_id=owner_id "
-            + "and type='USER'"
-            + "and (a.permission_name='folder_access' "
-            + "OR a.permission_name='content_view')";
+            Messages.getString("ResourceUsersSelector.sql"); //$NON-NLS-1$
     }
 }

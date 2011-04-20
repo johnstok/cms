@@ -32,6 +32,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import javax.sql.DataSource;
 
@@ -87,6 +88,9 @@ public class DbUtilsDB
                           final Object... param) {
 
         try {
+            log.debug("Query: "+q.getSql());
+            log.debug("Params: "+Arrays.asList(param));
+
             final PreparedStatement s = _c.prepareStatement(q.getSql());
             try {
                 int index = 1;

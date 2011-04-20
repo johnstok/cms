@@ -58,10 +58,6 @@ public final class UserMetadataSelector
     @Override
     public String getSql() {
         return
-        "SELECT udb.display_name key1, ud.attribute_value value "
-        + "FROM user_data ud, user_data_attrib udb, users u "
-        + "WHERE u.user_id = ud.user_id "
-        + "AND ud.attribute_id=udb.attribute_id "
-        + "AND u.user_id = ?";
+        Messages.getString("UserMetadataSelector.sql"); //$NON-NLS-1$
     }
 }

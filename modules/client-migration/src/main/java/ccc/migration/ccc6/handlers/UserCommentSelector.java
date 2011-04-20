@@ -55,9 +55,7 @@ public class UserCommentSelector implements SqlQuery<String> {
     /** {@inheritDoc} */
     @Override
     public String getSql() {
-        return "SELECT user_comment "
-                + "FROM c3_content "
-                + "WHERE content_id = ? and version_id = ?";
+        return Messages.getString("UserCommentSelector.sql"); //$NON-NLS-1$
     }
 
 }

@@ -57,14 +57,6 @@ public final class ResourceRolesSelector
     @Override
     public String getSql() {
         return
-            "SELECT DISTINCT p.profile_name "
-            + "FROM "
-            + "perm_attributes a, profiles p "
-            + "WHERE "
-            + "a.type='PROFILE' AND "
-            + "to_number(a.owner_id)=p.profile_id AND "
-            + "a.attribute=to_char(?) AND "
-            + "(a.permission_name='folder_access' "
-            + "OR a.permission_name='content_view')";
+            Messages.getString("ResourceRolesSelector.sql"); //$NON-NLS-1$
     }
 }

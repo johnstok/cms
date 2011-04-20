@@ -66,13 +66,6 @@ public final class UserRolesSelector
     /** {@inheritDoc} */
     @Override
     public String getSql() {
-        return
-            "SELECT DISTINCT users.user_id, "
-            + "profiles.application_name, "
-            + "profiles.profile_name "
-            + "FROM users, user_profiles, profiles "
-            + "WHERE users.user_id = user_profiles.user_id "
-            + "AND user_profiles.profile_id= profiles.profile_id "
-            + "AND users.user_id = ?";
+        return Messages.getString("UserRolesSelector.sql"); //$NON-NLS-1$
     }
 }

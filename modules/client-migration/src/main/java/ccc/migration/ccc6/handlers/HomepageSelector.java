@@ -61,11 +61,6 @@ public final class HomepageSelector
     @Override
     public String getSql() {
         return
-            "SELECT content_id, homepage "
-            + "FROM c3_content "
-            + "WHERE version_id = 0 "
-            + "AND (status = 'PUBLISHED' OR status = 'NEW') "
-            + "AND CONTENT_TYPE = 'FOLDER' "
-            + "AND homepage is not null";
+            Messages.getString("HomepageSelector.sql"); //$NON-NLS-1$
     }
 }

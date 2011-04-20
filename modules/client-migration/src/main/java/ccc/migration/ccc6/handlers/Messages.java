@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2011 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,45 +21,36 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
+
 package ccc.migration.ccc6.handlers;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-
-import ccc.migration.LogEntryBean;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 
 /**
- * A SQL query to return the user associated with a specified CCC6 log entry.
+ * SQL queries for legacy migration.
  *
  * @author Civic Computing Ltd.
  */
-public final class LogEntryUserSelector
-    implements
-        SqlQuery<LogEntryBean> {
+public class Messages {
 
-    /** {@inheritDoc} */
-    @Override
-    public LogEntryBean handle(final ResultSet rs) throws SQLException {
-        if (rs.next()) {
-            final int  userId     = rs.getInt("USER_ID");
-            final Date happenedOn = rs.getDate("ACTION_DATE");
+    private static final String         BUNDLE_NAME     = "ccc.migration.ccc6.handlers.messages"; //$NON-NLS-1$
 
-            return new LogEntryBean(userId, happenedOn);
+    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
-            // Ignore further records - choose the first.
-        }
-        return null;
+    private Messages() {
+
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public String getSql() {
-        return
-            Messages.getString("LogEntryUserSelector.sql"); //$NON-NLS-1$
+    public static String getString(String key) {
+        try {
+            return RESOURCE_BUNDLE.getString(key);
+        } catch (MissingResourceException e) {
+            return '!' + key + '!';
+        }
     }
 }

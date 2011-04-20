@@ -57,9 +57,7 @@ public class IsMajorEditSelector implements SqlQuery<Boolean> {
     /** {@inheritDoc} */
     @Override
     public String getSql() {
-        return "SELECT is_major_edit "
-                + "FROM c3_content "
-                + "WHERE content_id = ? and version_id = ?";
+        return Messages.getString("IsMajorEditSelector.sql"); //$NON-NLS-1$
     }
 
 }

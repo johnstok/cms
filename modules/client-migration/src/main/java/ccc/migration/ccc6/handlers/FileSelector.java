@@ -65,8 +65,6 @@ public final class FileSelector
     @Override
     public String getSql() {
         return
-        "SELECT object_name, object_title, classification, last_update "
-        + "FROM c3_file_objects "
-        + "WHERE application_name='CCC' AND object_type= ?";
+        Messages.getString("FileSelector.sql"); //$NON-NLS-1$
     }
 }

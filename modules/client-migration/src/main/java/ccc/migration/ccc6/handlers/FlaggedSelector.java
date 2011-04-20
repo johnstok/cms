@@ -55,9 +55,6 @@ public final class FlaggedSelector
     @Override
     public String getSql() {
         return
-            "SELECT news_flag "
-          + "FROM c3_pages "
-          + "WHERE page_id=? "
-          + "AND version_id=0";
+            Messages.getString("FlaggedSelector.sql"); //$NON-NLS-1$
     }
 }
