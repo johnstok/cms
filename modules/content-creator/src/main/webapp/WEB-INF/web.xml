@@ -134,8 +134,7 @@
     <filter-mapping>
         <filter-name>method-filter</filter-name>
         <servlet-name>Resteasy</servlet-name>
-    </filter-mapping>  
-
+    </filter-mapping>
     <filter-mapping>
         <filter-name>err-filter</filter-name>
         <servlet-name>content</servlet-name>
@@ -143,18 +142,16 @@
         <servlet-name>preview-template</servlet-name>
         <servlet-name>login</servlet-name>
         <servlet-name>logout</servlet-name>
-    </filter-mapping>  
-
+    </filter-mapping>
     <filter-mapping>
         <filter-name>txn-filter</filter-name>
         <servlet-name>content</servlet-name>
         <servlet-name>preview-content</servlet-name>
-    </filter-mapping>  
-
+    </filter-mapping>
     <filter-mapping>
         <filter-name>ccc6-filter</filter-name>
         <servlet-name>content</servlet-name>
-    </filter-mapping>  
+    </filter-mapping>
     
     <servlet-mapping>
         <servlet-name>Resteasy</servlet-name>
@@ -228,7 +225,6 @@
         <exception-type>java.lang.Exception</exception-type>
         <location>/ccc/error</location>
     </error-page>
-    
     <error-page>
         <error-code>403</error-code>
         <location>/forbidden</location>
