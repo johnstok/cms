@@ -185,3 +185,6 @@ proxies
 deserialized
 serializers
 wildcards
+thumbnails
+sonatype
+nexus
