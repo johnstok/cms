@@ -1,8 +1,0 @@
-= API =
-'''Documentation of the public APIs for CCC7.'''
- * ApiTemplates
- * ApiWeb
- * ApiScripting
- * ApiEvents
-
-Check also reserved metadata keys [wiki:ReservedMetadataKeys] and reserved Lucene field names [wiki:ReservedLuceneFieldNames]

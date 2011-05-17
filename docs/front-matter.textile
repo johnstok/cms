@@ -1,15 +1,49 @@
 h1. Content Control Manual
 
-h5. Authors
+h2. Summary
+
+Content Control is a Java, J2EE open source content management system (CMS) which is platform and database independent.
+
+Content Control is licenced under the General Public Licence version 3 (GPL3) to allow developers to expand, share, modify and publish new variations. Platform independence allows Content Control to be utilised across various browsers (IE, Firefox & Safari) and systems (Windows, Solaris, Linux, OSX) allowing users and developers complete freedom to create and utilise the CMS with ease and variation.
+
+Features:
+* Create & update resources (folders / pages / templates / aliases & text files)
+* Upload any file
+* Preview resources
+* Rename / move resources
+* Delete resources
+* Resource history with version control
+* Working copy support for files and pages
+* Resource metadata management
+* Resource cache control
+* Scheduled actions
+* Flexible templating
+* Resource lock / unlock
+* Resource publish / unpublish
+* Access control for resources
+* Friendly URLs
+* Lucene based site search
+* User management
+* Zero install, browser-based management interface.
+* Command line management tools
+
+h2. Contents
+
+* "Administration":administration/index.html
+* "Build":build/api.html
+* "Editing":CCC7_UserManual.htm
+* "Release Notes":release-notes/index.html
+
+h2. Authors
 
 * "Civic Computing Ltd.":http://www.civicuk.com
 
-h5. Extents
+h2. Extents
 
 All documents in or below this folder are considered a part of the Content Control manual and are licensed as described in the 'Licence' section below.
 
-h5. Licence
+h2. Licence
 
-Copyright © 2010 Civic Computing Ltd.
+Copyright © 2011 Civic Computing Ltd.
 
 Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license is included in the section entitled "GNU Free Documentation License".

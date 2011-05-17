@@ -1,0 +1,51 @@
+h1. Search design
+
+CC provides a full text search feature. The search API is defined in the @ccc.plugins.search@ package. Features of the API are:
+
+* full text search
+* similar resource search
+* access control
+* text extraction from files
+* re-indexing
+
+Because CC supports clustered behaviour any implementation of the full text search API must also be 'cluster safe'.
+
+h2. Lucene implementation
+
+The current (and only) implementation of full text search uses the Lucene engine. Each CC node in a cluster maintains its own index on the local file system. A full re-index is performed hourly, initiated by the scheduler infrastructure. This design is both naive and inefficient. For sites with large amounts of data a full re-indexing can take several hours. Also, because a re-index only occurs every hour web pages that rely on full text search queries may display stale data. This can confuse content editors from time to time.
+
+h3. Future improvements
+
+The performance & staleness problems could be addressed by implementing an incremental indexer rather than full re-index. An incremental re-indexer would require either i) a single shared index _or_ ii) a pub-sub infrastructure to distribute the update to all nodes in the cluster.
+
+If pub-sub is used the solution would probably require a durable topic to allow recovery for the case where a node crashes and updates happen while it is gone.
+
+It might be possible to implement a shared index by placing a disk based Lucene index in an NFS mounted folder. However, several reports indicate that this approach can lead to corrupted indexes if NFS configuration is wrong or if some network issue occurs.
+
+h2. Text Extraction
+
+The current implementation of the API supports text extraction for the following file types:
+
+* PDF
+* DOC
+* TXT
+
+h2. Access Control
+
+The CC content management engine attaches an access control list to each resource in an index. It is the responsibility of the search API implementor to apply access control. An implementation of the access control algorithm is provided in the @ccc.api.core.AccessController@ class. In the default Lucene implementation access control is implemented using a Lucene @Filter@.
+
+h2. Fields indexed
+
+The fields of a resource that are added to an index may vary per implementation.
+
+The default Lucene implementation indexes the following fields:
+* id
+* absolute path
+* name
+* type
+* title
+* tags
+* date created
+* date changed
+
+For pages all paragraphs are indexed; for files file content is indexed (if the format is supported).

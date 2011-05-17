@@ -1,0 +1,79 @@
+h1. JavaScript on the server side
+
+
+"https://developer.mozilla.org/en/a_re-introduction_to_javascript":https://developer.mozilla.org/en/a_re-introduction_to_javascript
+
+"http://java.sun.com/javase/6/docs/technotes/guides/scripting/programmer_guide/index.html":http://java.sun.com/javase/6/docs/technotes/guides/scripting/programmer_guide/index.html
+
+"http://www.infoq.com/presentations/javascript-in-the-enterprise":http://www.infoq.com/presentations/javascript-in-the-enterprise
+
+Any text file with "executable=true" set in metadata can be executed on the server side. At the moment only !JavaScript is supported. Scripts will only be executable via a HTTP POST method initially.
+
+h2. Best practices
+
+Be careful with JavaScript name space - check CC-672.
+
+Compare java.lang.Boolean using valueOf() method.
+
+h3. Manage scope and namespace
+
+<pre>
+var CCC = {};
+
+(function() {
+    CCC.foo. = function() {
+        bar();
+    }
+
+    function bar() {
+        // not visible outside 
+    }
+})();
+
+</pre>
+
+h3. Private fields in a constructor
+
+<pre>
+function User(name, age) {
+    var year = (new Date()).getFullYear() - age; // Not directly accessible.
+    this.getYearBorn = function() {
+        return year;
+    }
+    this.name = name;
+}
+</pre>
+
+h3. Avoid unnecessary Java code
+
+<pre>
+var map = new java.utilHashMap();
+map = someFunctionReturnsMap();
+
+var map = someFunctionReturnsMap();
+</pre>
+
+<pre>
+if(c.toString().equals("")...
+if (x == "")
+</pre>
+
+
+_javascript.NativeArray wont work with Velocity #foreach iteration_
+
+
+@var list - new java.util.ArrayList();@
+@list.add(foo);@
+@list.add(bar);@
+@list.get(1);@
+
+@var list = [];@
+@list.push(foo);@
+@list.push(bar);@
+@list[1];@
+
+
+
+h2. Security
+
+See CC-660

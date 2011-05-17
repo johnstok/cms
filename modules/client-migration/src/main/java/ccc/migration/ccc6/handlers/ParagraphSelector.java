@@ -58,8 +58,6 @@ public final class ParagraphSelector
     @Override
     public String getSql() {
         return
-            "SELECT * FROM  c3_paragraphs "
-            + "WHERE c3_paragraphs.page_id = ? "
-            + "AND version_id = ? ORDER BY seq";
+            Messages.getString("ParagraphSelector.sql"); //$NON-NLS-1$
     }
 }

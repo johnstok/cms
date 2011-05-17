@@ -124,6 +124,8 @@ INSERT INTO group_permissions (permission, group_id) SELECT 'USER_CREATE', id FR
 
 INSERT INTO group_permissions (permission, group_id) SELECT 'USER_UPDATE', id FROM groups WHERE name='ADMINISTRATOR';
 
+INSERT INTO group_permissions (permission, group_id) SELECT 'USER_DELETE', id FROM groups WHERE name='ADMINISTRATOR';
+
 INSERT INTO group_permissions (permission, group_id) SELECT 'SEARCH_CREATE', id FROM groups WHERE name='ADMINISTRATOR';
 
 INSERT INTO group_permissions (permission, group_id) SELECT 'RESOURCE_ACL_UPDATE', id FROM groups WHERE name='ADMINISTRATOR';

@@ -50,7 +50,7 @@ import com.extjs.gxt.ui.client.data.BeanModelMarker.BEAN;
 
 
 /**
- * A {@link ModelData} implementation for binding a {@link FolderSummary}.
+ * GXT model binding for CC7 DTO summaries.
  *
  * @author Civic Computing Ltd.
  */

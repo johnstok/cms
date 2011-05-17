@@ -13,11 +13,6 @@ From current page return the metadata value for bodyId key or 'default' if not s
 #optional ($name $startText $endText)
 Displays named paragraph if it is set in the page. Adds start and end texts if paragraph is found.
 
-#optionalImage($name)
-Returns the absolute path  of the image selected for the specified paragraph. Does not output anything if no image found.
-
-#createIndex($folderId)
-Displays published resources under specified folder sorted by date created.
 
 #tags
 Displays comma separated list of tags assigned to the resource.
@@ -32,10 +27,7 @@ h3. mainMenutag.vm
 
 #menuTag
 Renders dynamic navigation menu. Currently open page has css class 'hot' and any open parent folders have css class 'open'. 
-
-It works by creating a list of resources for each level, starting from the current resource towards the root. The list is fetched using $resources.list with parent and 'mainmenu' criterias. Finally the list is inverted and the macro renders each level. Removal of the 'mainmenu' criteria and doing the filtering in the Velocity code is not recommended as it affects performance.
-
-The optional variable $startLevel is used to control the starting level of the menu. The end level of the navigation menu is controlled with optional variable $endLevel.
+The optional variable $startLevel is used to control the starting level of the menu. The end level of the navigation menu is controlled with optional variabl $endLevel.
 
 
 h3. rss.vm
@@ -49,15 +41,3 @@ h3. siteMap.vm
 Renders site map for the child resource's of the parent.
 #printChildren($parent)
 
-h3. taxonomy.vm
-
-Retrieves vocabulary used by the taxonomy field and assigns it to the vocabulary variable.
-#loadVocabulary($field $vocabulary)
-
-Lists selected vocabulary term titles of the page.
-#listSelected($field $vocabulary)
-
-h3. displayComments.vm
-
-Displays first 20 comments of a resource  with specified status. Comments are ordered with their date.
-#displayComments($resource.getId(), $enums.of("ccc.api.types.CommentStatus",  "APPROVED")

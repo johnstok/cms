@@ -60,9 +60,6 @@ public final class LogEntryUserSelector
     @Override
     public String getSql() {
         return
-            "SELECT * FROM c3_version_audit_log "
-            + "WHERE content_id = ? AND "
-            + "version_id = ? AND "
-            + "action = ?";
+            Messages.getString("LogEntryUserSelector.sql"); //$NON-NLS-1$
     }
 }

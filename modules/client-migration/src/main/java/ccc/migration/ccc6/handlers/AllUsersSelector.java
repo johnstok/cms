@@ -92,7 +92,7 @@ public final class AllUsersSelector
                 resultList.put(Integer.valueOf(userId), user);
 
             } catch (final MigrationException e) {
-                log.warn("Error selecting user: "+e.getMessage());
+                log.warn("Error selecting user.", e);
             }
         }
         return resultList;
@@ -101,6 +101,6 @@ public final class AllUsersSelector
     /** {@inheritDoc} */
     @Override
     public String getSql() {
-        return "SELECT user_id, user_name, user_passwd, name FROM users";
+        return Messages.getString("AllUsersSelector.sql"); //$NON-NLS-1$
     }
 }

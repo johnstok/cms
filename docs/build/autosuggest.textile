@@ -8,12 +8,13 @@ h3. Template
 
 The template does Lucene query with given parameter ('q') and creates a JSON output. 
 
-bc. #set($query=$request.getParameter("q"))
+<pre>
+#set($query=$request.getParameter("q"))
 #set($search=$services.getSearch())
 #set($resources = $services.getResources())
 #set($query = $query.toLowerCase().trim())
 
-bc. #if ($query.indexOf(" ") == -1) 
+#if ($query.indexOf(" ") == -1) 
   #set($path = "path:/content/secure/*"+$query+"*")
 #else
   #set($path = "")
@@ -26,7 +27,7 @@ bc. #if ($query.indexOf(" ") == -1)
   #end
 #end
 
-bc. #set($term = $path+")
+#set($term = $path+")
 #set($result=$search.find($term,30,0))
 [#foreach($hit in $result.hits())
 #if($resources.exists($hit))
@@ -35,6 +36,7 @@ bc. #set($term = $path+")
 "url": "$hitresource.getAbsolutePath()"}#if($velocityHasNext),#end
 #end
 #end]
+</pre>
 ​
 
 h3. Page
@@ -47,7 +49,7 @@ h3. jQuery
 This JSON is then handled by jQuery UI autocomplete:
  http://jqueryui.com/demos/autocomplete/
  
-bc. 
+<pre>
   jQuery(function() {
     jQuery( "#inputString" ).autocomplete({
       source: function( request, response ) {
@@ -82,26 +84,26 @@ bc.
      var re = new RegExp("^(" + this.term + ")", 'i') ; 
      var output = item.title;
      var t = output.replace(re,"<strong>$1</strong>");
-     
-bc.     
+          
      return jQuery( " <li></li>" )
         .data( "item.autocomplete", item ).append( "<a>" + t + "</a>" ) .appendTo( ul );
     };
   });
+  </pre>
  
  
 h3. Form
 
 The HTML form must have a field with name 'q' for the search criteria.
 
-bc. 
-<form id="qualSearchLeft" name="qualSearchLeft" action="#">
-  <label for="inputString">Quick finder - <span>enter a term</span></label>
-  <input size="25" value="example" onblur="if (this.value == '') this.value = 'example';" onfocus="if (this.value == 'example') this.value = '';" id="inputString" type="text" />
-  <div style="display: none;" class="loading" id="loading">
-    <img class="spinner" src="/assets/images/busy-spinner.gif" alt="Loading..." title="Loading..."/>
-  </div>
-</form>
+@<form id="qualSearchLeft" name="qualSearchLeft" action="#">@
+@<label for="inputString">Quick finder - <span>enter a term</span></label>@
+@<input size="25" value="example" onblur="if (this.value == '') this.value = 'example';" onfocus="if (this.value == 'example') this.value = '';" id="inputString" type="text" />@
+@<div style="display: none;" class="loading" id="loading">@
+@<img class="spinner" src="/assets/images/busy-spinner.gif" alt="Loading..." title="Loading..."/>@
+@</div>@
+@</form>@
+
 
  
  

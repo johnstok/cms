@@ -26,14 +26,13 @@
  */
 package ccc.persistence;
 
-import static ccc.persistence.QueryNames.*;
-
+import static ccc.persistence.QueryNames.USERS_WITH_LEGACY_ID;
+import static ccc.persistence.QueryNames.USER_WITH_MATCHING_USERNAME;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
 import ccc.api.core.UserCriteria;
 import ccc.api.types.SortOrder;
 import ccc.domain.UserEntity;
@@ -46,7 +45,7 @@ import ccc.domain.UserEntity;
  */
 class UserRepositoryImpl implements UserRepository {
 
-    private Repository _repository;
+    private final Repository _repository;
 
 
     /**
@@ -138,6 +137,10 @@ class UserRepositoryImpl implements UserRepository {
             params.put("metadataKey", uc.getMetadataKey());
             params.put("metadataValue", uc.getMetadataValue());
         }
+
+        // delete check
+        query.append((params.size()>0) ? " and" : " where");
+        query.append(" 'deleted' not in indices(u._metadata) ");
     }
 
 
@@ -153,7 +156,11 @@ class UserRepositoryImpl implements UserRepository {
     /** {@inheritDoc} */
     @Override
     public UserEntity find(final UUID userId) {
-        return _repository.find(UserEntity.class, userId);
+        UserEntity user = _repository.find(UserEntity.class, userId);
+        if (user.getMetadata().get("deleted") != null) {
+            return null;
+        }
+        return user;
     }
 
     /** {@inheritDoc} */
@@ -183,8 +190,12 @@ class UserRepositoryImpl implements UserRepository {
     /** {@inheritDoc} */
     @Override
     public UserEntity userByLegacyId(final String legacyId) {
-        return _repository.find(
+        UserEntity user = _repository.find(
             USERS_WITH_LEGACY_ID, UserEntity.class, legacyId);
+        if (user.getMetadata().get("deleted") != null) {
+            return null;
+        }
+        return user;
     }
 
     /** {@inheritDoc} */

@@ -1,49 +1,16 @@
-<h2>Metadata</h2>
-<table class="wiki">
-    <tbody>
-        <tr>
-            <td><strong>key</strong></td>
-            <td><strong>value</strong></td>
-            <td><strong>usage</strong></td>
-        </tr>
-        <tr>
-            <td>searchable</td>
-            <td>true</td>
-            <td>determine whether a resource can be indexed by the search engine</td>
-        </tr>
-    </tbody>
-</table>
-<h2>Reserved Fields</h2>
-<p>Following Lucene index field names are reserved. Any paragraphs or metadata values with the same name will be overwritten.</p>
-<table class="wiki">
-    <tbody>
-        <tr>
-            <td><strong>name</strong></td>
-            <td><strong>usage</strong></td>
-        </tr>
-        <tr>
-            <td>id</td>
-            <td>UUID of the resource</td>
-        </tr>
-        <tr>
-            <td>name</td>
-            <td>Resource name</td>
-        </tr>
-        <tr>
-            <td>title</td>
-            <td>Resource title</td>
-        </tr>
-        <tr>
-            <td>path</td>
-            <td>Absolute path of the resource</td>
-        </tr>
-        <tr>
-            <td>tags</td>
-            <td>Tags of resource, comma separated</td>
-        </tr>
-        <tr>
-            <td>content</td>
-            <td>Content of the page, all paragraphs</td>
-        </tr>
-    </tbody>
-</table>
+h2. Metadata
+
+|*key*     |*value*|*usage*|
+|searchable|true   |determine whether a resource can be indexed by the search engine|
+
+h2. Reserved Fields
+
+Following Lucene index field names are reserved. Any paragraphs or metadata values with the same name will be overwritten.
+
+|*name* |*usage*|
+|id     |UUID of the resource|
+|name   |Resource name|
+|title  |Resource title|
+|path   |Absolute path of the resource|
+|tags   |Tags of resource, comma separated|
+|content|Content of the page, all paragraphs|

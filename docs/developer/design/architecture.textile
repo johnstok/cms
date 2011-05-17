@@ -1,0 +1,57 @@
+h1. Content Control System Architecture
+
+Content Control is a modular content management platform. A suite of applications are provided to suit different purposes:
+
+* A content management server, accessible via HTTP
+* A content management client that can access CC servers via HTTP
+* A set of server administration tools
+* A set of migration tools for 3rd party systems. 
+
+h2. Modules
+
+|*Module*|*Description*|
+|api-core                     |Public CC API for use by internal & external clients|
+|api-plugins                  |Internal private API for 3rd party libraries|
+|api-types                    |Types used by the public API|
+|application-ear              |CC server binary - distributed as a JEE5 EAR file|
+|application-war              |Web app binding of the content management engine, includes page rendering|
+|client-core                  |CC API client core classes|
+|client-gwt                   |CC API client GWT implementation|
+|client-migration             |CC migration binary - contains tooling to migrate from CC6|
+|client-shell                 |CC admin binary - contains all the admin tools|
+|impl-ejb3                    |JEE implementation of the public API - the core content managment engine|
+|impl-http                    |HTTP client binding of the CC public API|
+|impl-jaxrs                   |Web services binding of the CC public API|
+|plugins-multipart-apache     |Apache Commons implementation of the file upload plugin|
+|plugins-persistence-hibernate|Hibernate/JPA implementation of the persistence plugin|
+|plugins-scripting-rhino      |Rhino implementation of the scripting plugin|
+|plugins-scripting-velocity   |Velocity implementation of the scripting plugin|
+|plugins-search-lucene        |Lucene implementation of the search plugin|
+|plugins-security-jboss       |JBoss implementation of the security plugin|
+|tests-acceptance             |Acceptance tests for the CC server|
+
+h2. Server Architecture
+
+!../../uml/server.png!
+
+The CC server provides a default ejb3 implementation of the CC content management API, which writes all content to a supported database using JEE's JPA library. A default implementation of the plugin API is also provided. The content managment engine uses the plugin API for various tasks, including full text search and sending email.
+
+A second implementation of the content management API using JEE6's JAX-RS library is provided to expose the content mangement engine over HTTP. The JAX-RS API implementation delegates to the ejb3 implmentation.
+
+Finally, a rendering engine is provided to map HTTP requests to resources stored by the content management engine and render those resources using a template. The rendering engine also provides the ability to execute text files stored in the CMS as scripts. This scripting capability allows any HTTP request to be handled by CC server.
+
+h2. GWT Client Architecture
+
+!../../uml/client-asynchronous.png!
+
+The GWT client for CC is implemented in Javascript, runs in most modern browsers and talks to a CC server over HTTP. Because Javascript interpretation in browsers is single-threaded, all HTTP calls are made asynchronously, to avoid blocking client execution while waiting for a server response. Consequently, the GWT client doesn't leverage the synchronous interfaces from the api-core module. Instead an asynchronous client implementation is provided via the client-core module. The asynchronous client communicates in a RESTful style over HTTP. In particular, the full power of HTTPs methods and response codes are leveraged, as well as using hyper-media as the engine of application state (HATEOAS).
+
+The client-core module provides further GWT non-specific client code for features such as input validation, event handling, MVP, I18n, etc.
+
+The client-gwt module contains GWT specific code such as MVP views and HTTP requests.
+
+h2. Synchronous Client Architecture
+
+!../../uml/client-synchronous.png!
+
+All remaining CC client applications are written in Java. They leverage a, more typical, synchronous style when communicating with a CC server. A full client-side stack for synchronous CC communication is provided, which communicates with a CC server via HTTP.

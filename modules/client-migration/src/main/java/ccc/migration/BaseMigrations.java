@@ -300,7 +300,7 @@ public class BaseMigrations {
         }
 
         final UUID templateId = _tm.getTemplate(
-            new ResourceName(templateName),
+            ResourceName.escape(templateName),
             templateDescription,
             templateFolder);
         _migration.updateResourceTemplate(

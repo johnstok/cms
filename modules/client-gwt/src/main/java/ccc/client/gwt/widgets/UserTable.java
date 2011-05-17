@@ -28,7 +28,6 @@ package ccc.client.gwt.widgets;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
@@ -36,6 +35,7 @@ import ccc.api.core.UserCriteria;
 import ccc.api.types.CommandType;
 import ccc.api.types.Permission;
 import ccc.api.types.SortOrder;
+import ccc.client.actions.DeleteUserAction;
 import ccc.client.actions.GetUserAction;
 import ccc.client.actions.ListGroups;
 import ccc.client.actions.ListUsersAction;
@@ -48,7 +48,6 @@ import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.views.gxt.EditUserPwDialog;
 import ccc.client.gwt.views.gxt.UserMetadataDialog;
-
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
@@ -89,7 +88,8 @@ public class UserTable
     extends
         TablePanel
     implements
-        EventHandler<CommandType>, ColumnConfigSupport{
+        EventHandler<CommandType>,
+        ColumnConfigSupport {
 
     private ListStore<BeanModel> _detailsStore =
         new ListStore<BeanModel>();
@@ -144,6 +144,9 @@ public class UserTable
             contextMenu.add(createEditPwMenu(_grid));
             contextMenu.add(createEditMetadataMenu(_grid));
         }
+        if (GLOBALS.currentUser().hasPermission(Permission.USER_DELETE)) {
+            contextMenu.add(createDeleteUserMenu(_grid));
+        }
 
         _grid.setContextMenu(contextMenu);
         _grid.addPlugin(gp);
@@ -191,6 +194,18 @@ public class UserTable
         });
         return editUserPw;
     }
+
+     private MenuItem createDeleteUserMenu(final Grid<BeanModel> grid) {
+        final MenuItem deleteUser = new MenuItem(UI_CONSTANTS.delete());
+        deleteUser.addSelectionListener(new SelectionListener<MenuEvent>() {
+            @Override public void componentSelected(final MenuEvent ce) {
+                final BeanModel userDTO =
+                    grid.getSelectionModel().getSelectedItem();
+                new DeleteUserAction(userDTO.<User>getBean()).execute();
+            }
+        });
+        return deleteUser;
+     }
 
     private MenuItem createEditMetadataMenu(
                          final Grid<BeanModel> grid) {
@@ -283,6 +298,7 @@ public class UserTable
      */
     private final class SearchListener implements Listener<ComponentEvent> {
 
+        @Override
         public void handleEvent(final ComponentEvent be) {
             if (_searchString.getValue() == null) {
                 return;

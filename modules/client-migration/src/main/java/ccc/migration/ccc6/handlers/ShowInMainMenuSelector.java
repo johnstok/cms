@@ -57,6 +57,6 @@ public final class ShowInMainMenuSelector
     @Override
     public String getSql() {
         return
-            "select distinct content_id from menu_data";
+            Messages.getString("ShowInMainMenuSelector.sql"); //$NON-NLS-1$
     }
 }

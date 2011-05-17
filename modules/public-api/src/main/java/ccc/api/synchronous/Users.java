@@ -28,8 +28,8 @@ package ccc.api.synchronous;
 
 import java.util.Collection;
 import java.util.UUID;
-
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -38,7 +38,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.types.SortOrder;
@@ -198,5 +197,11 @@ public interface Users {
     void resetPassword(@QueryParam("password") String password,
                        @QueryParam("token") String token);
 
-
+    /**
+     * Delete the user with the specified id.
+     *
+     * @param resourceId The id of the existing resource.
+     */
+    @DELETE @Path(ccc.api.synchronous.ResourceIdentifiers.User.ELEMENT)
+    void delete(@PathParam("id") UUID resourceId);
 }

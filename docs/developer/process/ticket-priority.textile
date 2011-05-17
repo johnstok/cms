@@ -1,0 +1,7 @@
+h1. Ticket priorities:
+
+# Bugs
+# Operational / security features
+# Refactoring
+# Build features
+# Other features

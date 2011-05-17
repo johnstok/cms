@@ -1,0 +1,65 @@
+h1. Software Process
+
+h2. Summary
+
+We will be using XP to develop CCC7. For an introduction to XP see "wikipedia":"http://en.wikipedia.org/wiki/Extreme_programming.":http://en.wikipedia.org/wiki/Extreme_programming.
+
+!http://www.extremeprogramming.org/map/images/iteration.gif!
+
+h2. Our implementation
+
+* 2 weekly iterations.
+* End of iteration Fri 5pm
+* Release and planning on a Monday morning
+
+h2. Practices used
+
+* Unit testing (jUnit)
+* Acceptance testing ("SeleniumRC":SeleniumRC)
+* Pair programming (as required)
+* Refactoring
+* Simple design
+* Collective code ownership
+* Continuous integration
+* On site customer
+* Small releases
+* Sustainable pace
+* Coding standard
+* Mission statement
+* Ubiquitous language
+* User stories
+
+h2. Code review
+
+* We will run monthly code reviews.
+* We'll document our [StrategyCodeReview code review strategy].
+
+h2. User stories
+
+* User stories will be written using Mike Cohn's *As a user, I want* style.
+* For more information on user stories see the [XpPractices XP practices page].
+
+h2. How we estimate
+
+* We will estimate story size in 'story points'
+* We will use fibonacci numbers for estimates (ie 1, 2, 3, 5, 8, 13, 21...)
+
+h3. What detail should form part of an estimate?
+
+All delivery activities:
+* Planning
+* Architecture discussions / design decisions
+* Technical spike
+* Unit tests
+* Coding
+* Documentation
+* Deployment considerations: DB upgrade required, etc.
+* Acceptance tests required
+* Libraries to be selected or integrated
+
+h3. Further details:
+
+* "Estimating user stories":"http://www.smartagile.com/2007/10/user-story-estimates.html":http://www.smartagile.com/2007/10/user-story-estimates.html
+* "Story points vs Ideal days":"http://jan-so.blogspot.com/2008/01/estimating-in-story-points-vs-ideal.html":http://jan-so.blogspot.com/2008/01/estimating-in-story-points-vs-ideal.html
+* "How to estimate":"http://www.agile-software-development.com/2007/09/how-to-implement-scrum-in-10-easy-steps_28.html":http://www.agile-software-development.com/2007/09/how-to-implement-scrum-in-10-easy-steps_28.html
+* "User Story Estimation Techniques":"http://www.infoq.com/articles/agile-estimation-techniques":http://www.infoq.com/articles/agile-estimation-techniques

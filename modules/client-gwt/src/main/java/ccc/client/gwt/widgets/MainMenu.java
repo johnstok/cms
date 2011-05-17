@@ -39,6 +39,8 @@ import ccc.client.actions.ListGroups;
 import ccc.client.actions.LockAction;
 import ccc.client.actions.LogoutAction;
 import ccc.client.actions.OpenAboutAction;
+import ccc.client.actions.OpenApiDocsAction;
+import ccc.client.actions.OpenBuildDocsAction;
 import ccc.client.actions.OpenCreateUserAction;
 import ccc.client.actions.OpenEditCacheAction;
 import ccc.client.actions.OpenHelpAction;
@@ -46,7 +48,6 @@ import ccc.client.actions.OpenUpdateCurrentUserAction;
 import ccc.client.actions.OpenUpdateFolderAction;
 import ccc.client.actions.OpenUpdateMetadataAction;
 import ccc.client.actions.OpenUpdateResourceAclAction;
-import ccc.client.actions.OpenBuildDocsAction;
 import ccc.client.actions.PublishAction;
 import ccc.client.actions.UnlockAction;
 import ccc.client.actions.UnpublishAction;
@@ -60,7 +61,6 @@ import ccc.client.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.GroupViewImpl;
 import ccc.client.i18n.UIConstants;
 import ccc.client.presenters.CreateGroupPresenter;
-
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
@@ -111,13 +111,17 @@ public class MainMenu
                 _constants.about(),
                 new OpenAboutAction()),
             createMenuItem(
-                "open-build-docs",
-                _constants.build(),
-                new OpenBuildDocsAction()),
-            createMenuItem(
                 "open-manual",
                 _constants.manual(),
-                new OpenHelpAction()));
+                new OpenHelpAction()),
+            createMenuItem(
+                "open-full-docs",
+                _constants.fullDocumentation(),
+                new OpenBuildDocsAction()),
+            createMenuItem(
+                "open-api-docs",
+                _constants.api(),
+                new OpenApiDocsAction()));
 
         addButton(
             null, "logout-menu-item", _constants.logout(), new LogoutAction());
@@ -162,6 +166,7 @@ public class MainMenu
         rootMenu.addListener(
             Events.BeforeShow,
             new Listener<MenuEvent>() {
+                @Override
                 public void handleEvent(final MenuEvent be) {
                     rootMenu.removeAll();
 
@@ -280,6 +285,7 @@ public class MainMenu
             _constants.details(),
             new Action(){
 
+                @Override
                 public void execute() {
                     final StringBuilder sb = new StringBuilder();
                     if (root.getLockedBy() != null) {

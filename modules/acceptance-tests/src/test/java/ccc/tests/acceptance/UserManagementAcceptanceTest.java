@@ -31,7 +31,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
@@ -177,7 +176,7 @@ public class UserManagementAcceptanceTest
         // TODO: Test metadata set correctly.
     }
 
-    
+
     /**
      * Test.
      */
@@ -188,7 +187,7 @@ public class UserManagementAcceptanceTest
         final String email = username+"@abc.def";
         final String name = "testuser";
 
-      
+
         final User us = getUsers().retrieveCurrent();
 
         // ACT
@@ -205,11 +204,11 @@ public class UserManagementAcceptanceTest
         // ASSERT
         final User ud = getUsers().retrieve(us.getId());
         // must not be able to change own username
-        assertEquals(us.getUsername(), ud.getUsername()); 
+        assertEquals(us.getUsername(), ud.getUsername());
         assertEquals(email, ud.getEmail());
         assertEquals(name, ud.getName());
     }
-    
+
 
     /**
      * Test.
@@ -338,7 +337,7 @@ public class UserManagementAcceptanceTest
         final Boolean exists = getUsers().usernameExists(username);
 
         // ASSERT
-        assertTrue("Username should exists", exists.booleanValue());
+        assertTrue("Username should exist", exists.booleanValue());
     }
 
     /**
@@ -414,19 +413,19 @@ public class UserManagementAcceptanceTest
         assertEquals(us.getEmail(), ul.getEmail());
         assertEquals(0, ul.getGroups().size());
     }
-    
-    
+
+
     /**
      * Test.
      */
     public void testSetTokenAndVerifyDTO() {
-        
+
         // ARRANGE
         final User us = tempUser();
-        
+
         // ACT
         getUsers().sendToken(us.getUsername().toString());
-        
+
         // ASSERT
         final User ud = getUsers().retrieve(us.getId());
         assertEquals(us.getUsername(), ud.getUsername());
@@ -436,17 +435,17 @@ public class UserManagementAcceptanceTest
         assertFalse("Token expiry must not be set",
             ud.getMetadata().keySet().contains("tokenExpiry"));
     }
-    
-    
+
+
     /**
      * Test.
      */
     public void testResetPasswordWithBadToken() {
-        
+
         // ARRANGE
         final User us = tempUser();
         getUsers().sendToken(us.getUsername().toString());
-        
+
         // ACT
         try {
             getUsers().resetPassword("TestTest123--", "faultytoken");
@@ -457,13 +456,13 @@ public class UserManagementAcceptanceTest
                 e.getMessage());
         }
     }
-    
-    
+
+
     /**
      * Test.
      */
     public void testResetPasswordWithExpiredToken() {
-        
+
         // ARRANGE
         User us = tempUser();
         Map<String, String> meta = us.getMetadata();
@@ -471,10 +470,10 @@ public class UserManagementAcceptanceTest
         meta.put("tokenExpiry", "100");
         us.setMetadata(meta);
         getUsers().update(us.getId(), us);
-        
+
         // ACT
         try {
-            getUsers().resetPassword("TestTest123--", 
+            getUsers().resetPassword("TestTest123--",
                 "abc"+us.getId().toString());
         } catch (CCException e) {
             // ASSERT
@@ -483,33 +482,32 @@ public class UserManagementAcceptanceTest
                 e.getMessage());
         }
     }
-    
-    
+
+
     /**
      * Test.
      */
     public void testResetPassword() {
-        
+
         // ARRANGE
         User user = tempUser();
 
-        
         String token = user.getId().toString();
         Map<String, String> meta = user.getMetadata();
         meta.put("token", token);
-        
+
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, 1);
-        
+
         meta.put("tokenExpiry", ""+cal.getTime().getTime());
         user.setMetadata(meta);
         getUsers().update(user.getId(), user);
-        
-        
+
+
         // ACT
         getUsers().resetPassword("TestTest123--", token);
         getSecurity().logout();
-        
+
         // ASSERT
         assertTrue(
             getSecurity().login(user.getUsername().toString(), "TestTest123--")
@@ -517,6 +515,103 @@ public class UserManagementAcceptanceTest
         assertFalse(
             getSecurity().login(user.getUsername().toString(), "Testtest00-")
             .booleanValue());
-        
+
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testQueryAndDeletedUsers() {
+        // ARRANGE
+        final User us = tempUser();
+        getUsers().delete(us.getId());
+
+        // ACT
+        final List<User> ul =
+            getUsers()
+                .query(
+                    us.getUsername().toString(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    1,
+                    PAGE_SIZE)
+                .getElements();
+
+        // ASSERT
+        assertEquals(0, ul.size());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUsernameExistsDeletedUsers() {
+
+        // ARRANGE
+        final Username username = dummyUsername();
+        final String email = username+"@abc.def";
+        final String name = "testuser";
+
+        // Create the user
+        final User u =
+            new User()
+                .setEmail(email)
+                .setUsername(username)
+                .setName(name)
+                .setMetadata(Collections.singletonMap("key", "value"))
+                .setPassword("Testtest00-");
+
+        User user = getUsers().create(u);
+        getUsers().delete(user.getId());
+
+        // ACT
+        final Boolean exists = getUsers().usernameExists(username);
+
+        // ASSERT
+        assertTrue("Username should exists", exists.booleanValue());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testRetrieveDeletedUsers() {
+        // ARRANGE
+        final User us = tempUser();
+        getUsers().delete(us.getId());
+
+        // ACT
+        User actual = getUsers().retrieve(us.getId());
+
+        // ASSERT
+        assertNull(actual);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUserByLegacyIdDeletedUsers() {
+        // ARRANGE
+        final User us = tempUser();
+
+        final int legacyId = new Random().nextInt(100000);
+
+        Map<String, String> metadata = us.getMetadata();
+        metadata.put("legacyId", ""+legacyId);
+        us.setMetadata(metadata);
+        getUsers().update(us.getId(), us);
+        getUsers().delete(us.getId());
+
+        // ACT
+        User actual = getUsers().userByLegacyId(""+legacyId);
+
+        // ASSERT
+        assertNull(actual);
     }
 }

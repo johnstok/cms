@@ -1,0 +1,95 @@
+h1. Design of the GWT Client
+
+The high level GWT client architecture is explained in architecture.html.
+
+Almost all the widgets are Sencha GXT widgets as they provide functionality and visuals that were not available in plain GWT. Mixing GWT and GXT widgets should be avoided as much as possible. In order to use certain GXT widgets like grid we had to introduce GXT specific bindings. 
+
+User interface dialogs extend AbstractBaseDialog directly or through another abstract class, for example for input form dialogs there is AbstractEditDialog.
+
+During the project Model-View-Presenter (MVP) pattern was introduced and some of the new dialogs are following it. However, there are still good amount of dialogs with older style. One of the benefits of the MVP is better testability.
+
+Another concept introduce after the begin is the event bus. It is used to keep related dialogs updated without complex cross dependency. The client code is not revised to use it everywhere and therefore for example SingleSelectionModel has still update, move and create methods. 
+
+h2. client-core
+
+h3. ccc.client.actions
+
+Remoting actions which make a server-side calls used by MVP presenters.
+
+h3. ccc.client.concurrent
+
+SimpleLatch class, used to ensure that necessary async calls finish before next action.
+
+h3. ccc.client.core
+
+Classes and interfaces for validation, exception handling etc. 
+
+h3. ccc.client.events
+
+Client event bus classes and interfaces. The event bus reduces cross dependency of the client side dialogs and  is used to notify UI elements about changes in data happening in some other UI element. 
+
+h3. ccc.client.i18n
+
+Interface for i18n features. Most of the UI labels are defined in UIConstants. The difference between UIConstants and UIMessages is that UIMessages have inserted values in the message.
+
+h3. ccc.client.presenters
+
+Presenter classes for MVP used for the newer client dialogs.
+
+h3. ccc.client.remoting
+
+GetServicesAction is used for HATEOAS CC7 API fetching when the CC7 client is initialised. 
+TextParser is an API interface for JSON/text parsing and it has client and server specific implementations. 
+
+h3. ccc.client.validation
+
+Base implementation of non platform-specific validations.
+
+h3. ccc.client.views
+
+MVP view interfaces.
+
+
+
+h2. client-gwt
+
+h3. ccc.client.gwt.actions
+
+GUI actions used to open dialogs or preview windows when no server API access is needed.
+
+h3. ccc.client.gwt.binding
+
+Binding between CC7 DTO summaries and GXT models. These models are then consumed by GXT data grids etc. Some of the summaries have 1:1 mapping but for certain a subset of fields is used. 
+
+h3. ccc.client.gwt.core
+
+GWT specific implementations for various interfaces.
+
+h3. ccc.client.gwt.i18n
+
+GWT i18n specific interfaces extending their ccc.client.i18n counterparts. The actual text sources for messages are stored under client-core module's src/main/resources/ccc/client/gwt/i18n folder.
+
+h3. ccc.client.gwt.jre.java.io
+
+GWT implementation of java.io.InputStream. This empty interface is added in order to support GWT compilation CC7 classes (ccc.api.core.File). 
+
+h3. ccc.client.gwt.jre.java.util
+
+GWT implementation of java.util.UUID. The class is just a simple value holder and does not support random UUID generation.
+
+h3. ccc.client.gwt.remoting
+
+Remoting actions which make a server-side call to retrieve or send data used by GWT user interface. These 
+classes extend ccc.client.core.RemotingAction and override at least getPath method. 
+
+h3. ccc.client.gwt.validation
+
+Validations class extending ccc.client.validation.AbstractValidations and adding method for XML validation. The XML validation uses GWT's XML parser, hence the location.
+
+h3. ccc.client.gwt.views.gxt
+
+Dialogs for specific user tasks. This package contains MVP view implementations and older ones that are not yet converted to MVP. All new dialogs should follow MVP pattern. 
+
+h3. ccc.client.gwt.widgets
+
+GXT user interface components. These are CC7 specific widgets used to display content editing related resources. FCKEditor and CodeMirrorEditor are special cases as they contain JSNI code in order to interact with 3rd party JavaScript code.

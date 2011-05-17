@@ -27,6 +27,7 @@
                   <configuration>
                       <doCheck>false</doCheck>
                       <doUpdate>false</doUpdate>
+                      <revisionOnScmFailure>1</revisionOnScmFailure>
                   </configuration>
               </plugin>
             <plugin>
@@ -133,6 +134,83 @@
                            <outputDirectory>${basedir}/target/client-gwt/ccc.client.gwt.ContentCreator/manual/api</outputDirectory>
                            <sourcepath>${basedir}/target/api-source</sourcepath>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-doc-assets</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/client-gwt/ccc.client.gwt.ContentCreator/manual</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/../../docs</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include> **/*.txt </include>
+                                        <include> **/*.gif </include>
+                                        <include> **/*.png </include>
+                                        <include> **/*.jpg </include>
+                                        <include> **/*.jpeg </include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>convert-textile</id>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <tasks>
+                                <script language="ruby"><![CDATA[
+# Recursively create missing directories
+def mkdir(dir)
+    path = dir.sub(%r</\z>, '')
+    stack = []
+    until path == stack.last   # dirname("/")=="/", dirname("C:/")=="C:/"
+      stack.push path
+      path = File.dirname(path)
+    end
+    stack.reverse_each do |dir|
+      begin
+        if !File.directory?(dir) then Dir.mkdir(dir) end
+      end
+    end
+end
+
+# Handle multi-module builds
+isMultiModule = !Dir.pwd.end_with?('modules/content-creator')
+if isMultiModule then Dir.chdir(Dir.pwd+'/modules/content-creator') end
+
+# Import the RedCloth library
+require 'src/build/ruby/redcloth.rb'
+
+# Convert all Textile files to HTML
+Dir.glob( File.join('../../docs/', '**', '*.textile')).each { |filename|
+    target = 'target/client-gwt/ccc.client.gwt.ContentCreator/manual/'+filename[11,filename.length-18]+'html'
+    puts 'Writing '+target
+    
+    contents = IO.read(filename)
+    mkdir File.dirname(target)
+    File.open(target, 'w') {|f| f.write(RedCloth.new(contents).to_html) }
+}
+                                ]]></script>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

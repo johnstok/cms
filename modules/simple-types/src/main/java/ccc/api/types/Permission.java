@@ -154,6 +154,8 @@ public final class Permission {
     public static final String USER_READ = "USER_READ";
     /** SELF_UPDATE : String. */
     public static final String SELF_UPDATE = "SELF_UPDATE";
+    /** USER_READ : String. */
+    public static final String USER_DELETE = "USER_DELETE";
 
     /** LOG_ENTRY_CREATE : String. */
     public static final String LOG_ENTRY_CREATE = "LOG_ENTRY_CREATE";
@@ -220,6 +222,7 @@ public final class Permission {
         allPerms.add(USER_UPDATE);
         allPerms.add(USER_READ);
         allPerms.add(SELF_UPDATE);
+        allPerms.add(USER_DELETE);
         allPerms.add(LOG_ENTRY_CREATE);
         allPerms.add(API_ACCESS);
 

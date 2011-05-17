@@ -1,0 +1,51 @@
+h1. CC Database Schema
+
+A description of the key tables in the CC database schema and how they are used.
+
+h2. General Points
+
+* All DB identifiers are type 4 UUIDs.
+* The VN column found in a number of tables is used by the ORM layer to provide optimistic offline locking and can be ignored for migration purposes.
+
+h2. Users
+
+* Each user has a record in the USERS table.
+* User groups are store in the GROUPS table.
+* A user can belong to multiple groups recorded in the USER_ROLES join table.
+* Additional user metadata may be available in the USER_METADATA table.
+* A group can be assigned 0 or more permissions, determing the commands a user can perform.
+
+h2. Resources
+
+* CC stores 6 different subtypes of resources: Aliases, Files, Folders, Pages, Searches and Templates.
+* All resources have an entry in the RESOURCES table.
+* An additional table for each resource subtype is available. Matching a record in the RESOURCE and the subtype table can be achieved by joining on their respective ID columns.
+* Resources are stored hierarchically. A resouce's parent is specified by the PARENT_ID column.
+* Root folders have a null value for PARENT_ID.
+* The order of resources in a parent is specified by the PARENT_INDEX column.
+* For pages, files and templates a revision history is kept. Each revision is stored in the corresponding revison table, e.g. PAGE_REVISIONS.
+* The order of revisions is specified by the REVISION_NO column. Revision no's are specified by a sequence starting from 0.
+* To identify the current revsion for a subtype you should join against the subtype's ID and REVISION_NO columns.
+* Pages and files may also have a working copy specified in their respective wcopies table (e.g. PAGE_WCOPIES). However, for migration purposes these can likely be ignored.
+* File data is not stored in the database. Instead a file is written to disk with a filename corresponding to the value of the DATA_ID column from a record in the FILE_REVISIONS table.
+* CC implements soft delete. Deleted resources are identified by a non-zero / true value in the DELETED column.
+* Each revision of a page contains 0 or more paragraphs, stored in the PAGE_REVISION_PARAGRAPHS table.
+* Each paragraph has a name, a type and a value.
+* Paragraphs can be one of several types: 
+** TEXT    Stored in the VALUE_TEXT column.
+** BOOLEAN Stored in the VALUE_BOOLEAN column.
+** DATE    Stored in the VALUE_DATE column.
+** NUMBER  Encoded using java.math.BigDecimal#toString() method and stored in the VALUE_TEXT column.
+** LIST    Comma delimited and stored in the VALUE_TEXT column.
+* By default a resource is accessible to everyone. If a users / groups are assigned to a resource it will be visible only if the user matches one of assigned subjects.
+* The RESOURCE_ROLES and RESOURCE_USERS tables record the groups and users assigned to a resource, respectively.
+
+h2. Comments
+
+* Comments are stored in a single table COMMENTS.
+* Each comment refers to a resource, specified by the RESOURCE_ID column.
+
+h2. Actions
+
+* Actions are commands scheduled to execute at a later data. These can likely be ignored for migration.
+

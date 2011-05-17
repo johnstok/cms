@@ -1,0 +1,283 @@
+h1. EJB3
+
+
+h2. Examples of fully annotated EJBs
+
+
+h3. A stateless bean
+
+<pre>
+@Stateless
+@Remote ({LibraryService.class})
+@TransactionAttribute(REQUIRES_NEW)
+@SecurityDomain("foo")
+@RolesAllowed({"Admin"})
+@Resource(
+   name="jms/QCF",
+   mappedName="java:/JmsXA",
+   authenticationType=CONTAINER,
+   type=javax.jms.QueueConnectionFactory.class)
+public class LibraryBean
+     extends BeanSupport
+  implements LibraryService {
+
+   // The body of the class
+}
+</pre>
+
+h3. A timer bean
+
+TO DO...
+
+h3. A message-driven bean
+
+<pre>
+@MessageDriven(
+   activationConfig = {
+      @ActivationConfigProperty(propertyName="destinationType", propertyValue="javax.jms.Queue"),
+      @ActivationConfigProperty(propertyName="destination", propertyValue="queue/MyQueue")
+   })
+@SecurityDomain("foo")
+@RunAs("Admin")
+@Resource(
+   name="jms/QCF",
+   mappedName="java:/JmsXA",
+   authenticationType=CONTAINER,
+   type=javax.jms.QueueConnectionFactory.class)
+public class BulkBatchRegistrationMsgBean
+  implements MessageListener {
+
+   /** myContext : MessageDrivenContext */
+   @Resource private transient MessageDrivenContext myContext;
+
+   public void onMessage(javax.jms.Message theMessage) {
+      // Bean implementation
+   }
+}
+</pre>
+
+h2. Description of annotations used
+
+h3. @Stateless
+
+The Stateless annotation specifies that the enterprise bean is a stateless session bean.
+
+The Stateless annotation is applied to the bean class. The name annotation element defaults to the unqualified name of the bean class. The name, whether explicitly specified or defaulted, must be unique within the ejb-jar. The mappedName element is a product-specific name that the session bean should be mapped to.
+
+<pre>
+@Target(TYPE)
+@Retention(RUNTIME)
+public @interface Stateless {
+   String name() default "";
+   String mappedName() default "";
+   String description() default "";
+}
+</pre>
+
+h3. @Remote
+
+The Remote annotation is applied to the session bean class or remote business interface to designate a remote interface of the bean.
+
+<pre>
+@Target(TYPE)
+@Retention(RUNTIME)
+public @interface Remote {
+   Class[] value() default {}; // list of remote business interfaces
+}
+</pre>
+
+h3. @TransactionAttribute
+
+The !TransactionAttribute annotation specifies whether the container is to invoke a business method within a transaction context.
+
+The !TransactionAttribute annotation can only be specified if container managed transaction demarcation is used.
+
+<pre>
+@Target({METHOD, TYPE})
+@Retention(RUNTIME)
+public @interface TransactionAttribute {
+   TransactionAttributeType value() default TransactionAttributeType.REQUIRED;
+}
+</pre>
+<pre>
+public enum TransactionAttributeType {
+   MANDATORY,
+   REQUIRED,
+   REQUIRES_NEW,
+   SUPPORTS,
+   NOT_SUPPORTED,
+   NEVER
+}
+</pre>
+
+h3. @SecurityDomain
+
+The !SecurityDomain annotation specifies that the Bean belongs to a jBoss security domain.
+
+Accepts a single string value - the name attribute of an application-policy from the jBoss server's login-config.xml file. For example, the specified value would be simply "my-policy", not the fully qualified JNDI location for the security domain (which is "java:/jaas/my-policy").
+<pre>
+@Target(value=TYPE)
+@Retention(value=RUNTIME)
+public @interface SecurityDomain {
+   String value();
+}
+</pre>
+
+h3. @RolesAllowed
+
+The !RolesAllowed annotation specifies the security roles that are allowed to invoke the methods of the bean.
+
+The value of the !RolesAllowed annotation is a list of security role names. This annotation can be specified on the bean class and/or it can be specified on methods of the class that are methods of the business interface. Specifying the !RolesAllowed annotation on the bean class means that it applies to all applicable interface methods of the class.
+
+<pre>
+@Target({TYPE, METHOD})
+@Retention(RUNTIME)
+public @interface RolesAllowed {
+   String[] value();
+}
+</pre>
+
+h3. @Resource
+
+The Resource annotation is used to express a dependency on an external resource in the bean's environment.
+
+The name property refers to the name by which the resource is to be known in the environment; the type is the resource manager connection factory type. The authenticationType element specifies whether the container or bean is to perform authentication. The shareable element refers to
+the sharability of resource manager connections. The mappedName element is a product-specific name that the resource should be mapped to. Applications that use mapped names may not be portable.
+
+<pre>
+@Target({TYPE, METHOD, FIELD})
+@Retention(RUNTIME)
+public @interface Resource {
+   String name() default "";
+   Class type() default Object.class;
+   AuthenticationType authenticationType() default AuthenticationType.CONTAINER;
+   boolean shareable() default true;
+   String mappedName() default "";
+   String description() default "";
+}
+
+public enum AuthenticationType {
+   CONTAINER,
+   APPLICATION
+}
+</pre>
+
+Multiple Resource annotations may be specified by wrapping them in a Resources annotation.
+
+<pre>
+@Target(TYPE)
+@Retention(RUNTIME)
+public @interface Resources {
+   Resource[] value();
+}
+</pre>
+
+The dual purpose of @Resource
+
+TO DO
+# Mapping from container-specific to container-nonspecific resources.
+# Dependency injection.
+
+h3. @MessageDriven
+
+The !MessageDriven annotation specifies that the enterprise bean is a message-driven bean.
+
+This annotation is applied to the bean class. The name annotation element defaults to the unqualified name of the bean class. The name—whether explicitly specified or defaulted—must be unique within the ejb-jar. The mappedName element is a product-specific name that the message-driven bean should be mapped to. Applications that use mapped names may not be portable.
+<pre>
+@Target(TYPE)
+@Retention(RUNTIME)
+public @interface MessageDriven {
+   String name() default "";
+   Class messageListenerInterface() default Object.class;
+   ActivationConfigProperty[] activationConfig() default {};
+   String mappedName() default "";
+   String description() default "";
+}
+</pre>
+
+h3. @ActivationConfigProperty
+
+The !ActivationConfigProperty annotation is used to pass configuration parameters to message-driven beans.
+
+Activation config properties are specified via the 'activationConfig' field of a !MessageDriven annotation. The references below include links to those properties supported by the jBoss container.
+
+<pre>
+@Target({})
+@Retention(RUNTIME)
+public @interface ActivationConfigProperty {
+   String propertyName();
+   String propertyValue();
+}
+</pre>
+
+h3. @RunAs
+
+The !RunAs annotation specifies the security context under which the annotated class' methods should execute.
+
+For example, this allows a class to execute with elevated privileges relative to the documented norm. The role must map to the user / group information in the container's security realm. It's value is the name of a security role.
+
+<pre>
+@Documented
+@Retention(value=RUNTIME)
+@Target(value=TYPE)
+public @interface RunAs {
+   String value();
+}
+</pre>
+
+h2. F. A. Q.
+
+
+h3. Can we moved shared annotations to a super-class?
+
+The official answer to this question is NO. The annotations defined in the EJB3 spec (simplified edition) are not themselves annotated with the @inherited annotation. The implication of this is that an EJB3 deployer will not detect EJB3 annotations on superclasses. See the annotation definitions above for more details.
+
+h3. Do MDBs still have to implement the jms interface !MessageListener?
+
+No, but if they do not then they must specify the messaging interface they support as part of the @!MessageDriven annotation.
+
+From Sun's EJB 3.0 spec (simplified version):
+<pre>
+6.1.1 Business Interface
+   The business interface of a message-driven bean is the message-listener interface that is determined by
+   the messaging type in use for the bean. For example, in the case of JMS, this is the javax.jms.MessageListener
+   interface.
+   The message-driven bean must implement the appropriate message listener interface for the messaging
+   type that the message-driven bean supports or must designate its message listener interface using the
+   !MessageDriven annotation or the deployment descriptor.
+
+6.1.2 Bean Class
+   A message driven bean must be annotated with the !MessageDriven annotation or denoted in the
+   deployment descriptor as a message-driven bean. The bean class need not implement the
+   javax.ejb.MessageDrivenBean interface.
+</pre>
+
+h3. How do we mount EJBs so that the name of the ear does not form part of the jndi-location?
+
+The EJB3 spec' does not prescribe the names with which EJBs should be bound into the app' server's JNDI context. As such it is up to each vendor to come with a default naming convention. For jBoss these default names can be overridden using the non-standard @!LocalBinding and @!RemoteBinding annotations. For example, to bind the remote interface of an EJB to the JNDI location "foo/bar" you add the following annotation:
+<pre>
+@RemoteBinding(jndiBinding="foo/bar")
+</pre>
+
+h3. Do we have to specify an interface when we annotate a bean with the @Remote annotation?
+
+To do - answer this question...
+
+h2. Useful resources for EJB3
+
+* "EJB3 Cheatsheet":"http://www.fnogol.de/ejb-annotations-cheat-sheat/":http://www.fnogol.de/ejb-annotations-cheat-sheat/
+* "Javaworld article: Migrating EJB 2.x applications to EJB 3.0":"http://www.javaworld.com/javaworld/jw-08-2006/jw-0814-ejb.html":http://www.javaworld.com/javaworld/jw-08-2006/jw-0814-ejb.html
+* "Activation Config Properties supported by jBoss":"http://wiki.jboss.org/wiki/Wiki.jsp?page=ConfigJMSMessageListener":http://wiki.jboss.org/wiki/Wiki.jsp?page=ConfigJMSMessageListener
+* "Javadoc for all EJB3 annotations supported by jBoss":"http://docs.huihoo.com/javadoc/jboss/ejb3/index.html":http://docs.huihoo.com/javadoc/jboss/ejb3/index.html
+* "jBoss wiki-home for EJB 3":"http://www.jboss.com/wiki/Wiki.jsp?page=EJB3":http://www.jboss.com/wiki/Wiki.jsp?page=EJB3
+* "jBoss EJB3 examples":"http://docs.jboss.org/ejb3/app-server/tutorial/index.html":http://docs.jboss.org/ejb3/app-server/tutorial/index.html
+* "jBoss EJB3 tutorial":"http://trailblazer.demo.jboss.com/EJB3Trail/":http://trailblazer.demo.jboss.com/EJB3Trail/
+* "jBoss EJB 3 extensions":"http://docs.jboss.org/ejb3/app-server/reference/build/reference/en/html/index.html":http://docs.jboss.org/ejb3/app-server/reference/build/reference/en/html/index.html
+* "Sun's EJB3 specification":"http://java.sun.com/products/ejb/docs.html":http://java.sun.com/products/ejb/docs.html
+* "Sun's Documentation of the standard meta-annotations (annotations of annotations)":"http://java.sun.com/j2se/1.5.0/docs/api/index.html?java/lang/annotation/package-summary.html":http://java.sun.com/j2se/1.5.0/docs/api/index.html?java/lang/annotation/package-summary.html
+* "Sun's documentation of the JEE security annotations (RunAs, RolesAllowed etc.)":"http://java.sun.com/javaee/5/docs/api/index.html?javax/annotation/security/package-summary.html":http://java.sun.com/javaee/5/docs/api/index.html?javax/annotation/security/package-summary.html
+* "Sun's JEE 5 Tutorial":"http://java.sun.com/javaee/5/docs/tutorial/doc/index.html":http://java.sun.com/javaee/5/docs/tutorial/doc/index.html
+* "Stateful session EJBs and extended persistence contexts":"http://blogs.sun.com/enterprisetechtips/entry/extended_persistence_context_in_stateful":http://blogs.sun.com/enterprisetechtips/entry/extended_persistence_context_in_stateful
+* "Exception handling in EJBs":"http://java.sun.com/javaee/5/docs/tutorial/doc/bnbpj.html":http://java.sun.com/javaee/5/docs/tutorial/doc/bnbpj.html
+* "EJB do's and dont's":"http://blogs.sun.com/chengfang/entry/do_s_and_don_ts":http://blogs.sun.com/chengfang/entry/do_s_and_don_ts
+* "http://dobesland.wordpress.com/2007/07/22/gwt-using-a-stateful-ejb-in-the-http-session-via-a-servlet/":http://dobesland.wordpress.com/2007/07/22/gwt-using-a-stateful-ejb-in-the-http-session-via-a-servlet/

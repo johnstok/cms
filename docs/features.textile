@@ -4,7 +4,7 @@ J2EE, Open Source
 
 h2. User interface
 
-* Based on GXT. Works on major browsers (IE6/7/8, Firefox, Safari, Chrome)
+* Based on GXT. Works on major browsers (IE6/7/8, Firefox, Safari)
 * Closer to desktop application than traditional web application
 * Supports multiple user interface languages
 * Built-in help

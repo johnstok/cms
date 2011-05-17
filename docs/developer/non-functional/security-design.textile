@@ -1,0 +1,28 @@
+h1. Security Design
+
+This page describes how security should be implemented in CCC7.
+
+h2. Passwords
+
+* Never store plain text passwords in the db - salt & hash them. (Salting inhibits rainbow table attacks).
+
+h2. Authentication
+
+* Add an escalating delay on authentications to prevent brute force attacks (ie after three failed logins user must wait 10s, then 20s, 40s, etc.)
+* Could an escalating delay be leveraged to implement a DoS attack?
+
+h2. Authorisation
+
+The basic outline for providing authorisation for the an app will be as follows:
+* EJB security will be applied to _remote_ EJBs.
+* By default no roles are allowed to access a method: *@RolesAllowed({})*.
+* Only a single role should be specified for a given EJB method.
+* For some, widely used, query methods *@PermitAll* may be more appropriate.
+* A user may have multiple roles - each role a user has will allow them access to a subset of EJB methods.
+* Parts of the UI will be selectively displayed, based on the roles for the 'logged in' user.
+
+h2. References
+
+* "Salt & hash passwords":"http://blog.moertel.com/articles/2006/12/15/never-store-passwords-in-a-database.":http://blog.moertel.com/articles/2006/12/15/never-store-passwords-in-a-database.
+* "Rainbow tables":"http://www.codinghorror.com/blog/archives/000949.html.":http://www.codinghorror.com/blog/archives/000949.html.
+* "Brute force attacks":"http://www.codinghorror.com/blog/archives/001206.html.":http://www.codinghorror.com/blog/archives/001206.html.

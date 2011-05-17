@@ -1,0 +1,62 @@
+h1. Useful tools for development
+
+
+A list of tools that make development easier...
+
+h2. CurrPorts (win)
+
+
+From the website:
+
+bq. CurrPorts displays the list of all currently opened TCP/IP and UDP ports on your local computer. For each port in the list, information about the process that opened the port is also displayed, including the process name, full path of the process, version information of the process (product name, file description, and so on), the time that the process was created, and the user that created it.
+
+CurrPorts is especially useful for diagnosing problems such as jBoss not starting properly due to required ports being in use...
+
+"http://nirsoft.net/utils/cports.html":http://nirsoft.net/utils/cports.html
+
+h2. lsof (unix)
+
+
+List of open files but can be used to reveal process occupying port.
+
+Example: display process binding to port 8080
+<pre>
+> lsof -i:8080
+COMMAND   PID    USER   FD   TYPE DEVICE SIZE NODE NAME
+java    12612 petteri  152r  IPv6  29653       TCP localhost:webcache (LISTEN)
+</pre>
+
+h2. tail (unix)
+
+
+Displays end of file and can be used to continuous log file monitoring 
+
+Example: display last 50 rows and append new rows in the end.
+<pre>
+> tail -f 50 /tmp/log
+</pre>
+"Tail for windows.":"http://tailforwin32.sourceforge.net/":http://tailforwin32.sourceforge.net/
+
+h2. WinSCP
+
+bq. WinSCP is an open source free SFTP client and FTP client for Windows. Legacy SCP protocol is also supported. Its main function is safe copying of files between a local and a remote computer. 
+"http://winscp.net/eng/index.php":http://winscp.net/eng/index.php
+
+h2. 7-Zip
+
+bq. 7-Zip is a file archiver with a high compression ratio.
+"http://www.7-zip.org/":http://www.7-zip.org/
+
+h2. Rainlender
+
+bq. Rainlendar is a feature rich calendar application that is easy to use and doesn't take much space on your desktop. The application is platform independent so you can run it both on Windows and on Linux.
+"http://www.rainlendar.net/cms/index.php":http://www.rainlendar.net/cms/index.php
+
+h2. Comparing files
+
+There are numerous tools available for visual diff & merge of text files:
+* "http://winmerge.org/":http://winmerge.org/
+* "http://www.sourcegear.com/diffmerge/index.html":http://www.sourcegear.com/diffmerge/index.html
+* "http://www.angusj.com/delphi/textdiff.html":http://www.angusj.com/delphi/textdiff.html
+* "http://meld.sourceforge.net/":http://meld.sourceforge.net/
+Reviews welcome!...

@@ -1,0 +1,76 @@
+
+h2. Deployment
+
+This page covers two typical deployment scenarios for CC7 during development.
+
+h3. Local deployment with development version
+
+This is the common case where a developer deploys latest version to the local JBoss to verify code changes and to run acceptance tests before commit or release.
+
+In case you want to use H2 "memory only" as your database, start it in the build directory @.../CCC7/build@ by executing @h2.cmd@.
+Other databases do not need this step and the DB connections parameters are read from the ~/.m2/settings.xml.
+
+Make sure you have running JBoss instance. Start Jboss from Eclipse, there should be a run target if the Jboss project is imported correctly.
+After Jboss is up and running,  on the command line execute: @mvn clean install -P deploy,configure@.
+
+The web site itself is accessible at "http://localhost:8080{application.name}":http://localhost:8080{application.name}.
+The content control user interface is be available at "http://localhost:8080{application.name}/ccc/client/":http://localhost:8080{application.name}/ccc/client/.
+
+
+h3. Remote deployment with development version
+
+Remote deployment is necessary when CC7 has to be deployed on a cluster. This can be the case under development for example when load testing is taking place.
+
+h4. 1. Create assembly
+
+mvn clean install -P assemble
+
+h4. 2. Copy assembly and install/upgrade the application on the server
+
+Create a directory to /webhome/docs/xxxx where xxxx is the application name.
+Copy the new ear file (/modules/application-ear/target/cc7-release.zip) to the server in that directory.
+Unzip the file on the server and delete the cc-release.zip.
+
+Only in case of new installation - run /installer/install.sh and /installer/post_install.sh
+To upgrade existing installation - run /installer/upgrade.sh
+
+h4. 3. Deploy
+
+Create symbolic link in to Jboss server deploy directory ln -s /webhome/docs/xxxx/xxxx.ear /usr/local/jboss/server/standard/deploy/xxxx.ear
+Observe server log to monitor deployment tail -f /usr/local/jboss/server/standard/log/server.log
+Configure jBoss logging to send output to a separate appender.
+
+h4. 4. Migration (optional)
+
+Migrate data from cc6 using the command line tool.
+Create upgraded templates for migrated data.
+
+h4. 5. Start tasks
+
+start lucene indexing: java -cp client-shell-7.2.20-SNAPSHOT.jar ccc.cli.Search -a xxxx -p migration -u migration -c start
+start scheduler: java -cp client-shell-7.2.20-SNAPSHOT.jar ccc.cli.Scheduling -a xxxx -p migration -u migration -c start
+
+h4. 6. Configure Apache
+
+Configure Apache to provide reverse-proxying etc. depending on the setup.
+
+
+h2. Command line tools
+
+Tools output possible options when executed without options. Read "shell tools":../../administration/shell-tools.html for more information.
+
+h2. Apache HTTP server
+
+Read separate page about configuration: "HowToConfigApacheHTTPServer":/ccc7/wiki/HowToConfigApacheHTTPServer
+
+h2. Acceptance testing
+
+Check the "testing strategy document":../testing/testing-strategy.html.
+
+h2. Database schema
+
+During development the DB schema can be recreated using 'configure' mvn profile.
+
+The latest schema definitions can be exported using 'schema' profile under services-ejb3: @mvn clean install -P schema@.
+
+DB scripts are stored under db-schema module and it produces zip file containing all scripts.

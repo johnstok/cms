@@ -27,7 +27,6 @@
 package ccc.acceptance.client;
 
 import java.util.UUID;
-
 import ccc.acceptance.client.views.EditTextFileFake;
 import ccc.api.core.File;
 import ccc.api.core.Folder;
@@ -53,20 +52,24 @@ public class EditTextFileAcceptanceTest extends AbstractAcceptanceTest {
 
         // ARRANGE
         final Folder parent = tempFolder();
-        final EditTextFile view = new EditTextFileFake("",
-            "",
-            "",
-            "",
-            false);
+        final EditTextFile view =
+            new EditTextFileFake("", "", "", "", false);
 
-        final File textFile = new File(parent.getId(),
-            "content", new MimeType("text", "html"), true, "none", "nocontent");
+        final File textFile =
+            new File(
+                parent.getId(),
+                "content",
+                new MimeType("text", "html"),
+                true,
+                "none",
+                "nocontent");
         textFile.setName(
             new ResourceName("testFile"+UUID.randomUUID().toString()));
         final File fileRs = getFiles().createTextFile(textFile);
         getCommands().lock(fileRs.getId());
-        final EditTextFilePresenter p = new EditTextFilePresenter(view,
-            getFiles().retrieve(fileRs.getId()));
+        final EditTextFilePresenter p =
+            new EditTextFilePresenter(
+                view, getFiles().retrieve(fileRs.getId()));
 
         view.setText("another text");
         view.setSubMime("plain");

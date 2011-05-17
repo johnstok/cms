@@ -26,17 +26,20 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.api.types.Permission.*;
-import static javax.ejb.TransactionAttributeType.*;
-
+import static ccc.api.types.Permission.SELF_UPDATE;
+import static ccc.api.types.Permission.USER_CREATE;
+import static ccc.api.types.Permission.USER_DELETE;
+import static ccc.api.types.Permission.USER_READ;
+import static ccc.api.types.Permission.USER_UPDATE;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 import java.util.Collection;
+import java.util.Date;
 import java.util.UUID;
-
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
@@ -44,6 +47,7 @@ import ccc.api.synchronous.Users;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 import ccc.commands.CreateUserCommand;
+import ccc.commands.DeleteUserCommand;
 import ccc.commands.ResetPasswordCommand;
 import ccc.commands.SendTokenCommand;
 import ccc.commands.UpdateCurrentUserCommand;
@@ -235,6 +239,18 @@ public class UsersEJB
             new SendTokenCommand(
                 getRepoFactory(),
                 username));
+    }
+
+
+    @Override
+    @RolesAllowed(USER_DELETE)
+    public void delete(final UUID userId) {
+        new DeleteUserCommand(
+                       getRepoFactory(),
+                       userId)
+                   .execute(
+                       currentUser(),
+                       new Date());
     }
 
 }

@@ -1,44 +1,49 @@
-<h2 id="Forsingledeveloper">Why?</h2>
-<p>The Apache webserver provides a wealth of useful modules that can further enhance a website run using Content Control. For example, mod_cache can be set up to run as a reverse proxy significantly reducing the load on Content Control for popular pages. Likewise, mod_proxy can be used to load balance across mutliple Content Control instances running in a cluster.</p>
-<h2>Example Configuration</h2>
-<pre class="wiki">
-&lt;VirtualHost *:80&gt;
+h2. Why?
+
+The Apache webserver provides a wealth of useful modules that can further enhance a website run using Content Control. For example, mod_cache can be set up to run as a reverse proxy significantly reducing the load on Content Control for popular pages. Likewise, mod_proxy can be used to load balance across mutliple Content Control instances running in a cluster.
+
+h2. Example Configuration
+
+<pre>
+<VirtualHost *:80>
  
     # Basic configuration
     ServerName www.example.com
     ServerAdmin admin@example.com
 
+    # Redirect to context
     Redirect permanent / /cc7/
  
     # Proxying
     ProxyRequests Off
-    &lt;Proxy *&gt;
+    <Proxy *>
         Order deny,allow
         Allow from all
-    &lt;/Proxy&gt;
- 
+    </Proxy>
     ProxyPass /cc7 http://localhost:8080/cc7
     ProxyPassReverse /cc7 http://localhost:8080/cc7
     ProxyPassReverseCookiePath /cc7 /cc7
  
     # Reverse proxy caching
-        CacheEnable disk /cc7
+    CacheEnable disk /cc7
  
     # Compression
-        SetOutputFilter DEFLATE
-        BrowserMatch ^Mozilla/4 gzip-only-text/html
-        BrowserMatch ^Mozilla/4\.0[678] no-gzip
-        BrowserMatch \bMSIE\s(7|8) !no-gzip !gzip-only-text/html
-        DeflateCompressionLevel 9
-        Header append Vary User-Agent env=!dont-vary
+    SetOutputFilter DEFLATE
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE\s(7|8) !no-gzip !gzip-only-text/html
+    DeflateCompressionLevel 9
+    Header append Vary User-Agent env=!dont-vary
  
     # Logging
     LogLevel warn
     ErrorLog /var/log/apache2/error.log
     CustomLog /var/log/apache2/access.log combined
  
-&lt;/VirtualHost&gt;
+</VirtualHost>
 </pre>
-<p>&nbsp;</p>
-<p>The configuration above proxies a private jBoss server running Content Control on port 8080 to the standard HTTP port 80. It provides disk caching and gzip compression to improve page load times.</p>
-<p>The following Apache modules are required: mod_proxy,mod_proxy_http, mod_cache, mod_disk_cache and mod_headers.</p>
+
+
+The configuration above proxies a private jBoss server running Content Control on port 8080 to the standard HTTP port 80. It provides disk caching and gzip compression to improve page load times.
+
+The following Apache modules are required: mod_proxy,mod_proxy_http, mod_cache, mod_disk_cache and mod_headers.

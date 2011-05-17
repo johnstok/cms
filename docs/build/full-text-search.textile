@@ -6,36 +6,42 @@ h2. Searching for resources
 
 Access to the search engine is available in all templates via the @$services@ object. See documentation of the "search":ccc.api.core.SearchEngine class for full details of the methods available.
 
-bc. #set( $search=$services.getSearch() )
-#set ($result = $search.find("content control", 20, 0);
+<pre>
+#set( $search=$services.getSearch() )
+#set ($result = find("content control", 20, 0);
 <ul>
 #foreach( $hit in $result.hits() )
     <li>$hit</li>
 #end
 </ul>
+</pre>
 
-Query methods on the search engine always return a "search result":ccc.api.types.SearchResult object containing hits that match the search term.
+Query methods on the search engine always return a "search result":../api/ccc/api/types/SearchResult.html object containing hits that match the search term.
 
-Each hit is the unique identifier of a resource in control. You could look up the resource using the "resources":ccc.api.coreResources object. For example:
+Each hit is the unique identifier of a resource in control. You could look up the resource using the "resources":../api/ccc/api/core/Resources.html object. For example:
 
-bc. #set( $resource=$services.getResources().retrieve($hit) )
+@#set( $resource=$services.getResources().retrieve($hit) )@
 
-Query methods are always paged, the above snippet returns the first 20 results from the first (0th) page. If necessary you can implement "paging":paging.html to scroll through subsequent results.
+Query methods are always paged, the above snippet returns the first 20 results from the first (0th) page. If necessary you can implement "paging":search-with-paging.html to scroll through subsequent results.
 
 h2. Syntax for search terms.
 
 For simple searches it should be enough to pass one or more terms to the search engine:
 
-bc. "Java"
+<pre>
+"Java"
 "Content Control"
 "Content Management System"
+</pre>
 
 Lucene uses a tokeniser to split terms such as "open-source" (it would be equivalent to "open source").
 
 It is also possible to search on specific fields of a resource:
 
-bc. "title:blog"
+<pre>
+"title:blog"
 "tags:news"
+</pre>
 
 For full details of the search term syntax see the Lucene "query syntax":http://lucene.apache.org/java/3_0_2/queryparsersyntax.html.
 
@@ -57,10 +63,10 @@ h3. Pages
 
 A field will be created for each paragraph on the page. So, for example, if page has a paragraph named 'article' you could search in the article paragraph with the following query:
 
-bc. "article:Java"
+@"article:Java"@
 
 If the paragraph contains text content both tokenised and un-tokenised fields are created. Un-tokenised fields are prefixed with an underscore (e.g. '_article'). This simplifies some queries such as "starts with". For example, to find all articles that start with a T you could use the following search:
 
-bc. "_article:T*"
+@"_article:T*"@
 
 Un-tokenised text fields are also useful when sorting textual paragraphs.

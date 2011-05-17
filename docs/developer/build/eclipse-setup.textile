@@ -1,0 +1,82 @@
+This page contains information about proper Eclipse setup for CCC7 project.
+
+h2. Plugins for Eclipse
+
+
+h3. Maven Integration for Eclipse 
+
+Make sure the version is using Maven 2.2.x, version 3.x seems to cause issues.
+
+* "http://m2eclipse.sonatype.org/":http://m2eclipse.sonatype.org/
+* "An introduction to m2eclipse":"http://www.theserverside.com/tt/articles/article.tss?l=Introductiontom2eclipse.":http://www.theserverside.com/tt/articles/article.tss?l=Introductiontom2eclipse.
+
+h3. Subversive
+
+Subclipse plugin seems to work a bit strangely with maven projects. Subversive handles them better so it might be worth of downloading the plugin (actually two parts) and disable Subclipse while working with CCC7.
+
+"http://www.eclipse.org/subversive/":http://www.eclipse.org/subversive/ (Project home)
+
+"http://www.polarion.org/index.php?page=download&project=subversive":http://www.polarion.org/index.php?page=download&project=subversive (Downloads)
+
+h3. Checkstyle
+
+Helps to ensure that Java code adheres to a set of coding standards. Configuration explained in the chapter below.
+
+"http://eclipse-cs.sourceforge.net/":http://eclipse-cs.sourceforge.net/
+
+
+h2. Configurations
+
+
+h3. Imports for Eclipse
+
+
+Configuration files can be found from project root/configuration/eclipse/
+
+Window->Preferences->Java:Code Style:Clean Up->Import clean-up.xml
+
+Window->Preferences->Java:Code Style:Code Templates->Import templates-java.xml
+
+Window->Preferences->Java:Code Style:Formatter->Import codeformat.xml
+
+Window->Preferences->Web and XML:XML Files:Templates->Import templates-xml.xml
+
+h3. Import for Checkstyle
+
+
+Window->Preferences->Checkstyle:New-> 'External Configuration File' from project root /build/configuration/checkstyle.xml
+
+Remember to activate Checkstyle for each module.
+
+h2. Other
+
+Window->Preferences->General:Workspace:Text file encoding = UTF-8
+
+Window->Preferences->General:Workspace:New text file line delimiter = Unix
+
+Window->Preferences->Team:SVN:Properties Configuration:Automatic properties->Import svn-auto-props.txt
+
+Window->Preferences->General:Editors:Text Editors:Spelling->User defined dictionary = dictionary.txt
+
+Window->Preferences->Java:Editor:Save Actions->Add the following 'additional actions':
+* Remove 'this' qualifier for non static field accesses
+* Remove 'this' qualifier for non static method accesses
+* Convert control statement bodies to block
+* Convert for loops to enhanced for loops
+* Add final modifier to method parameters
+* Add final modifier to local variables
+* Remove unused imports
+* Add missing '@Override' annotations
+* Add missing '@Deprecated' annotations
+* Remove unnecessary casts
+* Remove unnecessary '$NON-NLS$' tags
+* Remove trailing white spaces on all lines
+
+
+
+h3. Working Sets
+
+
+Create working set in order to tidy up Package Explorer without removing projects from Eclipse. Select Package Explorer, click triangle on its top right side to bring up a menu. Select Top Level Elements and switch to working sets. Click same trianlge again and now create own working set with Configure Working Sets.
+
+

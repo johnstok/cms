@@ -1548,14 +1548,14 @@ public interface UIConstants {
      * @return The constant, in the appropriate locale.
      */
     String titlesMustNotContainBrackets();
-    
+
     /**
      * "The description field may not contain brackets.".
      *
      * @return The constant, in the appropriate locale.
      */
     String descriptionMustNotContainBrackets();
-    
+
     /**
      * "The tags field may not contain brackets.".
      *
@@ -1699,4 +1699,18 @@ public interface UIConstants {
      */
     String build();
 
+    /**
+     * "API".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String api();
+
+
+    /**
+     * "Full Documentation".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+     String fullDocumentation();
 }

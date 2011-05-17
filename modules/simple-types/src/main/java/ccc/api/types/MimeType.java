@@ -111,6 +111,43 @@ public class MimeType implements Serializable {
     }
 
 
+    /**
+     * Test whether this mime type represents textual content.
+     *
+     * @return True if the mime type represents text; false otherwise.
+     */
+    public boolean isText() {
+        final String primary = getPrimaryType();
+        final String sub     = getSubType();
+
+        if ("text".equalsIgnoreCase(primary)) {
+            return true;
+
+        } else if ("application".equalsIgnoreCase(primary)) {
+            if ("xml".equalsIgnoreCase(sub)
+                || "velocity".equalsIgnoreCase(sub)
+                || "plain".equalsIgnoreCase(sub)
+                || "json".equalsIgnoreCase(sub)
+                || "javascript".equalsIgnoreCase(sub)
+                || "x-javascript".equalsIgnoreCase(sub)
+                || sub.startsWith("vnd.cc")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Test whether this mime type represents an image.
+     *
+     * @return True if the mime type represents an image; false otherwise.
+     */
+    public boolean isImage() {
+        return "image".equalsIgnoreCase(getPrimaryType());
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public String toString() {
